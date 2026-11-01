@@ -43,10 +43,10 @@ final class ShapeMatcherTests: XCTestCase {
     }
 
     func testMostOfTheCatalogueIsAmongTheFirstFive() throws {
-        var found = 0
-        for (i, c) in CartridgeCatalog.all.enumerated() {
-            if try rank(of: c, angle: Double(i % 7) * 0.45, pixelsPerMM: 5 + Double(i % 4)) < 5 { found += 1 }
+        let ranks = try CartridgeCatalog.all.enumerated().map { i, c in
+            try rank(of: c, angle: Double(i % 7) * 0.45, pixelsPerMM: 5 + Double(i % 4))
         }
+        let found = ranks.filter { $0 < 5 }.count
         XCTAssertGreaterThanOrEqual(Double(found) / Double(CartridgeCatalog.all.count), 0.95)
     }
 
