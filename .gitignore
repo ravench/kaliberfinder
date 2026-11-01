@@ -1,0 +1,8 @@
+*.xcodeproj/
+xcuserdata/
+DerivedData/
+.DS_Store
+build/
+Kaliberfinder/Kaliberfinder.entitlements
+Kaliberfinder/Info.plist
+__pycache__/
