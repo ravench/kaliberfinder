@@ -9,7 +9,7 @@ import os, re, sys
 ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Kaliberfinder")
 LIT = r'"((?:[^"\\]|\\.|\\\((?:[^()]|\([^()]*\))*\))*)"'
 CONTEXTS = [
-    r'\b(?:Text|Button|Label|Section|TextField|Picker|Toggle|LabeledContent|Stepper|Menu|ContentUnavailableView)\(\s*' + LIT,
+    r'\b(?:Text|Button|Label|Section|TextField|Picker|Toggle|LabeledContent|Stepper|Menu|ContentUnavailableView|NavigationLink)\(\s*' + LIT,
     r'\.(?:navigationTitle|alert|confirmationDialog|accessibilityLabel)\(\s*' + LIT,
     r'\bprompt:\s*' + LIT,
     r'\bString\(localized:\s*' + LIT,

@@ -47,6 +47,29 @@
         }
       }
     },
+    "Alle Kaliber durchsuchen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search all calibres"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chercher dans tous les calibres"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerca in tutti i calibri"
+          }
+        }
+      }
+    },
     "Andere": {
       "extractionState": "manual",
       "localizations": {
@@ -89,6 +112,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noto anche come"
+          }
+        }
+      }
+    },
+    "Aufschrift «%@»": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marking “%@”"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inscription « %@ »"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scritta «%@»"
           }
         }
       }
@@ -231,6 +277,29 @@
         }
       }
     },
+    "Boden oder Spitze fotografiert: nur die Aufschrift wird ausgewertet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photographed from the base or tip: only the marking is used."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photographiée du culot ou de la pointe : seule l'inscription est utilisée."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografata dal fondello o dalla punta: viene usata solo la scritta."
+          }
+        }
+      }
+    },
     "Bodendurchmesser": {
       "extractionState": "manual",
       "localizations": {
@@ -277,6 +346,29 @@
         }
       }
     },
+    "Die besten drei 1:1 vergleichen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare the best three 1:1"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparer les trois meilleurs 1:1"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confronta i migliori tre 1:1"
+          }
+        }
+      }
+    },
     "Fertig": {
       "extractionState": "manual",
       "localizations": {
@@ -319,6 +411,121 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fucile a canna liscia"
+          }
+        }
+      }
+    },
+    "Form passt gut": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shape fits well"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La forme correspond bien"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La forma corrisponde bene"
+          }
+        }
+      }
+    },
+    "Form passt ungefähr": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shape fits roughly"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La forme correspond à peu près"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La forma corrisponde più o meno"
+          }
+        }
+      }
+    },
+    "Form passt wenig": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shape fits poorly"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La forme correspond peu"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La forma corrisponde poco"
+          }
+        }
+      }
+    },
+    "Foto auswählen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose photo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisir une photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli foto"
+          }
+        }
+      }
+    },
+    "Foto wird ausgewertet …": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysing photo …"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse de la photo …"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analisi della foto …"
           }
         }
       }
@@ -645,6 +852,52 @@
         }
       }
     },
+    "Keine Patrone im Bild erkannt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No cartridge found in the photo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune cartouche détectée sur la photo."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna cartuccia trovata nella foto."
+          }
+        }
+      }
+    },
+    "Keine passenden Kaliber gefunden.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No matching calibres found."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun calibre correspondant trouvé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessun calibro corrispondente trovato."
+          }
+        }
+      }
+    },
     "Kleiner": {
       "extractionState": "manual",
       "localizations": {
@@ -710,6 +963,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Arma lunga"
+          }
+        }
+      }
+    },
+    "Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lay the cartridge on the screen, base on the zero line, and compare."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posez la cartouche sur l'écran, le culot sur la ligne zéro, et comparez."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appoggia la cartuccia sullo schermo, il fondello sulla linea dello zero, e confronta."
           }
         }
       }
@@ -875,6 +1151,29 @@
         }
       }
     },
+    "Mögliche Kaliber": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Possible calibres"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibres possibles"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibri possibili"
+          }
+        }
+      }
+    },
     "Originalgrösse": {
       "extractionState": "manual",
       "localizations": {
@@ -894,6 +1193,75 @@
           "stringUnit": {
             "state": "translated",
             "value": "Grandezza reale"
+          }
+        }
+      }
+    },
+    "Patrone erkennen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identify a cartridge"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identifier une cartouche"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riconoscere una cartuccia"
+          }
+        }
+      }
+    },
+    "Patrone fotografieren": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photograph cartridge"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photographier la cartouche"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografa la cartuccia"
+          }
+        }
+      }
+    },
+    "Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Eine Aufschrift auf dem Boden oder der Schachtel hilft zusätzlich.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lay the cartridge on its side on a light background and photograph it from above. A marking on the base or the box helps too."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut. Une inscription sur le culot ou la boîte aide aussi."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto. Anche una scritta sul fondello o sulla scatola aiuta."
           }
         }
       }
@@ -1078,6 +1446,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Salva"
+          }
+        }
+      }
+    },
+    "Tipp: Patrone seitlich auf einen hellen, einfarbigen Untergrund legen und senkrecht von oben fotografieren.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tip: lay the cartridge on its side on a light, plain background and photograph it straight from above."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Astuce : posez la cartouche sur le côté sur un fond clair et uni et photographiez-la bien d'en haut."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggerimento: appoggia la cartuccia di lato su uno sfondo chiaro e uniforme e fotografala dritta dall'alto."
+          }
+        }
+      }
+    },
+    "Treffer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Matches"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Résultats"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Risultati"
           }
         }
       }

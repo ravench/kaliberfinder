@@ -30,6 +30,8 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: Kaliberfinder
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        # German source; translations in Resources/InfoPlist.xcstrings (tools/localize.py).
+        INFOPLIST_KEY_NSCameraUsageDescription: "Patronen fotografieren, um das Kaliber zu erkennen."
   KaliberfinderTests:
     type: bundle.unit-test
     platform: iOS
