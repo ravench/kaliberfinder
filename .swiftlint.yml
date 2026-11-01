@@ -1,0 +1,67 @@
+# SwiftLint configuration. CI runs `swiftlint lint --strict`, so every warning fails the build.
+# Run it locally with `brew install swiftlint && swiftlint`.
+included:
+  - Kaliberfinder
+  - KaliberfinderTests
+excluded:
+  - DerivedData
+  - build
+
+# Extra rules on top of SwiftLint's defaults.
+opt_in_rules:
+  - closure_spacing
+  - contains_over_filter_count
+  - contains_over_first_not_nil
+  - empty_count
+  - empty_string
+  - first_where
+  - last_where
+  - modifier_order
+  - operator_usage_whitespace
+  - redundant_nil_coalescing
+  - sorted_first_last
+  - toggle_bool
+  - unneeded_parentheses_in_closure_argument
+  - vertical_whitespace_closing_braces
+
+disabled_rules:
+  # Short names such as x, y, id, a, b are idiomatic in geometry and parser code.
+  - identifier_name
+  # SwiftUI views and parsers are naturally long; enforced with the limits below instead.
+  - type_body_length
+  - todo
+  # Trailing commas in multi-line literals keep diffs small.
+  - trailing_comma
+  # The code base uses compact `}` / `else {` on separate lines for one-line branches.
+  - statement_position
+
+line_length:
+  warning: 180
+  error: 220
+  ignores_urls: true
+  ignores_interpolated_strings: true
+  # Long UI texts are localisation keys and can't be wrapped without changing the key.
+  excluded_lines_patterns:
+    - '"[^"]{80,}"'
+
+file_length:
+  warning: 700
+  error: 1000
+
+function_body_length:
+  warning: 80
+  error: 150
+
+cyclomatic_complexity:
+  warning: 20
+  error: 30
+  ignores_case_statements: true
+
+nesting:
+  type_level: 2
+
+large_tuple:
+  warning: 4
+  error: 5
+
+reporter: xcode
