@@ -74,8 +74,7 @@ enum ScreenScale {
         if let simulated = ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] { return simulated }
         var info = utsname()
         uname(&info)
-        return withUnsafeBytes(of: &info.machine) { raw in
-            String(decoding: raw.prefix { $0 != 0 }, as: UTF8.self)
-        }
+        let bytes = withUnsafeBytes(of: &info.machine) { raw in Array(raw.prefix { $0 != 0 }) }
+        return String(bytes: bytes, encoding: .utf8) ?? "unknown"
     }
 }
