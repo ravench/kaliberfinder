@@ -277,29 +277,6 @@
         }
       }
     },
-    "Boden oder Spitze fotografiert: nur die Aufschrift wird ausgewertet.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Photographed from the base or tip: only the marking is used."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Photographiée du culot ou de la pointe : seule l'inscription est utilisée."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotografata dal fondello o dalla punta: viene usata solo la scritta."
-          }
-        }
-      }
-    },
     "Bodendurchmesser": {
       "extractionState": "manual",
       "localizations": {
@@ -1331,6 +1308,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Senza orlo"
+          }
+        }
+      }
+    },
+    "Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Bei Patronen zählt nur die Aufschrift.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Round in the photo: the base or tip of a cartridge, or a round ball. For cartridges only the marking counts."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rond sur la photo : culot ou pointe d'une cartouche, ou une balle ronde. Pour les cartouches, seule l'inscription compte."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rotondo nella foto: fondello o punta di una cartuccia, oppure una palla sferica. Per le cartucce conta solo la scritta."
           }
         }
       }

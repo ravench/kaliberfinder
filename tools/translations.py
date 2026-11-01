@@ -17,10 +17,6 @@ T = {
     "Alle Kaliber durchsuchen": ("Search all calibres", "Chercher dans tous les calibres", "Cerca in tutti i calibri"),
     "Andere": ("Other", "Autre", "Altro"),
     "Aufschrift «%@»": ("Marking “%@”", "Inscription « %@ »", "Scritta «%@»"),
-    "Boden oder Spitze fotografiert: nur die Aufschrift wird ausgewertet.": (
-        "Photographed from the base or tip: only the marking is used.",
-        "Photographiée du culot ou de la pointe : seule l'inscription est utilisée.",
-        "Fotografata dal fondello o dalla punta: viene usata solo la scritta."),
     "Die besten drei 1:1 vergleichen": ("Compare the best three 1:1", "Comparer les trois meilleurs 1:1", "Confronta i migliori tre 1:1"),
     "Form passt gut": ("Shape fits well", "La forme correspond bien", "La forma corrisponde bene"),
     "Form passt ungefähr": ("Shape fits roughly", "La forme correspond à peu près", "La forma corrisponde più o meno"),
@@ -100,6 +96,10 @@ T = {
     "Schrotpatrone": ("Shotshell", "Cartouche à plombs", "Cartuccia a pallini"),
     "Schulterdurchmesser": ("Shoulder diameter", "Diamètre de l'épaulement", "Diametro della spalla"),
     "Schwarzpulver": ("Black powder", "Poudre noire", "Polvere nera"),
+    "Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Bei Patronen zählt nur die Aufschrift.": (
+        "Round in the photo: the base or tip of a cartridge, or a round ball. For cartridges only the marking counts.",
+        "Rond sur la photo : culot ou pointe d'une cartouche, ou une balle ronde. Pour les cartouches, seule l'inscription compte.",
+        "Rotondo nella foto: fondello o punta di una cartuccia, oppure una palla sferica. Per le cartucce conta solo la scritta."),
     "Speichern": ("Save", "Enregistrer", "Salva"),
     "Vom iPhone-Modell": ("From the iPhone model", "Selon le modèle d'iPhone", "Dal modello di iPhone"),
     "Zurücksetzen": ("Reset", "Réinitialiser", "Ripristina"),

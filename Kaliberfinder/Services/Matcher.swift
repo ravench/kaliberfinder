@@ -26,13 +26,14 @@ enum Matcher {
                      cartridges: [Cartridge] = CartridgeCatalog.all,
                      expected: [String: ShapeMeasurement] = ShapeMatcher.catalogue,
                      limit: Int = 8) -> [Match] {
-        let usableShape = shape.flatMap { $0.isEndView ? nil : $0 }
         let hitByID = Dictionary(hits.map { ($0.cartridgeID, $0) }, uniquingKeysWith: { a, _ in a })
         var matches: [Match] = []
         for c in cartridges {
             let hit = hitByID[c.id]
             var distance: Double?
-            if let usableShape, let e = expected[c.id] { distance = ShapeMatcher.distance(usableShape, e) }
+            // A round silhouette is either a cartridge seen end-on or a round ball: compare
+            // round with round and long with long only.
+            if let shape, let e = expected[c.id], e.isEndView == shape.isEndView { distance = ShapeMatcher.distance(shape, e) }
             guard hit != nil || distance != nil else { continue }
             var score = distance.map { exp(-3 * $0) } ?? 0
             switch hit?.strength {
