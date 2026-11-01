@@ -2,10 +2,49 @@
 Values: (English, French, Italian). Use %1$@ / %2$@ when word order changes.
 """
 
+# Info.plist keys: (German, English, French, Italian). German must match project.yml.
+INFO_PLIST = {
+    "NSCameraUsageDescription": (
+        "Patronen fotografieren, um das Kaliber zu erkennen.",
+        "Take photos of cartridges to recognise the calibre.",
+        "Photographier des cartouches pour reconnaître le calibre.",
+        "Fotografare cartucce per riconoscere il calibro."),
+}
+
 T = {
     "1:1 vergleichen (%lld)": ("Compare 1:1 (%lld)", "Comparer 1:1 (%lld)", "Confronta 1:1 (%lld)"),
     "Alle Kaliber": ("All calibres", "Tous les calibres", "Tutti i calibri"),
+    "Alle Kaliber durchsuchen": ("Search all calibres", "Chercher dans tous les calibres", "Cerca in tutti i calibri"),
     "Andere": ("Other", "Autre", "Altro"),
+    "Aufschrift «%@»": ("Marking “%@”", "Inscription « %@ »", "Scritta «%@»"),
+    "Boden oder Spitze fotografiert: nur die Aufschrift wird ausgewertet.": (
+        "Photographed from the base or tip: only the marking is used.",
+        "Photographiée du culot ou de la pointe : seule l'inscription est utilisée.",
+        "Fotografata dal fondello o dalla punta: viene usata solo la scritta."),
+    "Die besten drei 1:1 vergleichen": ("Compare the best three 1:1", "Comparer les trois meilleurs 1:1", "Confronta i migliori tre 1:1"),
+    "Form passt gut": ("Shape fits well", "La forme correspond bien", "La forma corrisponde bene"),
+    "Form passt ungefähr": ("Shape fits roughly", "La forme correspond à peu près", "La forma corrisponde più o meno"),
+    "Form passt wenig": ("Shape fits poorly", "La forme correspond peu", "La forma corrisponde poco"),
+    "Foto auswählen": ("Choose photo", "Choisir une photo", "Scegli foto"),
+    "Foto wird ausgewertet …": ("Analysing photo …", "Analyse de la photo …", "Analisi della foto …"),
+    "Keine Patrone im Bild erkannt.": ("No cartridge found in the photo.", "Aucune cartouche détectée sur la photo.", "Nessuna cartuccia trovata nella foto."),
+    "Keine passenden Kaliber gefunden.": ("No matching calibres found.", "Aucun calibre correspondant trouvé.", "Nessun calibro corrispondente trovato."),
+    "Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.": (
+        "Lay the cartridge on the screen, base on the zero line, and compare.",
+        "Posez la cartouche sur l'écran, le culot sur la ligne zéro, et comparez.",
+        "Appoggia la cartuccia sullo schermo, il fondello sulla linea dello zero, e confronta."),
+    "Mögliche Kaliber": ("Possible calibres", "Calibres possibles", "Calibri possibili"),
+    "Patrone erkennen": ("Identify a cartridge", "Identifier une cartouche", "Riconoscere una cartuccia"),
+    "Patrone fotografieren": ("Photograph cartridge", "Photographier la cartouche", "Fotografa la cartuccia"),
+    "Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Eine Aufschrift auf dem Boden oder der Schachtel hilft zusätzlich.": (
+        "Lay the cartridge on its side on a light background and photograph it from above. A marking on the base or the box helps too.",
+        "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut. Une inscription sur le culot ou la boîte aide aussi.",
+        "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto. Anche una scritta sul fondello o sulla scatola aiuta."),
+    "Tipp: Patrone seitlich auf einen hellen, einfarbigen Untergrund legen und senkrecht von oben fotografieren.": (
+        "Tip: lay the cartridge on its side on a light, plain background and photograph it straight from above.",
+        "Astuce : posez la cartouche sur le côté sur un fond clair et uni et photographiez-la bien d'en haut.",
+        "Suggerimento: appoggia la cartuccia di lato su uno sfondo chiaro e uniforme e fotografala dritta dall'alto."),
+    "Treffer": ("Matches", "Résultats", "Risultati"),
     "Auch bekannt als": ("Also known as", "Aussi appelé", "Noto anche come"),
     "Auswählen": ("Select", "Sélectionner", "Seleziona"),
     "Bauart": ("Type", "Type", "Tipo"),

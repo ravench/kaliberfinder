@@ -1,0 +1,35 @@
+{
+  "sourceLanguage": "de",
+  "strings": {
+    "NSCameraUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patronen fotografieren, um das Kaliber zu erkennen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take photos of cartridges to recognise the calibre."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photographier des cartouches pour reconnaître le calibre."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografare cartucce per riconoscere il calibro."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
