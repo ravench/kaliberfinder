@@ -79,7 +79,7 @@ struct MatchesView: View {
     static func notes(for a: PhotoAnalysis) -> [String] {
         var notes: [String] = []
         if let shape = a.shape {
-            if shape.isEndView { notes.append("Boden oder Spitze fotografiert: nur die Aufschrift wird ausgewertet.".loc) }
+            if shape.isEndView { notes.append("Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Bei Patronen zählt nur die Aufschrift.".loc) }
         } else {
             notes.append("Keine Patrone im Bild erkannt.".loc)
         }

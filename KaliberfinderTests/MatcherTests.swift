@@ -24,13 +24,21 @@ final class MatcherTests: XCTestCase {
         XCTAssertNotNil(matches.first?.shapeDistance)
     }
 
-    func testEndViewUsesOnlyText() {
+    func testRoundSilhouetteComparesOnlyWithRoundBalls() {
         let disc = ShapeMeasurement(aspect: 1, profile: ShapeMatcher.fractions.map { _ in 1 })
         let hit = HeadstampReader.Hit(cartridgeID: ".45 ACP", text: "45 AUTO", strength: .strong)
         let matches = Matcher.rank(shape: disc, hits: [hit])
-        XCTAssertEqual(matches.map(\.cartridge.id), [".45 ACP"])
+        XCTAssertEqual(matches.first?.cartridge.id, ".45 ACP")
         XCTAssertNil(matches.first?.shapeDistance)
         XCTAssertNil(matches.first?.shapeFit)
+        let others = matches.dropFirst()
+        XCTAssertFalse(others.isEmpty)
+        XCTAssertTrue(others.allSatisfy { $0.cartridge.kind == "ball" || $0.cartridge.kind == "pellet" }, others.map(\.cartridge.id).joined(separator: ", "))
+    }
+
+    func testLongSilhouetteIgnoresRoundBalls() throws {
+        let matches = Matcher.rank(shape: try expected("9x19 mm"), hits: [], limit: .max)
+        XCTAssertFalse(matches.contains { $0.cartridge.kind == "ball" })
     }
 
     func testNothingFoundGivesNoMatches() {
