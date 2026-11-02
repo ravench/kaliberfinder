@@ -18,6 +18,8 @@ it is, after taking a photo of it. In German, English, French and Italian.
   neck and bullet diameter, and the primer (Boxer size of commercial brass).
 - **1:1**: one or several calibres side by side at real size, standing on a common base
   line next to a millimetre ruler, with the case head seen from below (rim and primer).
+  The ruler stays on screen while the cartridges scroll sideways; a 1:1 badge explains why
+  the view can't be zoomed.
 - **Ohne Foto**: enter measured dimensions, or pick calibres by name, and compare them 1:1.
 - **Calibration**: the app knows the display density of every iPhone since the XS and
   takes Display Zoom into account. For unknown models, or to fine-tune, calibrate once
