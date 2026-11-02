@@ -24,6 +24,29 @@
         }
       }
     },
+    "Abweichung bis %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Off by up to %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écart jusqu'à %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scarto fino a %@"
+          }
+        }
+      }
+    },
     "Alle Kaliber": {
       "extractionState": "manual",
       "localizations": {
@@ -135,6 +158,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Scritta «%@»"
+          }
+        }
+      }
+    },
+    "Ausgewählt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionnés"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selezionati"
           }
         }
       }
@@ -507,6 +553,52 @@
         }
       }
     },
+    "Fülle aus, was du messen kannst. Schon eine Länge und ein Durchmesser grenzen die Auswahl stark ein.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fill in what you can measure. One length and one diameter already narrow it down a lot."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remplissez ce que vous pouvez mesurer. Une longueur et un diamètre suffisent déjà à bien réduire le choix."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compila ciò che puoi misurare. Già una lunghezza e un diametro restringono molto la scelta."
+          }
+        }
+      }
+    },
+    "Gemessen in mm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measured in mm"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mesuré en mm"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Misurato in mm"
+          }
+        }
+      }
+    },
     "Gesamtlänge": {
       "extractionState": "manual",
       "localizations": {
@@ -733,6 +825,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Calibri"
+          }
+        }
+      }
+    },
+    "Kaliber auswählen und vergleichen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick and compare calibres"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisir et comparer des calibres"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli e confronta calibri"
           }
         }
       }
@@ -1059,6 +1174,29 @@
         }
       }
     },
+    "Masse eingeben": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter dimensions"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saisir les dimensions"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inserisci le dimensioni"
+          }
+        }
+      }
+    },
     "Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten.": {
       "extractionState": "manual",
       "localizations": {
@@ -1151,6 +1289,29 @@
         }
       }
     },
+    "Ohne Foto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Without a photo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sans photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Senza foto"
+          }
+        }
+      }
+    },
     "Originalgrösse": {
       "extractionState": "manual",
       "localizations": {
@@ -1170,6 +1331,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Grandezza reale"
+          }
+        }
+      }
+    },
+    "Passt genau": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exact fit"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Correspond exactement"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corrisponde esattamente"
           }
         }
       }
@@ -1450,6 +1634,29 @@
         }
       }
     },
+    "Suche nach Namen und tippe die Kaliber an, die du nebeneinander sehen willst.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search by name and tap the calibres you want to see side by side."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cherchez par nom et touchez les calibres que vous voulez voir côte à côte."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerca per nome e tocca i calibri che vuoi vedere uno accanto all'altro."
+          }
+        }
+      }
+    },
     "Tipp: Patrone seitlich auf einen hellen, einfarbigen Untergrund legen und senkrecht von oben fotografieren.": {
       "extractionState": "manual",
       "localizations": {
@@ -1515,6 +1722,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dal modello di iPhone"
+          }
+        }
+      }
+    },
+    "Wähle Kaliber aus, um sie in Originalgrösse nebeneinander zu vergleichen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select calibres to compare them side by side at real size."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionnez des calibres pour les comparer côte à côte en taille réelle."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleziona i calibri per confrontarli uno accanto all'altro a grandezza reale."
           }
         }
       }

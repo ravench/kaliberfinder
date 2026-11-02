@@ -24,9 +24,17 @@ struct HomeView: View {
                 Text("Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Eine Aufschrift auf dem Boden oder der Schachtel hilft zusätzlich.")
             }
             Section {
+                NavigationLink { MeasureView() } label: {
+                    Label("Masse eingeben", systemImage: "ruler")
+                }
+                NavigationLink { CatalogView(selecting: true) } label: {
+                    Label("Kaliber auswählen und vergleichen", systemImage: "square.split.2x1")
+                }
                 NavigationLink { CatalogView() } label: {
                     Label("Alle Kaliber", systemImage: "list.bullet")
                 }
+            } header: {
+                Text("Ohne Foto")
             }
             Section {
                 NavigationLink { CalibrationView() } label: {
