@@ -1,0 +1,80 @@
+name: TestFlight
+# Uploads a build to TestFlight after the Build workflow passes on main.
+# Needs the repository secrets ASC_KEY_ID, ASC_ISSUER_ID and ASC_KEY_P8 (an App Store
+# Connect API key with the Admin role); without them the upload is skipped.
+on:
+  workflow_run:
+    workflows: [Build]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: testflight
+  cancel-in-progress: false
+defaults:
+  run:
+    # pipefail: otherwise a failing xcodebuild piped into xcpretty still passes.
+    shell: bash -eo pipefail {0}
+jobs:
+  upload:
+    # Only builds whose tests passed, and only pushes to main (not PRs from a branch named main).
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: macos-15
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - name: Check secrets
+        id: secrets
+        run: |
+          if [ -n "$ASC_KEY_ID" ] && [ -n "$ASC_ISSUER_ID" ] && [ -n "$ASC_KEY_P8" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::TestFlight upload skipped: set the ASC_KEY_ID, ASC_ISSUER_ID and ASC_KEY_P8 secrets."
+          fi
+      - uses: actions/checkout@v4
+        if: steps.secrets.outputs.ready == 'true'
+        with:
+          # The commit the Build workflow tested, not whatever main is now.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - name: Prepare
+        if: steps.secrets.outputs.ready == 'true'
+        run: |
+          python3 -m unittest discover -s tools -p 'test_testflight.py'
+          brew install xcodegen
+          xcodegen generate
+          # The runner is thrown away after the job, key included.
+          echo "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
+          python3 tools/testflight.py export-options "$RUNNER_TEMP/ExportOptions.plist"
+          BUILD=$(python3 tools/testflight.py build-number "${{ github.run_number }}")
+          echo "BUILD_NUMBER=$BUILD" >> "$GITHUB_ENV"
+          echo "Build number $BUILD"
+      - name: Archive
+        if: steps.secrets.outputs.ready == 'true'
+        run: |
+          xcodebuild archive \
+            -project Kaliberfinder.xcodeproj \
+            -scheme Kaliberfinder \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/Kaliberfinder.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/AuthKey.p8" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER" | xcpretty
+      - name: Upload to TestFlight
+        if: steps.secrets.outputs.ready == 'true'
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/Kaliberfinder.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/AuthKey.p8" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+          echo "### Build $BUILD_NUMBER uploaded to TestFlight" >> "$GITHUB_STEP_SUMMARY"
