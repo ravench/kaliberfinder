@@ -15,7 +15,7 @@ the top (y = 0), base at the bottom (y = overall length).
 import json, math, os, sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from cartridges import CATALOGUE, DISPLAY_ALIASES, RIMLESS, RIMMED, BELTED, RIMFIRE, SHOT, BALL, MINIE, PELLET, SPITZER, ROUND, FLAT
+from cartridges import CATALOGUE, DISPLAY_ALIASES, PRIMERS, PRIMER_DIAMETERS, RIMLESS, RIMMED, BELTED, RIMFIRE, SHOT, BALL, MINIE, PELLET, SPITZER, ROUND, FLAT
 from headstamps import HEADSTAMPS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -124,6 +124,15 @@ def dimensions(s):
     return d
 
 
+def primer(s):
+    """Primer type and diameter; none for rimfire and for balls, Minié bullets and pellets."""
+    if s["kind"] in (RIMFIRE, BALL, MINIE, PELLET):
+        assert s["name"] not in PRIMERS, f"{s['name']} has no primer"
+        return {}
+    kind = PRIMERS[s["name"]]  # every centrefire calibre needs one
+    return {"primer": {"type": kind, "diameter": PRIMER_DIAMETERS[kind]}}
+
+
 def build():
     cartridges = []
     for category, items in CATALOGUE:
@@ -131,7 +140,8 @@ def build():
             cartridges.append({"id": s["name"], "name": s["name"], "category": category, "kind": s["kind"],
                                "aliases": s["aliases"], "displayAliases": DISPLAY_ALIASES.get(s["name"], []),
                                "headstamps": HEADSTAMPS.get(s["name"], []),
-                               "dimensions": dimensions(s), "outline": outline(s)})
+                               "dimensions": dimensions(s), "outline": outline(s),
+                               **primer(s)})
     names = {c["name"] for c in cartridges}
     unknown = (set(DISPLAY_ALIASES) | set(HEADSTAMPS)) - names
     assert not unknown, f"aliases for unknown calibres: {unknown}"

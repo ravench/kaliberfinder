@@ -16,6 +16,29 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     let headstamps: [String]
     let dimensions: Dimensions
     let outline: Outline
+    /// Nil for rimfire and for balls, Minié bullets and pellets.
+    let primer: Primer?
+
+    /// The primer in the centre of the case head (Boxer size of commercial brass).
+    struct Primer: Decodable, Hashable {
+        /// small-pistol, large-pistol, small-rifle, large-rifle, shotshell-209 or bmg-35.
+        let type: String
+        /// Cup diameter in mm.
+        let diameter: Double
+
+        /// German title, used as localization key.
+        var title: String {
+            switch type {
+            case "small-pistol": "Pistole klein"
+            case "large-pistol": "Pistole gross"
+            case "small-rifle": "Büchse klein"
+            case "large-rifle": "Büchse gross"
+            case "shotshell-209": "Schrot (209)"
+            case "bmg-35": ".50 BMG (#35)"
+            default: type
+            }
+        }
+    }
 
     struct Dimensions: Decodable, Hashable {
         let rim: Double
@@ -39,6 +62,9 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     }
 
     var hasCase: Bool { dimensions.caseLength > 0 }
+
+    /// Diameter of the case head seen from below: the rim, or the base where it is wider.
+    var headDiameter: Double { max(dimensions.rim, dimensions.base) }
 
     /// All names the cartridge is known by, for search.
     var allNames: [String] { [name] + displayAliases + aliases + headstamps }
