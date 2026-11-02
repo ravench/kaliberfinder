@@ -53,8 +53,11 @@ enum LengthUnit: String, CaseIterable, Identifiable {
     /// Text that isn't a valid value is kept as it is.
     static func convert(_ text: String, from: LengthUnit, to: LengthUnit) -> String {
         guard from != to, let mm = from.parse(text) else { return text }
-        let digits = to == .metric ? 2 : 3
-        return to.value(fromMM: mm).formatted(.number.precision(.fractionLength(0...digits)).grouping(.never).locale(Locale(identifier: "en_US_POSIX")))
+        let digits: Int = to == .metric ? 2 : 3
+        let style = FloatingPointFormatStyle<Double>(locale: Locale(identifier: "en_US_POSIX"))
+            .precision(.fractionLength(0...digits))
+            .grouping(.never)
+        return to.value(fromMM: mm).formatted(style)
     }
 }
 
@@ -69,31 +72,41 @@ extension LengthUnit {
     /// Ticks from zero up to `lengthMM`: metric every mm (longer at 5, numbered every cm),
     /// imperial every 1/16 in (longer at 1/8, 1/4, 1/2, numbered every inch).
     func rulerTicks(lengthMM: Double) -> [RulerTick] {
+        let step = self == .metric ? 1.0 : Self.mmPerInch / 16
+        let count = max(0, Int((lengthMM / step + 1e-9).rounded(.down)))
+        var ticks: [RulerTick] = []
+        ticks.reserveCapacity(count + 1)
+        for i in 0...count {
+            ticks.append(tick(i, step: step))
+        }
+        return ticks
+    }
+
+    /// The `i`-th tick: every mm or every 1/16 in.
+    private func tick(_ i: Int, step: Double) -> RulerTick {
+        let perUnit = self == .metric ? 10 : 16
+        let level: Int
         switch self {
         case .metric:
-            return (0...max(0, Int(lengthMM.rounded(.down)))).map { i in
-                RulerTick(mm: Double(i), level: i % 10 == 0 ? 4 : (i % 5 == 0 ? 2 : 0), label: i % 10 == 0 ? "\(i / 10)" : nil)
-            }
+            if i % 10 == 0 { level = 4 } else if i % 5 == 0 { level = 2 } else { level = 0 }
         case .imperial:
-            let step = Self.mmPerInch / 16
-            let count = Int((lengthMM / step + 1e-9).rounded(.down))
-            return (0...max(0, count)).map { i in
-                let level = i % 16 == 0 ? 4 : (i % 8 == 0 ? 3 : (i % 4 == 0 ? 2 : (i % 2 == 0 ? 1 : 0)))
-                return RulerTick(mm: Double(i) * step, level: level, label: i % 16 == 0 ? "\(i / 16)" : nil)
-            }
+            if i % 16 == 0 { level = 4 } else if i % 8 == 0 { level = 3 } else if i % 4 == 0 { level = 2 } else if i % 2 == 0 { level = 1 } else { level = 0 }
         }
+        let label: String? = i % perUnit == 0 ? String(i / perUnit) : nil
+        return RulerTick(mm: Double(i) * step, level: level, label: label)
     }
 
     /// Ruler length in mm: the tallest cartridge plus 5 mm, rounded up to a whole cm or inch.
     func rulerLength(tallestMM: Double) -> Double {
-        let unitMM = self == .metric ? 10 : Self.mmPerInch
+        let unitMM: Double = self == .metric ? 10 : Self.mmPerInch
         return ceil((tallestMM + 5) / unitMM) * unitMM
     }
 
     /// Screen scale for display, e.g. "6.32 pt/mm" or "160.5 pt/in". `precise` adds one decimal (calibration).
     func scaleText(pointsPerMM: Double, precise: Bool = false, locale: Locale = .current) -> String {
-        let value = self == .metric ? pointsPerMM : pointsPerMM * Self.mmPerInch
-        let digits = (self == .metric ? 2 : 1) + (precise ? 1 : 0)
+        let value: Double = self == .metric ? pointsPerMM : pointsPerMM * Self.mmPerInch
+        var digits: Int = self == .metric ? 2 : 1
+        if precise { digits += 1 }
         return value.formatted(.number.precision(.fractionLength(digits)).locale(locale)) + " pt/" + symbol
     }
 }
