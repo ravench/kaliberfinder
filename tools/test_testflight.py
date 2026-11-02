@@ -98,6 +98,15 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("branches: [main]", self.workflow)
         self.assertIn("conclusion == 'success'", self.workflow)
 
+    def test_actions_run_on_node_24(self):
+        # GitHub retired Node 20 for actions; checkout v5 is the first major on Node 24.
+        node24 = {"actions/checkout": 5}
+        workflows = os.path.join(testflight.ROOT, ".github", "workflows")
+        for name in sorted(os.listdir(workflows)):
+            with open(os.path.join(workflows, name)) as f:
+                for action, major in re.findall(r"uses:\s*([\w-]+/[\w-]+)@v(\d+)", f.read()):
+                    self.assertGreaterEqual(int(major), node24.get(action, 0), f"{name}: {action}@v{major}")
+
     def test_build_pushes_only_on_main(self):
         # One Mac run per commit: branches build via their pull request; main's
         # push build is what triggers the TestFlight upload.
