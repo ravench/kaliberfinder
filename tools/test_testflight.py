@@ -98,6 +98,14 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("branches: [main]", self.workflow)
         self.assertIn("conclusion == 'success'", self.workflow)
 
+    def test_build_pushes_only_on_main(self):
+        # One Mac run per commit: branches build via their pull request; main's
+        # push build is what triggers the TestFlight upload.
+        with open(os.path.join(testflight.ROOT, ".github", "workflows", "build.yml")) as f:
+            build = f.read()
+        self.assertRegex(build, r"push:\n\s+branches: \[main\]")
+        self.assertIn("pull_request:", build)
+
     def test_uses_ci_build_number(self):
         self.assertIn('CURRENT_PROJECT_VERSION="$BUILD_NUMBER"', self.workflow)
 
