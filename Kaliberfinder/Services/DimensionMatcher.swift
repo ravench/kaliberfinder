@@ -50,10 +50,8 @@ enum DimensionMatcher {
         }.prefix(limit))
     }
 
-    /// Reads a number typed with either decimal separator, e.g. "29,7" or "29.7". Empty or invalid text is nil.
+    /// Reads millimetres typed with either decimal separator, e.g. "29,7" or "29.7". Empty or invalid text is nil.
     static func number(_ text: String) -> Double? {
-        let cleaned = text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: ",", with: ".")
-        guard let value = Double(cleaned), value > 0, value < 500 else { return nil }
-        return value
+        LengthUnit.metric.parse(text)
     }
 }

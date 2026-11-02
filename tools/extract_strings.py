@@ -21,7 +21,7 @@ CONTEXTS = [
     r'\bcase "[a-z0-9-]+":\s*' + LIT,  # titles for catalogue kinds and primers
     r'\[' + LIT + r'(?:,\s*' + LIT + r')+\]\s*\n?\s*\.map\(\\\.loc\)',
 ]
-STRINGY = ("formatted", "name", "Name", "Developer", "title", "Description", "joined", ".loc", "text", "Text", "mm(")
+STRINGY = ("formatted", "name", "Name", "Developer", "title", "Description", "joined", ".loc", "text", "Text", "mm(", "format(")
 
 
 def key_for(literal):

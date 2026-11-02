@@ -3,6 +3,7 @@ import SwiftUI
 /// Dimensions of one calibre and a link to its real-size view.
 struct CartridgeDetailView: View {
     let cartridge: Cartridge
+    @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
 
     var body: some View {
         let d = cartridge.dimensions
@@ -21,23 +22,23 @@ struct CartridgeDetailView: View {
                 }
             }
             Section("Masse") {
-                LabeledContent("Gesamtlänge", value: mm(d.overallLength))
+                LabeledContent("Gesamtlänge", value: unit.format(d.overallLength))
                 if cartridge.hasCase {
-                    LabeledContent(cartridge.kind == "shot" ? "Hülsenlänge (offen)".loc : "Hülsenlänge".loc, value: mm(d.caseLength))
-                    LabeledContent("Randdurchmesser", value: mm(d.rim))
-                    LabeledContent("Bodendurchmesser", value: mm(d.base))
+                    LabeledContent(cartridge.kind == "shot" ? "Hülsenlänge (offen)".loc : "Hülsenlänge".loc, value: unit.format(d.caseLength))
+                    LabeledContent("Randdurchmesser", value: unit.format(d.rim))
+                    LabeledContent("Bodendurchmesser", value: unit.format(d.base))
                     if let shoulder = d.shoulder {
-                        LabeledContent("Schulterdurchmesser", value: mm(shoulder))
+                        LabeledContent("Schulterdurchmesser", value: unit.format(shoulder))
                     }
                     if cartridge.kind != "shot" {
-                        LabeledContent("Halsdurchmesser", value: mm(d.neck))
+                        LabeledContent("Halsdurchmesser", value: unit.format(d.neck))
                     }
                 }
                 if cartridge.kind != "shot" {
-                    LabeledContent("Geschossdurchmesser", value: mm(d.bullet))
+                    LabeledContent("Geschossdurchmesser", value: unit.format(d.bullet))
                 }
                 if let primer = cartridge.primer {
-                    LabeledContent("Zündhütchen", value: "\(primer.title.loc), \(mm(primer.diameter))")
+                    LabeledContent("Zündhütchen", value: "\(primer.title.loc), \(unit.format(primer.diameter))")
                 } else if cartridge.kind == "rimfire" {
                     LabeledContent("Zündhütchen", value: "Randfeuer, ohne Zündhütchen".loc)
                 }

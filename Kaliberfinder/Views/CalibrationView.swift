@@ -6,6 +6,7 @@ struct CalibrationView: View {
     @EnvironmentObject private var scale: ScaleModel
     @Environment(\.dismiss) private var dismiss
     @State private var value: Double = 6
+    @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
 
     var body: some View {
         let card = ScreenScale.cardSize
@@ -25,7 +26,7 @@ struct CalibrationView: View {
                         Button { value -= 0.005 } label: { Image(systemName: "minus.circle") }
                             .accessibilityLabel("Kleiner")
                         Spacer()
-                        Text(verbatim: value.formatted(.number.precision(.fractionLength(3))) + " pt/mm")
+                        Text(verbatim: unit.scaleText(pointsPerMM: value, precise: true))
                             .font(.footnote.monospacedDigit())
                         Spacer()
                         Button { value += 0.005 } label: { Image(systemName: "plus.circle") }
