@@ -70,6 +70,18 @@ swiftlint lint --strict
 
 Every change should come with tests.
 
+## TestFlight
+
+Every push to `main` whose Build workflow passes is archived and uploaded to TestFlight
+by `.github/workflows/testflight.yml` (it can also be started by hand under Actions).
+The build number is the workflow run number plus 1000 (`tools/testflight.py`); bump
+`MARKETING_VERSION` in `project.yml` for a new version.
+
+The upload needs three repository secrets from an App Store Connect API key with the
+Admin role (Users and Access, Integrations, Team Keys): `ASC_KEY_ID` (Key ID),
+`ASC_ISSUER_ID` (Issuer ID) and `ASC_KEY_P8` (the whole content of the downloaded
+`AuthKey_….p8`). Without them the workflow skips the upload. Forks don't get the secrets.
+
 ## License
 
 © 2026 Simon Giotta. Source-available under the
