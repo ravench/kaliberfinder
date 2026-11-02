@@ -101,6 +101,26 @@ class WorkflowTests(unittest.TestCase):
     def test_uses_ci_build_number(self):
         self.assertIn('CURRENT_PROJECT_VERSION="$BUILD_NUMBER"', self.workflow)
 
+    def test_builds_with_ios_26_sdk(self):
+        # App Store Connect rejects builds made with an SDK older than iOS 26 (Xcode 26).
+        for name in ("build.yml", "testflight.yml"):
+            with open(os.path.join(testflight.ROOT, ".github", "workflows", name)) as f:
+                runners = re.findall(r"runs-on:\s*macos-(\d+)", f.read())
+            self.assertTrue(runners, name)
+            for version in runners:
+                self.assertGreaterEqual(int(version), 26, name)
+
+    def test_ipad_supports_all_orientations(self):
+        # iPad multitasking needs all four orientations, or the upload is rejected.
+        family = re.search(r"TARGETED_DEVICE_FAMILY:\s*\"?([\d,]+)", self.project).group(1)
+        if "2" not in family.split(","):
+            self.skipTest("iPhone only")
+        ipad = re.search(r"INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad:\s*\"?([^\"\n]+)", self.project)
+        self.assertIsNotNone(ipad)
+        self.assertEqual(set(ipad.group(1).split()), {
+            "UIInterfaceOrientationPortrait", "UIInterfaceOrientationPortraitUpsideDown",
+            "UIInterfaceOrientationLandscapeLeft", "UIInterfaceOrientationLandscapeRight"})
+
     def test_no_export_compliance_prompt(self):
         # Otherwise every build waits in App Store Connect for the encryption question.
         self.assertRegex(self.project, r"INFOPLIST_KEY_ITSAppUsesNonExemptEncryption:\s*NO")
