@@ -12,14 +12,14 @@ jobs:
     # Official SwiftLint image with a pinned version, so results don't change under us.
     container: ghcr.io/realm/swiftlint:0.59.1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: SwiftLint
         # --strict turns every warning into a failure; the reporter adds annotations to the PR.
         run: swiftlint lint --strict --reporter github-actions-logging
   build:
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: brew install xcodegen
       - run: xcodegen generate
       - name: Check generated data and translations
