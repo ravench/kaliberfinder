@@ -8,9 +8,11 @@ struct CartridgeDetailView: View {
         let d = cartridge.dimensions
         List {
             Section {
-                HStack {
+                HStack(alignment: .bottom, spacing: 24) {
                     Spacer()
                     CartridgeThumbnail(cartridge: cartridge, size: CGSize(width: 90, height: 160))
+                    // Same scale as the side view, so the head's size reads correctly next to it.
+                    CaseBaseView(cartridge: cartridge, pointsPerMM: thumbnailScale)
                     Spacer()
                 }
                 .padding(.vertical, 8)
@@ -34,6 +36,11 @@ struct CartridgeDetailView: View {
                 if cartridge.kind != "shot" {
                     LabeledContent("Geschossdurchmesser", value: mm(d.bullet))
                 }
+                if let primer = cartridge.primer {
+                    LabeledContent("Zündhütchen", value: "\(primer.title.loc), \(mm(primer.diameter))")
+                } else if cartridge.kind == "rimfire" {
+                    LabeledContent("Zündhütchen", value: "Randfeuer, ohne Zündhütchen".loc)
+                }
             }
             Section {
                 LabeledContent("Kategorie", value: cartridge.category.loc)
@@ -42,11 +49,16 @@ struct CartridgeDetailView: View {
                     LabeledContent("Auch bekannt als", value: cartridge.displayAliases.joined(separator: ", "))
                 }
             } footer: {
-                Text("Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten.")
+                Text("Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten. Zündhütchen: Boxer-Grösse handelsüblicher Hülsen; Militärmunition kann Berdan-Zündhütchen anderer Grösse haben.")
             }
         }
         .navigationTitle(Text(verbatim: cartridge.name))
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    /// Points per mm of the 90 × 160 pt thumbnail.
+    private var thumbnailScale: Double {
+        min(90 / cartridge.outline.width, 160 / cartridge.outline.height)
     }
 
     /// German title of a catalogue kind, used as localization key.
