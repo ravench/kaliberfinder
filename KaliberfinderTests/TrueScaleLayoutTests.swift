@@ -36,6 +36,16 @@ final class TrueScaleLayoutTests: XCTestCase {
         XCTAssertEqual(TrueScaleLayout(cartridges: [], unit: .metric, pointsPerMM: 6).rulerMM, 10)
     }
 
+    func testRulerIsPinnedToTheLeftEdgeAndTheBaseLine() throws {
+        XCTAssertEqual(TrueScaleLayout.rulerLeadingInset, 0)
+        let layout = TrueScaleLayout(cartridges: try cartridges(["9x19 mm"]), unit: .metric, pointsPerMM: 6)
+        // The ruler is as tall as the band, so its zero is where the cartridge bases stand.
+        XCTAssertEqual(RulerView.y(forMM: 0, height: layout.bandHeight, pointsPerMM: 6), layout.bandHeight)
+        // The top of a 29.69 mm cartridge lines up with the 29.69 mm mark.
+        let tip = layout.bandHeight - 29.69 * 6
+        XCTAssertEqual(RulerView.y(forMM: 29.69, height: layout.bandHeight, pointsPerMM: 6), tip, accuracy: 1e-9)
+    }
+
     func testOneToOneHintsAreTranslated() throws {
         let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "en"))
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
