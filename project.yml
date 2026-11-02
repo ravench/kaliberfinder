@@ -1,6 +1,6 @@
 name: Kaliberfinder
 options:
-  bundleIdPrefix: net.forestraven
+  bundleIdPrefix: ch.giotta
   deploymentTarget:
     iOS: "17.0"
   developmentLanguage: de
@@ -16,7 +16,7 @@ targets:
         CFBundleLocalizations: [de, en, fr, it]
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: net.forestraven.kaliberfinder
+        PRODUCT_BUNDLE_IDENTIFIER: ch.giotta.kaliberfinder
         # Signing team of the maintainer. Forks: replace with your own team ID (or remove it and pick a team in Xcode).
         DEVELOPMENT_TEAM: PD9YC6KM5T
         CODE_SIGN_STYLE: Automatic
@@ -42,7 +42,7 @@ targets:
       - target: Kaliberfinder
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: net.forestraven.kaliberfinder.tests
+        PRODUCT_BUNDLE_IDENTIFIER: ch.giotta.kaliberfinder.tests
         DEVELOPMENT_TEAM: PD9YC6KM5T
         CODE_SIGN_STYLE: Automatic
         SWIFT_VERSION: "5.10"
