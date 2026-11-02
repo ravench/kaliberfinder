@@ -64,8 +64,14 @@ enum ShapeMatcher {
     static func expected(for cartridge: Cartridge) -> ShapeMeasurement? {
         let g = OutlineGeometry(cartridge.outline)
         let h = cartridge.outline.height
-        let widths = (0..<bins).map { i in
-            (0...4).map { t in g.width(at: (Double(i) + Double(t) / 4) / Double(bins) * h) }.max() ?? 0
+        // Explicit types and steps: Xcode 26 can't type-check this as one expression in time.
+        let widths: [Double] = (0..<bins).map { (i: Int) -> Double in
+            var widest = 0.0
+            for t in 0...4 {
+                let position: Double = (Double(i) + Double(t) / 4) / Double(bins) * h
+                widest = max(widest, g.width(at: position))
+            }
+            return widest
         }
         return signature(widths: widths, length: h, tipFirst: true)
     }
