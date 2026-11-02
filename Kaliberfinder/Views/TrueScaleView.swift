@@ -7,6 +7,8 @@ struct TrueScaleLayout: Equatable {
     let rulerMM: Double
     /// Height of the band above the base line, in points.
     let bandHeight: Double
+    /// The ruler sits flush against the left edge of the screen.
+    static let rulerLeadingInset = 0.0
 
     init(cartridges: [Cartridge], unit: LengthUnit, pointsPerMM: Double) {
         let tallest = cartridges.map(\.outline.height).max() ?? 0
@@ -30,14 +32,18 @@ struct TrueScaleView: View {
         let layout = TrueScaleLayout(cartridges: cartridges, unit: unit, pointsPerMM: ppmm)
         ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 12) {
-                OneToOneBadge()
-                if scale.resolution.source == .estimate {
-                    Label("Bildschirm nicht kalibriert: Grösse kann leicht abweichen.", systemImage: "exclamationmark.triangle")
-                        .font(.footnote)
-                        .foregroundStyle(.orange)
+                VStack(alignment: .leading, spacing: 12) {
+                    OneToOneBadge()
+                    if scale.resolution.source == .estimate {
+                        Label("Bildschirm nicht kalibriert: Grösse kann leicht abweichen.", systemImage: "exclamationmark.triangle")
+                            .font(.footnote)
+                            .foregroundStyle(.orange)
+                    }
                 }
+                .padding([.horizontal, .top])
                 HStack(alignment: .top, spacing: 0) {
-                    // Outside the horizontal scroll view, so it stays on screen.
+                    // Outside the horizontal scroll view, so it stays on screen, flush with the
+                    // left edge and with its zero on the cartridges' base line.
                     RulerView(lengthMM: layout.rulerMM, pointsPerMM: ppmm, unit: unit)
                         .frame(height: layout.bandHeight, alignment: .bottom)
                         .padding(.trailing, 4)
@@ -65,8 +71,9 @@ struct TrueScaleView: View {
                     }
                     .scrollIndicators(.visible)
                 }
+                .padding(.leading, TrueScaleLayout.rulerLeadingInset)
+                .padding(.bottom)
             }
-            .padding()
         }
         .simultaneousGesture(MagnifyGesture().onChanged { _ in showZoomHint = true })
         .overlay(alignment: .bottom) {
@@ -128,10 +135,15 @@ struct RulerView: View {
     /// Tick length in points by level.
     private static let tickLengths: [Double] = [4, 6, 9, 11, 14]
 
+    /// Vertical position of a tick, measured up from the bottom edge (the base line).
+    static func y(forMM mm: Double, height: Double, pointsPerMM: Double) -> Double {
+        height - mm * pointsPerMM
+    }
+
     var body: some View {
         Canvas { context, size in
             for tick in unit.rulerTicks(lengthMM: lengthMM) {
-                let y = size.height - tick.mm * pointsPerMM
+                let y = Self.y(forMM: tick.mm, height: size.height, pointsPerMM: pointsPerMM)
                 let length = Self.tickLengths[min(max(tick.level, 0), Self.tickLengths.count - 1)]
                 var line = Path()
                 line.move(to: CGPoint(x: size.width - length, y: y))
