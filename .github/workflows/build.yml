@@ -1,6 +1,9 @@
 name: Build
 on:
+  # Branches are built through their pull request; building their pushes too
+  # would take a second Mac runner for every commit.
   push:
+    branches: [main]
   pull_request:
 defaults:
   run:
@@ -17,7 +20,7 @@ jobs:
         # --strict turns every warning into a failure; the reporter adds annotations to the PR.
         run: swiftlint lint --strict --reporter github-actions-logging
   build:
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v5
       - run: brew install xcodegen
