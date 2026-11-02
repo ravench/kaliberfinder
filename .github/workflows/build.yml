@@ -1,6 +1,9 @@
 name: Build
 on:
+  # Branches are built through their pull request; building their pushes too
+  # would take a second Mac runner for every commit.
   push:
+    branches: [main]
   pull_request:
 defaults:
   run:
