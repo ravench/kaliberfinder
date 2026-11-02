@@ -61,8 +61,3 @@ struct PolygonShape: Shape {
         return path
     }
 }
-
-/// Formats millimetres for display, e.g. "29.7 mm" (decimal separator follows the locale).
-func mm(_ value: Double) -> String {
-    value.formatted(.number.precision(.fractionLength(0...2))) + " mm"
-}

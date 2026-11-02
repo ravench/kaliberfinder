@@ -7,24 +7,26 @@ struct MeasureView: View {
     @State private var rim = ""
     @State private var bullet = ""
     @State private var selection: [Cartridge] = []
+    @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
 
     private var measured: MeasuredDimensions {
-        MeasuredDimensions(overallLength: DimensionMatcher.number(overallLength),
-                           caseLength: DimensionMatcher.number(caseLength),
-                           rim: DimensionMatcher.number(rim),
-                           bullet: DimensionMatcher.number(bullet))
+        MeasuredDimensions(overallLength: unit.parse(overallLength),
+                           caseLength: unit.parse(caseLength),
+                           rim: unit.parse(rim),
+                           bullet: unit.parse(bullet))
     }
 
     var body: some View {
         let matches = DimensionMatcher.rank(measured)
         List {
             Section {
+                UnitPicker(unit: $unit)
                 field("Gesamtlänge", text: $overallLength)
                 field("Hülsenlänge", text: $caseLength)
                 field("Randdurchmesser", text: $rim)
                 field("Geschossdurchmesser", text: $bullet)
             } header: {
-                Text("Gemessen in mm")
+                if unit == .metric { Text("Gemessen in mm") } else { Text("Gemessen in Zoll") }
             } footer: {
                 Text("Fülle aus, was du messen kannst. Schon eine Länge und ein Durchmesser grenzen die Auswahl stark ein.")
             }
@@ -33,7 +35,7 @@ struct MeasureView: View {
                     ForEach(matches) { m in
                         Button { toggle(m.cartridge) } label: {
                             HStack {
-                                CartridgeRow(cartridge: m.cartridge, detail: Self.detail(for: m))
+                                CartridgeRow(cartridge: m.cartridge, detail: Self.detail(for: m, unit: unit))
                                 Spacer()
                                 Image(systemName: selection.contains(m.cartridge) ? "checkmark.circle.fill" : "circle")
                                     .foregroundStyle(selection.contains(m.cartridge) ? Color.accentColor : .secondary)
@@ -63,6 +65,11 @@ struct MeasureView: View {
                 .padding()
             }
         }
+        .onChange(of: unit) { old, new in
+            for text in [$overallLength, $caseLength, $rim, $bullet] {
+                text.wrappedValue = LengthUnit.convert(text.wrappedValue, from: old, to: new)
+            }
+        }
         .onChange(of: measured) { _, _ in
             let ids = Set(matches.map(\.id))
             selection.removeAll { !ids.contains($0.id) }
@@ -71,7 +78,7 @@ struct MeasureView: View {
 
     private func field(_ title: LocalizedStringKey, text: Binding<String>) -> some View {
         LabeledContent(title) {
-            TextField("mm", text: text)
+            TextField(unit.symbol, text: text)
                 .keyboardType(.decimalPad)
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: 100)
@@ -82,8 +89,20 @@ struct MeasureView: View {
         if let i = selection.firstIndex(of: c) { selection.remove(at: i) } else { selection.append(c) }
     }
 
-    /// E.g. "Abweichung bis 0.2 mm".
-    static func detail(for m: DimensionMatch) -> String {
-        m.fit == .good ? "Passt genau".loc : String(format: "Abweichung bis %@".loc, mm(m.maxDeviation))
+    /// E.g. "Abweichung bis 0.2 mm" (or in inches).
+    static func detail(for m: DimensionMatch, unit: LengthUnit = .metric) -> String {
+        m.fit == .good ? "Passt genau".loc : String(format: "Abweichung bis %@".loc, unit.format(m.maxDeviation))
+    }
+}
+
+/// Metric or imperial, as a segmented control. Writes the shared setting.
+struct UnitPicker: View {
+    @Binding var unit: LengthUnit
+
+    var body: some View {
+        Picker("Einheiten", selection: $unit) {
+            ForEach(LengthUnit.allCases) { Text($0.title.loc).tag($0) }
+        }
+        .pickerStyle(.segmented)
     }
 }
