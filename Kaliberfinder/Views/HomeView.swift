@@ -11,7 +11,7 @@ struct HomeView: View {
     var body: some View {
         List {
             Section {
-                if CameraPicker.isAvailable {
+                if LiDARCamera.isAvailable || CameraPicker.isAvailable {
                     Button { showCamera = true } label: {
                         Label("Patrone fotografieren", systemImage: "camera")
                     }
@@ -61,10 +61,14 @@ struct HomeView: View {
             }
         }
         .navigationTitle("Kaliberfinder")
-        .navigationDestination(item: $photo) { MatchesView(photo: $0.image) }
+        .navigationDestination(item: $photo) { MatchesView(photo: $0.image, depth: $0.depth) }
         .fullScreenCover(isPresented: $showCamera) {
-            CameraPicker { photo = PickedPhoto(image: $0) }
-                .ignoresSafeArea()
+            if LiDARCamera.isAvailable {
+                LiDARCameraView { photo = PickedPhoto(image: $0, depth: $1) }
+            } else {
+                CameraPicker { photo = PickedPhoto(image: $0) }
+                    .ignoresSafeArea()
+            }
         }
         .onChange(of: libraryItem) { _, item in
             guard let item else { return }
