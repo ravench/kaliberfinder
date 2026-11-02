@@ -1,0 +1,67 @@
+import XCTest
+@testable import Kaliberfinder
+
+final class CatalogTests: XCTestCase {
+    func testCatalogueLoadsWithUniqueIDs() {
+        let all = CartridgeCatalog.all
+        XCTAssertGreaterThan(all.count, 90)
+        XCTAssertEqual(Set(all.map(\.id)).count, all.count)
+    }
+
+    func testDimensionsArePlausible() {
+        for c in CartridgeCatalog.all {
+            let d = c.dimensions
+            XCTAssertGreaterThan(d.overallLength, 0, c.name)
+            XCTAssertGreaterThanOrEqual(d.overallLength + 0.01, d.caseLength, "\(c.name): case longer than cartridge")
+            XCTAssertGreaterThan(d.rim, 0, c.name)
+            XCTAssertLessThanOrEqual(c.outline.width, max(d.rim, d.base, d.bullet) + 0.01, c.name)
+            XCTAssertEqual(c.outline.height, d.overallLength, accuracy: 0.01, c.name)
+            if let shoulder = d.shoulder {
+                XCTAssertLessThanOrEqual(d.neck, shoulder, c.name)
+            }
+        }
+    }
+
+    func testKnownDimensions() throws {
+        let nine = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
+        XCTAssertEqual(nine.dimensions.caseLength, 19.15, accuracy: 0.001)
+        XCTAssertEqual(nine.dimensions.overallLength, 29.7, accuracy: 0.001)
+        XCTAssertEqual(nine.dimensions.rim, 9.96, accuracy: 0.001)
+        XCTAssertNil(nine.dimensions.shoulder)
+        let gp11 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x55 mm Swiss (GP 11)"))
+        XCTAssertEqual(gp11.dimensions.shoulder, 11.6)
+        XCTAssertTrue(gp11.hasCase)
+        let ball = try XCTUnwrap(CartridgeCatalog.cartridge(id: ".44 Rundkugel (.454)"))
+        XCTAssertFalse(ball.hasCase)
+    }
+
+    func testEveryCategoryIsKnown() {
+        let known = Set(CartridgeCatalog.Category.allCases.map(\.rawValue))
+        for c in CartridgeCatalog.all {
+            XCTAssertTrue(known.contains(c.category), "\(c.name): unknown category \(c.category)")
+        }
+    }
+
+    func testSearchMatchesAliasesIgnoringSpacesDotsAndMM() {
+        XCTAssertTrue(CartridgeCatalog.search("9 mm Luger").contains { $0.id == "9x19 mm" })
+        XCTAssertTrue(CartridgeCatalog.search("9MM LUGER").contains { $0.id == "9x19 mm" })
+        XCTAssertTrue(CartridgeCatalog.search("GP90").contains { $0.id == "5.6 mm GP 90 (Swiss)" })
+        XCTAssertTrue(CartridgeCatalog.search("win 308").contains { $0.id == ".308 Winchester" })
+        XCTAssertEqual(CartridgeCatalog.search("").count, CartridgeCatalog.all.count)
+        XCTAssertTrue(CartridgeCatalog.search("no such calibre").isEmpty)
+    }
+
+    func testNormalized() {
+        XCTAssertEqual(CartridgeCatalog.normalized(" 7,5 × 55 mm "), "75x55")
+        XCTAssertEqual(CartridgeCatalog.normalized(".45 ACP"), "45acp")
+    }
+
+    func testGroupedKeepsCategoryOrder() {
+        let groups = CartridgeCatalog.grouped(CartridgeCatalog.all).map(\.category)
+        XCTAssertEqual(groups, CartridgeCatalog.Category.allCases.map(\.rawValue))
+    }
+
+    func testDecodeRejectsGarbage() {
+        XCTAssertTrue(CartridgeCatalog.decode(Data("nope".utf8)).isEmpty)
+    }
+}

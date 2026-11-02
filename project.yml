@@ -1,0 +1,62 @@
+name: Kaliberfinder
+options:
+  bundleIdPrefix: net.forestraven
+  deploymentTarget:
+    iOS: "17.0"
+  developmentLanguage: de
+targets:
+  Kaliberfinder:
+    type: application
+    platform: iOS
+    sources: [Kaliberfinder]
+    info:
+      path: Kaliberfinder/Info.plist
+      properties:
+        CFBundleDevelopmentRegion: de
+        CFBundleLocalizations: [de, en, fr, it]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: net.forestraven.kaliberfinder
+        # Signing team of the maintainer. Forks: replace with your own team ID (or remove it and pick a team in Xcode).
+        DEVELOPMENT_TEAM: PD9YC6KM5T
+        CODE_SIGN_STYLE: Automatic
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "5.10"
+        # iPhone only: the real-size drawing needs each model's display density.
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_KEY_CFBundleDisplayName: Kaliberfinder
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        # German source; translations in Resources/InfoPlist.xcstrings (tools/localize.py).
+        INFOPLIST_KEY_NSCameraUsageDescription: "Patronen fotografieren, um das Kaliber zu erkennen."
+  KaliberfinderTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [KaliberfinderTests]
+    dependencies:
+      - target: Kaliberfinder
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: net.forestraven.kaliberfinder.tests
+        DEVELOPMENT_TEAM: PD9YC6KM5T
+        CODE_SIGN_STYLE: Automatic
+        SWIFT_VERSION: "5.10"
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  Kaliberfinder:
+    build:
+      targets:
+        Kaliberfinder: all
+        KaliberfinderTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - KaliberfinderTests
+    archive:
+      config: Release
