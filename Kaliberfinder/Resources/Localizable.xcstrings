@@ -1,6 +1,29 @@
 {
   "sourceLanguage": "de",
   "strings": {
+    ".50 BMG (#35)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ".50 BMG (#35)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ".50 BMG (#35)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ".50 BMG (#35)"
+          }
+        }
+      }
+    },
     "1:1 vergleichen (%lld)": {
       "extractionState": "manual",
       "localizations": {
@@ -323,6 +346,29 @@
         }
       }
     },
+    "Boden mit Zündhütchen %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Case head with %@ primer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Culot avec amorce %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fondello con innesco %@"
+          }
+        }
+      }
+    },
     "Bodendurchmesser": {
       "extractionState": "manual",
       "localizations": {
@@ -342,6 +388,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diametro alla base"
+          }
+        }
+      }
+    },
+    "Büchse gross": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large rifle"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grande carabine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carabina grande"
+          }
+        }
+      }
+    },
+    "Büchse klein": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Small rifle"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Petite carabine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carabina piccolo"
           }
         }
       }
@@ -1197,25 +1289,25 @@
         }
       }
     },
-    "Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten.": {
+    "Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten. Zündhütchen: Boxer-Grösse handelsüblicher Hülsen; Militärmunition kann Berdan-Zündhütchen anderer Grösse haben.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dimensions are rounded reference values (CIP/SAAMI), not reloading data."
+            "value": "Dimensions are rounded reference values (CIP/SAAMI), not reloading data. Primer: Boxer size of commercial cases; military ammunition can have Berdan primers of other sizes."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les dimensions sont des valeurs indicatives arrondies (CIP/SAAMI), pas des données de rechargement."
+            "value": "Les dimensions sont des valeurs indicatives arrondies (CIP/SAAMI), pas des données de rechargement. Amorce : taille Boxer des douilles du commerce ; les munitions militaires peuvent avoir des amorces Berdan d'autres tailles."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le dimensioni sono valori indicativi arrotondati (CIP/SAAMI), non dati di ricarica."
+            "value": "Le dimensioni sono valori indicativi arrotondati (CIP/SAAMI), non dati di ricarica. Innesco: misura Boxer dei bossoli commerciali; le munizioni militari possono avere inneschi Berdan di altre misure."
           }
         }
       }
@@ -1427,6 +1519,52 @@
         }
       }
     },
+    "Pistole gross": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large pistol"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grand pistolet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pistola grande"
+          }
+        }
+      }
+    },
+    "Pistole klein": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Small pistol"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Petit pistolet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pistola piccolo"
+          }
+        }
+      }
+    },
     "Randdurchmesser": {
       "extractionState": "manual",
       "localizations": {
@@ -1469,6 +1607,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Percussione anulare"
+          }
+        }
+      }
+    },
+    "Randfeuer, ohne Zündhütchen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rimfire, no primer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Percussion annulaire, sans amorce"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Percussione anulare, senza innesco"
           }
         }
       }
@@ -1538,6 +1699,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Palla sferica"
+          }
+        }
+      }
+    },
+    "Schrot (209)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shotshell (209)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartouche de chasse (209)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartuccia a pallini (209)"
           }
         }
       }
@@ -1768,6 +1952,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ripristina"
+          }
+        }
+      }
+    },
+    "Zündhütchen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amorce"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Innesco"
           }
         }
       }

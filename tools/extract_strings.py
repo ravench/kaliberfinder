@@ -18,7 +18,7 @@ CONTEXTS = [
     r'\bBreakdownChart\(title:\s*' + LIT,
     r'\bcase \.\w+:\s*' + LIT,          # enum titles (titleKey) and error texts
     r'\bcase \w+ = ' + LIT,             # CartridgeCatalog.Category raw values
-    r'\bcase "[a-z]+":\s*' + LIT,       # titles for catalogue kinds
+    r'\bcase "[a-z0-9-]+":\s*' + LIT,  # titles for catalogue kinds and primers
     r'\[' + LIT + r'(?:,\s*' + LIT + r')+\]\s*\n?\s*\.map\(\\\.loc\)',
 ]
 STRINGY = ("formatted", "name", "Name", "Developer", "title", "Description", "joined", ".loc", "text", "Text", "mm(")

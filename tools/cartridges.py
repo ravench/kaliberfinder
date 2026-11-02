@@ -167,3 +167,46 @@ DISPLAY_ALIASES = {
     "8x57 mm IS": ["8 mm Mauser"],
     ".50 BMG": ["12,7x99 mm NATO"],
 }
+
+# Primer per calibre (Boxer sizes of commercial, reloadable brass). Primers sit in the
+# centre of the case head. Military surplus can be Berdan-primed with other sizes
+# (e.g. 7.62x39, 7.62x54R, 7.5x54 French); rimfire and caseless entries have none.
+SMALL_PISTOL, LARGE_PISTOL, SMALL_RIFLE, LARGE_RIFLE, SHOTSHELL_209, BMG_35 = (
+    "small-pistol", "large-pistol", "small-rifle", "large-rifle", "shotshell-209", "bmg-35")
+PRIMER_DIAMETERS = {  # mm, nominal primer cup diameter
+    SMALL_PISTOL: 4.45, SMALL_RIFLE: 4.45,     # .175"
+    LARGE_PISTOL: 5.33, LARGE_RIFLE: 5.33,     # .210"
+    SHOTSHELL_209: 6.15,                       # .242"
+    BMG_35: 8.03,                              # .316", CCI #35
+}
+PRIMERS = {
+    "6.35 mm Browning (.25 ACP)": SMALL_PISTOL, "7.65 mm Browning (.32 ACP)": SMALL_PISTOL,
+    "7.65 mm Parabellum": SMALL_PISTOL, ".32 S&W Long": SMALL_PISTOL, ".32 H&R Magnum": SMALL_PISTOL,
+    "7.62x25 mm Tokarev": SMALL_PISTOL, "9 mm Browning kurz (.380 ACP)": SMALL_PISTOL,
+    "9x18 mm Makarov": SMALL_PISTOL, "9x19 mm": SMALL_PISTOL, "9x21 mm IMI": SMALL_PISTOL,
+    ".357 SIG": SMALL_PISTOL, ".38 Special": SMALL_PISTOL, ".357 Magnum": SMALL_PISTOL,
+    ".38 Super": SMALL_PISTOL, "10 mm Auto": LARGE_PISTOL, ".40 S&W": SMALL_PISTOL,
+    ".41 Magnum": LARGE_PISTOL, ".44 Special": LARGE_PISTOL, ".44 Magnum": LARGE_PISTOL,
+    ".45 ACP": LARGE_PISTOL, ".45 Colt": LARGE_PISTOL, ".45 GAP": SMALL_PISTOL,
+    ".454 Casull": SMALL_RIFLE, ".460 S&W Magnum": LARGE_RIFLE, ".500 S&W Magnum": LARGE_RIFLE,
+    "5.7x28 mm": SMALL_RIFLE, "4.6x30 mm": SMALL_RIFLE,
+    ".204 Ruger": SMALL_RIFLE, ".222 Remington": SMALL_RIFLE, ".223 Remington": SMALL_RIFLE,
+    "5.56x45 mm NATO": SMALL_RIFLE, "5.6 mm GP 90 (Swiss)": SMALL_RIFLE, ".22-250 Remington": LARGE_RIFLE,
+    ".243 Winchester": LARGE_RIFLE, "6 mm BR Norma": SMALL_RIFLE, "6 mm ARC": SMALL_RIFLE,
+    "6.5 mm Creedmoor": LARGE_RIFLE, "6.5x55 mm Swedish": LARGE_RIFLE, "6.5x47 mm Lapua": SMALL_RIFLE,
+    "6.5 PRC": LARGE_RIFLE, ".260 Remington": LARGE_RIFLE, ".270 Winchester": LARGE_RIFLE,
+    "7 mm-08 Remington": LARGE_RIFLE, "7x57 mm Mauser": LARGE_RIFLE, "7x64 mm": LARGE_RIFLE,
+    "7 mm Remington Magnum": LARGE_RIFLE, "7 mm PRC": LARGE_RIFLE, "7.5x55 mm Swiss (GP 11)": LARGE_RIFLE,
+    "7.5x54 mm French": LARGE_RIFLE, "7.62x39 mm": SMALL_RIFLE, ".300 AAC Blackout": SMALL_RIFLE,
+    "7.62x51 mm NATO": LARGE_RIFLE, ".308 Winchester": LARGE_RIFLE, ".30-06 Springfield": LARGE_RIFLE,
+    ".30-30 Winchester": LARGE_RIFLE, ".300 Winchester Magnum": LARGE_RIFLE, ".300 PRC": LARGE_RIFLE,
+    ".300 Norma Magnum": LARGE_RIFLE, ".303 British": LARGE_RIFLE, "7.62x54 mm R": LARGE_RIFLE,
+    "8x57 mm IS": LARGE_RIFLE, "8x68 mm S": LARGE_RIFLE, "9.3x62 mm": LARGE_RIFLE, "9.3x74 mm R": LARGE_RIFLE,
+    ".338 Lapua Magnum": LARGE_RIFLE, ".375 H&H Magnum": LARGE_RIFLE, ".416 Rigby": LARGE_RIFLE,
+    ".45-70 Government": LARGE_RIFLE, ".50 BMG": BMG_35,
+    # Vetterli: the original Swiss service round is rimfire; modern centrefire cases take large rifle.
+    "10.4x38 mm R Vetterli": LARGE_RIFLE, ".577 Snider": LARGE_RIFLE, ".577/450 Martini-Henry": LARGE_RIFLE,
+    ".50-70 Government": LARGE_RIFLE, ".44-40 WCF": LARGE_PISTOL,
+    "12/70": SHOTSHELL_209, "12/76": SHOTSHELL_209, "12/89": SHOTSHELL_209, "16/70": SHOTSHELL_209,
+    "20/70": SHOTSHELL_209, "20/76": SHOTSHELL_209, "28/70": SHOTSHELL_209, ".410/76": SHOTSHELL_209,
+}
