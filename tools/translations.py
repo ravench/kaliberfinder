@@ -13,6 +13,7 @@ INFO_PLIST = {
 
 T = {
     "1:1 vergleichen (%lld)": ("Compare 1:1 (%lld)", "Comparer 1:1 (%lld)", "Confronta 1:1 (%lld)"),
+    "Abweichung bis %@": ("Off by up to %@", "Écart jusqu'à %@", "Scarto fino a %@"),
     "Alle Kaliber": ("All calibres", "Tous les calibres", "Tutti i calibri"),
     "Alle Kaliber durchsuchen": ("Search all calibres", "Chercher dans tous les calibres", "Cerca in tutti i calibri"),
     "Andere": ("Other", "Autre", "Altro"),
@@ -36,12 +37,17 @@ T = {
         "Lay the cartridge on its side on a light background and photograph it from above. A marking on the base or the box helps too.",
         "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut. Une inscription sur le culot ou la boîte aide aussi.",
         "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto. Anche una scritta sul fondello o sulla scatola aiuta."),
+    "Suche nach Namen und tippe die Kaliber an, die du nebeneinander sehen willst.": (
+        "Search by name and tap the calibres you want to see side by side.",
+        "Cherchez par nom et touchez les calibres que vous voulez voir côte à côte.",
+        "Cerca per nome e tocca i calibri che vuoi vedere uno accanto all'altro."),
     "Tipp: Patrone seitlich auf einen hellen, einfarbigen Untergrund legen und senkrecht von oben fotografieren.": (
         "Tip: lay the cartridge on its side on a light, plain background and photograph it straight from above.",
         "Astuce : posez la cartouche sur le côté sur un fond clair et uni et photographiez-la bien d'en haut.",
         "Suggerimento: appoggia la cartuccia di lato su uno sfondo chiaro e uniforme e fotografala dritta dall'alto."),
     "Treffer": ("Matches", "Résultats", "Risultati"),
     "Auch bekannt als": ("Also known as", "Aussi appelé", "Noto anche come"),
+    "Ausgewählt": ("Selected", "Sélectionnés", "Selezionati"),
     "Auswählen": ("Select", "Sélectionner", "Seleziona"),
     "Bauart": ("Type", "Type", "Tipo"),
     "Bildschirm": ("Screen", "Écran", "Schermo"),
@@ -59,6 +65,11 @@ T = {
     "Fertig": ("Done", "Terminé", "Fine"),
     "Flinte": ("Shotgun", "Fusil de chasse", "Fucile a canna liscia"),
     "Geschätzt, bitte kalibrieren": ("Estimated, please calibrate", "Estimé, veuillez calibrer", "Stimato, calibra per favore"),
+    "Fülle aus, was du messen kannst. Schon eine Länge und ein Durchmesser grenzen die Auswahl stark ein.": (
+        "Fill in what you can measure. One length and one diameter already narrow it down a lot.",
+        "Remplissez ce que vous pouvez mesurer. Une longueur et un diamètre suffisent déjà à bien réduire le choix.",
+        "Compila ciò che puoi misurare. Già una lunghezza e un diametro restringono molto la scelta."),
+    "Gemessen in mm": ("Measured in mm", "Mesuré en mm", "Misurato in mm"),
     "Gesamtlänge": ("Overall length", "Longueur totale", "Lunghezza totale"),
     "Geschossdurchmesser": ("Bullet diameter", "Diamètre du projectile", "Diametro della palla"),
     "Grösser": ("Larger", "Plus grand", "Più grande"),
@@ -70,6 +81,7 @@ T = {
     "Kaliber": ("Calibres", "Calibres", "Calibri"),
     "Kaliber, z. B. 9 mm Luger": ("Calibre, e.g. 9 mm Luger", "Calibre, p. ex. 9 mm Luger", "Calibro, p. es. 9 mm Luger"),
     "Kaliberfinder": ("Kaliberfinder", "Kaliberfinder", "Kaliberfinder"),
+    "Kaliber auswählen und vergleichen": ("Pick and compare calibres", "Choisir et comparer des calibres", "Scegli e confronta calibri"),
     "Kalibriert": ("Calibrated", "Calibré", "Calibrato"),
     "Kategorie": ("Category", "Catégorie", "Categoria"),
     "Kleiner": ("Smaller", "Plus petit", "Più piccolo"),
@@ -81,6 +93,7 @@ T = {
         "Appoggia una carta bancaria (o carta d'identità, licenza di condurre) in verticale sul rettangolo, allineata in alto, e sposta il cursore finché il rettangolo è lungo esattamente come la carta."),
     "Lineal in Zentimetern": ("Ruler in centimetres", "Règle en centimètres", "Righello in centimetri"),
     "Luftdruck": ("Air gun", "Air comprimé", "Aria compressa"),
+    "Masse eingeben": ("Enter dimensions", "Saisir les dimensions", "Inserisci le dimensioni"),
     "Masse": ("Dimensions", "Dimensions", "Dimensioni"),
     "Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten.": (
         "Dimensions are rounded reference values (CIP/SAAMI), not reloading data.",
@@ -88,7 +101,9 @@ T = {
         "Le dimensioni sono valori indicativi arrotondati (CIP/SAAMI), non dati di ricarica."),
     "Minié-Geschoss": ("Minié ball", "Balle Minié", "Palla Minié"),
     "Mit Rand": ("Rimmed", "À bourrelet", "Con orlo"),
+    "Ohne Foto": ("Without a photo", "Sans photo", "Senza foto"),
     "Originalgrösse": ("Real size", "Taille réelle", "Grandezza reale"),
+    "Passt genau": ("Exact fit", "Correspond exactement", "Corrisponde esattamente"),
     "Randdurchmesser": ("Rim diameter", "Diamètre du bourrelet", "Diametro dell'orlo"),
     "Randfeuer": ("Rimfire", "Percussion annulaire", "Percussione anulare"),
     "Randlos": ("Rimless", "Sans bourrelet", "Senza orlo"),
@@ -102,5 +117,9 @@ T = {
         "Rotondo nella foto: fondello o punta di una cartuccia, oppure una palla sferica. Per le cartucce conta solo la scritta."),
     "Speichern": ("Save", "Enregistrer", "Salva"),
     "Vom iPhone-Modell": ("From the iPhone model", "Selon le modèle d'iPhone", "Dal modello di iPhone"),
+    "Wähle Kaliber aus, um sie in Originalgrösse nebeneinander zu vergleichen.": (
+        "Select calibres to compare them side by side at real size.",
+        "Sélectionnez des calibres pour les comparer côte à côte en taille réelle.",
+        "Seleziona i calibri per confrontarli uno accanto all'altro a grandezza reale."),
     "Zurücksetzen": ("Reset", "Réinitialiser", "Ripristina"),
 }
