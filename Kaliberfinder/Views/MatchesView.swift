@@ -87,7 +87,7 @@ struct MatchesView: View {
 
     /// "Gemessen: L ≈ 71 mm, Ø ≈ 12 mm", rounded to what the measurement can tell.
     static func measuredText(_ size: MeasuredSize, unit: LengthUnit) -> String {
-        let step = unit == .metric ? 0.5 : LengthUnit.mmPerInch / 200
+        let step: Double = unit == .metric ? 0.5 : LengthUnit.mmPerInch / 200
         func rounded(_ mm: Double) -> String { unit.format((mm / step).rounded() * step) }
         return String(format: "Gemessen: L ≈ %1$@, Ø ≈ %2$@".loc, rounded(size.length), rounded(size.diameter))
     }
