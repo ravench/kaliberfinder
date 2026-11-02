@@ -38,6 +38,8 @@ struct CameraPicker: UIViewControllerRepresentable {
 struct PickedPhoto: Identifiable, Hashable {
     let id = UUID()
     let image: UIImage
+    /// From the LiDAR camera; nil for the system camera and the photo library.
+    var depth: DepthScale?
 
     static func == (a: PickedPhoto, b: PickedPhoto) -> Bool { a.id == b.id }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }

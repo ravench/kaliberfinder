@@ -12,6 +12,29 @@ INFO_PLIST = {
 }
 
 T = {
+    "Abbrechen": ("Cancel", "Annuler", "Annulla"),
+    "Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form und Aufschrift.": (
+        "Distance outside 12–45 cm: size not measured, matches by shape and marking only.",
+        "Distance hors de 12–45 cm : taille non mesurée, résultats selon la forme et l'inscription seulement.",
+        "Distanza fuori da 12–45 cm: dimensione non misurata, risultati solo per forma e scritta."),
+    "Abstand passt": ("Distance is good", "Bonne distance", "Distanza corretta"),
+    "Etwas weiter weg": ("Move a bit further away", "Éloignez-vous un peu", "Allontanati un po'"),
+    "Foto aufnehmen": ("Take photo", "Prendre la photo", "Scatta foto"),
+    "Gemessen: L ≈ %1$@, Ø ≈ %2$@": ("Measured: L ≈ %1$@, Ø ≈ %2$@", "Mesuré : L ≈ %1$@, Ø ≈ %2$@", "Misurato: L ≈ %1$@, Ø ≈ %2$@"),
+    "Grösse nicht messbar: Treffer nur nach Form und Aufschrift.": (
+        "Size could not be measured: matches by shape and marking only.",
+        "Taille non mesurable : résultats selon la forme et l'inscription seulement.",
+        "Dimensione non misurabile: risultati solo per forma e scritta."),
+    "Grösse passt gut": ("Size fits well", "La taille correspond bien", "La dimensione corrisponde bene"),
+    "Grösse passt ungefähr": ("Size fits roughly", "La taille correspond à peu près", "La dimensione corrisponde più o meno"),
+    "Grösse passt wenig": ("Size fits poorly", "La taille correspond peu", "La dimensione corrisponde poco"),
+    "Keine Tiefe gemessen": ("No depth measured", "Aucune profondeur mesurée", "Nessuna profondità misurata"),
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das iPhone parallel, 20–30 cm darüber.": (
+        "Lay the cartridge flat on a light surface and hold the iPhone parallel, 20–30 cm above it.",
+        "Posez la cartouche à plat sur un fond clair et tenez l'iPhone parallèle, à 20–30 cm au-dessus.",
+        "Appoggia la cartuccia piatta su un fondo chiaro e tieni l'iPhone parallelo, 20–30 cm sopra."),
+    "Näher heran": ("Move closer", "Rapprochez-vous", "Avvicinati"),
+    "iPhone parallel zum Tisch halten": ("Hold the iPhone parallel to the table", "Tenez l'iPhone parallèle à la table", "Tieni l'iPhone parallelo al tavolo"),
     "Einheiten": ("Units", "Unités", "Unità"),
     "Gemessen in Zoll": ("Measured in inches", "Mesuré en pouces", "Misurato in pollici"),
     "Imperial (Zoll)": ("Imperial (in)", "Impérial (po)", "Imperiale (in)"),
