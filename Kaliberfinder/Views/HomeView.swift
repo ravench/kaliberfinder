@@ -1,10 +1,28 @@
+import PhotosUI
 import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var scale: ScaleModel
+    @State private var showCamera = false
+    @State private var libraryItem: PhotosPickerItem?
+    @State private var photo: PickedPhoto?
 
     var body: some View {
         List {
+            Section {
+                if CameraPicker.isAvailable {
+                    Button { showCamera = true } label: {
+                        Label("Patrone fotografieren", systemImage: "camera")
+                    }
+                }
+                PhotosPicker(selection: $libraryItem, matching: .images) {
+                    Label("Foto auswählen", systemImage: "photo")
+                }
+            } header: {
+                Text("Patrone erkennen")
+            } footer: {
+                Text("Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Eine Aufschrift auf dem Boden oder der Schachtel hilft zusätzlich.")
+            }
             Section {
                 NavigationLink { CatalogView() } label: {
                     Label("Alle Kaliber", systemImage: "list.bullet")
@@ -31,5 +49,19 @@ struct HomeView: View {
             }
         }
         .navigationTitle("Kaliberfinder")
+        .navigationDestination(item: $photo) { MatchesView(photo: $0.image) }
+        .fullScreenCover(isPresented: $showCamera) {
+            CameraPicker { photo = PickedPhoto(image: $0) }
+                .ignoresSafeArea()
+        }
+        .onChange(of: libraryItem) { _, item in
+            guard let item else { return }
+            Task {
+                if let data = try? await item.loadTransferable(type: Data.self), let image = UIImage(data: data) {
+                    photo = PickedPhoto(image: image)
+                }
+                libraryItem = nil
+            }
+        }
     }
 }

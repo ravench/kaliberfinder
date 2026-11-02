@@ -10,7 +10,7 @@ import json, os, sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 from extract_strings import keys
-from translations import T
+from translations import T, INFO_PLIST
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "Kaliberfinder", "Resources", "Localizable.xcstrings")
@@ -30,5 +30,11 @@ for key in sorted(T):
         for lang, v in (("en", en), ("fr", fr), ("it", it))}}
 json.dump({"sourceLanguage": "de", "strings": strings, "version": "1.0"},
           open(OUT, "w"), ensure_ascii=False, indent=2, sort_keys=True)
+# Info.plist texts (German source in project.yml).
+info = {key: {"extractionState": "manual", "localizations": {
+    lang: {"stringUnit": {"state": "translated", "value": v}}
+    for lang, v in zip(("de", "en", "fr", "it"), values)}} for key, values in INFO_PLIST.items()}
+json.dump({"sourceLanguage": "de", "strings": info, "version": "1.0"},
+          open(os.path.join(os.path.dirname(OUT), "InfoPlist.xcstrings"), "w"), ensure_ascii=False, indent=2, sort_keys=True)
 unused = sorted(k for k in T if k not in used)
 print(f"{len(strings)} keys written" + (f"; unused: {unused}" if unused else ""))

@@ -2,10 +2,16 @@
 
 Small iOS app (SwiftUI, iOS 17+, iPhone) that shows cartridges at **real size**
 on the screen, so you can lay a cartridge on the display and see which calibre
-it is. In German, English, French and Italian.
+it is, after taking a photo of it. In German, English, French and Italian.
 
 ## Features
 
+- **Patrone erkennen**: take a photo of a cartridge (or pick one) and get a ranked list of
+  likely calibres. The app cuts the cartridge out of the photo (Vision foreground mask),
+  compares its silhouette (length/width ratio and width profile) with every calibre's
+  outline, and reads text such as the headstamp ("WIN 308", "9MM LUGER"). Then compare
+  the candidates 1:1 by laying the cartridge on the screen. Works best with the
+  cartridge on its side on a light, plain background, photographed from above.
 - **Kaliber**: catalogue of about 100 calibres (rimfire, handgun, rifle incl. GP 90 / GP 11,
   black powder, shotgun, air), with search across names, aliases and headstamp spellings.
   Each calibre shows its dimensions: overall length, case length, rim, base, shoulder,
