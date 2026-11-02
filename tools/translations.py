@@ -12,6 +12,15 @@ INFO_PLIST = {
 }
 
 T = {
+    ".50 BMG (#35)": (".50 BMG (#35)", ".50 BMG (#35)", ".50 BMG (#35)"),
+    "Boden mit Zündhütchen %@": ("Case head with %@ primer", "Culot avec amorce %@", "Fondello con innesco %@"),
+    "Büchse gross": ("Large rifle", "Grande carabine", "Carabina grande"),
+    "Büchse klein": ("Small rifle", "Petite carabine", "Carabina piccolo"),
+    "Pistole gross": ("Large pistol", "Grand pistolet", "Pistola grande"),
+    "Pistole klein": ("Small pistol", "Petit pistolet", "Pistola piccolo"),
+    "Randfeuer, ohne Zündhütchen": ("Rimfire, no primer", "Percussion annulaire, sans amorce", "Percussione anulare, senza innesco"),
+    "Schrot (209)": ("Shotshell (209)", "Cartouche de chasse (209)", "Cartuccia a pallini (209)"),
+    "Zündhütchen": ("Primer", "Amorce", "Innesco"),
     "1:1 vergleichen (%lld)": ("Compare 1:1 (%lld)", "Comparer 1:1 (%lld)", "Confronta 1:1 (%lld)"),
     "Abweichung bis %@": ("Off by up to %@", "Écart jusqu'à %@", "Scarto fino a %@"),
     "Alle Kaliber": ("All calibres", "Tous les calibres", "Tutti i calibri"),
@@ -95,10 +104,10 @@ T = {
     "Luftdruck": ("Air gun", "Air comprimé", "Aria compressa"),
     "Masse eingeben": ("Enter dimensions", "Saisir les dimensions", "Inserisci le dimensioni"),
     "Masse": ("Dimensions", "Dimensions", "Dimensioni"),
-    "Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten.": (
-        "Dimensions are rounded reference values (CIP/SAAMI), not reloading data.",
-        "Les dimensions sont des valeurs indicatives arrondies (CIP/SAAMI), pas des données de rechargement.",
-        "Le dimensioni sono valori indicativi arrotondati (CIP/SAAMI), non dati di ricarica."),
+    "Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten. Zündhütchen: Boxer-Grösse handelsüblicher Hülsen; Militärmunition kann Berdan-Zündhütchen anderer Grösse haben.": (
+        "Dimensions are rounded reference values (CIP/SAAMI), not reloading data. Primer: Boxer size of commercial cases; military ammunition can have Berdan primers of other sizes.",
+        "Les dimensions sont des valeurs indicatives arrondies (CIP/SAAMI), pas des données de rechargement. Amorce : taille Boxer des douilles du commerce ; les munitions militaires peuvent avoir des amorces Berdan d'autres tailles.",
+        "Le dimensioni sono valori indicativi arrotondati (CIP/SAAMI), non dati di ricarica. Innesco: misura Boxer dei bossoli commerciali; le munizioni militari possono avere inneschi Berdan di altre misure."),
     "Minié-Geschoss": ("Minié ball", "Balle Minié", "Palla Minié"),
     "Mit Rand": ("Rimmed", "À bourrelet", "Con orlo"),
     "Ohne Foto": ("Without a photo", "Sans photo", "Senza foto"),

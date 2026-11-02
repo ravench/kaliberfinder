@@ -33,6 +33,7 @@ struct TrueScaleView: View {
                             CartridgeView(cartridge: c, pointsPerMM: ppmm)
                                 .alignmentGuide(.cartridgeBase) { $0[.bottom] }
                             label(for: c)
+                            CaseBaseView(cartridge: c, pointsPerMM: ppmm)
                         }
                     }
                 }
