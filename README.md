@@ -45,7 +45,7 @@ Generated files (commit them after a change):
 ```sh
 python3 tools/generate_data.py   # Resources/Cartridges.json from tools/cartridges.py
 python3 tools/localize.py        # Resources/Localizable.xcstrings, fails on missing translations
-python3 tools/app_icon.py        # app icon (needs Pillow)
+python3 tools/app_icon.py        # app icon, light/dark/tinted (node + Playwright; --no-ruler, --navy)
 ```
 
 ## Tests
