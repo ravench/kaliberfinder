@@ -47,7 +47,7 @@ enum Matcher {
             var score = distance.map { exp(-3 * $0) } ?? 0
             // The size only says something about cartridges compared from the side.
             var sizeDeviation: Double?
-            if distance != nil, let size { sizeDeviation = deviation(of: c, from: size) }
+            if distance != nil, shape?.isEndView == false, let size { sizeDeviation = deviation(of: c, from: size) }
             score += sizeDeviation.map { exp(-$0 / 2) } ?? 0
             switch hit?.strength {
             // More than shape and size together can reach, so a strong text hit stays first.
