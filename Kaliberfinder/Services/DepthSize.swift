@@ -19,7 +19,7 @@ struct MeasuredSize: Equatable {
 }
 
 /// Why a photo with depth still couldn't be measured.
-enum SizeFailure: Equatable {
+enum SizeFailure: Error, Equatable {
     case noDepth
     case outOfRange
     case endView
