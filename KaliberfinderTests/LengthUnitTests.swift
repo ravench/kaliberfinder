@@ -56,7 +56,8 @@ final class LengthUnitTests: XCTestCase {
 
     func testImperialEntryFindsTheSameCalibre() {
         let unit = LengthUnit.imperial
-        let measured = MeasuredDimensions(overallLength: unit.parse("1.169"), rim: unit.parse("0.392"))
+        // Length and rim alone also fit 9x21 and 7.65 Parabellum; the case length tells them apart.
+        let measured = MeasuredDimensions(overallLength: unit.parse("1.169"), caseLength: unit.parse("0.754"), rim: unit.parse("0.392"))
         XCTAssertEqual(DimensionMatcher.rank(measured).first?.cartridge.id, "9x19 mm")
         let gp11 = MeasuredDimensions(overallLength: unit.parse("3.051"), rim: unit.parse("0.496"))
         XCTAssertEqual(DimensionMatcher.rank(gp11).first?.cartridge.id, "7.5x55 mm Swiss (GP 11)")
