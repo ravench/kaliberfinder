@@ -12,6 +12,11 @@ INFO_PLIST = {
 }
 
 T = {
+    "Einheiten": ("Units", "Unités", "Unità"),
+    "Gemessen in Zoll": ("Measured in inches", "Mesuré en pouces", "Misurato in pollici"),
+    "Imperial (Zoll)": ("Imperial (in)", "Impérial (po)", "Imperiale (in)"),
+    "Lineal in Zoll": ("Ruler in inches", "Règle en pouces", "Righello in pollici"),
+    "Metrisch (mm)": ("Metric (mm)", "Métrique (mm)", "Metrico (mm)"),
     ".50 BMG (#35)": (".50 BMG (#35)", ".50 BMG (#35)", ".50 BMG (#35)"),
     "Boden mit Zündhütchen %@": ("Case head with %@ primer", "Culot avec amorce %@", "Fondello con innesco %@"),
     "Büchse gross": ("Large rifle", "Grande carabine", "Carabina grande"),

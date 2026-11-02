@@ -14,6 +14,7 @@ extension VerticalAlignment {
 struct TrueScaleView: View {
     let cartridges: [Cartridge]
     @EnvironmentObject private var scale: ScaleModel
+    @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
 
     var body: some View {
         let ppmm = scale.pointsPerMM
@@ -26,7 +27,7 @@ struct TrueScaleView: View {
                         .foregroundStyle(.orange)
                 }
                 HStack(alignment: .cartridgeBase, spacing: 8 * ppmm) {
-                    RulerView(lengthMM: ceil((tallest + 5) / 10) * 10, pointsPerMM: ppmm)
+                    RulerView(lengthMM: unit.rulerLength(tallestMM: tallest), pointsPerMM: ppmm, unit: unit)
                         .alignmentGuide(.cartridgeBase) { $0[.bottom] }
                     ForEach(cartridges) { c in
                         VStack(spacing: 6) {
@@ -47,8 +48,8 @@ struct TrueScaleView: View {
     private func label(for c: Cartridge) -> some View {
         VStack(spacing: 2) {
             Text(verbatim: c.name).font(.caption.bold())
-            Text(verbatim: "L \(mm(c.dimensions.overallLength))").font(.caption2)
-            Text(verbatim: "Ø \(mm(max(c.dimensions.rim, c.dimensions.base)))").font(.caption2)
+            Text(verbatim: "L \(unit.format(c.dimensions.overallLength))").font(.caption2)
+            Text(verbatim: "Ø \(unit.format(max(c.dimensions.rim, c.dimensions.base)))").font(.caption2)
         }
         .multilineTextAlignment(.center)
         .frame(width: max(70, c.outline.width * scale.pointsPerMM))
@@ -56,23 +57,26 @@ struct TrueScaleView: View {
     }
 }
 
-/// A vertical millimetre ruler, zero at the bottom: ticks every mm, longer every 5, numbers every 10.
+/// A vertical ruler, zero at the bottom: centimetres or inches (see `LengthUnit.rulerTicks`).
 struct RulerView: View {
     let lengthMM: Double
     let pointsPerMM: Double
+    var unit: LengthUnit = .metric
+
+    /// Tick length in points by level.
+    private static let tickLengths: [Double] = [4, 6, 9, 11, 14]
 
     var body: some View {
         Canvas { context, size in
-            let total = Int(lengthMM)
-            for i in 0...total {
-                let y = size.height - Double(i) * pointsPerMM
-                let tick: Double = i % 10 == 0 ? 14 : (i % 5 == 0 ? 9 : 5)
+            for tick in unit.rulerTicks(lengthMM: lengthMM) {
+                let y = size.height - tick.mm * pointsPerMM
+                let length = Self.tickLengths[min(max(tick.level, 0), Self.tickLengths.count - 1)]
                 var line = Path()
-                line.move(to: CGPoint(x: size.width - tick, y: y))
+                line.move(to: CGPoint(x: size.width - length, y: y))
                 line.addLine(to: CGPoint(x: size.width, y: y))
                 context.stroke(line, with: .color(.primary), lineWidth: 0.5)
-                if i % 10 == 0 {
-                    let text = Text(verbatim: "\(i / 10)").font(.system(size: 9)).foregroundStyle(.secondary)
+                if let label = tick.label {
+                    let text = Text(verbatim: label).font(.system(size: 9)).foregroundStyle(.secondary)
                     context.draw(text, at: CGPoint(x: size.width - 22, y: y), anchor: .center)
                 }
             }
@@ -82,6 +86,6 @@ struct RulerView: View {
             context.stroke(axis, with: .color(.primary), lineWidth: 0.5)
         }
         .frame(width: 32, height: lengthMM * pointsPerMM)
-        .accessibilityLabel("Lineal in Zentimetern")
+        .accessibilityLabel(unit == .metric ? "Lineal in Zentimetern".loc : "Lineal in Zoll".loc)
     }
 }

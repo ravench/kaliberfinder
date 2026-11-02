@@ -484,6 +484,29 @@
         }
       }
     },
+    "Einheiten": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Units"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unités"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unità"
+          }
+        }
+      }
+    },
     "Fertig": {
       "extractionState": "manual",
       "localizations": {
@@ -664,6 +687,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Compila ciò che puoi misurare. Già una lunghezza e un diametro restringono molto la scelta."
+          }
+        }
+      }
+    },
+    "Gemessen in Zoll": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measured in inches"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mesuré en pouces"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Misurato in pollici"
           }
         }
       }
@@ -871,6 +917,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lunghezza del bossolo (aperto)"
+          }
+        }
+      }
+    },
+    "Imperial (Zoll)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imperial (in)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impérial (po)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imperiale (in)"
           }
         }
       }
@@ -1220,6 +1289,29 @@
         }
       }
     },
+    "Lineal in Zoll": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ruler in inches"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Règle en pouces"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Righello in pollici"
+          }
+        }
+      }
+    },
     "Luftdruck": {
       "extractionState": "manual",
       "localizations": {
@@ -1308,6 +1400,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Le dimensioni sono valori indicativi arrotondati (CIP/SAAMI), non dati di ricarica. Innesco: misura Boxer dei bossoli commerciali; le munizioni militari possono avere inneschi Berdan di altre misure."
+          }
+        }
+      }
+    },
+    "Metrisch (mm)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Metric (mm)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Métrique (mm)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Metrico (mm)"
           }
         }
       }

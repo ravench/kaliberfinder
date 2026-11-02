@@ -22,6 +22,8 @@ it is, after taking a photo of it. In German, English, French and Italian.
 - **Calibration**: the app knows the display density of every iPhone since the XS and
   takes Display Zoom into account. For unknown models, or to fine-tune, calibrate once
   with a bank card.
+- **Einheiten**: metric (mm, the default) or US imperial (inches, three decimals, ruler in
+  1/16 in). Data and matching stay in millimetres; only display and input change.
 
 The cartridge data is a copy of the catalogue in
 [Schiesstagebuch](https://github.com/ravench/schiesstagebuch). Dimensions are rounded
