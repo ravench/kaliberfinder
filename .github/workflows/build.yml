@@ -27,6 +27,8 @@ jobs:
           python3 tools/generate_data.py
           python3 tools/localize.py
           git diff --exit-code Kaliberfinder/Resources
+      - name: Tool tests
+        run: python3 -m unittest discover -s tools -p 'test_*.py'
       - name: Build for simulator
         run: |
           xcodebuild build \
