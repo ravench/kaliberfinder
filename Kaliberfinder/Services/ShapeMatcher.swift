@@ -23,6 +23,11 @@ enum ShapeMatcher {
     /// `pixelSize` is the spacing of the points; it's added to every extent, since the
     /// outermost pixel centres lie half a pixel inside the edge on each side.
     static func measure(_ points: [Point], pixelSize: Double = 1) -> ShapeMeasurement? {
+        measureWithLength(points, pixelSize: pixelSize)?.shape
+    }
+
+    /// Like `measure`, plus the silhouette's length in the points' units (pixels), for sizing with depth.
+    static func measureWithLength(_ points: [Point], pixelSize: Double = 1) -> (shape: ShapeMeasurement, length: Double)? {
         guard points.count >= 50 else { return nil }
         let n = Double(points.count)
         let mx = points.reduce(0) { $0 + $1.x } / n
@@ -51,7 +56,8 @@ enum ShapeMatcher {
             minV[i] = min(minV[i], pv); maxV[i] = max(maxV[i], pv)
         }
         let widths = (0..<bins).map { maxV[$0] >= minV[$0] ? maxV[$0] - minV[$0] + pixelSize : 0 }
-        return signature(widths: widths, length: length + pixelSize)
+        guard let shape = signature(widths: widths, length: length + pixelSize) else { return nil }
+        return (shape, length + pixelSize)
     }
 
     /// The shape a catalogue cartridge would have, measured the same way as a photo.
