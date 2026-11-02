@@ -3,8 +3,11 @@ import SwiftUI
 /// Analyses a photo and lists the calibres it may show; each opens at real size for comparison.
 struct MatchesView: View {
     let photo: UIImage
+    /// Distance and focal length from the LiDAR camera, nil for other photos.
+    var depth: DepthScale?
     @State private var analysis: PhotoAnalysis?
     @State private var matches: [Match] = []
+    @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
 
     var body: some View {
         List {
@@ -15,7 +18,7 @@ struct MatchesView: View {
                     .frame(maxWidth: .infinity, maxHeight: 220)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 if let analysis {
-                    ForEach(Self.notes(for: analysis), id: \.self) { note in
+                    ForEach(Self.notes(for: analysis, depth: depth, unit: unit), id: \.self) { note in
                         Text(note).font(.footnote).foregroundStyle(.secondary)
                     }
                 } else {
@@ -57,7 +60,8 @@ struct MatchesView: View {
         .navigationBarTitleDisplayMode(.inline)
         .task {
             let result = await PhotoAnalyzer.analyze(photo)
-            matches = Matcher.rank(shape: result.shape, hits: HeadstampReader.hits(in: result.texts))
+            let size = try? result.size(depth: depth).get()
+            matches = Matcher.rank(shape: result.shape, hits: HeadstampReader.hits(in: result.texts), size: size)
             analysis = result
         }
     }
@@ -72,12 +76,32 @@ struct MatchesView: View {
         case .poor: parts.append("Form passt wenig".loc)
         case nil: break
         }
+        switch m.sizeFit {
+        case .good: parts.append("Grösse passt gut".loc)
+        case .rough: parts.append("Grösse passt ungefähr".loc)
+        case .poor: parts.append("Grösse passt wenig".loc)
+        case nil: break
+        }
         return parts.joined(separator: " · ")
     }
 
-    /// Hints about what the analysis could use.
-    static func notes(for a: PhotoAnalysis) -> [String] {
+    /// "Gemessen: L ≈ 71 mm, Ø ≈ 12 mm", rounded to what the measurement can tell.
+    static func measuredText(_ size: MeasuredSize, unit: LengthUnit) -> String {
+        let step = unit == .metric ? 0.5 : LengthUnit.mmPerInch / 200
+        func rounded(_ mm: Double) -> String { unit.format((mm / step).rounded() * step) }
+        return String(format: "Gemessen: L ≈ %1$@, Ø ≈ %2$@".loc, rounded(size.length), rounded(size.diameter))
+    }
+
+    /// Hints about what the analysis could use, and the size measured with LiDAR.
+    static func notes(for a: PhotoAnalysis, depth: DepthScale? = nil, unit: LengthUnit = .metric) -> [String] {
         var notes: [String] = []
+        if depth != nil {
+            switch a.size(depth: depth) {
+            case .success(let size): notes.append(measuredText(size, unit: unit))
+            case .failure(.outOfRange): notes.append("Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form und Aufschrift.".loc)
+            case .failure: notes.append("Grösse nicht messbar: Treffer nur nach Form und Aufschrift.".loc)
+            }
+        }
         if let shape = a.shape {
             if shape.isEndView { notes.append("Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Bei Patronen zählt nur die Aufschrift.".loc) }
         } else {

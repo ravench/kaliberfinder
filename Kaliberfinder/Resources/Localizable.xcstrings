@@ -47,6 +47,75 @@
         }
       }
     },
+    "Abbrechen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuler"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annulla"
+          }
+        }
+      }
+    },
+    "Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form und Aufschrift.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance outside 12–45 cm: size not measured, matches by shape and marking only."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance hors de 12–45 cm : taille non mesurée, résultats selon la forme et l'inscription seulement."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distanza fuori da 12–45 cm: dimensione non misurata, risultati solo per forma e scritta."
+          }
+        }
+      }
+    },
+    "Abstand passt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance is good"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bonne distance"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distanza corretta"
+          }
+        }
+      }
+    },
     "Abweichung bis %@": {
       "extractionState": "manual",
       "localizations": {
@@ -507,6 +576,29 @@
         }
       }
     },
+    "Etwas weiter weg": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move a bit further away"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Éloignez-vous un peu"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allontanati un po'"
+          }
+        }
+      }
+    },
     "Fertig": {
       "extractionState": "manual",
       "localizations": {
@@ -618,6 +710,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "La forma corrisponde poco"
+          }
+        }
+      }
+    },
+    "Foto aufnehmen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take photo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prendre la photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scatta foto"
           }
         }
       }
@@ -737,6 +852,29 @@
         }
       }
     },
+    "Gemessen: L ≈ %1$@, Ø ≈ %2$@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measured: L ≈ %1$@, Ø ≈ %2$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mesuré : L ≈ %1$@, Ø ≈ %2$@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Misurato: L ≈ %1$@, Ø ≈ %2$@"
+          }
+        }
+      }
+    },
     "Gesamtlänge": {
       "extractionState": "manual",
       "localizations": {
@@ -802,6 +940,98 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stimato, calibra per favore"
+          }
+        }
+      }
+    },
+    "Grösse nicht messbar: Treffer nur nach Form und Aufschrift.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Size could not be measured: matches by shape and marking only."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taille non mesurable : résultats selon la forme et l'inscription seulement."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dimensione non misurabile: risultati solo per forma e scritta."
+          }
+        }
+      }
+    },
+    "Grösse passt gut": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Size fits well"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La taille correspond bien"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La dimensione corrisponde bene"
+          }
+        }
+      }
+    },
+    "Grösse passt ungefähr": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Size fits roughly"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La taille correspond à peu près"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La dimensione corrisponde più o meno"
+          }
+        }
+      }
+    },
+    "Grösse passt wenig": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Size fits poorly"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La taille correspond peu"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La dimensione corrisponde poco"
           }
         }
       }
@@ -1128,6 +1358,29 @@
         }
       }
     },
+    "Keine Tiefe gemessen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No depth measured"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune profondeur mesurée"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna profondità misurata"
+          }
+        }
+      }
+    },
     "Keine passenden Kaliber gefunden.": {
       "extractionState": "manual",
       "localizations": {
@@ -1239,6 +1492,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Appoggia la cartuccia sullo schermo, il fondello sulla linea dello zero, e confronta."
+          }
+        }
+      }
+    },
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das iPhone parallel, 20–30 cm darüber.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lay the cartridge flat on a light surface and hold the iPhone parallel, 20–30 cm above it."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posez la cartouche à plat sur un fond clair et tenez l'iPhone parallèle, à 20–30 cm au-dessus."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appoggia la cartuccia piatta su un fondo chiaro e tieni l'iPhone parallelo, 20–30 cm sopra."
           }
         }
       }
@@ -1492,6 +1768,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Calibri possibili"
+          }
+        }
+      }
+    },
+    "Näher heran": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move closer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rapprochez-vous"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvicinati"
           }
         }
       }
@@ -2090,6 +2389,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Innesco"
+          }
+        }
+      }
+    },
+    "iPhone parallel zum Tisch halten": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold the iPhone parallel to the table"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tenez l'iPhone parallèle à la table"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tieni l'iPhone parallelo al tavolo"
           }
         }
       }

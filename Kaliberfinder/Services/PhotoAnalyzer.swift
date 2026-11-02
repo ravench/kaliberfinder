@@ -8,6 +8,15 @@ struct PhotoAnalysis {
     let shape: ShapeMeasurement?
     /// Text read from the photo (headstamp, box label).
     let texts: [String]
+    /// The silhouette's length in pixels of the analysed image, and that image's long side.
+    var lengthPixels: Double?
+    var imageLongSide: Double = 0
+
+    /// Size from the silhouette and the LiDAR distance, if the photo was taken with depth.
+    func size(depth: DepthScale?) -> Result<MeasuredSize, SizeFailure> {
+        guard let shape, let lengthPixels else { return .failure(depth == nil ? .noDepth : .endView) }
+        return SizeEstimator.estimate(lengthPixels: lengthPixels, aspect: shape.aspect, imageLongSide: imageLongSide, depth: depth)
+    }
 }
 
 /// Runs Vision on a photo: foreground segmentation for the silhouette, text recognition for the headstamp.
@@ -33,12 +42,13 @@ enum PhotoAnalyzer {
 
         // Not available on the simulator; then only the text counts.
         let maskRequest = VNGenerateForegroundInstanceMaskRequest()
-        var shape: ShapeMeasurement?
+        var measured: (shape: ShapeMeasurement, length: Double)?
         if (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
             let (points, step) = silhouette(of: observation, handler: handler)
-            shape = ShapeMatcher.measure(points, pixelSize: Double(step))
+            measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
         }
-        return PhotoAnalysis(shape: shape, texts: texts)
+        return PhotoAnalysis(shape: measured?.shape, texts: texts, lengthPixels: measured?.length,
+                             imageLongSide: Double(max(cgImage.width, cgImage.height)))
     }
 
     /// The image scaled down and with its orientation applied, so pixels are upright.

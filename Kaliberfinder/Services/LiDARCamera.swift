@@ -1,0 +1,144 @@
+import AVFoundation
+import CoreMotion
+import UIKit
+
+/// The back camera paired with the LiDAR scanner (Pro iPhones from the 12 Pro). Shows live guidance
+/// (distance and tilt) and takes a photo together with the table distance and focal length.
+/// Depth stays in memory and is dropped after the size is computed (LIDAR-07).
+final class LiDARCamera: NSObject, ObservableObject {
+    /// LIDAR-01: only phones with the scanner get the depth camera.
+    static var isAvailable: Bool {
+        AVCaptureDevice.default(.builtInLiDARDepthCamera, for: .video, position: .back) != nil
+    }
+
+    @Published private(set) var guidance: LiDARGuidance = .noDepth
+    @Published private(set) var isRunning = false
+
+    let session = AVCaptureSession()
+    private let photoOutput = AVCapturePhotoOutput()
+    private let depthOutput = AVCaptureDepthDataOutput()
+    private let queue = DispatchQueue(label: "net.forestraven.kaliberfinder.lidar")
+    private let motion = CMMotionManager()
+    private var tilt: Double?
+    private var lastDepthUpdate = Date.distantPast
+    private var onPhoto: ((UIImage, DepthScale?) -> Void)?
+
+    func start() {
+        AVCaptureDevice.requestAccess(for: .video) { [self] granted in
+            guard granted else { return }
+            queue.async { [self] in
+                if session.inputs.isEmpty { configure() }
+                session.startRunning()
+                let running = session.isRunning
+                DispatchQueue.main.async { self.isRunning = running }
+            }
+        }
+        if motion.isDeviceMotionAvailable {
+            motion.deviceMotionUpdateInterval = 0.1
+            motion.startDeviceMotionUpdates(to: .main) { [weak self] data, _ in
+                guard let g = data?.gravity else { return }
+                self?.tilt = LiDARGuidance.tilt(gravityX: g.x, y: g.y, z: g.z)
+            }
+        }
+    }
+
+    func stop() {
+        motion.stopDeviceMotionUpdates()
+        queue.async { [self] in session.stopRunning() }
+    }
+
+    /// Takes a photo; `completion` gets the image and, when the depth was usable, its scale.
+    func capture(_ completion: @escaping (UIImage, DepthScale?) -> Void) {
+        queue.async { [self] in
+            onPhoto = completion
+            let settings = AVCapturePhotoSettings()
+            settings.isDepthDataDeliveryEnabled = photoOutput.isDepthDataDeliveryEnabled
+            settings.isDepthDataFiltered = true
+            // Portrait, like the preview (the app runs in portrait only).
+            if let connection = photoOutput.connection(with: .video), connection.isVideoRotationAngleSupported(90) {
+                connection.videoRotationAngle = 90
+            }
+            photoOutput.capturePhoto(with: settings, delegate: self)
+        }
+    }
+
+    private func configure() {
+        guard let device = AVCaptureDevice.default(.builtInLiDARDepthCamera, for: .video, position: .back),
+              let input = try? AVCaptureDeviceInput(device: device) else { return }
+        session.beginConfiguration()
+        defer { session.commitConfiguration() }
+        session.sessionPreset = .photo
+        guard session.canAddInput(input), session.canAddOutput(photoOutput), session.canAddOutput(depthOutput) else { return }
+        session.addInput(input)
+        session.addOutput(photoOutput)
+        session.addOutput(depthOutput)
+        // A 4:3 format that delivers depth, with a float depth format.
+        if let format = device.formats.last(where: { f in
+            let d = f.formatDescription.dimensions
+            return !f.supportedDepthDataFormats.isEmpty && d.width * 3 == d.height * 4
+        }) {
+            try? device.lockForConfiguration()
+            device.activeFormat = format
+            device.activeDepthDataFormat = format.supportedDepthDataFormats.last {
+                let type = $0.formatDescription.mediaSubType.rawValue
+                return type == kCVPixelFormatType_DepthFloat32 || type == kCVPixelFormatType_DepthFloat16
+            }
+            device.unlockForConfiguration()
+        }
+        photoOutput.isDepthDataDeliveryEnabled = photoOutput.isDepthDataDeliverySupported
+        depthOutput.isFilteringEnabled = true
+        depthOutput.setDelegate(self, callbackQueue: queue)
+    }
+
+    /// Table distance in mm from a depth map: the valid samples in the central half of the frame.
+    static func tableDistance(_ depthData: AVDepthData) -> Double? {
+        let depth = depthData.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32).depthDataMap
+        CVPixelBufferLockBaseAddress(depth, .readOnly)
+        defer { CVPixelBufferUnlockBaseAddress(depth, .readOnly) }
+        guard let base = CVPixelBufferGetBaseAddress(depth) else { return nil }
+        let width = CVPixelBufferGetWidth(depth), height = CVPixelBufferGetHeight(depth)
+        let rowBytes = CVPixelBufferGetBytesPerRow(depth)
+        var samples: [Float] = []
+        for y in stride(from: height / 4, to: height * 3 / 4, by: 2) {
+            let row = base.advanced(by: y * rowBytes)
+            for x in stride(from: width / 4, to: width * 3 / 4, by: 2) {
+                samples.append(row.load(fromByteOffset: x * 4, as: Float.self))
+            }
+        }
+        return SizeEstimator.tableDistance(samples: samples)
+    }
+
+    /// Distance and focal length for a photo, nil when the depth isn't absolute or is missing.
+    static func depthScale(_ depthData: AVDepthData?) -> DepthScale? {
+        guard let depthData, depthData.depthDataAccuracy == .absolute,
+              let calibration = depthData.cameraCalibrationData,
+              let distance = tableDistance(depthData) else { return nil }
+        let reference = calibration.intrinsicMatrixReferenceDimensions
+        return DepthScale(tableDistance: distance,
+                          focalLength: Double(calibration.intrinsicMatrix.columns.0.x),
+                          referenceLongSide: Double(max(reference.width, reference.height)))
+    }
+}
+
+extension LiDARCamera: AVCaptureDepthDataOutputDelegate {
+    func depthDataOutput(_ output: AVCaptureDepthDataOutput, didOutput depthData: AVDepthData,
+                         timestamp: CMTime, connection: AVCaptureConnection) {
+        // A few updates a second are enough for the guide.
+        guard Date().timeIntervalSince(lastDepthUpdate) > 0.2 else { return }
+        lastDepthUpdate = Date()
+        let distance = Self.tableDistance(depthData)
+        DispatchQueue.main.async { [self] in
+            guidance = LiDARGuidance.state(distance: distance, tilt: tilt)
+        }
+    }
+}
+
+extension LiDARCamera: AVCapturePhotoCaptureDelegate {
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        let completion = onPhoto
+        onPhoto = nil
+        guard let data = photo.fileDataRepresentation(), let image = UIImage(data: data) else { return }
+        let scale = Self.depthScale(photo.depthData)
+        DispatchQueue.main.async { completion?(image, scale) }
+    }
+}

@@ -22,6 +22,12 @@ it is, after taking a photo of it. In German, English, French and Italian.
 - **Calibration**: the app knows the display density of every iPhone since the XS and
   takes Display Zoom into account. For unknown models, or to fine-tune, calibrate once
   with a bank card.
+- **LiDAR** (Pro iPhones from the 12 Pro): "Patrone fotografieren" opens the app's own camera,
+  which guides you to hold the phone flat 20–30 cm above the cartridge and takes the photo
+  with the LiDAR distance. From that distance and the camera's focal length the app measures
+  the cartridge's length and diameter and ranks calibres by size as well as shape and
+  headstamp. The depth is used in memory only and never stored. Other iPhones and photos
+  from the library work as before.
 - **Einheiten**: metric (mm, the default) or US imperial (inches, three decimals, ruler in
   1/16 in). Data and matching stay in millimetres; only display and input change.
 
