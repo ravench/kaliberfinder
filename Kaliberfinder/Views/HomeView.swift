@@ -6,6 +6,7 @@ struct HomeView: View {
     @State private var showCamera = false
     @State private var libraryItem: PhotosPickerItem?
     @State private var photo: PickedPhoto?
+    @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
 
     var body: some View {
         List {
@@ -39,7 +40,7 @@ struct HomeView: View {
             Section {
                 NavigationLink { CalibrationView() } label: {
                     LabeledContent {
-                        Text(verbatim: scale.pointsPerMM.formatted(.number.precision(.fractionLength(2))) + " pt/mm")
+                        Text(verbatim: unit.scaleText(pointsPerMM: scale.pointsPerMM))
                     } label: {
                         Text("Bildschirm")
                         Text(scale.resolution.source.title.loc)
@@ -49,6 +50,9 @@ struct HomeView: View {
                 Text("Originalgrösse")
             } footer: {
                 Text("Bildschirmzoom und Kalibrierung werden berücksichtigt. Prüfe die Grösse einmal mit einer Bankkarte.")
+            }
+            Section("Einheiten") {
+                UnitPicker(unit: $unit)
             }
             Section {
                 Text(verbatim: "© 2026 Simon Giotta · PolyForm Noncommercial 1.0.0")
