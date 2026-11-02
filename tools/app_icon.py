@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """App icons: three cartridges side by side (.22 LR, 9x19 mm, 7.5x55 Swiss GP 11),
 drawn from the catalogue outlines at the same scale. The default look borrows
-from the iOS Measure app: black background, yellow ruler and a white dotted
-measuring line with round handles. --navy gives the Schiesstagebuch look instead.
+from the iOS Measure app: black background and a white dotted measuring line
+with round handles, over a cream mm ruler with a red zero mark. --navy gives
+the Schiesstagebuch look instead.
 
     python3 tools/app_icon.py [--no-ruler] [--navy] [OUT_DIR]
 
@@ -23,15 +24,15 @@ GAP = 66          # px between cartridges
 BRASS = dict(brass="#E3C16F", brass_hi="#F3DC9C", copper="#C0743A", copper_hi="#DE9A62", line="#3A2A12")
 TINT = dict(brass="#C8C8C8", brass_hi="#E6E6E6", copper="#8C8C8C", copper_hi="#A8A8A8", line="#000000")
 
-# Measure-app look: near-black, system yellow ruler, white measuring line.
+# Measure-app look: near-black, white measuring line; cream ruler with a red zero mark.
 MEASURE = {
-    "": dict(BRASS, bg=("#2C2C2E", "#0A0A0A"), ruler="#FFD60A", tick="#1C1C1E", zero="#1C1C1E",
+    "": dict(BRASS, bg=("#2C2C2E", "#0A0A0A"), ruler="#F4F1E8", tick="#141414", zero="#D52B1E",
              shadow="#000000", measure="#FFFFFF"),
     "-Dark": dict(BRASS, bg=("#1C1C1E", "#000000"), brass="#C9A85A", brass_hi="#DCC07A", copper="#A8622F",
-                  copper_hi="#C47E4C", line="#000000", ruler="#E6C10A", tick="#0D0D0D", zero="#0D0D0D",
+                  copper_hi="#C47E4C", line="#000000", ruler="#D9D5CA", tick="#0D0D0D", zero="#FF5A45",
                   shadow="#000000", measure="#E8E8E8"),
     # Tinted: grayscale on black; iOS maps luminance onto the user's tint colour.
-    "-Tinted": dict(TINT, bg=("#000000", "#000000"), ruler="#D0D0D0", tick="#000000", zero="#000000",
+    "-Tinted": dict(TINT, bg=("#000000", "#000000"), ruler="#D0D0D0", tick="#000000", zero="#FFFFFF",
                     shadow="#000000", measure="#FFFFFF"),
 }
 
