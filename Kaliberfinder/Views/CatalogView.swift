@@ -3,12 +3,34 @@ import SwiftUI
 /// All catalogue calibres by category, with search. In selection mode several can be compared 1:1.
 struct CatalogView: View {
     @State private var query = ""
-    @State private var selecting = false
+    @State private var selecting: Bool
     @State private var selection: [Cartridge] = []
+
+    /// `selecting`: start in selection mode, to pick calibres for a side-by-side comparison.
+    init(selecting: Bool = false) {
+        _selecting = State(initialValue: selecting)
+    }
 
     var body: some View {
         let results = CartridgeCatalog.search(query)
         List {
+            if selecting {
+                Section {
+                    if selection.isEmpty {
+                        Text("Suche nach Namen und tippe die Kaliber an, die du nebeneinander sehen willst.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                    ForEach(selection) { c in
+                        Button { toggle(c) } label: {
+                            Label { Text(verbatim: c.name) } icon: { Image(systemName: "xmark.circle.fill") }
+                        }
+                        .foregroundStyle(.primary)
+                    }
+                } header: {
+                    Text("Ausgewählt")
+                }
+            }
             ForEach(CartridgeCatalog.grouped(results), id: \.category) { group in
                 Section(group.category.loc) {
                     ForEach(group.cartridges) { c in row(c) }
