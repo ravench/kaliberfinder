@@ -59,4 +59,27 @@ final class MatcherTests: XCTestCase {
         let side = ShapeMeasurement(aspect: 3, profile: [1])
         XCTAssertTrue(MatchesView.notes(for: PhotoAnalysis(shape: side, texts: [])).isEmpty)
     }
+
+    func testCompareButtonTakesAllMatches() throws {
+        let matches = Matcher.rank(shape: try expected("7.5x55 mm Swiss (GP 11)"), hits: [])
+        XCTAssertGreaterThan(matches.count, 3)
+        // Every listed calibre, not just the best three, in rank order.
+        XCTAssertEqual(MatchesView.toCompare(matches).map(\.id), matches.map(\.cartridge.id))
+        XCTAssertEqual(MatchesView.compareTitle(matches), String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, matches.count))
+        XCTAssertTrue(MatchesView.compareTitle(matches).contains("\(matches.count)"))
+    }
+
+    func testCompareSymbolExists() {
+        XCTAssertNotNil(UIImage(systemName: MatchesView.compareSymbol))
+    }
+
+    func testFitsWellNeedsGoodShapeAndSize() throws {
+        let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
+        XCTAssertTrue(Match(cartridge: c, score: 2, headstamp: nil, shapeDistance: 0.05, sizeDeviation: 0.1).fitsWell)
+        // Shape only, size only rough, or shape only rough: no highlight.
+        XCTAssertFalse(Match(cartridge: c, score: 1, headstamp: nil, shapeDistance: 0.05).fitsWell)
+        XCTAssertFalse(Match(cartridge: c, score: 1, headstamp: nil, shapeDistance: 0.05, sizeDeviation: 0.8).fitsWell)
+        XCTAssertFalse(Match(cartridge: c, score: 1, headstamp: nil, shapeDistance: 0.25, sizeDeviation: 0.1).fitsWell)
+        XCTAssertFalse(Match(cartridge: c, score: 0, headstamp: nil, shapeDistance: nil).fitsWell)
+    }
 }

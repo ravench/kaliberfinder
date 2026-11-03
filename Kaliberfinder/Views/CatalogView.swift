@@ -55,7 +55,7 @@ struct CatalogView: View {
                 NavigationLink {
                     TrueScaleView(cartridges: selection)
                 } label: {
-                    Label("1:1 vergleichen (\(selection.count))", systemImage: "ruler")
+                    Label("1:1 vergleichen (\(selection.count))", systemImage: MatchesView.compareSymbol)
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
@@ -89,6 +89,8 @@ struct CatalogView: View {
 struct CartridgeRow: View {
     let cartridge: Cartridge
     var detail: String?
+    /// Shows the detail in green with a check mark, for a calibre that fits well.
+    var highlighted = false
 
     var body: some View {
         HStack(spacing: 12) {
@@ -100,8 +102,17 @@ struct CartridgeRow: View {
                     Text(verbatim: aliases).font(.caption).foregroundStyle(.secondary)
                 }
                 if let detail {
-                    Text(verbatim: detail).font(.caption).foregroundStyle(.secondary)
+                    Text(verbatim: detail).font(.caption)
+                        .fontWeight(highlighted ? .semibold : nil)
+                        .foregroundStyle(highlighted ? AnyShapeStyle(.green) : AnyShapeStyle(.secondary))
                 }
+            }
+            if highlighted {
+                Spacer()
+                Image(systemName: "checkmark.seal.fill")
+                    .font(.title2)
+                    .foregroundStyle(.green)
+                    .accessibilityLabel(Text("Passt genau"))
             }
         }
     }
