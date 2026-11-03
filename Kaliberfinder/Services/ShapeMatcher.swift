@@ -176,11 +176,18 @@ enum ShapeMatcher {
         return true
     }
 
-    /// Distance to an expected shape, nil when rim or neck rule the calibre out. An empty case
-    /// is tried both ways round.
+    /// Added to a loaded cartridge's distance when its rim doesn't fit. On a loaded cartridge the
+    /// rim is only a hint: a shadow or the edge of the base can look like a rim in the photo.
+    static let rimPenalty = 0.1
+
+    /// Distance to an expected shape. For an empty case, nil when rim or neck rule the calibre out,
+    /// and the case is tried both ways round; for a cartridge a misfitting rim only adds `rimPenalty`.
     static func distance(_ photo: ShapeMeasurement, to expected: ShapeMeasurement, part: ShapePart) -> Double? {
-        let candidates = part == .emptyCase ? [photo, photo.reversed()] : [photo]
-        return candidates
+        if part == .cartridge {
+            let rimFits = featuresFit(photo, expected, part: .cartridge)
+            return distance(photo, expected) + (rimFits ? 0 : rimPenalty)
+        }
+        return [photo, photo.reversed()]
             .filter { featuresFit($0, expected, part: part) }
             .map { distance($0, expected) }
             .min()

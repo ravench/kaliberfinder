@@ -38,6 +38,30 @@ enum HeadstampReader {
         return .strong
     }
 
+    /// Calibres whose headstamp of the form number + word ("45 AUTO") may be what was read when a
+    /// leading digit or the word's first or last letter was missed, as on a worn or stylised stamp:
+    /// "5 AUTO", "45 AUT" or "5 AUT". Ambiguous ("5 AUTO" also fits "25 AUTO"), so only ever a weak hit.
+    static func partialMatches(_ key: String, index: [String: [String]] = index) -> [String] {
+        guard let read = numberAndWord(key) else { return [] }
+        var ids: [String] = []
+        for (name, nameIDs) in index {
+            guard let full = numberAndWord(name), full.word.count >= 3 else { continue }
+            let number = full.number == read.number || (full.number.hasSuffix(read.number) && read.number.count < full.number.count)
+            let word = full.word == read.word
+                || (read.word.count >= 3 && read.word.count == full.word.count - 1 && (full.word.hasPrefix(read.word) || full.word.hasSuffix(read.word)))
+            if number && word { ids += nameIDs }
+        }
+        return Array(Set(ids)).sorted()
+    }
+
+    /// "45auto" -> ("45", "auto"); nil unless the key is digits followed by letters.
+    static func numberAndWord(_ key: String) -> (number: String, word: String)? {
+        let number = key.prefix { $0.isNumber }
+        let word = key.dropFirst(number.count)
+        guard !number.isEmpty, !word.isEmpty, word.allSatisfy(\.isLetter) else { return nil }
+        return (String(number), String(word))
+    }
+
     /// All calibres mentioned in `lines`, strongest first, one hit per calibre.
     /// Each line is tried whole and as runs of up to three neighbouring words.
     static func hits(in lines: [String], index: [String: [String]] = index) -> [Hit] {
@@ -52,11 +76,10 @@ enum HeadstampReader {
             }
             for text in candidates {
                 let key = CartridgeCatalog.normalized(text)
-                guard let ids = index[key] else { continue }
-                let s = strength(of: key)
-                for id in ids {
-                    if let existing = best[id], existing.strength >= s { continue }
-                    best[id] = Hit(cartridgeID: id, text: text.trimmingCharacters(in: .whitespaces), strength: s)
+                let found = index[key].map { ($0, strength(of: key)) } ?? (partialMatches(key, index: index), Strength.weak)
+                for id in found.0 {
+                    if let existing = best[id], existing.strength >= found.1 { continue }
+                    best[id] = Hit(cartridgeID: id, text: text.trimmingCharacters(in: .whitespaces), strength: found.1)
                 }
             }
         }
