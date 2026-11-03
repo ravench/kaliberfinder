@@ -3,9 +3,11 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var scale: ScaleModel
+    @Environment(\.scenePhase) private var scenePhase
     @State private var showCamera = false
     @State private var libraryItem: PhotosPickerItem?
     @State private var photo: PickedPhoto?
+    @State private var sortingShared = false
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
 
     var body: some View {
@@ -61,7 +63,22 @@ struct HomeView: View {
             }
         }
         .navigationTitle("Kaliberfinder")
-        .navigationDestination(item: $photo) { MatchesView(photo: $0.image, depth: $0.depth) }
+        .navigationDestination(item: $photo) {
+            // New identity per photo, so a photo shared while the matches are open is analysed afresh.
+            MatchesView(photo: $0.image, depth: $0.depth, base: $0.base).id($0.id)
+        }
+        // Photos shared from other apps: the extension opens the app with this URL. If iOS did not
+        // let it, they wait in the inbox until the app comes to the front.
+        .onOpenURL { if SharedInbox.isOpenURL($0) { Task { await takeSharedPhotos() } } }
+        .onChange(of: scenePhase) { _, phase in if phase == .active { Task { await takeSharedPhotos() } } }
+        .task { await takeSharedPhotos() }
+        .overlay {
+            if sortingShared {
+                ProgressView { Text("Geteilte Fotos werden geprüft …") }
+                    .padding()
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+            }
+        }
         .fullScreenCover(isPresented: $showCamera) {
             if LiDARCamera.isAvailable {
                 LiDARCameraView { photo = PickedPhoto(image: $0, depth: $1) }
@@ -79,5 +96,22 @@ struct HomeView: View {
                 libraryItem = nil
             }
         }
+    }
+
+    /// Opens the matches for photos shared from another app. With several photos, their
+    /// silhouettes decide which is the side photo and which the base photo, not their order.
+    private func takeSharedPhotos() async {
+        let images = (SharedInbox.shared?.take() ?? []).compactMap(UIImage.init(data:))
+        guard !images.isEmpty else { return }
+        showCamera = false
+        var views: [SharedPhotoSorter.View] = [.side]
+        if images.count > 1 {
+            sortingShared = true
+            views = []
+            for image in images { views.append(.init(await PhotoAnalyzer.analyze(image, kind: .side).shape)) }
+            sortingShared = false
+        }
+        guard let (side, base) = SharedPhotoSorter.assign(views) else { return }
+        photo = PickedPhoto(image: images[side], base: base.map { images[$0] })
     }
 }
