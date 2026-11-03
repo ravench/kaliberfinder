@@ -7,8 +7,8 @@ Dimensions are approximations for an icon, not reloading data.
 # Kinds
 RIMLESS, RIMMED, BELTED, RIMFIRE, SHOT, BALL, MINIE, PELLET = (
     "rimless", "rimmed", "belted", "rimfire", "shot", "ball", "minie", "pellet")
-# Bullet profiles
-SPITZER, ROUND, FLAT = "spitzer", "round", "flat"
+# Bullet profiles. PATCHED: paper-patched lead body with a steel-capped round nose (GP 1890).
+SPITZER, ROUND, FLAT, PATCHED = "spitzer", "round", "flat", "patched"
 
 
 def c(name, kind, rim, base, shoulder, neck, case, sh_at, oal, bullet, profile, aliases=()):
@@ -96,9 +96,11 @@ CATALOGUE = [
         c("7 mm PRC", RIMLESS, 13.4, 13.4, 13.0, 8.0, 63.5, 54.0, 90.3, 7.2, SPITZER, ["7prc"]),
         c("7.5x55 mm Swiss (GP 11)", RIMLESS, 12.6, 12.6, 11.6, 8.5, 55.6, 45.0, 77.5, 7.77, SPITZER, ["gp11", "gp 11", "7.5x55", "7.5", "7.5mm", "7.5swiss", "k31"]),
         # GP 1890 ("Patrone, Modell 1890", later "Scharfe Patrone 90/23", from about 1960 "7,5 mm GP 90/23"):
-        # the original Schmidt-Rubin round of the IG 89/96, KarK 93/05, KG 97 and KG 00, paper-patched lead
-        # round nose, shorter case than GP 11. Not to be confused with the 5.6 mm GP 90 of the Stgw 90.
-        c("7.5x53.5 mm Swiss (GP 1890)", RIMLESS, 12.5, 12.4, 11.5, 8.6, 53.5, 42.5, 77.0, 7.8, ROUND,
+        # the original Schmidt-Rubin round of the IG 89/96, KarK 93/05, KG 97 and KG 00. Its bullet is
+        # unusual: a lead body wrapped in two turns of paper (the white band above the case mouth) and a
+        # long, blunt round nose under a steel cap (13.7 g, 29 mm long, 7.8 mm over the paper). Shorter case
+        # than GP 11. Not to be confused with the 5.6 mm GP 90 of the Stgw 90.
+        c("7.5x53.5 mm Swiss (GP 1890)", RIMLESS, 12.5, 12.4, 11.5, 8.6, 53.5, 42.5, 77.0, 7.8, PATCHED,
           ["gp1890", "gp 1890", "gp1890/03", "gp90/03", "gp90/23", "7.5 mm gp 90", "patrone 1890", "patrone 90/23",
            "7.5x53.5", "7.5x53", "schmidt-rubin", "ig89"]),
         c("7.5x54 mm French", RIMLESS, 12.25, 12.25, 11.2, 8.6, 54.0, 44.0, 76.0, 7.8, SPITZER, ["7.5x54"]),
