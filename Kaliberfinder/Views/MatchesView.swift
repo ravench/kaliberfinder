@@ -28,10 +28,9 @@ struct MatchesView: View {
     var body: some View {
         List {
             Section {
-                let outlines = Self.outlines(for: overview, chosen: chosen)
-                CandidatePhotoView(photo: preview?.image ?? photo, candidates: outlines.frames,
+                let frames = Self.frames(overview: overview, measured: analysis, picking: needsPick)
+                CandidatePhotoView(photo: preview?.image ?? photo, candidates: frames.candidates, measured: frames.measured,
                                    region: preview?.region ?? CGRect(x: 0, y: 0, width: 1, height: 1),
-                                   selected: outlines.selected,
                                    maxHeight: needsPick ? 420 : 220) { choose($0) }
                 if needsPick {
                     Label(Self.severalObjectsText, systemImage: "hand.tap")
@@ -98,8 +97,7 @@ struct MatchesView: View {
         .task {
             if let base, basePhoto == nil { setBasePhoto(base) }
             let result = await PhotoAnalyzer.analyze(photo, kind: .side)
-            let frames = Self.outlines(for: result, chosen: nil).frames
-            if let region = Self.previewRegion(around: frames, imageSize: photo.size) {
+            if let region = Self.previewRegion(around: Self.detectedBoxes(result), imageSize: photo.size) {
                 preview = (PhotoAnalyzer.cropped(photo, to: region), region)
             }
             overview = result
@@ -170,14 +168,22 @@ struct MatchesView: View {
         }
     }
 
-    /// Several cartridges compete and the user hasn't picked one yet.
-    /// Outlines on the photo: every competing cartridge while the user picks (then the picked one),
-    /// or the one measured cartridge when there is only one.
-    static func outlines(for overview: PhotoAnalysis?, chosen: Int?) -> (frames: [CGRect], selected: Int?) {
-        guard let overview else { return ([], nil) }
-        if overview.hasSeveralObjects { return (overview.candidates, chosen) }
-        guard let subject = overview.subject, overview.shape != nil else { return ([], nil) }
-        return ([subject], 0)
+    /// Frames on the photo: the competing cartridges while the user picks one; afterwards, or when
+    /// there is only one, exactly the silhouette that was measured.
+    static func frames(overview: PhotoAnalysis?, measured: PhotoAnalysis?,
+                       picking: Bool) -> (candidates: [CGRect], measured: [CGPoint]?) {
+        if picking { return (overview?.candidates ?? [], nil) }
+        guard let measured, measured.shape != nil else { return ([], nil) }
+        return ([], measured.outline)
+    }
+
+    /// Boxes around everything detected in the whole photo, for cropping the preview.
+    static func detectedBoxes(_ analysis: PhotoAnalysis) -> [CGRect] {
+        if analysis.hasSeveralObjects { return analysis.candidates }
+        guard analysis.shape != nil, let outline = analysis.outline, !outline.isEmpty else { return [] }
+        let xs = outline.map(\.x), ys = outline.map(\.y)
+        return [CGRect(x: xs.min() ?? 0, y: ys.min() ?? 0, width: (xs.max() ?? 0) - (xs.min() ?? 0),
+                       height: (ys.max() ?? 0) - (ys.min() ?? 0))]
     }
 
     /// The part of the photo the preview shows: every detected cartridge with a margin of half
@@ -192,6 +198,7 @@ struct MatchesView: View {
             .intersection(CGRect(x: 0, y: 0, width: 1, height: 1))
     }
 
+    /// Several cartridges compete and the user hasn't picked one yet.
     private var needsPick: Bool { overview?.hasSeveralObjects == true && chosen == nil }
 
     /// Measures only the picked cartridge.
