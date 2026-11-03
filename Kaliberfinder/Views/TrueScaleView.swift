@@ -138,6 +138,10 @@ struct TrueScaleView: View {
     private func label(for c: Cartridge) -> some View {
         VStack(spacing: 2) {
             Text(verbatim: c.name).font(.caption.bold())
+            // Calibres with the same measurements look exactly like this one.
+            ForEach(CartridgeCatalog.twins(of: c)) { twin in
+                Text(verbatim: "= \(twin.name)").font(.caption2).foregroundStyle(.secondary)
+            }
             Text(verbatim: "L \(unit.format(c.dimensions.overallLength))").font(.caption2)
             Text(verbatim: "Ø \(unit.format(max(c.dimensions.rim, c.dimensions.base)))").font(.caption2)
         }

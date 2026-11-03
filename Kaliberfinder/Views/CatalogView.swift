@@ -84,15 +84,22 @@ struct CartridgeRow: View {
     var detail: String?
     /// Shows the detail in green with a check mark, for a calibre that fits well.
     var highlighted = false
+    /// Calibres that look exactly like `cartridge` from the side, shown in the same row.
+    var merged: [Cartridge] = []
 
     var body: some View {
         HStack(spacing: 12) {
             CartridgeThumbnail(cartridge: cartridge)
             VStack(alignment: .leading, spacing: 2) {
-                Text(verbatim: cartridge.name)
+                Text(verbatim: ([cartridge] + merged).map(\.name).joined(separator: " / "))
                 let aliases = cartridge.displayAliases.joined(separator: ", ")
                 if !aliases.isEmpty {
                     Text(verbatim: aliases).font(.caption).foregroundStyle(.secondary)
+                }
+                if let note = CartridgeCatalog.profileNote(for: cartridge, merged: merged) {
+                    Label { Text(verbatim: note) } icon: { Image(systemName: "equal.circle") }
+                        .font(.caption)
+                        .foregroundStyle(.orange)
                 }
                 if let detail {
                     Text(verbatim: detail).font(.caption)

@@ -38,10 +38,13 @@ struct MeasureView: View {
             }
             if !matches.isEmpty {
                 Section {
-                    ForEach(matches) { m in
+                    // Calibres with identical measurements share one row; picking it picks the first.
+                    ForEach(DimensionMatcher.grouped(matches)) { g in
+                        let m = g.lead
                         Button { toggle(m.cartridge) } label: {
                             HStack {
-                                CartridgeRow(cartridge: m.cartridge, detail: Self.detail(for: m, unit: unit))
+                                CartridgeRow(cartridge: m.cartridge, detail: Self.detail(for: m, unit: unit),
+                                             merged: g.others.map(\.cartridge))
                                 Spacer()
                                 Image(systemName: selection.contains(m.cartridge) ? "checkmark.circle.fill" : "circle")
                                     .foregroundStyle(selection.contains(m.cartridge) ? Color.accentColor : .secondary)
@@ -92,7 +95,7 @@ struct MeasureView: View {
     /// The compare button: the picked calibres, else all that fit, else the best three.
     static func compareTitle(matches: [DimensionMatch], selected: Int) -> String {
         if selected > 0 { return String(format: "1:1 vergleichen (%lld)".loc, selected) }
-        let fitting = matches.filter { $0.fit != .poor }.count
+        let fitting = DimensionMatcher.grouped(matches).filter { $0.lead.fit != .poor }.count
         return fitting > 0 ? String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, fitting) : "Die besten drei 1:1 vergleichen".loc
     }
 
