@@ -39,9 +39,14 @@ final class BasePhotoTests: XCTestCase {
         XCTAssertTrue(HeadstampReader.hits(in: result.texts).contains { $0.cartridgeID == ".308 Winchester" })
     }
 
-    func testTextOnTheSidePhotoIsIgnored() {
-        let result = PhotoAnalyzer.analyzeNow(textImage("WIN 308"), kind: .side)
-        XCTAssertEqual(result.texts, [])
+    func testSidePhotoIsMeasuredButNotRead() throws {
+        let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "photo-45acp-wood", withExtension: "jpg"))
+        let image = try XCTUnwrap(UIImage(contentsOfFile: url.path))
+        let side = PhotoAnalyzer.analyzeNow(image, kind: .side)
+        let shape = try XCTUnwrap(side.shape)
+        XCTAssertFalse(shape.isEndView)
+        XCTAssertEqual(side.texts, [], "text is only read on the base photo")
+        XCTAssertNil(PhotoAnalyzer.analyzeNow(image, kind: .base).shape, "the base photo is not measured")
     }
 
     func testHitsComeFromTheBasePhoto() {
