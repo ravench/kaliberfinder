@@ -57,7 +57,7 @@ final class CatalogTests: XCTestCase {
         XCTAssertEqual(gp1890.dimensions.overallLength, 77.0, accuracy: 0.001)
         XCTAssertEqual(gp1890.category, CartridgeCatalog.Category.rifle.rawValue)
         XCTAssertTrue(gp1890.hasCase)
-        for text in ["GP 1890", "gp 90/03", "7,5x53,5"] {
+        for text in ["GP 1890", "GP 90/23", "7.5mm GP 90", "Patrone 1890", "7,5x53,5"] {
             XCTAssertTrue(CartridgeCatalog.search(text).contains { $0.id == gp1890.id }, text)
         }
         XCTAssertNotEqual(HeadstampReader.hits(in: ["GP 90"]).first?.cartridgeID, gp1890.id, "GP 90 is the Stgw 90 round")
