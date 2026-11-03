@@ -49,6 +49,8 @@ enum PhotoKind {
 enum PhotoAnalyzer {
     /// Photos are scaled down to this many pixels on the long side first; plenty for the shape.
     static let maxDimension: CGFloat = 1600
+    /// Base photos keep more detail: the case head is often small and its letters are fine.
+    static let maxBaseDimension: CGFloat = 2000
     /// Upper bound on silhouette points handed to the shape measurement.
     static let maxPoints = 40_000
 
@@ -88,7 +90,7 @@ enum PhotoAnalyzer {
     }
 
     static func analyzeNow(_ image: UIImage, kind: PhotoKind = .side) -> PhotoAnalysis {
-        guard let cgImage = upright(image) else { return PhotoAnalysis(shape: nil, texts: []) }
+        guard let cgImage = upright(image, maxSide: kind == .base ? maxBaseDimension : maxDimension) else { return PhotoAnalysis(shape: nil, texts: []) }
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
 
         // Not available on the simulator; then the colour cut-out below does the work.
@@ -109,23 +111,67 @@ enum PhotoAnalyzer {
             }
         }
         var texts: [String] = []
-        if kind.readsText(shape: measured?.shape) {
-            let textRequest = VNRecognizeTextRequest()
-            textRequest.recognitionLevel = .accurate
-            textRequest.usesLanguageCorrection = false
-            try? handler.perform([textRequest])
-            texts = (textRequest.results ?? []).flatMap { $0.topCandidates(3).map(\.string) }
-        }
+        if kind.readsText(shape: measured?.shape) { texts = readHeadstamp(cgImage) }
         return PhotoAnalysis(shape: measured?.shape, texts: texts, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)),
                              candidates: candidates.count > 1 ? candidates : [])
     }
 
+    /// Text on a case head: read from the photo as it is, and from the ring of letters unrolled
+    /// into a strip, both ways up (see `HeadstampImage`).
+    static func readHeadstamp(_ cgImage: CGImage) -> [String] {
+        var texts = recognizeText(cgImage)
+        if let rgb = rgbImage(cgImage), let disc = HeadstampImage.locate(rgb) {
+            let strip = HeadstampImage.unwrap(rgb, disc: disc)
+            // Letters face outwards or inwards; stamped letters can show dark or light.
+            for way in [strip, strip.rotatedHalfTurn(), strip.inverted(), strip.rotatedHalfTurn().inverted()] {
+                // Each piece on its own, then the first guesses of all pieces as one line.
+                var firsts: [String] = []
+                for tile in HeadstampImage.tiles(way) {
+                    guard let image = grayCGImage(tile) else { continue }
+                    let read = recognizeLines(image)
+                    texts += read.guesses
+                    if !read.line.isEmpty { firsts.append(read.line) }
+                }
+                if firsts.count > 1 { texts.append(firsts.joined(separator: " ")) }
+            }
+        }
+        return texts
+    }
+
+    /// Text Vision reads, up to three guesses per line, plus all first guesses joined into one line,
+    /// so words recognised separately (".45" and "AUTO") can still form a calibre name.
+    static func recognizeText(_ cgImage: CGImage) -> [String] {
+        let read = recognizeLines(cgImage)
+        return read.lineCount > 1 ? read.guesses + [read.line] : read.guesses
+    }
+
+    /// Up to three guesses per line, and the first guesses of all lines joined.
+    static func recognizeLines(_ cgImage: CGImage) -> (guesses: [String], line: String, lineCount: Int) {
+        let request = VNRecognizeTextRequest()
+        request.recognitionLevel = .accurate
+        request.usesLanguageCorrection = false
+        try? VNImageRequestHandler(cgImage: cgImage, options: [:]).perform([request])
+        let observations = request.results ?? []
+        let guesses = observations.flatMap { $0.topCandidates(3).map(\.string) }
+        let firsts = observations.compactMap { $0.topCandidates(1).first?.string }
+        return (guesses, firsts.joined(separator: " "), firsts.count)
+    }
+
+    /// A gray image as a CGImage, for Vision.
+    static func grayCGImage(_ image: GrayImage) -> CGImage? {
+        guard let provider = CGDataProvider(data: Data(image.pixels) as CFData) else { return nil }
+        return CGImage(width: image.width, height: image.height, bitsPerComponent: 8, bitsPerPixel: 8,
+                       bytesPerRow: image.width, space: CGColorSpaceCreateDeviceGray(),
+                       bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue),
+                       provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
+    }
+
     /// The image scaled down and with its orientation applied, so pixels are upright.
-    private static func upright(_ image: UIImage) -> CGImage? {
+    private static func upright(_ image: UIImage, maxSide: CGFloat) -> CGImage? {
         let longSide = max(image.size.width, image.size.height)
         guard longSide > 0 else { return nil }
-        let factor = min(1, maxDimension / longSide)
+        let factor = min(1, maxSide / longSide)
         let size = CGSize(width: image.size.width * factor, height: image.size.height * factor)
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
