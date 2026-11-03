@@ -1,0 +1,3 @@
+[submodule "calibre-data"]
+	path = calibre-data
+	url = https://github.com/ravench/calibre-data
