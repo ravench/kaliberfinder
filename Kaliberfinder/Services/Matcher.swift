@@ -27,6 +27,9 @@ struct Match: Identifiable, Equatable {
         guard let d = sizeDeviation else { return nil }
         return d <= 0.3 ? .good : (d <= 1.0 ? .rough : .poor)
     }
+
+    /// Shape and size both fit well: the row is highlighted in green.
+    var fitsWell: Bool { shapeFit == .good && sizeFit == .good }
 }
 
 /// What the user is photographing (SCAN-01): the app decides by itself, or the user says so.
