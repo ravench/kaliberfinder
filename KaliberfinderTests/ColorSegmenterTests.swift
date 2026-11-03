@@ -8,11 +8,27 @@ final class ColorSegmenterTests: XCTestCase {
         try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)
     }
 
+    /// A cartridge drawn into a synthetic photo, centred at fractions of the width and height.
+    private struct Placed {
+        let cartridge: Cartridge
+        let angle: Double
+        let pixelsPerMM: Double
+        let centre: (Double, Double)
+
+        init(_ cartridge: Cartridge, angle: Double, pixelsPerMM: Double, at centre: (Double, Double)) {
+            self.cartridge = cartridge
+            self.angle = angle
+            self.pixelsPerMM = pixelsPerMM
+            self.centre = centre
+        }
+    }
+
     /// A synthetic photo: wood-like stripes, a shadow over the lower half, a dark box cut off by the
     /// top edge, and a brass cartridge with a copper bullet lying at `angle`, `pixelsPerMM` px/mm,
-    /// once at each of `centres` (fractions of the width and height).
+    /// once at each of `centres` (fractions of the width and height), plus the `also` cartridges.
     private func photo(_ c: Cartridge, angle: Double = 0.3, pixelsPerMM: Double = 6,
-                       width: Int = 600, height: Int = 800, centres: [(Double, Double)] = [(0.5, 0.5)]) -> RGBImage {
+                       width: Int = 600, height: Int = 800, centres: [(Double, Double)] = [(0.5, 0.5)],
+                       also: [Placed] = []) -> RGBImage {
         var p = [Float](repeating: 0, count: width * height * 3)
         var seed: UInt64 = 42
         func noise() -> Float {
@@ -29,11 +45,12 @@ final class ColorSegmenterTests: XCTestCase {
                 for c in 0..<3 { p[(y * width + x) * 3 + c] = rgb[c] }
             }
         }
-        let g = OutlineGeometry(c.outline)
-        let bulletEnd = c.outline.height - c.dimensions.caseLength
-        let half = max(c.outline.height, c.outline.width) * pixelsPerMM
-        for (fx, fy) in centres {
-            let cx = Double(width) * fx, cy = Double(height) * fy
+        for item in centres.map({ Placed(c, angle: angle, pixelsPerMM: pixelsPerMM, at: $0) }) + also {
+            let c = item.cartridge, angle = item.angle, pixelsPerMM = item.pixelsPerMM
+            let g = OutlineGeometry(c.outline)
+            let bulletEnd = c.outline.height - c.dimensions.caseLength
+            let half = max(c.outline.height, c.outline.width) * pixelsPerMM
+            let cx = Double(width) * item.centre.0, cy = Double(height) * item.centre.1
             for y in Int(cy - half)...Int(cy + half) {
                 for x in Int(cx - half)...Int(cx + half) {
                     // Back to cartridge millimetres: rotate by -angle around the centre.
@@ -171,6 +188,19 @@ final class ColorSegmenterTests: XCTestCase {
         XCTAssertEqual(ColorSegmenter.objectCount(photo(gp11, angle: 1.2, pixelsPerMM: 5, centres: [(0.5, 0.35), (0.5, 0.65)])), 2)
     }
 
+    func testACartridgeOffInACornerIsIgnored() throws {
+        // Clearly not the subject: measure the one in the middle, no error.
+        let nine = try cartridge("9x19 mm")
+        XCTAssertEqual(ColorSegmenter.objectCount(photo(nine, centres: [(0.5, 0.5), (0.2, 0.85)])), 1)
+    }
+
+    func testDifferentCalibresSideBySideAreCounted() throws {
+        // A 9 mm and a GP 11 in the middle: both look like cartridges, so it is unclear which to measure.
+        let nine = try cartridge("9x19 mm")
+        let gp11 = Placed(try cartridge("7.5x55 mm Swiss (GP 11)"), angle: 1.2, pixelsPerMM: 5, at: (0.5, 0.68))
+        XCTAssertEqual(ColorSegmenter.objectCount(photo(nine, centres: [(0.5, 0.3)], also: [gp11])), 2)
+    }
+
     func testPlainImageCountsNothing() {
         let plain = RGBImage(width: 200, height: 300, pixels: [Float](repeating: 180, count: 200 * 300 * 3))
         XCTAssertEqual(ColorSegmenter.objectCount(plain), 0)
@@ -255,7 +285,20 @@ final class ColorSegmenterTests: XCTestCase {
         XCTAssertFalse(cartridge.resembles(rectangle(30, 10, colour: [48, 36, 30])))
         // Without colour (Vision instances) only size and shape count.
         XCTAssertTrue(rectangle(30, 10).resembles(rectangle(30, 10, colour: [48, 36, 30])))
-        XCTAssertEqual(Blob.count(resembling: 0, in: [cartridge, rectangle(30, 10, colour: brass), rectangle(100, 3)]), 2)
+    }
+
+    func testOnlyProminentLookalikesCompete() {
+        // Three cartridge-like rectangles in a 200 × 200 image: centre, beside it, far corner.
+        func placed(_ x0: Int, _ y0: Int) -> Blob {
+            var blob = Blob()
+            for y in y0..<(y0 + 10) { for x in x0..<(x0 + 30) { blob.add(x: x, y: y) } }
+            return blob
+        }
+        let centre = placed(85, 95), beside = placed(85, 125), corner = placed(5, 185), edge = rectangle(100, 3)
+        XCTAssertTrue(centre.competes(beside, width: 200, height: 200))
+        XCTAssertFalse(centre.competes(corner, width: 200, height: 200))
+        XCTAssertFalse(centre.competes(edge, width: 200, height: 200))
+        XCTAssertEqual(Blob.count(competingWith: 0, in: [centre, beside, corner, edge], width: 200, height: 200), 2)
     }
 
     func testAnalysisWithSeveralObjects() {
