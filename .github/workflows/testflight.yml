@@ -68,12 +68,17 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER" | tee "$RUNNER_TEMP/archive.log" | xcpretty
           # The export keeps the entitlements the archived app is signed with, and an unsigned app has
-          # none: sign it ad hoc with the project's entitlements (iCloud, push) first.
-          ENTITLEMENTS=Kaliberfinder/Kaliberfinder.entitlements
-          if [ -f "$ENTITLEMENTS" ]; then
-            codesign --force --sign - --entitlements "$ENTITLEMENTS" \
-              "$RUNNER_TEMP/Kaliberfinder.xcarchive/Products/Applications/Kaliberfinder.app"
-          fi
+          # none: sign it ad hoc with the project's entitlements (App Group) first. Extensions
+          # (<Name>.appex, entitlements in <Name>/<Name>.entitlements) before the app that contains them.
+          APP="$RUNNER_TEMP/Kaliberfinder.xcarchive/Products/Applications/Kaliberfinder.app"
+          for BUNDLE in "$APP"/PlugIns/*.appex "$APP"; do
+            [ -e "$BUNDLE" ] || continue
+            NAME=$(basename "$BUNDLE"); NAME=${NAME%.*}
+            ENTITLEMENTS="$NAME/$NAME.entitlements"
+            if [ -f "$ENTITLEMENTS" ]; then
+              codesign --force --sign - --entitlements "$ENTITLEMENTS" "$BUNDLE"
+            fi
+          done
       - name: Show the archive errors
         # xcpretty drops signing and account errors; show what xcodebuild actually said.
         if: failure() && steps.secrets.outputs.ready == 'true'
@@ -94,9 +99,14 @@ jobs:
             -authenticationKeyID "$ASC_KEY_ID" \
             -authenticationKeyIssuerID "$ASC_ISSUER_ID"
           mkdir -p "$RUNNER_TEMP/ipa" && unzip -q -o "$RUNNER_TEMP"/export/*.ipa -d "$RUNNER_TEMP/ipa"
-          codesign -d --entitlements :- "$RUNNER_TEMP"/ipa/Payload/*.app > "$RUNNER_TEMP/entitlements.plist"
-          cat "$RUNNER_TEMP/entitlements.plist"
-          python3 tools/testflight.py check-entitlements "$RUNNER_TEMP/entitlements.plist" Kaliberfinder/Kaliberfinder.entitlements
+          for BUNDLE in "$RUNNER_TEMP"/ipa/Payload/*.app/PlugIns/*.appex "$RUNNER_TEMP"/ipa/Payload/*.app; do
+            [ -e "$BUNDLE" ] || continue
+            NAME=$(basename "$BUNDLE"); NAME=${NAME%.*}
+            echo "--- $NAME"
+            codesign -d --entitlements :- "$BUNDLE" > "$RUNNER_TEMP/entitlements.plist"
+            cat "$RUNNER_TEMP/entitlements.plist"
+            python3 tools/testflight.py check-entitlements "$RUNNER_TEMP/entitlements.plist" "$NAME/$NAME.entitlements"
+          done
       - name: Upload to TestFlight
         if: steps.secrets.outputs.ready == 'true'
         run: |
