@@ -7,7 +7,7 @@ struct SharedInbox {
     static let appGroup = "group.ch.giotta.kaliberfinder"
     /// Opened by the extension; the app then looks into the inbox.
     static let openURL = URL(string: "kaliberfinder://shared")!
-    /// The side photo, then optionally the base photo for the headstamp.
+    /// The side photo and optionally the base photo, in any order (see `SharedPhotoSorter`).
     static let maxPhotos = 2
 
     /// Shown in the share sheet when iOS did not let the extension open the app.

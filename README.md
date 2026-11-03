@@ -21,7 +21,7 @@ it is, after taking a photo of it. In German, English, French and Italian.
   off are not listed.
 - **Teilen**: share a photo from Photos, Files, Messages or any other app to "Kaliberfinder"
   in the share sheet; the app opens on the matches for it. Share two photos at once to add the
-  base photo too (first = side, second = base). The share extension only hands the photos over
+  base photo too, in any order: the app tells the side view from the round base by its outline. The share extension only hands the photos over
   through the App Group `group.ch.giotta.kaliberfinder`; the analysis runs in the app.
 - **Kaliber**: catalogue of about 100 calibres (rimfire, handgun, rifle incl. GP 90 / GP 11,
   black powder, shotgun, air), with search across names, aliases and headstamp spellings.
