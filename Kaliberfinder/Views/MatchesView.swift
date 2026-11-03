@@ -14,6 +14,8 @@ struct MatchesView: View {
     @State private var overview: PhotoAnalysis?
     /// Which of several cartridges the user picked.
     @State private var chosen: Int?
+    /// The photo cut down to the detected cartridges, and which part of the photo that is.
+    @State private var preview: (image: UIImage, region: CGRect)?
     @State private var matches: [Match] = []
     /// The optional second photo of the case head; only its text is read.
     @State private var basePhoto: UIImage?
@@ -27,7 +29,9 @@ struct MatchesView: View {
         List {
             Section {
                 let outlines = Self.outlines(for: overview, chosen: chosen)
-                CandidatePhotoView(photo: photo, candidates: outlines.frames, selected: outlines.selected,
+                CandidatePhotoView(photo: preview?.image ?? photo, candidates: outlines.frames,
+                                   region: preview?.region ?? CGRect(x: 0, y: 0, width: 1, height: 1),
+                                   selected: outlines.selected,
                                    maxHeight: needsPick ? 420 : 220) { choose($0) }
                 if needsPick {
                     Label(Self.severalObjectsText, systemImage: "hand.tap")
@@ -94,6 +98,10 @@ struct MatchesView: View {
         .task {
             if let base, basePhoto == nil { setBasePhoto(base) }
             let result = await PhotoAnalyzer.analyze(photo, kind: .side)
+            let frames = Self.outlines(for: result, chosen: nil).frames
+            if let region = Self.previewRegion(around: frames, imageSize: photo.size) {
+                preview = (PhotoAnalyzer.cropped(photo, to: region), region)
+            }
             overview = result
             if !result.hasSeveralObjects {
                 analysis = result
@@ -170,6 +178,18 @@ struct MatchesView: View {
         if overview.hasSeveralObjects { return (overview.candidates, chosen) }
         guard let subject = overview.subject, overview.shape != nil else { return ([], nil) }
         return ([subject], 0)
+    }
+
+    /// The part of the photo the preview shows: every detected cartridge with a margin of half
+    /// their larger extent (at least a tenth of the photo's long side) all round, inside the photo.
+    /// Nil when nothing was detected, so the whole photo is shown.
+    static func previewRegion(around frames: [CGRect], imageSize: CGSize) -> CGRect? {
+        guard let first = frames.first, imageSize.width > 0, imageSize.height > 0 else { return nil }
+        let union = frames.dropFirst().reduce(first) { $0.union($1) }
+        let w = union.width * imageSize.width, h = union.height * imageSize.height
+        let margin = max(max(w, h) / 2, max(imageSize.width, imageSize.height) / 10)
+        return union.insetBy(dx: -margin / imageSize.width, dy: -margin / imageSize.height)
+            .intersection(CGRect(x: 0, y: 0, width: 1, height: 1))
     }
 
     private var needsPick: Bool { overview?.hasSeveralObjects == true && chosen == nil }

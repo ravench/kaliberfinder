@@ -380,6 +380,44 @@ final class ColorSegmenterTests: XCTestCase {
         XCTAssertEqual(MatchesView.outlines(for: several, chosen: 1).selected, 1)
     }
 
+    func testPreviewIsCroppedToAllCartridgesWithAMargin() throws {
+        let size = CGSize(width: 1000, height: 2000)
+        XCTAssertNil(MatchesView.previewRegion(around: [], imageSize: size))
+        // One cartridge, 100 × 200 px: a margin of 200 px (the larger of half its height and a tenth of 2000 px).
+        let one = try XCTUnwrap(MatchesView.previewRegion(around: [CGRect(x: 0.4, y: 0.4, width: 0.1, height: 0.1)], imageSize: size))
+        XCTAssertEqual(one.minX, 0.2, accuracy: 1e-9)
+        XCTAssertEqual(one.maxX, 0.7, accuracy: 1e-9)
+        XCTAssertEqual(one.minY, 0.3, accuracy: 1e-9)
+        XCTAssertEqual(one.maxY, 0.6, accuracy: 1e-9)
+        // Two cartridges far apart: both inside, and the crop stays inside the photo.
+        let boxes = [CGRect(x: 0.05, y: 0.1, width: 0.1, height: 0.1), CGRect(x: 0.7, y: 0.5, width: 0.1, height: 0.1)]
+        let both = try XCTUnwrap(MatchesView.previewRegion(around: boxes, imageSize: size))
+        XCTAssertTrue(boxes.allSatisfy { both.contains($0) }, "\(both)")
+        XCTAssertTrue(CGRect(x: 0, y: 0, width: 1, height: 1).contains(both), "\(both)")
+        XCTAssertEqual(both.minX, 0, accuracy: 1e-9)
+    }
+
+    func testOutlinesFollowTheCroppedPreview() {
+        let region = CGRect(x: 0.2, y: 0.3, width: 0.5, height: 0.4)
+        let box = CandidatePhotoView.relative(CGRect(x: 0.45, y: 0.5, width: 0.1, height: 0.1), to: region)
+        XCTAssertEqual(box.minX, 0.5, accuracy: 1e-9)
+        XCTAssertEqual(box.minY, 0.5, accuracy: 1e-9)
+        XCTAssertEqual(box.width, 0.2, accuracy: 1e-9)
+        XCTAssertEqual(box.height, 0.25, accuracy: 1e-9)
+        let whole = CGRect(x: 0, y: 0, width: 1, height: 1)
+        XCTAssertEqual(CandidatePhotoView.relative(region, to: whole), region)
+    }
+
+    func testCroppedImageHasTheRegionsSize() {
+        let image = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 300)).image { context in
+            UIColor.white.setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 400, height: 300))
+        }
+        let cropped = PhotoAnalyzer.cropped(image, to: CGRect(x: 0.25, y: 0.5, width: 0.5, height: 0.5))
+        XCTAssertEqual(cropped.size.width * cropped.scale, 200, accuracy: 1)
+        XCTAssertEqual(cropped.size.height * cropped.scale, 150, accuracy: 1)
+    }
+
     func testFocusRegionAddsAMarginInsideThePhoto() {
         let region = PhotoAnalyzer.focusRegion(CGRect(x: 0.4, y: 0.4, width: 0.2, height: 0.1))
         XCTAssertEqual(region.minX, 0.3, accuracy: 1e-9)
