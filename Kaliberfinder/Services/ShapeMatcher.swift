@@ -6,9 +6,63 @@ import Foundation
 struct ShapeMeasurement: Equatable {
     let aspect: Double
     let profile: [Double]
+    /// Width of every slice relative to the body, tip (or case mouth) first. Empty when
+    /// built by hand from a profile only.
+    var widths: [Double] = []
 
     /// Seen from the base or the tip (a disc): the shape says nothing about the calibre.
     var isEndView: Bool { aspect < 1.4 }
+
+    /// Rim and neck, if the slice widths are known.
+    var features: ShapeFeatures? { widths.count == ShapeMatcher.bins ? ShapeFeatures(widths: widths) : nil }
+
+    /// The same silhouette turned end for end: an empty case may lie either way round,
+    /// since its mouth isn't always the narrower end.
+    func reversed() -> ShapeMeasurement {
+        guard widths.count == ShapeMatcher.bins else { return self }
+        return ShapeMatcher.measurement(aspect: aspect, relativeWidths: widths.reversed())
+    }
+
+    /// An empty case turned so that its mouth comes first: the base is the end with the wider
+    /// rim (or extractor groove edge), since a case mouth is never wider than the body.
+    func mouthFirst() -> ShapeMeasurement {
+        guard widths.count == ShapeMatcher.bins else { return self }
+        let front = max(widths[0], widths[1])
+        let back = max(widths[widths.count - 1], widths[widths.count - 2])
+        return front > back + 0.02 ? reversed() : self
+    }
+}
+
+/// Details of the silhouette that tell calibres apart beyond the overall shape (SHAPE-05).
+struct ShapeFeatures: Equatable {
+    /// Width at the base end relative to the body: about 1 for rimless cases, 1.1 to 1.25 for rimmed ones.
+    let rim: Double
+    /// Width at the other end (median of the first three slices) relative to the body. For an empty
+    /// case it is the neck: below about 0.9 the case has a bottleneck.
+    let mouth: Double
+    /// The end is cut square (first slice about as wide as the next two), like a case mouth;
+    /// a bullet tip narrows instead.
+    let isFlatEnd: Bool
+
+    static let rimmedFrom = 1.08
+    static let neckBelow = 0.9
+    static let flatFrom = 0.85
+
+    init(widths w: [Double]) {
+        rim = max(w[w.count - 1], w[w.count - 2])
+        mouth = Array(w.prefix(3)).sorted()[1]
+        isFlatEnd = w[0] / max(w[1], w[2], 1e-9) >= Self.flatFrom
+    }
+
+    var isRimmed: Bool { rim >= Self.rimmedFrom }
+    var hasNeck: Bool { mouth < Self.neckBelow }
+}
+
+/// What the photo shows: a loaded cartridge or an empty case. Only the case can be compared
+/// with a case, since the bullet makes up a large part of a cartridge's length.
+enum ShapePart: Equatable {
+    case cartridge
+    case emptyCase
 }
 
 enum ShapeMatcher {
@@ -60,20 +114,25 @@ enum ShapeMatcher {
         return (shape, length + pixelSize)
     }
 
-    /// The shape a catalogue cartridge would have, measured the same way as a photo.
-    static func expected(for cartridge: Cartridge) -> ShapeMeasurement? {
-        let g = OutlineGeometry(cartridge.outline)
+    /// The shape a catalogue cartridge would have, measured the same way as a photo: the whole
+    /// cartridge, or only its empty case (nil for balls, Minié bullets and pellets).
+    static func expected(for cartridge: Cartridge, part: ShapePart = .cartridge) -> ShapeMeasurement? {
+        let caseOnly = part == .emptyCase
+        guard !caseOnly || cartridge.hasCase else { return nil }
+        let g = OutlineGeometry(cartridge.outline, includeBullet: !caseOnly)
         let h = cartridge.outline.height
+        let top = caseOnly ? h - cartridge.dimensions.caseLength : 0
+        let length = h - top
         // Explicit types and steps: Xcode 26 can't type-check this as one expression in time.
         let widths: [Double] = (0..<bins).map { (i: Int) -> Double in
             var widest = 0.0
             for t in 0...4 {
-                let position: Double = (Double(i) + Double(t) / 4) / Double(bins) * h
+                let position: Double = top + (Double(i) + Double(t) / 4) / Double(bins) * length
                 widest = max(widest, g.width(at: position))
             }
             return widest
         }
-        return signature(widths: widths, length: h, tipFirst: true)
+        return signature(widths: widths, length: length, tipFirst: true)
     }
 
     /// Turns slice widths into a measurement. The body width is the width most of the
@@ -86,8 +145,13 @@ enum ShapeMatcher {
         var w = widths
         let k = max(1, bins * 15 / 100)
         if !tipFirst && w.prefix(k).reduce(0, +) > w.suffix(k).reduce(0, +) { w.reverse() }
-        let profile = fractions.map { f in min(maxRelativeWidth, w[min(bins - 1, Int(f * Double(bins)))] / body) }
-        return ShapeMeasurement(aspect: length / body, profile: profile)
+        return measurement(aspect: length / body, relativeWidths: w.map { min(maxRelativeWidth, $0 / body) })
+    }
+
+    /// A measurement from slice widths that are already relative to the body.
+    static func measurement(aspect: Double, relativeWidths w: [Double]) -> ShapeMeasurement {
+        let profile = fractions.map { f in w[min(bins - 1, Int(f * Double(bins)))] }
+        return ShapeMeasurement(aspect: aspect, profile: profile, widths: w)
     }
 
     /// How different two shapes are: 0 is identical. Length/width ratio counts most.
@@ -98,10 +162,41 @@ enum ShapeMatcher {
         return 3 * aspect + 2 * profile
     }
 
+    /// How far the rim (relative to the body) may differ: rimmed and rimless cases differ by 0.1 to 0.25.
+    static let rimTolerance = 0.1
+    /// How far an empty case's neck (relative to the body) may differ.
+    static let neckTolerance = 0.15
+
+    /// Whether the photo's rim, and for an empty case its neck, can belong to the expected shape.
+    /// Shapes without slice widths (built by hand) always fit.
+    static func featuresFit(_ photo: ShapeMeasurement, _ expected: ShapeMeasurement, part: ShapePart) -> Bool {
+        guard let a = photo.features, let b = expected.features else { return true }
+        if abs(a.rim - b.rim) > rimTolerance { return false }
+        if part == .emptyCase, abs(a.mouth - b.mouth) > neckTolerance { return false }
+        return true
+    }
+
+    /// Distance to an expected shape, nil when rim or neck rule the calibre out. An empty case
+    /// is tried both ways round.
+    static func distance(_ photo: ShapeMeasurement, to expected: ShapeMeasurement, part: ShapePart) -> Double? {
+        let candidates = part == .emptyCase ? [photo, photo.reversed()] : [photo]
+        return candidates
+            .filter { featuresFit($0, expected, part: part) }
+            .map { distance($0, expected) }
+            .min()
+    }
+
     /// Expected shapes of all catalogue cartridges, computed once.
     static let catalogue: [String: ShapeMeasurement] = {
         var result: [String: ShapeMeasurement] = [:]
         for c in CartridgeCatalog.all { result[c.id] = expected(for: c) }
+        return result
+    }()
+
+    /// Expected shapes of the empty cases (calibres that have a case), computed once.
+    static let caseCatalogue: [String: ShapeMeasurement] = {
+        var result: [String: ShapeMeasurement] = [:]
+        for c in CartridgeCatalog.all { result[c.id] = expected(for: c, part: .emptyCase) }
         return result
     }()
 }
