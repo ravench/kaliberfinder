@@ -26,9 +26,9 @@ To agree, tick the CLA checkbox in the pull request description.
 
 - Write UI text in German and add English, French and Italian to
   `tools/translations.py`, then run `python3 tools/localize.py`.
-- Cartridge data comes from [Schiesstagebuch](https://github.com/ravench/schiesstagebuch):
-  `tools/cartridges.py` is a copy of its catalogue. Fix dimensions there and copy the
-  file over; headstamp spellings go into `tools/headstamps.py`. Then run
-  `python3 tools/generate_data.py` and commit the generated JSON.
+- Cartridge data comes from the shared [calibre-data](https://github.com/ravench/calibre-data)
+  repository, a git submodule at `calibre-data/` (run `git submodule update --init` after
+  cloning). Fix dimensions there, then bump the submodule here; headstamp spellings go into
+  `tools/headstamps.py`. Then run `python3 tools/generate_data.py` and commit the generated JSON.
 - Every change comes with unit tests; CI runs them and SwiftLint on every push.
 - Keep pull requests small and focused, and describe what you changed and how you tested it.
