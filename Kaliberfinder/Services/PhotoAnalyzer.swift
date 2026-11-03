@@ -72,15 +72,44 @@ enum PhotoAnalyzer {
             if measured != nil { objectCount = max(1, ColorSegmenter.objectCount(rgb)) }
         }
         var texts: [String] = []
-        if kind.readsText(shape: measured?.shape) {
-            let textRequest = VNRecognizeTextRequest()
-            textRequest.recognitionLevel = .accurate
-            textRequest.usesLanguageCorrection = false
-            try? handler.perform([textRequest])
-            texts = (textRequest.results ?? []).flatMap { $0.topCandidates(3).map(\.string) }
-        }
+        if kind.readsText(shape: measured?.shape) { texts = readHeadstamp(cgImage) }
         return PhotoAnalysis(shape: measured?.shape, texts: texts, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)), objectCount: objectCount)
+    }
+
+    /// Text on a case head: read from the photo as it is, and from the ring of letters unrolled
+    /// into a strip, both ways up (see `HeadstampImage`).
+    static func readHeadstamp(_ cgImage: CGImage) -> [String] {
+        var texts = recognizeText(cgImage)
+        if let rgb = rgbImage(cgImage), let disc = HeadstampImage.locate(rgb) {
+            let strip = HeadstampImage.unwrap(rgb, disc: disc)
+            for image in [strip, strip.rotatedHalfTurn()] {
+                if let stripImage = grayCGImage(image) { texts += recognizeText(stripImage) }
+            }
+        }
+        return texts
+    }
+
+    /// Text Vision reads, up to three guesses per line, plus all first guesses joined into one line,
+    /// so words recognised separately (".45" and "AUTO") can still form a calibre name.
+    static func recognizeText(_ cgImage: CGImage) -> [String] {
+        let request = VNRecognizeTextRequest()
+        request.recognitionLevel = .accurate
+        request.usesLanguageCorrection = false
+        try? VNImageRequestHandler(cgImage: cgImage, options: [:]).perform([request])
+        let observations = request.results ?? []
+        let guesses = observations.flatMap { $0.topCandidates(3).map(\.string) }
+        let firsts = observations.compactMap { $0.topCandidates(1).first?.string }
+        return firsts.count > 1 ? guesses + [firsts.joined(separator: " ")] : guesses
+    }
+
+    /// A gray image as a CGImage, for Vision.
+    static func grayCGImage(_ image: GrayImage) -> CGImage? {
+        guard let provider = CGDataProvider(data: Data(image.pixels) as CFData) else { return nil }
+        return CGImage(width: image.width, height: image.height, bitsPerComponent: 8, bitsPerPixel: 8,
+                       bytesPerRow: image.width, space: CGColorSpaceCreateDeviceGray(),
+                       bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue),
+                       provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
     }
 
     /// The image scaled down and with its orientation applied, so pixels are upright.
