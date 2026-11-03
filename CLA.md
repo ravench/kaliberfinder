@@ -7,22 +7,22 @@ translations, icons or other material ("Contribution").
 
 1. **Copyright stays with you.** You keep the copyright in your Contribution.
 
-2. **License to the Owner.** You grant the Owner a perpetual, worldwide,
-   non-exclusive, royalty-free, irrevocable license to use, reproduce, modify,
+2. **Licence to the Owner.** You grant the Owner a perpetual, worldwide,
+   non-exclusive, royalty-free, irrevocable licence to use, reproduce, modify,
    prepare derivative works of, publicly display, publish, sublicense and
    distribute your Contribution and derivative works of it, **for any purpose,
    including commercial purposes** (for example selling the app in the App Store),
-   and under any license terms the Owner chooses.
+   and under any licence terms the Owner chooses.
 
 3. **Patents.** You grant the Owner and recipients of the software a perpetual,
-   worldwide, non-exclusive, royalty-free, irrevocable patent license for any
+   worldwide, non-exclusive, royalty-free, irrevocable patent licence for any
    patent claims you can license that your Contribution, alone or combined with
    the project, would infringe.
 
 4. **Your right to contribute.** You confirm that the Contribution is your own
    original work, or that you have the right to submit it under this agreement,
    and that your employer (if any) has agreed or has no rights in it. Material
-   from third parties must be clearly marked with its source and license.
+   from third parties must be clearly marked with its source and licence.
 
 5. **No warranty.** You provide your Contribution "as is", without warranties
    of any kind. You are not expected to provide support.
