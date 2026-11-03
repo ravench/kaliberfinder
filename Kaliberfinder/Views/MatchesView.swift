@@ -48,16 +48,9 @@ struct MatchesView: View {
                     }
                 } else {
                     Section {
-                        NavigationLink {
-                            TrueScaleView(cartridges: matches.prefix(3).map(\.cartridge))
-                        } label: {
-                            Label("Die besten drei 1:1 vergleichen", systemImage: "ruler")
-                        }
-                    }
-                    Section {
                         ForEach(matches) { m in
                             NavigationLink { TrueScaleView(cartridges: [m.cartridge]) } label: {
-                                CartridgeRow(cartridge: m.cartridge, detail: Self.reason(for: m))
+                                CartridgeRow(cartridge: m.cartridge, detail: Self.reason(for: m), highlighted: m.fitsWell)
                             }
                         }
                     } header: {
@@ -66,6 +59,17 @@ struct MatchesView: View {
                         Text("Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.")
                     }
                 }
+            }
+        }
+        .safeAreaInset(edge: .bottom) {
+            // A prominent button pinned to the bottom, like on the measure screen, so it is not missed.
+            if analysis != nil, !matches.isEmpty {
+                NavigationLink { TrueScaleView(cartridges: Self.toCompare(matches)) } label: {
+                    Label(Self.compareTitle(matches), systemImage: Self.compareSymbol)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                .padding()
             }
         }
         .navigationTitle("Treffer")
@@ -154,6 +158,19 @@ struct MatchesView: View {
         let lines = texts.map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty && seen.insert($0).inserted }
         guard !lines.isEmpty else { return "Keine Aufschrift erkannt.".loc }
         return String(format: "Aufschrift erkannt: «%@»".loc, lines.prefix(3).joined(separator: " / "))
+    }
+
+    /// Symbol of the 1:1 compare buttons: two items side by side.
+    static let compareSymbol = "square.and.line.vertical.and.square"
+
+    /// Every listed calibre goes to the 1:1 screen, in rank order; it scrolls sideways.
+    static func toCompare(_ matches: [Match]) -> [Cartridge] {
+        matches.map(\.cartridge)
+    }
+
+    /// E.g. "Alle passenden 1:1 vergleichen (5)".
+    static func compareTitle(_ matches: [Match]) -> String {
+        String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, matches.count)
     }
 
     /// Why a calibre is listed, e.g. "Aufschrift «308 WIN» · Form passt gut".
