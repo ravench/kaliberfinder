@@ -99,10 +99,12 @@ T = {
         "Several cartridges found in the photo.",
         "Plusieurs cartouches détectées sur la photo.",
         "Più cartucce trovate nella foto."),
-    "Bitte nur eine Patrone pro Foto: die anderen beiseitelegen und neu fotografieren.": (
-        "Please show only one cartridge per photo: put the others aside and take a new photo.",
-        "Une seule cartouche par photo, s'il vous plaît : mettez les autres de côté et reprenez la photo.",
-        "Una sola cartuccia per foto, per favore: metti da parte le altre e scatta una nuova foto."),
+    "Tippe auf die Patrone, die bestimmt werden soll.": (
+        "Tap the cartridge you want to identify.",
+        "Touchez la cartouche à identifier.",
+        "Tocca la cartuccia da identificare."),
+    "Andere Patrone wählen": ("Choose another cartridge", "Choisir une autre cartouche", "Scegli un'altra cartuccia"),
+    "Patrone %lld": ("Cartridge %lld", "Cartouche %lld", "Cartuccia %lld"),
     "Keine Patrone im Bild erkannt.": ("No cartridge found in the photo.", "Aucune cartouche détectée sur la photo.", "Nessuna cartuccia trovata nella foto."),
     "Keine passenden Kaliber gefunden.": ("No matching calibres found.", "Aucun calibre correspondant trouvé.", "Nessun calibro corrispondente trovato."),
     "Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.": (
