@@ -95,6 +95,9 @@ CATALOGUE = [
         c("7 mm Remington Magnum", BELTED, 13.5, 13.0, 12.4, 8.0, 63.5, 54.0, 82.6, 7.2, SPITZER, ["7mmremmag", "7rm"]),
         c("7 mm PRC", RIMLESS, 13.4, 13.4, 13.0, 8.0, 63.5, 54.0, 90.3, 7.2, SPITZER, ["7prc"]),
         c("7.5x55 mm Swiss (GP 11)", RIMLESS, 12.6, 12.6, 11.6, 8.5, 55.6, 45.0, 77.5, 7.77, SPITZER, ["gp11", "gp 11", "7.5x55", "7.5", "7.5mm", "7.5swiss", "k31"]),
+        # GP 1890 (GP 90/03 from 1903): the original Schmidt-Rubin round of the K89/K96, paper-patched
+        # lead round nose, shorter case than GP 11. Not to be confused with the 5.6 mm GP 90 of the Stgw 90.
+        c("7.5x53.5 mm Swiss (GP 1890)", RIMLESS, 12.5, 12.4, 11.5, 8.6, 53.5, 42.5, 77.0, 7.8, ROUND, ["gp1890", "gp 1890", "gp1890/03", "gp90/03", "7.5x53.5", "7.5x53", "schmidt-rubin"]),
         c("7.5x54 mm French", RIMLESS, 12.25, 12.25, 11.2, 8.6, 54.0, 44.0, 76.0, 7.8, SPITZER, ["7.5x54"]),
         c("7.62x39 mm", RIMLESS, 11.35, 11.35, 10.07, 8.6, 38.7, 30.5, 56.0, 7.9, SPITZER, ["7.62x39", "762x39"]),
         c(".300 AAC Blackout", RIMLESS, 9.6, 9.6, 9.1, 8.4, 34.7, 31.0, 57.0, 7.8, SPITZER, ["300blk", "300blackout", "300aac"]),
@@ -164,6 +167,7 @@ DISPLAY_ALIASES = {
     ".30-06 Springfield": ["7.62x63 mm"],
     ".300 AAC Blackout": [".300 BLK", "7.62x35 mm"],
     "7.5x55 mm Swiss (GP 11)": ["GP 11", "7.5 mm Swiss"],
+    "7.5x53.5 mm Swiss (GP 1890)": ["GP 1890", "GP 90/03"],
     "8x57 mm IS": ["8 mm Mauser"],
     ".50 BMG": ["12,7x99 mm NATO"],
 }
@@ -197,6 +201,7 @@ PRIMERS = {
     "6.5 PRC": LARGE_RIFLE, ".260 Remington": LARGE_RIFLE, ".270 Winchester": LARGE_RIFLE,
     "7 mm-08 Remington": LARGE_RIFLE, "7x57 mm Mauser": LARGE_RIFLE, "7x64 mm": LARGE_RIFLE,
     "7 mm Remington Magnum": LARGE_RIFLE, "7 mm PRC": LARGE_RIFLE, "7.5x55 mm Swiss (GP 11)": LARGE_RIFLE,
+    "7.5x53.5 mm Swiss (GP 1890)": LARGE_RIFLE,
     "7.5x54 mm French": LARGE_RIFLE, "7.62x39 mm": SMALL_RIFLE, ".300 AAC Blackout": SMALL_RIFLE,
     "7.62x51 mm NATO": LARGE_RIFLE, ".308 Winchester": LARGE_RIFLE, ".30-06 Springfield": LARGE_RIFLE,
     ".30-30 Winchester": LARGE_RIFLE, ".300 Winchester Magnum": LARGE_RIFLE, ".300 PRC": LARGE_RIFLE,
