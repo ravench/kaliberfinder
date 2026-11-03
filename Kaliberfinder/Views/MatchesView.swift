@@ -67,9 +67,11 @@ struct MatchesView: View {
                     }
                 } else {
                     Section {
-                        ForEach(matches) { m in
-                            NavigationLink { TrueScaleView(cartridges: [m.cartridge]) } label: {
-                                CartridgeRow(cartridge: m.cartridge, detail: Self.reason(for: m), highlighted: m.fitsWell)
+                        // Calibres that look exactly the same from the side share one row.
+                        ForEach(Matcher.grouped(matches)) { g in
+                            NavigationLink { TrueScaleView(cartridges: [g.lead.cartridge]) } label: {
+                                CartridgeRow(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead),
+                                             highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
                             }
                         }
                     } header: {
@@ -200,14 +202,15 @@ struct MatchesView: View {
         return String(format: "Aufschrift erkannt: «%@»".loc, lines.prefix(3).joined(separator: " / "))
     }
 
-    /// Every listed calibre goes to the 1:1 screen, in rank order; it scrolls sideways.
+    /// Every listed row goes to the 1:1 screen, in rank order; it scrolls sideways. Calibres that
+    /// look exactly the same from the side are shown once.
     static func toCompare(_ matches: [Match]) -> [Cartridge] {
-        matches.map(\.cartridge)
+        Matcher.grouped(matches).map(\.lead.cartridge)
     }
 
-    /// E.g. "Alle passenden 1:1 vergleichen (5)".
+    /// E.g. "Alle passenden 1:1 vergleichen (5)", counting identical-looking calibres once.
     static func compareTitle(_ matches: [Match]) -> String {
-        String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, matches.count)
+        String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, toCompare(matches).count)
     }
 
     /// Why a calibre is listed, e.g. "Aufschrift «308 WIN» · Form passt gut".
