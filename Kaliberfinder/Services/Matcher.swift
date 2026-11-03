@@ -61,7 +61,7 @@ enum ScanMode: String, CaseIterable, Identifiable {
 
 /// Combines the photo's shape and the text found in it into a ranked list of calibres.
 enum Matcher {
-    /// Shapes further off than this are not listed (SCAN-04), unless the text names the calibre.
+    /// Side views further off than this are not listed (SCAN-04), unless the text names the calibre.
     static let maxShapeDistance = 0.35
     /// …nor those clearly worse than the best match.
     static let maxBehindBest = 0.25
@@ -90,8 +90,10 @@ enum Matcher {
             // The size only says something about cartridges compared from the side.
             var sizeDeviation: Double?
             if distance != nil, shape?.isEndView == false, let size { sizeDeviation = deviation(of: c, from: size, part: part) }
+            // A round silhouette says little about the calibre, so only side views are cut off.
+            let sideView = shape?.isEndView == false
             if hit == nil {
-                guard let distance, distance <= maxShapeDistance else { continue }
+                guard let distance, !sideView || distance <= maxShapeDistance else { continue }
                 if let sizeDeviation, sizeDeviation > maxSizeDeviation { continue }
             }
             var score = distance.map { exp(-3 * $0) } ?? 0
@@ -105,8 +107,10 @@ enum Matcher {
             matches.append(Match(cartridge: c, score: score, headstamp: hit, shapeDistance: distance,
                                  sizeDeviation: sizeDeviation, part: part))
         }
-        let best = matches.filter { $0.headstamp == nil }.compactMap(\.shapeDistance).min() ?? 0
-        matches.removeAll { $0.headstamp == nil && ($0.shapeDistance ?? 0) > best + maxBehindBest }
+        if shape?.isEndView == false {
+            let best = matches.filter { $0.headstamp == nil }.compactMap(\.shapeDistance).min() ?? 0
+            matches.removeAll { $0.headstamp == nil && ($0.shapeDistance ?? 0) > best + maxBehindBest }
+        }
         return Array(matches.sorted { $0.score > $1.score }.prefix(limit))
     }
 
