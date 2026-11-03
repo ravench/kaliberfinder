@@ -354,6 +354,32 @@ final class ColorSegmenterTests: XCTestCase {
         }
     }
 
+    func testASingleCartridgeIsOutlinedToo() async throws {
+        let analysis = await PhotoAnalyzer.analyze(try realPhoto("photo-9x19-wood"))
+        XCTAssertFalse(analysis.hasSeveralObjects)
+        let subject = try XCTUnwrap(analysis.subject)
+        XCTAssertTrue(CGRect(x: 0, y: 0, width: 1, height: 1).contains(subject), "\(subject)")
+        // A cartridge, not the board: a small part of the photo.
+        XCTAssertLessThan(subject.width * subject.height, 0.2, "\(subject)")
+        XCTAssertGreaterThan(subject.width * subject.height, 0.001, "\(subject)")
+        let outlines = MatchesView.outlines(for: analysis, chosen: nil)
+        XCTAssertEqual(outlines.frames, [subject])
+        XCTAssertEqual(outlines.selected, 0)
+    }
+
+    func testOutlinesForSeveralOrNoCartridges() {
+        XCTAssertTrue(MatchesView.outlines(for: nil, chosen: nil).frames.isEmpty)
+        // Nothing measured: no frame, even with a stray box.
+        let nothing = PhotoAnalysis(shape: nil, texts: [], subject: CGRect(x: 0.4, y: 0.4, width: 0.1, height: 0.1))
+        XCTAssertTrue(MatchesView.outlines(for: nothing, chosen: nil).frames.isEmpty)
+        // Several: all of them while picking, then the picked one highlighted.
+        let boxes = [CGRect(x: 0.1, y: 0.1, width: 0.2, height: 0.1), CGRect(x: 0.6, y: 0.6, width: 0.2, height: 0.1)]
+        let several = PhotoAnalysis(shape: nil, texts: [], candidates: boxes, subject: boxes[0])
+        XCTAssertEqual(MatchesView.outlines(for: several, chosen: nil).frames, boxes)
+        XCTAssertNil(MatchesView.outlines(for: several, chosen: nil).selected)
+        XCTAssertEqual(MatchesView.outlines(for: several, chosen: 1).selected, 1)
+    }
+
     func testFocusRegionAddsAMarginInsideThePhoto() {
         let region = PhotoAnalyzer.focusRegion(CGRect(x: 0.4, y: 0.4, width: 0.2, height: 0.1))
         XCTAssertEqual(region.minX, 0.3, accuracy: 1e-9)

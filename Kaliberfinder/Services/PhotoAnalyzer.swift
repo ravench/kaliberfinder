@@ -14,6 +14,8 @@ struct PhotoAnalysis {
     /// Where the cartridges that compete for the measurement are, as fractions of the upright
     /// photo (0…1), the one measured first; empty when there is at most one.
     var candidates: [CGRect] = []
+    /// Where the measured cartridge is, as fractions of the upright photo; nil if none was found.
+    var subject: CGRect?
 
     /// How many cartridges compete for the measurement.
     var objectCount: Int { max(1, candidates.count) }
@@ -80,6 +82,7 @@ enum PhotoAnalyzer {
         let scale = min(1, maxDimension / max(crop.width, crop.height))
         analysis.imageLongSide = Double(max(size.width, size.height) * scale)
         analysis.candidates = []
+        analysis.subject = nil
         return analysis
     }
 
@@ -97,6 +100,8 @@ enum PhotoAnalyzer {
         let maskRequest = VNGenerateForegroundInstanceMaskRequest()
         var measured: (shape: ShapeMeasurement, length: Double)?
         var candidates: [CGRect] = []
+    /// Where the measured cartridge is, as fractions of the upright photo; nil if none was found.
+    var subject: CGRect?
         if kind == .side, (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
             let (points, step, boxes) = silhouette(of: observation, handler: handler)
             measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
@@ -114,7 +119,7 @@ enum PhotoAnalyzer {
         if kind.readsText(shape: measured?.shape) { texts = readHeadstamp(cgImage) }
         return PhotoAnalysis(shape: measured?.shape, texts: texts, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)),
-                             candidates: candidates.count > 1 ? candidates : [])
+                             candidates: candidates.count > 1 ? candidates : [], subject: candidates.first)
     }
 
     /// Text on a case head: read from the photo as it is, and from the ring of letters unrolled
