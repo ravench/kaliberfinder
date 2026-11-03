@@ -1,3 +1,4 @@
+import PhotosUI
 import SwiftUI
 
 /// Analyses a photo and lists the calibres it may show; each opens at real size for comparison.
@@ -7,6 +8,11 @@ struct MatchesView: View {
     var depth: DepthScale?
     @State private var analysis: PhotoAnalysis?
     @State private var matches: [Match] = []
+    /// The optional second photo of the case head; only its text is read.
+    @State private var basePhoto: UIImage?
+    @State private var baseTexts: [String]?
+    @State private var showBaseCamera = false
+    @State private var baseItem: PhotosPickerItem?
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
 
     var body: some View {
@@ -29,6 +35,7 @@ struct MatchesView: View {
                 }
             }
             if analysis != nil {
+                baseSection
                 if matches.isEmpty {
                     Section {
                         Text("Keine passenden Kaliber gefunden.")
@@ -59,11 +66,88 @@ struct MatchesView: View {
         .navigationTitle("Treffer")
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            let result = await PhotoAnalyzer.analyze(photo)
-            let size = try? result.size(depth: depth).get()
-            matches = Matcher.rank(shape: result.shape, hits: HeadstampReader.hits(in: result.texts), size: size)
+            let result = await PhotoAnalyzer.analyze(photo, kind: .side)
             analysis = result
+            rank()
         }
+        .fullScreenCover(isPresented: $showBaseCamera) {
+            CameraPicker { setBasePhoto($0) }
+                .ignoresSafeArea()
+        }
+        .onChange(of: baseItem) { _, item in
+            guard let item else { return }
+            Task {
+                if let data = try? await item.loadTransferable(type: Data.self), let image = UIImage(data: data) {
+                    setBasePhoto(image)
+                }
+                baseItem = nil
+            }
+        }
+    }
+
+    /// Second photo of the case head, read for the headstamp.
+    private var baseSection: some View {
+        Section {
+            if let basePhoto {
+                HStack(spacing: 12) {
+                    Image(uiImage: basePhoto)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 56, height: 56)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                    if let baseTexts {
+                        Text(Self.baseNote(baseTexts)).font(.footnote).foregroundStyle(.secondary)
+                    } else {
+                        ProgressView()
+                        Text("Aufschrift wird gelesen …").foregroundStyle(.secondary)
+                    }
+                }
+            }
+            if CameraPicker.isAvailable {
+                Button { showBaseCamera = true } label: {
+                    if basePhoto == nil {
+                        Label("Boden fotografieren", systemImage: "camera.metering.center.weighted")
+                    } else {
+                        Label("Boden neu fotografieren", systemImage: "camera.metering.center.weighted")
+                    }
+                }
+            }
+            PhotosPicker(selection: $baseItem, matching: .images) {
+                Label("Bodenfoto auswählen", systemImage: "photo")
+            }
+        } header: {
+            Text("Aufschrift")
+        } footer: {
+            Text("Die Aufschrift wird nur auf dem Bodenfoto gelesen. Boden formatfüllend, scharf und von vorne fotografieren.")
+        }
+    }
+
+    private func setBasePhoto(_ image: UIImage) {
+        basePhoto = image
+        baseTexts = nil
+        Task {
+            baseTexts = await PhotoAnalyzer.analyze(image, kind: .base).texts
+            rank()
+        }
+    }
+
+    private func rank() {
+        guard let analysis else { return }
+        let size = try? analysis.size(depth: depth).get()
+        matches = Matcher.rank(shape: analysis.shape, hits: Self.hits(side: analysis, baseTexts: baseTexts), size: size)
+    }
+
+    /// Headstamp hits from the base photo, plus the first photo's text when that one showed a base anyway.
+    static func hits(side: PhotoAnalysis, baseTexts: [String]?) -> [HeadstampReader.Hit] {
+        HeadstampReader.hits(in: side.texts + (baseTexts ?? []))
+    }
+
+    /// "Aufschrift erkannt: «WIN 308»" or a hint that nothing was legible.
+    static func baseNote(_ texts: [String]) -> String {
+        var seen = Set<String>()
+        let lines = texts.map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty && seen.insert($0).inserted }
+        guard !lines.isEmpty else { return "Keine Aufschrift erkannt.".loc }
+        return String(format: "Aufschrift erkannt: «%@»".loc, lines.prefix(3).joined(separator: " / "))
     }
 
     /// Why a calibre is listed, e.g. "Aufschrift «308 WIN» · Form passt gut".

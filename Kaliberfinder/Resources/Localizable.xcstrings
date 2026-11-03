@@ -254,6 +254,75 @@
         }
       }
     },
+    "Aufschrift": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Headstamp"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inscription"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scritta"
+          }
+        }
+      }
+    },
+    "Aufschrift erkannt: «%@»": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Headstamp read: “%@”"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inscription lue : « %@ »"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scritta letta: «%@»"
+          }
+        }
+      }
+    },
+    "Aufschrift wird gelesen …": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading headstamp …"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lecture de l'inscription …"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lettura della scritta …"
+          }
+        }
+      }
+    },
     "Aufschrift «%@»": {
       "extractionState": "manual",
       "localizations": {
@@ -438,6 +507,29 @@
         }
       }
     },
+    "Boden fotografieren": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photograph base"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photographier le culot"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografa il fondello"
+          }
+        }
+      }
+    },
     "Boden mit Zündhütchen %@": {
       "extractionState": "manual",
       "localizations": {
@@ -461,6 +553,29 @@
         }
       }
     },
+    "Boden neu fotografieren": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retake base photo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rephotographier le culot"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rifotografa il fondello"
+          }
+        }
+      }
+    },
     "Bodendurchmesser": {
       "extractionState": "manual",
       "localizations": {
@@ -480,6 +595,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diametro alla base"
+          }
+        }
+      }
+    },
+    "Bodenfoto auswählen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose base photo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisir une photo du culot"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli foto del fondello"
           }
         }
       }
@@ -549,6 +687,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Piombino diabolo"
+          }
+        }
+      }
+    },
+    "Die Aufschrift wird nur auf dem Bodenfoto gelesen. Boden formatfüllend, scharf und von vorne fotografieren.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The headstamp is only read from the base photo. Fill the frame with the base, in focus and head-on."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'inscription n'est lue que sur la photo du culot. Cadrez le culot en plein format, net et de face."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La scritta viene letta solo dalla foto del fondello. Inquadra il fondello a tutto schermo, a fuoco e di fronte."
           }
         }
       }
@@ -1358,6 +1519,29 @@
         }
       }
     },
+    "Keine Aufschrift erkannt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No headstamp read."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune inscription lue."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna scritta letta."
+          }
+        }
+      }
+    },
     "Keine Patrone im Bild erkannt.": {
       "extractionState": "manual",
       "localizations": {
@@ -1956,25 +2140,25 @@
         }
       }
     },
-    "Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Eine Aufschrift auf dem Boden oder der Schachtel hilft zusätzlich.": {
+    "Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Für die Aufschrift danach den Boden fotografieren.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lay the cartridge on its side on a light background and photograph it from above. A marking on the base or the box helps too."
+            "value": "Lay the cartridge on its side on a light background and photograph it from above. Then photograph the base for the headstamp."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut. Une inscription sur le culot ou la boîte aide aussi."
+            "value": "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut. Photographiez ensuite le culot pour l'inscription."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto. Anche una scritta sul fondello o sulla scatola aiuta."
+            "value": "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto. Poi fotografa il fondello per la scritta."
           }
         }
       }
