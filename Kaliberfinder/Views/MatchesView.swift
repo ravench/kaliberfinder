@@ -26,7 +26,8 @@ struct MatchesView: View {
     var body: some View {
         List {
             Section {
-                CandidatePhotoView(photo: photo, candidates: overview?.candidates ?? [], selected: chosen,
+                let outlines = Self.outlines(for: overview, chosen: chosen)
+                CandidatePhotoView(photo: photo, candidates: outlines.frames, selected: outlines.selected,
                                    maxHeight: needsPick ? 420 : 220) { choose($0) }
                 if needsPick {
                     Label(Self.severalObjectsText, systemImage: "hand.tap")
@@ -162,6 +163,15 @@ struct MatchesView: View {
     }
 
     /// Several cartridges compete and the user hasn't picked one yet.
+    /// Outlines on the photo: every competing cartridge while the user picks (then the picked one),
+    /// or the one measured cartridge when there is only one.
+    static func outlines(for overview: PhotoAnalysis?, chosen: Int?) -> (frames: [CGRect], selected: Int?) {
+        guard let overview else { return ([], nil) }
+        if overview.hasSeveralObjects { return (overview.candidates, chosen) }
+        guard let subject = overview.subject, overview.shape != nil else { return ([], nil) }
+        return ([subject], 0)
+    }
+
     private var needsPick: Bool { overview?.hasSeveralObjects == true && chosen == nil }
 
     /// Measures only the picked cartridge.
