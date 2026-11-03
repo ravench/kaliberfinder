@@ -22,7 +22,8 @@ parentheses.
   cartridge on its side on a light, plain background, photographed from above. When
   several cartridges compete in the photo, the app outlines them and you tap the one to
   identify; a cartridge off in a corner is simply ignored. A single cartridge gets a
-  green frame, so you can see what was measured. Empty cases work too: the app
+  green frame, so you can see what was measured, and the preview is cropped to the
+  detected cartridges. Empty cases work too: the app
   tells a case mouth from a bullet tip by itself (or you pick «Cartridge» / «Empty case»),
   compares cases with case outlines, and uses the rim (rimmed or rimless) and the neck
   (bottleneck or straight) to rule out calibres. Matches that are far off are not listed.
