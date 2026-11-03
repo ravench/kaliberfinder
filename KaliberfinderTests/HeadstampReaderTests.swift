@@ -53,4 +53,20 @@ final class HeadstampReaderTests: XCTestCase {
             XCTAssertEqual(Set(ids).count, ids.count, key)
         }
     }
+
+    /// Raven's .45 ACP base photo: Vision read "5 AUTO" and "AUT", missing the stylised 4.
+    func testPartlyReadHeadstampsAreWeakHits() {
+        let partial = HeadstampReader.hits(in: ["5 AUTO"])
+        XCTAssertTrue(partial.contains { $0.cartridgeID == ".45 ACP" })
+        XCTAssertTrue(partial.allSatisfy { $0.strength == .weak })
+        XCTAssertTrue(HeadstampReader.hits(in: ["45 AUT"]).contains { $0.cartridgeID == ".45 ACP" })
+        XCTAssertEqual(HeadstampReader.numberAndWord("45auto")?.number, "45")
+        XCTAssertNil(HeadstampReader.numberAndWord("auto"))
+        // Both parts incomplete, or a word alone, is too little.
+        XCTAssertTrue(HeadstampReader.hits(in: ["5 AUT"]).isEmpty)
+        XCTAssertTrue(HeadstampReader.hits(in: ["AUTO"]).isEmpty)
+        XCTAssertTrue(HeadstampReader.hits(in: ["TBC"]).isEmpty)
+        // A complete headstamp is still a strong hit.
+        XCTAssertEqual(HeadstampReader.hits(in: ["45 AUTO"]).first?.strength, .strong)
+    }
 }
