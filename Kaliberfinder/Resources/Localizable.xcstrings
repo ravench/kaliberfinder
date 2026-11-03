@@ -576,6 +576,29 @@
         }
       }
     },
+    "Bitte nur eine Patrone pro Foto: die anderen beiseitelegen und neu fotografieren.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please show only one cartridge per photo: put the others aside and take a new photo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une seule cartouche par photo, s'il vous plaît : mettez les autres de côté et reprenez la photo."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una sola cartuccia per foto, per favore: metti da parte le altre e scatta una nuova foto."
+          }
+        }
+      }
+    },
     "Boden fotografieren": {
       "extractionState": "manual",
       "localizations": {
@@ -2090,6 +2113,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Le dimensioni sono valori indicativi arrotondati (CIP/SAAMI), non dati di ricarica. Innesco: misura Boxer dei bossoli commerciali; le munizioni militari possono avere inneschi Berdan di altre misure."
+          }
+        }
+      }
+    },
+    "Mehrere Patronen im Bild erkannt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Several cartridges found in the photo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plusieurs cartouches détectées sur la photo."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Più cartucce trovate nella foto."
           }
         }
       }

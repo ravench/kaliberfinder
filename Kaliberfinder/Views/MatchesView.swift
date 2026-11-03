@@ -24,7 +24,11 @@ struct MatchesView: View {
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: 220)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
-                if let analysis {
+                if let analysis, analysis.hasSeveralObjects {
+                    Label(Self.severalObjectsText, systemImage: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.red)
+                    Text(Self.severalObjectsHint).font(.footnote).foregroundStyle(.secondary)
+                } else if let analysis {
                     Picker("Was liegt im Bild?", selection: $mode) {
                         ForEach(ScanMode.allCases) { Text($0.title.loc).tag($0) }
                     }
@@ -39,7 +43,7 @@ struct MatchesView: View {
                     }
                 }
             }
-            if analysis != nil {
+            if let analysis, !analysis.hasSeveralObjects {
                 baseSection
                 if matches.isEmpty {
                     Section {
@@ -138,9 +142,15 @@ struct MatchesView: View {
     }
 
     private func rank() {
-        guard let analysis else { return }
+        guard let analysis, !analysis.hasSeveralObjects else { matches = []; return }
         let size = try? analysis.size(depth: depth).get()
         matches = Matcher.rank(shape: analysis.shape, hits: Self.hits(side: analysis, baseTexts: baseTexts), size: size, mode: mode)
+    }
+
+    /// Error shown instead of matches when the photo holds more than one cartridge.
+    static var severalObjectsText: String { "Mehrere Patronen im Bild erkannt.".loc }
+    static var severalObjectsHint: String {
+        "Bitte nur eine Patrone pro Foto: die anderen beiseitelegen und neu fotografieren.".loc
     }
 
     /// Headstamp hits from the base photo, plus the first photo's text when that one showed a base anyway.
