@@ -32,4 +32,12 @@ final class LocalizationTests: XCTestCase {
         }
         XCTAssertEqual(en["Gesamtlänge"], "Overall length")
     }
+
+    func testPickAndCompareHasShortTitle() throws {
+        let expected = ["en": "Pick and compare", "fr": "Choisir et comparer", "it": "Scegli e confronta"]
+        for (lang, title) in expected {
+            XCTAssertEqual(try table(lang)["Auswählen und vergleichen"], title, lang)
+            XCTAssertNil(try table(lang)["Kaliber auswählen und vergleichen"], lang)
+        }
+    }
 }
