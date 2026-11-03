@@ -40,7 +40,7 @@ enum HeadstampReader {
 
     /// Calibres whose headstamp of the form number + word ("45 AUTO") may be what was read when a
     /// leading digit or the word's first or last letter was missed, as on a worn or stylised stamp:
-    /// "5 AUTO" or "45 AUT". Ambiguous ("5 AUTO" also fits "25 AUTO"), so only ever a weak hit.
+    /// "5 AUTO", "45 AUT" or "5 AUT". Ambiguous ("5 AUTO" also fits "25 AUTO"), so only ever a weak hit.
     static func partialMatches(_ key: String, index: [String: [String]] = index) -> [String] {
         guard let read = numberAndWord(key) else { return [] }
         var ids: [String] = []
@@ -49,9 +49,7 @@ enum HeadstampReader {
             let number = full.number == read.number || (full.number.hasSuffix(read.number) && read.number.count < full.number.count)
             let word = full.word == read.word
                 || (read.word.count >= 3 && read.word.count == full.word.count - 1 && (full.word.hasPrefix(read.word) || full.word.hasSuffix(read.word)))
-            // At least one part has to be complete.
-            let exact = full.number == read.number || full.word == read.word
-            if number && word && exact { ids += nameIDs }
+            if number && word { ids += nameIDs }
         }
         return Array(Set(ids)).sorted()
     }

@@ -62,8 +62,11 @@ final class HeadstampReaderTests: XCTestCase {
         XCTAssertTrue(HeadstampReader.hits(in: ["45 AUT"]).contains { $0.cartridgeID == ".45 ACP" })
         XCTAssertEqual(HeadstampReader.numberAndWord("45auto")?.number, "45")
         XCTAssertNil(HeadstampReader.numberAndWord("auto"))
-        // Both parts incomplete, or a word alone, is too little.
-        XCTAssertTrue(HeadstampReader.hits(in: ["5 AUT"]).isEmpty)
+        // What CI's text recognition actually read from the photo.
+        XCTAssertTrue(HeadstampReader.hits(in: ["5 AUT"]).contains { $0.cartridgeID == ".45 ACP" })
+        XCTAssertTrue(HeadstampReader.hits(in: ["5 UTO"]).contains { $0.cartridgeID == ".45 ACP" })
+        // Two letters of a word, or a word alone, is too little.
+        XCTAssertTrue(HeadstampReader.hits(in: ["5 AU"]).isEmpty)
         XCTAssertTrue(HeadstampReader.hits(in: ["AUTO"]).isEmpty)
         XCTAssertTrue(HeadstampReader.hits(in: ["TBC"]).isEmpty)
         // A complete headstamp is still a strong hit.
