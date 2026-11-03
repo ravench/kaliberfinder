@@ -85,7 +85,8 @@ enum Matcher {
             // A round silhouette is either a cartridge seen end-on or a round ball: compare
             // round with round and long with long only.
             if let shape, let e = expected(c, part), e.isEndView == shape.isEndView {
-                distance = ShapeMatcher.distance(shape, to: e, part: part)
+                // Rim and neck only mean something for side views of calibres with a case.
+                distance = c.hasCase && !shape.isEndView ? ShapeMatcher.distance(shape, to: e, part: part) : ShapeMatcher.distance(shape, e)
             }
             // The size only says something about cartridges compared from the side.
             var sizeDeviation: Double?
