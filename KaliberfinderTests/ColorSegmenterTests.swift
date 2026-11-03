@@ -9,9 +9,10 @@ final class ColorSegmenterTests: XCTestCase {
     }
 
     /// A synthetic photo: wood-like stripes, a shadow over the lower half, a dark box cut off by the
-    /// top edge, and a brass cartridge with a copper bullet lying at `angle`, `pixelsPerMM` px/mm.
+    /// top edge, and a brass cartridge with a copper bullet lying at `angle`, `pixelsPerMM` px/mm,
+    /// once at each of `centres` (fractions of the width and height).
     private func photo(_ c: Cartridge, angle: Double = 0.3, pixelsPerMM: Double = 6,
-                       width: Int = 600, height: Int = 800) -> RGBImage {
+                       width: Int = 600, height: Int = 800, centres: [(Double, Double)] = [(0.5, 0.5)]) -> RGBImage {
         var p = [Float](repeating: 0, count: width * height * 3)
         var seed: UInt64 = 42
         func noise() -> Float {
@@ -30,18 +31,20 @@ final class ColorSegmenterTests: XCTestCase {
         }
         let g = OutlineGeometry(c.outline)
         let bulletEnd = c.outline.height - c.dimensions.caseLength
-        let cx = Double(width) / 2, cy = Double(height) / 2
         let half = max(c.outline.height, c.outline.width) * pixelsPerMM
-        for y in Int(cy - half)...Int(cy + half) {
-            for x in Int(cx - half)...Int(cx + half) {
-                // Back to cartridge millimetres: rotate by -angle around the centre.
-                let dx = Double(x) - cx, dy = Double(y) - cy
-                let u = (dx * cos(angle) + dy * sin(angle)) / pixelsPerMM + c.outline.width / 2
-                let v = (-dx * sin(angle) + dy * cos(angle)) / pixelsPerMM + c.outline.height / 2
-                guard x >= 0, y >= 0, x < width, y < height, g.contains(Point(x: u, y: v)) else { continue }
-                let rgb: [Float] = v < bulletEnd ? [190, 110, 70] : [200, 160, 60]
-                let light = Float(0.8 + 0.4 * abs(u / c.outline.width - 0.5))
-                for k in 0..<3 { p[(y * width + x) * 3 + k] = min(255, rgb[k] * light) }
+        for (fx, fy) in centres {
+            let cx = Double(width) * fx, cy = Double(height) * fy
+            for y in Int(cy - half)...Int(cy + half) {
+                for x in Int(cx - half)...Int(cx + half) {
+                    // Back to cartridge millimetres: rotate by -angle around the centre.
+                    let dx = Double(x) - cx, dy = Double(y) - cy
+                    let u = (dx * cos(angle) + dy * sin(angle)) / pixelsPerMM + c.outline.width / 2
+                    let v = (-dx * sin(angle) + dy * cos(angle)) / pixelsPerMM + c.outline.height / 2
+                    guard x >= 0, y >= 0, x < width, y < height, g.contains(Point(x: u, y: v)) else { continue }
+                    let rgb: [Float] = v < bulletEnd ? [190, 110, 70] : [200, 160, 60]
+                    let light = Float(0.8 + 0.4 * abs(u / c.outline.width - 0.5))
+                    for k in 0..<3 { p[(y * width + x) * 3 + k] = min(255, rgb[k] * light) }
+                }
             }
         }
         return RGBImage(width: width, height: height, pixels: p)
@@ -150,5 +153,88 @@ final class ColorSegmenterTests: XCTestCase {
         XCTAssertGreaterThan(step, 1)
         XCTAssertLessThanOrEqual(thin.count, PhotoAnalyzer.maxPoints)
         XCTAssertEqual(PhotoAnalyzer.thinned(Array(points.prefix(100))).step, 1)
+    }
+
+    // MARK: - Several cartridges in one photo
+
+    func testOneCartridgeCountsAsOne() throws {
+        let nine = try cartridge("9x19 mm")
+        XCTAssertEqual(ColorSegmenter.objectCount(photo(nine)), 1)
+        let gp11 = try cartridge("7.5x55 mm Swiss (GP 11)")
+        XCTAssertEqual(ColorSegmenter.objectCount(photo(gp11, angle: 1.2, pixelsPerMM: 5)), 1)
+    }
+
+    func testTwoCartridgesAreCounted() throws {
+        let nine = try cartridge("9x19 mm")
+        XCTAssertEqual(ColorSegmenter.objectCount(photo(nine, centres: [(0.3, 0.45), (0.7, 0.6)])), 2)
+        let gp11 = try cartridge("7.5x55 mm Swiss (GP 11)")
+        XCTAssertEqual(ColorSegmenter.objectCount(photo(gp11, angle: 1.2, pixelsPerMM: 5, centres: [(0.5, 0.35), (0.5, 0.65)])), 2)
+    }
+
+    func testPlainImageCountsNothing() {
+        let plain = RGBImage(width: 200, height: 300, pixels: [Float](repeating: 180, count: 200 * 300 * 3))
+        XCTAssertEqual(ColorSegmenter.objectCount(plain), 0)
+    }
+
+    func testRealPhotosShowOneCartridge() throws {
+        for name in ["photo-9x19-wood", "photo-45acp-wood"] {
+            let rgb = try XCTUnwrap(PhotoAnalyzer.rgbImage(XCTUnwrap(realPhoto(name).cgImage)), name)
+            XCTAssertEqual(ColorSegmenter.objectCount(rgb), 1, name)
+        }
+    }
+
+    /// The middle of the photo copied a quarter of the width to the right, next to the original.
+    private func withSecondCopy(_ image: RGBImage) -> RGBImage {
+        var p = image.pixels
+        let w = image.width, h = image.height, shift = w * 28 / 100
+        for y in (h * 3 / 10)..<(h * 7 / 10) {
+            for x in (w * 3 / 10)..<(w * 7 / 10) where x + shift < w {
+                for c in 0..<3 { p[(y * w + x + shift) * 3 + c] = image.pixels[(y * w + x) * 3 + c] }
+            }
+        }
+        return RGBImage(width: w, height: h, pixels: p)
+    }
+
+    func testRealPhotosWithASecondCartridgeShowTwo() throws {
+        for name in ["photo-9x19-wood", "photo-45acp-wood"] {
+            let rgb = try XCTUnwrap(PhotoAnalyzer.rgbImage(XCTUnwrap(realPhoto(name).cgImage)), name)
+            XCTAssertEqual(ColorSegmenter.objectCount(withSecondCopy(rgb)), 2, name)
+        }
+    }
+
+    func testAnalyzerReportsOneCartridgeInARealPhoto() async throws {
+        let analysis = await PhotoAnalyzer.analyze(try realPhoto("photo-9x19-wood"))
+        XCTAssertNotNil(analysis.shape)
+        XCTAssertEqual(analysis.objectCount, 1)
+        XCTAssertFalse(analysis.hasSeveralObjects)
+    }
+
+    func testVisionInstancesCountCartridgesOnly() {
+        let w = 100, h = 100
+        var labels = [Int](repeating: 0, count: w * h)
+        // 1: the board, touching the edges; 2 and 3: two cartridges; 4: a speck of dust.
+        for y in 0..<h { for x in 0..<50 { labels[y * w + x] = 1 } }
+        for y in 20..<26 { for x in 60..<80 { labels[y * w + x] = 2 } }
+        for y in 60..<65 { for x in 62..<80 { labels[y * w + x] = 3 } }
+        labels[90 * w + 90] = 4
+        let instances = SubjectPicker.instances(labels: labels, width: w)
+        XCTAssertEqual(SubjectPicker.objectCount(instances, width: w, height: h), 2)
+        XCTAssertEqual(SubjectPicker.objectCount(instances.filter { $0.label != 3 }, width: w, height: h), 1)
+        XCTAssertEqual(SubjectPicker.objectCount(instances.filter { $0.label == 1 }, width: w, height: h), 0)
+    }
+
+    func testSimilarSizesCount() {
+        XCTAssertEqual(SubjectPicker.similar([]), 0)
+        XCTAssertEqual(SubjectPicker.similar([500]), 1)
+        XCTAssertEqual(SubjectPicker.similar([500, 100, 40]), 1)
+        XCTAssertEqual(SubjectPicker.similar([500, 400, 200]), 3)
+    }
+
+    func testAnalysisWithSeveralObjects() {
+        var analysis = PhotoAnalysis(shape: nil, texts: [])
+        XCTAssertFalse(analysis.hasSeveralObjects)
+        analysis.objectCount = 2
+        XCTAssertTrue(analysis.hasSeveralObjects)
+        XCTAssertFalse(MatchesView.severalObjectsText.isEmpty)
     }
 }

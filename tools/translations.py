@@ -95,6 +95,14 @@ T = {
     "Form passt wenig": ("Shape fits poorly", "La forme correspond peu", "La forma corrisponde poco"),
     "Foto auswählen": ("Choose photo", "Choisir une photo", "Scegli foto"),
     "Foto wird ausgewertet …": ("Analysing photo …", "Analyse de la photo …", "Analisi della foto …"),
+    "Mehrere Patronen im Bild erkannt.": (
+        "Several cartridges found in the photo.",
+        "Plusieurs cartouches détectées sur la photo.",
+        "Più cartucce trovate nella foto."),
+    "Bitte nur eine Patrone pro Foto: die anderen beiseitelegen und neu fotografieren.": (
+        "Please show only one cartridge per photo: put the others aside and take a new photo.",
+        "Une seule cartouche par photo, s'il vous plaît : mettez les autres de côté et reprenez la photo.",
+        "Una sola cartuccia per foto, per favore: metti da parte le altre e scatta una nuova foto."),
     "Keine Patrone im Bild erkannt.": ("No cartridge found in the photo.", "Aucune cartouche détectée sur la photo.", "Nessuna cartuccia trovata nella foto."),
     "Keine passenden Kaliber gefunden.": ("No matching calibres found.", "Aucun calibre correspondant trouvé.", "Nessun calibro corrispondente trovato."),
     "Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.": (
