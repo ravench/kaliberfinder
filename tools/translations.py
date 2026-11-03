@@ -175,7 +175,7 @@ T = {
     "Kaliber": ("Calibres", "Calibres", "Calibri"),
     "Kaliber, z. B. 9 mm Luger": ("Calibre, e.g. 9 mm Luger", "Calibre, p. ex. 9 mm Luger", "Calibro, p. es. 9 mm Luger"),
     "Kaliberfinder": ("Kaliberfinder", "Kaliberfinder", "Kaliberfinder"),
-    "Kaliber auswählen und vergleichen": ("Pick and compare calibres", "Choisir et comparer des calibres", "Scegli e confronta calibri"),
+    "Auswählen und vergleichen": ("Pick and compare", "Choisir et comparer", "Scegli e confronta"),
     "Kalibriert": ("Calibrated", "Calibré", "Calibrato"),
     "Kategorie": ("Category", "Catégorie", "Categoria"),
     "Kleiner": ("Smaller", "Plus petit", "Più piccolo"),
