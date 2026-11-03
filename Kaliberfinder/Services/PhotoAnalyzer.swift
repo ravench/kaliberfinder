@@ -40,12 +40,17 @@ enum PhotoAnalyzer {
         try? handler.perform([textRequest])
         let texts = (textRequest.results ?? []).flatMap { $0.topCandidates(3).map(\.string) }
 
-        // Not available on the simulator; then only the text counts.
+        // Not available on the simulator; then the colour cut-out below does the work.
         let maskRequest = VNGenerateForegroundInstanceMaskRequest()
         var measured: (shape: ShapeMeasurement, length: Double)?
         if (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
             let (points, step) = silhouette(of: observation, handler: handler)
             measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
+        }
+        // Vision found only the table, box or paper: find the cartridge by its colour.
+        if measured == nil, let rgb = rgbImage(cgImage), let points = ColorSegmenter.segment(rgb) {
+            let (sampled, step) = thinned(points)
+            measured = ShapeMatcher.measureWithLength(sampled, pixelSize: Double(step))
         }
         return PhotoAnalysis(shape: measured?.shape, texts: texts, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)))
@@ -64,16 +69,37 @@ enum PhotoAnalyzer {
         }.cgImage
     }
 
-    /// Pixels of the largest foreground instance, sampled every `step` pixels.
+    /// The image's pixels as RGB values.
+    static func rgbImage(_ cgImage: CGImage) -> RGBImage? {
+        let width = cgImage.width, height = cgImage.height
+        var bytes = [UInt8](repeating: 0, count: width * height * 4)
+        let drawn: Bool = bytes.withUnsafeMutableBytes { buffer in
+            guard let context = CGContext(data: buffer.baseAddress, width: width, height: height, bitsPerComponent: 8,
+                                          bytesPerRow: width * 4, space: CGColorSpaceCreateDeviceRGB(),
+                                          bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue) else { return false }
+            context.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
+            return true
+        }
+        return drawn ? RGBImage(width: width, height: height, rgba: bytes) : nil
+    }
+
+    /// At most `maxPoints` of the points, keeping every `step`-th pixel in both directions.
+    static func thinned(_ points: [Point]) -> (points: [Point], step: Int) {
+        let step = max(1, Int((Double(points.count) / Double(maxPoints)).squareRoot().rounded(.up)))
+        guard step > 1 else { return (points, 1) }
+        return (points.filter { Int($0.x) % step == 0 && Int($0.y) % step == 0 }, step)
+    }
+
+    /// Pixels of the foreground instance that is the cartridge (see `SubjectPicker`), sampled every
+    /// `step` pixels; empty if every instance is the table, a box or the paper.
     private static func silhouette(of observation: VNInstanceMaskObservation, handler: VNImageRequestHandler) -> (points: [Point], step: Int) {
         let labels = observation.instanceMask
-        var counts: [Int: Int] = [:]
-        forEachPixel(labels, step: 1) { _, _, value in
-            let label = Int(value.rounded())
-            if label > 0 { counts[label, default: 0] += 1 }
-        }
-        guard let largest = counts.max(by: { $0.value < $1.value })?.key,
-              let mask = try? observation.generateScaledMaskForImage(forInstances: IndexSet(integer: largest), from: handler)
+        var map: [Int] = []
+        forEachPixel(labels, step: 1) { _, _, value in map.append(Int(value.rounded())) }
+        let width = CVPixelBufferGetWidth(labels), height = CVPixelBufferGetHeight(labels)
+        guard map.count == width * height,
+              let label = SubjectPicker.pick(SubjectPicker.instances(labels: map, width: width), width: width, height: height),
+              let mask = try? observation.generateScaledMaskForImage(forInstances: IndexSet(integer: label), from: handler)
         else { return ([], 1) }
         let pixels = CVPixelBufferGetWidth(mask) * CVPixelBufferGetHeight(mask)
         let step = max(1, Int((Double(pixels) / Double(maxPoints)).squareRoot().rounded(.up)))
