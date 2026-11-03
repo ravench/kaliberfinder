@@ -49,10 +49,14 @@ jobs:
           # The runner is thrown away after the job, key included.
           echo "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
           python3 tools/testflight.py export-options "$RUNNER_TEMP/ExportOptions.plist"
+          python3 tools/testflight.py export-options "$RUNNER_TEMP/ExportLocal.plist" export
           BUILD=$(python3 tools/testflight.py build-number "${{ github.run_number }}")
           echo "BUILD_NUMBER=$BUILD" >> "$GITHUB_ENV"
           echo "Build number $BUILD"
       - name: Archive
+        # Unsigned: automatic signing here made every fresh runner create a new Apple Development
+        # certificate until the team hit Apple's limit (2026-11-03), and ad hoc signing is not
+        # allowed for iOS. The export steps sign with the cloud-managed distribution certificate.
         if: steps.secrets.outputs.ready == 'true'
         run: |
           xcodebuild archive \
@@ -61,18 +65,45 @@ jobs:
             -configuration Release \
             -destination 'generic/platform=iOS' \
             -archivePath "$RUNNER_TEMP/Kaliberfinder.xcarchive" \
+            CODE_SIGNING_ALLOWED=NO \
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER" | tee "$RUNNER_TEMP/archive.log" | xcpretty
+          # The export keeps the entitlements the archived app is signed with, and an unsigned app has
+          # none: sign it ad hoc with the project's entitlements (iCloud, push) first.
+          ENTITLEMENTS=Kaliberfinder/Kaliberfinder.entitlements
+          if [ -f "$ENTITLEMENTS" ]; then
+            codesign --force --sign - --entitlements "$ENTITLEMENTS" \
+              "$RUNNER_TEMP/Kaliberfinder.xcarchive/Products/Applications/Kaliberfinder.app"
+          fi
+      - name: Show the archive errors
+        # xcpretty drops signing and account errors; show what xcodebuild actually said.
+        if: failure() && steps.secrets.outputs.ready == 'true'
+        run: |
+          grep -iE "error|warning: .*(sign|certificate|profile)|certificate|provisioning" "$RUNNER_TEMP/archive.log" | sort -u | tail -40 || true
+          echo "--- last lines ---"
+          tail -40 "$RUNNER_TEMP/archive.log"
+      - name: Sign and check the entitlements
+        # Sign locally first, so a build that lost its iCloud or push entitlements is never uploaded.
+        if: steps.secrets.outputs.ready == 'true'
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/Kaliberfinder.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportLocal.plist" \
+            -exportPath "$RUNNER_TEMP/export" \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$RUNNER_TEMP/AuthKey.p8" \
             -authenticationKeyID "$ASC_KEY_ID" \
-            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
-            CURRENT_PROJECT_VERSION="$BUILD_NUMBER" | xcpretty
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+          mkdir -p "$RUNNER_TEMP/ipa" && unzip -q -o "$RUNNER_TEMP"/export/*.ipa -d "$RUNNER_TEMP/ipa"
+          codesign -d --entitlements :- "$RUNNER_TEMP"/ipa/Payload/*.app > "$RUNNER_TEMP/entitlements.plist"
+          cat "$RUNNER_TEMP/entitlements.plist"
+          python3 tools/testflight.py check-entitlements "$RUNNER_TEMP/entitlements.plist" Kaliberfinder/Kaliberfinder.entitlements
       - name: Upload to TestFlight
         if: steps.secrets.outputs.ready == 'true'
         run: |
           xcodebuild -exportArchive \
             -archivePath "$RUNNER_TEMP/Kaliberfinder.xcarchive" \
             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
-            -exportPath "$RUNNER_TEMP/export" \
+            -exportPath "$RUNNER_TEMP/upload" \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$RUNNER_TEMP/AuthKey.p8" \
             -authenticationKeyID "$ASC_KEY_ID" \
