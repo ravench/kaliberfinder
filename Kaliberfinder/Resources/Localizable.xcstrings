@@ -208,6 +208,29 @@
         }
       }
     },
+    "Alle passenden 1:1 vergleichen (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare all matches 1:1 (%lld)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparer toutes les correspondances 1:1 (%lld)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confronta tutte le corrispondenze 1:1 (%lld)"
+          }
+        }
+      }
+    },
     "Andere": {
       "extractionState": "manual",
       "localizations": {
@@ -342,6 +365,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tipo"
+          }
+        }
+      }
+    },
+    "Beliebige Form": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Any shape"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toute forme"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qualsiasi forma"
           }
         }
       }
@@ -668,6 +714,29 @@
         }
       }
     },
+    "Form": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shape"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forme"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forma"
+          }
+        }
+      }
+    },
     "Form passt gut": {
       "extractionState": "manual",
       "localizations": {
@@ -898,6 +967,29 @@
         }
       }
     },
+    "Gerade Hülse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Straight case"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Douille droite"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bossolo dritto"
+          }
+        }
+      }
+    },
     "Gesamtlänge": {
       "extractionState": "manual",
       "localizations": {
@@ -1124,6 +1216,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diametro del colletto"
+          }
+        }
+      }
+    },
+    "Hülse mit Flaschenhals": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bottleneck case"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Douille à goulot"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bossolo a collo di bottiglia"
           }
         }
       }
