@@ -19,6 +19,23 @@ struct PhotoAnalysis {
     }
 }
 
+/// Which photo of the two-shot flow is analysed.
+enum PhotoKind {
+    /// The cartridge lying on its side: shape and size only.
+    case side
+    /// The case head seen from below: only the headstamp text counts.
+    case base
+
+    /// Whether text read from this photo is used. A side photo is only read when it turned out
+    /// to show a round end (someone photographed the base anyway); otherwise the shape counts.
+    func readsText(shape: ShapeMeasurement?) -> Bool {
+        switch self {
+        case .base: true
+        case .side: shape?.isEndView == true
+        }
+    }
+}
+
 /// Runs Vision on a photo: foreground segmentation for the silhouette, text recognition for the headstamp.
 enum PhotoAnalyzer {
     /// Photos are scaled down to this many pixels on the long side first; plenty for the shape.
@@ -26,31 +43,33 @@ enum PhotoAnalyzer {
     /// Upper bound on silhouette points handed to the shape measurement.
     static let maxPoints = 40_000
 
-    static func analyze(_ image: UIImage) async -> PhotoAnalysis {
-        await Task.detached(priority: .userInitiated) { analyzeNow(image) }.value
+    static func analyze(_ image: UIImage, kind: PhotoKind = .side) async -> PhotoAnalysis {
+        await Task.detached(priority: .userInitiated) { analyzeNow(image, kind: kind) }.value
     }
 
-    static func analyzeNow(_ image: UIImage) -> PhotoAnalysis {
+    static func analyzeNow(_ image: UIImage, kind: PhotoKind = .side) -> PhotoAnalysis {
         guard let cgImage = upright(image) else { return PhotoAnalysis(shape: nil, texts: []) }
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-
-        let textRequest = VNRecognizeTextRequest()
-        textRequest.recognitionLevel = .accurate
-        textRequest.usesLanguageCorrection = false
-        try? handler.perform([textRequest])
-        let texts = (textRequest.results ?? []).flatMap { $0.topCandidates(3).map(\.string) }
 
         // Not available on the simulator; then the colour cut-out below does the work.
         let maskRequest = VNGenerateForegroundInstanceMaskRequest()
         var measured: (shape: ShapeMeasurement, length: Double)?
-        if (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
+        if kind == .side, (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
             let (points, step) = silhouette(of: observation, handler: handler)
             measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
         }
         // Vision found only the table, box or paper: find the cartridge by its colour.
-        if measured == nil, let rgb = rgbImage(cgImage), let points = ColorSegmenter.segment(rgb) {
+        if kind == .side, measured == nil, let rgb = rgbImage(cgImage), let points = ColorSegmenter.segment(rgb) {
             let (sampled, step) = thinned(points)
             measured = ShapeMatcher.measureWithLength(sampled, pixelSize: Double(step))
+        }
+        var texts: [String] = []
+        if kind.readsText(shape: measured?.shape) {
+            let textRequest = VNRecognizeTextRequest()
+            textRequest.recognitionLevel = .accurate
+            textRequest.usesLanguageCorrection = false
+            try? handler.perform([textRequest])
+            texts = (textRequest.results ?? []).flatMap { $0.topCandidates(3).map(\.string) }
         }
         return PhotoAnalysis(shape: measured?.shape, texts: texts, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)))

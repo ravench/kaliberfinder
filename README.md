@@ -10,7 +10,9 @@ it is, after taking a photo of it. In German, English, French and Italian.
   likely calibres. The app cuts the cartridge out of the photo (Vision foreground mask; when
   Vision takes the table, a box or the paper as the subject, a colour-based cut-out instead),
   compares its silhouette (length/width ratio and width profile) with every calibre's
-  outline, and reads text such as the headstamp ("WIN 308", "9MM LUGER"). Then compare
+  outline. A second, optional photo of the case head is read for the headstamp
+  ("WIN 308", "9MM LUGER"); text is only read from that base photo (or from a first photo
+  that turns out to show a round end), never from the side photo. Then compare
   the candidates 1:1 by laying the cartridge on the screen. Works best with the
   cartridge on its side on a light, plain background, photographed from above.
   Empty cases work too: the app tells a case mouth from a bullet tip by itself (or you pick
