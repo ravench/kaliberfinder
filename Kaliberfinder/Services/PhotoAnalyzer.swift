@@ -11,11 +11,15 @@ struct PhotoAnalysis {
     /// The silhouette's length in pixels of the analysed image, and that image's long side.
     var lengthPixels: Double?
     var imageLongSide: Double = 0
-    /// How many cartridge-like objects the side photo shows; only one can be identified at a time.
-    var objectCount = 1
+    /// Where the cartridges that compete for the measurement are, as fractions of the upright
+    /// photo (0…1), the one measured first; empty when there is at most one.
+    var candidates: [CGRect] = []
 
-    /// More than one cartridge in the photo: the results would mix them up, so none are shown.
-    var hasSeveralObjects: Bool { objectCount > 1 }
+    /// How many cartridges compete for the measurement.
+    var objectCount: Int { max(1, candidates.count) }
+
+    /// More than one cartridge in the photo: the user picks the one to identify.
+    var hasSeveralObjects: Bool { candidates.count > 1 }
 
     /// Size from the silhouette and the LiDAR distance, if the photo was taken with depth.
     func size(depth: DepthScale?) -> Result<MeasuredSize, SizeFailure> {
@@ -45,6 +49,8 @@ enum PhotoKind {
 enum PhotoAnalyzer {
     /// Photos are scaled down to this many pixels on the long side first; plenty for the shape.
     static let maxDimension: CGFloat = 1600
+    /// Base photos keep more detail: the case head is often small and its letters are fine.
+    static let maxBaseDimension: CGFloat = 2000
     /// Upper bound on silhouette points handed to the shape measurement.
     static let maxPoints = 40_000
 
@@ -52,42 +58,120 @@ enum PhotoAnalyzer {
         await Task.detached(priority: .userInitiated) { analyzeNow(image, kind: kind) }.value
     }
 
+    /// Analyses only the cartridge in `candidate` (fractions of the photo, from `candidates`):
+    /// the photo is cut down to a margin around it, so the others don't get in the way.
+    static func analyze(_ image: UIImage, focusingOn candidate: CGRect) async -> PhotoAnalysis {
+        await Task.detached(priority: .userInitiated) { analyzeNow(image, focusingOn: candidate) }.value
+    }
+
+    static func analyzeNow(_ image: UIImage, focusingOn candidate: CGRect) -> PhotoAnalysis {
+        let region = focusRegion(candidate)
+        let size = image.size
+        let crop = CGRect(x: region.minX * size.width, y: region.minY * size.height,
+                          width: region.width * size.width, height: region.height * size.height)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let cropped = UIGraphicsImageRenderer(size: crop.size, format: format).image { _ in
+            image.draw(at: CGPoint(x: -crop.minX, y: -crop.minY))
+        }
+        var analysis = analyzeNow(cropped, kind: .side)
+        // The size measurement compares pixels with the whole photo's long side, at the scale
+        // the cut-out was analysed at.
+        let scale = min(1, maxDimension / max(crop.width, crop.height))
+        analysis.imageLongSide = Double(max(size.width, size.height) * scale)
+        analysis.candidates = []
+        return analysis
+    }
+
+    /// A candidate's box widened by half its larger side all round, kept inside the photo.
+    static func focusRegion(_ candidate: CGRect) -> CGRect {
+        let margin = max(candidate.width, candidate.height) / 2
+        return candidate.insetBy(dx: -margin, dy: -margin).intersection(CGRect(x: 0, y: 0, width: 1, height: 1))
+    }
+
     static func analyzeNow(_ image: UIImage, kind: PhotoKind = .side) -> PhotoAnalysis {
-        guard let cgImage = upright(image) else { return PhotoAnalysis(shape: nil, texts: []) }
+        guard let cgImage = upright(image, maxSide: kind == .base ? maxBaseDimension : maxDimension) else { return PhotoAnalysis(shape: nil, texts: []) }
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
 
         // Not available on the simulator; then the colour cut-out below does the work.
         let maskRequest = VNGenerateForegroundInstanceMaskRequest()
         var measured: (shape: ShapeMeasurement, length: Double)?
-        var objectCount = 1
+        var candidates: [CGRect] = []
         if kind == .side, (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
-            let (points, step, count) = silhouette(of: observation, handler: handler)
+            let (points, step, boxes) = silhouette(of: observation, handler: handler)
             measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
-            if measured != nil { objectCount = count }
+            if measured != nil { candidates = boxes }
         }
         // Vision found only the table, box or paper: find the cartridge by its colour.
         if kind == .side, measured == nil, let rgb = rgbImage(cgImage), let points = ColorSegmenter.segment(rgb) {
             let (sampled, step) = thinned(points)
             measured = ShapeMatcher.measureWithLength(sampled, pixelSize: Double(step))
-            if measured != nil { objectCount = max(1, ColorSegmenter.objectCount(rgb)) }
+            if measured != nil {
+                candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
+            }
         }
         var texts: [String] = []
-        if kind.readsText(shape: measured?.shape) {
-            let textRequest = VNRecognizeTextRequest()
-            textRequest.recognitionLevel = .accurate
-            textRequest.usesLanguageCorrection = false
-            try? handler.perform([textRequest])
-            texts = (textRequest.results ?? []).flatMap { $0.topCandidates(3).map(\.string) }
-        }
+        if kind.readsText(shape: measured?.shape) { texts = readHeadstamp(cgImage) }
         return PhotoAnalysis(shape: measured?.shape, texts: texts, lengthPixels: measured?.length,
-                             imageLongSide: Double(max(cgImage.width, cgImage.height)), objectCount: objectCount)
+                             imageLongSide: Double(max(cgImage.width, cgImage.height)),
+                             candidates: candidates.count > 1 ? candidates : [])
+    }
+
+    /// Text on a case head: read from the photo as it is, and from the ring of letters unrolled
+    /// into a strip, both ways up (see `HeadstampImage`).
+    static func readHeadstamp(_ cgImage: CGImage) -> [String] {
+        var texts = recognizeText(cgImage)
+        if let rgb = rgbImage(cgImage), let disc = HeadstampImage.locate(rgb) {
+            let strip = HeadstampImage.unwrap(rgb, disc: disc)
+            // Letters face outwards or inwards; stamped letters can show dark or light.
+            for way in [strip, strip.rotatedHalfTurn(), strip.inverted(), strip.rotatedHalfTurn().inverted()] {
+                // Each piece on its own, then the first guesses of all pieces as one line.
+                var firsts: [String] = []
+                for tile in HeadstampImage.tiles(way) {
+                    guard let image = grayCGImage(tile) else { continue }
+                    let read = recognizeLines(image)
+                    texts += read.guesses
+                    if !read.line.isEmpty { firsts.append(read.line) }
+                }
+                if firsts.count > 1 { texts.append(firsts.joined(separator: " ")) }
+            }
+        }
+        return texts
+    }
+
+    /// Text Vision reads, up to three guesses per line, plus all first guesses joined into one line,
+    /// so words recognised separately (".45" and "AUTO") can still form a calibre name.
+    static func recognizeText(_ cgImage: CGImage) -> [String] {
+        let read = recognizeLines(cgImage)
+        return read.lineCount > 1 ? read.guesses + [read.line] : read.guesses
+    }
+
+    /// Up to three guesses per line, and the first guesses of all lines joined.
+    static func recognizeLines(_ cgImage: CGImage) -> (guesses: [String], line: String, lineCount: Int) {
+        let request = VNRecognizeTextRequest()
+        request.recognitionLevel = .accurate
+        request.usesLanguageCorrection = false
+        try? VNImageRequestHandler(cgImage: cgImage, options: [:]).perform([request])
+        let observations = request.results ?? []
+        let guesses = observations.flatMap { $0.topCandidates(3).map(\.string) }
+        let firsts = observations.compactMap { $0.topCandidates(1).first?.string }
+        return (guesses, firsts.joined(separator: " "), firsts.count)
+    }
+
+    /// A gray image as a CGImage, for Vision.
+    static func grayCGImage(_ image: GrayImage) -> CGImage? {
+        guard let provider = CGDataProvider(data: Data(image.pixels) as CFData) else { return nil }
+        return CGImage(width: image.width, height: image.height, bitsPerComponent: 8, bitsPerPixel: 8,
+                       bytesPerRow: image.width, space: CGColorSpaceCreateDeviceGray(),
+                       bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue),
+                       provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
     }
 
     /// The image scaled down and with its orientation applied, so pixels are upright.
-    private static func upright(_ image: UIImage) -> CGImage? {
+    private static func upright(_ image: UIImage, maxSide: CGFloat) -> CGImage? {
         let longSide = max(image.size.width, image.size.height)
         guard longSide > 0 else { return nil }
-        let factor = min(1, maxDimension / longSide)
+        let factor = min(1, maxSide / longSide)
         let size = CGSize(width: image.size.width * factor, height: image.size.height * factor)
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
@@ -117,11 +201,18 @@ enum PhotoAnalyzer {
         return (points.filter { Int($0.x) % step == 0 && Int($0.y) % step == 0 }, step)
     }
 
+    /// A box in pixels of a `width` × `height` image as fractions of it.
+    static func normalized(_ box: ColorSegmenter.Box, width: Int, height: Int) -> CGRect {
+        CGRect(x: Double(box.x0) / Double(width), y: Double(box.y0) / Double(height),
+               width: Double(box.x1 - box.x0 + 1) / Double(width), height: Double(box.y1 - box.y0 + 1) / Double(height))
+            .intersection(CGRect(x: 0, y: 0, width: 1, height: 1))
+    }
+
     /// Pixels of the foreground instance that is the cartridge (see `SubjectPicker`), sampled every
-    /// `step` pixels, and how many instances look like cartridges; empty if every instance is the
-    /// table, a box or the paper.
+    /// `step` pixels, and where the instances that compete with it are (fractions of the photo);
+    /// empty if every instance is the table, a box or the paper.
     private static func silhouette(of observation: VNInstanceMaskObservation,
-                                   handler: VNImageRequestHandler) -> (points: [Point], step: Int, count: Int) {
+                                   handler: VNImageRequestHandler) -> (points: [Point], step: Int, boxes: [CGRect]) {
         let labels = observation.instanceMask
         var map: [Int] = []
         forEachPixel(labels, step: 1) { _, _, value in map.append(Int(value.rounded())) }
@@ -129,14 +220,17 @@ enum PhotoAnalyzer {
         let instances = map.count == width * height ? SubjectPicker.instances(labels: map, width: width) : []
         guard let label = SubjectPicker.pick(instances, width: width, height: height),
               let mask = try? observation.generateScaledMaskForImage(forInstances: IndexSet(integer: label), from: handler)
-        else { return ([], 1, 0) }
+        else { return ([], 1, []) }
         let pixels = CVPixelBufferGetWidth(mask) * CVPixelBufferGetHeight(mask)
         let step = max(1, Int((Double(pixels) / Double(maxPoints)).squareRoot().rounded(.up)))
         var result: [Point] = []
         forEachPixel(mask, step: step) { x, y, value in
             if value > 0.5 { result.append(Point(x: Double(x), y: Double(y))) }
         }
-        return (result, step, SubjectPicker.objectCount(instances, width: width, height: height))
+        let boxes = SubjectPicker.competitors(instances, width: width, height: height).map {
+            normalized($0.bounds, width: width, height: height)
+        }
+        return (result, step, boxes)
     }
 
     /// Calls `body` with the value of every `step`-th pixel of a one-channel buffer

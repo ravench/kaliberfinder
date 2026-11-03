@@ -49,6 +49,10 @@ struct CartridgeDetailView: View {
                 if !cartridge.displayAliases.isEmpty {
                     LabeledContent("Auch bekannt als", value: cartridge.displayAliases.joined(separator: ", "))
                 }
+                let twins = CartridgeCatalog.twins(of: cartridge)
+                if !twins.isEmpty {
+                    LabeledContent("Im Profil nicht unterscheidbar von", value: twins.map(\.name).joined(separator: ", "))
+                }
             } footer: {
                 Text("Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten. Zündhütchen: Boxer-Grösse handelsüblicher Hülsen; Militärmunition kann Berdan-Zündhütchen anderer Grösse haben.")
             }

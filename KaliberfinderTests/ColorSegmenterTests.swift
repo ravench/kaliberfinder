@@ -304,8 +304,79 @@ final class ColorSegmenterTests: XCTestCase {
     func testAnalysisWithSeveralObjects() {
         var analysis = PhotoAnalysis(shape: nil, texts: [])
         XCTAssertFalse(analysis.hasSeveralObjects)
-        analysis.objectCount = 2
+        XCTAssertEqual(analysis.objectCount, 1)
+        analysis.candidates = [CGRect(x: 0.1, y: 0.1, width: 0.2, height: 0.1), CGRect(x: 0.6, y: 0.6, width: 0.2, height: 0.1)]
         XCTAssertTrue(analysis.hasSeveralObjects)
+        XCTAssertEqual(analysis.objectCount, 2)
         XCTAssertFalse(MatchesView.severalObjectsText.isEmpty)
+        XCTAssertFalse(MatchesView.severalObjectsHint.isEmpty)
+    }
+
+    // MARK: - Picking one of several cartridges
+
+    private func uiImage(_ rgb: RGBImage) throws -> UIImage {
+        var bytes = [UInt8](repeating: 255, count: rgb.width * rgb.height * 4)
+        for i in 0..<(rgb.width * rgb.height) {
+            for c in 0..<3 { bytes[i * 4 + c] = UInt8(max(0, min(255, rgb.pixels[i * 3 + c]))) }
+        }
+        let context = try XCTUnwrap(CGContext(data: &bytes, width: rgb.width, height: rgb.height, bitsPerComponent: 8,
+                                              bytesPerRow: rgb.width * 4, space: CGColorSpaceCreateDeviceRGB(),
+                                              bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue))
+        return UIImage(cgImage: try XCTUnwrap(context.makeImage()))
+    }
+
+    func testCompetitorsComeWithTheMainCartridgeFirst() throws {
+        let nine = try cartridge("9x19 mm")
+        // The one nearer the centre is measured first.
+        let boxes = ColorSegmenter.competitors(photo(nine, centres: [(0.3, 0.45), (0.55, 0.55)]))
+        XCTAssertEqual(boxes.count, 2)
+        let first = try XCTUnwrap(boxes.first), second = try XCTUnwrap(boxes.last)
+        XCTAssertGreaterThan(first.x0 + first.x1, second.x0 + second.x1)
+    }
+
+    func testAnalyzerOffersBothCartridgesAndMeasuresThePickedOne() async throws {
+        let rgb = try XCTUnwrap(PhotoAnalyzer.rgbImage(XCTUnwrap(realPhoto("photo-45acp-wood").cgImage)))
+        let image = try uiImage(withSecondCopy(rgb))
+        let overview = await PhotoAnalyzer.analyze(image)
+        XCTAssertTrue(overview.hasSeveralObjects)
+        XCTAssertEqual(overview.candidates.count, 2)
+        for candidate in overview.candidates {
+            XCTAssertTrue(CGRect(x: 0, y: 0, width: 1, height: 1).contains(candidate), "\(candidate)")
+            let picked = await PhotoAnalyzer.analyze(image, focusingOn: candidate)
+            XCTAssertFalse(picked.hasSeveralObjects)
+            let shape = try XCTUnwrap(picked.shape, "\(candidate)")
+            XCTAssertFalse(shape.isEndView)
+            XCTAssertEqual(shape.aspect, 2.85, accuracy: 0.5, "\(candidate)")
+            // Sizes still refer to the whole photo (1200 px long side, analysed unscaled).
+            XCTAssertEqual(picked.imageLongSide, 1200, accuracy: 1)
+            let top = Matcher.rank(shape: shape, hits: [], limit: 8).map(\.cartridge.id)
+            XCTAssertTrue(top.contains(".45 ACP"), "\(top)")
+        }
+    }
+
+    func testFocusRegionAddsAMarginInsideThePhoto() {
+        let region = PhotoAnalyzer.focusRegion(CGRect(x: 0.4, y: 0.4, width: 0.2, height: 0.1))
+        XCTAssertEqual(region.minX, 0.3, accuracy: 1e-9)
+        XCTAssertEqual(region.minY, 0.3, accuracy: 1e-9)
+        XCTAssertEqual(region.width, 0.4, accuracy: 1e-9)
+        XCTAssertEqual(region.height, 0.3, accuracy: 1e-9)
+        let corner = PhotoAnalyzer.focusRegion(CGRect(x: 0.9, y: 0, width: 0.1, height: 0.1))
+        XCTAssertEqual(corner.minX, 0.85, accuracy: 1e-9)
+        XCTAssertEqual(corner.minY, 0, accuracy: 1e-9)
+        XCTAssertEqual(corner.maxX, 1, accuracy: 1e-9)
+        XCTAssertEqual(corner.height, 0.15, accuracy: 1e-9)
+    }
+
+    func testNormalizedBoxes() {
+        let rect = PhotoAnalyzer.normalized(ColorSegmenter.Box(x0: 10, y0: 20, x1: 29, y1: 59), width: 100, height: 200)
+        XCTAssertEqual(rect.minX, 0.1, accuracy: 1e-9)
+        XCTAssertEqual(rect.minY, 0.1, accuracy: 1e-9)
+        XCTAssertEqual(rect.width, 0.2, accuracy: 1e-9)
+        XCTAssertEqual(rect.height, 0.2, accuracy: 1e-9)
+    }
+
+    func testCandidateOutlineScalesToTheView() {
+        let frame = CandidatePhotoView.frame(of: CGRect(x: 0.25, y: 0.5, width: 0.5, height: 0.25), in: CGSize(width: 200, height: 400))
+        XCTAssertEqual(frame, CGRect(x: 44, y: 194, width: 112, height: 112))
     }
 }

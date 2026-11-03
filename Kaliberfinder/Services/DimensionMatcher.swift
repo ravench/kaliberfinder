@@ -83,9 +83,11 @@ enum DimensionMatcher {
 
     /// What the compare button shows when nothing is selected (MEAS-04): every calibre that fits
     /// well or roughly, or the best three when none does.
+    /// Calibres that look exactly the same are compared once.
     static func toCompare(_ matches: [DimensionMatch]) -> [Cartridge] {
-        let fitting = matches.filter { $0.fit != .poor }.map(\.cartridge)
-        return fitting.isEmpty ? Array(matches.prefix(3).map(\.cartridge)) : fitting
+        let rows = grouped(matches).map(\.lead)
+        let fitting = rows.filter { $0.fit != .poor }.map(\.cartridge)
+        return fitting.isEmpty ? Array(rows.prefix(3).map(\.cartridge)) : fitting
     }
 
     /// Reads millimetres typed with either decimal separator, e.g. "29,7" or "29.7". Empty or invalid text is nil.

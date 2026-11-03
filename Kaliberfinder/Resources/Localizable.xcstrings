@@ -254,6 +254,29 @@
         }
       }
     },
+    "Andere Patrone wählen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose another cartridge"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisir une autre cartouche"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli un'altra cartuccia"
+          }
+        }
+      }
+    },
     "Auch bekannt als": {
       "extractionState": "manual",
       "localizations": {
@@ -572,29 +595,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lo zoom dello schermo e la calibrazione vengono considerati. Controlla la dimensione una volta con una carta bancaria."
-          }
-        }
-      }
-    },
-    "Bitte nur eine Patrone pro Foto: die anderen beiseitelegen und neu fotografieren.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Please show only one cartridge per photo: put the others aside and take a new photo."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Une seule cartouche par photo, s'il vous plaît : mettez les autres de côté et reprenez la photo."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Una sola cartuccia per foto, per favore: metti da parte le altre e scatta una nuova foto."
           }
         }
       }
@@ -1611,6 +1611,75 @@
         }
       }
     },
+    "Im Profil nicht unterscheidbar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indistinguishable in profile"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indiscernable de profil"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indistinguibile di profilo"
+          }
+        }
+      }
+    },
+    "Im Profil nicht unterscheidbar von": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Looks identical in profile to"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identique de profil à"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identica di profilo a"
+          }
+        }
+      }
+    },
+    "Im Profil nicht unterscheidbar von %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indistinguishable in profile from %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indiscernable de profil de %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indistinguibile di profilo da %@"
+          }
+        }
+      }
+    },
     "Imperial (Zoll)": {
       "extractionState": "manual",
       "localizations": {
@@ -2439,6 +2508,29 @@
         }
       }
     },
+    "Patrone %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartridge %lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartouche %lld"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartuccia %lld"
+          }
+        }
+      }
+    },
     "Patrone erkennen": {
       "extractionState": "manual",
       "localizations": {
@@ -2849,6 +2941,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Suggerimento: appoggia la cartuccia di lato su uno sfondo chiaro e uniforme e fotografala dritta dall'alto."
+          }
+        }
+      }
+    },
+    "Tippe auf die Patrone, die bestimmt werden soll.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap the cartridge you want to identify."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touchez la cartouche à identifier."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tocca la cartuccia da identificare."
           }
         }
       }
