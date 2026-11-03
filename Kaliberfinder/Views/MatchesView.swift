@@ -8,7 +8,12 @@ struct MatchesView: View {
     var depth: DepthScale?
     /// A base photo that came with the side photo (two photos shared at once).
     var base: UIImage?
+    /// The analysis that is ranked: the whole photo, or the picked cartridge when there are several.
     @State private var analysis: PhotoAnalysis?
+    /// The first look at the whole photo; tells whether the user has to pick a cartridge.
+    @State private var overview: PhotoAnalysis?
+    /// Which of several cartridges the user picked.
+    @State private var chosen: Int?
     @State private var matches: [Match] = []
     /// The optional second photo of the case head; only its text is read.
     @State private var basePhoto: UIImage?
@@ -21,31 +26,39 @@ struct MatchesView: View {
     var body: some View {
         List {
             Section {
-                Image(uiImage: photo)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity, maxHeight: 220)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                if let analysis, analysis.hasSeveralObjects {
-                    Label(Self.severalObjectsText, systemImage: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.red)
+                CandidatePhotoView(photo: photo, candidates: overview?.candidates ?? [], selected: chosen,
+                                   maxHeight: needsPick ? 420 : 220) { choose($0) }
+                if needsPick {
+                    Label(Self.severalObjectsText, systemImage: "hand.tap")
+                        .foregroundStyle(.orange)
                     Text(Self.severalObjectsHint).font(.footnote).foregroundStyle(.secondary)
-                } else if let analysis {
-                    Picker("Was liegt im Bild?", selection: $mode) {
-                        ForEach(ScanMode.allCases) { Text($0.title.loc).tag($0) }
-                    }
-                    .pickerStyle(.segmented)
-                    ForEach(Self.notes(for: analysis, depth: depth, unit: unit, mode: mode), id: \.self) { note in
-                        Text(note).font(.footnote).foregroundStyle(.secondary)
-                    }
                 } else {
-                    HStack {
-                        ProgressView()
-                        Text("Foto wird ausgewertet …").foregroundStyle(.secondary)
+                    if chosen != nil {
+                        Button {
+                            chosen = nil
+                            analysis = nil
+                            matches = []
+                        } label: {
+                            Label("Andere Patrone wählen", systemImage: "hand.tap")
+                        }
+                    }
+                    if let analysis {
+                        Picker("Was liegt im Bild?", selection: $mode) {
+                            ForEach(ScanMode.allCases) { Text($0.title.loc).tag($0) }
+                        }
+                        .pickerStyle(.segmented)
+                        ForEach(Self.notes(for: analysis, depth: depth, unit: unit, mode: mode), id: \.self) { note in
+                            Text(note).font(.footnote).foregroundStyle(.secondary)
+                        }
+                    } else {
+                        HStack {
+                            ProgressView()
+                            Text("Foto wird ausgewertet …").foregroundStyle(.secondary)
+                        }
                     }
                 }
             }
-            if let analysis, !analysis.hasSeveralObjects {
+            if analysis != nil {
                 baseSection
                 if matches.isEmpty {
                     Section {
@@ -78,8 +91,11 @@ struct MatchesView: View {
         .task {
             if let base, basePhoto == nil { setBasePhoto(base) }
             let result = await PhotoAnalyzer.analyze(photo, kind: .side)
-            analysis = result
-            rank()
+            overview = result
+            if !result.hasSeveralObjects {
+                analysis = result
+                rank()
+            }
         }
         .onChange(of: mode) { rank() }
         .fullScreenCover(isPresented: $showBaseCamera) {
@@ -143,16 +159,32 @@ struct MatchesView: View {
         }
     }
 
+    /// Several cartridges compete and the user hasn't picked one yet.
+    private var needsPick: Bool { overview?.hasSeveralObjects == true && chosen == nil }
+
+    /// Measures only the picked cartridge.
+    private func choose(_ index: Int) {
+        guard let overview, overview.candidates.indices.contains(index), chosen == nil else { return }
+        chosen = index
+        analysis = nil
+        Task {
+            let result = await PhotoAnalyzer.analyze(photo, focusingOn: overview.candidates[index])
+            guard chosen == index else { return }
+            analysis = result
+            rank()
+        }
+    }
+
     private func rank() {
-        guard let analysis, !analysis.hasSeveralObjects else { matches = []; return }
+        guard let analysis else { matches = []; return }
         let size = try? analysis.size(depth: depth).get()
         matches = Matcher.rank(shape: analysis.shape, hits: Self.hits(side: analysis, baseTexts: baseTexts), size: size, mode: mode)
     }
 
-    /// Error shown instead of matches when the photo holds more than one cartridge.
+    /// Shown instead of matches when several cartridges compete, until the user picks one.
     static var severalObjectsText: String { "Mehrere Patronen im Bild erkannt.".loc }
     static var severalObjectsHint: String {
-        "Bitte nur eine Patrone pro Foto: die anderen beiseitelegen und neu fotografieren.".loc
+        "Tippe auf die Patrone, die bestimmt werden soll.".loc
     }
 
     /// Headstamp hits from the base photo, plus the first photo's text when that one showed a base anyway.
