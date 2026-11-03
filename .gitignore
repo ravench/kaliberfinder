@@ -6,3 +6,5 @@ build/
 Kaliberfinder/Kaliberfinder.entitlements
 Kaliberfinder/Info.plist
 __pycache__/
+KaliberfinderShare/KaliberfinderShare.entitlements
+KaliberfinderShare/Info.plist
