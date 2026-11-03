@@ -6,6 +6,8 @@ struct MatchesView: View {
     let photo: UIImage
     /// Distance and focal length from the LiDAR camera, nil for other photos.
     var depth: DepthScale?
+    /// A base photo that came with the side photo (two photos shared at once).
+    var base: UIImage?
     @State private var analysis: PhotoAnalysis?
     @State private var matches: [Match] = []
     /// The optional second photo of the case head; only its text is read.
@@ -71,6 +73,7 @@ struct MatchesView: View {
         .navigationTitle("Treffer")
         .navigationBarTitleDisplayMode(.inline)
         .task {
+            if let base, basePhoto == nil { setBasePhoto(base) }
             let result = await PhotoAnalyzer.analyze(photo, kind: .side)
             analysis = result
             rank()
