@@ -22,7 +22,7 @@ struct HomeView: View {
             } header: {
                 Text("Patrone erkennen")
             } footer: {
-                Text("Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Eine Aufschrift auf dem Boden oder der Schachtel hilft zusätzlich.")
+                Text("Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Für die Aufschrift danach den Boden fotografieren.")
             }
             Section {
                 NavigationLink { MeasureView() } label: {
