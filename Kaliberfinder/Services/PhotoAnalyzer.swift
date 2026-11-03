@@ -14,8 +14,10 @@ struct PhotoAnalysis {
     /// Where the cartridges that compete for the measurement are, as fractions of the upright
     /// photo (0…1), the one measured first; empty when there is at most one.
     var candidates: [CGRect] = []
-    /// Where the measured cartridge is, as fractions of the upright photo; nil if none was found.
-    var subject: CGRect?
+    /// The measured silhouette's rotated bounding box: four corners as fractions of the upright
+    /// photo (x of the width, y of the height); nil if nothing was measured. Drawn as the frame,
+    /// so it shows exactly what was matched.
+    var outline: [CGPoint]?
 
     /// How many cartridges compete for the measurement.
     var objectCount: Int { max(1, candidates.count) }
@@ -78,7 +80,10 @@ enum PhotoAnalyzer {
         let scale = min(1, maxDimension / max(crop.width, crop.height))
         analysis.imageLongSide = Double(max(size.width, size.height) * scale)
         analysis.candidates = []
-        analysis.subject = nil
+        // From the cut-out back to the whole photo.
+        analysis.outline = analysis.outline?.map {
+            CGPoint(x: region.minX + $0.x * region.width, y: region.minY + $0.y * region.height)
+        }
         return analysis
     }
 
@@ -108,18 +113,24 @@ enum PhotoAnalyzer {
         let maskRequest = VNGenerateForegroundInstanceMaskRequest()
         var measured: (shape: ShapeMeasurement, length: Double)?
         var candidates: [CGRect] = []
-    /// Where the measured cartridge is, as fractions of the upright photo; nil if none was found.
-    var subject: CGRect?
+        var outline: [CGPoint]?
+        let normalize = { (box: [Point]?) in
+            box?.map { CGPoint(x: $0.x / Double(cgImage.width), y: $0.y / Double(cgImage.height)) }
+        }
         if kind == .side, (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
             let (points, step, boxes) = silhouette(of: observation, handler: handler)
             measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
-            if measured != nil { candidates = boxes }
+            if measured != nil {
+                candidates = boxes
+                outline = normalize(ShapeMatcher.orientedBox(points, pixelSize: Double(step)))
+            }
         }
         // Vision found only the table, box or paper: find the cartridge by its colour.
         if kind == .side, measured == nil, let rgb = rgbImage(cgImage), let points = ColorSegmenter.segment(rgb) {
             let (sampled, step) = thinned(points)
             measured = ShapeMatcher.measureWithLength(sampled, pixelSize: Double(step))
             if measured != nil {
+                outline = normalize(ShapeMatcher.orientedBox(sampled, pixelSize: Double(step)))
                 candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
             }
         }
@@ -127,7 +138,7 @@ enum PhotoAnalyzer {
         if kind.readsText(shape: measured?.shape) { texts = readHeadstamp(cgImage) }
         return PhotoAnalysis(shape: measured?.shape, texts: texts, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)),
-                             candidates: candidates.count > 1 ? candidates : [], subject: candidates.first)
+                             candidates: candidates.count > 1 ? candidates : [], outline: outline)
     }
 
     /// Text on a case head: read from the photo as it is, and from the ring of letters unrolled
