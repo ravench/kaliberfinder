@@ -63,6 +63,22 @@ final class CatalogTests: XCTestCase {
         XCTAssertNotEqual(HeadstampReader.hits(in: ["GP 90"]).first?.cartridgeID, gp1890.id, "GP 90 is the Stgw 90 round")
     }
 
+    func testGP1890HasPaperPatchedSteelCappedBullet() throws {
+        let gp1890 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x53.5 mm Swiss (GP 1890)"))
+        XCTAssertEqual(gp1890.outline.bulletMaterial, "steel")
+        let band = try XCTUnwrap(gp1890.outline.patch.map(OutlineGeometry.parse)?.first, "paper band above the case mouth")
+        let mouth = gp1890.dimensions.overallLength - gp1890.dimensions.caseLength
+        let ys = band.map(\.y)
+        XCTAssertEqual(ys.max() ?? 0, mouth, accuracy: 0.01, "the paper starts at the case mouth")
+        XCTAssertLessThan((ys.max() ?? 0) - (ys.min() ?? 0), mouth / 2, "most of the visible bullet is the steel cap")
+        // The paper band lies inside the bullet silhouette, so shape matching is unchanged by it.
+        let whole = OutlineGeometry(gp1890.outline), caseOnly = OutlineGeometry(gp1890.outline, includeBullet: false)
+        XCTAssertEqual(whole.polygons.count, caseOnly.polygons.count + 1)
+        let gp11 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x55 mm Swiss (GP 11)"))
+        XCTAssertNil(gp11.outline.patch)
+        XCTAssertNil(gp11.outline.bulletMaterial)
+    }
+
     func testNormalized() {
         XCTAssertEqual(CartridgeCatalog.normalized(" 7,5 × 55 mm "), "75x55")
         XCTAssertEqual(CartridgeCatalog.normalized(".45 ACP"), "45acp")

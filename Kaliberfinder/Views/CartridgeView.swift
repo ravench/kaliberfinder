@@ -9,6 +9,14 @@ struct CartridgeView: View {
     static let copper = Color(red: 0.72, green: 0.45, blue: 0.20)
     static let lead = Color(red: 0.54, green: 0.55, blue: 0.57)
     static let shotShell = Color(red: 0.75, green: 0.22, blue: 0.17)
+    static let steel = Color(red: 0.65, green: 0.68, blue: 0.71)
+    static let paper = Color(red: 0.95, green: 0.93, blue: 0.88)
+
+    /// Fill of the bullet: steel cap (GP 1890), copper jacket, or bare lead without a case.
+    static func bulletFill(for cartridge: Cartridge) -> Color {
+        if cartridge.outline.bulletMaterial == "steel" { return steel }
+        return cartridge.hasCase ? copper : lead
+    }
 
     var body: some View {
         let o = cartridge.outline
@@ -16,7 +24,8 @@ struct CartridgeView: View {
         ZStack(alignment: .topLeading) {
             part(o.case, fill: cartridge.kind == "shot" ? Self.shotShell : Self.brass, lineWidth: lineWidth)
             part(o.head, fill: Self.brass, lineWidth: lineWidth)
-            part(o.bullet, fill: cartridge.hasCase ? Self.copper : Self.lead, lineWidth: lineWidth)
+            part(o.bullet, fill: Self.bulletFill(for: cartridge), lineWidth: lineWidth)
+            part(o.patch, fill: Self.paper, lineWidth: lineWidth)
         }
         .frame(width: o.width * pointsPerMM, height: o.height * pointsPerMM, alignment: .topLeading)
         .accessibilityElement()
