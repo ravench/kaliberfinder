@@ -45,6 +45,8 @@ enum PhotoKind {
 enum PhotoAnalyzer {
     /// Photos are scaled down to this many pixels on the long side first; plenty for the shape.
     static let maxDimension: CGFloat = 1600
+    /// Base photos keep more detail: the case head is often small and its letters are fine.
+    static let maxBaseDimension: CGFloat = 2000
     /// Upper bound on silhouette points handed to the shape measurement.
     static let maxPoints = 40_000
 
@@ -53,7 +55,7 @@ enum PhotoAnalyzer {
     }
 
     static func analyzeNow(_ image: UIImage, kind: PhotoKind = .side) -> PhotoAnalysis {
-        guard let cgImage = upright(image) else { return PhotoAnalysis(shape: nil, texts: []) }
+        guard let cgImage = upright(image, maxSide: kind == .base ? maxBaseDimension : maxDimension) else { return PhotoAnalysis(shape: nil, texts: []) }
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
 
         // Not available on the simulator; then the colour cut-out below does the work.
@@ -83,7 +85,8 @@ enum PhotoAnalyzer {
         var texts = recognizeText(cgImage)
         if let rgb = rgbImage(cgImage), let disc = HeadstampImage.locate(rgb) {
             let strip = HeadstampImage.unwrap(rgb, disc: disc)
-            for way in [strip, strip.rotatedHalfTurn()] {
+            // Letters face outwards or inwards; stamped letters can show dark or light.
+            for way in [strip, strip.rotatedHalfTurn(), strip.inverted(), strip.rotatedHalfTurn().inverted()] {
                 // Each piece on its own, then the first guesses of all pieces as one line.
                 var firsts: [String] = []
                 for tile in HeadstampImage.tiles(way) {
@@ -127,10 +130,10 @@ enum PhotoAnalyzer {
     }
 
     /// The image scaled down and with its orientation applied, so pixels are upright.
-    private static func upright(_ image: UIImage) -> CGImage? {
+    private static func upright(_ image: UIImage, maxSide: CGFloat) -> CGImage? {
         let longSide = max(image.size.width, image.size.height)
         guard longSide > 0 else { return nil }
-        let factor = min(1, maxDimension / longSide)
+        let factor = min(1, maxSide / longSide)
         let size = CGSize(width: image.size.width * factor, height: image.size.height * factor)
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
