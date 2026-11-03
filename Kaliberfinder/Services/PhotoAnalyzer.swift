@@ -83,8 +83,16 @@ enum PhotoAnalyzer {
         var texts = recognizeText(cgImage)
         if let rgb = rgbImage(cgImage), let disc = HeadstampImage.locate(rgb) {
             let strip = HeadstampImage.unwrap(rgb, disc: disc)
-            for image in [strip, strip.rotatedHalfTurn()] {
-                if let stripImage = grayCGImage(image) { texts += recognizeText(stripImage) }
+            for way in [strip, strip.rotatedHalfTurn()] {
+                // Each piece on its own, then the first guesses of all pieces as one line.
+                var firsts: [String] = []
+                for tile in HeadstampImage.tiles(way) {
+                    guard let image = grayCGImage(tile) else { continue }
+                    let read = recognizeLines(image)
+                    texts += read.guesses
+                    if !read.line.isEmpty { firsts.append(read.line) }
+                }
+                if firsts.count > 1 { texts.append(firsts.joined(separator: " ")) }
             }
         }
         return texts
@@ -93,6 +101,12 @@ enum PhotoAnalyzer {
     /// Text Vision reads, up to three guesses per line, plus all first guesses joined into one line,
     /// so words recognised separately (".45" and "AUTO") can still form a calibre name.
     static func recognizeText(_ cgImage: CGImage) -> [String] {
+        let read = recognizeLines(cgImage)
+        return read.lineCount > 1 ? read.guesses + [read.line] : read.guesses
+    }
+
+    /// Up to three guesses per line, and the first guesses of all lines joined.
+    static func recognizeLines(_ cgImage: CGImage) -> (guesses: [String], line: String, lineCount: Int) {
         let request = VNRecognizeTextRequest()
         request.recognitionLevel = .accurate
         request.usesLanguageCorrection = false
@@ -100,7 +114,7 @@ enum PhotoAnalyzer {
         let observations = request.results ?? []
         let guesses = observations.flatMap { $0.topCandidates(3).map(\.string) }
         let firsts = observations.compactMap { $0.topCandidates(1).first?.string }
-        return firsts.count > 1 ? guesses + [firsts.joined(separator: " ")] : guesses
+        return (guesses, firsts.joined(separator: " "), firsts.count)
     }
 
     /// A gray image as a CGImage, for Vision.

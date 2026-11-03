@@ -81,6 +81,25 @@ final class HeadstampImageTests: XCTestCase {
         XCTAssertEqual(strip.pixels.max(), 255)
     }
 
+    func testStripIsCutIntoOverlappingPiecesWithAMargin() {
+        let h = 20, w = 300
+        let strip = GrayImage(width: w, height: h, pixels: (0..<(w * h)).map { UInt8($0 % w % 251) })
+        let tiles = HeadstampImage.tiles(strip)
+        let margin = h / 4, tileWidth = HeadstampImage.tileAspect * h
+        XCTAssertGreaterThan(tiles.count, 1)
+        for tile in tiles {
+            XCTAssertEqual(tile.width, tileWidth + 2 * margin)
+            XCTAssertEqual(tile.height, h + 2 * margin)
+        }
+        // The first piece starts at the strip's first column, the last one ends at its last column.
+        XCTAssertEqual(tiles[0].pixels[margin * tiles[0].width + margin], 0)
+        let last = tiles[tiles.count - 1]
+        XCTAssertEqual(last.pixels[margin * last.width + margin + tileWidth - 1], UInt8((w - 1) % 251))
+        // A strip shorter than one piece stays whole.
+        let short = GrayImage(width: 30, height: h, pixels: [UInt8](repeating: 7, count: 30 * h))
+        XCTAssertEqual(HeadstampImage.tiles(short).map(\.width), [30 + 2 * margin])
+    }
+
     func testHalfTurn() {
         let image = GrayImage(width: 3, height: 2, pixels: [1, 2, 3, 4, 5, 6])
         XCTAssertEqual(image.rotatedHalfTurn().pixels, [6, 5, 4, 3, 2, 1])
