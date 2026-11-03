@@ -9,6 +9,16 @@ struct TrueScaleLayout: Equatable {
     let bandHeight: Double
     /// The ruler sits flush against the left edge of the screen.
     static let rulerLeadingInset = 0.0
+    /// Ruler width plus its gap to the scrolling cartridges.
+    static let rulerWidth = RulerView.width + 4
+    /// With a single cartridge: space between the ruler and the cartridge, in mm.
+    static let singleGapMM = 8.0
+
+    /// With a single cartridge, the ruler and cartridge form one group, shifted by this many points
+    /// so that the cartridge itself (not the group) is centred on screen.
+    static func singleOffset(pointsPerMM: Double) -> Double {
+        -(rulerWidth + singleGapMM * pointsPerMM) / 2
+    }
 
     init(cartridges: [Cartridge], unit: LengthUnit, pointsPerMM: Double) {
         let tallest = cartridges.map(\.outline.height).max() ?? 0
@@ -41,40 +51,46 @@ struct TrueScaleView: View {
                     }
                 }
                 .padding([.horizontal, .top])
-                HStack(alignment: .top, spacing: 0) {
-                    // Outside the horizontal scroll view, so it stays on screen, flush with the
-                    // left edge and with its zero on the cartridges' base line.
-                    RulerView(lengthMM: layout.rulerMM, pointsPerMM: ppmm, unit: unit)
-                        .frame(height: layout.bandHeight, alignment: .bottom)
-                        .padding(.trailing, 4)
-                        .background(Color(.systemBackground))
-                        .zIndex(1)
-                    ScrollView(.horizontal) {
-                        HStack(alignment: .top, spacing: 8 * ppmm) {
-                            ForEach(cartridges) { c in
-                                VStack(spacing: 6) {
-                                    CartridgeView(cartridge: c, pointsPerMM: ppmm)
-                                        .frame(height: layout.bandHeight, alignment: .bottom)
-                                    label(for: c)
-                                    CaseBaseView(cartridge: c, pointsPerMM: ppmm)
+                if let single = cartridges.first, cartridges.count == 1 {
+                    singleView(single, layout: layout, ppmm: ppmm)
+                } else {
+                    HStack(alignment: .top, spacing: 0) {
+                        // Outside the horizontal scroll view, so it stays on screen, flush with the
+                        // left edge and with its zero on the cartridges' base line.
+                        RulerView(lengthMM: layout.rulerMM, pointsPerMM: ppmm, unit: unit)
+                            .frame(height: layout.bandHeight, alignment: .bottom)
+                            .padding(.trailing, 4)
+                            .background(Color(.systemBackground))
+                            .zIndex(1)
+                        ScrollView(.horizontal) {
+                            HStack(alignment: .top, spacing: 8 * ppmm) {
+                                ForEach(cartridges) { c in
+                                    VStack(spacing: 6) {
+                                        CartridgeView(cartridge: c, pointsPerMM: ppmm)
+                                            .frame(height: layout.bandHeight, alignment: .bottom)
+                                        label(for: c)
+                                        CaseBaseView(cartridge: c, pointsPerMM: ppmm)
+                                    }
                                 }
                             }
+                            .padding(.horizontal, 8 * ppmm)
+                            .overlay(alignment: .topLeading) {
+                                // The base line the cartridges stand on, continuing the ruler's zero.
+                                Rectangle()
+                                    .fill(Color.primary.opacity(0.35))
+                                    .frame(height: 0.5)
+                                    .offset(y: layout.bandHeight)
+                            }
                         }
-                        .padding(.horizontal, 8 * ppmm)
-                        .overlay(alignment: .topLeading) {
-                            // The base line the cartridges stand on, continuing the ruler's zero.
-                            Rectangle()
-                                .fill(Color.primary.opacity(0.35))
-                                .frame(height: 0.5)
-                                .offset(y: layout.bandHeight)
-                        }
+                        .scrollIndicators(.visible)
                     }
-                    .scrollIndicators(.visible)
+                    .padding(.leading, TrueScaleLayout.rulerLeadingInset)
+                    .padding(.bottom)
                 }
-                .padding(.leading, TrueScaleLayout.rulerLeadingInset)
-                .padding(.bottom)
             }
         }
+        // Scrolls only when a long cartridge does not fit on the screen.
+        .scrollBounceBehavior(.basedOnSize)
         .simultaneousGesture(MagnifyGesture().onChanged { _ in showZoomHint = true })
         .overlay(alignment: .bottom) {
             if showZoomHint {
@@ -94,6 +110,29 @@ struct TrueScaleView: View {
         .animation(.default, value: showZoomHint)
         .navigationTitle("1:1")
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    /// One cartridge, centred, with the ruler a fixed distance to its left and no sideways scrolling.
+    private func singleView(_ c: Cartridge, layout: TrueScaleLayout, ppmm: Double) -> some View {
+        VStack(spacing: 6) {
+            HStack(alignment: .bottom, spacing: TrueScaleLayout.singleGapMM * ppmm) {
+                RulerView(lengthMM: layout.rulerMM, pointsPerMM: ppmm, unit: unit)
+                    .padding(.trailing, 4)
+                CartridgeView(cartridge: c, pointsPerMM: ppmm)
+            }
+            .frame(height: layout.bandHeight, alignment: .bottom)
+            .overlay(alignment: .bottom) {
+                // The base line the cartridge stands on, continuing the ruler's zero.
+                Rectangle()
+                    .fill(Color.primary.opacity(0.35))
+                    .frame(height: 0.5)
+            }
+            .offset(x: TrueScaleLayout.singleOffset(pointsPerMM: ppmm))
+            label(for: c)
+            CaseBaseView(cartridge: c, pointsPerMM: ppmm)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.bottom)
     }
 
     private func label(for c: Cartridge) -> some View {
@@ -120,6 +159,7 @@ struct OneToOneBadge: View {
                 .foregroundStyle(.white)
             Text("Originalgrösse: nicht zoombar, damit die Masse stimmen.")
                 .font(.footnote)
+                .fixedSize(horizontal: false, vertical: true)
                 .foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .combine)
@@ -132,6 +172,11 @@ struct RulerView: View {
     let pointsPerMM: Double
     var unit: LengthUnit = .metric
 
+    static let width = 32.0
+    /// Room above the top and below the zero tick, so their numbers are not cut in half.
+    /// The ruler still takes up only its length in the layout, so zero stays on the base line.
+    static let labelOverhang = 8.0
+
     /// Tick length in points by level.
     private static let tickLengths: [Double] = [4, 6, 9, 11, 14]
 
@@ -142,8 +187,9 @@ struct RulerView: View {
 
     var body: some View {
         Canvas { context, size in
+            let height = size.height - 2 * Self.labelOverhang
             for tick in unit.rulerTicks(lengthMM: lengthMM) {
-                let y = Self.y(forMM: tick.mm, height: size.height, pointsPerMM: pointsPerMM)
+                let y = Self.labelOverhang + Self.y(forMM: tick.mm, height: height, pointsPerMM: pointsPerMM)
                 let length = Self.tickLengths[min(max(tick.level, 0), Self.tickLengths.count - 1)]
                 var line = Path()
                 line.move(to: CGPoint(x: size.width - length, y: y))
@@ -155,11 +201,12 @@ struct RulerView: View {
                 }
             }
             var axis = Path()
-            axis.move(to: CGPoint(x: size.width, y: 0))
-            axis.addLine(to: CGPoint(x: size.width, y: size.height))
+            axis.move(to: CGPoint(x: size.width, y: Self.labelOverhang))
+            axis.addLine(to: CGPoint(x: size.width, y: Self.labelOverhang + height))
             context.stroke(axis, with: .color(.primary), lineWidth: 0.5)
         }
-        .frame(width: 32, height: lengthMM * pointsPerMM)
+        .frame(width: Self.width, height: lengthMM * pointsPerMM + 2 * Self.labelOverhang)
+        .padding(.vertical, -Self.labelOverhang)
         .accessibilityLabel(unit == .metric ? "Lineal in Zentimetern".loc : "Lineal in Zoll".loc)
     }
 }
