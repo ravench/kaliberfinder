@@ -31,7 +31,7 @@ struct HomeView: View {
                     Label("Masse eingeben", systemImage: "ruler")
                 }
                 NavigationLink { CatalogView(selecting: true) } label: {
-                    Label("Kaliber auswählen und vergleichen", systemImage: "square.split.2x1")
+                    Label("Auswählen und vergleichen", systemImage: "square.split.2x1")
                 }
                 NavigationLink { CatalogView() } label: {
                     Label("Alle Kaliber", systemImage: "list.bullet")

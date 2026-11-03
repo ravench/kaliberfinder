@@ -438,6 +438,29 @@
         }
       }
     },
+    "Auswählen und vergleichen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick and compare"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisir et comparer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli e confronta"
+          }
+        }
+      }
+    },
     "Automatisch": {
       "extractionState": "manual",
       "localizations": {
@@ -1745,29 +1768,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Calibri"
-          }
-        }
-      }
-    },
-    "Kaliber auswählen und vergleichen": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pick and compare calibres"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choisir et comparer des calibres"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scegli e confronta calibri"
           }
         }
       }
