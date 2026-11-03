@@ -114,6 +114,34 @@ enum ShapeMatcher {
         return (shape, length + pixelSize)
     }
 
+    /// The rectangle along the principal axis that just holds the points (the silhouette as
+    /// measured, at any angle): its four corners in the points' units, nil for fewer than 50 points.
+    static func orientedBox(_ points: [Point], pixelSize: Double = 1) -> [Point]? {
+        guard points.count >= 50 else { return nil }
+        let n = Double(points.count)
+        let mx = points.reduce(0) { $0 + $1.x } / n
+        let my = points.reduce(0) { $0 + $1.y } / n
+        var sxx = 0.0, syy = 0.0, sxy = 0.0
+        for p in points {
+            let dx = p.x - mx, dy = p.y - my
+            sxx += dx * dx; syy += dy * dy; sxy += dx * dy
+        }
+        let angle = 0.5 * atan2(2 * sxy, sxx - syy)
+        let ux = cos(angle), uy = sin(angle)
+        var u0 = Double.infinity, u1 = -Double.infinity, v0 = Double.infinity, v1 = -Double.infinity
+        for p in points {
+            let dx = p.x - mx, dy = p.y - my
+            let u = dx * ux + dy * uy, v = -dx * uy + dy * ux
+            u0 = min(u0, u); u1 = max(u1, u); v0 = min(v0, v); v1 = max(v1, v)
+        }
+        // Each point stands for a pixel (or a `pixelSize` square): the box covers them whole.
+        let h = pixelSize / 2
+        u0 -= h; u1 += h; v0 -= h; v1 += h
+        return [(u0, v0), (u1, v0), (u1, v1), (u0, v1)].map { u, v in
+            Point(x: mx + u * ux - v * uy, y: my + u * uy + v * ux)
+        }
+    }
+
     /// The shape a catalogue cartridge would have, measured the same way as a photo: the whole
     /// cartridge, or only its empty case (nil for balls, Minié bullets and pellets).
     static func expected(for cartridge: Cartridge, part: ShapePart = .cartridge) -> ShapeMeasurement? {
