@@ -25,7 +25,9 @@ it is, after taking a photo of it. In German, English, French and Italian.
   line next to a millimetre ruler, with the case head seen from below (rim and primer).
   The ruler stays on screen while the cartridges scroll sideways; a 1:1 badge explains why
   the view can't be zoomed.
-- **Ohne Foto**: enter measured dimensions, or pick calibres by name, and compare them 1:1.
+- **Ohne Foto**: enter measured dimensions (optionally the case shape: straight or bottleneck),
+  or pick calibres by name, and compare them 1:1; without a selection the compare button
+  shows every calibre that fits within 1 mm.
 - **Calibration**: the app knows the display density of every iPhone since the XS and
   takes Display Zoom into account. For unknown models, or to fine-tune, calibrate once
   with a bank card.
