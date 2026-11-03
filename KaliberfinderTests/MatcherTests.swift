@@ -63,10 +63,11 @@ final class MatcherTests: XCTestCase {
     func testCompareButtonTakesAllMatches() throws {
         let matches = Matcher.rank(shape: try expected("7.5x55 mm Swiss (GP 11)"), hits: [])
         XCTAssertGreaterThan(matches.count, 3)
-        // Every listed calibre, not just the best three, in rank order.
-        XCTAssertEqual(MatchesView.toCompare(matches).map(\.id), matches.map(\.cartridge.id))
-        XCTAssertEqual(MatchesView.compareTitle(matches), String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, matches.count))
-        XCTAssertTrue(MatchesView.compareTitle(matches).contains("\(matches.count)"))
+        // Every listed row, not just the best three, in rank order; identical-looking calibres once.
+        let rows = Matcher.grouped(matches)
+        XCTAssertEqual(MatchesView.toCompare(matches).map(\.id), rows.map(\.lead.cartridge.id))
+        XCTAssertEqual(MatchesView.compareTitle(matches), String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, rows.count))
+        XCTAssertTrue(MatchesView.compareTitle(matches).contains("\(rows.count)"))
     }
 
     func testCompareButtonLooksLikeAButton() {
