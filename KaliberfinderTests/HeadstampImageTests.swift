@@ -54,10 +54,10 @@ final class HeadstampImageTests: XCTestCase {
         let cg = try XCTUnwrap(basePhoto().cgImage)
         let rgb = try XCTUnwrap(PhotoAnalyzer.rgbImage(cg))
         let found = try XCTUnwrap(HeadstampImage.locate(rgb))
-        // Measured by hand on the 900 × 1200 fixture.
-        XCTAssertEqual(found.cx, 418, accuracy: 15)
-        XCTAssertEqual(found.cy, 571, accuracy: 15)
-        XCTAssertEqual(found.radius, 91, accuracy: 12)
+        // Measured by hand on the 1512 × 2016 fixture.
+        XCTAssertEqual(found.cx, 702, accuracy: 25)
+        XCTAssertEqual(found.cy, 959, accuracy: 25)
+        XCTAssertEqual(found.radius, 153, accuracy: 20)
     }
 
     func testUnwrapPutsTheOuterEdgeOnTopAndGoesClockwise() throws {
@@ -104,6 +104,7 @@ final class HeadstampImageTests: XCTestCase {
         let image = GrayImage(width: 3, height: 2, pixels: [1, 2, 3, 4, 5, 6])
         XCTAssertEqual(image.rotatedHalfTurn().pixels, [6, 5, 4, 3, 2, 1])
         XCTAssertEqual(image.rotatedHalfTurn().rotatedHalfTurn(), image)
+        XCTAssertEqual(image.inverted().pixels, [254, 253, 252, 251, 250, 249])
         XCTAssertNotNil(PhotoAnalyzer.grayCGImage(image))
     }
 

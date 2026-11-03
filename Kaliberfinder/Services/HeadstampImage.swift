@@ -10,6 +10,11 @@ struct GrayImage: Equatable {
     func rotatedHalfTurn() -> GrayImage {
         GrayImage(width: width, height: height, pixels: pixels.reversed())
     }
+
+    /// Dark and light swapped.
+    func inverted() -> GrayImage {
+        GrayImage(width: width, height: height, pixels: pixels.map { 255 - $0 })
+    }
 }
 
 /// Prepares a base photo for text recognition. A headstamp's letters run round the primer, each
