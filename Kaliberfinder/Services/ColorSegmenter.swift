@@ -65,23 +65,35 @@ enum ColorSegmenter {
 
     /// Where the cartridge is, in image pixels.
     static func locate(_ image: RGBImage) -> Box? {
-        guard let found = clusters(image) else { return nil }
-        let w = found.width, h = found.height, f = found.factor
-        guard let best = found.clusters.max(by: { centreScore($0, width: w, height: h) < centreScore($1, width: w, height: h) })
-        else { return nil }
-        let b = bounds(best, width: w)
+        guard let found = clusters(image), let best = found.main else { return nil }
+        let w = found.width, f = found.factor
+        let b = bounds(found.clusters[best], width: w)
         return Box(x0: b.x0 * f, y0: b.y0 * f, x1: min(image.width, (b.x1 + 1) * f), y1: min(image.height, (b.y1 + 1) * f))
     }
 
-    /// How many objects stand out like a cartridge: clusters at least
-    /// `SubjectPicker.sameSizeShare` the size of the largest; 0 if nothing stands out.
+    /// How many cartridges compete for the measurement: the one `locate` picks, plus clusters
+    /// that look like cartridges and make it unclear which one is meant (see `Blob.competes`);
+    /// 0 if nothing stands out.
     static func objectCount(_ image: RGBImage) -> Int {
-        SubjectPicker.similar(clusters(image)?.clusters.map(\.count) ?? [])
+        guard let found = clusters(image), let main = found.main else { return 0 }
+        return Blob.count(competingWith: main, in: found.blobs, width: found.width, height: found.height)
     }
 
     /// Clusters of pixels that stand out by colour and don't touch the frame, in a copy of the
-    /// photo scaled down by `factor` to `width` × `height`.
-    private static func clusters(_ image: RGBImage) -> (clusters: [[Int]], width: Int, height: Int, factor: Int)? {
+    /// photo scaled down by `factor` to `width` × `height`; `main` is the one nearest the centre,
+    /// weighted by size.
+    struct Clusters {
+        let clusters: [[Int]]
+        let blobs: [Blob]
+        let width: Int, height: Int, factor: Int
+        var main: Int? {
+            let scores = blobs.map { $0.centreScore(width: width, height: height) }
+            return scores.indices.max { scores[$0] < scores[$1] }
+        }
+    }
+
+    /// The clusters with their size, elongation and colour.
+    private static func clusters(_ image: RGBImage) -> Clusters? {
         let f = max(1, Int((Double(max(image.width, image.height)) / Double(locateSide)).rounded(.up)))
         // Colour only, so shadow edges don't stand out.
         let small = chroma(downsample(image, factor: f))
@@ -104,18 +116,19 @@ enum ColorSegmenter {
         let candidates = components(mask, width: w, height: h).filter {
             $0.count >= 20 && !touchesBorder($0, width: w, height: h)
         }
-        return (candidates, w, h, f)
-    }
-
-    /// Size of a cluster, weighted down the further it is from the centre of the photo.
-    static func centreScore(_ component: [Int], width w: Int, height h: Int) -> Double {
-        var sx = 0.0, sy = 0.0
-        for p in component { sx += Double(p % w); sy += Double(p / w) }
-        let n = Double(component.count)
-        let dx = (sx / n - Double(w) / 2) / (Double(w) / 2)
-        let dy = (sy / n - Double(h) / 2) / (Double(h) / 2)
-        let off = min(1, (dx * dx + dy * dy).squareRoot() / 2.0.squareRoot())
-        return n * (1 - off) * (1 - off)
+        let blobs = candidates.map { cluster -> Blob in
+            var blob = Blob()
+            var colour = [Float](repeating: 0, count: 3), strongCount: Float = 0
+            for p in cluster {
+                blob.add(x: p % w, y: p / w)
+                guard contrast[p] > threshold else { continue }
+                for c in 0..<3 { colour[c] += small.pixels[p * 3 + c] }
+                strongCount += 1
+            }
+            if strongCount > 0 { blob.colour = colour.map { $0 / strongCount } }
+            return blob
+        }
+        return Clusters(clusters: candidates, blobs: blobs, width: w, height: h, factor: f)
     }
 
     // MARK: - Cut out
@@ -316,7 +329,8 @@ enum ColorSegmenter {
 enum SubjectPicker {
     struct Instance: Equatable {
         let label: Int
-        var count = 0
+        var blob = Blob()
+        var count: Int { blob.count }
         var bounds = ColorSegmenter.Box(x0: Int.max, y0: Int.max, x1: Int.min, y1: Int.min)
     }
 
@@ -329,7 +343,7 @@ enum SubjectPicker {
         for (i, label) in labels.enumerated() where label > 0 {
             var s = byLabel[label] ?? Instance(label: label)
             let x = i % w, y = i / w
-            s.count += 1
+            s.blob.add(x: x, y: y)
             s.bounds.x0 = min(s.bounds.x0, x); s.bounds.x1 = max(s.bounds.x1, x)
             s.bounds.y0 = min(s.bounds.y0, y); s.bounds.y1 = max(s.bounds.y1, y)
             byLabel[label] = s
@@ -337,25 +351,18 @@ enum SubjectPicker {
         return byLabel.values.sorted { $0.label < $1.label }
     }
 
-    /// Smallest size, relative to the largest, at which a second object counts as another
-    /// cartridge rather than a knot in the wood, a speck or a reflection.
-    static let sameSizeShare = 0.35
-
     /// The largest instance that lies inside the frame and isn't too big, nil if none does.
     static func pick(_ instances: [Instance], width w: Int, height h: Int) -> Int? {
         candidates(instances, width: w, height: h).max { $0.count < $1.count }?.label
     }
 
-    /// How many instances could each be a cartridge: inside the frame, not too big, and at least
-    /// `sameSizeShare` the size of the largest of them.
+    /// How many cartridges compete for the measurement: the one `pick` takes, plus instances
+    /// inside the frame that look like cartridges and make it unclear which one is meant
+    /// (see `Blob.competes`).
     static func objectCount(_ instances: [Instance], width w: Int, height h: Int) -> Int {
-        similar(candidates(instances, width: w, height: h).map(\.count))
-    }
-
-    /// How many of the sizes are at least `sameSizeShare` of the largest.
-    static func similar(_ sizes: [Int]) -> Int {
-        guard let largest = sizes.max(), largest > 0 else { return 0 }
-        return sizes.filter { Double($0) >= sameSizeShare * Double(largest) }.count
+        let blobs = candidates(instances, width: w, height: h).map(\.blob)
+        guard let main = blobs.indices.max(by: { blobs[$0].count < blobs[$1].count }) else { return 0 }
+        return Blob.count(competingWith: main, in: blobs, width: w, height: h)
     }
 
     private static func candidates(_ instances: [Instance], width w: Int, height h: Int) -> [Instance] {
@@ -364,5 +371,82 @@ enum SubjectPicker {
             let inside = b.x0 > 0 && b.y0 > 0 && b.x1 < w - 1 && b.y1 < h - 1
             return inside && Double(s.count) <= maxShare * Double(w * h)
         }
+    }
+}
+
+/// A patch of pixels summed up by size, position, elongation and colour, to tell a second
+/// cartridge from a table edge, a chair leg, a knot in the wood or a speck.
+///
+/// Another object only matters when it looks like a cartridge *and* gets in the way: it is about
+/// as prominent as the cartridge picked for measuring, so it is unclear which one is meant. A
+/// cartridge off in a corner, or anything that doesn't look like one, is ignored and the picked
+/// cartridge is measured.
+struct Blob: Equatable {
+    private(set) var count = 0
+    private var sx = 0.0, sy = 0.0, sxx = 0.0, syy = 0.0, sxy = 0.0
+    /// Mean colour (chroma) of the patch; nil when unknown, as for Vision instances.
+    var colour: [Float]?
+
+    /// Size range, relative to the cartridge, of another object that counts as a cartridge too
+    /// (wide enough for a 9 mm next to a GP 11).
+    static let sizeRange = (1.0 / 3)...3.0
+    /// Largest factor by which its elongation may differ from the cartridge's.
+    static let maxAspectFactor = 2.5
+    /// Smallest prominence (size, weighted down away from the centre), relative to the picked
+    /// cartridge, at which another cartridge makes the choice unclear.
+    static let competingShare = 0.4
+    /// Largest distance between the two mean colours (chroma, 0…255 per channel).
+    static let maxColourDistance: Float = 40
+
+    mutating func add(x: Int, y: Int) {
+        let px = Double(x), py = Double(y)
+        count += 1
+        sx += px; sy += py
+        sxx += px * px; syy += py * py; sxy += px * py
+    }
+
+    /// Size, weighted down the further the patch is from the centre of a `width` × `height` image:
+    /// how likely it is the subject of the photo.
+    func centreScore(width w: Int, height h: Int) -> Double {
+        guard count >= 1, w > 0, h > 0 else { return 0 }
+        let n = Double(count)
+        let dx = (sx / n - Double(w) / 2) / (Double(w) / 2)
+        let dy = (sy / n - Double(h) / 2) / (Double(h) / 2)
+        let off = min(1, (dx * dx + dy * dy).squareRoot() / 2.0.squareRoot())
+        return n * (1 - off) * (1 - off)
+    }
+
+    /// Long axis over short axis of the patch (principal axes of its pixels), at least 1.
+    var aspect: Double {
+        guard count > 1 else { return 1 }
+        let n = Double(count), mx = sx / n, my = sy / n
+        let a = sxx / n - mx * mx, c = syy / n - my * my, b = sxy / n - mx * my
+        let root = ((a - c) * (a - c) / 4 + b * b).squareRoot()
+        // A one-pixel-wide line still has a variance of 1/12 across.
+        let major = (a + c) / 2 + root, minor = max((a + c) / 2 - root, 1.0 / 12)
+        return max(1, (major / minor).squareRoot())
+    }
+
+    /// Whether `other` could be another cartridge next to this one: similar size, elongation and,
+    /// when both are known, colour. Errs towards no: a false alarm blocks the result entirely.
+    func resembles(_ other: Blob) -> Bool {
+        guard count >= 1, Self.sizeRange.contains(Double(other.count) / Double(count)) else { return false }
+        guard max(aspect, other.aspect) / min(aspect, other.aspect) <= Self.maxAspectFactor else { return false }
+        if let a = colour, let b = other.colour {
+            let distance = zip(a, b).reduce(Float(0)) { $0 + ($1.0 - $1.1) * ($1.0 - $1.1) }.squareRoot()
+            return distance <= Self.maxColourDistance
+        }
+        return true
+    }
+
+    /// Whether `other` looks like a cartridge too and is prominent enough in a `width` × `height`
+    /// image that it is unclear which of the two should be measured.
+    func competes(_ other: Blob, width w: Int, height h: Int) -> Bool {
+        resembles(other) && other.centreScore(width: w, height: h) >= Self.competingShare * centreScore(width: w, height: h)
+    }
+
+    /// The cartridge at `main` plus every other blob that competes with it.
+    static func count(competingWith main: Int, in blobs: [Blob], width w: Int, height h: Int) -> Int {
+        blobs.indices.filter { $0 == main || blobs[main].competes(blobs[$0], width: w, height: h) }.count
     }
 }
