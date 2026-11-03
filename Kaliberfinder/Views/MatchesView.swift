@@ -8,6 +8,7 @@ struct MatchesView: View {
     @State private var analysis: PhotoAnalysis?
     @State private var matches: [Match] = []
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
+    @AppStorage(ScanMode.storageKey) private var mode: ScanMode = .auto
 
     var body: some View {
         List {
@@ -18,7 +19,11 @@ struct MatchesView: View {
                     .frame(maxWidth: .infinity, maxHeight: 220)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 if let analysis {
-                    ForEach(Self.notes(for: analysis, depth: depth, unit: unit), id: \.self) { note in
+                    Picker("Was liegt im Bild?", selection: $mode) {
+                        ForEach(ScanMode.allCases) { Text($0.title.loc).tag($0) }
+                    }
+                    .pickerStyle(.segmented)
+                    ForEach(Self.notes(for: analysis, depth: depth, unit: unit, mode: mode), id: \.self) { note in
                         Text(note).font(.footnote).foregroundStyle(.secondary)
                     }
                 } else {
@@ -60,10 +65,16 @@ struct MatchesView: View {
         .navigationBarTitleDisplayMode(.inline)
         .task {
             let result = await PhotoAnalyzer.analyze(photo)
-            let size = try? result.size(depth: depth).get()
-            matches = Matcher.rank(shape: result.shape, hits: HeadstampReader.hits(in: result.texts), size: size)
             analysis = result
+            rank()
         }
+        .onChange(of: mode) { rank() }
+    }
+
+    private func rank() {
+        guard let analysis else { return }
+        let size = try? analysis.size(depth: depth).get()
+        matches = Matcher.rank(shape: analysis.shape, hits: HeadstampReader.hits(in: analysis.texts), size: size, mode: mode)
     }
 
     /// Why a calibre is listed, e.g. "Aufschrift «308 WIN» · Form passt gut".
@@ -85,6 +96,17 @@ struct MatchesView: View {
         return parts.joined(separator: " · ")
     }
 
+    /// What the photo shows, e.g. "Erkannt: leere Hülse · Flaschenhals · ohne Rand" (SCAN-03).
+    /// Nil for silhouettes built without slice widths.
+    static func featuresText(_ shape: ShapeMeasurement, mode: ScanMode) -> String? {
+        let part = mode.part(for: shape)
+        guard let f = (part == .emptyCase ? shape.mouthFirst() : shape).features else { return nil }
+        var parts: [String] = [part == .emptyCase ? "leere Hülse".loc : "Patrone".loc]
+        if part == .emptyCase { parts.append(f.hasNeck ? "Flaschenhals".loc : "gerade Hülse".loc) }
+        parts.append(f.isRimmed ? "mit Rand".loc : "ohne Rand".loc)
+        return String(format: "Erkannt: %@".loc, parts.joined(separator: " · "))
+    }
+
     /// "Gemessen: L ≈ 71 mm, Ø ≈ 12 mm", rounded to what the measurement can tell.
     static func measuredText(_ size: MeasuredSize, unit: LengthUnit) -> String {
         let step: Double = unit == .metric ? 0.5 : LengthUnit.mmPerInch / 200
@@ -93,8 +115,9 @@ struct MatchesView: View {
     }
 
     /// Hints about what the analysis could use, and the size measured with LiDAR.
-    static func notes(for a: PhotoAnalysis, depth: DepthScale? = nil, unit: LengthUnit = .metric) -> [String] {
+    static func notes(for a: PhotoAnalysis, depth: DepthScale? = nil, unit: LengthUnit = .metric, mode: ScanMode = .auto) -> [String] {
         var notes: [String] = []
+        if let shape = a.shape, !shape.isEndView, let text = featuresText(shape, mode: mode) { notes.append(text) }
         if depth != nil {
             switch a.size(depth: depth) {
             case .success(let size): notes.append(measuredText(size, unit: unit))
