@@ -11,7 +11,9 @@ it is, after taking a photo of it. In German, English, French and Italian.
   Vision takes the table, a box or the paper as the subject, a colour-based cut-out instead),
   compares its silhouette (length/width ratio and width profile) with every calibre's
   outline. A second, optional photo of the case head is read for the headstamp
-  ("WIN 308", "9MM LUGER"); text is only read from that base photo (or from a first photo
+  ("WIN 308", "9MM LUGER"). The app finds the brass case head in it, unrolls the ring of
+  letters round the primer into a straight strip and reads it both ways up, so the base
+  needn't fill the frame or be turned upright. Text is only read from that base photo (or from a first photo
   that turns out to show a round end), never from the side photo. Then compare
   the candidates 1:1 by laying the cartridge on the screen. Works best with the
   cartridge on its side on a light, plain background, photographed from above.
