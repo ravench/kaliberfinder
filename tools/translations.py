@@ -12,6 +12,17 @@ INFO_PLIST = {
 }
 
 T = {
+    "Aufschrift": ("Headstamp", "Inscription", "Scritta"),
+    "Aufschrift erkannt: «%@»": ("Headstamp read: “%@”", "Inscription lue : « %@ »", "Scritta letta: «%@»"),
+    "Aufschrift wird gelesen …": ("Reading headstamp …", "Lecture de l'inscription …", "Lettura della scritta …"),
+    "Boden fotografieren": ("Photograph base", "Photographier le culot", "Fotografa il fondello"),
+    "Boden neu fotografieren": ("Retake base photo", "Rephotographier le culot", "Rifotografa il fondello"),
+    "Bodenfoto auswählen": ("Choose base photo", "Choisir une photo du culot", "Scegli foto del fondello"),
+    "Die Aufschrift wird nur auf dem Bodenfoto gelesen. Boden formatfüllend, scharf und von vorne fotografieren.": (
+        "The headstamp is only read from the base photo. Fill the frame with the base, in focus and head-on.",
+        "L'inscription n'est lue que sur la photo du culot. Cadrez le culot en plein format, net et de face.",
+        "La scritta viene letta solo dalla foto del fondello. Inquadra il fondello a tutto schermo, a fuoco e di fronte."),
+    "Keine Aufschrift erkannt.": ("No headstamp read.", "Aucune inscription lue.", "Nessuna scritta letta."),
     "1:1 – Zoomen ist abgeschaltet, damit die Grösse stimmt.": (
         "1:1 – zoom is off so the size stays true.",
         "1:1 – le zoom est désactivé pour garder la taille réelle.",
@@ -78,10 +89,10 @@ T = {
     "Mögliche Kaliber": ("Possible calibres", "Calibres possibles", "Calibri possibili"),
     "Patrone erkennen": ("Identify a cartridge", "Identifier une cartouche", "Riconoscere una cartuccia"),
     "Patrone fotografieren": ("Photograph cartridge", "Photographier la cartouche", "Fotografa la cartuccia"),
-    "Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Eine Aufschrift auf dem Boden oder der Schachtel hilft zusätzlich.": (
-        "Lay the cartridge on its side on a light background and photograph it from above. A marking on the base or the box helps too.",
-        "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut. Une inscription sur le culot ou la boîte aide aussi.",
-        "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto. Anche una scritta sul fondello o sulla scatola aiuta."),
+    "Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Für die Aufschrift danach den Boden fotografieren.": (
+        "Lay the cartridge on its side on a light background and photograph it from above. Then photograph the base for the headstamp.",
+        "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut. Photographiez ensuite le culot pour l'inscription.",
+        "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto. Poi fotografa il fondello per la scritta."),
     "Suche nach Namen und tippe die Kaliber an, die du nebeneinander sehen willst.": (
         "Search by name and tap the calibres you want to see side by side.",
         "Cherchez par nom et touchez les calibres que vous voulez voir côte à côte.",
