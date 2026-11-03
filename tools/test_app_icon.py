@@ -21,6 +21,20 @@ class AppIconTests(unittest.TestCase):
         for palettes in (app_icon.MEASURE, app_icon.NAVY):
             self.assertEqual(set(palettes), {"", "-Dark", "-Tinted"})
 
+    def test_default_icon_has_no_ruler(self):
+        for p in app_icon.MEASURE.values():
+            svg = app_icon.icon(self.cartridges, p)
+            self.assertNotIn(p["ruler"], svg)
+            self.assertIn("stroke-dasharray", svg)  # the measuring line stays
+
+    def test_light_is_beige_dark_is_navy_tinted_is_black(self):
+        bgs = {k: p["bg"] for k, p in app_icon.MEASURE.items()}
+        self.assertEqual(bgs, {"": app_icon.BEIGE, "-Dark": app_icon.NAVY_BG, "-Tinted": app_icon.BLACK})
+
+    def test_measuring_line_differs_from_background(self):
+        for p in app_icon.MEASURE.values():
+            self.assertNotIn(p["measure"], p["bg"])
+
     def test_ruler_is_optional(self):
         p = app_icon.MEASURE[""]
         with_ruler = app_icon.icon(self.cartridges, p, ruler=True)

@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """App icons: three cartridges side by side (.22 LR, 9x19 mm, 7.5x55 Swiss GP 11),
 drawn from the catalogue outlines at the same scale. The default look borrows
-from the iOS Measure app: navy (dark mode: black) background, a white dotted measuring line
-with round handles, over a cream mm ruler with a red zero mark. --navy gives
-the Schiesstagebuch look instead.
+from the iOS Measure app: a dotted measuring line with round handles on a beige
+(dark mode: navy, tinted: black) background. --navy gives the Schiesstagebuch look instead.
 
-    python3 tools/app_icon.py [--no-ruler] [--navy] [OUT_DIR]
+    python3 tools/app_icon.py [--ruler] [--navy] [OUT_DIR]
 
 Writes AppIcon{,-Dark,-Tinted}.svg (1024x1024) to OUT_DIR (default: the asset
 catalogue) and renders PNGs next to them with the preinstalled Playwright
-Chromium (node). With a ruler by default; --no-ruler leaves it out.
+Chromium (node). No ruler by default (the measuring line already says "measure");
+--ruler adds a cream mm ruler with a red zero mark under the cartridges.
 """
 import json, os, re, subprocess, sys
 
@@ -24,16 +24,19 @@ GAP = 66          # px between cartridges
 BRASS = dict(brass="#E3C16F", brass_hi="#F3DC9C", copper="#C0743A", copper_hi="#DE9A62", line="#3A2A12")
 TINT = dict(brass="#C8C8C8", brass_hi="#E6E6E6", copper="#8C8C8C", copper_hi="#A8A8A8", line="#000000")
 
-# Measure-app look: white measuring line, cream ruler with a red zero mark;
-# navy background in light mode, near-black in dark mode.
+# Backgrounds: beige in light mode, navy in dark mode, black for tinted (grayscale).
+BEIGE = ("#F1E6D2", "#DCC9A8")
+NAVY_BG = ("#2B3A55", "#18233A")
+BLACK = ("#000000", "#000000")
+
+# Measure-app look: dotted measuring line with round handles (navy on beige, white on navy).
 MEASURE = {
-    "": dict(BRASS, bg=("#2B3A55", "#18233A"), ruler="#F4F1E8", tick="#141414", zero="#D52B1E",
-             shadow="#0B1222", measure="#FFFFFF"),
-    "-Dark": dict(BRASS, bg=("#1C1C1E", "#000000"), brass="#C9A85A", brass_hi="#DCC07A", copper="#A8622F",
-                  copper_hi="#C47E4C", line="#000000", ruler="#D9D5CA", tick="#0D0D0D", zero="#FF5A45",
-                  shadow="#000000", measure="#E8E8E8"),
+    "": dict(BRASS, bg=BEIGE, ruler="#F4F1E8", tick="#141414", zero="#D52B1E",
+             shadow="#7A6440", measure="#2B3A55"),
+    "-Dark": dict(BRASS, bg=NAVY_BG, ruler="#F4F1E8", tick="#141414", zero="#D52B1E",
+                  shadow="#0B1222", measure="#FFFFFF"),
     # Tinted: grayscale on black; iOS maps luminance onto the user's tint colour.
-    "-Tinted": dict(TINT, bg=("#000000", "#000000"), ruler="#D0D0D0", tick="#000000", zero="#FFFFFF",
+    "-Tinted": dict(TINT, bg=BLACK, ruler="#D0D0D0", tick="#000000", zero="#FFFFFF",
                     shadow="#000000", measure="#FFFFFF"),
 }
 
@@ -91,11 +94,12 @@ def measuring_line(x, top, bottom, colour):
             f'<circle cx="{x:.1f}" cy="{bottom:.1f}" r="15" fill="{colour}"/>')
 
 
-def icon(cartridges, p, ruler=True):
+def icon(cartridges, p, ruler=False):
     widths = [c["outline"]["width"] * SCALE for c in cartridges]
     total = sum(widths) + GAP * (len(cartridges) - 1)
     extra = 90 if "measure" in p else 0   # room for the measuring line on the right
-    base = 790 if ruler else 860
+    tallest = max(c["outline"]["height"] for c in cartridges) * SCALE
+    base = 790 if ruler else round((S + tallest) / 2)   # without ruler: centred vertically
     x = (S - total - extra) / 2
     centre = x + total / 2
     body = [f'<ellipse cx="{centre:.1f}" cy="{base + 4}" rx="{total / 2 + 60:.0f}" ry="16" fill="{p["shadow"]}" opacity="0.45"/>']
@@ -104,7 +108,6 @@ def icon(cartridges, p, ruler=True):
         body.append(part)
         x += w + GAP
     if "measure" in p:
-        tallest = max(c["outline"]["height"] for c in cartridges) * SCALE
         body.append(measuring_line(x - GAP + 70, base - tallest, base, p["measure"]))
     if ruler:
         left, right, top = 150, 874, base + 22
@@ -138,7 +141,7 @@ const { chromium } = require('playwright');
 
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    ruler = "--no-ruler" not in sys.argv
+    ruler = "--ruler" in sys.argv
     palettes = NAVY if "--navy" in sys.argv else MEASURE
     out = os.path.abspath(args[0]) if args else ASSETS
     os.makedirs(out, exist_ok=True)
