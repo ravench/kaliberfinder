@@ -3,6 +3,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var scale: ScaleModel
+    @Environment(\.scenePhase) private var scenePhase
     @State private var showCamera = false
     @State private var libraryItem: PhotosPickerItem?
     @State private var photo: PickedPhoto?
@@ -61,7 +62,15 @@ struct HomeView: View {
             }
         }
         .navigationTitle("Kaliberfinder")
-        .navigationDestination(item: $photo) { MatchesView(photo: $0.image, depth: $0.depth) }
+        .navigationDestination(item: $photo) {
+            // New identity per photo, so a photo shared while the matches are open is analysed afresh.
+            MatchesView(photo: $0.image, depth: $0.depth, base: $0.base).id($0.id)
+        }
+        // Photos shared from other apps: the extension opens the app with this URL. If iOS did not
+        // let it, they wait in the inbox until the app comes to the front.
+        .onOpenURL { if SharedInbox.isOpenURL($0) { takeSharedPhotos() } }
+        .onChange(of: scenePhase) { _, phase in if phase == .active { takeSharedPhotos() } }
+        .task { takeSharedPhotos() }
         .fullScreenCover(isPresented: $showCamera) {
             if LiDARCamera.isAvailable {
                 LiDARCameraView { photo = PickedPhoto(image: $0, depth: $1) }
@@ -79,5 +88,12 @@ struct HomeView: View {
                 libraryItem = nil
             }
         }
+    }
+
+    private func takeSharedPhotos() {
+        let images = (SharedInbox.shared?.take() ?? []).compactMap(UIImage.init(data:))
+        guard let first = images.first else { return }
+        showCamera = false
+        photo = PickedPhoto(image: first, base: images.dropFirst().first)
     }
 }

@@ -19,6 +19,10 @@ it is, after taking a photo of it. In German, English, French and Italian.
   "Patrone" / "Leere Hülse"), compares cases with case outlines, and uses the rim (rimmed or
   rimless) and the neck (bottleneck or straight) to rule out calibres. Matches that are far
   off are not listed.
+- **Teilen**: share a photo from Photos, Files, Messages or any other app to "Kaliberfinder"
+  in the share sheet; the app opens on the matches for it. Share two photos at once to add the
+  base photo too (first = side, second = base). The share extension only hands the photos over
+  through the App Group `group.ch.giotta.kaliberfinder`; the analysis runs in the app.
 - **Kaliber**: catalogue of about 100 calibres (rimfire, handgun, rifle incl. GP 90 / GP 11,
   black powder, shotgun, air), with search across names, aliases and headstamp spellings.
   Each calibre shows its dimensions: overall length, case length, rim, base, shoulder,
