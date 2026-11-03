@@ -35,6 +35,10 @@ class AppIconTests(unittest.TestCase):
         for p in app_icon.MEASURE.values():
             self.assertNotIn(p["measure"], p["bg"])
 
+    def test_no_shadow_under_the_cartridges(self):
+        for p in app_icon.MEASURE.values():
+            self.assertNotIn("<ellipse", app_icon.icon(self.cartridges, p))
+
     def test_ruler_is_optional(self):
         p = app_icon.MEASURE[""]
         with_ruler = app_icon.icon(self.cartridges, p, ruler=True)

@@ -31,13 +31,10 @@ BLACK = ("#000000", "#000000")
 
 # Measure-app look: dotted measuring line with round handles (navy on beige, white on navy).
 MEASURE = {
-    "": dict(BRASS, bg=BEIGE, ruler="#F4F1E8", tick="#141414", zero="#D52B1E",
-             shadow="#7A6440", measure="#2B3A55"),
-    "-Dark": dict(BRASS, bg=NAVY_BG, ruler="#F4F1E8", tick="#141414", zero="#D52B1E",
-                  shadow="#0B1222", measure="#FFFFFF"),
+    "": dict(BRASS, bg=BEIGE, ruler="#F4F1E8", tick="#141414", zero="#D52B1E", measure="#2B3A55"),
+    "-Dark": dict(BRASS, bg=NAVY_BG, ruler="#F4F1E8", tick="#141414", zero="#D52B1E", measure="#FFFFFF"),
     # Tinted: grayscale on black; iOS maps luminance onto the user's tint colour.
-    "-Tinted": dict(TINT, bg=BLACK, ruler="#D0D0D0", tick="#000000", zero="#FFFFFF",
-                    shadow="#000000", measure="#FFFFFF"),
+    "-Tinted": dict(TINT, bg=BLACK, ruler="#D0D0D0", tick="#000000", zero="#FFFFFF", measure="#FFFFFF"),
 }
 
 # Schiesstagebuch look: navy, cream ruler with a red zero mark.
@@ -102,7 +99,9 @@ def icon(cartridges, p, ruler=False):
     base = 790 if ruler else round((S + tallest) / 2)   # without ruler: centred vertically
     x = (S - total - extra) / 2
     centre = x + total / 2
-    body = [f'<ellipse cx="{centre:.1f}" cy="{base + 4}" rx="{total / 2 + 60:.0f}" ry="16" fill="{p["shadow"]}" opacity="0.45"/>']
+    body = []
+    if "shadow" in p:   # contact shadow: only the --navy look has one
+        body.append(f'<ellipse cx="{centre:.1f}" cy="{base + 4}" rx="{total / 2 + 60:.0f}" ry="16" fill="{p["shadow"]}" opacity="0.45"/>')
     for i, c in enumerate(cartridges):
         part, w = cartridge(c, x, base, p, i)
         body.append(part)
