@@ -12,6 +12,11 @@ INFO_PLIST = {
 }
 
 T = {
+    "Alle passenden 1:1 vergleichen (%lld)": ("Compare all matches 1:1 (%lld)", "Comparer toutes les correspondances 1:1 (%lld)", "Confronta tutte le corrispondenze 1:1 (%lld)"),
+    "Beliebige Form": ("Any shape", "Toute forme", "Qualsiasi forma"),
+    "Form": ("Shape", "Forme", "Forma"),
+    "Gerade Hülse": ("Straight case", "Douille droite", "Bossolo dritto"),
+    "Hülse mit Flaschenhals": ("Bottleneck case", "Douille à goulot", "Bossolo a collo di bottiglia"),
     "Automatisch": ("Automatic", "Automatique", "Automatico"),
     "Erkannt: %@": ("Detected: %@", "Détecté : %@", "Riconosciuto: %@"),
     "Flaschenhals": ("bottleneck", "à goulot", "a collo di bottiglia"),
