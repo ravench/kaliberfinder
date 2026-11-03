@@ -36,7 +36,9 @@ final class EmptyCaseTests: XCTestCase {
         let shape = try photo(cartridge(".308 Winchester"), part: .emptyCase)
         XCTAssertEqual(ScanMode.auto.part(for: shape), .emptyCase)
         let matches = Matcher.rank(shape: shape, hits: [], limit: .max)
-        XCTAssertEqual(Set(matches.prefix(2).map(\.cartridge.id)), [".308 Winchester", "7.62x51 mm NATO"])
+        // Without a scale the GP 1890 case (same shape, only 2 mm longer) can tie with the .308 twins.
+        let top = Set(matches.prefix(3).map(\.cartridge.id))
+        XCTAssertTrue(top.isSuperset(of: [".308 Winchester", "7.62x51 mm NATO"]), top.sorted().joined(separator: ", "))
         XCTAssertTrue(matches.allSatisfy { $0.part == .emptyCase })
         // Before, .500 S&W Magnum and .357 Magnum came first: no handgun calibre may be listed.
         let handgun = matches.filter { $0.cartridge.category == CartridgeCatalog.Category.handgun.rawValue }
