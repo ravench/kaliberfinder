@@ -26,7 +26,11 @@ struct MatchesView: View {
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: 220)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
-                if let analysis {
+                if let analysis, analysis.hasSeveralObjects {
+                    Label(Self.severalObjectsText, systemImage: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.red)
+                    Text(Self.severalObjectsHint).font(.footnote).foregroundStyle(.secondary)
+                } else if let analysis {
                     Picker("Was liegt im Bild?", selection: $mode) {
                         ForEach(ScanMode.allCases) { Text($0.title.loc).tag($0) }
                     }
@@ -41,7 +45,7 @@ struct MatchesView: View {
                     }
                 }
             }
-            if analysis != nil {
+            if let analysis, !analysis.hasSeveralObjects {
                 baseSection
                 if matches.isEmpty {
                     Section {
@@ -50,16 +54,9 @@ struct MatchesView: View {
                     }
                 } else {
                     Section {
-                        NavigationLink {
-                            TrueScaleView(cartridges: matches.prefix(3).map(\.cartridge))
-                        } label: {
-                            Label("Die besten drei 1:1 vergleichen", systemImage: "ruler")
-                        }
-                    }
-                    Section {
                         ForEach(matches) { m in
                             NavigationLink { TrueScaleView(cartridges: [m.cartridge]) } label: {
-                                CartridgeRow(cartridge: m.cartridge, detail: Self.reason(for: m))
+                                CartridgeRow(cartridge: m.cartridge, detail: Self.reason(for: m), highlighted: m.fitsWell)
                             }
                         }
                     } header: {
@@ -68,6 +65,17 @@ struct MatchesView: View {
                         Text("Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.")
                     }
                 }
+            }
+        }
+        .safeAreaInset(edge: .bottom) {
+            // A prominent button pinned to the bottom, like on the measure screen, so it is not missed.
+            if analysis != nil, !matches.isEmpty {
+                NavigationLink { TrueScaleView(cartridges: Self.toCompare(matches)) } label: {
+                    Label(Self.compareTitle(matches), systemImage: Self.compareSymbol)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                .padding()
             }
         }
         .navigationTitle("Treffer")
@@ -141,9 +149,15 @@ struct MatchesView: View {
     }
 
     private func rank() {
-        guard let analysis else { return }
+        guard let analysis, !analysis.hasSeveralObjects else { matches = []; return }
         let size = try? analysis.size(depth: depth).get()
         matches = Matcher.rank(shape: analysis.shape, hits: Self.hits(side: analysis, baseTexts: baseTexts), size: size, mode: mode)
+    }
+
+    /// Error shown instead of matches when the photo holds more than one cartridge.
+    static var severalObjectsText: String { "Mehrere Patronen im Bild erkannt.".loc }
+    static var severalObjectsHint: String {
+        "Bitte nur eine Patrone pro Foto: die anderen beiseitelegen und neu fotografieren.".loc
     }
 
     /// Headstamp hits from the base photo, plus the first photo's text when that one showed a base anyway.
@@ -157,6 +171,19 @@ struct MatchesView: View {
         let lines = texts.map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty && seen.insert($0).inserted }
         guard !lines.isEmpty else { return "Keine Aufschrift erkannt.".loc }
         return String(format: "Aufschrift erkannt: «%@»".loc, lines.prefix(3).joined(separator: " / "))
+    }
+
+    /// Symbol of the 1:1 compare buttons: two items side by side.
+    static let compareSymbol = "square.and.line.vertical.and.square"
+
+    /// Every listed calibre goes to the 1:1 screen, in rank order; it scrolls sideways.
+    static func toCompare(_ matches: [Match]) -> [Cartridge] {
+        matches.map(\.cartridge)
+    }
+
+    /// E.g. "Alle passenden 1:1 vergleichen (5)".
+    static func compareTitle(_ matches: [Match]) -> String {
+        String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, matches.count)
     }
 
     /// Why a calibre is listed, e.g. "Aufschrift «308 WIN» · Form passt gut".
