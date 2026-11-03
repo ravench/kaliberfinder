@@ -75,8 +75,17 @@ enum ColorSegmenter {
     /// that look like cartridges and make it unclear which one is meant (see `Blob.competes`);
     /// 0 if nothing stands out.
     static func objectCount(_ image: RGBImage) -> Int {
-        guard let found = clusters(image), let main = found.main else { return 0 }
-        return Blob.count(competingWith: main, in: found.blobs, width: found.width, height: found.height)
+        competitors(image).count
+    }
+
+    /// Where the competing cartridges are, in image pixels, the one `locate` picks first.
+    static func competitors(_ image: RGBImage) -> [Box] {
+        guard let found = clusters(image), let main = found.main else { return [] }
+        let f = found.factor
+        return Blob.competitors(of: main, in: found.blobs, width: found.width, height: found.height).map { i in
+            let b = bounds(found.clusters[i], width: found.width)
+            return Box(x0: b.x0 * f, y0: b.y0 * f, x1: min(image.width, (b.x1 + 1) * f), y1: min(image.height, (b.y1 + 1) * f))
+        }
     }
 
     /// Clusters of pixels that stand out by colour and don't touch the frame, in a copy of the
@@ -360,9 +369,15 @@ enum SubjectPicker {
     /// inside the frame that look like cartridges and make it unclear which one is meant
     /// (see `Blob.competes`).
     static func objectCount(_ instances: [Instance], width w: Int, height h: Int) -> Int {
-        let blobs = candidates(instances, width: w, height: h).map(\.blob)
-        guard let main = blobs.indices.max(by: { blobs[$0].count < blobs[$1].count }) else { return 0 }
-        return Blob.count(competingWith: main, in: blobs, width: w, height: h)
+        competitors(instances, width: w, height: h).count
+    }
+
+    /// The competing instances, the one `pick` takes first.
+    static func competitors(_ instances: [Instance], width w: Int, height h: Int) -> [Instance] {
+        let found = candidates(instances, width: w, height: h)
+        let blobs = found.map(\.blob)
+        guard let main = blobs.indices.max(by: { blobs[$0].count < blobs[$1].count }) else { return [] }
+        return Blob.competitors(of: main, in: blobs, width: w, height: h).map { found[$0] }
     }
 
     private static func candidates(_ instances: [Instance], width w: Int, height h: Int) -> [Instance] {
@@ -447,6 +462,11 @@ struct Blob: Equatable {
 
     /// The cartridge at `main` plus every other blob that competes with it.
     static func count(competingWith main: Int, in blobs: [Blob], width w: Int, height h: Int) -> Int {
-        blobs.indices.filter { $0 == main || blobs[main].competes(blobs[$0], width: w, height: h) }.count
+        competitors(of: main, in: blobs, width: w, height: h).count
+    }
+
+    /// Indices of the cartridge at `main` (first) and of every other blob that competes with it.
+    static func competitors(of main: Int, in blobs: [Blob], width w: Int, height h: Int) -> [Int] {
+        [main] + blobs.indices.filter { $0 != main && blobs[main].competes(blobs[$0], width: w, height: h) }
     }
 }
