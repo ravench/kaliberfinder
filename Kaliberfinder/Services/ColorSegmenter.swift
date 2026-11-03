@@ -65,6 +65,23 @@ enum ColorSegmenter {
 
     /// Where the cartridge is, in image pixels.
     static func locate(_ image: RGBImage) -> Box? {
+        guard let found = clusters(image) else { return nil }
+        let w = found.width, h = found.height, f = found.factor
+        guard let best = found.clusters.max(by: { centreScore($0, width: w, height: h) < centreScore($1, width: w, height: h) })
+        else { return nil }
+        let b = bounds(best, width: w)
+        return Box(x0: b.x0 * f, y0: b.y0 * f, x1: min(image.width, (b.x1 + 1) * f), y1: min(image.height, (b.y1 + 1) * f))
+    }
+
+    /// How many objects stand out like a cartridge: clusters at least
+    /// `SubjectPicker.sameSizeShare` the size of the largest; 0 if nothing stands out.
+    static func objectCount(_ image: RGBImage) -> Int {
+        SubjectPicker.similar(clusters(image)?.clusters.map(\.count) ?? [])
+    }
+
+    /// Clusters of pixels that stand out by colour and don't touch the frame, in a copy of the
+    /// photo scaled down by `factor` to `width` × `height`.
+    private static func clusters(_ image: RGBImage) -> (clusters: [[Int]], width: Int, height: Int, factor: Int)? {
         let f = max(1, Int((Double(max(image.width, image.height)) / Double(locateSide)).rounded(.up)))
         // Colour only, so shadow edges don't stand out.
         let small = chroma(downsample(image, factor: f))
@@ -87,10 +104,7 @@ enum ColorSegmenter {
         let candidates = components(mask, width: w, height: h).filter {
             $0.count >= 20 && !touchesBorder($0, width: w, height: h)
         }
-        guard let best = candidates.max(by: { centreScore($0, width: w, height: h) < centreScore($1, width: w, height: h) })
-        else { return nil }
-        let b = bounds(best, width: w)
-        return Box(x0: b.x0 * f, y0: b.y0 * f, x1: min(image.width, (b.x1 + 1) * f), y1: min(image.height, (b.y1 + 1) * f))
+        return (candidates, w, h, f)
     }
 
     /// Size of a cluster, weighted down the further it is from the centre of the photo.
@@ -323,13 +337,32 @@ enum SubjectPicker {
         return byLabel.values.sorted { $0.label < $1.label }
     }
 
+    /// Smallest size, relative to the largest, at which a second object counts as another
+    /// cartridge rather than a knot in the wood, a speck or a reflection.
+    static let sameSizeShare = 0.35
+
     /// The largest instance that lies inside the frame and isn't too big, nil if none does.
     static func pick(_ instances: [Instance], width w: Int, height h: Int) -> Int? {
+        candidates(instances, width: w, height: h).max { $0.count < $1.count }?.label
+    }
+
+    /// How many instances could each be a cartridge: inside the frame, not too big, and at least
+    /// `sameSizeShare` the size of the largest of them.
+    static func objectCount(_ instances: [Instance], width w: Int, height h: Int) -> Int {
+        similar(candidates(instances, width: w, height: h).map(\.count))
+    }
+
+    /// How many of the sizes are at least `sameSizeShare` of the largest.
+    static func similar(_ sizes: [Int]) -> Int {
+        guard let largest = sizes.max(), largest > 0 else { return 0 }
+        return sizes.filter { Double($0) >= sameSizeShare * Double(largest) }.count
+    }
+
+    private static func candidates(_ instances: [Instance], width w: Int, height h: Int) -> [Instance] {
         instances.filter { s in
             let b = s.bounds
             let inside = b.x0 > 0 && b.y0 > 0 && b.x1 < w - 1 && b.y1 < h - 1
             return inside && Double(s.count) <= maxShare * Double(w * h)
         }
-        .max { $0.count < $1.count }?.label
     }
 }
