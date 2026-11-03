@@ -14,6 +14,10 @@ it is, after taking a photo of it. In German, English, French and Italian.
   that turns out to show a round end), never from the side photo. Then compare
   the candidates 1:1 by laying the cartridge on the screen. Works best with the
   cartridge on its side on a light, plain background, photographed from above.
+  Empty cases work too: the app tells a case mouth from a bullet tip by itself (or you pick
+  "Patrone" / "Leere Hülse"), compares cases with case outlines, and uses the rim (rimmed or
+  rimless) and the neck (bottleneck or straight) to rule out calibres. Matches that are far
+  off are not listed.
 - **Kaliber**: catalogue of about 100 calibres (rimfire, handgun, rifle incl. GP 90 / GP 11,
   black powder, shotgun, air), with search across names, aliases and headstamp spellings.
   Each calibre shows its dimensions: overall length, case length, rim, base, shoulder,

@@ -13,8 +13,9 @@ struct OutlineGeometry {
     let width: Double
     let height: Double
 
-    init(_ outline: Cartridge.Outline) {
-        polygons = [outline.case, outline.head, outline.bullet].compactMap { $0 }.flatMap(Self.parse)
+    /// Without the bullet, the polygons are those of the empty case.
+    init(_ outline: Cartridge.Outline, includeBullet: Bool = true) {
+        polygons = [outline.case, outline.head, includeBullet ? outline.bullet : nil].compactMap { $0 }.flatMap(Self.parse)
         width = outline.width
         height = outline.height
     }

@@ -392,6 +392,29 @@
         }
       }
     },
+    "Automatisch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatique"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatico"
+          }
+        }
+      }
+    },
     "Bauart": {
       "extractionState": "manual",
       "localizations": {
@@ -760,6 +783,29 @@
         }
       }
     },
+    "Erkannt: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detected: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Détecté : %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riconosciuto: %@"
+          }
+        }
+      }
+    },
     "Etwas weiter weg": {
       "extractionState": "manual",
       "localizations": {
@@ -802,6 +848,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fine"
+          }
+        }
+      }
+    },
+    "Flaschenhals": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bottleneck"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "à goulot"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a collo di bottiglia"
           }
         }
       }
@@ -1680,6 +1749,29 @@
         }
       }
     },
+    "Leere Hülse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empty case"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Douille vide"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bossolo vuoto"
+          }
+        }
+      }
+    },
     "Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.": {
       "extractionState": "manual",
       "localizations": {
@@ -2090,6 +2182,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Corrisponde esattamente"
+          }
+        }
+      }
+    },
+    "Patrone": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartridge"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartouche"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartuccia"
           }
         }
       }
@@ -2554,6 +2669,29 @@
         }
       }
     },
+    "Was liegt im Bild?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What is in the photo?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qu'y a-t-il sur la photo ?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cosa c'è nella foto?"
+          }
+        }
+      }
+    },
     "Wähle Kaliber aus, um sie in Originalgrösse nebeneinander zu vergleichen.": {
       "extractionState": "manual",
       "localizations": {
@@ -2623,6 +2761,29 @@
         }
       }
     },
+    "gerade Hülse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "straight case"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "douille droite"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bossolo dritto"
+          }
+        }
+      }
+    },
     "iPhone parallel zum Tisch halten": {
       "extractionState": "manual",
       "localizations": {
@@ -2642,6 +2803,75 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tieni l'iPhone parallelo al tavolo"
+          }
+        }
+      }
+    },
+    "leere Hülse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "empty case"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "douille vide"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bossolo vuoto"
+          }
+        }
+      }
+    },
+    "mit Rand": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rimmed"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "à bourrelet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "con orlo"
+          }
+        }
+      }
+    },
+    "ohne Rand": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rimless"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sans bourrelet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "senza orlo"
           }
         }
       }
