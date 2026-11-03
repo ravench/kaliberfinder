@@ -107,6 +107,19 @@ jobs:
             cat "$RUNNER_TEMP/entitlements.plist"
             python3 tools/testflight.py check-entitlements "$RUNNER_TEMP/entitlements.plist" "$NAME/$NAME.entitlements"
           done
+      - name: Show the export logs
+        # "exportArchive Authentication failed" hides the portal's answer; the distribution logs keep it.
+        if: failure() && steps.secrets.outputs.ready == 'true'
+        run: |
+          for LOGS in "${TMPDIR:-/tmp}"/*.xcdistributionlogs; do
+            [ -d "$LOGS" ] || continue
+            echo "=== $LOGS"
+            ls "$LOGS"
+            grep -hiE "error|fail|denied|forbidden|401|403|profile|certificate|capabilit" "$LOGS"/IDEDistribution*.log \
+              | grep -viE "AuthKey|token" | sort -u | tail -60 || true
+            echo "--- last lines ---"
+            tail -60 "$LOGS"/IDEDistribution.standard.log 2>/dev/null | grep -viE "AuthKey|token" || true
+          done
       - name: Upload to TestFlight
         if: steps.secrets.outputs.ready == 'true'
         run: |
