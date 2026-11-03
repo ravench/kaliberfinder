@@ -53,6 +53,48 @@ class TeamIdTests(unittest.TestCase):
             self.assertRegex(testflight.team_id(f.read()), r"^[A-Z0-9]{10}$")
 
 
+class EntitlementTests(unittest.TestCase):
+    EXPECTED = {"aps-environment": "development",
+                "com.apple.developer.icloud-container-identifiers": ["iCloud.ch.giotta.schiesstagebuch"],
+                "com.apple.developer.icloud-services": ["CloudKit"]}
+
+    def test_distribution_signature_passes(self):
+        signed = dict(self.EXPECTED, **{"aps-environment": "production", "application-identifier": "PD9YC6KM5T.x"})
+        self.assertEqual(testflight.missing_entitlements(signed, self.EXPECTED), [])
+
+    def test_lost_entitlements_reported(self):
+        signed = {"com.apple.developer.icloud-container-identifiers": [], "application-identifier": "x"}
+        self.assertEqual(testflight.missing_entitlements(signed, self.EXPECTED),
+                         ["aps-environment", "com.apple.developer.icloud-container-identifiers: iCloud.ch.giotta.schiesstagebuch",
+                          "com.apple.developer.icloud-services"])
+
+    def test_cli(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            signed, expected = os.path.join(tmp, "s.plist"), os.path.join(tmp, "e.plist")
+            with open(expected, "wb") as f:
+                plistlib.dump(self.EXPECTED, f)
+            with open(signed, "wb") as f:
+                plistlib.dump({}, f)
+            bad = subprocess.run([sys.executable, SCRIPT, "check-entitlements", signed, expected], capture_output=True, text=True)
+            self.assertNotEqual(bad.returncode, 0)
+            self.assertIn("icloud-services", bad.stderr)
+            with open(signed, "wb") as f:
+                plistlib.dump(self.EXPECTED, f)
+            ok = subprocess.run([sys.executable, SCRIPT, "check-entitlements", signed, expected], capture_output=True, text=True)
+            self.assertEqual(ok.returncode, 0, ok.stderr)
+            # Apps without an entitlements file (no capabilities) pass.
+            ok = subprocess.run([sys.executable, SCRIPT, "check-entitlements", signed, os.path.join(tmp, "none")], capture_output=True, text=True)
+            self.assertEqual(ok.returncode, 0, ok.stderr)
+
+
+class ExportDestinationTests(unittest.TestCase):
+    def test_local_export(self):
+        self.assertEqual(testflight.export_options("AB12CD34EF", "export")["destination"], "export")
+        self.assertEqual(testflight.export_options("AB12CD34EF")["destination"], "upload")
+        with self.assertRaises(ValueError):
+            testflight.export_options("AB12CD34EF", "somewhere")
+
+
 class ExportOptionsTests(unittest.TestCase):
     def test_uploads_to_app_store_connect(self):
         options = testflight.export_options("AB12CD34EF")
@@ -114,6 +156,29 @@ class WorkflowTests(unittest.TestCase):
             build = f.read()
         self.assertRegex(build, r"push:\n\s+branches: \[main\]")
         self.assertIn("pull_request:", build)
+
+    def test_archive_creates_no_certificates(self):
+        # Automatic signing in the archive made each fresh runner create an Apple Development
+        # certificate until Apple's per-team limit (2026-11-03). Only the export signs, in the cloud.
+        # Ad hoc signing ("-") is refused for the iOS SDK, so the archive is unsigned.
+        archive = self.workflow.split("xcodebuild archive")[1].split("- name:")[0]
+        self.assertIn("CODE_SIGNING_ALLOWED=NO", archive)
+        self.assertNotIn("allowProvisioningUpdates", archive)
+        # ...but the export only keeps entitlements the archived app is signed with.
+        self.assertIn('codesign --force --sign - --entitlements "$ENTITLEMENTS"', archive)
+
+    def test_entitlements_checked_before_upload(self):
+        check = self.workflow.index("check-entitlements")
+        upload = self.workflow.index("ExportOptions.plist\"", self.workflow.index("- name: Upload to TestFlight"))
+        self.assertLess(check, upload)
+        self.assertIn('export-options "$RUNNER_TEMP/ExportLocal.plist" export', self.workflow)
+
+    def test_archive_errors_shown(self):
+        # xcpretty hides signing errors; the raw log is kept and printed when the archive fails.
+        self.assertIn('| tee "$RUNNER_TEMP/archive.log" | xcpretty', self.workflow)
+        shown = self.workflow.split("Show the archive errors")[1].split("- name:")[0]
+        self.assertIn("if: failure()", shown)
+        self.assertIn("archive.log", shown)
 
     def test_uses_ci_build_number(self):
         self.assertIn('CURRENT_PROJECT_VERSION="$BUILD_NUMBER"', self.workflow)
