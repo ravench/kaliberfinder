@@ -144,6 +144,16 @@ T = {
     "Bodendurchmesser": ("Base diameter", "Diamètre au culot", "Diametro alla base"),
     "Diabolo": ("Diabolo pellet", "Plomb diabolo", "Piombino diabolo"),
     "Fertig": ("Done", "Terminé", "Fine"),
+    "Geteilte Fotos werden geprüft …": (
+        "Checking shared photos …", "Vérification des photos partagées …", "Verifica delle foto condivise …"),
+    "Foto übernommen. Öffne Kaliberfinder, um die Treffer zu sehen.": (
+        "Photo received. Open Kaliberfinder to see the matches.",
+        "Photo reçue. Ouvrez Kaliberfinder pour voir les correspondances.",
+        "Foto ricevuta. Apri Kaliberfinder per vedere le corrispondenze."),
+    "Das Foto konnte nicht übernommen werden.": (
+        "The photo could not be received.",
+        "Impossible de reprendre la photo.",
+        "Impossibile ricevere la foto."),
     "Flinte": ("Shotgun", "Fusil de chasse", "Fucile a canna liscia"),
     "Geschätzt, bitte kalibrieren": ("Estimated, please calibrate", "Estimé, veuillez calibrer", "Stimato, calibra per favore"),
     "Fülle aus, was du messen kannst. Schon eine Länge und ein Durchmesser grenzen die Auswahl stark ein.": (

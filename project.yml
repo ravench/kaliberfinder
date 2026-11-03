@@ -14,6 +14,19 @@ targets:
       properties:
         CFBundleDevelopmentRegion: de
         CFBundleLocalizations: [de, en, fr, it]
+        # Opened by the share extension once it has put a shared photo into the App Group inbox.
+        CFBundleURLTypes:
+          - CFBundleURLName: ch.giotta.kaliberfinder
+            CFBundleURLSchemes: [kaliberfinder]
+    entitlements:
+      path: Kaliberfinder/Kaliberfinder.entitlements
+      properties:
+        # Shared with the share extension (SharedInbox.appGroup).
+        com.apple.security.application-groups:
+          - group.ch.giotta.kaliberfinder
+    dependencies:
+      # Embeds the share extension in the app.
+      - target: KaliberfinderShare
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: ch.giotta.kaliberfinder
@@ -34,6 +47,44 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
         # German source; translations in Resources/InfoPlist.xcstrings (tools/localize.py).
         INFOPLIST_KEY_NSCameraUsageDescription: "Patronen fotografieren, um das Kaliber zu erkennen."
+  KaliberfinderShare:
+    # "Kaliberfinder" in the share sheet of Photos, Files, Messages …: hands photos to the app.
+    type: app-extension
+    platform: iOS
+    sources:
+      - KaliberfinderShare
+      - Kaliberfinder/Services/SharedInbox.swift
+      - Kaliberfinder/Services/L10n.swift
+      - Kaliberfinder/Resources/Localizable.xcstrings
+    info:
+      path: KaliberfinderShare/Info.plist
+      properties:
+        CFBundleDevelopmentRegion: de
+        CFBundleLocalizations: [de, en, fr, it]
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.share-services
+          NSExtensionPrincipalClass: ShareViewController
+          NSExtensionAttributes:
+            NSExtensionActivationRule:
+              # Side photo and optionally the base photo, in any order (SharedInbox.maxPhotos).
+              NSExtensionActivationSupportsImageWithMaxCount: 2
+    entitlements:
+      path: KaliberfinderShare/KaliberfinderShare.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.ch.giotta.kaliberfinder
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ch.giotta.kaliberfinder.share
+        DEVELOPMENT_TEAM: PD9YC6KM5T
+        CODE_SIGN_STYLE: Automatic
+        # Must match the app's, or App Store Connect rejects the upload.
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "5.10"
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Kaliberfinder
   KaliberfinderTests:
     type: bundle.unit-test
     platform: iOS

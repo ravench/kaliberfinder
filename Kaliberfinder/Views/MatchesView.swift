@@ -6,6 +6,8 @@ struct MatchesView: View {
     let photo: UIImage
     /// Distance and focal length from the LiDAR camera, nil for other photos.
     var depth: DepthScale?
+    /// A base photo that came with the side photo (two photos shared at once).
+    var base: UIImage?
     /// The analysis that is ranked: the whole photo, or the picked cartridge when there are several.
     @State private var analysis: PhotoAnalysis?
     /// The first look at the whole photo; tells whether the user has to pick a cartridge.
@@ -92,6 +94,7 @@ struct MatchesView: View {
         .navigationTitle("Treffer")
         .navigationBarTitleDisplayMode(.inline)
         .task {
+            if let base, basePhoto == nil { setBasePhoto(base) }
             let result = await PhotoAnalyzer.analyze(photo, kind: .side)
             overview = result
             if !result.hasSeveralObjects {
