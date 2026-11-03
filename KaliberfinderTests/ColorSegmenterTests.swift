@@ -357,27 +357,125 @@ final class ColorSegmenterTests: XCTestCase {
     func testASingleCartridgeIsOutlinedToo() async throws {
         let analysis = await PhotoAnalyzer.analyze(try realPhoto("photo-9x19-wood"))
         XCTAssertFalse(analysis.hasSeveralObjects)
-        let subject = try XCTUnwrap(analysis.subject)
-        XCTAssertTrue(CGRect(x: 0, y: 0, width: 1, height: 1).contains(subject), "\(subject)")
+        let outline = try XCTUnwrap(analysis.outline)
+        XCTAssertEqual(outline.count, 4)
+        let unit = CGRect(x: -0.01, y: -0.01, width: 1.02, height: 1.02)
+        XCTAssertTrue(outline.allSatisfy { unit.contains($0) }, "\(outline)")
         // A cartridge, not the board: a small part of the photo.
-        XCTAssertLessThan(subject.width * subject.height, 0.2, "\(subject)")
-        XCTAssertGreaterThan(subject.width * subject.height, 0.001, "\(subject)")
-        let outlines = MatchesView.outlines(for: analysis, chosen: nil)
-        XCTAssertEqual(outlines.frames, [subject])
-        XCTAssertEqual(outlines.selected, 0)
+        let box = try XCTUnwrap(MatchesView.detectedBoxes(analysis).first)
+        XCTAssertLessThan(box.width * box.height, 0.2, "\(box)")
+        XCTAssertGreaterThan(box.width * box.height, 0.001, "\(box)")
+        // The frame is exactly what was measured.
+        let frames = MatchesView.frames(overview: analysis, measured: analysis, picking: false)
+        XCTAssertTrue(frames.candidates.isEmpty)
+        XCTAssertEqual(frames.measured, outline)
     }
 
-    func testOutlinesForSeveralOrNoCartridges() {
-        XCTAssertTrue(MatchesView.outlines(for: nil, chosen: nil).frames.isEmpty)
-        // Nothing measured: no frame, even with a stray box.
-        let nothing = PhotoAnalysis(shape: nil, texts: [], subject: CGRect(x: 0.4, y: 0.4, width: 0.1, height: 0.1))
-        XCTAssertTrue(MatchesView.outlines(for: nothing, chosen: nil).frames.isEmpty)
-        // Several: all of them while picking, then the picked one highlighted.
+    func testTheFrameTurnsWithADiagonalCartridge() async throws {
+        // A brass-coloured 300 × 90 px "cartridge" turned by 35° on a grey board.
+        let size = CGSize(width: 900, height: 700)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let image = UIGraphicsImageRenderer(size: size, format: format).image { context in
+            UIColor(white: 0.55, alpha: 1).setFill()
+            context.fill(CGRect(origin: .zero, size: size))
+            context.cgContext.translateBy(x: 450, y: 350)
+            context.cgContext.rotate(by: 35 * .pi / 180)
+            UIColor(red: 0.8, green: 0.62, blue: 0.25, alpha: 1).setFill()
+            UIBezierPath(roundedRect: CGRect(x: -150, y: -45, width: 300, height: 90), cornerRadius: 20).fill()
+        }
+        let analysis = await PhotoAnalyzer.analyze(image)
+        XCTAssertNotNil(analysis.shape)
+        let outline = try XCTUnwrap(analysis.outline)
+        let pixels = outline.map { CGPoint(x: $0.x * size.width, y: $0.y * size.height) }
+        let side = hypot(pixels[1].x - pixels[0].x, pixels[1].y - pixels[0].y)
+        let other = hypot(pixels[2].x - pixels[1].x, pixels[2].y - pixels[1].y)
+        // Turned with the cartridge: about 300 × 90, not an upright box around a diagonal.
+        XCTAssertEqual(max(side, other), 300, accuracy: 20)
+        XCTAssertEqual(min(side, other), 90, accuracy: 15)
+        let edge = side >= other ? (pixels[1].x - pixels[0].x, pixels[1].y - pixels[0].y)
+                                 : (pixels[2].x - pixels[1].x, pixels[2].y - pixels[1].y)
+        var degrees = atan2(edge.1, edge.0) * 180 / .pi
+        if degrees < 0 { degrees += 180 }
+        XCTAssertEqual(degrees, 35, accuracy: 3)
+    }
+
+    func testOrientedBoxOfARotatedRectangle() throws {
+        // A 40 × 10 grid of points turned by 30°, around (100, 50).
+        let angle = 30.0 * .pi / 180
+        var points: [Point] = []
+        for i in 0..<40 {
+            for j in 0..<10 {
+                let u = Double(i) - 19.5, v = Double(j) - 4.5
+                points.append(Point(x: 100 + u * cos(angle) - v * sin(angle), y: 50 + u * sin(angle) + v * cos(angle)))
+            }
+        }
+        let box = try XCTUnwrap(ShapeMatcher.orientedBox(points))
+        XCTAssertEqual(box.count, 4)
+        let sides = (0..<4).map { k in hypot(box[(k + 1) % 4].x - box[k].x, box[(k + 1) % 4].y - box[k].y) }
+        XCTAssertEqual(max(sides[0], sides[1]), 40, accuracy: 1e-6)
+        XCTAssertEqual(min(sides[0], sides[1]), 10, accuracy: 1e-6)
+        XCTAssertEqual(sides[0], sides[2], accuracy: 1e-6)
+        let long = sides[0] > sides[1] ? (box[1].x - box[0].x, box[1].y - box[0].y) : (box[2].x - box[1].x, box[2].y - box[1].y)
+        var degrees = atan2(long.1, long.0) * 180 / .pi
+        if degrees < 0 { degrees += 180 }
+        XCTAssertEqual(degrees, 30, accuracy: 1e-6)
+        let cx = box.reduce(0) { $0 + $1.x } / 4, cy = box.reduce(0) { $0 + $1.y } / 4
+        XCTAssertEqual(cx, 100, accuracy: 1e-6)
+        XCTAssertEqual(cy, 50, accuracy: 1e-6)
+        XCTAssertNil(ShapeMatcher.orientedBox(Array(points.prefix(49))))
+    }
+
+    func testFramesWhilePickingAndAfterwards() {
+        XCTAssertTrue(MatchesView.frames(overview: nil, measured: nil, picking: false).candidates.isEmpty)
+        XCTAssertNil(MatchesView.frames(overview: nil, measured: nil, picking: false).measured)
+        let corners = [CGPoint(x: 0.1, y: 0.2), CGPoint(x: 0.3, y: 0.1), CGPoint(x: 0.35, y: 0.2), CGPoint(x: 0.15, y: 0.3)]
+        // Nothing measured: no frame, even with a stray outline.
+        let nothing = PhotoAnalysis(shape: nil, texts: [], outline: corners)
+        XCTAssertNil(MatchesView.frames(overview: nothing, measured: nothing, picking: false).measured)
+        XCTAssertTrue(MatchesView.detectedBoxes(nothing).isEmpty)
+        // Several: all of them while picking, then only what was measured.
         let boxes = [CGRect(x: 0.1, y: 0.1, width: 0.2, height: 0.1), CGRect(x: 0.6, y: 0.6, width: 0.2, height: 0.1)]
-        let several = PhotoAnalysis(shape: nil, texts: [], candidates: boxes, subject: boxes[0])
-        XCTAssertEqual(MatchesView.outlines(for: several, chosen: nil).frames, boxes)
-        XCTAssertNil(MatchesView.outlines(for: several, chosen: nil).selected)
-        XCTAssertEqual(MatchesView.outlines(for: several, chosen: 1).selected, 1)
+        let several = PhotoAnalysis(shape: nil, texts: [], candidates: boxes)
+        let picking = MatchesView.frames(overview: several, measured: nil, picking: true)
+        XCTAssertEqual(picking.candidates, boxes)
+        XCTAssertNil(picking.measured)
+        XCTAssertEqual(MatchesView.detectedBoxes(several), boxes)
+        let shape = ShapeMeasurement(aspect: 3, profile: ShapeMatcher.fractions.map { _ in 1 })
+        let picked = PhotoAnalysis(shape: shape, texts: [], outline: corners)
+        let after = MatchesView.frames(overview: several, measured: picked, picking: false)
+        XCTAssertTrue(after.candidates.isEmpty)
+        XCTAssertEqual(after.measured, corners)
+        // One cartridge: the preview crops around the outline's bounds.
+        let bounds = try? XCTUnwrap(MatchesView.detectedBoxes(picked).first)
+        XCTAssertEqual(bounds?.minX ?? 0, 0.1, accuracy: 1e-9)
+        XCTAssertEqual(bounds?.minY ?? 0, 0.1, accuracy: 1e-9)
+        XCTAssertEqual(bounds?.maxX ?? 0, 0.35, accuracy: 1e-9)
+        XCTAssertEqual(bounds?.maxY ?? 0, 0.3, accuracy: 1e-9)
+    }
+
+    func testPickedOutlineIsGivenInTheWholePhoto() async throws {
+        let rgb = try XCTUnwrap(PhotoAnalyzer.rgbImage(XCTUnwrap(realPhoto("photo-45acp-wood").cgImage)))
+        let image = try uiImage(withSecondCopy(rgb))
+        let overview = await PhotoAnalyzer.analyze(image)
+        for candidate in overview.candidates {
+            let picked = await PhotoAnalyzer.analyze(image, focusingOn: candidate)
+            let outline = try XCTUnwrap(picked.outline)
+            // The frame lies on the picked cartridge, not somewhere in the crop's own coordinates.
+            let centre = CGPoint(x: outline.reduce(0) { $0 + $1.x } / 4, y: outline.reduce(0) { $0 + $1.y } / 4)
+            XCTAssertTrue(candidate.insetBy(dx: -0.02, dy: -0.02).contains(centre), "\(centre) \(candidate)")
+        }
+    }
+
+    func testPointsFollowTheCroppedPreview() {
+        let region = CGRect(x: 0.2, y: 0.3, width: 0.5, height: 0.4)
+        let p = CandidatePhotoView.point(CGPoint(x: 0.45, y: 0.5), in: region, size: CGSize(width: 200, height: 100))
+        XCTAssertEqual(p.x, 100, accuracy: 1e-9)
+        XCTAssertEqual(p.y, 50, accuracy: 1e-9)
+        let whole = CandidatePhotoView.point(CGPoint(x: 0.25, y: 0.5), in: CGRect(x: 0, y: 0, width: 1, height: 1),
+                                             size: CGSize(width: 400, height: 300))
+        XCTAssertEqual(whole.x, 100, accuracy: 1e-9)
+        XCTAssertEqual(whole.y, 150, accuracy: 1e-9)
     }
 
     func testPreviewIsCroppedToAllCartridgesWithAMargin() throws {
