@@ -46,6 +46,25 @@ final class TrueScaleLayoutTests: XCTestCase {
         XCTAssertEqual(RulerView.y(forMM: 29.69, height: layout.bandHeight, pointsPerMM: 6), tip, accuracy: 1e-9)
     }
 
+    func testRulerNumbersHaveRoomAtBothEnds() {
+        // The 9 pt numbers are centred on the top and zero ticks: half their height sticks out.
+        XCTAssertGreaterThanOrEqual(RulerView.labelOverhang, 6)
+    }
+
+    func testSingleCartridgeIsCentredWithTheRulerBesideIt() {
+        let ppmm = 6.3
+        let gap = TrueScaleLayout.singleGapMM * ppmm
+        let offset = TrueScaleLayout.singleOffset(pointsPerMM: ppmm)
+        // Group = ruler, gap, cartridge (width w), centred at 0, then shifted by the offset.
+        for w in [10.0 * ppmm, 20.0 * ppmm] {
+            let group = TrueScaleLayout.rulerWidth + gap + w
+            let cartridgeCentre = -group / 2 + TrueScaleLayout.rulerWidth + gap + w / 2 + offset
+            XCTAssertEqual(cartridgeCentre, 0, accuracy: 1e-9)
+        }
+        // The ruler is the same distance from the cartridge whatever its width.
+        XCTAssertGreaterThan(gap, 0)
+    }
+
     func testOneToOneHintsAreTranslated() throws {
         let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "en"))
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])

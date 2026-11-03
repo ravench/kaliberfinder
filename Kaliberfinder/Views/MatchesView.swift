@@ -8,7 +8,12 @@ struct MatchesView: View {
     var depth: DepthScale?
     /// A base photo that came with the side photo (two photos shared at once).
     var base: UIImage?
+    /// The analysis that is ranked: the whole photo, or the picked cartridge when there are several.
     @State private var analysis: PhotoAnalysis?
+    /// The first look at the whole photo; tells whether the user has to pick a cartridge.
+    @State private var overview: PhotoAnalysis?
+    /// Which of several cartridges the user picked.
+    @State private var chosen: Int?
     @State private var matches: [Match] = []
     /// The optional second photo of the case head; only its text is read.
     @State private var basePhoto: UIImage?
@@ -21,31 +26,39 @@ struct MatchesView: View {
     var body: some View {
         List {
             Section {
-                Image(uiImage: photo)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity, maxHeight: 220)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                if let analysis, analysis.hasSeveralObjects {
-                    Label(Self.severalObjectsText, systemImage: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.red)
+                CandidatePhotoView(photo: photo, candidates: overview?.candidates ?? [], selected: chosen,
+                                   maxHeight: needsPick ? 420 : 220) { choose($0) }
+                if needsPick {
+                    Label(Self.severalObjectsText, systemImage: "hand.tap")
+                        .foregroundStyle(.orange)
                     Text(Self.severalObjectsHint).font(.footnote).foregroundStyle(.secondary)
-                } else if let analysis {
-                    Picker("Was liegt im Bild?", selection: $mode) {
-                        ForEach(ScanMode.allCases) { Text($0.title.loc).tag($0) }
-                    }
-                    .pickerStyle(.segmented)
-                    ForEach(Self.notes(for: analysis, depth: depth, unit: unit, mode: mode), id: \.self) { note in
-                        Text(note).font(.footnote).foregroundStyle(.secondary)
-                    }
                 } else {
-                    HStack {
-                        ProgressView()
-                        Text("Foto wird ausgewertet …").foregroundStyle(.secondary)
+                    if chosen != nil {
+                        Button {
+                            chosen = nil
+                            analysis = nil
+                            matches = []
+                        } label: {
+                            Label("Andere Patrone wählen", systemImage: "hand.tap")
+                        }
+                    }
+                    if let analysis {
+                        Picker("Was liegt im Bild?", selection: $mode) {
+                            ForEach(ScanMode.allCases) { Text($0.title.loc).tag($0) }
+                        }
+                        .pickerStyle(.segmented)
+                        ForEach(Self.notes(for: analysis, depth: depth, unit: unit, mode: mode), id: \.self) { note in
+                            Text(note).font(.footnote).foregroundStyle(.secondary)
+                        }
+                    } else {
+                        HStack {
+                            ProgressView()
+                            Text("Foto wird ausgewertet …").foregroundStyle(.secondary)
+                        }
                     }
                 }
             }
-            if let analysis, !analysis.hasSeveralObjects {
+            if analysis != nil {
                 baseSection
                 if matches.isEmpty {
                     Section {
@@ -54,9 +67,11 @@ struct MatchesView: View {
                     }
                 } else {
                     Section {
-                        ForEach(matches) { m in
-                            NavigationLink { TrueScaleView(cartridges: [m.cartridge]) } label: {
-                                CartridgeRow(cartridge: m.cartridge, detail: Self.reason(for: m), highlighted: m.fitsWell)
+                        // Calibres that look exactly the same from the side share one row.
+                        ForEach(Matcher.grouped(matches)) { g in
+                            NavigationLink { TrueScaleView(cartridges: [g.lead.cartridge]) } label: {
+                                CartridgeRow(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead),
+                                             highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
                             }
                         }
                     } header: {
@@ -78,8 +93,11 @@ struct MatchesView: View {
         .task {
             if let base, basePhoto == nil { setBasePhoto(base) }
             let result = await PhotoAnalyzer.analyze(photo, kind: .side)
-            analysis = result
-            rank()
+            overview = result
+            if !result.hasSeveralObjects {
+                analysis = result
+                rank()
+            }
         }
         .onChange(of: mode) { rank() }
         .fullScreenCover(isPresented: $showBaseCamera) {
@@ -143,16 +161,32 @@ struct MatchesView: View {
         }
     }
 
+    /// Several cartridges compete and the user hasn't picked one yet.
+    private var needsPick: Bool { overview?.hasSeveralObjects == true && chosen == nil }
+
+    /// Measures only the picked cartridge.
+    private func choose(_ index: Int) {
+        guard let overview, overview.candidates.indices.contains(index), chosen == nil else { return }
+        chosen = index
+        analysis = nil
+        Task {
+            let result = await PhotoAnalyzer.analyze(photo, focusingOn: overview.candidates[index])
+            guard chosen == index else { return }
+            analysis = result
+            rank()
+        }
+    }
+
     private func rank() {
-        guard let analysis, !analysis.hasSeveralObjects else { matches = []; return }
+        guard let analysis else { matches = []; return }
         let size = try? analysis.size(depth: depth).get()
         matches = Matcher.rank(shape: analysis.shape, hits: Self.hits(side: analysis, baseTexts: baseTexts), size: size, mode: mode)
     }
 
-    /// Error shown instead of matches when the photo holds more than one cartridge.
+    /// Shown instead of matches when several cartridges compete, until the user picks one.
     static var severalObjectsText: String { "Mehrere Patronen im Bild erkannt.".loc }
     static var severalObjectsHint: String {
-        "Bitte nur eine Patrone pro Foto: die anderen beiseitelegen und neu fotografieren.".loc
+        "Tippe auf die Patrone, die bestimmt werden soll.".loc
     }
 
     /// Headstamp hits from the base photo, plus the first photo's text when that one showed a base anyway.
@@ -168,14 +202,15 @@ struct MatchesView: View {
         return String(format: "Aufschrift erkannt: «%@»".loc, lines.prefix(3).joined(separator: " / "))
     }
 
-    /// Every listed calibre goes to the 1:1 screen, in rank order; it scrolls sideways.
+    /// Every listed row goes to the 1:1 screen, in rank order; it scrolls sideways. Calibres that
+    /// look exactly the same from the side are shown once.
     static func toCompare(_ matches: [Match]) -> [Cartridge] {
-        matches.map(\.cartridge)
+        Matcher.grouped(matches).map(\.lead.cartridge)
     }
 
-    /// E.g. "Alle passenden 1:1 vergleichen (5)".
+    /// E.g. "Alle passenden 1:1 vergleichen (5)", counting identical-looking calibres once.
     static func compareTitle(_ matches: [Match]) -> String {
-        String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, matches.count)
+        String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, toCompare(matches).count)
     }
 
     /// Why a calibre is listed, e.g. "Aufschrift «308 WIN» · Form passt gut".

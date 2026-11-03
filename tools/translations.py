@@ -90,6 +90,9 @@ T = {
     "Andere": ("Other", "Autre", "Altro"),
     "Aufschrift «%@»": ("Marking “%@”", "Inscription « %@ »", "Scritta «%@»"),
     "Die besten drei 1:1 vergleichen": ("Compare the best three 1:1", "Comparer les trois meilleurs 1:1", "Confronta i migliori tre 1:1"),
+    "Im Profil nicht unterscheidbar": ("Indistinguishable in profile", "Indiscernable de profil", "Indistinguibile di profilo"),
+    "Im Profil nicht unterscheidbar von": ("Looks identical in profile to", "Identique de profil à", "Identica di profilo a"),
+    "Im Profil nicht unterscheidbar von %@": ("Indistinguishable in profile from %@", "Indiscernable de profil de %@", "Indistinguibile di profilo da %@"),
     "Form passt gut": ("Shape fits well", "La forme correspond bien", "La forma corrisponde bene"),
     "Form passt ungefähr": ("Shape fits roughly", "La forme correspond à peu près", "La forma corrisponde più o meno"),
     "Form passt wenig": ("Shape fits poorly", "La forme correspond peu", "La forma corrisponde poco"),
@@ -99,10 +102,12 @@ T = {
         "Several cartridges found in the photo.",
         "Plusieurs cartouches détectées sur la photo.",
         "Più cartucce trovate nella foto."),
-    "Bitte nur eine Patrone pro Foto: die anderen beiseitelegen und neu fotografieren.": (
-        "Please show only one cartridge per photo: put the others aside and take a new photo.",
-        "Une seule cartouche par photo, s'il vous plaît : mettez les autres de côté et reprenez la photo.",
-        "Una sola cartuccia per foto, per favore: metti da parte le altre e scatta una nuova foto."),
+    "Tippe auf die Patrone, die bestimmt werden soll.": (
+        "Tap the cartridge you want to identify.",
+        "Touchez la cartouche à identifier.",
+        "Tocca la cartuccia da identificare."),
+    "Andere Patrone wählen": ("Choose another cartridge", "Choisir une autre cartouche", "Scegli un'altra cartuccia"),
+    "Patrone %lld": ("Cartridge %lld", "Cartouche %lld", "Cartuccia %lld"),
     "Keine Patrone im Bild erkannt.": ("No cartridge found in the photo.", "Aucune cartouche détectée sur la photo.", "Nessuna cartuccia trovata nella foto."),
     "Keine passenden Kaliber gefunden.": ("No matching calibres found.", "Aucun calibre correspondant trouvé.", "Nessun calibro corrispondente trovato."),
     "Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.": (
