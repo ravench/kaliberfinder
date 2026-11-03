@@ -6,8 +6,39 @@ struct MeasuredDimensions: Equatable {
     var caseLength: Double?
     var rim: Double?
     var bullet: Double?
+    /// Narrows the list to straight or bottleneck cases.
+    var shape: CaseShape = .any
 
+    /// No dimension entered (the shape alone doesn't rank anything).
     var isEmpty: Bool { [overallLength, caseLength, rim, bullet].allSatisfy { $0 == nil } }
+}
+
+/// The case shape picked on the dimensions screen (MEAS-05).
+enum CaseShape: String, CaseIterable, Identifiable {
+    case any
+    case straight
+    case bottleneck
+
+    var id: String { rawValue }
+
+    /// German text, used as localization key.
+    var title: String {
+        switch self {
+        case .any: "Beliebige Form"
+        case .straight: "Gerade Hülse"
+        case .bottleneck: "Hülse mit Flaschenhals"
+        }
+    }
+
+    /// Bottleneck cases have a shoulder; straight ones (pistol, revolver, shotgun) don't.
+    /// Balls, Minié bullets and pellets have no case at all.
+    func fits(_ c: Cartridge) -> Bool {
+        switch self {
+        case .any: true
+        case .straight: c.hasCase && c.dimensions.shoulder == nil
+        case .bottleneck: c.dimensions.shoulder != nil
+        }
+    }
 }
 
 /// A calibre ranked by how far its catalogue dimensions are from the measured ones.
@@ -32,7 +63,7 @@ enum DimensionMatcher {
                      cartridges: [Cartridge] = CartridgeCatalog.all,
                      limit: Int = 10) -> [DimensionMatch] {
         guard !measured.isEmpty else { return [] }
-        let matches = cartridges.map { c -> DimensionMatch in
+        let matches = cartridges.filter(measured.shape.fits).map { c -> DimensionMatch in
             let d = c.dimensions
             let pairs: [(Double?, Double)] = [
                 (measured.overallLength, d.overallLength),
@@ -48,6 +79,13 @@ enum DimensionMatcher {
         return Array(matches.sorted {
             ($0.meanDeviation, $0.maxDeviation) < ($1.meanDeviation, $1.maxDeviation)
         }.prefix(limit))
+    }
+
+    /// What the compare button shows when nothing is selected (MEAS-04): every calibre that fits
+    /// well or roughly, or the best three when none does.
+    static func toCompare(_ matches: [DimensionMatch]) -> [Cartridge] {
+        let fitting = matches.filter { $0.fit != .poor }.map(\.cartridge)
+        return fitting.isEmpty ? Array(matches.prefix(3).map(\.cartridge)) : fitting
     }
 
     /// Reads millimetres typed with either decimal separator, e.g. "29,7" or "29.7". Empty or invalid text is nil.

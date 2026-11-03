@@ -12,6 +12,11 @@ INFO_PLIST = {
 }
 
 T = {
+    "Alle passenden 1:1 vergleichen (%lld)": ("Compare all matches 1:1 (%lld)", "Comparer toutes les correspondances 1:1 (%lld)", "Confronta tutte le corrispondenze 1:1 (%lld)"),
+    "Beliebige Form": ("Any shape", "Toute forme", "Qualsiasi forma"),
+    "Form": ("Shape", "Forme", "Forma"),
+    "Gerade Hülse": ("Straight case", "Douille droite", "Bossolo dritto"),
+    "Hülse mit Flaschenhals": ("Bottleneck case", "Douille à goulot", "Bossolo a collo di bottiglia"),
     "1:1 – Zoomen ist abgeschaltet, damit die Grösse stimmt.": (
         "1:1 – zoom is off so the size stays true.",
         "1:1 – le zoom est désactivé pour garder la taille réelle.",

@@ -6,6 +6,7 @@ struct MeasureView: View {
     @State private var caseLength = ""
     @State private var rim = ""
     @State private var bullet = ""
+    @State private var shape: CaseShape = .any
     @State private var selection: [Cartridge] = []
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
 
@@ -13,7 +14,8 @@ struct MeasureView: View {
         MeasuredDimensions(overallLength: unit.parse(overallLength),
                            caseLength: unit.parse(caseLength),
                            rim: unit.parse(rim),
-                           bullet: unit.parse(bullet))
+                           bullet: unit.parse(bullet),
+                           shape: shape)
     }
 
     var body: some View {
@@ -21,6 +23,10 @@ struct MeasureView: View {
         List {
             Section {
                 UnitPicker(unit: $unit)
+                Picker("Form", selection: $shape) {
+                    ForEach(CaseShape.allCases) { Text($0.title.loc).tag($0) }
+                }
+                .pickerStyle(.menu)
                 field("Gesamtlänge", text: $overallLength)
                 field("Hülsenlänge", text: $caseLength)
                 field("Randdurchmesser", text: $rim)
@@ -54,11 +60,10 @@ struct MeasureView: View {
         .navigationTitle("Masse eingeben")
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
-            let compare = selection.isEmpty ? Array(matches.prefix(3).map(\.cartridge)) : selection
+            let compare = selection.isEmpty ? DimensionMatcher.toCompare(matches) : selection
             if !compare.isEmpty {
                 NavigationLink { TrueScaleView(cartridges: compare) } label: {
-                    Label(selection.isEmpty ? "Die besten drei 1:1 vergleichen".loc : String(format: "1:1 vergleichen (%lld)".loc, selection.count),
-                          systemImage: "ruler")
+                    Label(Self.compareTitle(matches: matches, selected: selection.count), systemImage: "ruler")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
@@ -87,6 +92,13 @@ struct MeasureView: View {
 
     private func toggle(_ c: Cartridge) {
         if let i = selection.firstIndex(of: c) { selection.remove(at: i) } else { selection.append(c) }
+    }
+
+    /// The compare button: the picked calibres, else all that fit, else the best three.
+    static func compareTitle(matches: [DimensionMatch], selected: Int) -> String {
+        if selected > 0 { return String(format: "1:1 vergleichen (%lld)".loc, selected) }
+        let fitting = matches.filter { $0.fit != .poor }.count
+        return fitting > 0 ? String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, fitting) : "Die besten drei 1:1 vergleichen".loc
     }
 
     /// E.g. "Abweichung bis 0.2 mm" (or in inches).
