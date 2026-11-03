@@ -419,7 +419,7 @@ struct Blob: Equatable {
     /// Whether `other` could be another cartridge next to this one: similar size, elongation and,
     /// when both are known, colour. Errs towards no: a false alarm blocks the result entirely.
     func resembles(_ other: Blob) -> Bool {
-        guard count > 0, Self.sizeRange.contains(Double(other.count) / Double(count)) else { return false }
+        guard count >= 1, Self.sizeRange.contains(Double(other.count) / Double(count)) else { return false }
         guard max(aspect, other.aspect) / min(aspect, other.aspect) <= Self.maxAspectFactor else { return false }
         if let a = colour, let b = other.colour {
             let distance = zip(a, b).reduce(Float(0)) { $0 + ($1.0 - $1.1) * ($1.0 - $1.1) }.squareRoot()
