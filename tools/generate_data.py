@@ -15,7 +15,7 @@ the top (y = 0), base at the bottom (y = overall length).
 import json, math, os, sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from cartridges import CATALOGUE, DISPLAY_ALIASES, PRIMERS, PRIMER_DIAMETERS, RIMLESS, RIMMED, BELTED, RIMFIRE, SHOT, BALL, MINIE, PELLET, SPITZER, ROUND, FLAT
+from cartridges import CATALOGUE, DISPLAY_ALIASES, PRIMERS, PRIMER_DIAMETERS, RIMLESS, RIMMED, BELTED, RIMFIRE, SHOT, BALL, MINIE, PELLET, SPITZER, ROUND, FLAT, PATCHED
 from headstamps import HEADSTAMPS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -55,6 +55,16 @@ def bullet_profile(r, y0, top, profile):
         cyl, tip, f = 0.32, 0.05, lambda t: (1 - t ** 1.7) ** 0.8
     elif profile == ROUND:
         cyl, tip, f = 0.22, 0.16, lambda t: math.sqrt(max(0, 1 - t * t))
+    elif profile == PATCHED:
+        # Long parallel body, then a blunt round nose. The steel cap sits a paper's thickness
+        # (about 0.06 mm) inside the patched body, so the outline steps in where the paper ends.
+        band, cap = PATCH_BAND * e, r - 0.06
+        pts = [(r, y0), (r, y0 + band), (cap, y0 + band)]
+        start = y0 + 0.40 * e
+        for i in range(1, N + 1):
+            t = i / N
+            pts.append((max(cap * 0.14, cap * math.sqrt(max(0, 1 - t * t))), start + t * (top - start)))
+        return pts + [(0, top)]
     else:
         cyl, tip, f = 0.30, 0.55, lambda t: math.sqrt(max(0, 1 - t * t))
     start = y0 + cyl * e
@@ -65,6 +75,15 @@ def bullet_profile(r, y0, top, profile):
     if pts[-1][0] > 0.001:
         pts.append((0, top))
     return pts
+
+
+# Share of the exposed bullet that shows the paper patch (GP 1890), from the case mouth up.
+PATCH_BAND = 0.26
+
+
+def patch_profile(r, y0, top):
+    """Right half of the paper band of a PATCHED bullet, drawn over the bullet."""
+    return [(r, y0), (r, y0 + PATCH_BAND * (top - y0))]
 
 
 def mirror(right):
@@ -112,6 +131,10 @@ def outline(s):
         paths["case"] = to_path(mirror(prof), H, hw)
         if s["oal"] > s["case"] + 0.1:
             paths["bullet"] = to_path(mirror(bullet_profile(s["bullet"] / 2, s["case"], s["oal"], s["profile"])), H, hw)
+            if s["profile"] == PATCHED:
+                # The bullet path is the whole silhouette (steel cap colour); the paper band goes on top.
+                paths["patch"] = to_path(mirror(patch_profile(s["bullet"] / 2, s["case"], s["oal"])), H, hw)
+                paths["bulletMaterial"] = "steel"
     return {"width": round(width, 2), "height": round(H, 2), **paths}
 
 
@@ -152,8 +175,10 @@ def preview(cartridges, path):
     cells = []
     for c in cartridges:
         o = c["outline"]
+        bullet = "#a7adb4" if o.get("bulletMaterial") == "steel" else "#b87333"
         parts = "".join(f'<path d="{o[k]}" fill="{col}" stroke="#333" stroke-width="0.25"/>'
-                        for k, col in (("case", "#e3c16f"), ("head", "#e3c16f"), ("bullet", "#b87333")) if k in o)
+                        for k, col in (("case", "#e3c16f"), ("head", "#e3c16f"), ("bullet", bullet), ("patch", "#f2ede0"))
+                        if k in o)
         cells.append(f'<div class=c><svg width="{o["width"] * 3}" height="{o["height"] * 3}" '
                      f'viewBox="0 0 {o["width"]} {o["height"]}">{parts}</svg><span>{c["name"]}</span></div>')
     open(path, "w").write("<!doctype html><meta charset=utf-8><style>body{font:11px sans-serif}"
