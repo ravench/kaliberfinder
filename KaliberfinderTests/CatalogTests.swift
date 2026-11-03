@@ -51,6 +51,18 @@ final class CatalogTests: XCTestCase {
         XCTAssertTrue(CartridgeCatalog.search("no such calibre").isEmpty)
     }
 
+    func testGP1890IsSeparateFromGP11AndGP90() throws {
+        let gp1890 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x53.5 mm Swiss (GP 1890)"))
+        XCTAssertEqual(gp1890.dimensions.caseLength, 53.5, accuracy: 0.001)
+        XCTAssertEqual(gp1890.dimensions.overallLength, 77.0, accuracy: 0.001)
+        XCTAssertEqual(gp1890.category, CartridgeCatalog.Category.rifle.rawValue)
+        XCTAssertTrue(gp1890.hasCase)
+        for text in ["GP 1890", "gp 90/03", "7,5x53,5"] {
+            XCTAssertTrue(CartridgeCatalog.search(text).contains { $0.id == gp1890.id }, text)
+        }
+        XCTAssertNotEqual(HeadstampReader.hits(in: ["GP 90"]).first?.cartridgeID, gp1890.id, "GP 90 is the Stgw 90 round")
+    }
+
     func testNormalized() {
         XCTAssertEqual(CartridgeCatalog.normalized(" 7,5 × 55 mm "), "75x55")
         XCTAssertEqual(CartridgeCatalog.normalized(".45 ACP"), "45acp")
