@@ -63,7 +63,7 @@ struct MeasureView: View {
             let compare = selection.isEmpty ? DimensionMatcher.toCompare(matches) : selection
             if !compare.isEmpty {
                 NavigationLink { TrueScaleView(cartridges: compare) } label: {
-                    Label(Self.compareTitle(matches: matches, selected: selection.count), systemImage: "ruler")
+                    Label(Self.compareTitle(matches: matches, selected: selection.count), systemImage: MatchesView.compareSymbol)
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
