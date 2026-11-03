@@ -134,6 +134,8 @@ T = {
     "Bodendurchmesser": ("Base diameter", "Diamètre au culot", "Diametro alla base"),
     "Diabolo": ("Diabolo pellet", "Plomb diabolo", "Piombino diabolo"),
     "Fertig": ("Done", "Terminé", "Fine"),
+    "Geteilte Fotos werden geprüft …": (
+        "Checking shared photos …", "Vérification des photos partagées …", "Verifica delle foto condivise …"),
     "Foto übernommen. Öffne Kaliberfinder, um die Treffer zu sehen.": (
         "Photo received. Open Kaliberfinder to see the matches.",
         "Photo reçue. Ouvrez Kaliberfinder pour voir les correspondances.",

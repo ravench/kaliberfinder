@@ -1335,6 +1335,29 @@
         }
       }
     },
+    "Geteilte Fotos werden geprüft …": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking shared photos …"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérification des photos partagées …"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verifica delle foto condivise …"
+          }
+        }
+      }
+    },
     "Grösse nicht messbar: Treffer nur nach Form und Aufschrift.": {
       "extractionState": "manual",
       "localizations": {

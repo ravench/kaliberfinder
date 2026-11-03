@@ -7,6 +7,7 @@ struct HomeView: View {
     @State private var showCamera = false
     @State private var libraryItem: PhotosPickerItem?
     @State private var photo: PickedPhoto?
+    @State private var sortingShared = false
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
 
     var body: some View {
@@ -68,9 +69,16 @@ struct HomeView: View {
         }
         // Photos shared from other apps: the extension opens the app with this URL. If iOS did not
         // let it, they wait in the inbox until the app comes to the front.
-        .onOpenURL { if SharedInbox.isOpenURL($0) { takeSharedPhotos() } }
-        .onChange(of: scenePhase) { _, phase in if phase == .active { takeSharedPhotos() } }
-        .task { takeSharedPhotos() }
+        .onOpenURL { if SharedInbox.isOpenURL($0) { Task { await takeSharedPhotos() } } }
+        .onChange(of: scenePhase) { _, phase in if phase == .active { Task { await takeSharedPhotos() } } }
+        .task { await takeSharedPhotos() }
+        .overlay {
+            if sortingShared {
+                ProgressView { Text("Geteilte Fotos werden geprüft …") }
+                    .padding()
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+            }
+        }
         .fullScreenCover(isPresented: $showCamera) {
             if LiDARCamera.isAvailable {
                 LiDARCameraView { photo = PickedPhoto(image: $0, depth: $1) }
@@ -90,10 +98,20 @@ struct HomeView: View {
         }
     }
 
-    private func takeSharedPhotos() {
+    /// Opens the matches for photos shared from another app. With several photos, their
+    /// silhouettes decide which is the side photo and which the base photo, not their order.
+    private func takeSharedPhotos() async {
         let images = (SharedInbox.shared?.take() ?? []).compactMap(UIImage.init(data:))
-        guard let first = images.first else { return }
+        guard !images.isEmpty else { return }
         showCamera = false
-        photo = PickedPhoto(image: first, base: images.dropFirst().first)
+        var views: [SharedPhotoSorter.View] = [.side]
+        if images.count > 1 {
+            sortingShared = true
+            views = []
+            for image in images { views.append(.init(await PhotoAnalyzer.analyze(image, kind: .side).shape)) }
+            sortingShared = false
+        }
+        guard let (side, base) = SharedPhotoSorter.assign(views) else { return }
+        photo = PickedPhoto(image: images[side], base: base.map { images[$0] })
     }
 }
