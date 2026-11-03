@@ -12,6 +12,16 @@ INFO_PLIST = {
 }
 
 T = {
+    "Automatisch": ("Automatic", "Automatique", "Automatico"),
+    "Erkannt: %@": ("Detected: %@", "Détecté : %@", "Riconosciuto: %@"),
+    "Flaschenhals": ("bottleneck", "à goulot", "a collo di bottiglia"),
+    "Leere Hülse": ("Empty case", "Douille vide", "Bossolo vuoto"),
+    "leere Hülse": ("empty case", "douille vide", "bossolo vuoto"),
+    "Patrone": ("Cartridge", "Cartouche", "Cartuccia"),
+    "mit Rand": ("rimmed", "à bourrelet", "con orlo"),
+    "ohne Rand": ("rimless", "sans bourrelet", "senza orlo"),
+    "Was liegt im Bild?": ("What is in the photo?", "Qu'y a-t-il sur la photo ?", "Cosa c'è nella foto?"),
+    "gerade Hülse": ("straight case", "douille droite", "bossolo dritto"),
     "1:1 – Zoomen ist abgeschaltet, damit die Grösse stimmt.": (
         "1:1 – zoom is off so the size stays true.",
         "1:1 – le zoom est désactivé pour garder la taille réelle.",
