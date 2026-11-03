@@ -760,6 +760,29 @@
         }
       }
     },
+    "Das Foto konnte nicht übernommen werden.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The photo could not be received."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de reprendre la photo."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossibile ricevere la foto."
+          }
+        }
+      }
+    },
     "Diabolo": {
       "extractionState": "manual",
       "localizations": {
@@ -1128,6 +1151,29 @@
         }
       }
     },
+    "Foto übernommen. Öffne Kaliberfinder, um die Treffer zu sehen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo received. Open Kaliberfinder to see the matches."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo reçue. Ouvrez Kaliberfinder pour voir les correspondances."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto ricevuta. Apri Kaliberfinder per vedere le corrispondenze."
+          }
+        }
+      }
+    },
     "Fülle aus, was du messen kannst. Schon eine Länge und ein Durchmesser grenzen die Auswahl stark ein.": {
       "extractionState": "manual",
       "localizations": {
@@ -1308,6 +1354,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stimato, calibra per favore"
+          }
+        }
+      }
+    },
+    "Geteilte Fotos werden geprüft …": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking shared photos …"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérification des photos partagées …"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verifica delle foto condivise …"
           }
         }
       }
