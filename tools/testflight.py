@@ -2,6 +2,8 @@
 
     python3 tools/testflight.py build-number 42          # -> 1042
     python3 tools/testflight.py export-options out.plist # ExportOptions.plist for the upload
+    python3 tools/testflight.py export-options out.plist export  # ... that only writes the .ipa
+    python3 tools/testflight.py check-entitlements signed.plist App/App.entitlements
 
 Build numbers come from the workflow's run number plus an offset, so every upload
 is higher than the last one and higher than builds uploaded by hand from Xcode.
@@ -35,11 +37,14 @@ def team_id(project_yml):
     return teams.pop()
 
 
-def export_options(team):
-    """Options for `xcodebuild -exportArchive` that sign for and upload to App Store Connect."""
+def export_options(team, destination="upload"):
+    """Options for `xcodebuild -exportArchive` that sign for App Store Connect and upload
+    (destination "upload") or only write the .ipa (destination "export")."""
+    if destination not in ("upload", "export"):
+        raise ValueError(destination)
     return {
         "method": "app-store-connect",
-        "destination": "upload",
+        "destination": destination,
         "signingStyle": "automatic",
         "teamID": team,
         "uploadSymbols": True,
@@ -48,14 +53,37 @@ def export_options(team):
     }
 
 
+def missing_entitlements(signed, expected):
+    """Entitlements from the project that the signed app lacks (values may differ, e.g.
+    aps-environment development -> production; list entries such as iCloud containers must stay)."""
+    missing = []
+    for key, value in expected.items():
+        if key not in signed:
+            missing.append(key)
+        elif isinstance(value, list):
+            missing += [f"{key}: {v}" for v in value if v not in signed[key]]
+    return missing
+
+
 def main(argv):
     if len(argv) == 3 and argv[1] == "build-number":
         print(build_number(argv[2]))
-    elif len(argv) == 3 and argv[1] == "export-options":
+    elif len(argv) in (3, 4) and argv[1] == "export-options":
         with open(PROJECT_YML) as f:
-            options = export_options(team_id(f.read()))
+            options = export_options(team_id(f.read()), *argv[3:])
         with open(argv[2], "wb") as f:
             plistlib.dump(options, f)
+    elif len(argv) == 4 and argv[1] == "check-entitlements":
+        with open(argv[2], "rb") as f:
+            signed = plistlib.load(f)
+        expected = {}
+        if os.path.exists(argv[3]):
+            with open(argv[3], "rb") as f:
+                expected = plistlib.load(f)
+        missing = missing_entitlements(signed, expected)
+        if missing:
+            sys.exit("Signed app lacks entitlements: " + ", ".join(missing))
+        print(f"All {len(expected)} entitlements present")
     else:
         sys.exit(__doc__)
 
