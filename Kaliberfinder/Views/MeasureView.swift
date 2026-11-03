@@ -62,12 +62,7 @@ struct MeasureView: View {
         .safeAreaInset(edge: .bottom) {
             let compare = selection.isEmpty ? DimensionMatcher.toCompare(matches) : selection
             if !compare.isEmpty {
-                NavigationLink { TrueScaleView(cartridges: compare) } label: {
-                    Label(Self.compareTitle(matches: matches, selected: selection.count), systemImage: MatchesView.compareSymbol)
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .padding()
+                CompareButton(title: Self.compareTitle(matches: matches, selected: selection.count), cartridges: compare)
             }
         }
         .onChange(of: unit) { old, new in

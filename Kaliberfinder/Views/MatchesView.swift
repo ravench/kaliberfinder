@@ -70,12 +70,7 @@ struct MatchesView: View {
         .safeAreaInset(edge: .bottom) {
             // A prominent button pinned to the bottom, like on the measure screen, so it is not missed.
             if analysis != nil, !matches.isEmpty {
-                NavigationLink { TrueScaleView(cartridges: Self.toCompare(matches)) } label: {
-                    Label(Self.compareTitle(matches), systemImage: Self.compareSymbol)
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .padding()
+                CompareButton(title: Self.compareTitle(matches), cartridges: Self.toCompare(matches))
             }
         }
         .navigationTitle("Treffer")
@@ -172,9 +167,6 @@ struct MatchesView: View {
         guard !lines.isEmpty else { return "Keine Aufschrift erkannt.".loc }
         return String(format: "Aufschrift erkannt: «%@»".loc, lines.prefix(3).joined(separator: " / "))
     }
-
-    /// Symbol of the 1:1 compare buttons: two items side by side.
-    static let compareSymbol = "square.and.line.vertical.and.square"
 
     /// Every listed calibre goes to the 1:1 screen, in rank order; it scrolls sideways.
     static func toCompare(_ matches: [Match]) -> [Cartridge] {

@@ -69,8 +69,11 @@ final class MatcherTests: XCTestCase {
         XCTAssertTrue(MatchesView.compareTitle(matches).contains("\(matches.count)"))
     }
 
-    func testCompareSymbolExists() {
-        XCTAssertNotNil(UIImage(systemName: MatchesView.compareSymbol))
+    func testCompareButtonLooksLikeAButton() {
+        XCTAssertNotNil(UIImage(systemName: CompareButton.symbol))
+        // Taller than the 44 pt touch target, and clear of the screen edges.
+        XCTAssertGreaterThanOrEqual(CompareButton.height, 50)
+        XCTAssertGreaterThanOrEqual(CompareButton.margin, 20)
     }
 
     func testFitsWellNeedsGoodShapeAndSize() throws {
