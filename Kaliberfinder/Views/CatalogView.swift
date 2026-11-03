@@ -52,14 +52,7 @@ struct CatalogView: View {
         }
         .safeAreaInset(edge: .bottom) {
             if selecting && !selection.isEmpty {
-                NavigationLink {
-                    TrueScaleView(cartridges: selection)
-                } label: {
-                    Label("1:1 vergleichen (\(selection.count))", systemImage: MatchesView.compareSymbol)
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .padding()
+                CompareButton(title: String(format: "1:1 vergleichen (%lld)".loc, selection.count), cartridges: selection)
             }
         }
     }
