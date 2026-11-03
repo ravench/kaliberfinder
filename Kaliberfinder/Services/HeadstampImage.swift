@@ -38,7 +38,7 @@ enum HeadstampImage {
     /// The strip covers a bit more than one turn, so a word cut at the start is whole at the end.
     static let turns = 1.25
     /// Strips are scaled to at least this height, enough for text recognition.
-    static let minStripHeight = 96.0
+    static let minStripHeight = 128.0
 
     /// Brass and copper: clearly more red and green than blue, unlike wood, paper or grey.
     static func isBrass(r: Float, g: Float, b: Float) -> Bool {
@@ -102,6 +102,42 @@ enum HeadstampImage {
         return stretched(values, width: width, height: height)
     }
 
+    /// Text recognition scales a long, thin strip down until the letters are too small to read, so the
+    /// strip is cut into overlapping pieces `tileAspect` times as wide as high, each with a margin.
+    static let tileAspect = 4
+
+    static func tiles(_ strip: GrayImage) -> [GrayImage] {
+        let h = strip.height, tileWidth = tileAspect * h, step = tileWidth / 2
+        var starts = Array(stride(from: 0, to: max(1, strip.width - tileWidth + 1), by: max(1, step)))
+        if let last = starts.last, last + tileWidth < strip.width { starts.append(strip.width - tileWidth) }
+        return starts.map { padded(crop(strip, x: max(0, $0), width: min(tileWidth, strip.width))) }
+    }
+
+    /// Columns `x ..< x + width` of an image.
+    static func crop(_ image: GrayImage, x: Int, width: Int) -> GrayImage {
+        var pixels: [UInt8] = []
+        pixels.reserveCapacity(width * image.height)
+        for row in 0..<image.height {
+            let start = row * image.width + x
+            pixels += image.pixels[start..<start + width]
+        }
+        return GrayImage(width: width, height: image.height, pixels: pixels)
+    }
+
+    /// The image with a margin of a quarter of its height all round, in its median brightness.
+    static func padded(_ image: GrayImage) -> GrayImage {
+        let m = image.height / 4
+        let fill = image.pixels.sorted()[image.pixels.count / 2]
+        let width = image.width + 2 * m, height = image.height + 2 * m
+        var pixels = [UInt8](repeating: fill, count: width * height)
+        for row in 0..<image.height {
+            for column in 0..<image.width {
+                pixels[(row + m) * width + column + m] = image.pixels[row * image.width + column]
+            }
+        }
+        return GrayImage(width: width, height: height, pixels: pixels)
+    }
+
     /// Brightness at a point between pixel centres (bilinear); outside the image, the nearest edge pixel.
     static func gray(_ image: RGBImage, x: Double, y: Double) -> Float {
         let fx = x - 0.5, fy = y - 0.5
@@ -119,7 +155,9 @@ enum HeadstampImage {
 
     /// Values mapped so the 2nd and 98th percentiles become black and white.
     static func stretched(_ values: [Float], width: Int, height: Int) -> GrayImage {
-        let low = ColorSegmenter.quantile(values, 0.02), high = ColorSegmenter.quantile(values, 0.98)
+        var low = ColorSegmenter.quantile(values, 0.02), high = ColorSegmenter.quantile(values, 0.98)
+        // Mostly one colour (a small mark on a plain disc): stretch between darkest and brightest.
+        if high - low < 1 { low = values.min() ?? 0; high = values.max() ?? 255 }
         let span = max(1, high - low)
         let pixels = values.map { UInt8(min(255, max(0, ($0 - low) / span * 255))) }
         return GrayImage(width: width, height: height, pixels: pixels)
