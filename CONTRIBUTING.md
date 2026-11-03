@@ -3,7 +3,7 @@
 Thanks for helping with Kaliberfinder! Pull requests are welcome: bug fixes,
 features, translations or better cartridge data.
 
-## License in short
+## Licence in short
 
 - The code is **source-available** under the
   [PolyForm Noncommercial License 1.0.0](LICENSE.md). You may read, build, change
