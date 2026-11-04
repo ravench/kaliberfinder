@@ -559,4 +559,3 @@ final class ColorSegmenterTests: XCTestCase {
         XCTAssertFalse(ColorSegmenter.isBrass(brass, [false, true], box))
     }
 }
-
