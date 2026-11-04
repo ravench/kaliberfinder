@@ -178,7 +178,7 @@ final class LiDARSizeTests: XCTestCase {
         let analysis = PhotoAnalysis(shape: side, lengthPixels: 600, imageLongSide: imageLongSide)
         XCTAssertTrue(MatchesView.notes(for: analysis).isEmpty)
         XCTAssertEqual(MatchesView.notes(for: analysis, depth: depth(250)).count, 1)
-        XCTAssertEqual(MatchesView.notes(for: analysis, depth: depth(900)), ["Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form und Aufschrift.".loc])
+        XCTAssertEqual(MatchesView.notes(for: analysis, depth: depth(900)), ["Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form.".loc])
         let noShape = PhotoAnalysis(shape: nil)
         XCTAssertEqual(noShape.size(depth: depth(250)), .failure(.endView))
         XCTAssertEqual(noShape.size(depth: nil), .failure(.noDepth))
