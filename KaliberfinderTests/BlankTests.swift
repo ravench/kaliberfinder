@@ -91,7 +91,7 @@ final class BlankTests: XCTestCase {
     /// A fired blank on grey linoleum. (Raven's other two photos are not used: on the dark speckled
     /// mat the simulator's colour cut-out misses the outline, and in the wide frame the blank is
     /// only about 50 pixels long, too few to tell it from a .22 BB Cap.)
-    /// The blank rests tilted, so it looks about a tenth shorter than it is; it must be the closest calibre.
+    /// The blank rests tilted, so it looks about a tenth shorter than it is; it must be the first match.
     func testRealPhotosOfFiredBlanksLookMostLikeTheBlank() async throws {
         var missed: [String] = []
         for name in ["photo-22blank-fired-grey"] {
@@ -106,11 +106,11 @@ final class BlankTests: XCTestCase {
             // tilted and the phone is held parallel to the table, so the rim shows only about 1.05
             // of the body (Raven, 2026-11-04); the blank must still be the closest calibre.
             if !features.hasNeck { missed.append("\(name): \(features)") }
-            let closest = CartridgeCatalog.current.compactMap { c -> (String, Double)? in
-                guard let e = ShapeMatcher.catalogue[c.id], let d = ShapeMatcher.distance(shape, to: e, part: .cartridge) else { return nil }
-                return (c.id, d)
-            }.sorted { $0.1 < $1.1 }.prefix(3)
-            if closest.first?.0 != blankID { missed.append("\(name): aspect \(aspect), closest \(Array(closest))") }
+            // As the app ranks it: with the tilt a blank's photo allows (see `ShapeMatcher.tilted`).
+            let closest = Matcher.rank(shape: shape, brass: analysis.isBrass, limit: 3)
+            if closest.first?.cartridge.id != blankID {
+                missed.append("\(name): aspect \(aspect), closest \(closest.map { "\($0.cartridge.id) \($0.shapeDistance ?? -1)" })")
+            }
         }
         XCTAssertTrue(missed.isEmpty, missed.joined(separator: "\n"))
     }
