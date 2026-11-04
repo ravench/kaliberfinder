@@ -74,7 +74,7 @@ enum ColorSegmenter {
             let crop = Box(x0: max(0, box.x0 - p), y0: max(0, box.y0 - p),
                            x1: min(image.width, box.x1 + p), y1: min(image.height, box.y1 + p))
             for candidate in candidates(image, crop, edges: edges) {
-                let value = candidate.score.value * (isBrass(image, candidate.mask, candidate.box) ? 1 : notBrassWeight)
+                let value = candidate.score.value * (isGrey(image, candidate.mask, candidate.box) ? greyWeight : 1)
                 if value > (chosen?.value ?? 0) { chosen = (candidate.mask, candidate.box, candidate.score, value) }
             }
         }
@@ -82,10 +82,14 @@ enum ColorSegmenter {
         return (ShapeMatcher.mirrorTrimmed(points(found.mask, found.box)), found.score)
     }
 
-    /// A patch that isn't brass-coloured counts this much of its score: a grey stone or tool next
-    /// to the cases has as clean an outline as a case (shelf photo, 2026-11-04), but most cases are
-    /// brass. A nickel case still wins over anything with a less cartridge-like outline.
-    static let notBrassWeight = 0.5
+    /// A grey patch counts this much of its score: a stone or tool next to the cases has as clean
+    /// an outline as a case (shelf photo, 2026-11-04), but most cases are brass. A nickel case
+    /// still wins over anything with a less cartridge-like outline.
+    static let greyWeight = 0.5
+    /// Saturation ((max − min) / max of the mean colour) below which a patch is grey. Under warm
+    /// light a grey stone reaches about 0.27, brass 0.65 and more, so `PhotoAnalyzer.isBrass`
+    /// (made for daylight) can't tell them apart there.
+    static let greyBelow: Float = 0.4
 
     /// The image pixels of a patch's mask (`box`: where the mask lies in the image).
     static func points(_ mask: [Bool], _ box: Box) -> [Point] {
@@ -93,9 +97,17 @@ enum ColorSegmenter {
         return mask.indices.filter { mask[$0] }.map { Point(x: Double(box.x0 + $0 % w), y: Double(box.y0 + $0 / w)) }
     }
 
-    /// Whether a patch is, on average, brass-coloured (see `PhotoAnalyzer.isBrass`).
-    static func isBrass(_ image: RGBImage, _ mask: [Bool], _ box: Box) -> Bool {
-        PhotoAnalyzer.isBrass(image, points: points(mask, box))
+    /// Whether a patch is, on average, grey: stone, lead, nickel or steel rather than brass.
+    static func isGrey(_ image: RGBImage, _ mask: [Bool], _ box: Box) -> Bool {
+        let w = box.x1 - box.x0
+        var sum: [Float] = [0, 0, 0]
+        for i in mask.indices where mask[i] {
+            let x = box.x0 + i % w, y = box.y0 + i / w
+            guard x >= 0, y >= 0, x < image.width, y < image.height else { continue }
+            for c in 0..<3 { sum[c] += image.pixels[(y * image.width + x) * 3 + c] }
+        }
+        guard let high = sum.max(), let low = sum.min(), high > 0 else { return true }
+        return (high - low) / high < greyBelow
     }
 
     // MARK: - Locate

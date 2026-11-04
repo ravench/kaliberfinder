@@ -551,11 +551,13 @@ final class ColorSegmenterTests: XCTestCase {
         XCTAssertEqual(PhotoAnalyzer.maskStep(objectPixels: 1600 * 1200), 7)
     }
 
-    /// The colour cut-out tells a brass patch from a grey one (a stone, lead) by its mean colour.
-    func testColourCutOutPrefersBrass() {
-        let brass = RGBImage(width: 2, height: 1, pixels: [180, 155, 95, 120, 122, 125])
-        let box = ColorSegmenter.Box(x0: 0, y0: 0, x1: 2, y1: 1)
-        XCTAssertTrue(ColorSegmenter.isBrass(brass, [true, false], box))
-        XCTAssertFalse(ColorSegmenter.isBrass(brass, [false, true], box))
+    /// The colour cut-out tells a grey patch from a brass one, also under warm light (shelf photo:
+    /// the stone 118/103/86, a 9 mm case 92/66/29).
+    func testColourCutOutTellsGreyFromBrass() {
+        let image = RGBImage(width: 3, height: 1, pixels: [118, 103, 86, 92, 66, 29, 200, 200, 205])
+        let box = ColorSegmenter.Box(x0: 0, y0: 0, x1: 3, y1: 1)
+        XCTAssertTrue(ColorSegmenter.isGrey(image, [true, false, false], box), "stone")
+        XCTAssertFalse(ColorSegmenter.isGrey(image, [false, true, false], box), "brass")
+        XCTAssertTrue(ColorSegmenter.isGrey(image, [false, false, true], box), "nickel")
     }
 }
