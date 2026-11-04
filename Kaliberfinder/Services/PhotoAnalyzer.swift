@@ -99,24 +99,20 @@ enum PhotoAnalyzer {
             box?.map { CGPoint(x: $0.x / Double(cgImage.width), y: $0.y / Double(cgImage.height)) }
         }
         let rgb = rgbImage(cgImage)
-        let edges = rgb.map(GradientImage.init)
         var measuredPoints: [Point] = []
-        var visionScore: OutlineScore?
         if (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
             let (found, step, boxes) = silhouette(of: observation, handler: handler)
-            let points = ShapeMatcher.mirrorTrimmed(found, pixelSize: Double(step))
-            measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
-            if measured != nil {
+            if let vision = measureSilhouette(found, step: step) {
+                measured = (vision.shape, vision.length)
                 candidates = boxes
-                outline = normalize(ShapeMatcher.orientedBox(points, pixelSize: Double(step)))
-                measuredPoints = points
-                visionScore = edges.flatMap { OutlineScore.score(points: points, step: step, edges: $0) }
+                outline = normalize(vision.box)
+                measuredPoints = vision.points
             }
         }
-        // Vision found only the table, box or paper, or its outline looks less like a cartridge
-        // (a shadow on one side, a piece missing) than the colour cut-out's: take the cut-out.
-        if let rgb, let edges, let colour = ColorSegmenter.best(rgb, edges: edges),
-           measured == nil || colour.score.value > (visionScore?.value ?? 0) {
+        // Vision found only the table, box or paper (or isn't available, on the simulator): take
+        // the colour cut-out. Never instead of Vision's object: the cut-out also takes in shadows
+        // and can pick a stone or a tool next to the cartridge (build 1042).
+        if measured == nil, let rgb, let colour = ColorSegmenter.best(rgb) {
             let (sampled, step) = thinned(colour.points)
             if let fromColour = ShapeMatcher.measureWithLength(sampled, pixelSize: Double(step)) {
                 measured = fromColour
@@ -129,6 +125,15 @@ enum PhotoAnalyzer {
                              imageLongSide: Double(max(cgImage.width, cgImage.height)),
                              candidates: candidates.count > 1 ? candidates : [], outline: outline,
                              isBrass: rgb.map { isBrass($0, points: measuredPoints) } ?? false)
+    }
+
+    /// The measurement of Vision's silhouette (`step`: pixels between the points): made
+    /// mirror-symmetric first, so a shadow clinging to part of one side is left out.
+    static func measureSilhouette(_ points: [Point], step: Int) -> (shape: ShapeMeasurement, length: Double, points: [Point], box: [Point]?)? {
+        let pixelSize = Double(step)
+        let trimmed = ShapeMatcher.mirrorTrimmed(points, pixelSize: pixelSize)
+        guard let measured = ShapeMatcher.measureWithLength(trimmed, pixelSize: pixelSize) else { return nil }
+        return (measured.shape, measured.length, trimmed, ShapeMatcher.orientedBox(trimmed, pixelSize: pixelSize))
     }
 
     /// How much red and green must each exceed blue, relative to it, for brass (yellow). Lead and
