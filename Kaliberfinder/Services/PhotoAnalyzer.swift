@@ -6,8 +6,6 @@ import Vision
 struct PhotoAnalysis {
     /// Silhouette of the largest foreground object, nil if none was found.
     let shape: ShapeMeasurement?
-    /// Text read from the photo (headstamp, box label).
-    let texts: [String]
     /// The silhouette's length in pixels of the analysed image, and that image's long side.
     var lengthPixels: Double?
     var imageLongSide: Double = 0
@@ -18,6 +16,8 @@ struct PhotoAnalysis {
     /// photo (x of the width, y of the height); nil if nothing was measured. Drawn as the frame,
     /// so it shows exactly what was matched.
     var outline: [CGPoint]?
+    /// The silhouette is brass-coloured: a case, not a lead ball or pellet.
+    var isBrass = false
 
     /// How many cartridges compete for the measurement.
     var objectCount: Int { max(1, candidates.count) }
@@ -32,34 +32,15 @@ struct PhotoAnalysis {
     }
 }
 
-/// Which photo of the two-shot flow is analysed.
-enum PhotoKind {
-    /// The cartridge lying on its side: shape and size only.
-    case side
-    /// The case head seen from below: only the headstamp text counts.
-    case base
-
-    /// Whether text read from this photo is used. A side photo is only read when it turned out
-    /// to show a round end (someone photographed the base anyway); otherwise the shape counts.
-    func readsText(shape: ShapeMeasurement?) -> Bool {
-        switch self {
-        case .base: true
-        case .side: shape?.isEndView == true
-        }
-    }
-}
-
-/// Runs Vision on a photo: foreground segmentation for the silhouette, text recognition for the headstamp.
+/// Runs Vision on a photo of the cartridge lying on its side: foreground segmentation for the silhouette.
 enum PhotoAnalyzer {
     /// Photos are scaled down to this many pixels on the long side first; plenty for the shape.
     static let maxDimension: CGFloat = 1600
-    /// Base photos keep more detail: the case head is often small and its letters are fine.
-    static let maxBaseDimension: CGFloat = 2000
     /// Upper bound on silhouette points handed to the shape measurement.
     static let maxPoints = 40_000
 
-    static func analyze(_ image: UIImage, kind: PhotoKind = .side) async -> PhotoAnalysis {
-        await Task.detached(priority: .userInitiated) { analyzeNow(image, kind: kind) }.value
+    static func analyze(_ image: UIImage) async -> PhotoAnalysis {
+        await Task.detached(priority: .userInitiated) { analyzeNow(image) }.value
     }
 
     /// Analyses only the cartridge in `candidate` (fractions of the photo, from `candidates`):
@@ -74,7 +55,7 @@ enum PhotoAnalyzer {
         let crop = CGRect(x: region.minX * size.width, y: region.minY * size.height,
                           width: region.width * size.width, height: region.height * size.height)
         let cropped = Self.cropped(image, to: region)
-        var analysis = analyzeNow(cropped, kind: .side)
+        var analysis = analyzeNow(cropped)
         // The size measurement compares pixels with the whole photo's long side, at the scale
         // the cut-out was analysed at.
         let scale = min(1, maxDimension / max(crop.width, crop.height))
@@ -105,8 +86,8 @@ enum PhotoAnalyzer {
         return candidate.insetBy(dx: -margin, dy: -margin).intersection(CGRect(x: 0, y: 0, width: 1, height: 1))
     }
 
-    static func analyzeNow(_ image: UIImage, kind: PhotoKind = .side) -> PhotoAnalysis {
-        guard let cgImage = upright(image, maxSide: kind == .base ? maxBaseDimension : maxDimension) else { return PhotoAnalysis(shape: nil, texts: []) }
+    static func analyzeNow(_ image: UIImage) -> PhotoAnalysis {
+        guard let cgImage = upright(image, maxSide: maxDimension) else { return PhotoAnalysis(shape: nil) }
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
 
         // Not available on the simulator; then the colour cut-out below does the work.
@@ -117,15 +98,17 @@ enum PhotoAnalyzer {
         let normalize = { (box: [Point]?) in
             box?.map { CGPoint(x: $0.x / Double(cgImage.width), y: $0.y / Double(cgImage.height)) }
         }
-        let rgb = kind == .side ? rgbImage(cgImage) : nil
+        let rgb = rgbImage(cgImage)
         let edges = rgb.map(GradientImage.init)
+        var measuredPoints: [Point] = []
         var visionScore: OutlineScore?
-        if kind == .side, (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
+        if (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
             let (points, step, boxes) = silhouette(of: observation, handler: handler)
             measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
             if measured != nil {
                 candidates = boxes
                 outline = normalize(ShapeMatcher.orientedBox(points, pixelSize: Double(step)))
+                measuredPoints = points
                 visionScore = edges.flatMap { OutlineScore.score(points: points, step: step, edges: $0) }
             }
         }
@@ -138,63 +121,34 @@ enum PhotoAnalyzer {
                 measured = fromColour
                 outline = normalize(ShapeMatcher.orientedBox(sampled, pixelSize: Double(step)))
                 candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
+                measuredPoints = sampled
             }
         }
-        var texts: [String] = []
-        if kind.readsText(shape: measured?.shape) { texts = readHeadstamp(cgImage) }
-        return PhotoAnalysis(shape: measured?.shape, texts: texts, lengthPixels: measured?.length,
+        return PhotoAnalysis(shape: measured?.shape, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)),
-                             candidates: candidates.count > 1 ? candidates : [], outline: outline)
+                             candidates: candidates.count > 1 ? candidates : [], outline: outline,
+                             isBrass: rgb.map { isBrass($0, points: measuredPoints) } ?? false)
     }
 
-    /// Text on a case head: read from the photo as it is, and from the ring of letters unrolled
-    /// into a strip, both ways up (see `HeadstampImage`).
-    static func readHeadstamp(_ cgImage: CGImage) -> [String] {
-        var texts = recognizeText(cgImage)
-        if let rgb = rgbImage(cgImage), let disc = HeadstampImage.locate(rgb) {
-            let strip = HeadstampImage.unwrap(rgb, disc: disc)
-            // Letters face outwards or inwards; stamped letters can show dark or light.
-            for way in [strip, strip.rotatedHalfTurn(), strip.inverted(), strip.rotatedHalfTurn().inverted()] {
-                // Each piece on its own, then the first guesses of all pieces as one line.
-                var firsts: [String] = []
-                for tile in HeadstampImage.tiles(way) {
-                    guard let image = grayCGImage(tile) else { continue }
-                    let read = recognizeLines(image)
-                    texts += read.guesses
-                    if !read.line.isEmpty { firsts.append(read.line) }
-                }
-                if firsts.count > 1 { texts.append(firsts.joined(separator: " ")) }
-            }
+    /// How much red and green must each exceed blue, relative to it, for brass (yellow). Lead and
+    /// nickel are grey (all three about equal). Copper is red with little green, so green must
+    /// also be close to red.
+    static let brassRedOverBlue: Float = 1.25
+    static let brassGreenOverBlue: Float = 1.1
+    static let brassGreenOfRed: Float = 0.75
+
+    /// Whether the pixels at `points` are, on average, brass-coloured.
+    static func isBrass(_ image: RGBImage, points: [Point]) -> Bool {
+        var sum: [Float] = [0, 0, 0], n: Float = 0
+        for p in points {
+            let x = Int(p.x), y = Int(p.y)
+            guard x >= 0, y >= 0, x < image.width, y < image.height else { continue }
+            let i = (y * image.width + x) * 3
+            for c in 0..<3 { sum[c] += image.pixels[i + c] }
+            n += 1
         }
-        return texts
-    }
-
-    /// Text Vision reads, up to three guesses per line, plus all first guesses joined into one line,
-    /// so words recognised separately (".45" and "AUTO") can still form a calibre name.
-    static func recognizeText(_ cgImage: CGImage) -> [String] {
-        let read = recognizeLines(cgImage)
-        return read.lineCount > 1 ? read.guesses + [read.line] : read.guesses
-    }
-
-    /// Up to three guesses per line, and the first guesses of all lines joined.
-    static func recognizeLines(_ cgImage: CGImage) -> (guesses: [String], line: String, lineCount: Int) {
-        let request = VNRecognizeTextRequest()
-        request.recognitionLevel = .accurate
-        request.usesLanguageCorrection = false
-        try? VNImageRequestHandler(cgImage: cgImage, options: [:]).perform([request])
-        let observations = request.results ?? []
-        let guesses = observations.flatMap { $0.topCandidates(3).map(\.string) }
-        let firsts = observations.compactMap { $0.topCandidates(1).first?.string }
-        return (guesses, firsts.joined(separator: " "), firsts.count)
-    }
-
-    /// A gray image as a CGImage, for Vision.
-    static func grayCGImage(_ image: GrayImage) -> CGImage? {
-        guard let provider = CGDataProvider(data: Data(image.pixels) as CFData) else { return nil }
-        return CGImage(width: image.width, height: image.height, bitsPerComponent: 8, bitsPerPixel: 8,
-                       bytesPerRow: image.width, space: CGColorSpaceCreateDeviceGray(),
-                       bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue),
-                       provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
+        guard n > 0, sum[2] > 0 else { return false }
+        return sum[0] >= brassRedOverBlue * sum[2] && sum[1] >= brassGreenOverBlue * sum[2] && sum[1] >= brassGreenOfRed * sum[0]
     }
 
     /// The image scaled down and with its orientation applied, so pixels are upright.
@@ -247,9 +201,10 @@ enum PhotoAnalyzer {
         var map: [Int] = []
         forEachPixel(labels, step: 1) { _, _, value in map.append(Int(value.rounded())) }
         let width = CVPixelBufferGetWidth(labels), height = CVPixelBufferGetHeight(labels)
-        let instances = map.count == width * height ? SubjectPicker.instances(labels: map, width: width) : []
-        guard let label = SubjectPicker.pick(instances, width: width, height: height),
-              let mask = try? observation.generateScaledMaskForImage(forInstances: IndexSet(integer: label), from: handler)
+        let pieces = map.count == width * height ? SubjectPicker.instances(labels: map, width: width) : []
+        let instances = SubjectPicker.joiningParts(pieces, labels: map, width: width, height: height)
+        guard let picked = SubjectPicker.pickInstance(instances, width: width, height: height),
+              let mask = try? observation.generateScaledMaskForImage(forInstances: picked.labels, from: handler)
         else { return ([], 1, []) }
         let pixels = CVPixelBufferGetWidth(mask) * CVPixelBufferGetHeight(mask)
         let step = max(1, Int((Double(pixels) / Double(maxPoints)).squareRoot().rounded(.up)))

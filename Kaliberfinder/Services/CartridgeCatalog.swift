@@ -33,6 +33,18 @@ enum CartridgeCatalog {
 
     static func cartridge(id: String) -> Cartridge? { byID[id] }
 
+    /// UserDefaults key of the «Veraltete Kaliber berücksichtigen» switch. Off by default.
+    static let includeObsoleteKey = "includeObsoleteCalibres"
+
+    /// The calibres photo and dimension matching compare against: obsolete ones only when asked.
+    /// The catalogue list and search always show every calibre.
+    static func matchable(includeObsolete: Bool, in cartridges: [Cartridge] = all) -> [Cartridge] {
+        includeObsolete ? cartridges : cartridges.filter { !$0.obsolete }
+    }
+
+    /// Calibres still in regular production: what matching uses with the switch off (the default).
+    static let current: [Cartridge] = matchable(includeObsolete: false)
+
     /// Normalises a name for comparison: case, spaces, dots and "mm" don't matter, "×" is "x", "," is ".".
     static func normalized(_ s: String) -> String {
         s.lowercased()
