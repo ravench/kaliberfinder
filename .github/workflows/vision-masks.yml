@@ -7,9 +7,4 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v5
-      - run: swift tools/vision_masks.swift KaliberfinderTests/Fixtures/*.jpg | cut -c1-200
-      - run: swift tools/vision_masks.swift KaliberfinderTests/Fixtures/*.jpg > "$RUNNER_TEMP/masks.txt"
-      - uses: actions/upload-artifact@v4
-        with:
-          name: vision-masks
-          path: ${{ runner.temp }}/masks.txt
+      - run: swift tools/vision_masks.swift KaliberfinderTests/Fixtures/*.jpg
