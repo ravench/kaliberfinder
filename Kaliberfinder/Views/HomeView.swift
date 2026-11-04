@@ -3,7 +3,7 @@ import SwiftUI
 
 /// The home screen's settings and actions, top to bottom.
 enum HomeSection: CaseIterable {
-    case photo, withoutPhoto, recognition, realSize, units
+    case photo, withoutPhoto, recognition, units, realSize
 }
 
 struct HomeView: View {
