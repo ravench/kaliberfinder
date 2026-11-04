@@ -11,8 +11,9 @@ parentheses.
 
 - **Identify a cartridge** (Patrone erkennen): take a photo of a cartridge (or pick one)
   and get a ranked list of likely calibres. The app cuts the cartridge out of the photo
-  (Vision foreground mask; when Vision takes the table, a box or the paper as the subject,
-  a colour-based cut-out instead) and compares its silhouette (length/width ratio and width
+  (Vision foreground mask and a colour-based cut-out; of their outlines the one that looks
+  most like a cartridge wins: symmetric about its axis, solid, with sharp edges, so a shadow
+  on one side, wood grain or a tarnished half isn't measured) and compares its silhouette (length/width ratio and width
   profile) with every calibre's outline. A second, optional photo of the case head is read
   for the headstamp («WIN 308», «9MM LUGER»). The app finds the brass case head in it,
   unrolls the ring of letters round the primer into a straight strip and reads it both ways

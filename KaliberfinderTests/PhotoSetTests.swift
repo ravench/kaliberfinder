@@ -1,5 +1,4 @@
 import UIKit
-import Vision
 import XCTest
 @testable import Kaliberfinder
 
@@ -16,24 +15,24 @@ final class PhotoSetTests: XCTestCase {
         return try XCTUnwrap(UIImage(contentsOfFile: url.path), name)
     }
 
-    /// A report of how each photo is measured today, for tuning the cut-out (see the CI log).
-    func testReportMeasurements() async throws {
-        var lines: [String] = []
+    /// Every photo through the analysis (on the simulator the colour cut-out, since Vision's
+    /// foreground mask isn't available there), with a report in the CI log. The shapes must come
+    /// close to the true calibre: before choosing the most cartridge-like patch (2026-11-04),
+    /// 13 of 26 were within 10% and the worst was off ten-fold (wood grain or a shadow measured).
+    func testPhotoSetMeasuresCloseToTheTruth() async throws {
+        var lines: [String] = [], errors: [Double] = []
         for entry in Self.photos {
-            let image = try photo(entry.name)
-            let cg = try XCTUnwrap(image.cgImage)
-            let request = VNGenerateForegroundInstanceMaskRequest()
-            let vision = (try? VNImageRequestHandler(cgImage: cg).perform([request])) != nil && request.results?.first != nil
-            let analysis = await PhotoAnalyzer.analyze(image)
-            var colour = "-"
-            if let rgb = PhotoAnalyzer.rgbImage(cg), let points = ColorSegmenter.segment(rgb),
-               let shape = ShapeMatcher.measure(points) {
-                colour = String(format: "%.2f", shape.aspect)
-            }
-            let aspect = analysis.shape.map { String(format: "%.2f", $0.aspect) } ?? "-"
-            lines.append("PHOTOSET \(entry.name) truth \(entry.aspect) vision \(vision) analysis \(aspect) colour \(colour)")
+            let analysis = await PhotoAnalyzer.analyze(try photo(entry.name))
+            let aspect = analysis.shape?.aspect ?? 0
+            let error = abs(aspect / entry.aspect - 1)
+            errors.append(error)
+            lines.append(String(format: "PHOTOSET %@ truth %.1f measured %.2f error %+.0f%%",
+                                entry.name, entry.aspect, aspect, 100 * (aspect / entry.aspect - 1)))
         }
         print(lines.joined(separator: "\n"))
-        XCTAssertEqual(lines.count, Self.photos.count)
+        let close = errors.filter { $0 < 0.15 }.count
+        print("PHOTOSET within 15%: \(close) of \(errors.count), worst \(Int(100 * (errors.max() ?? 0)))%")
+        XCTAssertGreaterThanOrEqual(close, 17, lines.joined(separator: "\n"))
+        XCTAssertLessThan(errors.max() ?? 1, 0.5, lines.joined(separator: "\n"))
     }
 }
