@@ -10,7 +10,7 @@ final class MatcherTests: XCTestCase {
         let matches = Matcher.rank(shape: try expected("7.5x55 mm Swiss (GP 11)"), hits: [])
         XCTAssertEqual(matches.first?.cartridge.id, "7.5x55 mm Swiss (GP 11)")
         XCTAssertEqual(matches.first?.shapeFit, .good)
-        XCTAssertEqual(matches.count, 8)
+        XCTAssertEqual(matches.count, 12)
         // .308 Win and 7.62 NATO share their dimensions, so both are on top.
         let top2 = Set(Matcher.rank(shape: try expected(".308 Winchester"), hits: []).prefix(2).map(\.cartridge.id))
         XCTAssertEqual(top2, [".308 Winchester", "7.62x51 mm NATO"])
