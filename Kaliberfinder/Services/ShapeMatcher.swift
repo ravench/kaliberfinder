@@ -221,6 +221,18 @@ enum ShapeMatcher {
             .min()
     }
 
+    /// A blank doesn't lie flat: its rim is wider than the crimped mouth, so it rests tilted and,
+    /// photographed parallel to the table (as the LiDAR guide asks), looks shorter than it is.
+    /// Seen this way it may look up to this share shorter (Raven, 2026-11-04).
+    static let maxTiltShortening = 0.2
+
+    /// The expected shape with its length/width ratio brought towards the photo's, as far as a
+    /// tilt can shorten it (never longer).
+    static func tilted(_ expected: ShapeMeasurement, toward photo: ShapeMeasurement) -> ShapeMeasurement {
+        let aspect = min(expected.aspect, max(photo.aspect, expected.aspect * (1 - maxTiltShortening)))
+        return ShapeMeasurement(aspect: aspect, profile: expected.profile, widths: expected.widths)
+    }
+
     /// Expected shapes of all catalogue cartridges, computed once.
     static let catalogue: [String: ShapeMeasurement] = {
         var result: [String: ShapeMeasurement] = [:]
