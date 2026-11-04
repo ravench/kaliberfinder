@@ -42,7 +42,8 @@ final class PhotoSetTests: XCTestCase {
     /// bottleneck case.
     func testLoadedRoundsAreCartridgesInAutomaticMode() async throws {
         for name in ["set-45acp-01", "set-45acp-02", "set-9x19-shadow"] {
-            let shape = try XCTUnwrap(await PhotoAnalyzer.analyze(try photo(name)).shape, name)
+            let analysis = await PhotoAnalyzer.analyze(try photo(name))
+            let shape = try XCTUnwrap(analysis.shape, name)
             XCTAssertEqual(ScanMode.auto.part(for: shape), .cartridge, name)
         }
     }
@@ -51,10 +52,12 @@ final class PhotoSetTests: XCTestCase {
     /// as clean an outline (build 1042 measured the stone).
     func testShelfPhotoMeasuresTheCaseNotTheStone() async throws {
         // Cut down to the 9 mm case (left third) and the stone (right of the middle).
-        let crop = try XCTUnwrap(await PhotoAnalyzer.analyze(try photo("shelf-cases-crop")).outline)
+        let cropped = await PhotoAnalyzer.analyze(try photo("shelf-cases-crop"))
+        let crop = try XCTUnwrap(cropped.outline)
         XCTAssertLessThan(crop.map(\.x).reduce(0, +) / 4, 0.4, "\(crop)")
         // The whole shelf: five cases, the stone at about 0.68…0.76 of the width, the nearest case at 0.64.
-        let shelf = try XCTUnwrap(await PhotoAnalyzer.analyze(try photo("shelf-cases")).outline)
+        let whole = await PhotoAnalyzer.analyze(try photo("shelf-cases"))
+        let shelf = try XCTUnwrap(whole.outline)
         let x = shelf.map(\.x).reduce(0, +) / 4
         XCTAssertFalse((0.69...0.76).contains(x), "\(shelf)")
     }
