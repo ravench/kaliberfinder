@@ -6,8 +6,6 @@ import Vision
 struct PhotoAnalysis {
     /// Silhouette of the largest foreground object, nil if none was found.
     let shape: ShapeMeasurement?
-    /// Text read from the photo (headstamp, box label).
-    let texts: [String]
     /// The silhouette's length in pixels of the analysed image, and that image's long side.
     var lengthPixels: Double?
     var imageLongSide: Double = 0
@@ -32,34 +30,15 @@ struct PhotoAnalysis {
     }
 }
 
-/// Which photo of the two-shot flow is analysed.
-enum PhotoKind {
-    /// The cartridge lying on its side: shape and size only.
-    case side
-    /// The case head seen from below: only the headstamp text counts.
-    case base
-
-    /// Whether text read from this photo is used. A side photo is only read when it turned out
-    /// to show a round end (someone photographed the base anyway); otherwise the shape counts.
-    func readsText(shape: ShapeMeasurement?) -> Bool {
-        switch self {
-        case .base: true
-        case .side: shape?.isEndView == true
-        }
-    }
-}
-
-/// Runs Vision on a photo: foreground segmentation for the silhouette, text recognition for the headstamp.
+/// Runs Vision on a photo of the cartridge lying on its side: foreground segmentation for the silhouette.
 enum PhotoAnalyzer {
     /// Photos are scaled down to this many pixels on the long side first; plenty for the shape.
     static let maxDimension: CGFloat = 1600
-    /// Base photos keep more detail: the case head is often small and its letters are fine.
-    static let maxBaseDimension: CGFloat = 2000
     /// Upper bound on silhouette points handed to the shape measurement.
     static let maxPoints = 40_000
 
-    static func analyze(_ image: UIImage, kind: PhotoKind = .side) async -> PhotoAnalysis {
-        await Task.detached(priority: .userInitiated) { analyzeNow(image, kind: kind) }.value
+    static func analyze(_ image: UIImage) async -> PhotoAnalysis {
+        await Task.detached(priority: .userInitiated) { analyzeNow(image) }.value
     }
 
     /// Analyses only the cartridge in `candidate` (fractions of the photo, from `candidates`):
@@ -74,7 +53,7 @@ enum PhotoAnalyzer {
         let crop = CGRect(x: region.minX * size.width, y: region.minY * size.height,
                           width: region.width * size.width, height: region.height * size.height)
         let cropped = Self.cropped(image, to: region)
-        var analysis = analyzeNow(cropped, kind: .side)
+        var analysis = analyzeNow(cropped)
         // The size measurement compares pixels with the whole photo's long side, at the scale
         // the cut-out was analysed at.
         let scale = min(1, maxDimension / max(crop.width, crop.height))
@@ -105,8 +84,8 @@ enum PhotoAnalyzer {
         return candidate.insetBy(dx: -margin, dy: -margin).intersection(CGRect(x: 0, y: 0, width: 1, height: 1))
     }
 
-    static func analyzeNow(_ image: UIImage, kind: PhotoKind = .side) -> PhotoAnalysis {
-        guard let cgImage = upright(image, maxSide: kind == .base ? maxBaseDimension : maxDimension) else { return PhotoAnalysis(shape: nil, texts: []) }
+    static func analyzeNow(_ image: UIImage) -> PhotoAnalysis {
+        guard let cgImage = upright(image, maxSide: maxDimension) else { return PhotoAnalysis(shape: nil) }
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
 
         // Not available on the simulator; then the colour cut-out below does the work.
@@ -117,7 +96,7 @@ enum PhotoAnalyzer {
         let normalize = { (box: [Point]?) in
             box?.map { CGPoint(x: $0.x / Double(cgImage.width), y: $0.y / Double(cgImage.height)) }
         }
-        if kind == .side, (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
+        if (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
             let (points, step, boxes) = silhouette(of: observation, handler: handler)
             measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
             if measured != nil {
@@ -126,7 +105,7 @@ enum PhotoAnalyzer {
             }
         }
         // Vision found only the table, box or paper: find the cartridge by its colour.
-        if kind == .side, measured == nil, let rgb = rgbImage(cgImage), let points = ColorSegmenter.segment(rgb) {
+        if measured == nil, let rgb = rgbImage(cgImage), let points = ColorSegmenter.segment(rgb) {
             let (sampled, step) = thinned(points)
             measured = ShapeMatcher.measureWithLength(sampled, pixelSize: Double(step))
             if measured != nil {
@@ -134,61 +113,9 @@ enum PhotoAnalyzer {
                 candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
             }
         }
-        var texts: [String] = []
-        if kind.readsText(shape: measured?.shape) { texts = readHeadstamp(cgImage) }
-        return PhotoAnalysis(shape: measured?.shape, texts: texts, lengthPixels: measured?.length,
+        return PhotoAnalysis(shape: measured?.shape, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)),
                              candidates: candidates.count > 1 ? candidates : [], outline: outline)
-    }
-
-    /// Text on a case head: read from the photo as it is, and from the ring of letters unrolled
-    /// into a strip, both ways up (see `HeadstampImage`).
-    static func readHeadstamp(_ cgImage: CGImage) -> [String] {
-        var texts = recognizeText(cgImage)
-        if let rgb = rgbImage(cgImage), let disc = HeadstampImage.locate(rgb) {
-            let strip = HeadstampImage.unwrap(rgb, disc: disc)
-            // Letters face outwards or inwards; stamped letters can show dark or light.
-            for way in [strip, strip.rotatedHalfTurn(), strip.inverted(), strip.rotatedHalfTurn().inverted()] {
-                // Each piece on its own, then the first guesses of all pieces as one line.
-                var firsts: [String] = []
-                for tile in HeadstampImage.tiles(way) {
-                    guard let image = grayCGImage(tile) else { continue }
-                    let read = recognizeLines(image)
-                    texts += read.guesses
-                    if !read.line.isEmpty { firsts.append(read.line) }
-                }
-                if firsts.count > 1 { texts.append(firsts.joined(separator: " ")) }
-            }
-        }
-        return texts
-    }
-
-    /// Text Vision reads, up to three guesses per line, plus all first guesses joined into one line,
-    /// so words recognised separately (".45" and "AUTO") can still form a calibre name.
-    static func recognizeText(_ cgImage: CGImage) -> [String] {
-        let read = recognizeLines(cgImage)
-        return read.lineCount > 1 ? read.guesses + [read.line] : read.guesses
-    }
-
-    /// Up to three guesses per line, and the first guesses of all lines joined.
-    static func recognizeLines(_ cgImage: CGImage) -> (guesses: [String], line: String, lineCount: Int) {
-        let request = VNRecognizeTextRequest()
-        request.recognitionLevel = .accurate
-        request.usesLanguageCorrection = false
-        try? VNImageRequestHandler(cgImage: cgImage, options: [:]).perform([request])
-        let observations = request.results ?? []
-        let guesses = observations.flatMap { $0.topCandidates(3).map(\.string) }
-        let firsts = observations.compactMap { $0.topCandidates(1).first?.string }
-        return (guesses, firsts.joined(separator: " "), firsts.count)
-    }
-
-    /// A gray image as a CGImage, for Vision.
-    static func grayCGImage(_ image: GrayImage) -> CGImage? {
-        guard let provider = CGDataProvider(data: Data(image.pixels) as CFData) else { return nil }
-        return CGImage(width: image.width, height: image.height, bitsPerComponent: 8, bitsPerPixel: 8,
-                       bytesPerRow: image.width, space: CGColorSpaceCreateDeviceGray(),
-                       bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue),
-                       provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
     }
 
     /// The image scaled down and with its orientation applied, so pixels are upright.

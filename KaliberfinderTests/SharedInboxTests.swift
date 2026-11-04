@@ -19,17 +19,18 @@ final class SharedInboxTests: XCTestCase {
         XCTAssertEqual(inbox.take(), [])
     }
 
-    func testPhotosComeBackInSharedOrderOnce() throws {
-        let side = Data("side".utf8), base = Data("base".utf8)
-        try inbox.put([side, base])
-        XCTAssertEqual(inbox.take(), [side, base])
+    func testPhotoComesBackOnce() throws {
+        let side = Data("side".utf8)
+        try inbox.put([side])
+        XCTAssertEqual(inbox.take(), [side])
         XCTAssertEqual(inbox.take(), [], "taking empties the inbox")
     }
 
-    func testKeepsAtMostTwoPhotos() throws {
+    func testKeepsOnlyTheSidePhoto() throws {
+        // No base photo any more: only the first shared photo is kept.
         try inbox.put((0..<5).map { Data("photo \($0)".utf8) })
-        XCTAssertEqual(SharedInbox.maxPhotos, 2)
-        XCTAssertEqual(inbox.take(), [Data("photo 0".utf8), Data("photo 1".utf8)])
+        XCTAssertEqual(SharedInbox.maxPhotos, 1)
+        XCTAssertEqual(inbox.take(), [Data("photo 0".utf8)])
     }
 
     func testNewShareReplacesWaitingPhotos() throws {

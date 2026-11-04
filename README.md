@@ -13,12 +13,8 @@ parentheses.
   and get a ranked list of likely calibres. The app cuts the cartridge out of the photo
   (Vision foreground mask; when Vision takes the table, a box or the paper as the subject,
   a colour-based cut-out instead) and compares its silhouette (length/width ratio and width
-  profile) with every calibre's outline. A second, optional photo of the case head is read
-  for the headstamp («WIN 308», «9MM LUGER»). The app finds the brass case head in it,
-  unrolls the ring of letters round the primer into a straight strip and reads it both ways
-  up, so the base needn't fill the frame or be turned upright. Text is only read from that base photo (or
-  from a first photo that turns out to show a round end), never from the side photo. Then
-  compare the candidates 1:1 by laying the cartridge on the screen. Works best with the
+  profile) with every calibre's outline. Only the side profile counts; no text is read
+  from the photo. Then compare the candidates 1:1 by laying the cartridge on the screen. Works best with the
   cartridge on its side on a light, plain background, photographed from above. When
   several cartridges compete in the photo, the app outlines them and you tap the one to
   identify; a cartridge off in a corner is simply ignored. The measured cartridge gets a
@@ -28,9 +24,7 @@ parentheses.
   compares cases with case outlines, and uses the rim (rimmed or rimless) and the neck
   (bottleneck or straight) to rule out calibres. Matches that are far off are not listed.
 - **Sharing**: share a photo from Photos, Files, Messages or any other app to
-  «Kaliberfinder» in the share sheet; the app opens on the matches for it. Share two
-  photos at once to add the base photo too, in any order: the app tells the side view from
-  the round base by its outline. The share extension only hands the photos over through
+  «Kaliberfinder» in the share sheet; the app opens on the matches for it. The share extension only hands the photo over through
   the App Group `group.ch.giotta.kaliberfinder`; the analysis runs in the app.
 - **Calibres** (Alle Kaliber): catalogue of about 100 calibres (rimfire, handgun, rifle
   incl. GP 90, GP 11 and GP 1890, black powder, shotgun, air), with search across names,
@@ -51,7 +45,7 @@ parentheses.
   camera, which guides you to hold the phone flat 20–30 cm above the cartridge and takes
   the photo with the LiDAR distance. From that distance and the camera's focal length the
   app measures the cartridge's length and diameter and ranks calibres by size as well as
-  shape and headstamp. The depth is used in memory only and never stored. Other iPhones
+  shape. The depth is used in memory only and never stored. Other iPhones
   and photos from the library work as before.
 - **Units** (Einheiten): metric (mm, the default) or US imperial (inches, three decimals,
   ruler in 1/16 in). Data and matching stay in millimetres; only display and input change.
