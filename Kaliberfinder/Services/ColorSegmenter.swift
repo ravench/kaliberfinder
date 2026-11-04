@@ -68,22 +68,34 @@ enum ColorSegmenter {
         let edges = edges ?? GradientImage(image)
         let longSide = Double(max(image.width, image.height))
         let pad = max(Double(max(box.x1 - box.x0, box.y1 - box.y0)) * 0.6, longSide / 16)
-        var chosen: (mask: [Bool], box: Box, score: OutlineScore)?
+        var chosen: (mask: [Bool], box: Box, score: OutlineScore, value: Double)?
         for factor in paddings {
             let p = Int(pad * factor)
             let crop = Box(x0: max(0, box.x0 - p), y0: max(0, box.y0 - p),
                            x1: min(image.width, box.x1 + p), y1: min(image.height, box.y1 + p))
-            for candidate in candidates(image, crop, edges: edges) where candidate.score.value > (chosen?.score.value ?? 0) {
-                chosen = candidate
+            for candidate in candidates(image, crop, edges: edges) {
+                let value = candidate.score.value * (isBrass(image, candidate.mask, candidate.box) ? 1 : notBrassWeight)
+                if value > (chosen?.value ?? 0) { chosen = (candidate.mask, candidate.box, candidate.score, value) }
             }
         }
         guard let found = chosen else { return nil }
-        let w = found.box.x1 - found.box.x0
-        var points: [Point] = []
-        for i in found.mask.indices where found.mask[i] {
-            points.append(Point(x: Double(found.box.x0 + i % w), y: Double(found.box.y0 + i / w)))
-        }
-        return (ShapeMatcher.mirrorTrimmed(points), found.score)
+        return (ShapeMatcher.mirrorTrimmed(points(found.mask, found.box)), found.score)
+    }
+
+    /// A patch that isn't brass-coloured counts this much of its score: a grey stone or tool next
+    /// to the cases has as clean an outline as a case (shelf photo, 2026-11-04), but most cases are
+    /// brass. A nickel case still wins over anything with a less cartridge-like outline.
+    static let notBrassWeight = 0.5
+
+    /// The image pixels of a patch's mask (`box`: where the mask lies in the image).
+    static func points(_ mask: [Bool], _ box: Box) -> [Point] {
+        let w = box.x1 - box.x0
+        return mask.indices.filter { mask[$0] }.map { Point(x: Double(box.x0 + $0 % w), y: Double(box.y0 + $0 / w)) }
+    }
+
+    /// Whether a patch is, on average, brass-coloured (see `PhotoAnalyzer.isBrass`).
+    static func isBrass(_ image: RGBImage, _ mask: [Bool], _ box: Box) -> Bool {
+        PhotoAnalyzer.isBrass(image, points: points(mask, box))
     }
 
     // MARK: - Locate
