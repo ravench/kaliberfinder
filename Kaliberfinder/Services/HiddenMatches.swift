@@ -37,7 +37,7 @@ extension DimensionMatch: CalibreResult {}
 struct HiddenMatches<Item: CalibreResult> {
     /// What the list shows: up to `limit` calibres the switches let through, in rank order.
     let shown: [Item]
-    /// Hidden calibres that rank among the first `limit` of all, in rank order.
+    /// Hidden calibres that rank among the first `limit` of all and are worth showing, in rank order.
     let hidden: [Item]
     /// Shown and hidden together, in rank order: the list after «Einblenden».
     let revealed: [Item]
@@ -45,12 +45,13 @@ struct HiddenMatches<Item: CalibreResult> {
     /// hidden tags counts once, under the first.
     let counts: [(tag: HiddenTag, count: Int)]
 
-    init(_ ranked: [Item], hiding tags: Set<HiddenTag>, limit: Int) {
+    /// `worthShowing` keeps far-off hidden calibres from being offered as «weitere Treffer».
+    init(_ ranked: [Item], hiding tags: Set<HiddenTag>, limit: Int, worthShowing: (Item) -> Bool = { _ in true }) {
         func tag(of item: Item) -> HiddenTag? {
             HiddenTag.allCases.first { tags.contains($0) && $0.applies(to: item.cartridge) }
         }
         let shown = Array(ranked.filter { tag(of: $0) == nil }.prefix(limit))
-        let hidden = ranked.prefix(limit).filter { tag(of: $0) != nil }
+        let hidden = ranked.prefix(limit).filter { tag(of: $0) != nil && worthShowing($0) }
         let shownIDs = Set(shown.map(\.cartridge.id)), hiddenIDs = Set(hidden.map(\.cartridge.id))
         self.shown = shown
         self.hidden = hidden
@@ -93,9 +94,10 @@ extension DimensionMatcher {
     /// How many dimension matches the list shows.
     static let shownLimit = 15
 
-    /// Ranks against every calibre, then hides the tags whose switch is off.
+    /// Ranks against every calibre, then hides the tags whose switch is off. Only hidden calibres
+    /// that fit at least roughly are offered: this list always has entries, however far off.
     static func rankHiding(_ tags: Set<HiddenTag>, _ measured: MeasuredDimensions,
                            cartridges: [Cartridge] = CartridgeCatalog.all) -> HiddenMatches<DimensionMatch> {
-        HiddenMatches(rank(measured, cartridges: cartridges, limit: .max), hiding: tags, limit: shownLimit)
+        HiddenMatches(rank(measured, cartridges: cartridges, limit: .max), hiding: tags, limit: shownLimit) { $0.fit != .poor }
     }
 }

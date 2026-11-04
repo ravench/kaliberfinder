@@ -19,7 +19,7 @@ final class HiddenMatchesTests: XCTestCase {
         let r = DimensionMatcher.rankHiding([.obsolete], gp1890)
         XCTAssertFalse(r.shown.contains { $0.cartridge.obsolete })
         XCTAssertFalse(r.hidden.isEmpty)
-        XCTAssertTrue(r.hidden.allSatisfy { $0.cartridge.obsolete })
+        XCTAssertTrue(r.hidden.allSatisfy { $0.cartridge.obsolete && $0.fit != .poor })
         XCTAssertTrue(r.hidden.contains { $0.cartridge.id == gp1890ID })
         // Revealing puts GP 1890 back at the top, in place, and keeps every shown row.
         XCTAssertEqual(r.list(revealing: true).first?.cartridge.id, gp1890ID)
@@ -66,6 +66,9 @@ final class HiddenMatchesTests: XCTestCase {
         XCTAssertEqual(all.summary, String(format: "%lld weitere Treffer".loc, 3) + ": " + String(format: "%lld veraltete".loc, 3))
 
         XCTAssertNil(HiddenMatches(ranked, hiding: [], limit: 10).summary)
+        let near = HiddenMatches(ranked, hiding: [.obsolete], limit: 10) { $0.maxDeviation < 0.35 }
+        XCTAssertEqual(near.hidden.map(\.id), [o[0].id, o[1].id])
+        XCTAssertEqual(near.revealed.map(\.id), [c1.id, o[0].id, c2.id, o[1].id])
         XCTAssertNil(HiddenMatches<DimensionMatch>.none.summary)
     }
 
