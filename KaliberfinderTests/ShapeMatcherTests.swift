@@ -33,7 +33,7 @@ final class ShapeMatcherTests: XCTestCase {
     }
 
     func testCommonCalibresAreAmongTheFirstFive() throws {
-        let ids = ["9x19 mm", ".308 Winchester", "7.5x55 mm Swiss (GP 11)", "5.6 mm GP 90 (Swiss)", ".22 LR",
+        let ids = ["9x19 mm", ".308 Winchester", "7.5x55 mm Swiss (GP 11)", "5.6 mm GP 90", ".22 LR",
                    ".45 ACP", ".38 Special", ".357 Magnum", "12/70", ".50 BMG"]
         for (i, id) in ids.enumerated() {
             let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: id))

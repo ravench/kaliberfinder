@@ -42,10 +42,26 @@ final class CatalogTests: XCTestCase {
         }
     }
 
+    func testObsoleteCalibresAreMarked() throws {
+        XCTAssertTrue(try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x53.5 mm Swiss (GP 1890)")).obsolete)
+        XCTAssertFalse(try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x55 mm Swiss (GP 11)")).obsolete)
+        XCTAssertFalse(try XCTUnwrap(CartridgeCatalog.cartridge(id: "5.6 mm GP 90")).obsolete)
+    }
+
+    func testMatchingSkipsObsoleteCalibresUnlessSwitchedOn() {
+        let current = CartridgeCatalog.matchable(includeObsolete: false)
+        XCTAssertFalse(current.isEmpty)
+        XCTAssertFalse(current.contains(where: \.obsolete))
+        XCTAssertFalse(current.contains { $0.id == "7.5x53.5 mm Swiss (GP 1890)" })
+        XCTAssertEqual(CartridgeCatalog.matchable(includeObsolete: true), CartridgeCatalog.all)
+        // The catalogue list and search still show obsolete calibres.
+        XCTAssertTrue(CartridgeCatalog.search("GP 1890").contains { $0.id == "7.5x53.5 mm Swiss (GP 1890)" })
+    }
+
     func testSearchMatchesAliasesIgnoringSpacesDotsAndMM() {
         XCTAssertTrue(CartridgeCatalog.search("9 mm Luger").contains { $0.id == "9x19 mm" })
         XCTAssertTrue(CartridgeCatalog.search("9MM LUGER").contains { $0.id == "9x19 mm" })
-        XCTAssertTrue(CartridgeCatalog.search("GP90").contains { $0.id == "5.6 mm GP 90 (Swiss)" })
+        XCTAssertTrue(CartridgeCatalog.search("GP90").contains { $0.id == "5.6 mm GP 90" })
         XCTAssertTrue(CartridgeCatalog.search("win 308").contains { $0.id == ".308 Winchester" })
         XCTAssertEqual(CartridgeCatalog.search("").count, CartridgeCatalog.all.count)
         XCTAssertTrue(CartridgeCatalog.search("no such calibre").isEmpty)

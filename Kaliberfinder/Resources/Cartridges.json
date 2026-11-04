@@ -9,6 +9,7 @@
    "aliases": [],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 6.9,
     "base": 5.7,
@@ -40,6 +41,7 @@
     "KK"
    ],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 6.9,
     "base": 5.7,
@@ -71,6 +73,7 @@
     "22 WIN MAG",
     "22 WMR"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 7.5,
     "base": 6.1,
@@ -98,6 +101,7 @@
    "headstamps": [
     "17 HMR"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 7.5,
     "base": 6.1,
@@ -122,6 +126,7 @@
    "aliases": [],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 6.9,
     "base": 5.7,
@@ -139,6 +144,141 @@
    }
   },
   {
+   "id": ".22 Long",
+   "name": ".22 Long",
+   "category": "Randfeuer",
+   "kind": "rimfire",
+   "aliases": [
+    "22long"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 6.9,
+    "base": 5.7,
+    "neck": 5.7,
+    "caseLength": 15.6,
+    "overallLength": 22.6,
+    "bullet": 5.7
+   },
+   "outline": {
+    "width": 6.9,
+    "height": 22.6,
+    "case": "M6.90 22.60 L6.90 21.50 L6.30 21.50 L6.30 7.00 L0.60 7.00 L0.60 21.50 L0.00 21.50 L0.00 22.60 Z",
+    "bullet": "M6.30 7.00 L6.30 5.46 L6.29 5.07 L6.27 4.68 L6.23 4.29 L6.18 3.90 L6.11 3.51 L6.02 3.12 L5.92 2.73 L5.79 2.34 L5.63 1.95 L5.44 1.56 L5.21 1.17 L4.92 0.78 L4.51 0.39 L3.91 0.00 L3.45 0.00 L2.99 0.00 L2.39 0.39 L1.98 0.78 L1.69 1.17 L1.46 1.56 L1.27 1.95 L1.11 2.34 L0.98 2.73 L0.88 3.12 L0.79 3.51 L0.72 3.90 L0.67 4.29 L0.63 4.68 L0.61 5.07 L0.60 5.46 L0.60 7.00 Z"
+   }
+  },
+  {
+   "id": ".22 BB Cap",
+   "name": ".22 BB Cap",
+   "category": "Randfeuer",
+   "kind": "rimfire",
+   "aliases": [
+    "22bb",
+    "bbcap",
+    "flobert"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 6.9,
+    "base": 5.7,
+    "neck": 5.7,
+    "caseLength": 7.2,
+    "overallLength": 8.7,
+    "bullet": 5.7
+   },
+   "outline": {
+    "width": 6.9,
+    "height": 8.7,
+    "case": "M6.90 8.70 L6.90 7.60 L6.30 7.60 L6.30 1.50 L0.60 1.50 L0.60 7.60 L0.00 7.60 L0.00 8.70 Z",
+    "bullet": "M6.30 1.50 L6.30 1.17 L6.29 1.09 L6.27 1.00 L6.23 0.92 L6.18 0.84 L6.11 0.75 L6.02 0.67 L5.92 0.58 L5.79 0.50 L5.63 0.42 L5.44 0.33 L5.21 0.25 L4.92 0.17 L4.51 0.08 L3.91 0.00 L3.45 0.00 L2.99 0.00 L2.39 0.08 L1.98 0.17 L1.69 0.25 L1.46 0.33 L1.27 0.42 L1.11 0.50 L0.98 0.58 L0.88 0.67 L0.79 0.75 L0.72 0.84 L0.67 0.92 L0.63 1.00 L0.61 1.09 L0.60 1.17 L0.60 1.50 Z"
+   }
+  },
+  {
+   "id": "5 mm Remington Rimfire Magnum",
+   "name": "5 mm Remington Rimfire Magnum",
+   "category": "Randfeuer",
+   "kind": "rimfire",
+   "aliases": [
+    "5mmrmr",
+    "5rmr"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 8.3,
+    "base": 6.6,
+    "neck": 5.7,
+    "caseLength": 25.9,
+    "overallLength": 33.0,
+    "bullet": 5.2,
+    "shoulder": 6.6
+   },
+   "outline": {
+    "width": 8.3,
+    "height": 33.0,
+    "case": "M8.30 33.00 L8.30 31.90 L7.45 31.90 L7.45 14.80 L7.00 14.00 L7.00 7.10 L1.30 7.10 L1.30 14.00 L0.85 14.80 L0.85 31.90 L0.00 31.90 L0.00 33.00 Z",
+    "bullet": "M6.75 7.10 L6.75 4.83 L6.73 4.48 L6.67 4.14 L6.60 3.79 L6.50 3.45 L6.38 3.10 L6.24 2.76 L6.09 2.41 L5.91 2.07 L5.71 1.72 L5.49 1.38 L5.24 1.03 L4.95 0.69 L4.62 0.34 L4.28 0.00 L4.15 0.00 L4.02 0.00 L3.68 0.34 L3.35 0.69 L3.06 1.03 L2.81 1.38 L2.59 1.72 L2.39 2.07 L2.21 2.41 L2.06 2.76 L1.92 3.10 L1.80 3.45 L1.70 3.79 L1.63 4.14 L1.57 4.48 L1.55 4.83 L1.55 7.10 Z"
+   }
+  },
+  {
+   "id": ".17 Winchester Super Magnum",
+   "name": ".17 Winchester Super Magnum",
+   "category": "Randfeuer",
+   "kind": "rimfire",
+   "aliases": [
+    "17wsm"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 8.5,
+    "base": 6.8,
+    "neck": 5.0,
+    "caseLength": 30.5,
+    "overallLength": 36.6,
+    "bullet": 4.4,
+    "shoulder": 6.8
+   },
+   "outline": {
+    "width": 8.5,
+    "height": 36.6,
+    "case": "M8.50 36.60 L8.50 35.50 L7.65 35.50 L7.65 12.90 L6.75 11.46 L6.75 6.10 L1.75 6.10 L1.75 11.46 L0.85 12.90 L0.85 35.50 L0.00 35.50 L0.00 36.60 Z",
+    "bullet": "M6.45 6.10 L6.45 4.15 L6.43 3.85 L6.39 3.56 L6.32 3.26 L6.24 2.96 L6.14 2.67 L6.02 2.37 L5.89 2.07 L5.74 1.78 L5.57 1.48 L5.38 1.19 L5.17 0.89 L4.93 0.59 L4.65 0.30 L4.36 0.00 L4.25 0.00 L4.14 0.00 L3.85 0.30 L3.57 0.59 L3.33 0.89 L3.12 1.19 L2.93 1.48 L2.76 1.78 L2.61 2.07 L2.48 2.37 L2.36 2.67 L2.26 2.96 L2.18 3.26 L2.11 3.56 L2.07 3.85 L2.05 4.15 L2.05 6.10 Z"
+   }
+  },
+  {
+   "id": ".44 Henry",
+   "name": ".44 Henry",
+   "category": "Randfeuer",
+   "kind": "rimfire",
+   "aliases": [
+    "44henry"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 13.2,
+    "base": 11.2,
+    "neck": 11.0,
+    "caseLength": 22.9,
+    "overallLength": 34.2,
+    "bullet": 11.3
+   },
+   "outline": {
+    "width": 13.2,
+    "height": 34.2,
+    "case": "M13.20 34.20 L13.20 33.10 L12.20 33.10 L12.10 11.30 L1.10 11.30 L1.00 33.10 L0.00 33.10 L0.00 34.20 Z",
+    "bullet": "M12.25 11.30 L12.25 7.91 L12.24 7.35 L12.19 6.78 L12.12 6.22 L12.01 5.65 L11.88 5.09 L11.70 4.52 L11.49 3.96 L11.24 3.39 L10.93 2.83 L10.55 2.26 L10.10 1.70 L9.71 1.13 L9.71 0.56 L9.71 0.00 L6.60 0.00 L3.49 0.00 L3.49 0.56 L3.49 1.13 L3.10 1.70 L2.65 2.26 L2.27 2.83 L1.96 3.39 L1.71 3.96 L1.50 4.52 L1.32 5.09 L1.19 5.65 L1.08 6.22 L1.01 6.78 L0.96 7.35 L0.95 7.91 L0.95 11.30 Z"
+   }
+  },
+  {
    "id": "6.35 mm Browning (.25 ACP)",
    "name": "6.35 mm Browning (.25 ACP)",
    "category": "Kurzwaffe",
@@ -153,6 +293,7 @@
     "25 AUTO",
     "6,35"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 7.6,
     "base": 7.1,
@@ -190,6 +331,7 @@
     "32 AUTO",
     "7,65"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.1,
     "base": 8.6,
@@ -222,6 +364,7 @@
     ".30 Luger"
    ],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.9,
     "base": 9.9,
@@ -254,6 +397,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.5,
     "base": 8.6,
@@ -281,6 +425,7 @@
    "aliases": [],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.5,
     "base": 8.6,
@@ -313,6 +458,7 @@
    "headstamps": [
     "7.62x25"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.9,
     "base": 9.9,
@@ -353,6 +499,7 @@
     "9mm K",
     "9 KURZ"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.5,
     "base": 9.5,
@@ -385,6 +532,7 @@
     "9x18",
     "9mm MAK"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.9,
     "base": 9.9,
@@ -430,6 +578,7 @@
     "9x19 PARA",
     "9mm NATO"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.96,
     "base": 9.96,
@@ -459,6 +608,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.96,
     "base": 9.96,
@@ -490,6 +640,7 @@
    "headstamps": [
     "357 SIG"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 10.77,
     "base": 10.77,
@@ -528,6 +679,7 @@
     "38 SPECIAL",
     "38 SPL +P"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 11.2,
     "base": 9.6,
@@ -563,6 +715,7 @@
     "357 MAGNUM",
     "357 REM MAG"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 11.2,
     "base": 9.6,
@@ -595,6 +748,7 @@
     "38 SUPER AUTO",
     "38 SUPER"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 10.2,
     "base": 9.7,
@@ -627,6 +781,7 @@
    "headstamps": [
     "10mm AUTO"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 10.8,
     "base": 10.8,
@@ -662,6 +817,7 @@
     "40 SW",
     "40 S+W"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 10.8,
     "base": 10.8,
@@ -691,6 +847,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.0,
     "base": 11.0,
@@ -724,6 +881,7 @@
     "44 SPL",
     "44 S&W SPL"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.1,
     "base": 11.6,
@@ -758,6 +916,7 @@
     "44 REM MAG",
     "44 REM MAGNUM"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.1,
     "base": 11.6,
@@ -796,6 +955,7 @@
     "45 AUTO",
     "45 ACP"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -832,6 +992,7 @@
     "45 COLT",
     "45 LC"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.9,
     "base": 12.2,
@@ -861,6 +1022,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -890,6 +1052,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.1,
     "base": 12.1,
@@ -919,6 +1082,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.2,
     "base": 12.2,
@@ -948,6 +1112,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 14.2,
     "base": 13.4,
@@ -980,6 +1145,7 @@
    "headstamps": [
     "FN 5.7x28"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 7.9,
     "base": 7.9,
@@ -1010,6 +1176,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 8.0,
     "base": 8.0,
@@ -1031,6 +1198,1456 @@
    }
   },
   {
+   "id": "7.63x25 mm Mauser",
+   "name": "7.63x25 mm Mauser",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "7.63mauser",
+    "30mauser"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 9.98,
+    "base": 9.86,
+    "neck": 8.46,
+    "caseLength": 25.15,
+    "overallLength": 34.8,
+    "bullet": 7.86,
+    "shoulder": 9.6
+   },
+   "outline": {
+    "width": 9.98,
+    "height": 34.8,
+    "case": "M9.98 34.80 L9.98 33.50 L9.03 33.50 L9.03 32.20 L9.92 31.50 L9.79 16.80 L9.22 15.89 L9.22 9.65 L0.76 9.65 L0.76 15.89 L0.19 16.80 L0.06 31.50 L0.95 32.20 L0.95 33.50 L0.00 33.50 L0.00 34.80 Z",
+    "bullet": "M8.92 9.65 L8.92 7.53 L8.91 6.99 L8.88 6.45 L8.83 5.91 L8.76 5.38 L8.66 4.84 L8.54 4.30 L8.39 3.76 L8.22 3.23 L8.00 2.69 L7.74 2.15 L7.42 1.61 L7.01 1.08 L6.45 0.54 L5.62 0.00 L4.99 0.00 L4.36 0.00 L3.53 0.54 L2.97 1.08 L2.56 1.61 L2.24 2.15 L1.98 2.69 L1.76 3.23 L1.59 3.76 L1.44 4.30 L1.32 4.84 L1.22 5.38 L1.15 5.91 L1.10 6.45 L1.07 6.99 L1.06 7.53 L1.06 9.65 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "7.62x38 mm R Nagant",
+   "name": "7.62x38 mm R Nagant",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "nagant",
+    "7.62nagant"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 9.86,
+    "base": 8.94,
+    "neck": 7.26,
+    "caseLength": 38.86,
+    "overallLength": 38.86,
+    "bullet": 7.82
+   },
+   "outline": {
+    "width": 9.86,
+    "height": 38.86,
+    "case": "M9.86 38.86 L9.86 37.36 L9.40 37.36 L8.56 0.00 L1.30 0.00 L0.46 37.36 L0.00 37.36 L0.00 38.86 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "7.5 mm Swiss Ordnance 1882",
+   "name": "7.5 mm Swiss Ordnance 1882",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "7.5ord",
+    "7.5revolver",
+    "revolver82"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 10.4,
+    "base": 8.4,
+    "neck": 8.4,
+    "caseLength": 22.8,
+    "overallLength": 34.6,
+    "bullet": 8.0
+   },
+   "outline": {
+    "width": 10.4,
+    "height": 34.6,
+    "case": "M10.40 34.60 L10.40 33.10 L9.40 33.10 L9.40 11.80 L1.00 11.80 L1.00 33.10 L0.00 33.10 L0.00 34.60 Z",
+    "bullet": "M9.20 11.80 L9.20 9.20 L9.19 8.55 L9.16 7.89 L9.11 7.23 L9.03 6.57 L8.94 5.92 L8.81 5.26 L8.66 4.60 L8.48 3.94 L8.26 3.29 L8.00 2.63 L7.67 1.97 L7.26 1.31 L6.68 0.66 L5.84 0.00 L5.20 0.00 L4.56 0.00 L3.72 0.66 L3.14 1.31 L2.73 1.97 L2.40 2.63 L2.14 3.29 L1.92 3.94 L1.74 4.60 L1.59 5.26 L1.46 5.92 L1.37 6.57 L1.29 7.23 L1.24 7.89 L1.21 8.55 L1.20 9.20 L1.20 11.80 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "7.65 mm Longue",
+   "name": "7.65 mm Longue",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "7.65longue",
+    "7.65mas",
+    "30pedersen"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 8.5,
+    "base": 8.53,
+    "neck": 8.5,
+    "caseLength": 19.7,
+    "overallLength": 30.24,
+    "bullet": 7.85
+   },
+   "outline": {
+    "width": 8.53,
+    "height": 30.24,
+    "case": "M8.52 30.24 L8.52 28.94 L7.76 28.94 L7.76 27.64 L8.53 26.94 L8.52 10.54 L0.01 10.54 L0.00 26.94 L0.77 27.64 L0.77 28.94 L0.01 28.94 L0.01 30.24 Z",
+    "bullet": "M8.19 10.54 L8.19 8.22 L8.18 7.63 L8.15 7.05 L8.10 6.46 L8.03 5.87 L7.93 5.29 L7.81 4.70 L7.66 4.11 L7.49 3.52 L7.27 2.94 L7.01 2.35 L6.69 1.76 L6.29 1.17 L5.72 0.59 L4.89 0.00 L4.26 0.00 L3.64 0.00 L2.81 0.59 L2.24 1.17 L1.84 1.76 L1.52 2.35 L1.26 2.94 L1.04 3.52 L0.87 4.11 L0.72 4.70 L0.60 5.29 L0.50 5.87 L0.43 6.46 L0.38 7.05 L0.35 7.63 L0.34 8.22 L0.34 10.54 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".30 Super Carry",
+   "name": ".30 Super Carry",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "30sc",
+    "30supercarry"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 8.74,
+    "base": 8.7,
+    "neck": 8.56,
+    "caseLength": 21.0,
+    "overallLength": 29.7,
+    "bullet": 7.93
+   },
+   "outline": {
+    "width": 8.74,
+    "height": 29.7,
+    "case": "M8.74 29.70 L8.74 28.40 L7.94 28.40 L7.94 27.10 L8.72 26.40 L8.65 8.70 L0.09 8.70 L0.02 26.40 L0.80 27.10 L0.80 28.40 L0.00 28.40 L0.00 29.70 Z",
+    "bullet": "M8.34 8.70 L8.34 6.79 L8.32 6.30 L8.29 5.82 L8.24 5.33 L8.17 4.85 L8.07 4.36 L7.95 3.88 L7.80 3.39 L7.62 2.91 L7.41 2.42 L7.14 1.94 L6.82 1.45 L6.41 0.97 L5.84 0.48 L5.00 0.00 L4.37 0.00 L3.74 0.00 L2.90 0.48 L2.33 0.97 L1.92 1.45 L1.60 1.94 L1.33 2.42 L1.12 2.91 L0.94 3.39 L0.79 3.88 L0.67 4.36 L0.57 4.85 L0.50 5.33 L0.45 5.82 L0.42 6.30 L0.41 6.79 L0.41 8.70 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".32 S&W",
+   "name": ".32 S&W",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "32s&wshort",
+    "32sws"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 9.5,
+    "base": 8.5,
+    "neck": 8.5,
+    "caseLength": 15.0,
+    "overallLength": 23.0,
+    "bullet": 7.9
+   },
+   "outline": {
+    "width": 9.5,
+    "height": 23.0,
+    "case": "M9.50 23.00 L9.50 21.50 L9.00 21.50 L9.00 8.00 L0.50 8.00 L0.50 21.50 L0.00 21.50 L0.00 23.00 Z",
+    "bullet": "M8.70 8.00 L8.70 6.24 L8.69 5.79 L8.66 5.35 L8.61 4.90 L8.54 4.46 L8.44 4.01 L8.32 3.57 L8.17 3.12 L7.99 2.67 L7.78 2.23 L7.51 1.78 L7.19 1.34 L6.78 0.89 L6.22 0.45 L5.38 0.00 L4.75 0.00 L4.12 0.00 L3.28 0.45 L2.72 0.89 L2.31 1.34 L1.99 1.78 L1.72 2.23 L1.51 2.67 L1.33 3.12 L1.18 3.57 L1.06 4.01 L0.96 4.46 L0.89 4.90 L0.84 5.35 L0.81 5.79 L0.80 6.24 L0.80 8.00 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".327 Federal Magnum",
+   "name": ".327 Federal Magnum",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "327fed",
+    "327federal"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 9.5,
+    "base": 8.6,
+    "neck": 8.6,
+    "caseLength": 30.0,
+    "overallLength": 37.0,
+    "bullet": 7.9
+   },
+   "outline": {
+    "width": 9.5,
+    "height": 37.0,
+    "case": "M9.50 37.00 L9.50 35.50 L9.05 35.50 L9.05 7.00 L0.45 7.00 L0.45 35.50 L0.00 35.50 L0.00 37.00 Z",
+    "bullet": "M8.70 7.00 L8.70 4.90 L8.69 4.55 L8.66 4.20 L8.61 3.85 L8.54 3.50 L8.44 3.15 L8.32 2.80 L8.17 2.45 L7.99 2.10 L7.78 1.75 L7.51 1.40 L7.19 1.05 L6.92 0.70 L6.92 0.35 L6.92 0.00 L4.75 0.00 L2.58 0.00 L2.58 0.35 L2.58 0.70 L2.31 1.05 L1.99 1.40 L1.72 1.75 L1.51 2.10 L1.33 2.45 L1.18 2.80 L1.06 3.15 L0.96 3.50 L0.89 3.85 L0.84 4.20 L0.81 4.55 L0.80 4.90 L0.80 7.00 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".32-20 Winchester",
+   "name": ".32-20 Winchester",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "32-20",
+    "32wcf"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 10.4,
+    "base": 9.0,
+    "neck": 8.3,
+    "caseLength": 33.4,
+    "overallLength": 40.4,
+    "bullet": 7.94,
+    "shoulder": 8.7
+   },
+   "outline": {
+    "width": 10.4,
+    "height": 40.4,
+    "case": "M10.40 40.40 L10.40 38.90 L9.70 38.90 L9.55 13.40 L9.35 12.60 L9.35 7.00 L1.05 7.00 L1.05 12.60 L0.85 13.40 L0.70 38.90 L0.00 38.90 L0.00 40.40 Z",
+    "bullet": "M9.17 7.00 L9.17 4.90 L9.16 4.55 L9.13 4.20 L9.08 3.85 L9.00 3.50 L8.91 3.15 L8.79 2.80 L8.64 2.45 L8.46 2.10 L8.24 1.75 L7.98 1.40 L7.66 1.05 L7.38 0.70 L7.38 0.35 L7.38 0.00 L5.20 0.00 L3.02 0.00 L3.02 0.35 L3.02 0.70 L2.74 1.05 L2.42 1.40 L2.16 1.75 L1.94 2.10 L1.76 2.45 L1.61 2.80 L1.49 3.15 L1.40 3.50 L1.32 3.85 L1.27 4.20 L1.24 4.55 L1.23 4.90 L1.23 7.00 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "5.45x18 mm",
+   "name": "5.45x18 mm",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "5.45x18",
+    "psm"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 7.64,
+    "base": 7.64,
+    "neck": 6.26,
+    "caseLength": 18.03,
+    "overallLength": 25.0,
+    "bullet": 5.63,
+    "shoulder": 7.4
+   },
+   "outline": {
+    "width": 7.64,
+    "height": 25.0,
+    "case": "M7.64 25.00 L7.64 23.70 L6.95 23.70 L6.95 22.40 L7.64 21.70 L7.52 12.00 L6.95 11.09 L6.95 6.97 L0.69 6.97 L0.69 11.09 L0.12 12.00 L0.00 21.70 L0.69 22.40 L0.69 23.70 L0.00 23.70 L0.00 25.00 Z",
+    "bullet": "M6.63 6.97 L6.63 4.74 L6.61 4.40 L6.55 4.06 L6.47 3.72 L6.36 3.39 L6.24 3.05 L6.09 2.71 L5.92 2.37 L5.72 2.03 L5.51 1.69 L5.27 1.35 L5.00 1.02 L4.69 0.68 L4.33 0.34 L3.96 0.00 L3.82 0.00 L3.68 0.00 L3.31 0.34 L2.95 0.68 L2.64 1.02 L2.37 1.35 L2.13 1.69 L1.92 2.03 L1.72 2.37 L1.55 2.71 L1.40 3.05 L1.28 3.39 L1.17 3.72 L1.09 4.06 L1.03 4.40 L1.00 4.74 L1.00 6.97 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".22 TCM",
+   "name": ".22 TCM",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "22tcm"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 9.6,
+    "base": 9.55,
+    "neck": 6.48,
+    "caseLength": 25.96,
+    "overallLength": 32.13,
+    "bullet": 5.7,
+    "shoulder": 9.19
+   },
+   "outline": {
+    "width": 9.6,
+    "height": 32.13,
+    "case": "M9.60 32.13 L9.60 30.83 L8.72 30.83 L8.72 29.53 L9.57 28.83 L9.39 12.13 L8.04 9.96 L8.04 6.17 L1.56 6.17 L1.56 9.96 L0.21 12.13 L0.02 28.83 L0.88 29.53 L0.88 30.83 L0.00 30.83 L0.00 32.13 Z",
+    "bullet": "M7.65 6.17 L7.65 4.20 L7.62 3.90 L7.57 3.60 L7.48 3.30 L7.38 3.00 L7.25 2.70 L7.10 2.40 L6.92 2.10 L6.73 1.80 L6.51 1.50 L6.27 1.20 L5.99 0.90 L5.68 0.60 L5.32 0.30 L4.94 0.00 L4.80 0.00 L4.66 0.00 L4.28 0.30 L3.92 0.60 L3.61 0.90 L3.33 1.20 L3.09 1.50 L2.87 1.80 L2.68 2.10 L2.50 2.40 L2.35 2.70 L2.22 3.00 L2.12 3.30 L2.03 3.60 L1.98 3.90 L1.95 4.20 L1.95 6.17 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "8 mm Nambu",
+   "name": "8 mm Nambu",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "nambu",
+    "8nambu"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 10.5,
+    "base": 10.23,
+    "neck": 8.71,
+    "caseLength": 21.43,
+    "overallLength": 31.56,
+    "bullet": 8.13,
+    "shoulder": 10.0
+   },
+   "outline": {
+    "width": 10.5,
+    "height": 31.56,
+    "case": "M10.50 31.56 L10.50 30.26 L9.44 30.26 L9.44 28.96 L10.37 28.26 L10.25 16.56 L9.61 15.53 L9.61 10.13 L0.89 10.13 L0.89 15.53 L0.25 16.56 L0.13 28.26 L1.06 28.96 L1.06 30.26 L0.00 30.26 L0.00 31.56 Z",
+    "bullet": "M9.32 10.13 L9.32 7.90 L9.30 7.34 L9.27 6.77 L9.22 6.21 L9.15 5.64 L9.05 5.08 L8.92 4.52 L8.77 3.95 L8.59 3.39 L8.36 2.82 L8.09 2.26 L7.76 1.69 L7.34 1.13 L6.76 0.56 L5.90 0.00 L5.25 0.00 L4.60 0.00 L3.74 0.56 L3.16 1.13 L2.74 1.69 L2.41 2.26 L2.14 2.82 L1.91 3.39 L1.73 3.95 L1.58 4.52 L1.45 5.08 L1.35 5.64 L1.28 6.21 L1.23 6.77 L1.20 7.34 L1.18 7.90 L1.18 10.13 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "8 mm Lebel revolver",
+   "name": "8 mm Lebel revolver",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "8lebelrev",
+    "8mm1892"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 10.43,
+    "base": 8.96,
+    "neck": 8.83,
+    "caseLength": 27.5,
+    "overallLength": 36.7,
+    "bullet": 8.35
+   },
+   "outline": {
+    "width": 10.43,
+    "height": 36.7,
+    "case": "M10.43 36.70 L10.43 35.20 L9.70 35.20 L9.63 9.20 L0.80 9.20 L0.73 35.20 L0.00 35.20 L0.00 36.70 Z",
+    "bullet": "M9.39 9.20 L9.39 7.18 L9.38 6.66 L9.35 6.15 L9.29 5.64 L9.22 5.13 L9.11 4.61 L8.99 4.10 L8.83 3.59 L8.64 3.08 L8.41 2.56 L8.14 2.05 L7.80 1.54 L7.37 1.03 L6.76 0.51 L5.88 0.00 L5.21 0.00 L4.55 0.00 L3.67 0.51 L3.06 1.03 L2.63 1.54 L2.29 2.05 L2.02 2.56 L1.79 3.08 L1.60 3.59 L1.44 4.10 L1.32 4.61 L1.21 5.13 L1.14 5.64 L1.08 6.15 L1.05 6.66 L1.04 7.18 L1.04 9.20 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "8 mm Roth-Steyr",
+   "name": "8 mm Roth-Steyr",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "rothsteyr",
+    "8steyr"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 8.85,
+    "base": 8.85,
+    "neck": 8.8,
+    "caseLength": 18.65,
+    "overallLength": 29.0,
+    "bullet": 8.16
+   },
+   "outline": {
+    "width": 8.85,
+    "height": 29.0,
+    "case": "M8.85 29.00 L8.85 27.70 L8.05 27.70 L8.05 26.40 L8.85 25.70 L8.82 10.35 L0.02 10.35 L0.00 25.70 L0.80 26.40 L0.80 27.70 L0.00 27.70 L0.00 29.00 Z",
+    "bullet": "M8.50 10.35 L8.50 8.07 L8.49 7.50 L8.46 6.92 L8.41 6.34 L8.33 5.77 L8.24 5.19 L8.11 4.61 L7.96 4.04 L7.77 3.46 L7.55 2.88 L7.28 2.31 L6.95 1.73 L6.53 1.15 L5.94 0.58 L5.08 0.00 L4.42 0.00 L3.77 0.00 L2.91 0.58 L2.32 1.15 L1.90 1.73 L1.57 2.31 L1.30 2.88 L1.08 3.46 L0.89 4.04 L0.74 4.61 L0.61 5.19 L0.52 5.77 L0.44 6.34 L0.39 6.92 L0.36 7.50 L0.34 8.07 L0.34 10.35 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "9 mm Glisenti",
+   "name": "9 mm Glisenti",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "glisenti"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 9.98,
+    "base": 9.96,
+    "neck": 9.65,
+    "caseLength": 19.15,
+    "overallLength": 29.21,
+    "bullet": 9.02
+   },
+   "outline": {
+    "width": 9.98,
+    "height": 29.21,
+    "case": "M9.98 29.21 L9.98 27.91 L9.07 27.91 L9.07 26.61 L9.97 25.91 L9.82 10.06 L0.17 10.06 L0.01 25.91 L0.91 26.61 L0.91 27.91 L0.00 27.91 L0.00 29.21 Z",
+    "bullet": "M9.50 10.06 L9.50 7.85 L9.49 7.29 L9.45 6.73 L9.40 6.17 L9.31 5.60 L9.20 5.04 L9.06 4.48 L8.90 3.92 L8.69 3.36 L8.44 2.80 L8.15 2.24 L7.78 1.68 L7.31 1.12 L6.66 0.56 L5.71 0.00 L4.99 0.00 L4.27 0.00 L3.32 0.56 L2.67 1.12 L2.20 1.68 L1.83 2.24 L1.54 2.80 L1.29 3.36 L1.08 3.92 L0.92 4.48 L0.78 5.04 L0.67 5.60 L0.58 6.17 L0.53 6.73 L0.49 7.29 L0.48 7.85 L0.48 10.06 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "9 mm Browning Long",
+   "name": "9 mm Browning Long",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "9browninglong",
+    "9x20sr"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 10.2,
+    "base": 9.72,
+    "neck": 9.68,
+    "caseLength": 20.2,
+    "overallLength": 28.0,
+    "bullet": 9.09
+   },
+   "outline": {
+    "width": 10.2,
+    "height": 28.0,
+    "case": "M10.20 28.00 L10.20 26.70 L9.09 26.70 L9.09 25.40 L9.96 24.70 L9.94 7.80 L0.26 7.80 L0.24 24.70 L1.11 25.40 L1.11 26.70 L0.00 26.70 L0.00 28.00 Z",
+    "bullet": "M9.64 7.80 L9.64 6.08 L9.63 5.65 L9.60 5.21 L9.54 4.78 L9.46 4.35 L9.35 3.91 L9.21 3.48 L9.04 3.04 L8.83 2.61 L8.58 2.17 L8.28 1.74 L7.91 1.30 L7.44 0.87 L6.79 0.43 L5.83 0.00 L5.10 0.00 L4.37 0.00 L3.41 0.43 L2.76 0.87 L2.29 1.30 L1.92 1.74 L1.62 2.17 L1.37 2.61 L1.16 3.04 L0.99 3.48 L0.85 3.91 L0.74 4.35 L0.66 4.78 L0.60 5.21 L0.57 5.65 L0.55 6.08 L0.55 7.80 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "9x23 mm Steyr",
+   "name": "9x23 mm Steyr",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "9steyr"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 9.7,
+    "base": 9.7,
+    "neck": 9.62,
+    "caseLength": 23.2,
+    "overallLength": 32.99,
+    "bullet": 9.03
+   },
+   "outline": {
+    "width": 9.7,
+    "height": 32.99,
+    "case": "M9.70 32.99 L9.70 31.69 L8.83 31.69 L8.83 30.39 L9.70 29.69 L9.66 9.79 L0.04 9.79 L0.00 29.69 L0.87 30.39 L0.87 31.69 L0.00 31.69 L0.00 32.99 Z",
+    "bullet": "M9.36 9.79 L9.36 7.64 L9.35 7.09 L9.32 6.55 L9.26 6.00 L9.18 5.45 L9.07 4.91 L8.93 4.36 L8.76 3.82 L8.56 3.27 L8.31 2.73 L8.01 2.18 L7.64 1.64 L7.18 1.09 L6.53 0.55 L5.57 0.00 L4.85 0.00 L4.13 0.00 L3.17 0.55 L2.52 1.09 L2.06 1.64 L1.69 2.18 L1.39 2.73 L1.14 3.27 L0.94 3.82 L0.77 4.36 L0.63 4.91 L0.52 5.45 L0.44 6.00 L0.38 6.55 L0.35 7.09 L0.33 7.64 L0.33 9.79 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "9x23 mm Largo",
+   "name": "9x23 mm Largo",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "9largo",
+    "bergmann-bayard"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 9.9,
+    "base": 9.91,
+    "neck": 9.7,
+    "caseLength": 23.1,
+    "overallLength": 33.53,
+    "bullet": 9.0
+   },
+   "outline": {
+    "width": 9.91,
+    "height": 33.53,
+    "case": "M9.91 33.53 L9.91 32.23 L9.02 32.23 L9.02 30.93 L9.91 30.23 L9.80 10.43 L0.11 10.43 L0.00 30.23 L0.89 30.93 L0.89 32.23 L0.00 32.23 L0.00 33.53 Z",
+    "bullet": "M9.46 10.43 L9.46 8.14 L9.44 7.55 L9.41 6.97 L9.35 6.39 L9.27 5.81 L9.16 5.23 L9.02 4.65 L8.85 4.07 L8.65 3.49 L8.40 2.91 L8.10 2.32 L7.74 1.74 L7.27 1.16 L6.63 0.58 L5.67 0.00 L4.96 0.00 L4.24 0.00 L3.28 0.58 L2.64 1.16 L2.17 1.74 L1.81 2.32 L1.51 2.91 L1.26 3.49 L1.06 4.07 L0.89 4.65 L0.75 5.23 L0.64 5.81 L0.56 6.39 L0.50 6.97 L0.47 7.55 L0.46 8.14 L0.46 10.43 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".38 S&W",
+   "name": ".38 S&W",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "38s&w",
+    "38sw",
+    "380-200"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 11.2,
+    "base": 9.82,
+    "neck": 9.79,
+    "caseLength": 19.7,
+    "overallLength": 31.5,
+    "bullet": 9.2
+   },
+   "outline": {
+    "width": 11.2,
+    "height": 31.5,
+    "case": "M11.20 31.50 L11.20 30.00 L10.51 30.00 L10.49 11.80 L0.71 11.80 L0.69 30.00 L0.00 30.00 L0.00 31.50 Z",
+    "bullet": "M10.20 11.80 L10.20 9.20 L10.19 8.55 L10.15 7.89 L10.09 7.23 L10.01 6.57 L9.90 5.92 L9.76 5.26 L9.58 4.60 L9.37 3.94 L9.12 3.29 L8.82 2.63 L8.45 1.97 L7.97 1.31 L7.31 0.66 L6.34 0.00 L5.60 0.00 L4.86 0.00 L3.89 0.66 L3.23 1.31 L2.75 1.97 L2.38 2.63 L2.08 3.29 L1.83 3.94 L1.62 4.60 L1.44 5.26 L1.30 5.92 L1.19 6.57 L1.11 7.23 L1.05 7.89 L1.01 8.55 L1.00 9.20 L1.00 11.80 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".38 Short Colt",
+   "name": ".38 Short Colt",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "38shortcolt"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 11.3,
+    "base": 9.6,
+    "neck": 9.6,
+    "caseLength": 19.4,
+    "overallLength": 30.48,
+    "bullet": 9.1
+   },
+   "outline": {
+    "width": 11.3,
+    "height": 30.48,
+    "case": "M11.30 30.48 L11.30 28.98 L10.45 28.98 L10.45 11.08 L0.85 11.08 L0.85 28.98 L0.00 28.98 L0.00 30.48 Z",
+    "bullet": "M10.20 11.08 L10.20 8.64 L10.19 8.03 L10.15 7.41 L10.09 6.79 L10.01 6.17 L9.90 5.56 L9.76 4.94 L9.59 4.32 L9.38 3.70 L9.14 3.09 L8.83 2.47 L8.46 1.85 L7.99 1.23 L7.34 0.62 L6.38 0.00 L5.65 0.00 L4.92 0.00 L3.96 0.62 L3.31 1.23 L2.84 1.85 L2.47 2.47 L2.16 3.09 L1.92 3.70 L1.71 4.32 L1.54 4.94 L1.40 5.56 L1.29 6.17 L1.21 6.79 L1.15 7.41 L1.11 8.03 L1.10 8.64 L1.10 11.08 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".38 Long Colt",
+   "name": ".38 Long Colt",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "38longcolt",
+    "38lc"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 11.3,
+    "base": 9.7,
+    "neck": 9.7,
+    "caseLength": 26.2,
+    "overallLength": 34.54,
+    "bullet": 9.1
+   },
+   "outline": {
+    "width": 11.3,
+    "height": 34.54,
+    "case": "M11.30 34.54 L11.30 33.04 L10.50 33.04 L10.50 8.34 L0.80 8.34 L0.80 33.04 L0.00 33.04 L0.00 34.54 Z",
+    "bullet": "M10.20 8.34 L10.20 6.51 L10.19 6.04 L10.15 5.58 L10.09 5.11 L10.01 4.65 L9.90 4.18 L9.76 3.72 L9.59 3.25 L9.38 2.79 L9.14 2.32 L8.83 1.86 L8.46 1.39 L7.99 0.93 L7.34 0.46 L6.38 0.00 L5.65 0.00 L4.92 0.00 L3.96 0.46 L3.31 0.93 L2.84 1.39 L2.47 1.86 L2.16 2.32 L1.92 2.79 L1.71 3.25 L1.54 3.72 L1.40 4.18 L1.29 4.65 L1.21 5.11 L1.15 5.58 L1.11 6.04 L1.10 6.51 L1.10 8.34 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".38-40 Winchester",
+   "name": ".38-40 Winchester",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "38-40",
+    "38wcf"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.3,
+    "base": 11.93,
+    "neck": 10.58,
+    "caseLength": 33.1,
+    "overallLength": 40.0,
+    "bullet": 10.17,
+    "shoulder": 11.54
+   },
+   "outline": {
+    "width": 13.3,
+    "height": 40.0,
+    "case": "M13.30 40.00 L13.30 38.50 L12.62 38.50 L12.42 15.00 L11.94 14.20 L11.94 6.90 L1.36 6.90 L1.36 14.20 L0.88 15.00 L0.69 38.50 L0.00 38.50 L0.00 40.00 Z",
+    "bullet": "M11.73 6.90 L11.73 4.83 L11.72 4.48 L11.68 4.14 L11.62 3.80 L11.52 3.45 L11.40 3.10 L11.24 2.76 L11.05 2.41 L10.82 2.07 L10.55 1.73 L10.21 1.38 L9.80 1.03 L9.45 0.69 L9.45 0.34 L9.45 0.00 L6.65 0.00 L3.85 0.00 L3.85 0.34 L3.85 0.69 L3.50 1.03 L3.09 1.38 L2.75 1.73 L2.48 2.07 L2.25 2.41 L2.06 2.76 L1.90 3.10 L1.78 3.45 L1.68 3.80 L1.62 4.14 L1.58 4.48 L1.57 4.83 L1.57 6.90 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "10.4 mm Swiss Ordnance 1878",
+   "name": "10.4 mm Swiss Ordnance 1878",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "10.4revolver",
+    "revolver78"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 13.3,
+    "base": 11.2,
+    "neck": 10.8,
+    "caseLength": 20.0,
+    "overallLength": 32.0,
+    "bullet": 10.76
+   },
+   "outline": {
+    "width": 13.3,
+    "height": 32.0,
+    "case": "M13.30 32.00 L13.30 30.50 L12.25 30.50 L12.05 12.00 L1.25 12.00 L1.05 30.50 L0.00 30.50 L0.00 32.00 Z",
+    "bullet": "M12.03 12.00 L12.03 9.36 L12.02 8.69 L11.97 8.02 L11.91 7.35 L11.81 6.69 L11.68 6.02 L11.51 5.35 L11.31 4.68 L11.07 4.01 L10.77 3.34 L10.42 2.67 L9.98 2.01 L9.42 1.34 L8.65 0.67 L7.51 0.00 L6.65 0.00 L5.79 0.00 L4.65 0.67 L3.88 1.34 L3.32 2.01 L2.88 2.67 L2.53 3.34 L2.23 4.01 L1.99 4.68 L1.79 5.35 L1.62 6.02 L1.49 6.69 L1.39 7.35 L1.33 8.02 L1.28 8.69 L1.27 9.36 L1.27 12.00 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".44 S&W Russian",
+   "name": ".44 S&W Russian",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "44russian"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.1,
+    "base": 11.6,
+    "neck": 11.6,
+    "caseLength": 24.6,
+    "overallLength": 36.3,
+    "bullet": 10.9
+   },
+   "outline": {
+    "width": 13.1,
+    "height": 36.3,
+    "case": "M13.10 36.30 L13.10 34.80 L12.35 34.80 L12.35 11.70 L0.75 11.70 L0.75 34.80 L0.00 34.80 L0.00 36.30 Z",
+    "bullet": "M12.00 11.70 L12.00 9.13 L11.99 8.47 L11.94 7.82 L11.87 7.17 L11.77 6.52 L11.64 5.87 L11.47 5.21 L11.27 4.56 L11.02 3.91 L10.72 3.26 L10.36 2.61 L9.92 1.96 L9.36 1.30 L8.57 0.65 L7.42 0.00 L6.55 0.00 L5.68 0.00 L4.53 0.65 L3.74 1.30 L3.18 1.96 L2.74 2.61 L2.38 3.26 L2.08 3.91 L1.83 4.56 L1.63 5.21 L1.46 5.87 L1.33 6.52 L1.23 7.17 L1.16 7.82 L1.11 8.47 L1.10 9.13 L1.10 11.70 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "11 mm French Ordnance",
+   "name": "11 mm French Ordnance",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "11mmfrench",
+    "11mm1873"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 12.5,
+    "base": 11.45,
+    "neck": 11.45,
+    "caseLength": 17.0,
+    "overallLength": 30.0,
+    "bullet": 11.46
+   },
+   "outline": {
+    "width": 12.5,
+    "height": 30.0,
+    "case": "M12.50 30.00 L12.50 28.50 L11.97 28.50 L11.97 13.00 L0.53 13.00 L0.53 28.50 L0.00 28.50 L0.00 30.00 Z",
+    "bullet": "M11.98 13.00 L11.98 10.14 L11.97 9.42 L11.92 8.69 L11.85 7.97 L11.74 7.24 L11.60 6.52 L11.43 5.79 L11.21 5.07 L10.95 4.35 L10.64 3.62 L10.26 2.90 L9.79 2.17 L9.20 1.45 L8.38 0.72 L7.17 0.00 L6.25 0.00 L5.33 0.00 L4.12 0.72 L3.30 1.45 L2.71 2.17 L2.24 2.90 L1.86 3.62 L1.55 4.35 L1.29 5.07 L1.07 5.79 L0.90 6.52 L0.76 7.24 L0.65 7.97 L0.58 8.69 L0.53 9.42 L0.52 10.14 L0.52 13.00 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".45 Schofield",
+   "name": ".45 Schofield",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "45schofield",
+    "45s&w"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.2,
+    "base": 12.2,
+    "neck": 12.2,
+    "caseLength": 27.9,
+    "overallLength": 36.3,
+    "bullet": 11.5
+   },
+   "outline": {
+    "width": 13.2,
+    "height": 36.3,
+    "case": "M13.20 36.30 L13.20 34.80 L12.70 34.80 L12.70 8.40 L0.50 8.40 L0.50 34.80 L0.00 34.80 L0.00 36.30 Z",
+    "bullet": "M12.35 8.40 L12.35 5.88 L12.34 5.46 L12.29 5.04 L12.22 4.62 L12.11 4.20 L11.97 3.78 L11.80 3.36 L11.58 2.94 L11.32 2.52 L11.00 2.10 L10.62 1.68 L10.16 1.26 L9.76 0.84 L9.76 0.42 L9.76 0.00 L6.60 0.00 L3.44 0.00 L3.44 0.42 L3.44 0.84 L3.04 1.26 L2.58 1.68 L2.20 2.10 L1.88 2.52 L1.62 2.94 L1.40 3.36 L1.23 3.78 L1.09 4.20 L0.98 4.62 L0.91 5.04 L0.86 5.46 L0.85 5.88 L0.85 8.40 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".45 Auto Rim",
+   "name": ".45 Auto Rim",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "45autorim",
+    "45ar"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.09,
+    "base": 11.96,
+    "neck": 11.9,
+    "caseLength": 22.87,
+    "overallLength": 32.12,
+    "bullet": 11.5
+   },
+   "outline": {
+    "width": 13.09,
+    "height": 32.12,
+    "case": "M13.09 32.12 L13.09 30.62 L12.53 30.62 L12.50 9.25 L0.59 9.25 L0.56 30.62 L0.00 30.62 L0.00 32.12 Z",
+    "bullet": "M12.29 9.25 L12.29 7.21 L12.28 6.70 L12.24 6.18 L12.16 5.67 L12.06 5.15 L11.92 4.64 L11.74 4.12 L11.52 3.61 L11.26 3.09 L10.95 2.58 L10.57 2.06 L10.10 1.55 L9.51 1.03 L8.68 0.52 L7.46 0.00 L6.54 0.00 L5.62 0.00 L4.41 0.52 L3.58 1.03 L2.99 1.55 L2.52 2.06 L2.14 2.58 L1.83 3.09 L1.57 3.61 L1.35 4.12 L1.17 4.64 L1.03 5.15 L0.93 5.67 L0.85 6.18 L0.81 6.70 L0.79 7.21 L0.79 9.25 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".455 Webley",
+   "name": ".455 Webley",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "455webley",
+    "455"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 12.2,
+    "neck": 12.1,
+    "caseLength": 19.6,
+    "overallLength": 31.2,
+    "bullet": 11.5
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 31.2,
+    "case": "M13.50 31.20 L13.50 29.70 L12.85 29.70 L12.80 11.60 L0.70 11.60 L0.65 29.70 L0.00 29.70 L0.00 31.20 Z",
+    "bullet": "M12.50 11.60 L12.50 9.05 L12.49 8.40 L12.44 7.76 L12.37 7.11 L12.26 6.46 L12.12 5.82 L11.95 5.17 L11.73 4.52 L11.47 3.88 L11.15 3.23 L10.77 2.59 L10.31 1.94 L9.71 1.29 L8.88 0.65 L7.67 0.00 L6.75 0.00 L5.83 0.00 L4.62 0.65 L3.79 1.29 L3.19 1.94 L2.73 2.59 L2.35 3.23 L2.03 3.88 L1.77 4.52 L1.55 5.17 L1.38 5.82 L1.24 6.46 L1.13 7.11 L1.06 7.76 L1.01 8.40 L1.00 9.05 L1.00 11.60 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".480 Ruger",
+   "name": ".480 Ruger",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "480ruger"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.7,
+    "base": 12.8,
+    "neck": 12.8,
+    "caseLength": 32.6,
+    "overallLength": 41.9,
+    "bullet": 12.1
+   },
+   "outline": {
+    "width": 13.7,
+    "height": 41.9,
+    "case": "M13.70 41.90 L13.70 40.60 L12.10 40.60 L12.10 39.30 L13.25 38.60 L13.25 9.30 L0.45 9.30 L0.45 38.60 L1.60 39.30 L1.60 40.60 L0.00 40.60 L0.00 41.90 Z",
+    "bullet": "M12.90 9.30 L12.90 6.51 L12.88 6.04 L12.84 5.58 L12.76 5.12 L12.65 4.65 L12.50 4.18 L12.32 3.72 L12.09 3.26 L11.81 2.79 L11.48 2.32 L11.08 1.86 L10.59 1.40 L10.18 0.93 L10.18 0.46 L10.18 0.00 L6.85 0.00 L3.52 0.00 L3.52 0.46 L3.52 0.93 L3.11 1.40 L2.62 1.86 L2.22 2.32 L1.89 2.79 L1.61 3.26 L1.38 3.72 L1.20 4.18 L1.05 4.65 L0.94 5.12 L0.86 5.58 L0.82 6.04 L0.80 6.51 L0.80 9.30 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".50 Action Express",
+   "name": ".50 Action Express",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "50ae"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.1,
+    "base": 13.8,
+    "neck": 13.5,
+    "caseLength": 32.6,
+    "overallLength": 40.9,
+    "bullet": 12.7
+   },
+   "outline": {
+    "width": 13.8,
+    "height": 40.9,
+    "case": "M13.45 40.90 L13.45 39.60 L12.56 39.60 L12.56 38.30 L13.80 37.60 L13.65 8.30 L0.15 8.30 L0.00 37.60 L1.24 38.30 L1.24 39.60 L0.35 39.60 L0.35 40.90 Z",
+    "bullet": "M13.25 8.30 L13.25 5.81 L13.23 5.39 L13.18 4.98 L13.10 4.56 L12.99 4.15 L12.83 3.73 L12.64 3.32 L12.40 2.90 L12.11 2.49 L11.76 2.07 L11.34 1.66 L10.83 1.24 L10.39 0.83 L10.39 0.41 L10.39 0.00 L6.90 0.00 L3.41 0.00 L3.41 0.41 L3.41 0.83 L2.97 1.24 L2.46 1.66 L2.04 2.07 L1.69 2.49 L1.40 2.90 L1.16 3.32 L0.97 3.73 L0.81 4.15 L0.70 4.56 L0.62 4.98 L0.57 5.39 L0.55 5.81 L0.55 8.30 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "9x18 mm Ultra",
+   "name": "9x18 mm Ultra",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "9ultra",
+    "9police"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 9.37,
+    "base": 9.81,
+    "neck": 9.65,
+    "caseLength": 17.85,
+    "overallLength": 25.27,
+    "bullet": 9.01
+   },
+   "outline": {
+    "width": 9.81,
+    "height": 25.27,
+    "case": "M9.59 25.27 L9.59 23.97 L8.93 23.97 L8.93 22.67 L9.81 21.97 L9.73 7.42 L0.08 7.42 L0.00 21.97 L0.88 22.67 L0.88 23.97 L0.22 23.97 L0.22 25.27 Z",
+    "bullet": "M9.41 7.42 L9.41 5.79 L9.40 5.37 L9.36 4.96 L9.31 4.55 L9.22 4.13 L9.11 3.72 L8.98 3.31 L8.81 2.89 L8.60 2.48 L8.36 2.07 L8.06 1.65 L7.69 1.24 L7.23 0.83 L6.58 0.41 L5.63 0.00 L4.91 0.00 L4.18 0.00 L3.23 0.41 L2.58 0.83 L2.12 1.24 L1.75 1.65 L1.45 2.07 L1.21 2.48 L1.00 2.89 L0.83 3.31 L0.70 3.72 L0.59 4.13 L0.50 4.55 L0.45 4.96 L0.41 5.37 L0.40 5.79 L0.40 7.42 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".357 Remington Maximum",
+   "name": ".357 Remington Maximum",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "357max"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 11.2,
+    "base": 9.6,
+    "neck": 9.6,
+    "caseLength": 40.8,
+    "overallLength": 50.5,
+    "bullet": 9.1
+   },
+   "outline": {
+    "width": 11.2,
+    "height": 50.5,
+    "case": "M11.20 50.50 L11.20 49.00 L10.40 49.00 L10.40 9.70 L0.80 9.70 L0.80 49.00 L0.00 49.00 L0.00 50.50 Z",
+    "bullet": "M10.15 9.70 L10.15 6.79 L10.14 6.30 L10.10 5.82 L10.04 5.34 L9.96 4.85 L9.85 4.37 L9.71 3.88 L9.54 3.39 L9.33 2.91 L9.09 2.42 L8.78 1.94 L8.41 1.45 L8.10 0.97 L8.10 0.48 L8.10 0.00 L5.60 0.00 L3.10 0.00 L3.10 0.48 L3.10 0.97 L2.79 1.45 L2.42 1.94 L2.11 2.42 L1.87 2.91 L1.66 3.39 L1.49 3.88 L1.35 4.37 L1.24 4.85 L1.16 5.34 L1.10 5.82 L1.06 6.30 L1.05 6.79 L1.05 9.70 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".41 Action Express",
+   "name": ".41 Action Express",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "41ae"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 10.0,
+    "base": 11.0,
+    "neck": 11.0,
+    "caseLength": 22.0,
+    "overallLength": 30.0,
+    "bullet": 10.4
+   },
+   "outline": {
+    "width": 11.0,
+    "height": 30.0,
+    "case": "M10.50 30.00 L10.50 28.70 L10.01 28.70 L10.01 27.40 L11.00 26.70 L11.00 8.00 L0.00 8.00 L0.00 26.70 L0.99 27.40 L0.99 28.70 L0.50 28.70 L0.50 30.00 Z",
+    "bullet": "M10.70 8.00 L10.70 5.60 L10.69 5.20 L10.65 4.80 L10.58 4.40 L10.48 4.00 L10.36 3.60 L10.20 3.20 L10.00 2.80 L9.77 2.40 L9.48 2.00 L9.14 1.60 L8.72 1.20 L8.36 0.80 L8.36 0.40 L8.36 0.00 L5.50 0.00 L2.64 0.00 L2.64 0.40 L2.64 0.80 L2.28 1.20 L1.86 1.60 L1.52 2.00 L1.23 2.40 L1.00 2.80 L0.80 3.20 L0.64 3.60 L0.52 4.00 L0.42 4.40 L0.35 4.80 L0.31 5.20 L0.30 5.60 L0.30 8.00 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".45 Winchester Magnum",
+   "name": ".45 Winchester Magnum",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "45winmag"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.2,
+    "base": 12.1,
+    "neck": 12.0,
+    "caseLength": 30.4,
+    "overallLength": 40.0,
+    "bullet": 11.5
+   },
+   "outline": {
+    "width": 12.2,
+    "height": 40.0,
+    "case": "M12.20 40.00 L12.20 38.70 L11.06 38.70 L11.06 37.40 L12.15 36.70 L12.10 9.60 L0.10 9.60 L0.05 36.70 L1.14 37.40 L1.14 38.70 L0.00 38.70 L0.00 40.00 Z",
+    "bullet": "M11.85 9.60 L11.85 7.49 L11.84 6.95 L11.79 6.42 L11.72 5.88 L11.61 5.35 L11.47 4.81 L11.30 4.28 L11.08 3.74 L10.82 3.21 L10.50 2.67 L10.12 2.14 L9.66 1.60 L9.06 1.07 L8.23 0.53 L7.02 0.00 L6.10 0.00 L5.18 0.00 L3.97 0.53 L3.14 1.07 L2.54 1.60 L2.08 2.14 L1.70 2.67 L1.38 3.21 L1.12 3.74 L0.90 4.28 L0.73 4.81 L0.59 5.35 L0.48 5.88 L0.41 6.42 L0.36 6.95 L0.35 7.49 L0.35 9.60 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".45 Super",
+   "name": ".45 Super",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "45super"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.0,
+    "base": 12.0,
+    "neck": 12.0,
+    "caseLength": 22.8,
+    "overallLength": 32.4,
+    "bullet": 11.5
+   },
+   "outline": {
+    "width": 12.0,
+    "height": 32.4,
+    "case": "M12.00 32.40 L12.00 31.10 L10.92 31.10 L10.92 29.80 L12.00 29.10 L12.00 9.60 L0.00 9.60 L0.00 29.10 L1.08 29.80 L1.08 31.10 L0.00 31.10 L0.00 32.40 Z",
+    "bullet": "M11.75 9.60 L11.75 7.49 L11.74 6.95 L11.69 6.42 L11.62 5.88 L11.51 5.35 L11.37 4.81 L11.20 4.28 L10.98 3.74 L10.72 3.21 L10.40 2.67 L10.02 2.14 L9.56 1.60 L8.96 1.07 L8.13 0.53 L6.92 0.00 L6.00 0.00 L5.08 0.00 L3.87 0.53 L3.04 1.07 L2.44 1.60 L1.98 2.14 L1.60 2.67 L1.28 3.21 L1.02 3.74 L0.80 4.28 L0.63 4.81 L0.49 5.35 L0.38 5.88 L0.31 6.42 L0.26 6.95 L0.25 7.49 L0.25 9.60 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".460 Rowland",
+   "name": ".460 Rowland",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "460rowland"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.2,
+    "base": 12.1,
+    "neck": 12.0,
+    "caseLength": 24.3,
+    "overallLength": 32.4,
+    "bullet": 11.5
+   },
+   "outline": {
+    "width": 12.2,
+    "height": 32.4,
+    "case": "M12.20 32.40 L12.20 31.10 L11.06 31.10 L11.06 29.80 L12.15 29.10 L12.10 8.10 L0.10 8.10 L0.05 29.10 L1.14 29.80 L1.14 31.10 L0.00 31.10 L0.00 32.40 Z",
+    "bullet": "M11.85 8.10 L11.85 6.32 L11.84 5.87 L11.79 5.42 L11.72 4.96 L11.61 4.51 L11.47 4.06 L11.30 3.61 L11.08 3.16 L10.82 2.71 L10.50 2.26 L10.12 1.81 L9.66 1.35 L9.06 0.90 L8.23 0.45 L7.02 0.00 L6.10 0.00 L5.18 0.00 L3.97 0.45 L3.14 0.90 L2.54 1.35 L2.08 1.81 L1.70 2.26 L1.38 2.71 L1.12 3.16 L0.90 3.61 L0.73 4.06 L0.59 4.51 L0.48 4.96 L0.41 5.42 L0.36 5.87 L0.35 6.32 L0.35 8.10 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".475 Linebaugh",
+   "name": ".475 Linebaugh",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "475linebaugh"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.7,
+    "base": 12.8,
+    "neck": 12.8,
+    "caseLength": 36.0,
+    "overallLength": 45.0,
+    "bullet": 12.1
+   },
+   "outline": {
+    "width": 13.7,
+    "height": 45.0,
+    "case": "M13.70 45.00 L13.70 43.70 L12.10 43.70 L12.10 42.40 L13.25 41.70 L13.25 9.00 L0.45 9.00 L0.45 41.70 L1.60 42.40 L1.60 43.70 L0.00 43.70 L0.00 45.00 Z",
+    "bullet": "M12.90 9.00 L12.90 6.30 L12.88 5.85 L12.84 5.40 L12.76 4.95 L12.65 4.50 L12.50 4.05 L12.32 3.60 L12.09 3.15 L11.81 2.70 L11.48 2.25 L11.08 1.80 L10.59 1.35 L10.18 0.90 L10.18 0.45 L10.18 0.00 L6.85 0.00 L3.52 0.00 L3.52 0.45 L3.52 0.90 L3.11 1.35 L2.62 1.80 L2.22 2.25 L1.89 2.70 L1.61 3.15 L1.38 3.60 L1.20 4.05 L1.05 4.50 L0.94 4.95 L0.86 5.40 L0.82 5.85 L0.80 6.30 L0.80 9.00 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".221 Remington Fireball",
+   "name": ".221 Remington Fireball",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "221fireball"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 9.6,
+    "base": 9.6,
+    "neck": 6.4,
+    "caseLength": 35.6,
+    "overallLength": 46.5,
+    "bullet": 5.7,
+    "shoulder": 9.2
+   },
+   "outline": {
+    "width": 9.6,
+    "height": 46.5,
+    "case": "M9.60 46.50 L9.60 45.20 L8.74 45.20 L8.74 43.90 L9.60 43.20 L9.40 19.20 L8.00 16.96 L8.00 10.90 L1.60 10.90 L1.60 16.96 L0.20 19.20 L0.00 43.20 L0.86 43.90 L0.86 45.20 L0.00 45.20 L0.00 46.50 Z",
+    "bullet": "M7.65 10.90 L7.65 7.41 L7.62 6.88 L7.57 6.35 L7.48 5.82 L7.38 5.29 L7.25 4.76 L7.10 4.24 L6.92 3.71 L6.73 3.18 L6.51 2.65 L6.27 2.12 L5.99 1.59 L5.68 1.06 L5.32 0.53 L4.94 0.00 L4.80 0.00 L4.66 0.00 L4.28 0.53 L3.92 1.06 L3.61 1.59 L3.33 2.12 L3.09 2.65 L2.87 3.18 L2.68 3.71 L2.50 4.24 L2.35 4.76 L2.22 5.29 L2.12 5.82 L2.03 6.35 L1.98 6.88 L1.95 7.41 L1.95 10.90 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".25 NAA",
+   "name": ".25 NAA",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "25naa"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 8.6,
+    "base": 8.6,
+    "neck": 7.0,
+    "caseLength": 18.9,
+    "overallLength": 24.4,
+    "bullet": 6.4,
+    "shoulder": 8.5
+   },
+   "outline": {
+    "width": 8.6,
+    "height": 24.4,
+    "case": "M8.60 24.40 L8.60 23.10 L7.83 23.10 L7.83 21.80 L8.60 21.10 L8.55 14.50 L7.80 13.30 L7.80 5.50 L0.80 5.50 L0.80 13.30 L0.05 14.50 L0.00 21.10 L0.77 21.80 L0.77 23.10 L0.00 23.10 L0.00 24.40 Z",
+    "bullet": "M7.50 5.50 L7.50 4.29 L7.49 3.98 L7.47 3.68 L7.43 3.37 L7.37 3.06 L7.29 2.76 L7.19 2.45 L7.07 2.14 L6.93 1.84 L6.75 1.53 L6.54 1.23 L6.28 0.92 L5.95 0.61 L5.49 0.31 L4.81 0.00 L4.30 0.00 L3.79 0.00 L3.11 0.31 L2.65 0.61 L2.32 0.92 L2.06 1.23 L1.85 1.53 L1.67 1.84 L1.53 2.14 L1.41 2.45 L1.31 2.76 L1.23 3.06 L1.17 3.37 L1.13 3.68 L1.11 3.98 L1.10 4.29 L1.10 5.50 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".32 NAA",
+   "name": ".32 NAA",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "32naa"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 9.5,
+    "base": 9.5,
+    "neck": 8.55,
+    "caseLength": 17.3,
+    "overallLength": 25.0,
+    "bullet": 7.95,
+    "shoulder": 9.47
+   },
+   "outline": {
+    "width": 9.5,
+    "height": 25.0,
+    "case": "M9.50 25.00 L9.50 23.70 L8.64 23.70 L8.64 22.40 L9.50 21.70 L9.48 18.40 L9.03 17.60 L9.03 7.70 L0.47 7.70 L0.47 17.60 L0.01 18.40 L0.00 21.70 L0.86 22.40 L0.86 23.70 L0.00 23.70 L0.00 25.00 Z",
+    "bullet": "M8.72 7.70 L8.72 6.01 L8.71 5.58 L8.68 5.15 L8.63 4.72 L8.56 4.29 L8.46 3.86 L8.34 3.43 L8.19 3.00 L8.01 2.57 L7.79 2.14 L7.53 1.72 L7.21 1.29 L6.80 0.86 L6.23 0.43 L5.39 0.00 L4.75 0.00 L4.11 0.00 L3.27 0.43 L2.70 0.86 L2.29 1.29 L1.97 1.72 L1.71 2.14 L1.49 2.57 L1.31 3.00 L1.16 3.43 L1.04 3.86 L0.94 4.29 L0.87 4.72 L0.82 5.15 L0.79 5.58 L0.77 6.01 L0.77 7.70 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".32 Long Colt",
+   "name": ".32 Long Colt",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "32longcolt"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 9.5,
+    "base": 8.1,
+    "neck": 8.0,
+    "caseLength": 23.0,
+    "overallLength": 32.0,
+    "bullet": 7.9
+   },
+   "outline": {
+    "width": 9.5,
+    "height": 32.0,
+    "case": "M9.50 32.00 L9.50 30.50 L8.80 30.50 L8.75 9.00 L0.75 9.00 L0.70 30.50 L0.00 30.50 L0.00 32.00 Z",
+    "bullet": "M8.70 9.00 L8.70 7.02 L8.69 6.52 L8.66 6.02 L8.61 5.52 L8.54 5.01 L8.44 4.51 L8.32 4.01 L8.17 3.51 L7.99 3.01 L7.78 2.51 L7.51 2.01 L7.19 1.50 L6.78 1.00 L6.22 0.50 L5.38 0.00 L4.75 0.00 L4.12 0.00 L3.28 0.50 L2.72 1.00 L2.31 1.50 L1.99 2.01 L1.72 2.51 L1.51 3.01 L1.33 3.51 L1.18 4.01 L1.06 4.51 L0.96 5.01 L0.89 5.52 L0.84 6.02 L0.81 6.52 L0.80 7.02 L0.80 9.00 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".35 S&W Auto",
+   "name": ".35 S&W Auto",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "35s&w",
+    "35auto"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 8.85,
+    "base": 8.83,
+    "neck": 8.82,
+    "caseLength": 17.21,
+    "overallLength": 24.16,
+    "bullet": 7.92
+   },
+   "outline": {
+    "width": 8.85,
+    "height": 24.16,
+    "case": "M8.85 24.16 L8.85 22.86 L8.05 22.86 L8.05 21.56 L8.84 20.86 L8.84 6.95 L0.01 6.95 L0.01 20.86 L0.80 21.56 L0.80 22.86 L0.00 22.86 L0.00 24.16 Z",
+    "bullet": "M8.38 6.95 L8.38 5.42 L8.37 5.03 L8.34 4.65 L8.29 4.26 L8.22 3.87 L8.12 3.48 L8.00 3.10 L7.85 2.71 L7.67 2.32 L7.46 1.94 L7.20 1.55 L6.87 1.16 L6.46 0.77 L5.89 0.39 L5.06 0.00 L4.42 0.00 L3.79 0.00 L2.96 0.39 L2.39 0.77 L1.98 1.16 L1.65 1.55 L1.39 1.94 L1.18 2.32 L1.00 2.71 L0.85 3.10 L0.73 3.48 L0.63 3.87 L0.56 4.26 L0.51 4.65 L0.48 5.03 L0.46 5.42 L0.46 6.95 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".38 ACP",
+   "name": ".38 ACP",
+   "category": "Kurzwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "38acp",
+    "38auto"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 10.3,
+    "base": 9.8,
+    "neck": 9.8,
+    "caseLength": 22.9,
+    "overallLength": 33.0,
+    "bullet": 9.0
+   },
+   "outline": {
+    "width": 10.3,
+    "height": 33.0,
+    "case": "M10.30 33.00 L10.30 31.70 L9.17 31.70 L9.17 30.40 L10.05 29.70 L10.05 10.10 L0.25 10.10 L0.25 29.70 L1.13 30.40 L1.13 31.70 L0.00 31.70 L0.00 33.00 Z",
+    "bullet": "M9.65 10.10 L9.65 7.88 L9.64 7.32 L9.60 6.75 L9.55 6.19 L9.46 5.63 L9.35 5.06 L9.22 4.50 L9.05 3.94 L8.84 3.38 L8.60 2.81 L8.30 2.25 L7.93 1.69 L7.47 1.13 L6.82 0.56 L5.87 0.00 L5.15 0.00 L4.43 0.00 L3.48 0.56 L2.83 1.13 L2.37 1.69 L2.00 2.25 L1.70 2.81 L1.46 3.38 L1.25 3.94 L1.08 4.50 L0.95 5.06 L0.84 5.63 L0.75 6.19 L0.70 6.75 L0.66 7.32 L0.65 7.88 L0.65 10.10 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".41 Long Colt",
+   "name": ".41 Long Colt",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "41longcolt",
+    "41lc"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 11.0,
+    "base": 10.3,
+    "neck": 10.2,
+    "caseLength": 28.6,
+    "overallLength": 35.5,
+    "bullet": 9.8
+   },
+   "outline": {
+    "width": 11.0,
+    "height": 35.5,
+    "case": "M11.00 35.50 L11.00 34.00 L10.65 34.00 L10.60 6.90 L0.40 6.90 L0.35 34.00 L0.00 34.00 L0.00 35.50 Z",
+    "bullet": "M10.40 6.90 L10.40 5.38 L10.39 5.00 L10.35 4.61 L10.29 4.23 L10.20 3.84 L10.08 3.46 L9.93 3.08 L9.74 2.69 L9.52 2.31 L9.25 1.92 L8.93 1.54 L8.53 1.15 L8.02 0.77 L7.32 0.38 L6.28 0.00 L5.50 0.00 L4.72 0.00 L3.68 0.38 L2.98 0.77 L2.47 1.15 L2.07 1.54 L1.75 1.92 L1.48 2.31 L1.26 2.69 L1.07 3.08 L0.92 3.46 L0.80 3.84 L0.71 4.23 L0.65 4.61 L0.61 5.00 L0.60 5.38 L0.60 6.90 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".44 Colt",
+   "name": ".44 Colt",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "44colt"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.3,
+    "base": 11.6,
+    "neck": 11.6,
+    "caseLength": 28.0,
+    "overallLength": 38.0,
+    "bullet": 11.5
+   },
+   "outline": {
+    "width": 12.3,
+    "height": 38.0,
+    "case": "M12.30 38.00 L12.30 36.50 L11.95 36.50 L11.95 10.00 L0.35 10.00 L0.35 36.50 L0.00 36.50 L0.00 38.00 Z",
+    "bullet": "M11.90 10.00 L11.90 7.00 L11.89 6.50 L11.84 6.00 L11.77 5.50 L11.66 5.00 L11.52 4.50 L11.35 4.00 L11.13 3.50 L10.87 3.00 L10.55 2.50 L10.17 2.00 L9.71 1.50 L9.31 1.00 L9.31 0.50 L9.31 0.00 L6.15 0.00 L2.99 0.00 L2.99 0.50 L2.99 1.00 L2.59 1.50 L2.13 2.00 L1.75 2.50 L1.43 3.00 L1.17 3.50 L0.95 4.00 L0.78 4.50 L0.64 5.00 L0.53 5.50 L0.46 6.00 L0.41 6.50 L0.40 7.00 L0.40 10.00 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".442 Webley",
+   "name": ".442 Webley",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "442webley",
+    "442ric"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 12.8,
+    "base": 12.0,
+    "neck": 12.0,
+    "caseLength": 18.0,
+    "overallLength": 28.0,
+    "bullet": 11.1
+   },
+   "outline": {
+    "width": 12.8,
+    "height": 28.0,
+    "case": "M12.80 28.00 L12.80 26.50 L12.40 26.50 L12.40 10.00 L0.40 10.00 L0.40 26.50 L0.00 26.50 L0.00 28.00 Z",
+    "bullet": "M11.95 10.00 L11.95 7.80 L11.94 7.24 L11.89 6.69 L11.82 6.13 L11.72 5.57 L11.58 5.01 L11.41 4.46 L11.21 3.90 L10.95 3.34 L10.65 2.79 L10.28 2.23 L9.83 1.67 L9.26 1.11 L8.46 0.56 L7.29 0.00 L6.40 0.00 L5.51 0.00 L4.34 0.56 L3.54 1.11 L2.97 1.67 L2.52 2.23 L2.15 2.79 L1.85 3.34 L1.59 3.90 L1.39 4.46 L1.22 5.01 L1.08 5.57 L0.98 6.13 L0.91 6.69 L0.86 7.24 L0.85 7.80 L0.85 10.00 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".450 Adams",
+   "name": ".450 Adams",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "450adams",
+    "450revolver"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 13.0,
+    "base": 12.1,
+    "neck": 12.1,
+    "caseLength": 18.0,
+    "overallLength": 28.0,
+    "bullet": 11.6
+   },
+   "outline": {
+    "width": 13.0,
+    "height": 28.0,
+    "case": "M13.00 28.00 L13.00 26.50 L12.55 26.50 L12.55 10.00 L0.45 10.00 L0.45 26.50 L0.00 26.50 L0.00 28.00 Z",
+    "bullet": "M12.30 10.00 L12.30 7.80 L12.29 7.24 L12.24 6.69 L12.17 6.13 L12.06 5.57 L11.92 5.01 L11.74 4.46 L11.52 3.90 L11.26 3.34 L10.94 2.79 L10.56 2.23 L10.09 1.67 L9.49 1.11 L8.65 0.56 L7.43 0.00 L6.50 0.00 L5.57 0.00 L4.35 0.56 L3.51 1.11 L2.91 1.67 L2.44 2.23 L2.06 2.79 L1.74 3.34 L1.48 3.90 L1.26 4.46 L1.08 5.01 L0.94 5.57 L0.83 6.13 L0.76 6.69 L0.71 7.24 L0.70 7.80 L0.70 10.00 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".476 Enfield",
+   "name": ".476 Enfield",
+   "category": "Kurzwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "476enfield",
+    "476eley"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 12.1,
+    "neck": 12.0,
+    "caseLength": 22.0,
+    "overallLength": 34.0,
+    "bullet": 11.6
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 34.0,
+    "case": "M13.50 34.00 L13.50 32.50 L12.80 32.50 L12.75 12.00 L0.75 12.00 L0.70 32.50 L0.00 32.50 L0.00 34.00 Z",
+    "bullet": "M12.55 12.00 L12.55 9.36 L12.54 8.69 L12.49 8.02 L12.42 7.35 L12.31 6.69 L12.17 6.02 L11.99 5.35 L11.77 4.68 L11.51 4.01 L11.19 3.34 L10.81 2.67 L10.34 2.01 L9.74 1.34 L8.90 0.67 L7.68 0.00 L6.75 0.00 L5.82 0.00 L4.60 0.67 L3.76 1.34 L3.16 2.01 L2.69 2.67 L2.31 3.34 L1.99 4.01 L1.73 4.68 L1.51 5.35 L1.33 6.02 L1.19 6.69 L1.08 7.35 L1.01 8.02 L0.96 8.69 L0.95 9.36 L0.95 12.00 Z"
+   },
+   "primer": {
+    "type": "large-pistol",
+    "diameter": 5.33
+   }
+  },
+  {
    "id": ".204 Ruger",
    "name": ".204 Ruger",
    "category": "Langwaffe",
@@ -1038,6 +2655,7 @@
    "aliases": [],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.6,
     "base": 9.6,
@@ -1068,6 +2686,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.6,
     "base": 9.6,
@@ -1103,6 +2722,7 @@
     "REM 223",
     "223 REMINGTON"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.6,
     "base": 9.6,
@@ -1139,6 +2759,7 @@
     "5.56",
     "5.56x45"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.6,
     "base": 9.6,
@@ -1160,8 +2781,8 @@
    }
   },
   {
-   "id": "5.6 mm GP 90 (Swiss)",
-   "name": "5.6 mm GP 90 (Swiss)",
+   "id": "5.6 mm GP 90",
+   "name": "5.6 mm GP 90",
    "category": "Langwaffe",
    "kind": "rimless",
    "aliases": [
@@ -1170,10 +2791,13 @@
     "5.6",
     "5.6mm",
     "5.6gp90",
-    "stgw90"
+    "stgw90",
+    "gewehrpatrone 90",
+    "gwpat90"
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.6,
     "base": 9.6,
@@ -1207,6 +2831,7 @@
     "22-250 REM",
     "22-250"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1241,6 +2866,7 @@
     "243 WIN",
     "WIN 243"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1272,6 +2898,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1302,6 +2929,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 11.2,
     "base": 11.2,
@@ -1338,6 +2966,7 @@
     "6.5 CREEDMOOR",
     "6.5 CM"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1372,6 +3001,7 @@
     "6.5x55 SE",
     "6,5x55"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.2,
     "base": 12.2,
@@ -1402,6 +3032,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1432,6 +3063,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.0,
     "base": 13.0,
@@ -1460,6 +3092,7 @@
    "aliases": [],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1494,6 +3127,7 @@
     "270 WIN",
     "WIN 270"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1527,6 +3161,7 @@
    "headstamps": [
     "7mm-08 REM"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1557,6 +3192,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1589,6 +3225,7 @@
    "headstamps": [
     "7x64"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1622,6 +3259,7 @@
    "headstamps": [
     "7mm REM MAG"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.5,
     "base": 13.0,
@@ -1652,6 +3290,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.4,
     "base": 13.4,
@@ -1691,6 +3330,7 @@
     "7.5 mm Swiss"
    ],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.6,
     "base": 12.6,
@@ -1735,6 +3375,7 @@
     "GP 90/23"
    ],
    "headstamps": [],
+   "obsolete": true,
    "dimensions": {
     "rim": 12.5,
     "base": 12.4,
@@ -1767,6 +3408,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.25,
     "base": 12.25,
@@ -1800,6 +3442,7 @@
    "headstamps": [
     "7.62x39"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 11.35,
     "base": 11.35,
@@ -1838,6 +3481,7 @@
     "300 BLK",
     "300 AAC BLACKOUT"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.6,
     "base": 9.6,
@@ -1873,6 +3517,7 @@
     "7.62x51",
     "7.62 NATO"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 11.9,
     "base": 11.9,
@@ -1908,6 +3553,7 @@
     "WIN 308",
     "308 WINCHESTER"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 11.9,
     "base": 11.9,
@@ -1945,6 +3591,7 @@
     "30-06 SPFLD",
     "30-06"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1979,6 +3626,7 @@
     "30-30 WIN",
     "30 WCF"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.8,
     "base": 10.7,
@@ -2013,6 +3661,7 @@
     "300 WIN MAG",
     "300 WM"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.0,
     "base": 13.0,
@@ -2043,6 +3692,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.4,
     "base": 13.4,
@@ -2074,6 +3724,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 14.9,
     "base": 14.9,
@@ -2108,6 +3759,7 @@
     "303 BRIT",
     ".303"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.5,
     "base": 11.7,
@@ -2141,6 +3793,7 @@
    "headstamps": [
     "7.62x54R"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 14.5,
     "base": 12.4,
@@ -2179,6 +3832,7 @@
     "8x57 IS",
     "8mm MAUSER"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 11.95,
     "base": 11.95,
@@ -2209,6 +3863,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.3,
     "base": 13.3,
@@ -2241,6 +3896,7 @@
    "headstamps": [
     "9,3x62"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -2271,6 +3927,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.0,
     "base": 11.9,
@@ -2306,6 +3963,7 @@
     "338 LAPUA MAG",
     "338 LAPUA"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 14.9,
     "base": 14.9,
@@ -2340,6 +3998,7 @@
     "375 H&H MAG",
     "375 H&H"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.0,
     "base": 13.0,
@@ -2370,6 +4029,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 14.9,
     "base": 14.9,
@@ -2404,6 +4064,7 @@
     "45-70 GOVT",
     "45-70"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 15.2,
     "base": 12.7,
@@ -2438,6 +4099,7 @@
    "headstamps": [
     "50 BMG"
    ],
+   "obsolete": false,
    "dimensions": {
     "rim": 20.4,
     "base": 20.4,
@@ -2459,6 +4121,2073 @@
    }
   },
   {
+   "id": "6.5x52 mm Carcano",
+   "name": "6.5x52 mm Carcano",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "6.5carcano",
+    "6.5x52"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 11.45,
+    "base": 11.41,
+    "neck": 7.55,
+    "caseLength": 52.5,
+    "overallLength": 76.5,
+    "bullet": 6.8,
+    "shoulder": 10.94
+   },
+   "outline": {
+    "width": 11.45,
+    "height": 76.5,
+    "case": "M11.45 76.50 L11.45 75.20 L10.40 75.20 L10.40 73.90 L11.43 73.20 L11.20 33.50 L9.50 30.79 L9.50 24.00 L1.95 24.00 L1.95 30.79 L0.25 33.50 L0.02 73.20 L1.05 73.90 L1.05 75.20 L0.00 75.20 L0.00 76.50 Z",
+    "bullet": "M9.12 24.00 L9.12 18.72 L9.12 17.38 L9.09 16.05 L9.05 14.71 L8.98 13.37 L8.90 12.03 L8.80 10.70 L8.67 9.36 L8.52 8.02 L8.33 6.69 L8.10 5.35 L7.83 4.01 L7.48 2.67 L6.99 1.34 L6.27 0.00 L5.72 0.00 L5.18 0.00 L4.46 1.34 L3.97 2.67 L3.62 4.01 L3.35 5.35 L3.12 6.69 L2.93 8.02 L2.78 9.36 L2.65 10.70 L2.55 12.03 L2.47 13.37 L2.40 14.71 L2.36 16.05 L2.33 17.38 L2.32 18.72 L2.32 24.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "6.5x50 mm SR Arisaka",
+   "name": "6.5x50 mm SR Arisaka",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "6.5arisaka",
+    "6.5x50"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.08,
+    "base": 11.45,
+    "neck": 7.37,
+    "caseLength": 51.0,
+    "overallLength": 76.0,
+    "bullet": 6.63,
+    "shoulder": 10.4
+   },
+   "outline": {
+    "width": 12.08,
+    "height": 76.0,
+    "case": "M12.08 76.00 L12.08 74.70 L10.73 74.70 L10.73 73.40 L11.77 72.70 L11.24 34.30 L9.72 31.88 L9.72 25.00 L2.35 25.00 L2.35 31.88 L0.84 34.30 L0.32 72.70 L1.35 73.40 L1.35 74.70 L0.00 74.70 L0.00 76.00 Z",
+    "bullet": "M9.36 25.00 L9.36 17.00 L9.33 15.79 L9.26 14.57 L9.16 13.36 L9.04 12.14 L8.89 10.93 L8.71 9.71 L8.51 8.50 L8.28 7.29 L8.03 6.07 L7.75 4.86 L7.43 3.64 L7.06 2.43 L6.64 1.21 L6.21 0.00 L6.04 0.00 L5.87 0.00 L5.44 1.21 L5.02 2.43 L4.65 3.64 L4.33 4.86 L4.05 6.07 L3.80 7.29 L3.57 8.50 L3.37 9.71 L3.19 10.93 L3.04 12.14 L2.92 13.36 L2.82 14.57 L2.75 15.79 L2.73 17.00 L2.73 25.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "7.7x58 mm Arisaka",
+   "name": "7.7x58 mm Arisaka",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "7.7arisaka",
+    "7.7x58"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.07,
+    "base": 12.02,
+    "neck": 8.58,
+    "caseLength": 57.8,
+    "overallLength": 79.6,
+    "bullet": 7.92,
+    "shoulder": 11.0
+   },
+   "outline": {
+    "width": 12.07,
+    "height": 79.6,
+    "case": "M12.07 79.60 L12.07 78.30 L10.96 78.30 L10.96 77.00 L12.04 76.30 L11.54 32.50 L10.32 30.56 L10.32 21.80 L1.75 21.80 L1.75 30.56 L0.54 32.50 L0.03 76.30 L1.11 77.00 L1.11 78.30 L0.00 78.30 L0.00 79.60 Z",
+    "bullet": "M10.00 21.80 L10.00 14.82 L9.96 13.77 L9.88 12.71 L9.76 11.65 L9.61 10.59 L9.43 9.53 L9.23 8.47 L8.99 7.41 L8.71 6.35 L8.41 5.29 L8.07 4.24 L7.69 3.18 L7.26 2.12 L6.75 1.06 L6.23 0.00 L6.04 0.00 L5.84 0.00 L5.32 1.06 L4.81 2.12 L4.38 3.18 L4.00 4.24 L3.66 5.29 L3.36 6.35 L3.08 7.41 L2.84 8.47 L2.64 9.53 L2.46 10.59 L2.31 11.65 L2.19 12.71 L2.11 13.77 L2.08 14.82 L2.08 21.80 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "8x50 mm R Lebel",
+   "name": "8x50 mm R Lebel",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "8lebel",
+    "8x50rlebel"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 16.0,
+    "base": 13.77,
+    "neck": 8.85,
+    "caseLength": 50.5,
+    "overallLength": 75.0,
+    "bullet": 8.3,
+    "shoulder": 11.42
+   },
+   "outline": {
+    "width": 16.0,
+    "height": 75.0,
+    "case": "M16.00 75.00 L16.00 73.50 L14.88 73.50 L13.71 35.60 L12.43 33.54 L12.43 24.50 L3.58 24.50 L3.58 33.54 L2.29 35.60 L1.12 73.50 L0.00 73.50 L0.00 75.00 Z",
+    "bullet": "M12.15 24.50 L12.15 16.66 L12.11 15.47 L12.03 14.28 L11.91 13.09 L11.75 11.90 L11.56 10.71 L11.34 9.52 L11.09 8.33 L10.81 7.14 L10.49 5.95 L10.13 4.76 L9.74 3.57 L9.28 2.38 L8.75 1.19 L8.21 0.00 L8.00 0.00 L7.79 0.00 L7.25 1.19 L6.72 2.38 L6.26 3.57 L5.87 4.76 L5.51 5.95 L5.19 7.14 L4.91 8.33 L4.66 9.52 L4.44 10.71 L4.25 11.90 L4.09 13.09 L3.97 14.28 L3.89 15.47 L3.85 16.66 L3.85 24.50 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "8x56 mm R Mannlicher",
+   "name": "8x56 mm R Mannlicher",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "8x56r"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 14.05,
+    "base": 12.47,
+    "neck": 9.2,
+    "caseLength": 55.63,
+    "overallLength": 75.91,
+    "bullet": 8.35,
+    "shoulder": 12.0
+   },
+   "outline": {
+    "width": 14.05,
+    "height": 75.91,
+    "case": "M14.05 75.91 L14.05 74.41 L13.26 74.41 L13.03 31.51 L11.62 29.27 L11.62 20.28 L2.43 20.28 L2.43 29.27 L1.03 31.51 L0.79 74.41 L0.00 74.41 L0.00 75.91 Z",
+    "bullet": "M11.20 20.28 L11.20 13.79 L11.16 12.81 L11.08 11.82 L10.95 10.84 L10.80 9.85 L10.61 8.87 L10.39 7.88 L10.14 6.90 L9.85 5.91 L9.53 4.93 L9.17 3.94 L8.77 2.96 L8.32 1.97 L7.78 0.99 L7.23 0.00 L7.03 0.00 L6.82 0.00 L6.27 0.99 L5.73 1.97 L5.28 2.96 L4.88 3.94 L4.52 4.93 L4.20 5.91 L3.91 6.90 L3.66 7.88 L3.44 8.87 L3.25 9.85 L3.10 10.84 L2.97 11.82 L2.89 12.81 L2.85 13.79 L2.85 20.28 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "8x50 mm R Mannlicher",
+   "name": "8x50 mm R Mannlicher",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "8x50rmannlicher",
+    "8x50r"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 14.11,
+    "base": 12.48,
+    "neck": 9.03,
+    "caseLength": 50.38,
+    "overallLength": 76.21,
+    "bullet": 8.22,
+    "shoulder": 12.01
+   },
+   "outline": {
+    "width": 14.11,
+    "height": 76.21,
+    "case": "M14.11 76.21 L14.11 74.71 L13.29 74.71 L13.06 36.91 L11.57 34.53 L11.57 25.83 L2.54 25.83 L2.54 34.53 L1.05 36.91 L0.81 74.71 L0.00 74.71 L0.00 76.21 Z",
+    "bullet": "M11.16 25.83 L11.16 20.15 L11.15 18.71 L11.12 17.27 L11.07 15.83 L10.99 14.39 L10.89 12.95 L10.77 11.51 L10.61 10.07 L10.43 8.63 L10.20 7.20 L9.93 5.76 L9.60 4.32 L9.17 2.88 L8.58 1.44 L7.71 0.00 L7.05 0.00 L6.40 0.00 L5.53 1.44 L4.94 2.88 L4.51 4.32 L4.18 5.76 L3.91 7.20 L3.68 8.63 L3.50 10.07 L3.34 11.51 L3.22 12.95 L3.12 14.39 L3.04 15.83 L2.99 17.27 L2.96 18.71 L2.94 20.15 L2.94 25.83 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "7.35x51 mm Carcano",
+   "name": "7.35x51 mm Carcano",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "7.35carcano",
+    "7.35x51"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 11.4,
+    "base": 11.4,
+    "neck": 8.32,
+    "caseLength": 51.5,
+    "overallLength": 73.5,
+    "bullet": 7.57,
+    "shoulder": 10.85
+   },
+   "outline": {
+    "width": 11.4,
+    "height": 73.5,
+    "case": "M11.40 73.50 L11.40 72.20 L10.37 72.20 L10.37 70.90 L11.40 70.20 L11.12 32.30 L9.86 30.28 L9.86 22.00 L1.54 22.00 L1.54 30.28 L0.28 32.30 L0.00 70.20 L1.03 70.90 L1.03 72.20 L0.00 72.20 L0.00 73.50 Z",
+    "bullet": "M9.48 22.00 L9.48 14.96 L9.45 13.89 L9.37 12.82 L9.26 11.75 L9.12 10.69 L8.95 9.62 L8.75 8.55 L8.52 7.48 L8.26 6.41 L7.97 5.34 L7.65 4.27 L7.28 3.21 L6.87 2.14 L6.39 1.07 L5.89 0.00 L5.70 0.00 L5.51 0.00 L5.01 1.07 L4.53 2.14 L4.12 3.21 L3.75 4.27 L3.43 5.34 L3.14 6.41 L2.88 7.48 L2.65 8.55 L2.45 9.62 L2.28 10.69 L2.14 11.75 L2.03 12.82 L1.95 13.89 L1.92 14.96 L1.92 22.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "6.5x54 mm Mannlicher-Schönauer",
+   "name": "6.5x54 mm Mannlicher-Schönauer",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "6.5x54ms",
+    "6.5x54"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 11.52,
+    "base": 11.47,
+    "neck": 7.56,
+    "caseLength": 57.2,
+    "overallLength": 77.8,
+    "bullet": 6.7,
+    "shoulder": 10.87
+   },
+   "outline": {
+    "width": 11.52,
+    "height": 77.8,
+    "case": "M11.52 77.80 L11.52 76.50 L10.46 76.50 L10.46 75.20 L11.50 74.50 L11.20 30.00 L9.54 27.35 L9.54 20.60 L1.98 20.60 L1.98 27.35 L0.33 30.00 L0.02 74.50 L1.06 75.20 L1.06 76.50 L0.00 76.50 L0.00 77.80 Z",
+    "bullet": "M9.11 20.60 L9.11 16.07 L9.10 14.92 L9.08 13.77 L9.03 12.62 L8.97 11.48 L8.89 10.33 L8.79 9.18 L8.66 8.03 L8.51 6.89 L8.33 5.74 L8.10 4.59 L7.83 3.44 L7.49 2.30 L7.00 1.15 L6.30 0.00 L5.76 0.00 L5.22 0.00 L4.52 1.15 L4.03 2.30 L3.69 3.44 L3.42 4.59 L3.19 5.74 L3.01 6.89 L2.86 8.03 L2.73 9.18 L2.63 10.33 L2.55 11.48 L2.49 12.62 L2.44 13.77 L2.42 14.92 L2.41 16.07 L2.41 20.60 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".30-40 Krag",
+   "name": ".30-40 Krag",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "30-40",
+    "30-40krag",
+    "30army"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.8,
+    "base": 11.6,
+    "neck": 8.6,
+    "caseLength": 58.8,
+    "overallLength": 78.5,
+    "bullet": 7.8,
+    "shoulder": 10.7
+   },
+   "outline": {
+    "width": 13.8,
+    "height": 78.5,
+    "case": "M13.80 78.50 L13.80 77.00 L12.70 77.00 L12.25 30.30 L11.20 28.62 L11.20 19.70 L2.60 19.70 L2.60 28.62 L1.55 30.30 L1.10 77.00 L0.00 77.00 L0.00 78.50 Z",
+    "bullet": "M10.80 19.70 L10.80 15.37 L10.79 14.27 L10.76 13.17 L10.71 12.07 L10.64 10.98 L10.54 9.88 L10.42 8.78 L10.28 7.68 L10.10 6.59 L9.89 5.49 L9.63 4.39 L9.31 3.29 L8.91 2.20 L8.35 1.10 L7.52 0.00 L6.90 0.00 L6.28 0.00 L5.45 1.10 L4.89 2.20 L4.49 3.29 L4.17 4.39 L3.91 5.49 L3.70 6.59 L3.52 7.68 L3.38 8.78 L3.26 9.88 L3.16 10.98 L3.09 12.07 L3.04 13.17 L3.01 14.27 L3.00 15.37 L3.00 19.70 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "7.92x33 mm Kurz",
+   "name": "7.92x33 mm Kurz",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "7.92kurz",
+    "8mmkurz",
+    "7.92x33"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 11.95,
+    "base": 11.94,
+    "neck": 9.1,
+    "caseLength": 33.0,
+    "overallLength": 48.0,
+    "bullet": 8.22,
+    "shoulder": 11.4
+   },
+   "outline": {
+    "width": 11.95,
+    "height": 48.0,
+    "case": "M11.95 48.00 L11.95 46.70 L10.87 46.70 L10.87 45.40 L11.95 44.70 L11.68 26.00 L10.52 24.16 L10.52 15.00 L1.42 15.00 L1.42 24.16 L0.27 26.00 L0.00 44.70 L1.08 45.40 L1.08 46.70 L0.00 46.70 L0.00 48.00 Z",
+    "bullet": "M10.09 15.00 L10.09 10.20 L10.05 9.47 L9.96 8.74 L9.84 8.01 L9.69 7.29 L9.50 6.56 L9.29 5.83 L9.04 5.10 L8.76 4.37 L8.44 3.64 L8.09 2.91 L7.69 2.19 L7.25 1.46 L6.72 0.73 L6.18 0.00 L5.97 0.00 L5.77 0.00 L5.23 0.73 L4.70 1.46 L4.26 2.19 L3.86 2.91 L3.51 3.64 L3.19 4.37 L2.91 5.10 L2.66 5.83 L2.45 6.56 L2.26 7.29 L2.11 8.01 L1.99 8.74 L1.90 9.47 L1.86 10.20 L1.86 15.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "5.45x39 mm",
+   "name": "5.45x39 mm",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "5.45x39",
+    "545x39"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 10.0,
+    "base": 10.0,
+    "neck": 6.29,
+    "caseLength": 39.82,
+    "overallLength": 57.0,
+    "bullet": 5.6,
+    "shoulder": 9.25
+   },
+   "outline": {
+    "width": 10.0,
+    "height": 57.0,
+    "case": "M10.00 57.00 L10.00 55.70 L9.10 55.70 L9.10 54.40 L10.00 53.70 L9.62 25.30 L8.14 22.93 L8.14 17.18 L1.85 17.18 L1.85 22.93 L0.38 25.30 L0.00 53.70 L0.90 54.40 L0.90 55.70 L0.00 55.70 L0.00 57.00 Z",
+    "bullet": "M7.80 17.18 L7.80 11.68 L7.77 10.85 L7.72 10.01 L7.64 9.18 L7.53 8.34 L7.40 7.51 L7.26 6.68 L7.09 5.84 L6.89 5.01 L6.68 4.17 L6.44 3.34 L6.17 2.50 L5.87 1.67 L5.51 0.83 L5.14 0.00 L5.00 0.00 L4.86 0.00 L4.49 0.83 L4.13 1.67 L3.83 2.50 L3.56 3.34 L3.32 4.17 L3.11 5.01 L2.91 5.84 L2.74 6.68 L2.60 7.51 L2.47 8.34 L2.36 9.18 L2.28 10.01 L2.23 10.85 L2.20 11.68 L2.20 17.18 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".22 Hornet",
+   "name": ".22 Hornet",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "22hornet",
+    "5.6x35r"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 8.89,
+    "base": 7.57,
+    "neck": 6.17,
+    "caseLength": 35.64,
+    "overallLength": 43.76,
+    "bullet": 5.69,
+    "shoulder": 7.01
+   },
+   "outline": {
+    "width": 8.89,
+    "height": 43.76,
+    "case": "M8.89 43.76 L8.89 42.26 L8.23 42.26 L7.95 16.36 L7.53 15.56 L7.53 8.12 L1.36 8.12 L1.36 15.56 L0.94 16.36 L0.66 42.26 L0.00 42.26 L0.00 43.76 Z",
+    "bullet": "M7.29 8.12 L7.29 5.52 L7.26 5.13 L7.21 4.73 L7.12 4.34 L7.02 3.94 L6.89 3.55 L6.74 3.16 L6.56 2.76 L6.37 2.37 L6.15 1.97 L5.91 1.58 L5.63 1.18 L5.32 0.79 L4.96 0.39 L4.59 0.00 L4.45 0.00 L4.30 0.00 L3.93 0.39 L3.57 0.79 L3.26 1.18 L2.98 1.58 L2.74 1.97 L2.52 2.37 L2.33 2.76 L2.15 3.16 L2.00 3.55 L1.87 3.94 L1.77 4.34 L1.68 4.73 L1.63 5.13 L1.60 5.52 L1.60 8.12 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".25-06 Remington",
+   "name": ".25-06 Remington",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "25-06"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.0,
+    "base": 11.9,
+    "neck": 7.4,
+    "caseLength": 63.3,
+    "overallLength": 82.6,
+    "bullet": 6.5,
+    "shoulder": 11.2
+   },
+   "outline": {
+    "width": 12.0,
+    "height": 82.6,
+    "case": "M12.00 82.60 L12.00 81.30 L10.88 81.30 L10.88 80.00 L11.95 79.30 L11.60 28.50 L9.70 25.46 L9.70 19.30 L2.30 19.30 L2.30 25.46 L0.40 28.50 L0.05 79.30 L1.12 80.00 L1.12 81.30 L0.00 81.30 L0.00 82.60 Z",
+    "bullet": "M9.25 19.30 L9.25 13.12 L9.22 12.19 L9.15 11.25 L9.06 10.31 L8.94 9.37 L8.79 8.44 L8.62 7.50 L8.42 6.56 L8.20 5.62 L7.95 4.69 L7.67 3.75 L7.36 2.81 L7.00 1.87 L6.59 0.94 L6.16 0.00 L6.00 0.00 L5.84 0.00 L5.41 0.94 L5.00 1.87 L4.64 2.81 L4.33 3.75 L4.05 4.69 L3.80 5.62 L3.58 6.56 L3.38 7.50 L3.21 8.44 L3.06 9.37 L2.94 10.31 L2.85 11.25 L2.78 12.19 L2.75 13.12 L2.75 19.30 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".257 Roberts",
+   "name": ".257 Roberts",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "257roberts"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.0,
+    "base": 12.0,
+    "neck": 7.4,
+    "caseLength": 56.7,
+    "overallLength": 70.5,
+    "bullet": 6.5,
+    "shoulder": 10.9
+   },
+   "outline": {
+    "width": 12.0,
+    "height": 70.5,
+    "case": "M12.00 70.50 L12.00 69.20 L10.92 69.20 L10.92 67.90 L12.00 67.20 L11.45 22.90 L9.70 20.10 L9.70 13.80 L2.30 13.80 L2.30 20.10 L0.55 22.90 L0.00 67.20 L1.08 67.90 L1.08 69.20 L0.00 69.20 L0.00 70.50 Z",
+    "bullet": "M9.25 13.80 L9.25 9.38 L9.22 8.71 L9.15 8.04 L9.06 7.37 L8.94 6.70 L8.79 6.03 L8.62 5.36 L8.42 4.69 L8.20 4.02 L7.95 3.35 L7.67 2.68 L7.36 2.01 L7.00 1.34 L6.59 0.67 L6.16 0.00 L6.00 0.00 L5.84 0.00 L5.41 0.67 L5.00 1.34 L4.64 2.01 L4.33 2.68 L4.05 3.35 L3.80 4.02 L3.58 4.69 L3.38 5.36 L3.21 6.03 L3.06 6.70 L2.94 7.37 L2.85 8.04 L2.78 8.71 L2.75 9.38 L2.75 13.80 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".280 Remington",
+   "name": ".280 Remington",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "280rem"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.0,
+    "base": 11.9,
+    "neck": 8.0,
+    "caseLength": 64.5,
+    "overallLength": 84.6,
+    "bullet": 7.2,
+    "shoulder": 11.2
+   },
+   "outline": {
+    "width": 12.0,
+    "height": 84.6,
+    "case": "M12.00 84.60 L12.00 83.30 L10.88 83.30 L10.88 82.00 L11.95 81.30 L11.60 30.00 L10.00 27.44 L10.00 20.10 L2.00 20.10 L2.00 27.44 L0.40 30.00 L0.05 81.30 L1.12 82.00 L1.12 83.30 L0.00 83.30 L0.00 84.60 Z",
+    "bullet": "M9.60 20.10 L9.60 13.67 L9.57 12.69 L9.49 11.72 L9.39 10.74 L9.25 9.76 L9.09 8.79 L8.90 7.81 L8.68 6.83 L8.44 5.86 L8.16 4.88 L7.85 3.91 L7.51 2.93 L7.11 1.95 L6.65 0.98 L6.18 0.00 L6.00 0.00 L5.82 0.00 L5.35 0.98 L4.89 1.95 L4.49 2.93 L4.15 3.91 L3.84 4.88 L3.56 5.86 L3.32 6.83 L3.10 7.81 L2.91 8.79 L2.75 9.76 L2.61 10.74 L2.51 11.72 L2.43 12.69 L2.40 13.67 L2.40 20.10 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".35 Whelen",
+   "name": ".35 Whelen",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "35whelen"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.0,
+    "base": 12.0,
+    "neck": 9.8,
+    "caseLength": 63.3,
+    "overallLength": 84.8,
+    "bullet": 9.1,
+    "shoulder": 11.2
+   },
+   "outline": {
+    "width": 12.0,
+    "height": 84.8,
+    "case": "M12.00 84.80 L12.00 83.50 L10.92 83.50 L10.92 82.20 L12.00 81.50 L11.60 33.50 L10.90 32.38 L10.90 21.50 L1.10 21.50 L1.10 32.38 L0.40 33.50 L0.00 81.50 L1.08 82.20 L1.08 83.50 L0.00 83.50 L0.00 84.80 Z",
+    "bullet": "M10.55 21.50 L10.55 16.77 L10.54 15.57 L10.50 14.37 L10.44 13.18 L10.36 11.98 L10.25 10.78 L10.11 9.58 L9.94 8.39 L9.73 7.19 L9.49 5.99 L9.18 4.79 L8.81 3.59 L8.34 2.40 L7.69 1.20 L6.73 0.00 L6.00 0.00 L5.27 0.00 L4.31 1.20 L3.66 2.40 L3.19 3.59 L2.82 4.79 L2.51 5.99 L2.27 7.19 L2.06 8.39 L1.89 9.58 L1.75 10.78 L1.64 11.98 L1.56 13.18 L1.50 14.37 L1.46 15.57 L1.45 16.77 L1.45 21.50 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".300 H&H Magnum",
+   "name": ".300 H&H Magnum",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "300h&h",
+    "300hh"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.0,
+    "neck": 8.6,
+    "caseLength": 72.4,
+    "overallLength": 91.4,
+    "bullet": 7.8,
+    "shoulder": 11.4
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 91.4,
+    "case": "M13.50 91.40 L13.50 90.10 L12.08 90.10 L12.08 88.80 L13.50 88.10 L13.50 85.20 L13.15 85.20 L12.45 29.60 L11.05 27.36 L11.05 19.00 L2.45 19.00 L2.45 27.36 L1.05 29.60 L0.35 85.20 L0.00 85.20 L0.00 88.10 L1.42 88.80 L1.42 90.10 L0.00 90.10 L0.00 91.40 Z",
+    "bullet": "M10.65 19.00 L10.65 12.92 L10.61 12.00 L10.54 11.07 L10.42 10.15 L10.27 9.23 L10.10 8.31 L9.89 7.38 L9.66 6.46 L9.39 5.54 L9.09 4.61 L8.76 3.69 L8.38 2.77 L7.96 1.85 L7.46 0.92 L6.95 0.00 L6.75 0.00 L6.55 0.00 L6.04 0.92 L5.54 1.85 L5.12 2.77 L4.74 3.69 L4.41 4.61 L4.11 5.54 L3.84 6.46 L3.61 7.38 L3.40 8.31 L3.23 9.23 L3.08 10.15 L2.96 11.07 L2.89 12.00 L2.85 12.92 L2.85 19.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".338 Winchester Magnum",
+   "name": ".338 Winchester Magnum",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "338winmag",
+    "338wm"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.0,
+    "neck": 9.4,
+    "caseLength": 63.5,
+    "overallLength": 84.8,
+    "bullet": 8.6,
+    "shoulder": 12.5
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 84.8,
+    "case": "M13.50 84.80 L13.50 83.50 L12.08 83.50 L12.08 82.20 L13.50 81.50 L13.50 78.60 L13.15 78.60 L13.00 32.80 L11.45 30.32 L11.45 21.30 L2.05 21.30 L2.05 30.32 L0.50 32.80 L0.35 78.60 L0.00 78.60 L0.00 81.50 L1.42 82.20 L1.42 83.50 L0.00 83.50 L0.00 84.80 Z",
+    "bullet": "M11.05 21.30 L11.05 14.48 L11.01 13.45 L10.92 12.41 L10.80 11.38 L10.64 10.35 L10.44 9.31 L10.21 8.28 L9.95 7.24 L9.66 6.21 L9.33 5.17 L8.96 4.14 L8.55 3.10 L8.08 2.07 L7.53 1.03 L6.96 0.00 L6.75 0.00 L6.54 0.00 L5.97 1.03 L5.42 2.07 L4.95 3.10 L4.54 4.14 L4.17 5.17 L3.84 6.21 L3.55 7.24 L3.29 8.28 L3.06 9.31 L2.86 10.35 L2.70 11.38 L2.58 12.41 L2.49 13.45 L2.45 14.48 L2.45 21.30 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".444 Marlin",
+   "name": ".444 Marlin",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "444marlin"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.1,
+    "base": 11.95,
+    "neck": 11.5,
+    "caseLength": 56.5,
+    "overallLength": 65.0,
+    "bullet": 10.9
+   },
+   "outline": {
+    "width": 13.1,
+    "height": 65.0,
+    "case": "M13.10 65.00 L13.10 63.50 L12.52 63.50 L12.30 8.50 L0.80 8.50 L0.58 63.50 L0.00 63.50 L0.00 65.00 Z",
+    "bullet": "M12.00 8.50 L12.00 5.95 L11.99 5.53 L11.94 5.10 L11.87 4.68 L11.77 4.25 L11.64 3.83 L11.47 3.40 L11.27 2.98 L11.02 2.55 L10.72 2.12 L10.36 1.70 L9.92 1.27 L9.55 0.85 L9.55 0.42 L9.55 0.00 L6.55 0.00 L3.55 0.00 L3.55 0.42 L3.55 0.85 L3.18 1.27 L2.74 1.70 L2.38 2.12 L2.08 2.55 L1.83 2.98 L1.63 3.40 L1.46 3.83 L1.33 4.25 L1.23 4.68 L1.16 5.10 L1.11 5.53 L1.10 5.95 L1.10 8.50 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".458 Winchester Magnum",
+   "name": ".458 Winchester Magnum",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "458winmag",
+    "458wm"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.0,
+    "neck": 12.2,
+    "caseLength": 63.5,
+    "overallLength": 84.8,
+    "bullet": 11.63
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 84.8,
+    "case": "M13.50 84.80 L13.50 83.50 L12.08 83.50 L12.08 82.20 L13.50 81.50 L13.50 78.60 L13.15 78.60 L12.85 21.30 L0.65 21.30 L0.35 78.60 L0.00 78.60 L0.00 81.50 L1.42 82.20 L1.42 83.50 L0.00 83.50 L0.00 84.80 Z",
+    "bullet": "M12.57 21.30 L12.57 16.61 L12.55 15.43 L12.51 14.24 L12.43 13.05 L12.32 11.87 L12.18 10.68 L12.00 9.49 L11.79 8.31 L11.52 7.12 L11.20 5.93 L10.82 4.75 L10.35 3.56 L9.75 2.37 L8.91 1.19 L7.68 0.00 L6.75 0.00 L5.82 0.00 L4.59 1.19 L3.75 2.37 L3.15 3.56 L2.68 4.75 L2.30 5.93 L1.98 7.12 L1.71 8.31 L1.50 9.49 L1.32 10.68 L1.18 11.87 L1.07 13.05 L0.99 14.24 L0.95 15.43 L0.93 16.61 L0.93 21.30 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".350 Legend",
+   "name": ".350 Legend",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "350legend"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 9.6,
+    "base": 9.9,
+    "neck": 9.6,
+    "caseLength": 43.0,
+    "overallLength": 57.0,
+    "bullet": 9.07
+   },
+   "outline": {
+    "width": 9.9,
+    "height": 57.0,
+    "case": "M9.75 57.00 L9.75 55.70 L9.01 55.70 L9.01 54.40 L9.90 53.70 L9.75 14.00 L0.15 14.00 L0.00 53.70 L0.89 54.40 L0.89 55.70 L0.15 55.70 L0.15 57.00 Z",
+    "bullet": "M9.48 14.00 L9.48 9.52 L9.44 8.84 L9.35 8.16 L9.22 7.48 L9.05 6.80 L8.84 6.12 L8.60 5.44 L8.33 4.76 L8.02 4.08 L7.67 3.40 L7.28 2.72 L6.85 2.04 L6.35 1.36 L5.77 0.68 L5.18 0.00 L4.95 0.00 L4.72 0.00 L4.13 0.68 L3.55 1.36 L3.05 2.04 L2.62 2.72 L2.23 3.40 L1.88 4.08 L1.57 4.76 L1.30 5.44 L1.06 6.12 L0.85 6.80 L0.68 7.48 L0.55 8.16 L0.46 8.84 L0.42 9.52 L0.42 14.00 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "5.6x50 mm Magnum",
+   "name": "5.6x50 mm Magnum",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "5.6x50",
+    "5.6x50mag"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 9.6,
+    "base": 9.56,
+    "neck": 6.48,
+    "caseLength": 50.0,
+    "overallLength": 61.3,
+    "bullet": 5.7,
+    "shoulder": 9.0
+   },
+   "outline": {
+    "width": 9.6,
+    "height": 61.3,
+    "case": "M9.60 61.30 L9.60 60.00 L8.72 60.00 L8.72 58.70 L9.58 58.00 L9.30 19.60 L8.04 17.58 L8.04 11.30 L1.56 11.30 L1.56 17.58 L0.30 19.60 L0.02 58.00 L0.88 58.70 L0.88 60.00 L0.00 60.00 L0.00 61.30 Z",
+    "bullet": "M7.65 11.30 L7.65 7.68 L7.62 7.14 L7.57 6.59 L7.48 6.04 L7.38 5.49 L7.25 4.94 L7.10 4.39 L6.92 3.84 L6.73 3.29 L6.51 2.74 L6.27 2.20 L5.99 1.65 L5.68 1.10 L5.32 0.55 L4.94 0.00 L4.80 0.00 L4.66 0.00 L4.28 0.55 L3.92 1.10 L3.61 1.65 L3.33 2.20 L3.09 2.74 L2.87 3.29 L2.68 3.84 L2.50 4.39 L2.35 4.94 L2.22 5.49 L2.12 6.04 L2.03 6.59 L1.98 7.14 L1.95 7.68 L1.95 11.30 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "6.5x57 mm Mauser",
+   "name": "6.5x57 mm Mauser",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "6.5x57"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 11.95,
+    "base": 11.9,
+    "neck": 7.65,
+    "caseLength": 56.7,
+    "overallLength": 82.0,
+    "bullet": 6.7,
+    "shoulder": 10.94
+   },
+   "outline": {
+    "width": 11.95,
+    "height": 82.0,
+    "case": "M11.95 82.00 L11.95 80.70 L10.85 80.70 L10.85 79.40 L11.93 78.70 L11.45 34.70 L9.80 32.07 L9.80 25.30 L2.15 25.30 L2.15 32.07 L0.50 34.70 L0.02 78.70 L1.10 79.40 L1.10 80.70 L0.00 80.70 L0.00 82.00 Z",
+    "bullet": "M9.32 25.30 L9.32 17.20 L9.29 15.98 L9.23 14.75 L9.13 13.52 L9.00 12.29 L8.85 11.06 L8.67 9.83 L8.47 8.60 L8.24 7.37 L7.99 6.14 L7.70 4.92 L7.38 3.69 L7.01 2.46 L6.58 1.23 L6.14 0.00 L5.97 0.00 L5.81 0.00 L5.37 1.23 L4.94 2.46 L4.57 3.69 L4.25 4.92 L3.96 6.14 L3.71 7.37 L3.48 8.60 L3.28 9.83 L3.10 11.06 L2.95 12.29 L2.82 13.52 L2.72 14.75 L2.66 15.98 L2.62 17.20 L2.62 25.30 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "6.5x68 mm",
+   "name": "6.5x68 mm",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "6.5x68"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.0,
+    "base": 13.3,
+    "neck": 7.6,
+    "caseLength": 67.5,
+    "overallLength": 86.5,
+    "bullet": 6.7,
+    "shoulder": 12.18
+   },
+   "outline": {
+    "width": 13.3,
+    "height": 86.5,
+    "case": "M13.15 86.50 L13.15 85.20 L12.10 85.20 L12.10 83.90 L13.30 83.20 L12.74 28.40 L10.45 24.74 L10.45 19.00 L2.85 19.00 L2.85 24.74 L0.56 28.40 L0.00 83.20 L1.20 83.90 L1.20 85.20 L0.15 85.20 L0.15 86.50 Z",
+    "bullet": "M10.00 19.00 L10.00 12.92 L9.97 12.00 L9.90 11.07 L9.80 10.15 L9.68 9.23 L9.53 8.31 L9.35 7.38 L9.15 6.46 L8.92 5.54 L8.66 4.61 L8.37 3.69 L8.05 2.77 L7.69 1.85 L7.26 0.92 L6.82 0.00 L6.65 0.00 L6.48 0.00 L6.04 0.92 L5.61 1.85 L5.25 2.77 L4.93 3.69 L4.64 4.61 L4.38 5.54 L4.15 6.46 L3.95 7.38 L3.77 8.31 L3.62 9.23 L3.50 10.15 L3.40 11.07 L3.33 12.00 L3.30 12.92 L3.30 19.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "8x64 mm S",
+   "name": "8x64 mm S",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "8x64s",
+    "8x64"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.0,
+    "base": 11.95,
+    "neck": 8.96,
+    "caseLength": 64.0,
+    "overallLength": 87.5,
+    "bullet": 8.22,
+    "shoulder": 10.85
+   },
+   "outline": {
+    "width": 12.0,
+    "height": 87.5,
+    "case": "M12.00 87.50 L12.00 86.20 L10.90 86.20 L10.90 84.90 L11.97 84.20 L11.43 34.50 L10.48 32.99 L10.48 23.50 L1.52 23.50 L1.52 32.99 L0.58 34.50 L0.03 84.20 L1.10 84.90 L1.10 86.20 L0.00 86.20 L0.00 87.50 Z",
+    "bullet": "M10.11 23.50 L10.11 15.98 L10.07 14.84 L9.99 13.70 L9.87 12.56 L9.71 11.41 L9.53 10.27 L9.31 9.13 L9.06 7.99 L8.78 6.85 L8.47 5.71 L8.11 4.57 L7.72 3.42 L7.27 2.28 L6.75 1.14 L6.21 0.00 L6.00 0.00 L5.79 0.00 L5.25 1.14 L4.73 2.28 L4.28 3.42 L3.89 4.57 L3.53 5.71 L3.22 6.85 L2.94 7.99 L2.69 9.13 L2.47 10.27 L2.29 11.41 L2.13 12.56 L2.01 13.70 L1.93 14.84 L1.89 15.98 L1.89 23.50 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "8x60 mm S",
+   "name": "8x60 mm S",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "8x60s",
+    "8x60"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 11.95,
+    "base": 11.98,
+    "neck": 9.08,
+    "caseLength": 60.0,
+    "overallLength": 83.6,
+    "bullet": 8.22,
+    "shoulder": 10.95
+   },
+   "outline": {
+    "width": 11.98,
+    "height": 83.6,
+    "case": "M11.96 83.60 L11.96 82.30 L10.90 82.30 L10.90 81.00 L11.98 80.30 L11.46 34.60 L10.53 33.10 L10.53 23.60 L1.45 23.60 L1.45 33.10 L0.52 34.60 L0.00 80.30 L1.08 81.00 L1.08 82.30 L0.02 82.30 L0.02 83.60 Z",
+    "bullet": "M10.10 23.60 L10.10 16.05 L10.06 14.90 L9.98 13.76 L9.86 12.61 L9.70 11.46 L9.52 10.32 L9.30 9.17 L9.05 8.02 L8.77 6.88 L8.46 5.73 L8.10 4.59 L7.71 3.44 L7.26 2.29 L6.74 1.15 L6.20 0.00 L5.99 0.00 L5.78 0.00 L5.24 1.15 L4.72 2.29 L4.27 3.44 L3.88 4.59 L3.52 5.73 L3.21 6.88 L2.93 8.02 L2.68 9.17 L2.46 10.32 L2.28 11.46 L2.12 12.61 L2.00 13.76 L1.92 14.90 L1.88 16.05 L1.88 23.60 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "9.5x57 mm Mannlicher-Schönauer",
+   "name": "9.5x57 mm Mannlicher-Schönauer",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "9.5x57",
+    "375rimless"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 11.89,
+    "base": 11.89,
+    "neck": 10.16,
+    "caseLength": 57.15,
+    "overallLength": 74.9,
+    "bullet": 9.55,
+    "shoulder": 11.55
+   },
+   "outline": {
+    "width": 11.89,
+    "height": 74.9,
+    "case": "M11.89 74.90 L11.89 73.60 L10.82 73.60 L10.82 72.30 L11.89 71.60 L11.72 30.30 L11.03 29.19 L11.03 17.75 L0.87 17.75 L0.87 29.19 L0.17 30.30 L0.00 71.60 L1.07 72.30 L1.07 73.60 L0.00 73.60 L0.00 74.90 Z",
+    "bullet": "M10.72 17.75 L10.72 13.85 L10.71 12.86 L10.67 11.87 L10.61 10.88 L10.52 9.89 L10.41 8.90 L10.26 7.91 L10.08 6.92 L9.86 5.93 L9.60 4.94 L9.29 3.96 L8.90 2.97 L8.40 1.98 L7.72 0.99 L6.71 0.00 L5.95 0.00 L5.18 0.00 L4.17 0.99 L3.49 1.98 L2.99 2.97 L2.60 3.96 L2.29 4.94 L2.03 5.93 L1.81 6.92 L1.63 7.91 L1.48 8.90 L1.37 9.89 L1.28 10.88 L1.22 11.87 L1.18 12.86 L1.17 13.85 L1.17 17.75 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".375 Ruger",
+   "name": ".375 Ruger",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "375ruger"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.5,
+    "neck": 10.3,
+    "caseLength": 65.5,
+    "overallLength": 84.8,
+    "bullet": 9.5,
+    "shoulder": 13.1
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 84.8,
+    "case": "M13.50 84.80 L13.50 83.50 L12.29 83.50 L12.29 82.20 L13.50 81.50 L13.30 31.80 L11.90 29.56 L11.90 19.30 L1.60 19.30 L1.60 29.56 L0.20 31.80 L0.00 81.50 L1.22 82.20 L1.22 83.50 L0.00 83.50 L0.00 84.80 Z",
+    "bullet": "M11.50 19.30 L11.50 15.05 L11.49 13.98 L11.45 12.90 L11.39 11.83 L11.30 10.75 L11.19 9.68 L11.04 8.60 L10.86 7.53 L10.65 6.45 L10.39 5.38 L10.07 4.30 L9.69 3.23 L9.20 2.15 L8.51 1.08 L7.51 0.00 L6.75 0.00 L5.99 0.00 L4.99 1.08 L4.30 2.15 L3.81 3.23 L3.43 4.30 L3.11 5.38 L2.85 6.45 L2.64 7.53 L2.46 8.60 L2.31 9.68 L2.20 10.75 L2.11 11.83 L2.05 12.90 L2.01 13.98 L2.00 15.05 L2.00 19.30 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".450 Bushmaster",
+   "name": ".450 Bushmaster",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "450bm",
+    "450bushmaster"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.01,
+    "base": 12.7,
+    "neck": 12.19,
+    "caseLength": 43.2,
+    "overallLength": 57.4,
+    "bullet": 11.48
+   },
+   "outline": {
+    "width": 12.7,
+    "height": 57.4,
+    "case": "M12.36 57.40 L12.36 56.10 L11.56 56.10 L11.56 54.80 L12.70 54.10 L12.45 14.20 L0.25 14.20 L0.00 54.10 L1.14 54.80 L1.14 56.10 L0.34 56.10 L0.34 57.40 Z",
+    "bullet": "M12.09 14.20 L12.09 9.66 L12.04 8.97 L11.92 8.28 L11.75 7.59 L11.54 6.90 L11.28 6.21 L10.97 5.52 L10.63 4.83 L10.23 4.14 L9.79 3.45 L9.30 2.76 L8.75 2.07 L8.12 1.38 L7.39 0.69 L6.64 0.00 L6.35 0.00 L6.06 0.00 L5.31 0.69 L4.58 1.38 L3.95 2.07 L3.40 2.76 L2.91 3.45 L2.47 4.14 L2.07 4.83 L1.73 5.52 L1.42 6.21 L1.16 6.90 L0.95 7.59 L0.78 8.28 L0.66 8.97 L0.61 9.66 L0.61 14.20 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "6.8 mm Remington SPC",
+   "name": "6.8 mm Remington SPC",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "6.8spc",
+    "68spc"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 10.7,
+    "base": 10.7,
+    "neck": 7.8,
+    "caseLength": 42.8,
+    "overallLength": 57.4,
+    "bullet": 7.0,
+    "shoulder": 10.2
+   },
+   "outline": {
+    "width": 10.7,
+    "height": 57.4,
+    "case": "M10.70 57.40 L10.70 56.10 L9.74 56.10 L9.74 54.80 L10.70 54.10 L10.45 24.30 L9.25 22.38 L9.25 14.60 L1.45 14.60 L1.45 22.38 L0.25 24.30 L0.00 54.10 L0.96 54.80 L0.96 56.10 L0.00 56.10 L0.00 57.40 Z",
+    "bullet": "M8.85 14.60 L8.85 9.93 L8.82 9.22 L8.75 8.51 L8.64 7.80 L8.51 7.09 L8.35 6.38 L8.17 5.67 L7.96 4.96 L7.72 4.25 L7.45 3.55 L7.15 2.84 L6.81 2.13 L6.43 1.42 L5.98 0.71 L5.52 0.00 L5.35 0.00 L5.17 0.00 L4.72 0.71 L4.27 1.42 L3.89 2.13 L3.55 2.84 L3.25 3.55 L2.98 4.25 L2.74 4.96 L2.53 5.67 L2.35 6.38 L2.19 7.09 L2.06 7.80 L1.95 8.51 L1.88 9.22 L1.85 9.93 L1.85 14.60 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".300 Winchester Short Magnum",
+   "name": ".300 Winchester Short Magnum",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "300wsm"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.6,
+    "base": 14.1,
+    "neck": 8.7,
+    "caseLength": 53.3,
+    "overallLength": 72.6,
+    "bullet": 7.8,
+    "shoulder": 13.7
+   },
+   "outline": {
+    "width": 14.1,
+    "height": 72.6,
+    "case": "M13.85 72.60 L13.85 71.30 L12.83 71.30 L12.83 70.00 L14.10 69.30 L13.90 29.90 L11.40 25.90 L11.40 19.30 L2.70 19.30 L2.70 25.90 L0.20 29.90 L0.00 69.30 L1.27 70.00 L1.27 71.30 L0.25 71.30 L0.25 72.60 Z",
+    "bullet": "M10.95 19.30 L10.95 13.12 L10.91 12.19 L10.84 11.25 L10.72 10.31 L10.57 9.37 L10.40 8.44 L10.19 7.50 L9.96 6.56 L9.69 5.62 L9.39 4.69 L9.06 3.75 L8.68 2.81 L8.26 1.87 L7.76 0.94 L7.25 0.00 L7.05 0.00 L6.85 0.00 L6.34 0.94 L5.84 1.87 L5.42 2.81 L5.04 3.75 L4.71 4.69 L4.41 5.62 L4.14 6.56 L3.91 7.50 L3.70 8.44 L3.53 9.37 L3.38 10.31 L3.26 11.25 L3.19 12.19 L3.15 13.12 L3.15 19.30 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".17 Remington",
+   "name": ".17 Remington",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "17rem"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 9.6,
+    "base": 9.6,
+    "neck": 5.1,
+    "caseLength": 45.6,
+    "overallLength": 54.6,
+    "bullet": 4.4,
+    "shoulder": 9.0
+   },
+   "outline": {
+    "width": 9.6,
+    "height": 54.6,
+    "case": "M9.60 54.60 L9.60 53.30 L8.74 53.30 L8.74 52.00 L9.60 51.30 L9.30 15.80 L7.35 12.68 L7.35 9.00 L2.25 9.00 L2.25 12.68 L0.30 15.80 L0.00 51.30 L0.86 52.00 L0.86 53.30 L0.00 53.30 L0.00 54.60 Z",
+    "bullet": "M7.00 9.00 L7.00 6.12 L6.98 5.68 L6.94 5.25 L6.87 4.81 L6.79 4.37 L6.69 3.93 L6.57 3.50 L6.44 3.06 L6.29 2.62 L6.12 2.19 L5.93 1.75 L5.72 1.31 L5.48 0.87 L5.20 0.44 L4.91 0.00 L4.80 0.00 L4.69 0.00 L4.40 0.44 L4.12 0.87 L3.88 1.31 L3.67 1.75 L3.48 2.19 L3.31 2.62 L3.16 3.06 L3.03 3.50 L2.91 3.93 L2.81 4.37 L2.73 4.81 L2.66 5.25 L2.62 5.68 L2.60 6.12 L2.60 9.00 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".218 Bee",
+   "name": ".218 Bee",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "218bee"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 10.4,
+    "base": 8.9,
+    "neck": 6.1,
+    "caseLength": 34.2,
+    "overallLength": 42.7,
+    "bullet": 5.7,
+    "shoulder": 8.4
+   },
+   "outline": {
+    "width": 10.4,
+    "height": 42.7,
+    "case": "M10.40 42.70 L10.40 41.20 L9.65 41.20 L9.40 16.80 L8.25 14.96 L8.25 8.50 L2.15 8.50 L2.15 14.96 L1.00 16.80 L0.75 41.20 L0.00 41.20 L0.00 42.70 Z",
+    "bullet": "M8.05 8.50 L8.05 5.95 L8.04 5.53 L8.02 5.10 L7.98 4.68 L7.93 4.25 L7.86 3.83 L7.77 3.40 L7.67 2.98 L7.54 2.55 L7.38 2.12 L7.19 1.70 L6.96 1.27 L6.77 0.85 L6.77 0.42 L6.77 0.00 L5.20 0.00 L3.63 0.00 L3.63 0.42 L3.63 0.85 L3.44 1.27 L3.21 1.70 L3.02 2.12 L2.86 2.55 L2.73 2.98 L2.63 3.40 L2.54 3.83 L2.47 4.25 L2.42 4.68 L2.38 5.10 L2.36 5.53 L2.35 5.95 L2.35 8.50 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".25-35 Winchester",
+   "name": ".25-35 Winchester",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "25-35",
+    "25-35wcf"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.9,
+    "base": 10.7,
+    "neck": 7.2,
+    "caseLength": 51.9,
+    "overallLength": 65.0,
+    "bullet": 6.6,
+    "shoulder": 9.3
+   },
+   "outline": {
+    "width": 12.9,
+    "height": 65.0,
+    "case": "M12.90 65.00 L12.90 63.50 L11.80 63.50 L11.10 22.40 L10.05 20.72 L10.05 13.10 L2.85 13.10 L2.85 20.72 L1.80 22.40 L1.10 63.50 L0.00 63.50 L0.00 65.00 Z",
+    "bullet": "M9.75 13.10 L9.75 9.17 L9.74 8.52 L9.72 7.86 L9.67 7.20 L9.61 6.55 L9.53 5.90 L9.43 5.24 L9.31 4.59 L9.16 3.93 L8.98 3.27 L8.76 2.62 L8.49 1.97 L8.27 1.31 L8.27 0.66 L8.27 0.00 L6.45 0.00 L4.63 0.00 L4.63 0.66 L4.63 1.31 L4.41 1.97 L4.14 2.62 L3.92 3.27 L3.74 3.93 L3.59 4.59 L3.47 5.24 L3.37 5.90 L3.29 6.55 L3.23 7.20 L3.18 7.86 L3.16 8.52 L3.15 9.17 L3.15 13.10 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".32 Winchester Special",
+   "name": ".32 Winchester Special",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "32winspecial",
+    "32ws"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.9,
+    "base": 10.7,
+    "neck": 8.7,
+    "caseLength": 51.8,
+    "overallLength": 65.2,
+    "bullet": 8.2,
+    "shoulder": 10.2
+   },
+   "outline": {
+    "width": 12.9,
+    "height": 65.2,
+    "case": "M12.90 65.20 L12.90 63.70 L11.80 63.70 L11.55 24.40 L10.80 23.20 L10.80 13.40 L2.10 13.40 L2.10 23.20 L1.35 24.40 L1.10 63.70 L0.00 63.70 L0.00 65.20 Z",
+    "bullet": "M10.55 13.40 L10.55 9.38 L10.54 8.71 L10.51 8.04 L10.45 7.37 L10.38 6.70 L10.28 6.03 L10.15 5.36 L10.00 4.69 L9.81 4.02 L9.59 3.35 L9.32 2.68 L8.99 2.01 L8.71 1.34 L8.71 0.67 L8.71 0.00 L6.45 0.00 L4.20 0.00 L4.20 0.67 L4.20 1.34 L3.91 2.01 L3.58 2.68 L3.31 3.35 L3.09 4.02 L2.90 4.69 L2.75 5.36 L2.62 6.03 L2.52 6.70 L2.45 7.37 L2.39 8.04 L2.36 8.71 L2.35 9.38 L2.35 13.40 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".35 Remington",
+   "name": ".35 Remington",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "35rem"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 11.7,
+    "base": 11.6,
+    "neck": 9.8,
+    "caseLength": 48.8,
+    "overallLength": 64.1,
+    "bullet": 9.1,
+    "shoulder": 10.3
+   },
+   "outline": {
+    "width": 11.7,
+    "height": 64.1,
+    "case": "M11.70 64.10 L11.70 62.80 L10.61 62.80 L10.61 61.50 L11.65 60.80 L11.00 27.30 L10.75 26.50 L10.75 15.30 L0.95 15.30 L0.95 26.50 L0.70 27.30 L0.05 60.80 L1.09 61.50 L1.09 62.80 L0.00 62.80 L0.00 64.10 Z",
+    "bullet": "M10.40 15.30 L10.40 11.93 L10.39 11.08 L10.35 10.23 L10.29 9.38 L10.21 8.52 L10.10 7.67 L9.96 6.82 L9.79 5.97 L9.58 5.11 L9.34 4.26 L9.03 3.41 L8.66 2.56 L8.19 1.70 L7.54 0.85 L6.58 0.00 L5.85 0.00 L5.12 0.00 L4.16 0.85 L3.51 1.70 L3.04 2.56 L2.67 3.41 L2.36 4.26 L2.12 5.11 L1.91 5.97 L1.74 6.82 L1.60 7.67 L1.49 8.52 L1.41 9.38 L1.35 10.23 L1.31 11.08 L1.30 11.93 L1.30 15.30 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".38-55 Winchester",
+   "name": ".38-55 Winchester",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "38-55"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.9,
+    "base": 10.7,
+    "neck": 10.0,
+    "caseLength": 53.0,
+    "overallLength": 64.8,
+    "bullet": 9.6
+   },
+   "outline": {
+    "width": 12.9,
+    "height": 64.8,
+    "case": "M12.90 64.80 L12.90 63.30 L11.80 63.30 L11.45 11.80 L1.45 11.80 L1.10 63.30 L0.00 63.30 L0.00 64.80 Z",
+    "bullet": "M11.25 11.80 L11.25 8.26 L11.24 7.67 L11.20 7.08 L11.14 6.49 L11.05 5.90 L10.93 5.31 L10.79 4.72 L10.61 4.13 L10.39 3.54 L10.13 2.95 L9.81 2.36 L9.42 1.77 L9.09 1.18 L9.09 0.59 L9.09 0.00 L6.45 0.00 L3.81 0.00 L3.81 0.59 L3.81 1.18 L3.48 1.77 L3.09 2.36 L2.77 2.95 L2.51 3.54 L2.29 4.13 L2.11 4.72 L1.97 5.31 L1.85 5.90 L1.76 6.49 L1.70 7.08 L1.66 7.67 L1.65 8.26 L1.65 11.80 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".348 Winchester",
+   "name": ".348 Winchester",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "348win"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 15.5,
+    "base": 14.0,
+    "neck": 9.61,
+    "caseLength": 57.3,
+    "overallLength": 71.0,
+    "bullet": 8.8,
+    "shoulder": 12.3
+   },
+   "outline": {
+    "width": 15.5,
+    "height": 71.0,
+    "case": "M15.50 71.00 L15.50 69.50 L14.75 69.50 L13.90 25.40 L12.55 23.25 L12.55 13.70 L2.95 13.70 L2.95 23.25 L1.60 25.40 L0.75 69.50 L0.00 69.50 L0.00 71.00 Z",
+    "bullet": "M12.15 13.70 L12.15 9.59 L12.14 8.91 L12.10 8.22 L12.05 7.54 L11.97 6.85 L11.86 6.17 L11.73 5.48 L11.56 4.80 L11.36 4.11 L11.12 3.42 L10.83 2.74 L10.47 2.06 L10.17 1.37 L10.17 0.69 L10.17 0.00 L7.75 0.00 L5.33 0.00 L5.33 0.69 L5.33 1.37 L5.03 2.06 L4.67 2.74 L4.38 3.42 L4.14 4.11 L3.94 4.80 L3.77 5.48 L3.64 6.17 L3.53 6.85 L3.45 7.54 L3.40 8.22 L3.36 8.91 L3.35 9.59 L3.35 13.70 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".358 Winchester",
+   "name": ".358 Winchester",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "358win"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.0,
+    "base": 11.9,
+    "neck": 9.9,
+    "caseLength": 51.2,
+    "overallLength": 70.6,
+    "bullet": 9.1,
+    "shoulder": 11.5
+   },
+   "outline": {
+    "width": 12.0,
+    "height": 70.6,
+    "case": "M12.00 70.60 L12.00 69.30 L10.88 69.30 L10.88 68.00 L11.95 67.30 L11.75 31.40 L10.95 30.12 L10.95 19.40 L1.05 19.40 L1.05 30.12 L0.25 31.40 L0.05 67.30 L1.12 68.00 L1.12 69.30 L0.00 69.30 L0.00 70.60 Z",
+    "bullet": "M10.55 19.40 L10.55 15.13 L10.54 14.05 L10.50 12.97 L10.44 11.89 L10.36 10.81 L10.25 9.73 L10.11 8.65 L9.94 7.57 L9.73 6.49 L9.49 5.40 L9.18 4.32 L8.81 3.24 L8.34 2.16 L7.69 1.08 L6.73 0.00 L6.00 0.00 L5.27 0.00 L4.31 1.08 L3.66 2.16 L3.19 3.24 L2.82 4.32 L2.51 5.40 L2.27 6.49 L2.06 7.57 L1.89 8.65 L1.75 9.73 L1.64 10.81 L1.56 11.89 L1.50 12.97 L1.46 14.05 L1.45 15.13 L1.45 19.40 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".264 Winchester Magnum",
+   "name": ".264 Winchester Magnum",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "264winmag"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.1,
+    "neck": 7.6,
+    "caseLength": 64.0,
+    "overallLength": 85.0,
+    "bullet": 6.7,
+    "shoulder": 12.5
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 85.0,
+    "case": "M13.50 85.00 L13.50 83.70 L12.12 83.70 L12.12 82.40 L13.50 81.70 L13.50 78.80 L13.20 78.80 L13.00 30.40 L10.55 26.48 L10.55 21.00 L2.95 21.00 L2.95 26.48 L0.50 30.40 L0.30 78.80 L0.00 78.80 L0.00 81.70 L1.38 82.40 L1.38 83.70 L0.00 83.70 L0.00 85.00 Z",
+    "bullet": "M10.10 21.00 L10.10 14.28 L10.07 13.26 L10.00 12.24 L9.90 11.22 L9.78 10.20 L9.63 9.18 L9.45 8.16 L9.25 7.14 L9.02 6.12 L8.76 5.10 L8.47 4.08 L8.15 3.06 L7.79 2.04 L7.36 1.02 L6.92 0.00 L6.75 0.00 L6.58 0.00 L6.14 1.02 L5.71 2.04 L5.35 3.06 L5.03 4.08 L4.74 5.10 L4.48 6.12 L4.25 7.14 L4.05 8.16 L3.87 9.18 L3.72 10.20 L3.60 11.22 L3.50 12.24 L3.43 13.26 L3.40 14.28 L3.40 21.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".300 Weatherby Magnum",
+   "name": ".300 Weatherby Magnum",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "300wby",
+    "300weatherby"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.0,
+    "neck": 8.5,
+    "caseLength": 71.8,
+    "overallLength": 90.5,
+    "bullet": 7.8,
+    "shoulder": 12.5
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 90.5,
+    "case": "M13.50 90.50 L13.50 89.20 L12.08 89.20 L12.08 87.90 L13.50 87.20 L13.50 84.30 L13.15 84.30 L13.00 29.30 L11.00 26.10 L11.00 18.70 L2.50 18.70 L2.50 26.10 L0.50 29.30 L0.35 84.30 L0.00 84.30 L0.00 87.20 L1.42 87.90 L1.42 89.20 L0.00 89.20 L0.00 90.50 Z",
+    "bullet": "M10.65 18.70 L10.65 12.72 L10.61 11.81 L10.54 10.90 L10.42 9.99 L10.27 9.08 L10.10 8.17 L9.89 7.27 L9.66 6.36 L9.39 5.45 L9.09 4.54 L8.76 3.63 L8.38 2.72 L7.96 1.82 L7.46 0.91 L6.95 0.00 L6.75 0.00 L6.55 0.00 L6.04 0.91 L5.54 1.82 L5.12 2.72 L4.74 3.63 L4.41 4.54 L4.11 5.45 L3.84 6.36 L3.61 7.27 L3.40 8.17 L3.23 9.08 L3.08 9.99 L2.96 10.90 L2.89 11.81 L2.85 12.72 L2.85 18.70 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".416 Remington Magnum",
+   "name": ".416 Remington Magnum",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "416rem"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.0,
+    "neck": 11.4,
+    "caseLength": 72.4,
+    "overallLength": 91.4,
+    "bullet": 10.6,
+    "shoulder": 12.4
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 91.4,
+    "case": "M13.50 91.40 L13.50 90.10 L12.08 90.10 L12.08 88.80 L13.50 88.10 L13.50 85.20 L13.15 85.20 L12.95 32.70 L12.45 31.90 L12.45 19.00 L1.05 19.00 L1.05 31.90 L0.55 32.70 L0.35 85.20 L0.00 85.20 L0.00 88.10 L1.42 88.80 L1.42 90.10 L0.00 90.10 L0.00 91.40 Z",
+    "bullet": "M12.05 19.00 L12.05 14.82 L12.04 13.76 L12.00 12.70 L11.93 11.64 L11.83 10.59 L11.70 9.53 L11.54 8.47 L11.34 7.41 L11.10 6.35 L10.81 5.29 L10.46 4.23 L10.03 3.18 L9.48 2.12 L8.72 1.06 L7.60 0.00 L6.75 0.00 L5.90 0.00 L4.78 1.06 L4.02 2.12 L3.47 3.18 L3.04 4.23 L2.69 5.29 L2.40 6.35 L2.16 7.41 L1.96 8.47 L1.80 9.53 L1.67 10.59 L1.57 11.64 L1.50 12.70 L1.46 13.76 L1.45 14.82 L1.45 19.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".470 Nitro Express",
+   "name": ".470 Nitro Express",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "470ne"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 16.6,
+    "base": 14.6,
+    "neck": 12.8,
+    "caseLength": 83.0,
+    "overallLength": 101.0,
+    "bullet": 12.0,
+    "shoulder": 13.5
+   },
+   "outline": {
+    "width": 16.6,
+    "height": 101.0,
+    "case": "M16.60 101.00 L16.60 99.50 L15.60 99.50 L15.05 33.20 L14.70 32.40 L14.70 18.00 L1.90 18.00 L1.90 32.40 L1.55 33.20 L1.00 99.50 L0.00 99.50 L0.00 101.00 Z",
+    "bullet": "M14.30 18.00 L14.30 14.04 L14.28 13.04 L14.24 12.03 L14.16 11.03 L14.05 10.03 L13.90 9.03 L13.72 8.02 L13.50 7.02 L13.22 6.02 L12.90 5.01 L12.50 4.01 L12.01 3.01 L11.39 2.01 L10.53 1.00 L9.26 0.00 L8.30 0.00 L7.34 0.00 L6.07 1.00 L5.21 2.01 L4.59 3.01 L4.10 4.01 L3.70 5.01 L3.38 6.02 L3.10 7.02 L2.88 8.02 L2.70 9.03 L2.55 10.03 L2.44 11.03 L2.36 12.03 L2.32 13.04 L2.30 14.04 L2.30 18.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".220 Swift",
+   "name": ".220 Swift",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "220swift"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.0,
+    "base": 11.3,
+    "neck": 6.6,
+    "caseLength": 56.0,
+    "overallLength": 68.1,
+    "bullet": 5.7,
+    "shoulder": 10.2
+   },
+   "outline": {
+    "width": 12.0,
+    "height": 68.1,
+    "case": "M12.00 68.10 L12.00 66.80 L10.63 66.80 L10.63 65.50 L11.65 64.80 L11.10 20.40 L9.30 17.52 L9.30 12.10 L2.70 12.10 L2.70 17.52 L0.90 20.40 L0.35 64.80 L1.37 65.50 L1.37 66.80 L0.00 66.80 L0.00 68.10 Z",
+    "bullet": "M8.85 12.10 L8.85 8.23 L8.82 7.64 L8.77 7.05 L8.68 6.46 L8.58 5.88 L8.45 5.29 L8.30 4.70 L8.12 4.11 L7.93 3.53 L7.71 2.94 L7.47 2.35 L7.19 1.76 L6.88 1.18 L6.52 0.59 L6.14 0.00 L6.00 0.00 L5.86 0.00 L5.48 0.59 L5.12 1.18 L4.81 1.76 L4.53 2.35 L4.29 2.94 L4.07 3.53 L3.88 4.11 L3.70 4.70 L3.55 5.29 L3.42 5.88 L3.32 6.46 L3.23 7.05 L3.18 7.64 L3.15 8.23 L3.15 12.10 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".25-20 Winchester",
+   "name": ".25-20 Winchester",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "25-20",
+    "25wcf"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 10.4,
+    "base": 8.9,
+    "neck": 7.0,
+    "caseLength": 33.8,
+    "overallLength": 40.4,
+    "bullet": 6.6,
+    "shoulder": 8.5
+   },
+   "outline": {
+    "width": 10.4,
+    "height": 40.4,
+    "case": "M10.40 40.40 L10.40 38.90 L9.65 38.90 L9.45 15.90 L8.70 14.70 L8.70 6.60 L1.70 6.60 L1.70 14.70 L0.95 15.90 L0.75 38.90 L0.00 38.90 L0.00 40.40 Z",
+    "bullet": "M8.50 6.60 L8.50 4.62 L8.49 4.29 L8.47 3.96 L8.42 3.63 L8.36 3.30 L8.28 2.97 L8.18 2.64 L8.06 2.31 L7.91 1.98 L7.73 1.65 L7.51 1.32 L7.24 0.99 L7.02 0.66 L7.02 0.33 L7.02 0.00 L5.20 0.00 L3.39 0.00 L3.39 0.33 L3.39 0.66 L3.16 0.99 L2.89 1.32 L2.67 1.65 L2.49 1.98 L2.34 2.31 L2.22 2.64 L2.12 2.97 L2.04 3.30 L1.98 3.63 L1.93 3.96 L1.91 4.29 L1.90 4.62 L1.90 6.60 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".250 Savage",
+   "name": ".250 Savage",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "250savage",
+    "250-3000"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.01,
+    "base": 11.86,
+    "neck": 7.25,
+    "caseLength": 48.56,
+    "overallLength": 63.88,
+    "bullet": 6.55,
+    "shoulder": 10.25
+   },
+   "outline": {
+    "width": 12.01,
+    "height": 63.88,
+    "case": "M12.01 63.88 L12.01 62.58 L10.87 62.58 L10.87 61.28 L11.93 60.58 L11.13 24.48 L9.63 22.08 L9.63 15.32 L2.38 15.32 L2.38 22.08 L0.88 24.48 L0.08 60.58 L1.14 61.28 L1.14 62.58 L0.00 62.58 L0.00 63.88 Z",
+    "bullet": "M9.28 15.32 L9.28 10.42 L9.25 9.67 L9.18 8.93 L9.09 8.19 L8.96 7.44 L8.82 6.70 L8.64 5.95 L8.45 5.21 L8.22 4.46 L7.97 3.72 L7.69 2.98 L7.37 2.23 L7.02 1.49 L6.60 0.74 L6.17 0.00 L6.00 0.00 L5.84 0.00 L5.41 0.74 L4.99 1.49 L4.64 2.23 L4.32 2.98 L4.04 3.72 L3.79 4.46 L3.56 5.21 L3.37 5.95 L3.19 6.70 L3.05 7.44 L2.92 8.19 L2.83 8.93 L2.76 9.67 L2.73 10.42 L2.73 15.32 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".257 Weatherby Magnum",
+   "name": ".257 Weatherby Magnum",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "257wby"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.0,
+    "neck": 7.2,
+    "caseLength": 64.6,
+    "overallLength": 81.5,
+    "bullet": 6.5,
+    "shoulder": 12.5
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 81.5,
+    "case": "M13.50 81.50 L13.50 80.20 L12.08 80.20 L12.08 78.90 L13.50 78.20 L13.50 75.30 L13.15 75.30 L13.00 26.10 L10.35 21.86 L10.35 16.90 L3.15 16.90 L3.15 21.86 L0.50 26.10 L0.35 75.30 L0.00 75.30 L0.00 78.20 L1.42 78.90 L1.42 80.20 L0.00 80.20 L0.00 81.50 Z",
+    "bullet": "M10.00 16.90 L10.00 11.49 L9.97 10.67 L9.90 9.85 L9.81 9.03 L9.69 8.21 L9.54 7.39 L9.37 6.57 L9.17 5.75 L8.95 4.93 L8.70 4.10 L8.42 3.28 L8.11 2.46 L7.75 1.64 L7.34 0.82 L6.91 0.00 L6.75 0.00 L6.59 0.00 L6.16 0.82 L5.75 1.64 L5.39 2.46 L5.08 3.28 L4.80 4.10 L4.55 4.93 L4.33 5.75 L4.13 6.57 L3.96 7.39 L3.81 8.21 L3.69 9.03 L3.60 9.85 L3.53 10.67 L3.50 11.49 L3.50 16.90 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".270 Weatherby Magnum",
+   "name": ".270 Weatherby Magnum",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "270wby"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.0,
+    "neck": 7.7,
+    "caseLength": 65.0,
+    "overallLength": 83.0,
+    "bullet": 7.0,
+    "shoulder": 12.5
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 83.0,
+    "case": "M13.50 83.00 L13.50 81.70 L12.08 81.70 L12.08 80.40 L13.50 79.70 L13.50 76.80 L13.15 76.80 L13.00 27.70 L10.60 23.86 L10.60 18.00 L2.90 18.00 L2.90 23.86 L0.50 27.70 L0.35 76.80 L0.00 76.80 L0.00 79.70 L1.42 80.40 L1.42 81.70 L0.00 81.70 L0.00 83.00 Z",
+    "bullet": "M10.25 18.00 L10.25 12.24 L10.22 11.37 L10.15 10.49 L10.04 9.62 L9.91 8.74 L9.75 7.87 L9.57 6.99 L9.36 6.12 L9.12 5.25 L8.85 4.37 L8.55 3.50 L8.21 2.62 L7.83 1.75 L7.38 0.87 L6.92 0.00 L6.75 0.00 L6.58 0.00 L6.12 0.87 L5.67 1.75 L5.29 2.62 L4.95 3.50 L4.65 4.37 L4.38 5.25 L4.14 6.12 L3.93 6.99 L3.75 7.87 L3.59 8.74 L3.46 9.62 L3.35 10.49 L3.28 11.37 L3.25 12.24 L3.25 18.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "7 mm Weatherby Magnum",
+   "name": "7 mm Weatherby Magnum",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "7mmwby"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.0,
+    "neck": 7.9,
+    "caseLength": 64.7,
+    "overallLength": 83.8,
+    "bullet": 7.2,
+    "shoulder": 12.4
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 83.8,
+    "case": "M13.50 83.80 L13.50 82.50 L12.08 82.50 L12.08 81.20 L13.50 80.50 L13.50 77.60 L13.15 77.60 L12.95 29.00 L10.70 25.40 L10.70 19.10 L2.80 19.10 L2.80 25.40 L0.55 29.00 L0.35 77.60 L0.00 77.60 L0.00 80.50 L1.42 81.20 L1.42 82.50 L0.00 82.50 L0.00 83.80 Z",
+    "bullet": "M10.35 19.10 L10.35 12.99 L10.32 12.06 L10.24 11.13 L10.14 10.20 L10.00 9.28 L9.84 8.35 L9.65 7.42 L9.43 6.49 L9.19 5.57 L8.91 4.64 L8.60 3.71 L8.26 2.78 L7.86 1.86 L7.40 0.93 L6.93 0.00 L6.75 0.00 L6.57 0.00 L6.10 0.93 L5.64 1.86 L5.24 2.78 L4.90 3.71 L4.59 4.64 L4.31 5.57 L4.07 6.49 L3.85 7.42 L3.66 8.35 L3.50 9.28 L3.36 10.20 L3.26 11.13 L3.18 12.06 L3.15 12.99 L3.15 19.10 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".340 Weatherby Magnum",
+   "name": ".340 Weatherby Magnum",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "340wby"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.0,
+    "neck": 9.3,
+    "caseLength": 72.0,
+    "overallLength": 91.0,
+    "bullet": 8.6,
+    "shoulder": 12.6
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 91.0,
+    "case": "M13.50 91.00 L13.50 89.70 L12.08 89.70 L12.08 88.40 L13.50 87.70 L13.50 84.80 L13.15 84.80 L13.05 30.50 L11.40 27.86 L11.40 19.00 L2.10 19.00 L2.10 27.86 L0.45 30.50 L0.35 84.80 L0.00 84.80 L0.00 87.70 L1.42 88.40 L1.42 89.70 L0.00 89.70 L0.00 91.00 Z",
+    "bullet": "M11.05 19.00 L11.05 12.92 L11.01 12.00 L10.92 11.07 L10.80 10.15 L10.64 9.23 L10.44 8.31 L10.21 7.38 L9.95 6.46 L9.66 5.54 L9.33 4.61 L8.96 3.69 L8.55 2.77 L8.08 1.85 L7.53 0.92 L6.96 0.00 L6.75 0.00 L6.54 0.00 L5.97 0.92 L5.42 1.85 L4.95 2.77 L4.54 3.69 L4.17 4.61 L3.84 5.54 L3.55 6.46 L3.29 7.38 L3.06 8.31 L2.86 9.23 L2.70 10.15 L2.58 11.07 L2.49 12.00 L2.45 12.92 L2.45 19.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".284 Winchester",
+   "name": ".284 Winchester",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "284win"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.01,
+    "base": 12.72,
+    "neck": 8.13,
+    "caseLength": 55.12,
+    "overallLength": 71.12,
+    "bullet": 7.21,
+    "shoulder": 12.06
+   },
+   "outline": {
+    "width": 12.72,
+    "height": 71.12,
+    "case": "M12.37 71.12 L12.37 69.82 L11.58 69.82 L11.58 68.52 L12.72 67.82 L12.39 25.92 L10.43 22.78 L10.43 16.00 L2.29 16.00 L2.29 22.78 L0.33 25.92 L0.00 67.82 L1.14 68.52 L1.14 69.82 L0.36 69.82 L0.36 71.12 Z",
+    "bullet": "M9.96 16.00 L9.96 10.88 L9.93 10.10 L9.86 9.33 L9.75 8.55 L9.62 7.77 L9.45 6.99 L9.26 6.22 L9.05 5.44 L8.80 4.66 L8.52 3.89 L8.21 3.11 L7.87 2.33 L7.47 1.55 L7.01 0.78 L6.54 0.00 L6.36 0.00 L6.18 0.00 L5.71 0.78 L5.25 1.55 L4.85 2.33 L4.51 3.11 L4.20 3.89 L3.92 4.66 L3.67 5.44 L3.46 6.22 L3.27 6.99 L3.10 7.77 L2.97 8.55 L2.86 9.33 L2.79 10.10 L2.76 10.88 L2.76 16.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".300 Savage",
+   "name": ".300 Savage",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "300savage"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.0,
+    "base": 12.0,
+    "neck": 8.6,
+    "caseLength": 47.5,
+    "overallLength": 66.0,
+    "bullet": 7.8,
+    "shoulder": 11.3
+   },
+   "outline": {
+    "width": 12.0,
+    "height": 66.0,
+    "case": "M12.00 66.00 L12.00 64.70 L10.92 64.70 L10.92 63.40 L12.00 62.70 L11.65 29.10 L10.30 26.94 L10.30 18.50 L1.70 18.50 L1.70 26.94 L0.35 29.10 L0.00 62.70 L1.08 63.40 L1.08 64.70 L0.00 64.70 L0.00 66.00 Z",
+    "bullet": "M9.90 18.50 L9.90 12.58 L9.86 11.68 L9.79 10.78 L9.67 9.88 L9.52 8.99 L9.35 8.09 L9.14 7.19 L8.91 6.29 L8.64 5.39 L8.34 4.49 L8.01 3.59 L7.63 2.70 L7.21 1.80 L6.71 0.90 L6.20 0.00 L6.00 0.00 L5.80 0.00 L5.29 0.90 L4.79 1.80 L4.37 2.70 L3.99 3.59 L3.66 4.49 L3.36 5.39 L3.09 6.29 L2.86 7.19 L2.65 8.09 L2.48 8.99 L2.33 9.88 L2.21 10.78 L2.14 11.68 L2.10 12.58 L2.10 18.50 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".300 Remington Ultra Magnum",
+   "name": ".300 Remington Ultra Magnum",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "300rum"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.6,
+    "base": 14.0,
+    "neck": 8.7,
+    "caseLength": 72.4,
+    "overallLength": 91.4,
+    "bullet": 7.8,
+    "shoulder": 13.3
+   },
+   "outline": {
+    "width": 14.0,
+    "height": 91.4,
+    "case": "M13.80 91.40 L13.80 90.10 L12.74 90.10 L12.74 88.80 L14.00 88.10 L13.65 29.60 L11.35 25.92 L11.35 19.00 L2.65 19.00 L2.65 25.92 L0.35 29.60 L0.00 88.10 L1.26 88.80 L1.26 90.10 L0.20 90.10 L0.20 91.40 Z",
+    "bullet": "M10.90 19.00 L10.90 12.92 L10.86 12.00 L10.79 11.07 L10.67 10.15 L10.52 9.23 L10.35 8.31 L10.14 7.38 L9.91 6.46 L9.64 5.54 L9.34 4.61 L9.01 3.69 L8.63 2.77 L8.21 1.85 L7.71 0.92 L7.20 0.00 L7.00 0.00 L6.80 0.00 L6.29 0.92 L5.79 1.85 L5.37 2.77 L4.99 3.69 L4.66 4.61 L4.36 5.54 L4.09 6.46 L3.86 7.38 L3.65 8.31 L3.48 9.23 L3.33 10.15 L3.21 11.07 L3.14 12.00 L3.10 12.92 L3.10 19.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".270 Winchester Short Magnum",
+   "name": ".270 Winchester Short Magnum",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "270wsm"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.6,
+    "base": 14.1,
+    "neck": 7.98,
+    "caseLength": 53.3,
+    "overallLength": 72.6,
+    "bullet": 7.0,
+    "shoulder": 13.67
+   },
+   "outline": {
+    "width": 14.1,
+    "height": 72.6,
+    "case": "M13.85 72.60 L13.85 71.30 L12.83 71.30 L12.83 70.00 L14.10 69.30 L13.88 29.00 L11.04 24.45 L11.04 19.30 L3.06 19.30 L3.06 24.45 L0.21 29.00 L0.00 69.30 L1.27 70.00 L1.27 71.30 L0.25 71.30 L0.25 72.60 Z",
+    "bullet": "M10.55 19.30 L10.55 13.12 L10.52 12.19 L10.45 11.25 L10.34 10.31 L10.21 9.37 L10.05 8.44 L9.87 7.50 L9.66 6.56 L9.42 5.62 L9.15 4.69 L8.85 3.75 L8.51 2.81 L8.13 1.87 L7.68 0.94 L7.22 0.00 L7.05 0.00 L6.88 0.00 L6.42 0.94 L5.97 1.87 L5.59 2.81 L5.25 3.75 L4.95 4.69 L4.68 5.62 L4.44 6.56 L4.23 7.50 L4.05 8.44 L3.89 9.37 L3.76 10.31 L3.65 11.25 L3.58 12.19 L3.55 13.12 L3.55 19.30 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "7 mm Winchester Short Magnum",
+   "name": "7 mm Winchester Short Magnum",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "7mmwsm",
+    "7wsm"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.6,
+    "base": 14.1,
+    "neck": 8.2,
+    "caseLength": 53.3,
+    "overallLength": 72.6,
+    "bullet": 7.2,
+    "shoulder": 13.7
+   },
+   "outline": {
+    "width": 14.1,
+    "height": 72.6,
+    "case": "M13.85 72.60 L13.85 71.30 L12.83 71.30 L12.83 70.00 L14.10 69.30 L13.90 29.20 L11.15 24.80 L11.15 19.30 L2.95 19.30 L2.95 24.80 L0.20 29.20 L0.00 69.30 L1.27 70.00 L1.27 71.30 L0.25 71.30 L0.25 72.60 Z",
+    "bullet": "M10.65 19.30 L10.65 13.12 L10.62 12.19 L10.54 11.25 L10.44 10.31 L10.30 9.37 L10.14 8.44 L9.95 7.50 L9.73 6.56 L9.49 5.62 L9.21 4.69 L8.90 3.75 L8.56 2.81 L8.16 1.87 L7.70 0.94 L7.23 0.00 L7.05 0.00 L6.87 0.00 L6.40 0.94 L5.94 1.87 L5.54 2.81 L5.20 3.75 L4.89 4.69 L4.61 5.62 L4.37 6.56 L4.15 7.50 L3.96 8.44 L3.80 9.37 L3.66 10.31 L3.56 11.25 L3.48 12.19 L3.45 13.12 L3.45 19.30 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".338 Federal",
+   "name": ".338 Federal",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "338fed"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.0,
+    "base": 11.9,
+    "neck": 9.4,
+    "caseLength": 51.0,
+    "overallLength": 70.0,
+    "bullet": 8.6,
+    "shoulder": 11.5
+   },
+   "outline": {
+    "width": 12.0,
+    "height": 70.0,
+    "case": "M12.00 70.00 L12.00 68.70 L10.88 68.70 L10.88 67.40 L11.95 66.70 L11.75 30.50 L10.70 28.82 L10.70 19.00 L1.30 19.00 L1.30 28.82 L0.25 30.50 L0.05 66.70 L1.12 67.40 L1.12 68.70 L0.00 68.70 L0.00 70.00 Z",
+    "bullet": "M10.30 19.00 L10.30 12.92 L10.26 12.00 L10.17 11.07 L10.05 10.15 L9.89 9.23 L9.69 8.31 L9.46 7.38 L9.20 6.46 L8.91 5.54 L8.58 4.61 L8.21 3.69 L7.80 2.77 L7.33 1.85 L6.78 0.92 L6.21 0.00 L6.00 0.00 L5.79 0.00 L5.22 0.92 L4.67 1.85 L4.20 2.77 L3.79 3.69 L3.42 4.61 L3.09 5.54 L2.80 6.46 L2.54 7.38 L2.31 8.31 L2.11 9.23 L1.95 10.15 L1.83 11.07 L1.74 12.00 L1.70 12.92 L1.70 19.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "8 mm Remington Magnum",
+   "name": "8 mm Remington Magnum",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "8mmremmag"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.0,
+    "neck": 9.0,
+    "caseLength": 72.4,
+    "overallLength": 91.4,
+    "bullet": 8.2,
+    "shoulder": 12.4
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 91.4,
+    "case": "M13.50 91.40 L13.50 90.10 L12.08 90.10 L12.08 88.80 L13.50 88.10 L13.50 85.20 L13.15 85.20 L12.95 30.00 L11.25 27.28 L11.25 19.00 L2.25 19.00 L2.25 27.28 L0.55 30.00 L0.35 85.20 L0.00 85.20 L0.00 88.10 L1.42 88.80 L1.42 90.10 L0.00 90.10 L0.00 91.40 Z",
+    "bullet": "M10.85 19.00 L10.85 12.92 L10.81 12.00 L10.73 11.07 L10.61 10.15 L10.46 9.23 L10.27 8.31 L10.05 7.38 L9.80 6.46 L9.52 5.54 L9.21 4.61 L8.86 3.69 L8.46 2.77 L8.02 1.85 L7.49 0.92 L6.96 0.00 L6.75 0.00 L6.54 0.00 L6.01 0.92 L5.48 1.85 L5.04 2.77 L4.64 3.69 L4.29 4.61 L3.98 5.54 L3.70 6.46 L3.45 7.38 L3.23 8.31 L3.04 9.23 L2.89 10.15 L2.77 11.07 L2.69 12.00 L2.65 12.92 L2.65 19.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".376 Steyr",
+   "name": ".376 Steyr",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "376steyr"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.55,
+    "base": 12.73,
+    "neck": 10.11,
+    "caseLength": 59.69,
+    "overallLength": 79.0,
+    "bullet": 9.5,
+    "shoulder": 12.02
+   },
+   "outline": {
+    "width": 12.73,
+    "height": 79.0,
+    "case": "M12.64 79.00 L12.64 77.70 L11.58 77.70 L11.58 76.40 L12.73 75.70 L12.38 31.80 L11.42 30.27 L11.42 19.31 L1.31 19.31 L1.31 30.27 L0.36 31.80 L0.00 75.70 L1.15 76.40 L1.15 77.70 L0.09 77.70 L0.09 79.00 Z",
+    "bullet": "M11.12 19.31 L11.12 15.06 L11.10 13.99 L11.07 12.91 L11.00 11.83 L10.92 10.76 L10.80 9.68 L10.66 8.61 L10.48 7.53 L10.26 6.46 L10.00 5.38 L9.69 4.30 L9.30 3.23 L8.81 2.15 L8.13 1.08 L7.12 0.00 L6.37 0.00 L5.61 0.00 L4.60 1.08 L3.92 2.15 L3.43 3.23 L3.04 4.30 L2.73 5.38 L2.47 6.46 L2.25 7.53 L2.07 8.61 L1.93 9.68 L1.81 10.76 L1.73 11.83 L1.66 12.91 L1.63 13.99 L1.62 15.06 L1.62 19.31 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "6.5 mm Grendel",
+   "name": "6.5 mm Grendel",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "6.5grendel",
+    "grendel"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 11.2,
+    "base": 11.15,
+    "neck": 7.44,
+    "caseLength": 38.7,
+    "overallLength": 57.5,
+    "bullet": 6.71,
+    "shoulder": 10.87
+   },
+   "outline": {
+    "width": 11.2,
+    "height": 57.5,
+    "case": "M11.20 57.50 L11.20 56.20 L10.17 56.20 L10.17 54.90 L11.18 54.20 L11.04 28.20 L9.32 25.46 L9.32 18.80 L1.88 18.80 L1.88 25.46 L0.17 28.20 L0.02 54.20 L1.03 54.90 L1.03 56.20 L0.00 56.20 L0.00 57.50 Z",
+    "bullet": "M8.96 18.80 L8.96 12.78 L8.92 11.87 L8.86 10.96 L8.76 10.04 L8.63 9.13 L8.48 8.22 L8.30 7.31 L8.10 6.39 L7.87 5.48 L7.61 4.57 L7.33 3.65 L7.00 2.74 L6.64 1.83 L6.21 0.91 L5.77 0.00 L5.60 0.00 L5.43 0.00 L4.99 0.91 L4.56 1.83 L4.20 2.74 L3.87 3.65 L3.59 4.57 L3.33 5.48 L3.10 6.39 L2.90 7.31 L2.72 8.22 L2.57 9.13 L2.44 10.04 L2.34 10.96 L2.28 11.87 L2.24 12.78 L2.24 18.80 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "6 mm Remington",
+   "name": "6 mm Remington",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "6mmrem",
+    "244rem"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.0,
+    "base": 12.0,
+    "neck": 7.0,
+    "caseLength": 56.7,
+    "overallLength": 71.8,
+    "bullet": 6.18,
+    "shoulder": 10.9
+   },
+   "outline": {
+    "width": 12.0,
+    "height": 71.8,
+    "case": "M12.00 71.80 L12.00 70.50 L10.92 70.50 L10.92 69.20 L12.00 68.50 L11.45 23.90 L9.50 20.78 L9.50 15.10 L2.50 15.10 L2.50 20.78 L0.55 23.90 L0.00 68.50 L1.08 69.20 L1.08 70.50 L0.00 70.50 L0.00 71.80 Z",
+    "bullet": "M9.09 15.10 L9.09 10.27 L9.06 9.53 L9.00 8.80 L8.91 8.07 L8.79 7.33 L8.65 6.60 L8.49 5.87 L8.30 5.13 L8.09 4.40 L7.85 3.67 L7.59 2.93 L7.29 2.20 L6.96 1.47 L6.56 0.73 L6.15 0.00 L6.00 0.00 L5.85 0.00 L5.44 0.73 L5.04 1.47 L4.71 2.20 L4.41 2.93 L4.15 3.67 L3.91 4.40 L3.70 5.13 L3.51 5.87 L3.35 6.60 L3.21 7.33 L3.09 8.07 L3.00 8.80 L2.94 9.53 L2.91 10.27 L2.91 15.10 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": "7-30 Waters",
+   "name": "7-30 Waters",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "7-30waters"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.9,
+    "base": 10.7,
+    "neck": 7.8,
+    "caseLength": 52.0,
+    "overallLength": 64.0,
+    "bullet": 7.2,
+    "shoulder": 10.2
+   },
+   "outline": {
+    "width": 12.9,
+    "height": 64.0,
+    "case": "M12.90 64.00 L12.90 62.50 L11.80 62.50 L11.55 21.90 L10.35 19.98 L10.35 12.00 L2.55 12.00 L2.55 19.98 L1.35 21.90 L1.10 62.50 L0.00 62.50 L0.00 64.00 Z",
+    "bullet": "M10.05 12.00 L10.05 8.40 L10.04 7.80 L10.01 7.20 L9.97 6.60 L9.90 6.00 L9.81 5.40 L9.70 4.80 L9.57 4.20 L9.40 3.60 L9.21 3.00 L8.97 2.40 L8.68 1.80 L8.43 1.20 L8.43 0.60 L8.43 0.00 L6.45 0.00 L4.47 0.00 L4.47 0.60 L4.47 1.20 L4.22 1.80 L3.93 2.40 L3.69 3.00 L3.50 3.60 L3.33 4.20 L3.20 4.80 L3.09 5.40 L3.00 6.00 L2.93 6.60 L2.89 7.20 L2.86 7.80 L2.85 8.40 L2.85 12.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".17 Hornet",
+   "name": ".17 Hornet",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "17hornet"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 8.9,
+    "base": 7.6,
+    "neck": 4.9,
+    "caseLength": 34.3,
+    "overallLength": 43.8,
+    "bullet": 4.4,
+    "shoulder": 7.3
+   },
+   "outline": {
+    "width": 8.9,
+    "height": 43.8,
+    "case": "M8.90 43.80 L8.90 42.30 L8.25 42.30 L8.10 16.30 L6.90 14.38 L6.90 9.50 L2.00 9.50 L2.00 14.38 L0.80 16.30 L0.65 42.30 L0.00 42.30 L0.00 43.80 Z",
+    "bullet": "M6.65 9.50 L6.65 6.46 L6.63 6.00 L6.59 5.54 L6.52 5.08 L6.44 4.61 L6.34 4.15 L6.22 3.69 L6.09 3.23 L5.94 2.77 L5.77 2.31 L5.58 1.85 L5.37 1.38 L5.13 0.92 L4.85 0.46 L4.56 0.00 L4.45 0.00 L4.34 0.00 L4.05 0.46 L3.77 0.92 L3.53 1.38 L3.32 1.85 L3.13 2.31 L2.96 2.77 L2.81 3.23 L2.68 3.69 L2.56 4.15 L2.46 4.61 L2.38 5.08 L2.31 5.54 L2.27 6.00 L2.25 6.46 L2.25 9.50 Z"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".375 Winchester",
+   "name": ".375 Winchester",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "375win"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 12.9,
+    "base": 10.7,
+    "neck": 10.2,
+    "caseLength": 51.3,
+    "overallLength": 65.0,
+    "bullet": 9.5
+   },
+   "outline": {
+    "width": 12.9,
+    "height": 65.0,
+    "case": "M12.90 65.00 L12.90 63.50 L11.80 63.50 L11.55 13.70 L1.35 13.70 L1.10 63.50 L0.00 63.50 L0.00 65.00 Z",
+    "bullet": "M11.20 13.70 L11.20 9.59 L11.19 8.91 L11.15 8.22 L11.09 7.54 L11.00 6.85 L10.89 6.16 L10.74 5.48 L10.56 4.80 L10.35 4.11 L10.09 3.42 L9.77 2.74 L9.39 2.05 L9.06 1.37 L9.06 0.69 L9.06 0.00 L6.45 0.00 L3.84 0.00 L3.84 0.69 L3.84 1.37 L3.51 2.05 L3.13 2.74 L2.81 3.42 L2.55 4.11 L2.34 4.80 L2.16 5.48 L2.01 6.16 L1.90 6.85 L1.81 7.54 L1.75 8.22 L1.71 8.91 L1.70 9.59 L1.70 13.70 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".405 Winchester",
+   "name": ".405 Winchester",
+   "category": "Langwaffe",
+   "kind": "rimmed",
+   "aliases": [
+    "405win"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.8,
+    "base": 11.7,
+    "neck": 11.1,
+    "caseLength": 65.6,
+    "overallLength": 80.6,
+    "bullet": 10.45
+   },
+   "outline": {
+    "width": 13.8,
+    "height": 80.6,
+    "case": "M13.80 80.60 L13.80 79.10 L12.75 79.10 L12.45 15.00 L1.35 15.00 L1.05 79.10 L0.00 79.10 L0.00 80.60 Z",
+    "bullet": "M12.12 15.00 L12.12 10.50 L12.11 9.75 L12.07 9.00 L12.00 8.25 L11.91 7.50 L11.78 6.75 L11.62 6.00 L11.42 5.25 L11.19 4.50 L10.90 3.75 L10.56 3.00 L10.13 2.25 L9.77 1.50 L9.77 0.75 L9.77 0.00 L6.90 0.00 L4.03 0.00 L4.03 0.75 L4.03 1.50 L3.67 2.25 L3.24 3.00 L2.90 3.75 L2.61 4.50 L2.38 5.25 L2.18 6.00 L2.02 6.75 L1.89 7.50 L1.80 8.25 L1.73 9.00 L1.69 9.75 L1.68 10.50 L1.68 15.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".450 Marlin",
+   "name": ".450 Marlin",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "450marlin"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.4,
+    "base": 13.01,
+    "neck": 12.2,
+    "caseLength": 53.0,
+    "overallLength": 65.0,
+    "bullet": 11.6
+   },
+   "outline": {
+    "width": 13.4,
+    "height": 65.0,
+    "case": "M13.40 65.00 L13.40 63.70 L12.03 63.70 L12.03 62.40 L13.40 61.70 L13.40 58.80 L13.11 58.80 L12.80 12.00 L0.60 12.00 L0.29 58.80 L0.00 58.80 L0.00 61.70 L1.37 62.40 L1.37 63.70 L0.00 63.70 L0.00 65.00 Z",
+    "bullet": "M12.50 12.00 L12.50 8.40 L12.49 7.80 L12.44 7.20 L12.37 6.60 L12.26 6.00 L12.12 5.40 L11.94 4.80 L11.72 4.20 L11.46 3.60 L11.14 3.00 L10.76 2.40 L10.29 1.80 L9.89 1.20 L9.89 0.60 L9.89 0.00 L6.70 0.00 L3.51 0.00 L3.51 0.60 L3.51 1.20 L3.11 1.80 L2.64 2.40 L2.26 3.00 L1.94 3.60 L1.68 4.20 L1.46 4.80 L1.28 5.40 L1.14 6.00 L1.03 6.60 L0.96 7.20 L0.91 7.80 L0.90 8.40 L0.90 12.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".458 Lott",
+   "name": ".458 Lott",
+   "category": "Langwaffe",
+   "kind": "belted",
+   "aliases": [
+    "458lott"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 13.5,
+    "base": 13.0,
+    "neck": 12.2,
+    "caseLength": 71.1,
+    "overallLength": 91.4,
+    "bullet": 11.6
+   },
+   "outline": {
+    "width": 13.5,
+    "height": 91.4,
+    "case": "M13.50 91.40 L13.50 90.10 L12.08 90.10 L12.08 88.80 L13.50 88.10 L13.50 85.20 L13.15 85.20 L12.85 20.30 L0.65 20.30 L0.35 85.20 L0.00 85.20 L0.00 88.10 L1.42 88.80 L1.42 90.10 L0.00 90.10 L0.00 91.40 Z",
+    "bullet": "M12.55 20.30 L12.55 15.83 L12.54 14.70 L12.49 13.57 L12.42 12.44 L12.31 11.31 L12.17 10.18 L11.99 9.05 L11.77 7.92 L11.51 6.79 L11.19 5.66 L10.81 4.52 L10.34 3.39 L9.74 2.26 L8.90 1.13 L7.68 0.00 L6.75 0.00 L5.82 0.00 L4.60 1.13 L3.76 2.26 L3.16 3.39 L2.69 4.52 L2.31 5.66 L1.99 6.79 L1.73 7.92 L1.51 9.05 L1.33 10.18 L1.19 11.31 L1.08 12.44 L1.01 13.57 L0.96 14.70 L0.95 15.83 L0.95 20.30 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
    "id": ".36 Rundkugel (.375)",
    "name": ".36 Rundkugel (.375)",
    "category": "Schwarzpulver",
@@ -2470,6 +6199,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 9.5,
     "base": 9.5,
@@ -2497,6 +6227,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 11.5,
     "base": 11.5,
@@ -2522,6 +6253,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 11.2,
     "base": 11.2,
@@ -2548,6 +6280,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 12.4,
     "base": 12.4,
@@ -2574,6 +6307,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.5,
     "base": 13.5,
@@ -2599,6 +6333,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": true,
    "dimensions": {
     "rim": 14.6,
     "base": 14.6,
@@ -2624,6 +6359,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": true,
    "dimensions": {
     "rim": 17.3,
     "base": 17.3,
@@ -2651,6 +6387,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": true,
    "dimensions": {
     "rim": 17.6,
     "base": 14.4,
@@ -2681,6 +6418,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": true,
    "dimensions": {
     "rim": 19.2,
     "base": 17.0,
@@ -2711,6 +6449,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": true,
    "dimensions": {
     "rim": 19.0,
     "base": 17.0,
@@ -2741,6 +6480,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": true,
    "dimensions": {
     "rim": 16.9,
     "base": 14.2,
@@ -2771,6 +6511,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.1,
     "base": 11.9,
@@ -2792,6 +6533,99 @@
    }
   },
   {
+   "id": "11x59 mm R Gras",
+   "name": "11x59 mm R Gras",
+   "category": "Schwarzpulver",
+   "kind": "rimmed",
+   "aliases": [
+    "11gras",
+    "gras"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 16.9,
+    "base": 13.8,
+    "neck": 11.9,
+    "caseLength": 59.0,
+    "overallLength": 76.0,
+    "bullet": 11.3,
+    "shoulder": 13.5
+   },
+   "outline": {
+    "width": 16.9,
+    "height": 76.0,
+    "case": "M16.90 76.00 L16.90 74.50 L15.35 74.50 L15.20 31.40 L14.40 30.12 L14.40 17.00 L2.50 17.00 L2.50 30.12 L1.70 31.40 L1.55 74.50 L0.00 74.50 L0.00 76.00 Z",
+    "bullet": "M14.10 17.00 L14.10 13.26 L14.09 12.31 L14.04 11.37 L13.97 10.42 L13.86 9.47 L13.73 8.52 L13.55 7.58 L13.34 6.63 L13.09 5.68 L12.78 4.74 L12.40 3.79 L11.95 2.84 L11.36 1.89 L10.55 0.95 L9.35 0.00 L8.45 0.00 L7.55 0.00 L6.35 0.95 L5.54 1.89 L4.95 2.84 L4.50 3.79 L4.12 4.74 L3.81 5.68 L3.56 6.63 L3.35 7.58 L3.17 8.52 L3.04 9.47 L2.93 10.42 L2.86 11.37 L2.81 12.31 L2.80 13.26 L2.80 17.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".32-40 Ballard",
+   "name": ".32-40 Ballard",
+   "category": "Schwarzpulver",
+   "kind": "rimmed",
+   "aliases": [
+    "32-40"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 12.9,
+    "base": 10.8,
+    "neck": 8.6,
+    "caseLength": 54.0,
+    "overallLength": 66.0,
+    "bullet": 8.1
+   },
+   "outline": {
+    "width": 12.9,
+    "height": 66.0,
+    "case": "M12.90 66.00 L12.90 64.50 L11.85 64.50 L10.75 12.00 L2.15 12.00 L1.05 64.50 L0.00 64.50 L0.00 66.00 Z",
+    "bullet": "M10.50 12.00 L10.50 8.40 L10.49 7.80 L10.46 7.20 L10.41 6.60 L10.33 6.00 L10.23 5.40 L10.11 4.80 L9.96 4.20 L9.77 3.60 L9.55 3.00 L9.28 2.40 L8.96 1.80 L8.68 1.20 L8.68 0.60 L8.68 0.00 L6.45 0.00 L4.22 0.00 L4.22 0.60 L4.22 1.20 L3.94 1.80 L3.62 2.40 L3.35 3.00 L3.13 3.60 L2.94 4.20 L2.79 4.80 L2.67 5.40 L2.57 6.00 L2.49 6.60 L2.44 7.20 L2.41 7.80 L2.40 8.40 L2.40 12.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
+   "id": ".50-90 Sharps",
+   "name": ".50-90 Sharps",
+   "category": "Schwarzpulver",
+   "kind": "rimmed",
+   "aliases": [
+    "50-90",
+    "50sharps"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "dimensions": {
+    "rim": 16.8,
+    "base": 14.9,
+    "neck": 13.4,
+    "caseLength": 64.0,
+    "overallLength": 81.0,
+    "bullet": 13.0
+   },
+   "outline": {
+    "width": 16.8,
+    "height": 81.0,
+    "case": "M16.80 81.00 L16.80 79.50 L15.85 79.50 L15.10 17.00 L1.70 17.00 L0.95 79.50 L0.00 79.50 L0.00 81.00 Z",
+    "bullet": "M14.90 17.00 L14.90 13.26 L14.88 12.31 L14.83 11.37 L14.75 10.42 L14.63 9.47 L14.47 8.52 L14.27 7.58 L14.03 6.63 L13.73 5.68 L13.38 4.74 L12.95 3.79 L12.42 2.84 L11.75 1.89 L10.81 0.95 L9.44 0.00 L8.40 0.00 L7.36 0.00 L5.99 0.95 L5.05 1.89 L4.38 2.84 L3.85 3.79 L3.42 4.74 L3.07 5.68 L2.77 6.63 L2.53 7.58 L2.33 8.52 L2.17 9.47 L2.05 10.42 L1.97 11.37 L1.92 12.31 L1.90 13.26 L1.90 17.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
    "id": "12/70",
    "name": "12/70",
    "category": "Flinte",
@@ -2804,6 +6638,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 22.3,
     "base": 20.6,
@@ -2833,6 +6668,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 22.3,
     "base": 20.6,
@@ -2862,6 +6698,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 22.3,
     "base": 20.6,
@@ -2892,6 +6729,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 20.5,
     "base": 18.9,
@@ -2922,6 +6760,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 19.0,
     "base": 17.6,
@@ -2951,6 +6790,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 19.0,
     "base": 17.6,
@@ -2981,6 +6821,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 17.5,
     "base": 16.0,
@@ -3011,6 +6852,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 13.3,
     "base": 11.8,
@@ -3045,6 +6887,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 4.5,
     "base": 4.5,
@@ -3070,6 +6913,7 @@
    ],
    "displayAliases": [],
    "headstamps": [],
+   "obsolete": false,
    "dimensions": {
     "rim": 5.5,
     "base": 5.5,
