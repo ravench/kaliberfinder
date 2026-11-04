@@ -13,7 +13,10 @@ struct MatchesView: View {
     @State private var chosen: Int?
     /// The photo cut down to the detected cartridges, and which part of the photo that is.
     @State private var preview: (image: UIImage, region: CGRect)?
-    @State private var matches: [Match] = []
+    /// Ranked against every calibre; the switches decide which are shown.
+    @State private var ranked = HiddenMatches<Match>.none
+    /// The user tapped «Einblenden»: hidden matching calibres are listed too, for this result only.
+    @State private var revealed = false
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(ScanMode.storageKey) private var mode: ScanMode = .auto
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
@@ -34,7 +37,7 @@ struct MatchesView: View {
                         Button {
                             chosen = nil
                             analysis = nil
-                            matches = []
+                            ranked = .none
                         } label: {
                             Label("Andere Patrone wählen", systemImage: "hand.tap")
                         }
@@ -80,6 +83,9 @@ struct MatchesView: View {
         .onChange(of: includeObsolete) { rank() }
     }
 
+    /// The calibres listed: the ones the switches let through, plus the hidden ones once revealed.
+    private var matches: [Match] { ranked.list(revealing: revealed) }
+
     /// The hint to measure by hand when the photo gives no sure answer, and the calibres found.
     @ViewBuilder private var results: some View {
         if let hint = Self.manualEntryHint(matches) {
@@ -91,7 +97,7 @@ struct MatchesView: View {
                 if matches.isEmpty { NavigationLink("Alle Kaliber durchsuchen") { CatalogView() } }
             }
         }
-        if !matches.isEmpty {
+        if !matches.isEmpty || ranked.summary != nil {
             Section {
                 // Calibres that look exactly the same from the side share one row.
                 ForEach(Matcher.grouped(matches)) { g in
@@ -100,6 +106,7 @@ struct MatchesView: View {
                                      highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
                     }
                 }
+                if let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
             } header: {
                 Text("Mögliche Kaliber")
             } footer: {
@@ -155,11 +162,11 @@ struct MatchesView: View {
     }
 
     private func rank() {
-        guard let analysis else { matches = []; return }
+        revealed = false
+        guard let analysis else { ranked = .none; return }
         let size = try? analysis.size(depth: depth).get()
-        matches = Matcher.rank(shape: analysis.shape, size: size, mode: mode,
-                               cartridges: CartridgeCatalog.matchable(includeObsolete: includeObsolete),
-                               brass: analysis.isBrass)
+        ranked = Matcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete), shape: analysis.shape,
+                                    size: size, mode: mode, brass: analysis.isBrass)
     }
 
     /// Points the user to measuring by hand when the photo found nothing or only weak shapes. A
