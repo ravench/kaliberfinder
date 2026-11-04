@@ -8,19 +8,50 @@ on:
     types: [completed]
     branches: [main]
   workflow_dispatch:
-concurrency:
-  group: testflight
-  cancel-in-progress: false
 defaults:
   run:
     # pipefail: otherwise a failing xcodebuild piped into xcpretty still passes.
     shell: bash -eo pipefail {0}
 jobs:
-  upload:
+  wait:
     # Only builds whose tests passed, and only pushes to main (not PRs from a branch named main).
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    # Several merges within a minute make one upload: a newer run cancels the older run's wait,
+    # and the upload job only runs after its own run's wait finished.
+    concurrency:
+      group: testflight-wait
+      cancel-in-progress: true
+    outputs:
+      latest: ${{ steps.latest.outputs.latest }}
+    steps:
+      - name: Wait for more merges
+        if: github.event_name == 'workflow_run'
+        run: sleep 60
+      - name: Check this is still the newest commit on main
+        # A newer commit's Build may finish first (Mac runners queue); its own run uploads then.
+        id: latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          if [ "${{ github.event_name }}" = workflow_run ]; then
+            MAIN=$(gh api "repos/${{ github.repository }}/commits/main" --jq .sha)
+            if [ "$MAIN" != "$SHA" ]; then
+              echo "::notice::Upload skipped: main has moved on to $MAIN, whose run uploads instead."
+              exit 0
+            fi
+          fi
+          echo "latest=true" >> "$GITHUB_OUTPUT"
+  upload:
+    needs: wait
+    if: needs.wait.outputs.latest == 'true'
+    # One upload at a time; never cancel one that has started.
+    concurrency:
+      group: testflight
+      cancel-in-progress: false
     runs-on: macos-26
     env:
       ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
