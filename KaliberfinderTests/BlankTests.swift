@@ -102,8 +102,10 @@ final class BlankTests: XCTestCase {
             }
             if !analysis.isBrass { missed.append("\(name): not taken for brass") }
             let aspect = (shape.aspect * 100).rounded() / 100
-            // Rimmed, and the star crimp narrows the front end.
-            if !features.isRimmed || !features.hasNeck { missed.append("\(name): \(features)") }
+            // The star crimp narrows the front end. The rim isn't required: a fired blank always rests
+            // tilted and the phone is held parallel to the table, so the rim shows only about 1.05
+            // of the body (Raven, 2026-11-04); the blank must still be the closest calibre.
+            if !features.hasNeck { missed.append("\(name): \(features)") }
             let closest = CartridgeCatalog.current.compactMap { c -> (String, Double)? in
                 guard let e = ShapeMatcher.catalogue[c.id], let d = ShapeMatcher.distance(shape, to: e, part: .cartridge) else { return nil }
                 return (c.id, d)
