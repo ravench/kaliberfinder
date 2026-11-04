@@ -140,6 +140,20 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("branches: [main]", self.workflow)
         self.assertIn("conclusion == 'success'", self.workflow)
 
+    def test_merges_within_a_minute_upload_once(self):
+        # Each run waits a minute in a group that cancels the older wait; only the newest commit uploads.
+        wait = self.workflow.split("\n  wait:")[1].split("\n  upload:")[0]
+        self.assertIn("group: testflight-wait", wait)
+        self.assertIn("cancel-in-progress: true", wait)
+        self.assertIn("sleep 60", wait)
+        self.assertIn("commits/main", wait)
+        upload = self.workflow.split("\n  upload:")[1]
+        self.assertIn("needs: wait", upload)
+        self.assertIn("needs.wait.outputs.latest == 'true'", upload)
+        # A started upload is never cancelled.
+        self.assertRegex(upload, r"group: testflight\n\s+cancel-in-progress: false")
+        self.assertNotRegex(self.workflow, r"^concurrency:", "workflow-level concurrency would hold the wait")
+
     def test_actions_run_on_node_24(self):
         # GitHub retired Node 20 for actions; checkout v5 is the first major on Node 24.
         node24 = {"actions/checkout": 5}
