@@ -126,9 +126,11 @@ enum PhotoAnalyzer {
     }
 
     /// How much red and green must each exceed blue, relative to it, for brass (yellow). Lead and
-    /// nickel are grey (all three about equal), copper is red with little green.
+    /// nickel are grey (all three about equal). Copper is red with little green, so green must
+    /// also be close to red.
     static let brassRedOverBlue: Float = 1.25
     static let brassGreenOverBlue: Float = 1.1
+    static let brassGreenOfRed: Float = 0.75
 
     /// Whether the pixels at `points` are, on average, brass-coloured.
     static func isBrass(_ image: RGBImage, points: [Point]) -> Bool {
@@ -141,7 +143,7 @@ enum PhotoAnalyzer {
             n += 1
         }
         guard n > 0, sum[2] > 0 else { return false }
-        return sum[0] >= brassRedOverBlue * sum[2] && sum[1] >= brassGreenOverBlue * sum[2]
+        return sum[0] >= brassRedOverBlue * sum[2] && sum[1] >= brassGreenOverBlue * sum[2] && sum[1] >= brassGreenOfRed * sum[0]
     }
 
     /// The image scaled down and with its orientation applied, so pixels are upright.
