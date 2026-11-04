@@ -93,25 +93,25 @@
         }
       }
     },
-    "Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form und Aufschrift.": {
+    "Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Distance outside 12–45 cm: size not measured, matches by shape and marking only."
+            "value": "Distance outside 12–45 cm: size not measured, matches by shape only."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Distance hors de 12–45 cm : taille non mesurée, résultats selon la forme et l'inscription seulement."
+            "value": "Distance hors de 12–45 cm : taille non mesurée, résultats selon la forme seulement."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Distanza fuori da 12–45 cm: dimensione non misurata, risultati solo per forma e scritta."
+            "value": "Distanza fuori da 12–45 cm: dimensione non misurata, risultati solo per forma."
           }
         }
       }
@@ -319,98 +319,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noto anche come"
-          }
-        }
-      }
-    },
-    "Aufschrift": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Headstamp"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inscription"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scritta"
-          }
-        }
-      }
-    },
-    "Aufschrift erkannt: «%@»": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Headstamp read: “%@”"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inscription lue : « %@ »"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scritta letta: «%@»"
-          }
-        }
-      }
-    },
-    "Aufschrift wird gelesen …": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reading headstamp …"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lecture de l'inscription …"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lettura della scritta …"
-          }
-        }
-      }
-    },
-    "Aufschrift «%@»": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Marking “%@”"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inscription « %@ »"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scritta «%@»"
           }
         }
       }
@@ -645,29 +553,6 @@
         }
       }
     },
-    "Boden fotografieren": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Photograph base"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Photographier le culot"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fotografa il fondello"
-          }
-        }
-      }
-    },
     "Boden mit Zündhütchen %@": {
       "extractionState": "manual",
       "localizations": {
@@ -691,29 +576,6 @@
         }
       }
     },
-    "Boden neu fotografieren": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retake base photo"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rephotographier le culot"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rifotografa il fondello"
-          }
-        }
-      }
-    },
     "Bodendurchmesser": {
       "extractionState": "manual",
       "localizations": {
@@ -733,29 +595,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diametro alla base"
-          }
-        }
-      }
-    },
-    "Bodenfoto auswählen": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose base photo"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choisir une photo du culot"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scegli foto del fondello"
           }
         }
       }
@@ -848,29 +687,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Piombino diabolo"
-          }
-        }
-      }
-    },
-    "Die Aufschrift wird nur auf dem Bodenfoto gelesen. Boden formatfüllend, scharf und von vorne fotografieren.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The headstamp is only read from the base photo. Fill the frame with the base, in focus and head-on."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "L'inscription n'est lue que sur la photo du culot. Cadrez le culot en plein format, net et de face."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La scritta viene letta solo dalla foto del fondello. Inquadra il fondello a tutto schermo, a fuoco e di fronte."
           }
         }
       }
@@ -1427,48 +1243,25 @@
         }
       }
     },
-    "Geteilte Fotos werden geprüft …": {
+    "Grösse nicht messbar: Treffer nur nach Form.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Checking shared photos …"
+            "value": "Size could not be measured: matches by shape only."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vérification des photos partagées …"
+            "value": "Taille non mesurable : résultats selon la forme seulement."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verifica delle foto condivise …"
-          }
-        }
-      }
-    },
-    "Grösse nicht messbar: Treffer nur nach Form und Aufschrift.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Size could not be measured: matches by shape and marking only."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Taille non mesurable : résultats selon la forme et l'inscription seulement."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dimensione non misurabile: risultati solo per forma e scritta."
+            "value": "Dimensione non misurabile: risultati solo per forma."
           }
         }
       }
@@ -1906,29 +1699,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Categoria"
-          }
-        }
-      }
-    },
-    "Keine Aufschrift erkannt.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No headstamp read."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucune inscription lue."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nessuna scritta letta."
           }
         }
       }
@@ -2623,25 +2393,25 @@
         }
       }
     },
-    "Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Für die Aufschrift danach den Boden fotografieren.": {
+    "Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lay the cartridge on its side on a light background and photograph it from above. Then photograph the base for the headstamp."
+            "value": "Lay the cartridge on its side on a light background and photograph it from above."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut. Photographiez ensuite le culot pour l'inscription."
+            "value": "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto. Poi fotografa il fondello per la scritta."
+            "value": "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto."
           }
         }
       }
@@ -2784,25 +2554,25 @@
         }
       }
     },
-    "Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Bei Patronen zählt nur die Aufschrift.": {
+    "Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Patronen werden nur von der Seite erkannt.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Round in the photo: the base or tip of a cartridge, or a round ball. For cartridges only the marking counts."
+            "value": "Round in the photo: the base or tip of a cartridge, or a round ball. Cartridges are only identified from the side."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rond sur la photo : culot ou pointe d'une cartouche, ou une balle ronde. Pour les cartouches, seule l'inscription compte."
+            "value": "Rond sur la photo : culot ou pointe d'une cartouche, ou une balle ronde. Les cartouches ne sont identifiées que de côté."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rotondo nella foto: fondello o punta di una cartuccia, oppure una palla sferica. Per le cartucce conta solo la scritta."
+            "value": "Rotondo nella foto: fondello o punta di una cartuccia, oppure una palla sferica. Le cartucce si riconoscono solo di lato."
           }
         }
       }

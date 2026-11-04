@@ -66,8 +66,8 @@ targets:
           NSExtensionPrincipalClass: ShareViewController
           NSExtensionAttributes:
             NSExtensionActivationRule:
-              # Side photo and optionally the base photo, in any order (SharedInbox.maxPhotos).
-              NSExtensionActivationSupportsImageWithMaxCount: 2
+              # One side photo (SharedInbox.maxPhotos).
+              NSExtensionActivationSupportsImageWithMaxCount: 1
     entitlements:
       path: KaliberfinderShare/KaliberfinderShare.entitlements
       properties:

@@ -12,17 +12,6 @@ INFO_PLIST = {
 }
 
 T = {
-    "Aufschrift": ("Headstamp", "Inscription", "Scritta"),
-    "Aufschrift erkannt: «%@»": ("Headstamp read: “%@”", "Inscription lue : « %@ »", "Scritta letta: «%@»"),
-    "Aufschrift wird gelesen …": ("Reading headstamp …", "Lecture de l'inscription …", "Lettura della scritta …"),
-    "Boden fotografieren": ("Photograph base", "Photographier le culot", "Fotografa il fondello"),
-    "Boden neu fotografieren": ("Retake base photo", "Rephotographier le culot", "Rifotografa il fondello"),
-    "Bodenfoto auswählen": ("Choose base photo", "Choisir une photo du culot", "Scegli foto del fondello"),
-    "Die Aufschrift wird nur auf dem Bodenfoto gelesen. Boden formatfüllend, scharf und von vorne fotografieren.": (
-        "The headstamp is only read from the base photo. Fill the frame with the base, in focus and head-on.",
-        "L'inscription n'est lue que sur la photo du culot. Cadrez le culot en plein format, net et de face.",
-        "La scritta viene letta solo dalla foto del fondello. Inquadra il fondello a tutto schermo, a fuoco e di fronte."),
-    "Keine Aufschrift erkannt.": ("No headstamp read.", "Aucune inscription lue.", "Nessuna scritta letta."),
     "Alle passenden 1:1 vergleichen (%lld)": ("Compare all matches 1:1 (%lld)", "Comparer toutes les correspondances 1:1 (%lld)", "Confronta tutte le corrispondenze 1:1 (%lld)"),
     "Beliebige Form": ("Any shape", "Toute forme", "Qualsiasi forma"),
     "Form": ("Shape", "Forme", "Forma"),
@@ -47,18 +36,18 @@ T = {
         "Taille réelle : pas de zoom, pour que les mesures restent justes.",
         "Grandezza reale: niente zoom, così le misure restano corrette."),
     "Abbrechen": ("Cancel", "Annuler", "Annulla"),
-    "Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form und Aufschrift.": (
-        "Distance outside 12–45 cm: size not measured, matches by shape and marking only.",
-        "Distance hors de 12–45 cm : taille non mesurée, résultats selon la forme et l'inscription seulement.",
-        "Distanza fuori da 12–45 cm: dimensione non misurata, risultati solo per forma e scritta."),
+    "Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form.": (
+        "Distance outside 12–45 cm: size not measured, matches by shape only.",
+        "Distance hors de 12–45 cm : taille non mesurée, résultats selon la forme seulement.",
+        "Distanza fuori da 12–45 cm: dimensione non misurata, risultati solo per forma."),
     "Abstand passt": ("Distance is good", "Bonne distance", "Distanza corretta"),
     "Etwas weiter weg": ("Move a bit further away", "Éloignez-vous un peu", "Allontanati un po'"),
     "Foto aufnehmen": ("Take photo", "Prendre la photo", "Scatta foto"),
     "Gemessen: L ≈ %1$@, Ø ≈ %2$@": ("Measured: L ≈ %1$@, Ø ≈ %2$@", "Mesuré : L ≈ %1$@, Ø ≈ %2$@", "Misurato: L ≈ %1$@, Ø ≈ %2$@"),
-    "Grösse nicht messbar: Treffer nur nach Form und Aufschrift.": (
-        "Size could not be measured: matches by shape and marking only.",
-        "Taille non mesurable : résultats selon la forme et l'inscription seulement.",
-        "Dimensione non misurabile: risultati solo per forma e scritta."),
+    "Grösse nicht messbar: Treffer nur nach Form.": (
+        "Size could not be measured: matches by shape only.",
+        "Taille non mesurable : résultats selon la forme seulement.",
+        "Dimensione non misurabile: risultati solo per forma."),
     "Grösse passt gut": ("Size fits well", "La taille correspond bien", "La dimensione corrisponde bene"),
     "Grösse passt ungefähr": ("Size fits roughly", "La taille correspond à peu près", "La dimensione corrisponde più o meno"),
     "Grösse passt wenig": ("Size fits poorly", "La taille correspond peu", "La dimensione corrisponde poco"),
@@ -94,7 +83,6 @@ T = {
     "Alle Kaliber": ("All calibres", "Tous les calibres", "Tutti i calibri"),
     "Alle Kaliber durchsuchen": ("Search all calibres", "Chercher dans tous les calibres", "Cerca in tutti i calibri"),
     "Andere": ("Other", "Autre", "Altro"),
-    "Aufschrift «%@»": ("Marking “%@”", "Inscription « %@ »", "Scritta «%@»"),
     "Die besten drei 1:1 vergleichen": ("Compare the best three 1:1", "Comparer les trois meilleurs 1:1", "Confronta i migliori tre 1:1"),
     "Im Profil nicht unterscheidbar": ("Indistinguishable in profile", "Indiscernable de profil", "Indistinguibile di profilo"),
     "Im Profil nicht unterscheidbar von": ("Looks identical in profile to", "Identique de profil à", "Identica di profilo a"),
@@ -123,10 +111,10 @@ T = {
     "Mögliche Kaliber": ("Possible calibres", "Calibres possibles", "Calibri possibili"),
     "Patrone erkennen": ("Identify a cartridge", "Identifier une cartouche", "Riconoscere una cartuccia"),
     "Patrone fotografieren": ("Photograph cartridge", "Photographier la cartouche", "Fotografa la cartuccia"),
-    "Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Für die Aufschrift danach den Boden fotografieren.": (
-        "Lay the cartridge on its side on a light background and photograph it from above. Then photograph the base for the headstamp.",
-        "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut. Photographiez ensuite le culot pour l'inscription.",
-        "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto. Poi fotografa il fondello per la scritta."),
+    "Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren.": (
+        "Lay the cartridge on its side on a light background and photograph it from above.",
+        "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut.",
+        "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto."),
     "Suche nach Namen und tippe die Kaliber an, die du nebeneinander sehen willst.": (
         "Search by name and tap the calibres you want to see side by side.",
         "Cherchez par nom et touchez les calibres que vous voulez voir côte à côte.",
@@ -153,8 +141,6 @@ T = {
     "Bodendurchmesser": ("Base diameter", "Diamètre au culot", "Diametro alla base"),
     "Diabolo": ("Diabolo pellet", "Plomb diabolo", "Piombino diabolo"),
     "Fertig": ("Done", "Terminé", "Fine"),
-    "Geteilte Fotos werden geprüft …": (
-        "Checking shared photos …", "Vérification des photos partagées …", "Verifica delle foto condivise …"),
     "Foto übernommen. Öffne Kaliberfinder, um die Treffer zu sehen.": (
         "Photo received. Open Kaliberfinder to see the matches.",
         "Photo reçue. Ouvrez Kaliberfinder pour voir les correspondances.",
@@ -211,10 +197,10 @@ T = {
     "Schrotpatrone": ("Shotshell", "Cartouche à plombs", "Cartuccia a pallini"),
     "Schulterdurchmesser": ("Shoulder diameter", "Diamètre de l'épaulement", "Diametro della spalla"),
     "Schwarzpulver": ("Black powder", "Poudre noire", "Polvere nera"),
-    "Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Bei Patronen zählt nur die Aufschrift.": (
-        "Round in the photo: the base or tip of a cartridge, or a round ball. For cartridges only the marking counts.",
-        "Rond sur la photo : culot ou pointe d'une cartouche, ou une balle ronde. Pour les cartouches, seule l'inscription compte.",
-        "Rotondo nella foto: fondello o punta di una cartuccia, oppure una palla sferica. Per le cartucce conta solo la scritta."),
+    "Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Patronen werden nur von der Seite erkannt.": (
+        "Round in the photo: the base or tip of a cartridge, or a round ball. Cartridges are only identified from the side.",
+        "Rond sur la photo : culot ou pointe d'une cartouche, ou une balle ronde. Les cartouches ne sont identifiées que de côté.",
+        "Rotondo nella foto: fondello o punta di una cartuccia, oppure una palla sferica. Le cartucce si riconoscono solo di lato."),
     "Speichern": ("Save", "Enregistrer", "Salva"),
     "Vom iPhone-Modell": ("From the iPhone model", "Selon le modèle d'iPhone", "Dal modello di iPhone"),
     "Wähle Kaliber aus, um sie in Originalgrösse nebeneinander zu vergleichen.": (

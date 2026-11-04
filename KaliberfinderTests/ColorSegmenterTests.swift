@@ -74,7 +74,7 @@ final class ColorSegmenterTests: XCTestCase {
         XCTAssertEqual(measured.shape.aspect, nine.dimensions.overallLength / nine.dimensions.base, accuracy: 0.3)
         // Length in pixels: 29.7 mm at 6 px/mm.
         XCTAssertEqual(measured.length, 29.7 * 6, accuracy: 12)
-        let ids = Matcher.rank(shape: measured.shape, hits: [], limit: 5).map(\.cartridge.id)
+        let ids = Matcher.rank(shape: measured.shape, limit: 5).map(\.cartridge.id)
         XCTAssertTrue(ids.contains(nine.id), "\(ids)")
     }
 
@@ -150,7 +150,7 @@ final class ColorSegmenterTests: XCTestCase {
             let shape = try XCTUnwrap(ShapeMatcher.measure(sampled, pixelSize: Double(step)), name)
             XCTAssertFalse(shape.isEndView, name)
             XCTAssertEqual(shape.aspect, 2.85, accuracy: 0.35, name)
-            let top = Matcher.rank(shape: shape, hits: [])
+            let top = Matcher.rank(shape: shape)
             XCTAssertTrue(top.contains { $0.cartridge.id == id }, "\(name): \(top.map(\.cartridge.id))")
             let handgun = CartridgeCatalog.Category.handgun.rawValue
             XCTAssertTrue(top.prefix(5).allSatisfy { $0.cartridge.category == handgun }, "\(name): \(top.map(\.cartridge.id))")
@@ -302,7 +302,7 @@ final class ColorSegmenterTests: XCTestCase {
     }
 
     func testAnalysisWithSeveralObjects() {
-        var analysis = PhotoAnalysis(shape: nil, texts: [])
+        var analysis = PhotoAnalysis(shape: nil)
         XCTAssertFalse(analysis.hasSeveralObjects)
         XCTAssertEqual(analysis.objectCount, 1)
         analysis.candidates = [CGRect(x: 0.1, y: 0.1, width: 0.2, height: 0.1), CGRect(x: 0.6, y: 0.6, width: 0.2, height: 0.1)]
@@ -349,7 +349,7 @@ final class ColorSegmenterTests: XCTestCase {
             XCTAssertEqual(shape.aspect, 2.85, accuracy: 0.5, "\(candidate)")
             // Sizes still refer to the whole photo (1200 px long side, analysed unscaled).
             XCTAssertEqual(picked.imageLongSide, 1200, accuracy: 1)
-            let top = Matcher.rank(shape: shape, hits: []).map(\.cartridge.id)
+            let top = Matcher.rank(shape: shape).map(\.cartridge.id)
             XCTAssertTrue(top.contains(".45 ACP"), "\(top)")
         }
     }
@@ -431,18 +431,18 @@ final class ColorSegmenterTests: XCTestCase {
         XCTAssertNil(MatchesView.frames(overview: nil, measured: nil, picking: false).measured)
         let corners = [CGPoint(x: 0.1, y: 0.2), CGPoint(x: 0.3, y: 0.1), CGPoint(x: 0.35, y: 0.2), CGPoint(x: 0.15, y: 0.3)]
         // Nothing measured: no frame, even with a stray outline.
-        let nothing = PhotoAnalysis(shape: nil, texts: [], outline: corners)
+        let nothing = PhotoAnalysis(shape: nil, outline: corners)
         XCTAssertNil(MatchesView.frames(overview: nothing, measured: nothing, picking: false).measured)
         XCTAssertTrue(MatchesView.detectedBoxes(nothing).isEmpty)
         // Several: all of them while picking, then only what was measured.
         let boxes = [CGRect(x: 0.1, y: 0.1, width: 0.2, height: 0.1), CGRect(x: 0.6, y: 0.6, width: 0.2, height: 0.1)]
-        let several = PhotoAnalysis(shape: nil, texts: [], candidates: boxes)
+        let several = PhotoAnalysis(shape: nil, candidates: boxes)
         let picking = MatchesView.frames(overview: several, measured: nil, picking: true)
         XCTAssertEqual(picking.candidates, boxes)
         XCTAssertNil(picking.measured)
         XCTAssertEqual(MatchesView.detectedBoxes(several), boxes)
         let shape = ShapeMeasurement(aspect: 3, profile: ShapeMatcher.fractions.map { _ in 1 })
-        let picked = PhotoAnalysis(shape: shape, texts: [], outline: corners)
+        let picked = PhotoAnalysis(shape: shape, outline: corners)
         let after = MatchesView.frames(overview: several, measured: picked, picking: false)
         XCTAssertTrue(after.candidates.isEmpty)
         XCTAssertEqual(after.measured, corners)
