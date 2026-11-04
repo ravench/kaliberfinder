@@ -74,12 +74,15 @@ enum Matcher {
                      size: MeasuredSize? = nil,
                      mode: ScanMode = .auto,
                      cartridges: [Cartridge] = CartridgeCatalog.current,
+                     brass: Bool = false,
                      limit: Int = 12) -> [Match] {
         let photoPart = shape.map { mode.part(for: $0) } ?? .cartridge
         var matches: [Match] = []
-        for c in cartridges {
-            // Calibres without a case (balls, Minié bullets) are compared whole.
-            let part: ShapePart = c.hasCase ? photoPart : .cartridge
+        // A brass-coloured object is no lead ball, Minié bullet or air gun pellet.
+        for c in cartridges where !brass || c.hasCase {
+            // Calibres without a case (balls, Minié bullets) are compared whole, and so is a blank:
+            // its case is the whole cartridge, and a fired one's crimp and rim don't fit the case checks.
+            let part: ShapePart = c.hasCase && !c.blank ? photoPart : .cartridge
             var distance: Double?
             // A round silhouette is either a cartridge seen end-on or a round ball: compare
             // round with round and long with long only.

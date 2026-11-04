@@ -151,7 +151,8 @@ struct MatchesView: View {
         guard let analysis else { matches = []; return }
         let size = try? analysis.size(depth: depth).get()
         matches = Matcher.rank(shape: analysis.shape, size: size, mode: mode,
-                               cartridges: CartridgeCatalog.matchable(includeObsolete: includeObsolete))
+                               cartridges: CartridgeCatalog.matchable(includeObsolete: includeObsolete),
+                               brass: analysis.isBrass)
     }
 
     /// Shown instead of matches when several cartridges compete, until the user picks one.

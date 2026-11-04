@@ -48,6 +48,18 @@ final class BlankTests: XCTestCase {
         }
     }
 
+    /// On the phone a fired blank came out "empty case, rimless": the rim and neck checks for empty
+    /// cases ruled the blank out. A blank is compared whole, with the rim only as a small penalty.
+    func testFiredBlankWithoutVisibleRimIsFoundAsEmptyCase() throws {
+        let blank = try XCTUnwrap(ShapeMatcher.catalogue[blankID])
+        var widths = blank.widths
+        for i in (widths.count - 4)..<widths.count { widths[i] = 1 }  // the rim lost in the photo
+        let shape = ShapeMatcher.measurement(aspect: blank.aspect, relativeWidths: widths)
+        XCTAssertFalse(try XCTUnwrap(shape.features).isRimmed)
+        let match = try XCTUnwrap(rank(shape, mode: .emptyCase, limit: .max).first { $0.cartridge.id == blankID })
+        XCTAssertEqual(match.part, .cartridge)
+    }
+
     // MARK: - Real photos
 
     private func realPhoto(_ name: String) throws -> UIImage {
@@ -68,6 +80,7 @@ final class BlankTests: XCTestCase {
                 missed.append("\(name): no outline")
                 continue
             }
+            if !analysis.isBrass { missed.append("\(name): not taken for brass") }
             let aspect = (shape.aspect * 100).rounded() / 100
             // Rimmed, and the star crimp narrows the front end.
             if !features.isRimmed || !features.hasNeck { missed.append("\(name): \(features)") }
