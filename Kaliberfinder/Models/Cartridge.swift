@@ -73,7 +73,6 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     var hasCase: Bool { dimensions.caseLength > 0 }
 
-
     /// Diameter of the case head seen from below: the rim, or the base where it is wider.
     var headDiameter: Double { max(dimensions.rim, dimensions.base) }
 
