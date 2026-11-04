@@ -60,7 +60,6 @@ final class CatalogTests: XCTestCase {
         for text in ["GP 1890", "GP 90/23", "7.5mm GP 90", "Patrone 1890", "7,5x53,5"] {
             XCTAssertTrue(CartridgeCatalog.search(text).contains { $0.id == gp1890.id }, text)
         }
-        XCTAssertNotEqual(HeadstampReader.hits(in: ["GP 90"]).first?.cartridgeID, gp1890.id, "GP 90 is the Stgw 90 round")
     }
 
     func testGP1890HasPaperPatchedSteelCappedBullet() throws {

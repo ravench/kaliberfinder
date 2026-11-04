@@ -35,7 +35,7 @@ final class EmptyCaseTests: XCTestCase {
     func testEmptyRifleCaseFindsRifleCalibres() throws {
         let shape = try photo(cartridge(".308 Winchester"), part: .emptyCase)
         XCTAssertEqual(ScanMode.auto.part(for: shape), .emptyCase)
-        let matches = Matcher.rank(shape: shape, hits: [], limit: .max)
+        let matches = Matcher.rank(shape: shape, limit: .max)
         // Without a scale the GP 1890 case (same shape, only 2 mm longer) can tie with the .308 twins.
         let top = Set(matches.prefix(3).map(\.cartridge.id))
         XCTAssertTrue(top.isSuperset(of: [".308 Winchester", "7.62x51 mm NATO"]), top.sorted().joined(separator: ", "))
@@ -49,7 +49,7 @@ final class EmptyCaseTests: XCTestCase {
         var missed: [String] = []
         for (i, c) in CartridgeCatalog.all.enumerated() where c.hasCase {
             let shape = try photo(c, part: .emptyCase, angle: Double(i % 7) * 0.45, pixelsPerMM: 5 + Double(i % 4))
-            let ids = Matcher.rank(shape: shape, hits: [], limit: 5).map(\.cartridge.id)
+            let ids = Matcher.rank(shape: shape, limit: 5).map(\.cartridge.id)
             if !ids.contains(c.id) { missed.append("\(c.id): \(ids)") }
         }
         XCTAssertTrue(missed.isEmpty, missed.joined(separator: "\n"))
@@ -66,7 +66,7 @@ final class EmptyCaseTests: XCTestCase {
     func testModeOverridesTheDetection() throws {
         let shape = try photo(cartridge(".308 Winchester"), part: .emptyCase)
         XCTAssertEqual(ScanMode.cartridge.part(for: shape), .cartridge)
-        XCTAssertTrue(Matcher.rank(shape: shape, hits: [], mode: .cartridge).allSatisfy { $0.part == .cartridge })
+        XCTAssertTrue(Matcher.rank(shape: shape, mode: .cartridge).allSatisfy { $0.part == .cartridge })
         let loaded = try photo(cartridge("9x19 mm"), part: .cartridge)
         XCTAssertEqual(ScanMode.emptyCase.part(for: loaded), .emptyCase)
         XCTAssertEqual(Set(ScanMode.allCases.map(\.rawValue)).count, 3)
@@ -120,7 +120,7 @@ final class EmptyCaseTests: XCTestCase {
     func testFarOffMatchesAreDropped() throws {
         for id in ["9x19 mm", ".45 ACP", ".308 Winchester", ".38 Special"] {
             for part in [ShapePart.cartridge, .emptyCase] {
-                let matches = Matcher.rank(shape: try photo(cartridge(id), part: part), hits: [], limit: .max)
+                let matches = Matcher.rank(shape: try photo(cartridge(id), part: part), limit: .max)
                 let distances = matches.compactMap(\.shapeDistance)
                 XCTAssertEqual(distances.count, matches.count)
                 let best = try XCTUnwrap(distances.min(), id)
@@ -130,12 +130,6 @@ final class EmptyCaseTests: XCTestCase {
         }
     }
 
-    func testTextStillListsAFarOffCalibre() throws {
-        let hit = HeadstampReader.Hit(cartridgeID: "9x19 mm", text: "9MM LUGER", strength: .strong)
-        let matches = Matcher.rank(shape: try photo(cartridge(".308 Winchester"), part: .emptyCase), hits: [hit])
-        XCTAssertEqual(matches.first?.cartridge.id, "9x19 mm")
-    }
-
     func testSizeOfAnEmptyCaseIsComparedWithTheCaseLength() throws {
         let c = try cartridge(".308 Winchester")
         let d = c.dimensions
@@ -143,11 +137,11 @@ final class EmptyCaseTests: XCTestCase {
         XCTAssertEqual(Matcher.deviation(of: c, from: size, part: .emptyCase), 0)
         XCTAssertGreaterThan(Matcher.deviation(of: c, from: size, part: .cartridge), 5)
         // An empty .308 case measured with LiDAR: still listed, with a good size fit.
-        let matches = Matcher.rank(shape: try photo(c, part: .emptyCase), hits: [], size: size)
+        let matches = Matcher.rank(shape: try photo(c, part: .emptyCase), size: size)
         XCTAssertEqual(matches.first { $0.cartridge.id == c.id }?.sizeFit, .good)
         // A size far off drops the calibre.
         let huge = MeasuredSize(length: 99, diameter: 20.4, lengthError: 1, diameterError: 0.3)
-        XCTAssertFalse(Matcher.rank(shape: try photo(c, part: .emptyCase), hits: [], size: huge, limit: .max).contains { $0.cartridge.id == c.id })
+        XCTAssertFalse(Matcher.rank(shape: try photo(c, part: .emptyCase), size: huge, limit: .max).contains { $0.cartridge.id == c.id })
     }
 
     // MARK: - Match screen
@@ -163,7 +157,7 @@ final class EmptyCaseTests: XCTestCase {
         XCTAssertEqual(MatchesView.featuresText(loaded, mode: .auto),
                        String(format: "Erkannt: %@".loc, ["Patrone".loc, "ohne Rand".loc].joined(separator: " · ")))
         XCTAssertNil(MatchesView.featuresText(ShapeMeasurement(aspect: 3, profile: [1]), mode: .auto))
-        let analysis = PhotoAnalysis(shape: rifle, texts: [])
+        let analysis = PhotoAnalysis(shape: rifle)
         XCTAssertEqual(MatchesView.notes(for: analysis).count, 1)
     }
 
