@@ -44,7 +44,7 @@ struct ShapeFeatures: Equatable {
     /// a bullet tip narrows instead.
     let isFlatEnd: Bool
 
-    static let rimmedFrom = 1.08
+    static let rimmedFrom = 1.05
     static let neckBelow = 0.9
     static let flatFrom = 0.85
 
