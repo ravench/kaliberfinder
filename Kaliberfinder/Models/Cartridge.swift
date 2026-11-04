@@ -12,7 +12,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     let aliases: [String]
     /// Printable alternative names, e.g. "9 mm Luger" for 9x19 mm.
     let displayAliases: [String]
-    /// Spellings found on headstamps, e.g. "WIN 308".
+    /// Spellings found on headstamps, e.g. "WIN 308", for the catalogue search.
     let headstamps: [String]
     /// No longer in regular factory production (only surplus, boutique loads or reloading).
     /// Matching skips these unless the «Veraltete Kaliber» switch is on.

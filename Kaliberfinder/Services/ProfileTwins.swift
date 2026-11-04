@@ -15,16 +15,12 @@ extension CartridgeCatalog {
     }
 
     /// Puts items whose calibres look the same from the side into one group, in the order of each
-    /// group's first item. Items for which `canJoin` is false (e.g. a match the headstamp named)
-    /// stay on their own.
-    static func groupedByProfile<Item>(_ items: [Item],
-                                       cartridge: (Item) -> Cartridge,
-                                       canJoin: (Item) -> Bool = { _ in true }) -> [[Item]] {
+    /// group's first item.
+    static func groupedByProfile<Item>(_ items: [Item], cartridge: (Item) -> Cartridge) -> [[Item]] {
         var groups: [[Item]] = []
         for item in items {
             let c = cartridge(item)
-            if canJoin(item),
-               let i = groups.firstIndex(where: { g in canJoin(g[0]) && sameProfile(cartridge(g[0]), c) }) {
+            if let i = groups.firstIndex(where: { g in sameProfile(cartridge(g[0]), c) }) {
                 groups[i].append(item)
             } else {
                 groups.append([item])
@@ -53,10 +49,9 @@ struct TwinGroup<Item: Identifiable>: Identifiable where Item.ID == String {
 }
 
 extension Matcher {
-    /// Ranked matches with identical-looking calibres in one row. A calibre the headstamp named
-    /// keeps its own row: the text does tell it apart.
+    /// Ranked matches with identical-looking calibres in one row.
     static func grouped(_ matches: [Match]) -> [TwinGroup<Match>] {
-        CartridgeCatalog.groupedByProfile(matches, cartridge: \.cartridge, canJoin: { $0.headstamp == nil })
+        CartridgeCatalog.groupedByProfile(matches, cartridge: \.cartridge)
             .map { TwinGroup(items: $0) }
     }
 }

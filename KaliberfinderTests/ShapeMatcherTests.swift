@@ -33,7 +33,7 @@ final class ShapeMatcherTests: XCTestCase {
     /// Nil when the calibre is not listed at all, e.g. the .22 BB Cap, which is nearly as wide as long.
     private func rankIfListed(of c: Cartridge, angle: Double, pixelsPerMM: Double) throws -> Int? {
         let m = try XCTUnwrap(measure(c, angle: angle, pixelsPerMM: pixelsPerMM), c.name)
-        let ranked = Matcher.rank(shape: m, hits: [], cartridges: CartridgeCatalog.all, limit: .max)
+        let ranked = Matcher.rank(shape: m, cartridges: CartridgeCatalog.all, limit: .max)
         return ranked.firstIndex { $0.cartridge.id == c.id }
     }
 
