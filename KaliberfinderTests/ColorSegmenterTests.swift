@@ -150,7 +150,7 @@ final class ColorSegmenterTests: XCTestCase {
             let shape = try XCTUnwrap(ShapeMatcher.measure(sampled, pixelSize: Double(step)), name)
             XCTAssertFalse(shape.isEndView, name)
             XCTAssertEqual(shape.aspect, 2.85, accuracy: 0.35, name)
-            let top = Matcher.rank(shape: shape, limit: 8)
+            let top = Matcher.rank(shape: shape)
             XCTAssertTrue(top.contains { $0.cartridge.id == id }, "\(name): \(top.map(\.cartridge.id))")
             let handgun = CartridgeCatalog.Category.handgun.rawValue
             XCTAssertTrue(top.prefix(5).allSatisfy { $0.cartridge.category == handgun }, "\(name): \(top.map(\.cartridge.id))")
@@ -349,7 +349,7 @@ final class ColorSegmenterTests: XCTestCase {
             XCTAssertEqual(shape.aspect, 2.85, accuracy: 0.5, "\(candidate)")
             // Sizes still refer to the whole photo (1200 px long side, analysed unscaled).
             XCTAssertEqual(picked.imageLongSide, 1200, accuracy: 1)
-            let top = Matcher.rank(shape: shape, limit: 8).map(\.cartridge.id)
+            let top = Matcher.rank(shape: shape).map(\.cartridge.id)
             XCTAssertTrue(top.contains(".45 ACP"), "\(top)")
         }
     }

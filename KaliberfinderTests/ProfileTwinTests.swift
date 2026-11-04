@@ -7,7 +7,7 @@ final class ProfileTwinTests: XCTestCase {
 
     func testCatalogueTwins() throws {
         XCTAssertEqual(CartridgeCatalog.twins(of: try c(".308 Winchester")).map(\.id), ["7.62x51 mm NATO"])
-        XCTAssertEqual(Set(CartridgeCatalog.twins(of: try c("5.6 mm GP 90 (Swiss)")).map(\.id)),
+        XCTAssertEqual(Set(CartridgeCatalog.twins(of: try c("5.6 mm GP 90")).map(\.id)),
                        [".223 Remington", "5.56x45 mm NATO"])
         XCTAssertTrue(CartridgeCatalog.twins(of: try c("9x19 mm")).isEmpty)
         XCTAssertTrue(CartridgeCatalog.twins(of: try c("7.5x55 mm Swiss (GP 11)")).isEmpty)
@@ -19,9 +19,10 @@ final class ProfileTwinTests: XCTestCase {
         let all = CartridgeCatalog.all
         let groups = CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).filter { $0.count > 1 }
         XCTAssertEqual(Set(groups.map { Set($0.map(\.id)) }),
-                       [[".308 Winchester", "7.62x51 mm NATO"], [".223 Remington", "5.56x45 mm NATO", "5.6 mm GP 90 (Swiss)"]])
+                       [[".308 Winchester", "7.62x51 mm NATO"], [".223 Remington", "5.56x45 mm NATO", "5.6 mm GP 90"],
+                        [".45 ACP", ".45 Super"]])
         // Grouping never loses or duplicates a calibre.
-        XCTAssertEqual(CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).flatMap { $0 }.map(\.id), all.map(\.id))
+        XCTAssertEqual(CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).flatMap { $0 }.map(\.id).sorted(), all.map(\.id).sorted())
     }
 
     func testPhotoMatchesShowTwinsInOneRow() throws {
@@ -43,7 +44,7 @@ final class ProfileTwinTests: XCTestCase {
         let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 57.4, caseLength: 44.7, rim: 9.6))
         let rows = DimensionMatcher.grouped(matches)
         let first = try XCTUnwrap(rows.first)
-        XCTAssertEqual(Set(first.items.map(\.cartridge.id)), [".223 Remington", "5.56x45 mm NATO", "5.6 mm GP 90 (Swiss)"])
+        XCTAssertEqual(Set(first.items.map(\.cartridge.id)), [".223 Remington", "5.56x45 mm NATO", "5.6 mm GP 90"])
         XCTAssertEqual(first.lead.fit, .good)
         let compare = DimensionMatcher.toCompare(matches).map(\.id)
         XCTAssertEqual(compare.first, first.lead.cartridge.id)

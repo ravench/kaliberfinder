@@ -16,6 +16,7 @@ struct MatchesView: View {
     @State private var matches: [Match] = []
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(ScanMode.storageKey) private var mode: ScanMode = .auto
+    @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
 
     var body: some View {
         List {
@@ -97,6 +98,7 @@ struct MatchesView: View {
             }
         }
         .onChange(of: mode) { rank() }
+        .onChange(of: includeObsolete) { rank() }
     }
 
     /// Frames on the photo: the competing cartridges while the user picks one; afterwards, or when
@@ -148,7 +150,8 @@ struct MatchesView: View {
     private func rank() {
         guard let analysis else { matches = []; return }
         let size = try? analysis.size(depth: depth).get()
-        matches = Matcher.rank(shape: analysis.shape, size: size, mode: mode)
+        matches = Matcher.rank(shape: analysis.shape, size: size, mode: mode,
+                               cartridges: CartridgeCatalog.matchable(includeObsolete: includeObsolete))
     }
 
     /// Shown instead of matches when several cartridges compete, until the user picks one.

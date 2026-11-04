@@ -16,7 +16,7 @@ import json, os, sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
-from cartridges import CATALOGUE, DISPLAY_ALIASES, PRIMERS, PRIMER_DIAMETERS, RIMFIRE, BALL, MINIE, PELLET  # noqa: E402
+from cartridges import CATALOGUE, DISPLAY_ALIASES, is_obsolete, PRIMERS, PRIMER_DIAMETERS, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
 from outline import outline, bullet_profile  # noqa: E402,F401  (bullet_profile re-exported for tests)
 from headstamps import HEADSTAMPS  # noqa: E402
 
@@ -47,7 +47,8 @@ def build():
         for s in items:
             cartridges.append({"id": s["name"], "name": s["name"], "category": category, "kind": s["kind"],
                                "aliases": s["aliases"], "displayAliases": DISPLAY_ALIASES.get(s["name"], []),
-                               "headstamps": HEADSTAMPS.get(s["name"], []),
+                               "headstamps": HEADSTAMPS.get(s["name"], []), "obsolete": is_obsolete(s["name"]),
+                               "blank": s["profile"] == CRIMPED,
                                "dimensions": dimensions(s), "outline": outline(s),
                                **primer(s)})
     names = {c["name"] for c in cartridges}
