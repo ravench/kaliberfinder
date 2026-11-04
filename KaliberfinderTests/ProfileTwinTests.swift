@@ -26,7 +26,7 @@ final class ProfileTwinTests: XCTestCase {
     }
 
     func testPhotoMatchesShowTwinsInOneRow() throws {
-        let matches = Matcher.rank(shape: try XCTUnwrap(ShapeMatcher.catalogue[".308 Winchester"]), hits: [])
+        let matches = Matcher.rank(shape: try XCTUnwrap(ShapeMatcher.catalogue[".308 Winchester"]))
         let rows = Matcher.grouped(matches)
         XCTAssertEqual(rows.flatMap(\.items).count, matches.count)
         let first = try XCTUnwrap(rows.first)
@@ -38,18 +38,6 @@ final class ProfileTwinTests: XCTestCase {
         let compare = MatchesView.toCompare(matches).map(\.id)
         XCTAssertEqual(compare.filter { [".308 Winchester", "7.62x51 mm NATO"].contains($0) }.count, 1)
         XCTAssertEqual(MatchesView.compareTitle(matches), String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, rows.count))
-    }
-
-    func testHeadstampKeepsTheNamedCalibreApart() throws {
-        let hit = HeadstampReader.Hit(cartridgeID: ".308 Winchester", text: "WIN 308", strength: .strong)
-        let matches = Matcher.rank(shape: try XCTUnwrap(ShapeMatcher.catalogue[".308 Winchester"]), hits: [hit])
-        let rows = Matcher.grouped(matches)
-        let named = try XCTUnwrap(rows.first)
-        XCTAssertEqual(named.items.map(\.cartridge.id), [".308 Winchester"], "the headstamp tells it apart")
-        let nato = try XCTUnwrap(rows.first { $0.lead.cartridge.id == "7.62x51 mm NATO" })
-        XCTAssertTrue(nato.others.isEmpty)
-        XCTAssertEqual(CartridgeCatalog.profileNote(for: nato.lead.cartridge),
-                       String(format: "Im Profil nicht unterscheidbar von %@".loc, ".308 Winchester"))
     }
 
     func testMeasuredDimensionsShowTwinsInOneRow() throws {

@@ -8,7 +8,7 @@ final class BlankTests: XCTestCase {
     private let blankID = ".22 Blank (6.8/11)"
 
     private func rank(_ shape: ShapeMeasurement, mode: ScanMode = .auto, limit: Int = 8) -> [Match] {
-        Matcher.rank(shape: shape, hits: [], mode: mode, limit: limit)
+        Matcher.rank(shape: shape, mode: mode, limit: limit)
     }
 
     func testBlankIsInTheCatalogue() throws {
