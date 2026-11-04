@@ -114,6 +114,9 @@ enum ShapeMatcher {
         return (shape, length + pixelSize)
     }
 
+    /// How far, relative to the width, one side may reach beyond the other before it is cut back.
+    static let mirrorSlack = 0.03
+
     /// The silhouette made mirror-symmetric about its long axis (SCAN-05): in each slice across the
     /// axis, the side that reaches further out is cut back to the other side's reach. A cartridge is
     /// round, so its outline is symmetric; a shadow or a strip of wood grain clings to one side only.
@@ -140,15 +143,18 @@ enum ShapeMatcher {
             minV[i] = min(minV[i], pv); maxV[i] = max(maxV[i], pv)
         }
         let filled = (0..<bins).filter { maxV[$0] >= minV[$0] }
+        let typicalWidth = filled.map { maxV[$0] - minV[$0] }.sorted()[filled.count / 2]
+        // Small differences between the sides (perspective, a soft edge) are kept; a shadow is wider.
+        let slack = max(pixelSize / 2, mirrorSlack * typicalWidth)
         guard let axis = centreLine(slices: filled.map { lo + (Double($0) + 0.5) / Double(bins) * length },
                                     centres: filled.map { (maxV[$0] + minV[$0]) / 2 },
-                                    tolerance: max(pixelSize, 0.03 * filled.map { maxV[$0] - minV[$0] }.sorted()[filled.count / 2]))
+                                    tolerance: max(pixelSize, 0.03 * typicalWidth))
         else { return points }
         let reach = (0..<bins).map { i -> Double in
             let at = axis.offset + axis.slope * (lo + (Double(i) + 0.5) / Double(bins) * length)
             return min(maxV[i] - at, at - minV[i])
         }
-        return points.indices.filter { abs(v[$0] - (axis.offset + axis.slope * u[$0])) <= reach[slice[$0]] + pixelSize / 2 }.map { points[$0] }
+        return points.indices.filter { abs(v[$0] - (axis.offset + axis.slope * u[$0])) <= reach[slice[$0]] + slack }.map { points[$0] }
     }
 
     /// The straight line most slices' centres lie on (within `tolerance`), fitted to those slices:
