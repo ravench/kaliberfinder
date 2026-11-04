@@ -154,6 +154,18 @@ class WorkflowTests(unittest.TestCase):
         self.assertRegex(upload, r"group: testflight\n\s+cancel-in-progress: false")
         self.assertNotRegex(self.workflow, r"^concurrency:", "workflow-level concurrency would hold the wait")
 
+    def test_build_rerun_when_no_runner_picked_it_up(self):
+        # Queued macOS jobs can fail without ever starting (2026-11-04): Build is re-run instead
+        # of silently skipping the upload, but only for that failure and only twice.
+        retry = self.workflow.split("\n  retry:")[1].split("\n  wait:")[0]
+        self.assertIn("workflow_run.conclusion == 'failure'", retry)
+        self.assertIn("workflow_run.event == 'push'", retry)
+        self.assertIn("run_attempt < 3", retry)
+        self.assertIn("actions: write", retry)
+        self.assertIn("not acquired by Runner", retry)
+        self.assertIn('gh run rerun "$RUN" --failed', retry)
+        self.assertIn("runs-on: ubuntu-latest", retry)
+
     def test_actions_run_on_node_24(self):
         # GitHub retired Node 20 for actions; checkout v5 is the first major on Node 24.
         node24 = {"actions/checkout": 5}
