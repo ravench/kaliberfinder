@@ -19,9 +19,12 @@ final class LiDARCamera: NSObject, ObservableObject {
     private let depthOutput = AVCaptureDepthDataOutput()
     private let queue = DispatchQueue(label: "net.forestraven.kaliberfinder.lidar")
     private let motion = CMMotionManager()
-    private var tilt: Double?
+    private(set) var tilt: Double?
+    /// Gravity in device coordinates, for the training data (`TrainingCapture`).
+    private(set) var gravity: [Double]?
     private var lastDepthUpdate = Date.distantPast
     private var onPhoto: ((UIImage, DepthScale?) -> Void)?
+    private var onRawPhoto: ((AVCapturePhoto) -> Void)?
 
     func start() {
         AVCaptureDevice.requestAccess(for: .video) { [self] granted in
@@ -38,6 +41,7 @@ final class LiDARCamera: NSObject, ObservableObject {
             motion.startDeviceMotionUpdates(to: .main) { [weak self] data, _ in
                 guard let g = data?.gravity else { return }
                 self?.tilt = LiDARGuidance.tilt(gravityX: g.x, y: g.y, z: g.z)
+                self?.gravity = [g.x, g.y, g.z]
             }
         }
     }
@@ -51,15 +55,28 @@ final class LiDARCamera: NSObject, ObservableObject {
     func capture(_ completion: @escaping (UIImage, DepthScale?) -> Void) {
         queue.async { [self] in
             onPhoto = completion
-            let settings = AVCapturePhotoSettings()
-            settings.isDepthDataDeliveryEnabled = photoOutput.isDepthDataDeliveryEnabled
-            settings.isDepthDataFiltered = true
-            // Portrait, like the preview (the app runs in portrait only).
-            if let connection = photoOutput.connection(with: .video), connection.isVideoRotationAngleSupported(90) {
-                connection.videoRotationAngle = 90
-            }
-            photoOutput.capturePhoto(with: settings, delegate: self)
+            takePhoto()
         }
+    }
+
+    /// Takes a photo and hands it over as the camera delivered it, with depth and calibration
+    /// (`TrainingRecorder`), on the main queue.
+    func captureRaw(_ completion: @escaping (AVCapturePhoto) -> Void) {
+        queue.async { [self] in
+            onRawPhoto = completion
+            takePhoto()
+        }
+    }
+
+    private func takePhoto() {
+        let settings = AVCapturePhotoSettings()
+        settings.isDepthDataDeliveryEnabled = photoOutput.isDepthDataDeliveryEnabled
+        settings.isDepthDataFiltered = true
+        // Portrait, like the preview (the app runs in portrait only).
+        if let connection = photoOutput.connection(with: .video), connection.isVideoRotationAngleSupported(90) {
+            connection.videoRotationAngle = 90
+        }
+        photoOutput.capturePhoto(with: settings, delegate: self)
     }
 
     private func configure() {
@@ -92,20 +109,23 @@ final class LiDARCamera: NSObject, ObservableObject {
 
     /// Table distance in mm from a depth map: the valid samples in the central half of the frame.
     static func tableDistance(_ depthData: AVDepthData) -> Double? {
+        depthValues(depthData).flatMap { SizeEstimator.tableDistance(depth: $0.values, width: $0.width, height: $0.height) }
+    }
+
+    /// The depth map's values in metres, row by row.
+    static func depthValues(_ depthData: AVDepthData) -> (values: [Float], width: Int, height: Int)? {
         let depth = depthData.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32).depthDataMap
         CVPixelBufferLockBaseAddress(depth, .readOnly)
         defer { CVPixelBufferUnlockBaseAddress(depth, .readOnly) }
         guard let base = CVPixelBufferGetBaseAddress(depth) else { return nil }
         let width = CVPixelBufferGetWidth(depth), height = CVPixelBufferGetHeight(depth)
         let rowBytes = CVPixelBufferGetBytesPerRow(depth)
-        var samples: [Float] = []
-        for y in stride(from: height / 4, to: height * 3 / 4, by: 2) {
-            let row = base.advanced(by: y * rowBytes)
-            for x in stride(from: width / 4, to: width * 3 / 4, by: 2) {
-                samples.append(row.load(fromByteOffset: x * 4, as: Float.self))
-            }
+        var values: [Float] = []
+        values.reserveCapacity(width * height)
+        for y in 0..<height {
+            values.append(contentsOf: UnsafeBufferPointer(start: base.advanced(by: y * rowBytes).assumingMemoryBound(to: Float.self), count: width))
         }
-        return SizeEstimator.tableDistance(samples: samples)
+        return (values, width, height)
     }
 
     /// Distance and focal length for a photo, nil when the depth isn't absolute or is missing.
@@ -135,6 +155,11 @@ extension LiDARCamera: AVCaptureDepthDataOutputDelegate {
 
 extension LiDARCamera: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        if let raw = onRawPhoto {
+            onRawPhoto = nil
+            DispatchQueue.main.async { raw(photo) }
+            return
+        }
         let completion = onPhoto
         onPhoto = nil
         guard let data = photo.fileDataRepresentation(), let image = UIImage(data: data) else { return }
