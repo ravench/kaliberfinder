@@ -67,20 +67,20 @@ enum ColorSegmenter {
         let edges = edges ?? GradientImage(image)
         let longSide = Double(max(image.width, image.height))
         let pad = max(Double(max(box.x1 - box.x0, box.y1 - box.y0)) * 0.6, longSide / 16)
-        var chosen: (mask: [Bool], crop: Box, score: OutlineScore)?
+        var chosen: (mask: [Bool], box: Box, score: OutlineScore)?
         for factor in paddings {
             let p = Int(pad * factor)
             let crop = Box(x0: max(0, box.x0 - p), y0: max(0, box.y0 - p),
                            x1: min(image.width, box.x1 + p), y1: min(image.height, box.y1 + p))
-            for (mask, score) in candidates(image, crop, edges: edges) where score.value > (chosen?.score.value ?? 0) {
-                chosen = (mask, crop, score)
+            for candidate in candidates(image, crop, edges: edges) where candidate.score.value > (chosen?.score.value ?? 0) {
+                chosen = candidate
             }
         }
         guard let found = chosen else { return nil }
-        let w = found.crop.x1 - found.crop.x0
+        let w = found.box.x1 - found.box.x0
         var points: [Point] = []
         for i in found.mask.indices where found.mask[i] {
-            points.append(Point(x: Double(found.crop.x0 + i % w), y: Double(found.crop.y0 + i / w)))
+            points.append(Point(x: Double(found.box.x0 + i % w), y: Double(found.box.y0 + i / w)))
         }
         return (points, found.score)
     }
@@ -169,7 +169,7 @@ enum ColorSegmenter {
     /// Patches inside `crop` whose colour (and, in a second pass, brightness) differs from the
     /// crop's edge, at a few thresholds, holes filled, each with its score; patches touching the
     /// crop's edge and patches that don't look like a cartridge are left out.
-    static func candidates(_ image: RGBImage, _ crop: Box, edges: GradientImage) -> [(mask: [Bool], score: OutlineScore)] {
+    static func candidates(_ image: RGBImage, _ crop: Box, edges: GradientImage) -> [(mask: [Bool], box: Box, score: OutlineScore)] {
         let w = crop.x1 - crop.x0, h = crop.y1 - crop.y0
         guard w > 6, h > 6 else { return [] }
         var cropped = [Float](repeating: 0, count: w * h * 3)
@@ -178,7 +178,8 @@ enum ColorSegmenter {
             for i in 0..<(w * 3) { cropped[y * w * 3 + i] = image.pixels[src + i] }
         }
         let colours = chroma(RGBImage(width: w, height: h, pixels: cropped)).pixels
-        var result: [(mask: [Bool], score: OutlineScore)] = []
+        var result: [(mask: [Bool], box: Box, score: OutlineScore)] = []
+        let cropEdgeMean = edges.mean(x0: crop.x0, y0: crop.y0, x1: crop.x1, y1: crop.y1)
         for weight in [0, brightnessWeight] {
             let distance = distanceFromEdge(colours: colours, original: cropped, brightness: weight, width: w, height: h)
             let otsuThreshold = otsu(distance)
@@ -189,11 +190,16 @@ enum ColorSegmenter {
                     .filter { $0.count >= OutlineScore.minPixels && !touchesBorder($0, width: w, height: h) }
                     .sorted { $0.count > $1.count }
                 for patch in patches.prefix(patchesPerCut) {
-                    var m = [Bool](repeating: false, count: w * h)
-                    for p in patch { m[p] = true }
-                    m = fillHoles(m, width: w, height: h)
-                    if let score = OutlineScore.score(mask: m, width: w, height: h, origin: (crop.x0, crop.y0), edges: edges) {
-                        result.append((m, score))
+                    // Within the patch's bounds plus one pixel, so filling holes stays cheap.
+                    let b = bounds(patch, width: w)
+                    let bx = b.x0 - 1, by = b.y0 - 1, bw = b.x1 - b.x0 + 3, bh = b.y1 - b.y0 + 3
+                    var m = [Bool](repeating: false, count: bw * bh)
+                    for p in patch { m[(p / w - by) * bw + p % w - bx] = true }
+                    m = fillHoles(m, width: bw, height: bh)
+                    let box = Box(x0: crop.x0 + bx, y0: crop.y0 + by, x1: crop.x0 + bx + bw, y1: crop.y0 + by + bh)
+                    if let score = OutlineScore.score(mask: m, width: bw, height: bh, origin: (box.x0, box.y0),
+                                                      edges: edges, edgeMean: cropEdgeMean) {
+                        result.append((m, box, score))
                     }
                 }
             }
