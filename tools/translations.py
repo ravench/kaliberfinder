@@ -103,7 +103,19 @@ T = {
     "Andere Patrone wählen": ("Choose another cartridge", "Choisir une autre cartouche", "Scegli un'altra cartuccia"),
     "Patrone %lld": ("Cartridge %lld", "Cartouche %lld", "Cartuccia %lld"),
     "Keine Patrone im Bild erkannt.": ("No cartridge found in the photo.", "Aucune cartouche détectée sur la photo.", "Nessuna cartuccia trovata nella foto."),
-    "Keine passenden Kaliber gefunden.": ("No matching calibres found.", "Aucun calibre correspondant trouvé.", "Nessun calibro corrispondente trovato."),
+    "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.": (
+        "No matching calibres found. Measure the cartridge with a calliper and enter the dimensions.",
+        "Aucun calibre correspondant trouvé. Mesurez la cartouche au pied à coulisse et saisissez les dimensions.",
+        "Nessun calibro corrispondente trovato. Misura la cartuccia con un calibro a corsoio e inserisci le dimensioni."),
+    "Ohne LiDAR-Messung zeigt das Foto nicht, wie gross die Patrone ist. Miss Länge und Durchmesser mit einer Schieblehre für ein sicheres Ergebnis.": (
+        "Without a LiDAR measurement the photo can't tell how big the cartridge is. Measure length and diameter with a calliper for a sure result.",
+        "Sans mesure LiDAR, la photo ne montre pas la taille de la cartouche. Mesurez la longueur et le diamètre au pied à coulisse pour un résultat sûr.",
+        "Senza misura LiDAR la foto non mostra quanto è grande la cartuccia. Misura lunghezza e diametro con un calibro a corsoio per un risultato sicuro."),
+    "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.": (
+        "No sure match. Measure the cartridge with a calliper and enter the dimensions.",
+        "Pas de correspondance sûre. Mesurez la cartouche au pied à coulisse et saisissez les dimensions.",
+        "Nessuna corrispondenza sicura. Misura la cartuccia con un calibro a corsoio e inserisci le dimensioni."),
+    "Masse von Hand eingeben": ("Enter dimensions by hand", "Saisir les dimensions à la main", "Inserisci le dimensioni a mano"),
     "Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.": (
         "Lay the cartridge on the screen, base on the zero line, and compare.",
         "Posez la cartouche sur l'écran, le culot sur la ligne zéro, et comparez.",
