@@ -57,7 +57,8 @@ final class MatcherTests: XCTestCase {
         let disc = ShapeMeasurement(aspect: 1, profile: [1])
         let depth = DepthScale(tableDistance: 250, focalLength: 3000, referenceLongSide: 4032)
         let all = MatchesView.notes(for: PhotoAnalysis(shape: disc)) + MatchesView.notes(for: PhotoAnalysis(shape: nil), depth: depth)
-        XCTAssertFalse(all.contains { $0.contains("Aufschrift") || $0.localizedCaseInsensitiveContains("headstamp") }, all.joined(separator: "\n"))
+        let words = ["Aufschrift", "headstamp", "marking"]
+        XCTAssertFalse(all.contains { note in words.contains { note.localizedCaseInsensitiveContains($0) } }, all.joined(separator: "\n"))
     }
 
     func testCompareButtonTakesAllMatches() throws {
