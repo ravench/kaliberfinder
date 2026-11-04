@@ -99,21 +99,27 @@ enum PhotoAnalyzer {
             box?.map { CGPoint(x: $0.x / Double(cgImage.width), y: $0.y / Double(cgImage.height)) }
         }
         let rgb = rgbImage(cgImage)
+        let edges = rgb.map(GradientImage.init)
         var measuredPoints: [Point] = []
+        var visionScore: OutlineScore?
         if (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
-            let (points, step, boxes) = silhouette(of: observation, handler: handler)
+            let (found, step, boxes) = silhouette(of: observation, handler: handler)
+            let points = ShapeMatcher.mirrorTrimmed(found, pixelSize: Double(step))
             measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
             if measured != nil {
                 candidates = boxes
                 outline = normalize(ShapeMatcher.orientedBox(points, pixelSize: Double(step)))
                 measuredPoints = points
+                visionScore = edges.flatMap { OutlineScore.score(points: points, step: step, edges: $0) }
             }
         }
-        // Vision found only the table, box or paper: find the cartridge by its colour.
-        if measured == nil, let rgb, let points = ColorSegmenter.segment(rgb) {
-            let (sampled, step) = thinned(points)
-            measured = ShapeMatcher.measureWithLength(sampled, pixelSize: Double(step))
-            if measured != nil {
+        // Vision found only the table, box or paper, or its outline looks less like a cartridge
+        // (a shadow on one side, a piece missing) than the colour cut-out's: take the cut-out.
+        if let rgb, let edges, let colour = ColorSegmenter.best(rgb, edges: edges),
+           measured == nil || colour.score.value > (visionScore?.value ?? 0) {
+            let (sampled, step) = thinned(colour.points)
+            if let fromColour = ShapeMatcher.measureWithLength(sampled, pixelSize: Double(step)) {
+                measured = fromColour
                 outline = normalize(ShapeMatcher.orientedBox(sampled, pixelSize: Double(step)))
                 candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
                 measuredPoints = sampled

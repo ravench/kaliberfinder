@@ -31,15 +31,15 @@ struct RGBImage {
 ///
 /// 1. Locate: in a small copy, pixels whose colour differs from their surroundings (the cartridge)
 ///    form a cluster near the centre that doesn't touch the frame.
-/// 2. Cut out: around that cluster, pixels whose colour (not brightness, so shadows don't count)
-///    differs from the background form the cartridge; holes from reflections are filled.
+/// 2. Cut out: around that cluster, pixels whose colour (not brightness, so shadows don't count;
+///    in a second pass a little brightness too, for brass on wood) differs from the background
+///    form patches; holes from reflections are filled. Of the patches from a few crops and
+///    thresholds, the one that looks most like a cartridge is taken (see `OutlineScore`).
 enum ColorSegmenter {
     /// Long side of the copy used to locate the cartridge.
     static let locateSide = 800
     /// Share of the most contrasting pixels kept when locating.
     static let locateQuantile: Float = 0.99
-    /// Fewest pixels a silhouette may have.
-    static let minPixels = 50
 
     struct Box: Equatable {
         var x0: Int, y0: Int, x1: Int, y1: Int
@@ -47,18 +47,43 @@ enum ColorSegmenter {
 
     /// Pixels of the cartridge (x, y in image pixels), nil if nothing stands out.
     static func segment(_ image: RGBImage) -> [Point]? {
+        best(image)?.points
+    }
+
+    /// Crops around the located cluster, as factors of the first padding.
+    static let paddings: [Double] = [1, 2, 4]
+    /// Thresholds tried, as factors of Otsu's threshold on the colour distance.
+    static let thresholdFactors: [Float] = [0.8, 1, 1.3]
+    /// Weight of brightness next to colour in the second cut-out (brass on wood differs more in
+    /// brightness than in colour).
+    static let brightnessWeight: Float = 0.3
+    /// Largest patches per cut-out that are scored.
+    static let patchesPerCut = 6
+
+    /// The patch that looks most like a cartridge (see `OutlineScore`) among the cut-outs of a few
+    /// crops around the located cluster, with colour alone and with brightness, at a few thresholds;
+    /// made symmetric about its axis (see `ShapeMatcher.mirrorTrimmed`).
+    static func best(_ image: RGBImage, edges: GradientImage? = nil) -> (points: [Point], score: OutlineScore)? {
         guard let box = locate(image) else { return nil }
+        let edges = edges ?? GradientImage(image)
         let longSide = Double(max(image.width, image.height))
-        var pad = max(Double(max(box.x1 - box.x0, box.y1 - box.y0)) * 0.6, longSide / 16)
-        for _ in 0..<3 {
-            let crop = Box(x0: max(0, box.x0 - Int(pad)), y0: max(0, box.y0 - Int(pad)),
-                           x1: min(image.width, box.x1 + Int(pad)), y1: min(image.height, box.y1 + Int(pad)))
-            guard let cut = cutOut(image, crop) else { return nil }
-            if !cut.runsOff { return cut.points }
-            // The object runs off the crop: look wider.
-            pad *= 2
+        let pad = max(Double(max(box.x1 - box.x0, box.y1 - box.y0)) * 0.6, longSide / 16)
+        var chosen: (mask: [Bool], box: Box, score: OutlineScore)?
+        for factor in paddings {
+            let p = Int(pad * factor)
+            let crop = Box(x0: max(0, box.x0 - p), y0: max(0, box.y0 - p),
+                           x1: min(image.width, box.x1 + p), y1: min(image.height, box.y1 + p))
+            for candidate in candidates(image, crop, edges: edges) where candidate.score.value > (chosen?.score.value ?? 0) {
+                chosen = candidate
+            }
         }
-        return nil
+        guard let found = chosen else { return nil }
+        let w = found.box.x1 - found.box.x0
+        var points: [Point] = []
+        for i in found.mask.indices where found.mask[i] {
+            points.append(Point(x: Double(found.box.x0 + i % w), y: Double(found.box.y0 + i / w)))
+        }
+        return (ShapeMatcher.mirrorTrimmed(points), found.score)
     }
 
     // MARK: - Locate
@@ -142,46 +167,89 @@ enum ColorSegmenter {
 
     // MARK: - Cut out
 
-    /// The largest patch inside `crop` whose colour differs from the crop's edge. `runsOff` is
-    /// true when every such patch touches the edge, i.e. the crop is too small.
-    static func cutOut(_ image: RGBImage, _ crop: Box) -> (points: [Point], runsOff: Bool)? {
+    /// Patches inside `crop` whose colour (and, in a second pass, brightness) differs from the
+    /// crop's edge, at a few thresholds, holes filled, each with its score; patches touching the
+    /// crop's edge and patches that don't look like a cartridge are left out.
+    static func candidates(_ image: RGBImage, _ crop: Box, edges: GradientImage) -> [(mask: [Bool], box: Box, score: OutlineScore)] {
         let w = crop.x1 - crop.x0, h = crop.y1 - crop.y0
-        guard w > 6, h > 6 else { return nil }
+        guard w > 6, h > 6 else { return [] }
         var cropped = [Float](repeating: 0, count: w * h * 3)
         for y in 0..<h {
             let src = ((crop.y0 + y) * image.width + crop.x0) * 3
             for i in 0..<(w * 3) { cropped[y * w * 3 + i] = image.pixels[src + i] }
         }
         let colours = chroma(RGBImage(width: w, height: h, pixels: cropped)).pixels
-        // Background colour: the median along the crop's edge.
-        var ring: [[Float]] = [[], [], []]
+        var result: [(mask: [Bool], box: Box, score: OutlineScore)] = []
+        let cropEdgeMean = edges.mean(x0: crop.x0, y0: crop.y0, x1: crop.x1, y1: crop.y1)
+        for weight in [0, brightnessWeight] {
+            let distance = distanceFromEdge(colours: colours, original: cropped, brightness: weight, width: w, height: h)
+            let otsuThreshold = otsu(distance)
+            for factor in thresholdFactors {
+                let threshold = otsuThreshold * factor
+                let mask = opened(distance.map { $0 > threshold }, width: w, height: h)
+                let patches = components(mask, width: w, height: h)
+                    .filter { $0.count >= OutlineScore.minPixels && !touchesBorder($0, width: w, height: h) }
+                    .sorted { $0.count > $1.count }
+                for patch in patches.prefix(patchesPerCut) {
+                    // Within the patch's bounds plus one pixel, so filling holes stays cheap.
+                    let b = bounds(patch, width: w)
+                    let bx = b.x0 - 1, by = b.y0 - 1, bw = b.x1 - b.x0 + 3, bh = b.y1 - b.y0 + 3
+                    var m = [Bool](repeating: false, count: bw * bh)
+                    for p in patch { m[(p / w - by) * bw + p % w - bx] = true }
+                    m = fillHoles(m, width: bw, height: bh)
+                    let box = Box(x0: crop.x0 + bx, y0: crop.y0 + by, x1: crop.x0 + bx + bw, y1: crop.y0 + by + bh)
+                    if let score = OutlineScore.score(mask: m, width: bw, height: bh, origin: (box.x0, box.y0),
+                                                      edges: edges, edgeMean: cropEdgeMean) {
+                        result.append((m, box, score))
+                    }
+                }
+            }
+        }
+        return result
+    }
+
+    /// Distance of each pixel's colour (plus `brightness` × its brightness) from the median along
+    /// the crop's edge, i.e. from the background.
+    static func distanceFromEdge(colours: [Float], original: [Float], brightness: Float, width w: Int, height h: Int) -> [Float] {
+        let channels = brightness > 0 ? 4 : 3
+        var features = [Float](repeating: 0, count: w * h * channels)
+        for i in 0..<(w * h) {
+            for c in 0..<3 { features[i * channels + c] = colours[i * 3 + c] }
+            if channels == 4 { features[i * 4 + 3] = brightness * (original[i * 3] + original[i * 3 + 1] + original[i * 3 + 2]) / 3 }
+        }
+        var ring = [[Float]](repeating: [], count: channels)
         for y in 0..<h {
             for x in 0..<w where y < 3 || y >= h - 3 || x < 3 || x >= w - 3 {
-                for c in 0..<3 { ring[c].append(colours[(y * w + x) * 3 + c]) }
+                for c in 0..<channels { ring[c].append(features[(y * w + x) * channels + c]) }
             }
         }
         let background = ring.map { quantile($0, 0.5) }
         var distance = [Float](repeating: 0, count: w * h)
         for i in 0..<(w * h) {
             var sum: Float = 0
-            for c in 0..<3 {
-                let d = colours[i * 3 + c] - background[c]
+            for c in 0..<channels {
+                let d = features[i * channels + c] - background[c]
                 sum += d * d
             }
             distance[i] = sum.squareRoot()
         }
-        let threshold = otsu(distance)
-        let patches = components(distance.map { $0 > threshold }, width: w, height: h).filter { $0.count >= minPixels }
-        let inner = patches.filter { !touchesBorder($0, width: w, height: h) }
-        guard let best = (inner.isEmpty ? patches : inner).max(by: { $0.count < $1.count }) else { return nil }
-        var mask = [Bool](repeating: false, count: w * h)
-        for p in best { mask[p] = true }
-        mask = fillHoles(mask, width: w, height: h)
-        var points: [Point] = []
-        for i in 0..<(w * h) where mask[i] {
-            points.append(Point(x: Double(crop.x0 + i % w), y: Double(crop.y0 + i / w)))
+        return distance
+    }
+
+    /// Erosion then dilation with a plus-shaped 3 × 3 element: removes one-pixel threads and specks
+    /// that join the cartridge to the grain around it.
+    static func opened(_ mask: [Bool], width w: Int, height h: Int) -> [Bool] {
+        // Erosion (`all`) or dilation; pixels outside the image count as background.
+        func morph(_ m: [Bool], all: Bool) -> [Bool] {
+            var out = m
+            for i in m.indices {
+                let x = i % w, y = i / w
+                let l = x > 0 && m[i - 1], r = x < w - 1 && m[i + 1], u = y > 0 && m[i - w], d = y < h - 1 && m[i + w]
+                out[i] = all ? (m[i] && l && r && u && d) : (m[i] || l || r || u || d)
+            }
+            return out
         }
-        return (points, inner.isEmpty)
+        return morph(morph(mask, all: true), all: false)
     }
 
     // MARK: - Helpers
@@ -254,10 +322,10 @@ enum ColorSegmenter {
                 let p = patch[i]
                 i += 1
                 let x = p % w, y = p / w
-                for (q, ok) in [(p - 1, x > 0), (p + 1, x < w - 1), (p - w, y > 0), (p + w, y < h - 1)] where ok && mask[q] && !label[q] {
-                    label[q] = true
-                    patch.append(q)
-                }
+                if x > 0, mask[p - 1], !label[p - 1] { label[p - 1] = true; patch.append(p - 1) }
+                if x < w - 1, mask[p + 1], !label[p + 1] { label[p + 1] = true; patch.append(p + 1) }
+                if y > 0, mask[p - w], !label[p - w] { label[p - w] = true; patch.append(p - w) }
+                if y < h - 1, mask[p + w], !label[p + w] { label[p + w] = true; patch.append(p + w) }
             }
             result.append(patch)
         }
