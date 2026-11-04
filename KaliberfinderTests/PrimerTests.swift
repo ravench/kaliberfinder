@@ -9,7 +9,7 @@ final class PrimerTests: XCTestCase {
     func testKnownPrimers() throws {
         XCTAssertEqual(try cartridge("9x19 mm").primer, Cartridge.Primer(type: "small-pistol", diameter: 4.45))
         XCTAssertEqual(try cartridge(".45 ACP").primer?.type, "large-pistol")
-        XCTAssertEqual(try cartridge("5.6 mm GP 90 (Swiss)").primer?.type, "small-rifle")
+        XCTAssertEqual(try cartridge("5.6 mm GP 90").primer?.type, "small-rifle")
         XCTAssertEqual(try cartridge("7.5x55 mm Swiss (GP 11)").primer, Cartridge.Primer(type: "large-rifle", diameter: 5.33))
         XCTAssertEqual(try cartridge(".50 BMG").primer?.diameter ?? 0, 8.03, accuracy: 0.001)
         XCTAssertEqual(try cartridge("12/70").primer?.type, "shotshell-209")

@@ -73,8 +73,8 @@ enum Matcher {
     static func rank(shape: ShapeMeasurement?,
                      size: MeasuredSize? = nil,
                      mode: ScanMode = .auto,
-                     cartridges: [Cartridge] = CartridgeCatalog.all,
-                     limit: Int = 8) -> [Match] {
+                     cartridges: [Cartridge] = CartridgeCatalog.current,
+                     limit: Int = 12) -> [Match] {
         let photoPart = shape.map { mode.part(for: $0) } ?? .cartridge
         var matches: [Match] = []
         for c in cartridges {

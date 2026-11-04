@@ -16,6 +16,35 @@ GP1890 = "7.5x53.5 mm Swiss (GP 1890)"
 
 
 
+class ObsoleteFlagTests(unittest.TestCase):
+    """Every entry says whether it is obsolete, so the app can leave those out of matching."""
+
+    def test_every_entry_has_the_flag(self):
+        by_name = {c["name"]: c for c in generate_data.build()}
+        self.assertTrue(all(isinstance(c["obsolete"], bool) for c in by_name.values()))
+        self.assertTrue(by_name[GP1890]["obsolete"])
+        self.assertTrue(by_name["10.4x38 mm R Vetterli"]["obsolete"])
+        self.assertFalse(by_name["7.5x55 mm Swiss (GP 11)"]["obsolete"])
+        self.assertFalse(by_name["5.6 mm GP 90"]["obsolete"])
+
+    def test_gp90_has_the_short_name(self):
+        names = {c["name"] for c in generate_data.build()}
+        self.assertIn("5.6 mm GP 90", names)
+        self.assertNotIn("5.6 mm GP 90 (Swiss)", names)
+
+
+class BlankFlagTests(unittest.TestCase):
+    """Crimped blanks are flagged, so the app can leave out the bullet diameter."""
+
+    def test_only_the_crimped_blank_is_a_blank(self):
+        cartridges = generate_data.build()
+        self.assertTrue(all(isinstance(c["blank"], bool) for c in cartridges))
+        self.assertEqual([c["name"] for c in cartridges if c["blank"]], [".22 Blank (6.8/11)"])
+        blank = next(c for c in cartridges if c["blank"])
+        self.assertNotIn("bullet", blank["outline"])
+        self.assertEqual(blank["dimensions"]["caseLength"], blank["dimensions"]["overallLength"])
+
+
 class CalibreDataSubmoduleTests(unittest.TestCase):
     """The catalogue comes from the shared calibre-data submodule (github.com/ravench/calibre-data)."""
 

@@ -9,6 +9,7 @@ struct MeasureView: View {
     @State private var shape: CaseShape = .any
     @State private var selection: [Cartridge] = []
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
+    @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
 
     private var measured: MeasuredDimensions {
         MeasuredDimensions(overallLength: unit.parse(overallLength),
@@ -19,7 +20,7 @@ struct MeasureView: View {
     }
 
     var body: some View {
-        let matches = DimensionMatcher.rank(measured)
+        let matches = DimensionMatcher.rank(measured, cartridges: CartridgeCatalog.matchable(includeObsolete: includeObsolete))
         List {
             Section {
                 UnitPicker(unit: $unit)

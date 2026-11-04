@@ -8,6 +8,7 @@ struct HomeView: View {
     @State private var libraryItem: PhotosPickerItem?
     @State private var photo: PickedPhoto?
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
+    @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
 
     var body: some View {
         List {
@@ -54,6 +55,13 @@ struct HomeView: View {
             }
             Section("Einheiten") {
                 UnitPicker(unit: $unit)
+            }
+            Section {
+                Toggle("Veraltete Kaliber berücksichtigen", isOn: $includeObsolete)
+            } header: {
+                Text("Erkennung")
+            } footer: {
+                Text("Auch Kaliber vorschlagen, die nicht mehr regulär hergestellt werden, z. B. GP 1890 oder Vetterli. «Alle Kaliber» zeigt sie immer.")
             }
             Section {
                 Text(verbatim: "© 2026 Simon Giotta · PolyForm Noncommercial 1.0.0")
