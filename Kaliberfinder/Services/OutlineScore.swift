@@ -40,10 +40,11 @@ struct OutlineScore: Equatable {
     }
 
     /// Scores a mask of `width` × `height` cells, `step` pixels apart, cell (0, 0) at pixel
-    /// `origin` of the photo whose brightness gradient is `edges`.
+    /// `origin` of the photo whose brightness gradient is `edges`; the outline's gradient is compared
+    /// with `edgeMean`, by default the mean over the mask's box.
     /// Nil when the patch is too small or not elongated like a cartridge.
     static func score(mask: [Bool], width w: Int, height h: Int, step: Int = 1,
-                      origin: (x: Int, y: Int) = (0, 0), edges: GradientImage) -> OutlineScore? {
+                      origin: (x: Int, y: Int) = (0, 0), edges: GradientImage, edgeMean: Float? = nil) -> OutlineScore? {
         var points: [Point] = []
         for i in mask.indices where mask[i] { points.append(Point(x: Double(i % w), y: Double(i / w))) }
         guard points.count * step * step >= minPixels, points.count >= 20 else { return nil }
@@ -83,7 +84,8 @@ struct OutlineScore: Equatable {
         }
         guard outlineCells > 0 else { return nil }
         let x0 = origin.x, y0 = origin.y, x1 = origin.x + w * step, y1 = origin.y + h * step
-        let edgeStrength = (sum / Double(outlineCells)) / (Double(edges.mean(x0: x0, y0: y0, x1: x1, y1: y1)) + 1e-3)
+        let mean = edgeMean ?? edges.mean(x0: x0, y0: y0, x1: x1, y1: y1)
+        let edgeStrength = (sum / Double(outlineCells)) / (Double(mean) + 1e-3)
         return OutlineScore(aspect: length / body, symmetry: symmetry, solidity: solidity,
                             edgeStrength: edgeStrength, size: n * Double(step * step))
     }
