@@ -54,4 +54,8 @@ jobs:
             -project Kaliberfinder.xcodeproj \
             -scheme Kaliberfinder \
             -destination "id=$UDID" \
-            CODE_SIGNING_ALLOWED=NO | xcpretty
+            CODE_SIGNING_ALLOWED=NO | tee "$RUNNER_TEMP/test.log" | xcpretty
+      # xcpretty hides print(); show the photo set measurement report (PhotoSetTests).
+      - name: Photo set report
+        if: always()
+        run: grep "^PHOTOSET" "$RUNNER_TEMP/test.log" || true
