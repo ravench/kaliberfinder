@@ -26,6 +26,14 @@ final class DimensionMatcherTests: XCTestCase {
         XCTAssertNotEqual(gp11?.fit, .good, "GP 11's case is 2 mm longer")
     }
 
+    func testGP1890IsOnlyFoundWithObsoleteCalibresSwitchedOn() {
+        let gp1890 = MeasuredDimensions(overallLength: 77.0, caseLength: 53.5, rim: 12.5)
+        let without = DimensionMatcher.rank(gp1890, cartridges: CartridgeCatalog.matchable(includeObsolete: false))
+        XCTAssertFalse(without.contains { $0.cartridge.id == "7.5x53.5 mm Swiss (GP 1890)" })
+        let with = DimensionMatcher.rank(gp1890, cartridges: CartridgeCatalog.matchable(includeObsolete: true))
+        XCTAssertEqual(with.first?.cartridge.id, "7.5x53.5 mm Swiss (GP 1890)")
+    }
+
     func testIdenticalCalibresTie() {
         let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 71.1, caseLength: 51.2, rim: 11.9))
         XCTAssertEqual(Set(matches.prefix(2).map(\.cartridge.id)), [".308 Winchester", "7.62x51 mm NATO"])

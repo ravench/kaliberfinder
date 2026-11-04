@@ -70,6 +70,12 @@ T = {
     "Näher heran": ("Move closer", "Rapprochez-vous", "Avvicinati"),
     "iPhone parallel zum Tisch halten": ("Hold the iPhone parallel to the table", "Tenez l'iPhone parallèle à la table", "Tieni l'iPhone parallelo al tavolo"),
     "Einheiten": ("Units", "Unités", "Unità"),
+    "Erkennung": ("Recognition", "Reconnaissance", "Riconoscimento"),
+    "Veraltete Kaliber berücksichtigen": ("Include obsolete calibres", "Inclure les calibres obsolètes", "Includi calibri obsoleti"),
+    "Auch Kaliber vorschlagen, die nicht mehr regulär hergestellt werden, z. B. GP 1890 oder Vetterli. «Alle Kaliber» zeigt sie immer.": (
+        "Also suggest calibres that are no longer in regular production, e.g. GP 1890 or Vetterli. “All calibres” always shows them.",
+        "Proposer aussi des calibres qui ne sont plus fabriqués en série, p. ex. GP 1890 ou Vetterli. « Tous les calibres » les affiche toujours.",
+        "Proporre anche calibri non più prodotti regolarmente, p. es. GP 1890 o Vetterli. «Tutti i calibri» li mostra sempre."),
     "Gemessen in Zoll": ("Measured in inches", "Mesuré en pouces", "Misurato in pollici"),
     "Imperial (Zoll)": ("Imperial (in)", "Impérial (po)", "Imperiale (in)"),
     "Lineal in Zoll": ("Ruler in inches", "Règle en pouces", "Righello in pollici"),

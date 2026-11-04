@@ -277,6 +277,29 @@
         }
       }
     },
+    "Auch Kaliber vorschlagen, die nicht mehr regulär hergestellt werden, z. B. GP 1890 oder Vetterli. «Alle Kaliber» zeigt sie immer.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Also suggest calibres that are no longer in regular production, e.g. GP 1890 or Vetterli. “All calibres” always shows them."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proposer aussi des calibres qui ne sont plus fabriqués en série, p. ex. GP 1890 ou Vetterli. « Tous les calibres » les affiche toujours."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proporre anche calibri non più prodotti regolarmente, p. es. GP 1890 o Vetterli. «Tutti i calibri» li mostra sempre."
+          }
+        }
+      }
+    },
     "Auch bekannt als": {
       "extractionState": "manual",
       "localizations": {
@@ -917,6 +940,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Riconosciuto: %@"
+          }
+        }
+      }
+    },
+    "Erkennung": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recognition"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconnaissance"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riconoscimento"
           }
         }
       }
@@ -2987,6 +3033,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Risultati"
+          }
+        }
+      }
+    },
+    "Veraltete Kaliber berücksichtigen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Include obsolete calibres"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inclure les calibres obsolètes"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Includi calibri obsoleti"
           }
         }
       }
