@@ -45,6 +45,17 @@ enum SizeEstimator {
         return Double(valid[valid.count / 2]) * 1000
     }
 
+    /// The surface distance from a whole depth map (metres, row by row): every second sample of
+    /// its central half, as `tableDistance(samples:)` expects.
+    static func tableDistance(depth: [Float], width: Int, height: Int) -> Double? {
+        guard width > 0, height > 0, depth.count == width * height else { return nil }
+        var samples: [Float] = []
+        for y in stride(from: height / 4, to: height * 3 / 4, by: 2) {
+            for x in stride(from: width / 4, to: width * 3 / 4, by: 2) { samples.append(depth[y * width + x]) }
+        }
+        return tableDistance(samples: samples)
+    }
+
     /// Size of the cartridge whose silhouette is `lengthPixels` long with length/width ratio `aspect`,
     /// in an image whose long side is `imageLongSide` pixels.
     ///
