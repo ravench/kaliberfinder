@@ -107,10 +107,6 @@ T = {
         "No matching calibres found. Measure the cartridge with a calliper and enter the dimensions.",
         "Aucun calibre correspondant trouvé. Mesurez la cartouche au pied à coulisse et saisissez les dimensions.",
         "Nessun calibro corrispondente trovato. Misura la cartuccia con un calibro a corsoio e inserisci le dimensioni."),
-    "Ohne LiDAR-Messung zeigt das Foto nicht, wie gross die Patrone ist. Miss Länge und Durchmesser mit einer Schieblehre für ein sicheres Ergebnis.": (
-        "Without a LiDAR measurement the photo can't tell how big the cartridge is. Measure length and diameter with a calliper for a sure result.",
-        "Sans mesure LiDAR, la photo ne montre pas la taille de la cartouche. Mesurez la longueur et le diamètre au pied à coulisse pour un résultat sûr.",
-        "Senza misura LiDAR la foto non mostra quanto è grande la cartuccia. Misura lunghezza e diametro con un calibro a corsoio per un risultato sicuro."),
     "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.": (
         "No sure match. Measure the cartridge with a calliper and enter the dimensions.",
         "Pas de correspondance sûre. Mesurez la cartouche au pied à coulisse et saisissez les dimensions.",
