@@ -1,4 +1,4 @@
-# Temporary diagnostic: Vision's foreground masks for the test photos on macOS.
+# Temporary diagnostic: the photo measurement with Vision's real foreground masks, on macOS.
 name: Vision masks
 on:
   pull_request:
@@ -7,4 +7,11 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v5
-      - run: swift tools/vision_masks.swift KaliberfinderTests/Fixtures/*.jpg
+        with:
+          submodules: true
+      - run: |
+          cd Kaliberfinder/Services
+          swiftc -O -o "$RUNNER_TEMP/vcheck" ../../tools/vision_check/main.swift ShapeMatcher.swift ColorSegmenter.swift \
+            OutlineScore.swift Matcher.swift CartridgeCatalog.swift ../Models/Cartridge.swift DimensionMatcher.swift \
+            OutlineGeometry.swift ProfileTwins.swift DepthSize.swift LengthUnit.swift L10n.swift
+      - run: '"$RUNNER_TEMP/vcheck" KaliberfinderTests/Fixtures/*.jpg'
