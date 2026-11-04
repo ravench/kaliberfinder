@@ -16,6 +16,8 @@ struct PhotoAnalysis {
     /// photo (x of the width, y of the height); nil if nothing was measured. Drawn as the frame,
     /// so it shows exactly what was matched.
     var outline: [CGPoint]?
+    /// The silhouette is brass-coloured: a case, not a lead ball or pellet.
+    var isBrass = false
 
     /// How many cartridges compete for the measurement.
     var objectCount: Int { max(1, candidates.count) }
@@ -96,26 +98,52 @@ enum PhotoAnalyzer {
         let normalize = { (box: [Point]?) in
             box?.map { CGPoint(x: $0.x / Double(cgImage.width), y: $0.y / Double(cgImage.height)) }
         }
+        let rgb = rgbImage(cgImage)
+        var measuredPoints: [Point] = []
         if (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
             let (points, step, boxes) = silhouette(of: observation, handler: handler)
             measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
             if measured != nil {
                 candidates = boxes
                 outline = normalize(ShapeMatcher.orientedBox(points, pixelSize: Double(step)))
+                measuredPoints = points
             }
         }
         // Vision found only the table, box or paper: find the cartridge by its colour.
-        if measured == nil, let rgb = rgbImage(cgImage), let points = ColorSegmenter.segment(rgb) {
+        if measured == nil, let rgb, let points = ColorSegmenter.segment(rgb) {
             let (sampled, step) = thinned(points)
             measured = ShapeMatcher.measureWithLength(sampled, pixelSize: Double(step))
             if measured != nil {
                 outline = normalize(ShapeMatcher.orientedBox(sampled, pixelSize: Double(step)))
                 candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
+                measuredPoints = sampled
             }
         }
         return PhotoAnalysis(shape: measured?.shape, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)),
-                             candidates: candidates.count > 1 ? candidates : [], outline: outline)
+                             candidates: candidates.count > 1 ? candidates : [], outline: outline,
+                             isBrass: rgb.map { isBrass($0, points: measuredPoints) } ?? false)
+    }
+
+    /// How much red and green must each exceed blue, relative to it, for brass (yellow). Lead and
+    /// nickel are grey (all three about equal). Copper is red with little green, so green must
+    /// also be close to red.
+    static let brassRedOverBlue: Float = 1.25
+    static let brassGreenOverBlue: Float = 1.1
+    static let brassGreenOfRed: Float = 0.75
+
+    /// Whether the pixels at `points` are, on average, brass-coloured.
+    static func isBrass(_ image: RGBImage, points: [Point]) -> Bool {
+        var sum: [Float] = [0, 0, 0], n: Float = 0
+        for p in points {
+            let x = Int(p.x), y = Int(p.y)
+            guard x >= 0, y >= 0, x < image.width, y < image.height else { continue }
+            let i = (y * image.width + x) * 3
+            for c in 0..<3 { sum[c] += image.pixels[i + c] }
+            n += 1
+        }
+        guard n > 0, sum[2] > 0 else { return false }
+        return sum[0] >= brassRedOverBlue * sum[2] && sum[1] >= brassGreenOverBlue * sum[2] && sum[1] >= brassGreenOfRed * sum[0]
     }
 
     /// The image scaled down and with its orientation applied, so pixels are upright.
@@ -168,9 +196,10 @@ enum PhotoAnalyzer {
         var map: [Int] = []
         forEachPixel(labels, step: 1) { _, _, value in map.append(Int(value.rounded())) }
         let width = CVPixelBufferGetWidth(labels), height = CVPixelBufferGetHeight(labels)
-        let instances = map.count == width * height ? SubjectPicker.instances(labels: map, width: width) : []
-        guard let label = SubjectPicker.pick(instances, width: width, height: height),
-              let mask = try? observation.generateScaledMaskForImage(forInstances: IndexSet(integer: label), from: handler)
+        let pieces = map.count == width * height ? SubjectPicker.instances(labels: map, width: width) : []
+        let instances = SubjectPicker.joiningParts(pieces, labels: map, width: width, height: height)
+        guard let picked = SubjectPicker.pickInstance(instances, width: width, height: height),
+              let mask = try? observation.generateScaledMaskForImage(forInstances: picked.labels, from: handler)
         else { return ([], 1, []) }
         let pixels = CVPixelBufferGetWidth(mask) * CVPixelBufferGetHeight(mask)
         let step = max(1, Int((Double(pixels) / Double(maxPoints)).squareRoot().rounded(.up)))
