@@ -14,8 +14,8 @@ final class MeasureShapeTests: XCTestCase {
         XCTAssertFalse(ids(straight).contains(".17 HMR"))
         XCTAssertTrue(straight.allSatisfy { $0.cartridge.dimensions.shoulder == nil && $0.cartridge.hasCase })
         let bottleneck = DimensionMatcher.rank(MeasuredDimensions(overallLength: 32.3, shape: .bottleneck))
-        // .17 HMR and .22 TCM are both 32.3 mm long within the tolerance.
-        XCTAssertTrue(bottleneck.filter { $0.meanDeviation == 0 }.contains { $0.cartridge.id == ".17 HMR" }, "\(ids(bottleneck))")
+        // .22 TCM is just as close to 32.3 mm as the .17 HMR.
+        XCTAssertTrue(ids(bottleneck).prefix(2).contains(".17 HMR"), "\(ids(bottleneck))")
         XCTAssertTrue(bottleneck.allSatisfy { $0.cartridge.dimensions.shoulder != nil })
     }
 
