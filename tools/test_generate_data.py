@@ -33,6 +33,18 @@ class ObsoleteFlagTests(unittest.TestCase):
         self.assertNotIn("5.6 mm GP 90 (Swiss)", names)
 
 
+class BlankFlagTests(unittest.TestCase):
+    """Crimped blanks are flagged, so the app can leave out the bullet diameter."""
+
+    def test_only_the_crimped_blank_is_a_blank(self):
+        cartridges = generate_data.build()
+        self.assertTrue(all(isinstance(c["blank"], bool) for c in cartridges))
+        self.assertEqual([c["name"] for c in cartridges if c["blank"]], [".22 Blank (6.8/11)"])
+        blank = next(c for c in cartridges if c["blank"])
+        self.assertNotIn("bullet", blank["outline"])
+        self.assertEqual(blank["dimensions"]["caseLength"], blank["dimensions"]["overallLength"])
+
+
 class CalibreDataSubmoduleTests(unittest.TestCase):
     """The catalogue comes from the shared calibre-data submodule (github.com/ravench/calibre-data)."""
 
