@@ -42,6 +42,9 @@ enum CartridgeCatalog {
         includeObsolete ? cartridges : cartridges.filter { !$0.obsolete }
     }
 
+    /// Calibres still in regular production: what matching uses with the switch off (the default).
+    static let current: [Cartridge] = matchable(includeObsolete: false)
+
     /// Normalises a name for comparison: case, spaces, dots and "mm" don't matter, "×" is "x", "," is ".".
     static func normalized(_ s: String) -> String {
         s.lowercased()

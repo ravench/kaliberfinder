@@ -27,9 +27,14 @@ final class ShapeMatcherTests: XCTestCase {
     }
 
     private func rank(of c: Cartridge, angle: Double, pixelsPerMM: Double) throws -> Int {
+        try XCTUnwrap(rankIfListed(of: c, angle: angle, pixelsPerMM: pixelsPerMM), c.name)
+    }
+
+    /// Nil when the calibre is not listed at all, e.g. the .22 BB Cap, which is nearly as wide as long.
+    private func rankIfListed(of c: Cartridge, angle: Double, pixelsPerMM: Double) throws -> Int? {
         let m = try XCTUnwrap(measure(c, angle: angle, pixelsPerMM: pixelsPerMM), c.name)
-        let ranked = Matcher.rank(shape: m, hits: [], limit: .max)
-        return try XCTUnwrap(ranked.firstIndex { $0.cartridge.id == c.id }, c.name)
+        let ranked = Matcher.rank(shape: m, hits: [], cartridges: CartridgeCatalog.all, limit: .max)
+        return ranked.firstIndex { $0.cartridge.id == c.id }
     }
 
     func testCommonCalibresAreAmongTheFirstFive() throws {
@@ -44,9 +49,9 @@ final class ShapeMatcherTests: XCTestCase {
 
     func testMostOfTheCatalogueIsAmongTheFirstFive() throws {
         let ranks = try CartridgeCatalog.all.enumerated().map { i, c in
-            try rank(of: c, angle: Double(i % 7) * 0.45, pixelsPerMM: 5 + Double(i % 4))
+            try rankIfListed(of: c, angle: Double(i % 7) * 0.45, pixelsPerMM: 5 + Double(i % 4))
         }
-        let found = ranks.filter { $0 < 5 }.count
+        let found = ranks.filter { ($0 ?? .max) < 5 }.count
         XCTAssertGreaterThanOrEqual(Double(found) / Double(CartridgeCatalog.all.count), 0.95)
     }
 
