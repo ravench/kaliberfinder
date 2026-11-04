@@ -162,15 +162,13 @@ struct MatchesView: View {
                                brass: analysis.isBrass)
     }
 
-    /// Asks for measurements by hand when the photo has no good match: nothing found, or no row
-    /// fitting well (in shape and size with LiDAR, in shape alone without). Nil otherwise, as the
-    /// user then checks the cartridge on the 1:1 screen.
+    /// Points the user to measuring by hand when the photo found nothing or only weak shapes. A
+    /// good shape match is checked on the 1:1 screen instead, with or without LiDAR.
     static func manualEntryHint(_ matches: [Match]) -> String? {
         if matches.isEmpty {
             return "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc
         }
-        let sized = matches.contains { $0.sizeDeviation != nil }
-        if matches.contains(where: { sized ? $0.fitsWell : $0.shapeFit == .good }) { return nil }
+        if matches.contains(where: { $0.shapeFit == .good }) { return nil }
         return "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc
     }
 

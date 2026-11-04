@@ -89,19 +89,16 @@ final class MatcherTests: XCTestCase {
     }
 
     // Weak photo results ask for measurements by hand.
-    func testManualEntryIsSuggestedUnlessARowFitsWell() throws {
+    func testManualEntryIsSuggestedOnlyWithoutAGoodShape() throws {
         let c = try XCTUnwrap(CartridgeCatalog.current.first)
-        let good = Match(cartridge: c, score: 2, shapeDistance: 0.05, sizeDeviation: 0.1)
         let roughSize = Match(cartridge: c, score: 1, shapeDistance: 0.05, sizeDeviation: 0.8)
         let shapeOnly = Match(cartridge: c, score: 1, shapeDistance: 0.05)
-        XCTAssertNil(MatchesView.manualEntryHint([good, roughSize]))
+        let roughShape = Match(cartridge: c, score: 1, shapeDistance: 0.25, sizeDeviation: 0.1)
+        // A good shape is compared on the 1:1 screen, with or without LiDAR.
+        XCTAssertNil(MatchesView.manualEntryHint([roughSize]))
+        XCTAssertNil(MatchesView.manualEntryHint([shapeOnly, roughShape]))
         XCTAssertEqual(MatchesView.manualEntryHint([]),
                        "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc)
-        XCTAssertEqual(MatchesView.manualEntryHint([roughSize]),
-                       "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc)
-        // Without LiDAR a good shape is enough: the user compares it on the 1:1 screen.
-        let roughShape = Match(cartridge: c, score: 1, shapeDistance: 0.25)
-        XCTAssertNil(MatchesView.manualEntryHint([shapeOnly, roughShape]))
         XCTAssertEqual(MatchesView.manualEntryHint([roughShape]),
                        "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc)
     }
