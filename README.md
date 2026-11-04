@@ -11,10 +11,12 @@ parentheses.
 
 - **Identify a cartridge** (Patrone erkennen): take a photo of a cartridge (or pick one)
   and get a ranked list of likely calibres. The app cuts the cartridge out of the photo
-  (Vision foreground mask; when Vision takes the table, a box or the paper as the subject,
-  a colour-based cut-out instead) and compares its silhouette (length/width ratio and width
-  profile) with every calibre's outline. Only the side profile counts; no text is read
-  from the photo. Then compare the candidates 1:1 by laying the cartridge on the screen. Works best with the
+  (Vision foreground mask and a colour-based cut-out; of their outlines the one that looks
+  most like a cartridge wins: symmetric about its axis, solid, with sharp edges, so a shadow
+  on one side, wood grain or a tarnished half isn't measured) and compares its silhouette
+  (length/width ratio and width profile) with every calibre's outline. Only the side profile
+  counts; no text is read from the photo. Then compare the candidates 1:1 by laying the
+  cartridge on the screen. Works best with the
   cartridge on its side on a light, plain background, photographed from above. When
   several cartridges compete in the photo, the app outlines them and you tap the one to
   identify; a cartridge off in a corner is simply ignored. The measured cartridge gets a
