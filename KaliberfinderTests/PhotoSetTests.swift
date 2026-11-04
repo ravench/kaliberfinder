@@ -4,11 +4,12 @@ import XCTest
 @testable import Kaliberfinder
 
 /// Raven's photos of known calibres on different surfaces (2026-11-04): eight 9x19 cartridges and
-/// nine empty GP 11 cases, some with shadows, tarnish or an annealed neck.
+/// nine empty GP 11 cases and nine empty 6 mm BR Norma cases, some with shadows, tarnish or an annealed neck.
 final class PhotoSetTests: XCTestCase {
     static let photos: [(name: String, calibre: String, aspect: Double)] =
         (1...8).map { (String(format: "set-9x19-%02d", $0), "9x19 mm", 3.0) }
         + (1...9).map { (String(format: "set-gp11-case-%02d", $0), "7.5x55 mm Swiss (GP 11)", 4.5) }
+        + (1...9).map { (String(format: "set-6mmbr-case-%02d", $0), "6 mm BR Norma (case)", 3.3) }
 
     private func photo(_ name: String) throws -> UIImage {
         let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: name, withExtension: "jpg"), name)
