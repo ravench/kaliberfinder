@@ -55,28 +55,7 @@ struct MatchesView: View {
                     }
                 }
             }
-            if analysis != nil {
-                if matches.isEmpty {
-                    Section {
-                        Text("Keine passenden Kaliber gefunden.")
-                        NavigationLink("Alle Kaliber durchsuchen") { CatalogView() }
-                    }
-                } else {
-                    Section {
-                        // Calibres that look exactly the same from the side share one row.
-                        ForEach(Matcher.grouped(matches)) { g in
-                            NavigationLink { TrueScaleView(cartridges: [g.lead.cartridge]) } label: {
-                                CartridgeRow(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead),
-                                             highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
-                            }
-                        }
-                    } header: {
-                        Text("Mögliche Kaliber")
-                    } footer: {
-                        Text("Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.")
-                    }
-                }
-            }
+            if analysis != nil { results }
         }
         .safeAreaInset(edge: .bottom) {
             // A prominent button pinned to the bottom, like on the measure screen, so it is not missed.
@@ -99,6 +78,34 @@ struct MatchesView: View {
         }
         .onChange(of: mode) { rank() }
         .onChange(of: includeObsolete) { rank() }
+    }
+
+    /// The hint to measure by hand when the photo gives no sure answer, and the calibres found.
+    @ViewBuilder private var results: some View {
+        if let hint = Self.manualEntryHint(matches) {
+            Section {
+                Text(hint)
+                NavigationLink { MeasureView() } label: {
+                    Label("Masse von Hand eingeben", systemImage: "ruler")
+                }
+                if matches.isEmpty { NavigationLink("Alle Kaliber durchsuchen") { CatalogView() } }
+            }
+        }
+        if !matches.isEmpty {
+            Section {
+                // Calibres that look exactly the same from the side share one row.
+                ForEach(Matcher.grouped(matches)) { g in
+                    NavigationLink { TrueScaleView(cartridges: [g.lead.cartridge]) } label: {
+                        CartridgeRow(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead),
+                                     highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
+                    }
+                }
+            } header: {
+                Text("Mögliche Kaliber")
+            } footer: {
+                Text("Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.")
+            }
+        }
     }
 
     /// Frames on the photo: the competing cartridges while the user picks one; afterwards, or when
@@ -153,6 +160,16 @@ struct MatchesView: View {
         matches = Matcher.rank(shape: analysis.shape, size: size, mode: mode,
                                cartridges: CartridgeCatalog.matchable(includeObsolete: includeObsolete),
                                brass: analysis.isBrass)
+    }
+
+    /// Points the user to measuring by hand when the photo found nothing or only weak shapes. A
+    /// good shape match is checked on the 1:1 screen instead, with or without LiDAR.
+    static func manualEntryHint(_ matches: [Match]) -> String? {
+        if matches.isEmpty {
+            return "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc
+        }
+        if matches.contains(where: { $0.shapeFit == .good }) { return nil }
+        return "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc
     }
 
     /// Shown instead of matches when several cartridges compete, until the user picks one.
