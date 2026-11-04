@@ -1,4 +1,3 @@
-import PhotosUI
 import SwiftUI
 
 /// Analyses a photo and lists the calibres it may show; each opens at real size for comparison.
@@ -6,8 +5,6 @@ struct MatchesView: View {
     let photo: UIImage
     /// Distance and focal length from the LiDAR camera, nil for other photos.
     var depth: DepthScale?
-    /// A base photo that came with the side photo (two photos shared at once).
-    var base: UIImage?
     /// The analysis that is ranked: the whole photo, or the picked cartridge when there are several.
     @State private var analysis: PhotoAnalysis?
     /// The first look at the whole photo; tells whether the user has to pick a cartridge.
@@ -17,11 +14,6 @@ struct MatchesView: View {
     /// The photo cut down to the detected cartridges, and which part of the photo that is.
     @State private var preview: (image: UIImage, region: CGRect)?
     @State private var matches: [Match] = []
-    /// The optional second photo of the case head; only its text is read.
-    @State private var basePhoto: UIImage?
-    @State private var baseTexts: [String]?
-    @State private var showBaseCamera = false
-    @State private var baseItem: PhotosPickerItem?
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(ScanMode.storageKey) private var mode: ScanMode = .auto
 
@@ -63,7 +55,6 @@ struct MatchesView: View {
                 }
             }
             if analysis != nil {
-                baseSection
                 if matches.isEmpty {
                     Section {
                         Text("Keine passenden Kaliber gefunden.")
@@ -95,8 +86,7 @@ struct MatchesView: View {
         .navigationTitle("Treffer")
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            if let base, basePhoto == nil { setBasePhoto(base) }
-            let result = await PhotoAnalyzer.analyze(photo, kind: .side)
+            let result = await PhotoAnalyzer.analyze(photo)
             if let region = Self.previewRegion(around: Self.detectedBoxes(result), imageSize: photo.size) {
                 preview = (PhotoAnalyzer.cropped(photo, to: region), region)
             }
@@ -107,65 +97,6 @@ struct MatchesView: View {
             }
         }
         .onChange(of: mode) { rank() }
-        .fullScreenCover(isPresented: $showBaseCamera) {
-            CameraPicker { setBasePhoto($0) }
-                .ignoresSafeArea()
-        }
-        .onChange(of: baseItem) { _, item in
-            guard let item else { return }
-            Task {
-                if let data = try? await item.loadTransferable(type: Data.self), let image = UIImage(data: data) {
-                    setBasePhoto(image)
-                }
-                baseItem = nil
-            }
-        }
-    }
-
-    /// Second photo of the case head, read for the headstamp.
-    private var baseSection: some View {
-        Section {
-            if let basePhoto {
-                HStack(spacing: 12) {
-                    Image(uiImage: basePhoto)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 56, height: 56)
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
-                    if let baseTexts {
-                        Text(Self.baseNote(baseTexts)).font(.footnote).foregroundStyle(.secondary)
-                    } else {
-                        ProgressView()
-                        Text("Aufschrift wird gelesen …").foregroundStyle(.secondary)
-                    }
-                }
-            }
-            if CameraPicker.isAvailable {
-                Button { showBaseCamera = true } label: {
-                    if basePhoto == nil {
-                        Label("Boden fotografieren", systemImage: "camera.metering.center.weighted")
-                    } else {
-                        Label("Boden neu fotografieren", systemImage: "camera.metering.center.weighted")
-                    }
-                }
-            }
-            PhotosPicker(selection: $baseItem, matching: .images) {
-                Label("Bodenfoto auswählen", systemImage: "photo")
-            }
-        } header: {
-            Text("Aufschrift")
-        } footer: {
-            Text("Die Aufschrift wird nur auf dem Bodenfoto gelesen. Boden formatfüllend, scharf und von vorne fotografieren.")
-        }
-    }
-
-    private func setBasePhoto(_ image: UIImage) {
-        basePhoto = image
-        baseTexts = nil
-        Task {
-            baseTexts = await PhotoAnalyzer.analyze(image, kind: .base).texts
-            rank()
-        }
     }
 
     /// Frames on the photo: the competing cartridges while the user picks one; afterwards, or when
@@ -217,26 +148,13 @@ struct MatchesView: View {
     private func rank() {
         guard let analysis else { matches = []; return }
         let size = try? analysis.size(depth: depth).get()
-        matches = Matcher.rank(shape: analysis.shape, hits: Self.hits(side: analysis, baseTexts: baseTexts), size: size, mode: mode)
+        matches = Matcher.rank(shape: analysis.shape, size: size, mode: mode)
     }
 
     /// Shown instead of matches when several cartridges compete, until the user picks one.
     static var severalObjectsText: String { "Mehrere Patronen im Bild erkannt.".loc }
     static var severalObjectsHint: String {
         "Tippe auf die Patrone, die bestimmt werden soll.".loc
-    }
-
-    /// Headstamp hits from the base photo, plus the first photo's text when that one showed a base anyway.
-    static func hits(side: PhotoAnalysis, baseTexts: [String]?) -> [HeadstampReader.Hit] {
-        HeadstampReader.hits(in: side.texts + (baseTexts ?? []))
-    }
-
-    /// "Aufschrift erkannt: «WIN 308»" or a hint that nothing was legible.
-    static func baseNote(_ texts: [String]) -> String {
-        var seen = Set<String>()
-        let lines = texts.map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty && seen.insert($0).inserted }
-        guard !lines.isEmpty else { return "Keine Aufschrift erkannt.".loc }
-        return String(format: "Aufschrift erkannt: «%@»".loc, lines.prefix(3).joined(separator: " / "))
     }
 
     /// Every listed row goes to the 1:1 screen, in rank order; it scrolls sideways. Calibres that
@@ -250,10 +168,9 @@ struct MatchesView: View {
         String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, toCompare(matches).count)
     }
 
-    /// Why a calibre is listed, e.g. "Aufschrift «308 WIN» · Form passt gut".
+    /// Why a calibre is listed, e.g. "Form passt gut · Grösse passt ungefähr".
     static func reason(for m: Match) -> String {
         var parts: [String] = []
-        if let hit = m.headstamp { parts.append(String(format: "Aufschrift «%@»".loc, hit.text)) }
         switch m.shapeFit {
         case .good: parts.append("Form passt gut".loc)
         case .rough: parts.append("Form passt ungefähr".loc)
@@ -294,12 +211,12 @@ struct MatchesView: View {
         if depth != nil {
             switch a.size(depth: depth) {
             case .success(let size): notes.append(measuredText(size, unit: unit))
-            case .failure(.outOfRange): notes.append("Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form und Aufschrift.".loc)
-            case .failure: notes.append("Grösse nicht messbar: Treffer nur nach Form und Aufschrift.".loc)
+            case .failure(.outOfRange): notes.append("Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form.".loc)
+            case .failure: notes.append("Grösse nicht messbar: Treffer nur nach Form.".loc)
             }
         }
         if let shape = a.shape {
-            if shape.isEndView { notes.append("Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Bei Patronen zählt nur die Aufschrift.".loc) }
+            if shape.isEndView { notes.append("Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Patronen werden nur von der Seite erkannt.".loc) }
         } else {
             notes.append("Keine Patrone im Bild erkannt.".loc)
         }

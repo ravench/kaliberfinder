@@ -108,20 +108,13 @@ final class LiDARSizeTests: XCTestCase {
         let shape = try XCTUnwrap(ShapeMatcher.catalogue["9x19 mm"])
         let nine = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
         // The best shape match that differs in size from 9x19 by more than the tolerance.
-        let other = try XCTUnwrap(Matcher.rank(shape: shape, hits: [], limit: .max).map(\.cartridge).first {
+        let other = try XCTUnwrap(Matcher.rank(shape: shape, limit: .max).map(\.cartridge).first {
             abs($0.dimensions.overallLength - nine.dimensions.overallLength) > 3
         })
-        let matches = Matcher.rank(shape: shape, hits: [], size: try size(of: other.id))
+        let matches = Matcher.rank(shape: shape, size: try size(of: other.id))
         XCTAssertEqual(matches.first?.cartridge.id, other.id)
         XCTAssertEqual(matches.first?.sizeFit, .good)
         XCTAssertNotEqual(matches.first { $0.cartridge.id == "9x19 mm" }?.sizeFit, .good)
-    }
-
-    func testStrongTextStillRanksFirst() throws {
-        let hit = HeadstampReader.Hit(cartridgeID: "9x19 mm", text: "9MM LUGER", strength: .strong)
-        let matches = Matcher.rank(shape: try XCTUnwrap(ShapeMatcher.catalogue[".308 Winchester"]), hits: [hit],
-                                   size: try size(of: ".308 Winchester"))
-        XCTAssertEqual(matches.first?.cartridge.id, "9x19 mm")
     }
 
     func testDeviationUsesTheMeasurementsUncertainty() throws {
@@ -135,7 +128,7 @@ final class LiDARSizeTests: XCTestCase {
 
     func testSizeIsIgnoredForRoundSilhouettes() throws {
         let disc = ShapeMeasurement(aspect: 1, profile: ShapeMatcher.fractions.map { _ in 1 })
-        let matches = Matcher.rank(shape: disc, hits: [], size: try size(of: "9x19 mm"))
+        let matches = Matcher.rank(shape: disc, size: try size(of: "9x19 mm"))
         XCTAssertTrue(matches.allSatisfy { $0.sizeDeviation == nil })
     }
 
@@ -158,11 +151,11 @@ final class LiDARSizeTests: XCTestCase {
             y += step
         }
         let measured = try XCTUnwrap(ShapeMatcher.measureWithLength(points, pixelSize: step * pixelsPerMM))
-        let analysis = PhotoAnalysis(shape: measured.shape, texts: [], lengthPixels: measured.length, imageLongSide: imageLongSide)
+        let analysis = PhotoAnalysis(shape: measured.shape, lengthPixels: measured.length, imageLongSide: imageLongSide)
         let size = try analysis.size(depth: depth(distance)).get()
         XCTAssertEqual(size.length, gp11.dimensions.overallLength, accuracy: 0.5)
         XCTAssertEqual(size.diameter, gp11.dimensions.base, accuracy: 0.6)
-        let matches = Matcher.rank(shape: measured.shape, hits: [], size: size)
+        let matches = Matcher.rank(shape: measured.shape, size: size)
         XCTAssertEqual(matches.first?.cartridge.id, gp11.id)
         XCTAssertEqual(matches.first?.sizeFit, .good)
         XCTAssertTrue(MatchesView.reason(for: try XCTUnwrap(matches.first)).contains(" · "))
@@ -182,11 +175,11 @@ final class LiDARSizeTests: XCTestCase {
 
     func testNotesSayWhenTheSizeIsMissing() {
         let side = ShapeMeasurement(aspect: 6, profile: ShapeMatcher.fractions.map { _ in 1 })
-        let analysis = PhotoAnalysis(shape: side, texts: [], lengthPixels: 600, imageLongSide: imageLongSide)
+        let analysis = PhotoAnalysis(shape: side, lengthPixels: 600, imageLongSide: imageLongSide)
         XCTAssertTrue(MatchesView.notes(for: analysis).isEmpty)
         XCTAssertEqual(MatchesView.notes(for: analysis, depth: depth(250)).count, 1)
         XCTAssertEqual(MatchesView.notes(for: analysis, depth: depth(900)), ["Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form und Aufschrift.".loc])
-        let noShape = PhotoAnalysis(shape: nil, texts: [])
+        let noShape = PhotoAnalysis(shape: nil)
         XCTAssertEqual(noShape.size(depth: depth(250)), .failure(.endView))
         XCTAssertEqual(noShape.size(depth: nil), .failure(.noDepth))
     }

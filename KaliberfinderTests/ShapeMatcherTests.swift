@@ -28,7 +28,7 @@ final class ShapeMatcherTests: XCTestCase {
 
     private func rank(of c: Cartridge, angle: Double, pixelsPerMM: Double) throws -> Int {
         let m = try XCTUnwrap(measure(c, angle: angle, pixelsPerMM: pixelsPerMM), c.name)
-        let ranked = Matcher.rank(shape: m, hits: [], limit: .max)
+        let ranked = Matcher.rank(shape: m, limit: .max)
         return try XCTUnwrap(ranked.firstIndex { $0.cartridge.id == c.id }, c.name)
     }
 
