@@ -83,3 +83,25 @@ final class OutlineScoreTests: XCTestCase {
         XCTAssertEqual(image.value(x: 60, y: 30), 0)
     }
 }
+
+/// Cutting a one-sided shadow off the silhouette (SCAN-05).
+final class MirrorTrimTests: XCTestCase {
+    private func bar(width: Int, height: Int, at y0: Int = 0) -> [Point] {
+        (0..<width).flatMap { x in (y0..<(y0 + height)).map { Point(x: Double(x), y: Double($0)) } }
+    }
+
+    func testAShadowOnOneSideIsCutOff() throws {
+        // A 120 × 30 bar with a 10-pixel shadow below its front third.
+        let points = bar(width: 120, height: 30) + (0..<40).flatMap { x in (30..<40).map { Point(x: Double(x), y: Double($0)) } }
+        let trimmed = ShapeMatcher.mirrorTrimmed(points)
+        XCTAssertEqual(trimmed.count, 120 * 30, accuracy: 120)
+        let measured = try XCTUnwrap(ShapeMatcher.measure(trimmed))
+        XCTAssertEqual(measured.aspect, 4, accuracy: 0.15)
+    }
+
+    func testASymmetricSilhouetteStaysAsItIs() {
+        // A bottleneck: wide body, narrow neck, both centred.
+        let points = bar(width: 80, height: 30) + (80..<120).flatMap { x in (10..<20).map { Point(x: Double(x), y: Double($0)) } }
+        XCTAssertEqual(ShapeMatcher.mirrorTrimmed(points).count, points.count)
+    }
+}
