@@ -87,4 +87,19 @@ final class MatcherTests: XCTestCase {
         XCTAssertFalse(Match(cartridge: c, score: 1, shapeDistance: 0.25, sizeDeviation: 0.1).fitsWell)
         XCTAssertFalse(Match(cartridge: c, score: 0, shapeDistance: nil).fitsWell)
     }
+
+    // Weak photo results ask for measurements by hand.
+    func testManualEntryIsSuggestedOnlyWithoutAGoodShape() throws {
+        let c = try XCTUnwrap(CartridgeCatalog.current.first)
+        let roughSize = Match(cartridge: c, score: 1, shapeDistance: 0.05, sizeDeviation: 0.8)
+        let shapeOnly = Match(cartridge: c, score: 1, shapeDistance: 0.05)
+        let roughShape = Match(cartridge: c, score: 1, shapeDistance: 0.25, sizeDeviation: 0.1)
+        // A good shape is compared on the 1:1 screen, with or without LiDAR.
+        XCTAssertNil(MatchesView.manualEntryHint([roughSize]))
+        XCTAssertNil(MatchesView.manualEntryHint([shapeOnly, roughShape]))
+        XCTAssertEqual(MatchesView.manualEntryHint([]),
+                       "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc)
+        XCTAssertEqual(MatchesView.manualEntryHint([roughShape]),
+                       "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc)
+    }
 }
