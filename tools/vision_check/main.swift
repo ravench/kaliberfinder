@@ -6,7 +6,7 @@ import ImageIO
 import Vision
 
 let catalogue = CartridgeCatalog.matchable(includeObsolete: false,
-                                           in: CartridgeCatalog.load(from: Bundle(path: "Kaliberfinder/Resources")!))
+                                           in: CartridgeCatalog.load(from: Bundle(path: FileManager.default.currentDirectoryPath + "/Kaliberfinder/Resources")!))
 
 func pixels(_ buffer: CVPixelBuffer, step: Int, _ body: (Int, Int, Float) -> Void) {
     CVPixelBufferLockBaseAddress(buffer, .readOnly)
@@ -52,11 +52,13 @@ for path in CommandLine.arguments.dropFirst() {
     print("VCHECK \(name) \(image.width)x\(image.height) labels \(lw)x\(lh) instances \(instances.map { "\(Array($0.labels)):\($0.count)@\($0.bounds.x0),\($0.bounds.y0)-\($0.bounds.x1),\($0.bounds.y1)" })")
     guard let picked = SubjectPicker.pickInstance(instances, width: lw, height: lh),
           let mask = try? observation.generateScaledMaskForImage(forInstances: picked.labels, from: handler) else { print("  picked none"); continue }
-    let count = CVPixelBufferGetWidth(mask) * CVPixelBufferGetHeight(mask)
-    let step = max(1, Int((Double(count) / 40_000).squareRoot().rounded(.up)))
-    var points: [Point] = []
-    pixels(mask, step: step) { x, y, v in if v > 0.5 { points.append(Point(x: Double(x), y: Double(y))) } }
-    print("  picked \(Array(picked.labels)) points \(points.count) step \(step)")
-    describe("raw    ", points, step: step, width: image.width, height: image.height)
-    describe("trimmed", ShapeMatcher.mirrorTrimmed(points, pixelSize: Double(step)), step: step, width: image.width, height: image.height)
+    let scale = Double(CVPixelBufferGetWidth(mask) * CVPixelBufferGetHeight(mask)) / Double(lw * lh)
+    for step in [max(1, Int((Double(CVPixelBufferGetWidth(mask) * CVPixelBufferGetHeight(mask)) / 40_000).squareRoot().rounded(.up))),
+                 max(1, Int((Double(picked.count) * scale / 40_000).squareRoot().rounded(.up)))] {
+        var points: [Point] = []
+        pixels(mask, step: step) { x, y, v in if v > 0.5 { points.append(Point(x: Double(x), y: Double(y))) } }
+        print("  picked \(Array(picked.labels)) points \(points.count) step \(step)")
+        describe("raw    ", points, step: step, width: image.width, height: image.height)
+        describe("trimmed", ShapeMatcher.mirrorTrimmed(points, pixelSize: Double(step)), step: step, width: image.width, height: image.height)
+    }
 }

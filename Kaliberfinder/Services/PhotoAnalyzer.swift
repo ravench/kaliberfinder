@@ -191,6 +191,11 @@ enum PhotoAnalyzer {
         return (points.filter { Int($0.x) % step == 0 && Int($0.y) % step == 0 }, step)
     }
 
+    /// Every how many pixels to sample an object's mask so it gives at most about `maxPoints` points.
+    static func maskStep(objectPixels: Double) -> Int {
+        max(1, Int((objectPixels / Double(maxPoints)).squareRoot().rounded(.up)))
+    }
+
     /// A box in pixels of a `width` × `height` image as fractions of it.
     static func normalized(_ box: ColorSegmenter.Box, width: Int, height: Int) -> CGRect {
         CGRect(x: Double(box.x0) / Double(width), y: Double(box.y0) / Double(height),
@@ -212,8 +217,10 @@ enum PhotoAnalyzer {
         guard let picked = SubjectPicker.pickInstance(instances, width: width, height: height),
               let mask = try? observation.generateScaledMaskForImage(forInstances: picked.labels, from: handler)
         else { return ([], 1, []) }
-        let pixels = CVPixelBufferGetWidth(mask) * CVPixelBufferGetHeight(mask)
-        let step = max(1, Int((Double(pixels) / Double(maxPoints)).squareRoot().rounded(.up)))
+        // The step from the object's size, not the photo's: from the whole photo it was 7 pixels
+        // at 1600 px, which left a handgun cartridge only 8 or 9 points wide.
+        let scale = Double(CVPixelBufferGetWidth(mask) * CVPixelBufferGetHeight(mask)) / Double(width * height)
+        let step = maskStep(objectPixels: Double(picked.count) * scale)
         var result: [Point] = []
         forEachPixel(mask, step: step) { x, y, value in
             if value > 0.5 { result.append(Point(x: Double(x), y: Double(y))) }
