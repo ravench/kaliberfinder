@@ -114,6 +114,64 @@ enum ShapeMatcher {
         return (shape, length + pixelSize)
     }
 
+    /// The silhouette made mirror-symmetric about its long axis (SCAN-05): in each slice across the
+    /// axis, the side that reaches further out is cut back to the other side's reach. A cartridge is
+    /// round, so its outline is symmetric; a shadow or a strip of wood grain clings to one side only.
+    /// The axis is the line most slices' centres lie on, so a shadow over part of the length doesn't
+    /// pull it over (one over most of the length can't be told from a wider cartridge).
+    static func mirrorTrimmed(_ points: [Point], pixelSize: Double = 1) -> [Point] {
+        guard points.count >= 50 else { return points }
+        let n = Double(points.count)
+        let mx = points.reduce(0) { $0 + $1.x } / n, my = points.reduce(0) { $0 + $1.y } / n
+        var sxx = 0.0, syy = 0.0, sxy = 0.0
+        for p in points {
+            let dx = p.x - mx, dy = p.y - my
+            sxx += dx * dx; syy += dy * dy; sxy += dx * dy
+        }
+        let angle = 0.5 * atan2(2 * sxy, sxx - syy)
+        let ux = cos(angle), uy = sin(angle)
+        let u = points.map { ($0.x - mx) * ux + ($0.y - my) * uy }
+        let v = points.map { -($0.x - mx) * uy + ($0.y - my) * ux }
+        guard let lo = u.min(), let hi = u.max(), hi > lo else { return points }
+        let length = hi - lo + pixelSize
+        let slice = u.map { min(bins - 1, Int(($0 - lo) / length * Double(bins))) }
+        var minV = [Double](repeating: .infinity, count: bins), maxV = [Double](repeating: -.infinity, count: bins)
+        for (i, pv) in zip(slice, v) {
+            minV[i] = min(minV[i], pv); maxV[i] = max(maxV[i], pv)
+        }
+        let filled = (0..<bins).filter { maxV[$0] >= minV[$0] }
+        guard let axis = centreLine(slices: filled.map { lo + (Double($0) + 0.5) / Double(bins) * length },
+                                    centres: filled.map { (maxV[$0] + minV[$0]) / 2 },
+                                    tolerance: max(pixelSize, 0.03 * filled.map { maxV[$0] - minV[$0] }.sorted()[filled.count / 2]))
+        else { return points }
+        let reach = (0..<bins).map { i -> Double in
+            let at = axis.offset + axis.slope * (lo + (Double(i) + 0.5) / Double(bins) * length)
+            return min(maxV[i] - at, at - minV[i])
+        }
+        return points.indices.filter { abs(v[$0] - (axis.offset + axis.slope * u[$0])) <= reach[slice[$0]] + pixelSize / 2 }.map { points[$0] }
+    }
+
+    /// The straight line most slices' centres lie on (within `tolerance`), fitted to those slices:
+    /// a shadow shifts the centres of the slices it touches, so they are left out.
+    static func centreLine(slices u: [Double], centres c: [Double], tolerance: Double) -> (offset: Double, slope: Double)? {
+        guard u.count >= 2 else { return nil }
+        var bestInliers: [Int] = []
+        for i in u.indices {
+            for j in stride(from: i + max(1, u.count / 3), to: u.count, by: 1) where u[j] > u[i] {
+                let slope = (c[j] - c[i]) / (u[j] - u[i]), offset = c[i] - slope * u[i]
+                let inliers = u.indices.filter { abs(c[$0] - (offset + slope * u[$0])) <= tolerance }
+                if inliers.count > bestInliers.count { bestInliers = inliers }
+            }
+        }
+        guard bestInliers.count >= 2 else { return nil }
+        let n = Double(bestInliers.count)
+        let um = bestInliers.reduce(0) { $0 + u[$1] } / n, cm = bestInliers.reduce(0) { $0 + c[$1] } / n
+        let suu = bestInliers.reduce(0) { $0 + (u[$1] - um) * (u[$1] - um) }
+        let suc = bestInliers.reduce(0) { $0 + (u[$1] - um) * (c[$1] - cm) }
+        let slope = suu > 0 ? suc / suu : 0
+        return (cm - slope * um, slope)
+    }
+
     /// The rectangle along the principal axis that just holds the points (the silhouette as
     /// measured, at any angle): its four corners in the points' units, nil for fewer than 50 points.
     static func orientedBox(_ points: [Point], pixelSize: Double = 1) -> [Point]? {

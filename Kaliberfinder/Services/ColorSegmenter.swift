@@ -61,7 +61,8 @@ enum ColorSegmenter {
     static let patchesPerCut = 6
 
     /// The patch that looks most like a cartridge (see `OutlineScore`) among the cut-outs of a few
-    /// crops around the located cluster, with colour alone and with brightness, at a few thresholds.
+    /// crops around the located cluster, with colour alone and with brightness, at a few thresholds;
+    /// made symmetric about its axis (see `ShapeMatcher.mirrorTrimmed`).
     static func best(_ image: RGBImage, edges: GradientImage? = nil) -> (points: [Point], score: OutlineScore)? {
         guard let box = locate(image) else { return nil }
         let edges = edges ?? GradientImage(image)
@@ -82,7 +83,7 @@ enum ColorSegmenter {
         for i in found.mask.indices where found.mask[i] {
             points.append(Point(x: Double(found.box.x0 + i % w), y: Double(found.box.y0 + i / w)))
         }
-        return (points, found.score)
+        return (ShapeMatcher.mirrorTrimmed(points), found.score)
     }
 
     // MARK: - Locate
@@ -321,10 +322,10 @@ enum ColorSegmenter {
                 let p = patch[i]
                 i += 1
                 let x = p % w, y = p / w
-                for (q, ok) in [(p - 1, x > 0), (p + 1, x < w - 1), (p - w, y > 0), (p + w, y < h - 1)] where ok && mask[q] && !label[q] {
-                    label[q] = true
-                    patch.append(q)
-                }
+                if x > 0, mask[p - 1], !label[p - 1] { label[p - 1] = true; patch.append(p - 1) }
+                if x < w - 1, mask[p + 1], !label[p + 1] { label[p + 1] = true; patch.append(p + 1) }
+                if y > 0, mask[p - w], !label[p - w] { label[p - w] = true; patch.append(p - w) }
+                if y < h - 1, mask[p + w], !label[p + w] { label[p + w] = true; patch.append(p + w) }
             }
             result.append(patch)
         }

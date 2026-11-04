@@ -103,7 +103,8 @@ enum PhotoAnalyzer {
         var measuredPoints: [Point] = []
         var visionScore: OutlineScore?
         if (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
-            let (points, step, boxes) = silhouette(of: observation, handler: handler)
+            let (found, step, boxes) = silhouette(of: observation, handler: handler)
+            let points = ShapeMatcher.mirrorTrimmed(found, pixelSize: Double(step))
             measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
             if measured != nil {
                 candidates = boxes
