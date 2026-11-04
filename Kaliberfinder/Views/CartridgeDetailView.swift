@@ -34,7 +34,7 @@ struct CartridgeDetailView: View {
                         LabeledContent("Halsdurchmesser", value: unit.format(d.neck))
                     }
                 }
-                if cartridge.kind != "shot" && cartridge.hasBullet {
+                if cartridge.kind != "shot" && !cartridge.blank {
                     LabeledContent("Geschossdurchmesser", value: unit.format(d.bullet))
                 }
                 if let primer = cartridge.primer {

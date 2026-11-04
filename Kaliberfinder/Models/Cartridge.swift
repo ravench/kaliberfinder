@@ -17,6 +17,8 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     /// No longer in regular factory production (only surplus, boutique loads or reloading).
     /// Matching skips these unless the «Veraltete Kaliber» switch is on.
     let obsolete: Bool
+    /// A crimped blank (power-tool load, starter pistol blank): no bullet, the case is the whole cartridge.
+    let blank: Bool
     let dimensions: Dimensions
     let outline: Outline
     /// Nil for rimfire and for balls, Minié bullets and pellets.
@@ -71,8 +73,6 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     var hasCase: Bool { dimensions.caseLength > 0 }
 
-    /// False for a crimped blank: its case is the whole cartridge.
-    var hasBullet: Bool { dimensions.overallLength > dimensions.caseLength + 0.05 || !hasCase }
 
     /// Diameter of the case head seen from below: the rim, or the base where it is wider.
     var headDiameter: Double { max(dimensions.rim, dimensions.base) }

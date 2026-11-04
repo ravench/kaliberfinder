@@ -60,8 +60,8 @@ enum DimensionMatcher {
     static let tolerance = 0.15
 
     static func rank(_ measured: MeasuredDimensions,
-                     cartridges: [Cartridge] = CartridgeCatalog.all,
-                     limit: Int = 10) -> [DimensionMatch] {
+                     cartridges: [Cartridge] = CartridgeCatalog.current,
+                     limit: Int = 15) -> [DimensionMatch] {
         guard !measured.isEmpty else { return [] }
         let matches = cartridges.filter(measured.shape.fits).map { c -> DimensionMatch in
             let d = c.dimensions
