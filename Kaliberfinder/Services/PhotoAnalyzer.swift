@@ -117,19 +117,25 @@ enum PhotoAnalyzer {
         let normalize = { (box: [Point]?) in
             box?.map { CGPoint(x: $0.x / Double(cgImage.width), y: $0.y / Double(cgImage.height)) }
         }
+        let rgb = kind == .side ? rgbImage(cgImage) : nil
+        let edges = rgb.map(GradientImage.init)
+        var visionScore: OutlineScore?
         if kind == .side, (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
             let (points, step, boxes) = silhouette(of: observation, handler: handler)
             measured = ShapeMatcher.measureWithLength(points, pixelSize: Double(step))
             if measured != nil {
                 candidates = boxes
                 outline = normalize(ShapeMatcher.orientedBox(points, pixelSize: Double(step)))
+                visionScore = edges.flatMap { OutlineScore.score(points: points, step: step, edges: $0) }
             }
         }
-        // Vision found only the table, box or paper: find the cartridge by its colour.
-        if kind == .side, measured == nil, let rgb = rgbImage(cgImage), let points = ColorSegmenter.segment(rgb) {
-            let (sampled, step) = thinned(points)
-            measured = ShapeMatcher.measureWithLength(sampled, pixelSize: Double(step))
-            if measured != nil {
+        // Vision found only the table, box or paper, or its outline looks less like a cartridge
+        // (a shadow on one side, a piece missing) than the colour cut-out's: take the cut-out.
+        if let rgb, let edges, let colour = ColorSegmenter.best(rgb, edges: edges),
+           measured == nil || colour.score.value > (visionScore?.value ?? 0) {
+            let (sampled, step) = thinned(colour.points)
+            if let fromColour = ShapeMatcher.measureWithLength(sampled, pixelSize: Double(step)) {
+                measured = fromColour
                 outline = normalize(ShapeMatcher.orientedBox(sampled, pixelSize: Double(step)))
                 candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
             }
