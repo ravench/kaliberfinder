@@ -19,7 +19,8 @@ final class DimensionMatcherTests: XCTestCase {
     }
 
     func testShorterCaseTellsGP1890FromGP11() {
-        let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 77.0, caseLength: 53.5, rim: 12.5))
+        let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 77.0, caseLength: 53.5, rim: 12.5),
+                                            cartridges: CartridgeCatalog.all)
         XCTAssertEqual(matches.first?.cartridge.id, "7.5x53.5 mm Swiss (GP 1890)")
         XCTAssertEqual(matches.first?.fit, .good)
         let gp11 = matches.first { $0.cartridge.id == "7.5x55 mm Swiss (GP 11)" }
@@ -57,7 +58,7 @@ final class DimensionMatcherTests: XCTestCase {
     }
 
     func testLimit() {
-        XCTAssertEqual(DimensionMatcher.rank(MeasuredDimensions(overallLength: 30)).count, 10)
+        XCTAssertEqual(DimensionMatcher.rank(MeasuredDimensions(overallLength: 30)).count, 15)
         XCTAssertEqual(DimensionMatcher.rank(MeasuredDimensions(overallLength: 30), limit: 3).count, 3)
     }
 
