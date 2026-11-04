@@ -1703,6 +1703,29 @@
         }
       }
     },
+    "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No sure match. Measure the cartridge with a calliper and enter the dimensions."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas de correspondance sûre. Mesurez la cartouche au pied à coulisse et saisissez les dimensions."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna corrispondenza sicura. Misura la cartuccia con un calibro a corsoio e inserisci le dimensioni."
+          }
+        }
+      }
+    },
     "Keine Patrone im Bild erkannt.": {
       "extractionState": "manual",
       "localizations": {
@@ -1749,25 +1772,25 @@
         }
       }
     },
-    "Keine passenden Kaliber gefunden.": {
+    "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "No matching calibres found."
+            "value": "No matching calibres found. Measure the cartridge with a calliper and enter the dimensions."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aucun calibre correspondant trouvé."
+            "value": "Aucun calibre correspondant trouvé. Mesurez la cartouche au pied à coulisse et saisissez les dimensions."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nessun calibro corrispondente trovato."
+            "value": "Nessun calibro corrispondente trovato. Misura la cartuccia con un calibro a corsoio e inserisci le dimensioni."
           }
         }
       }
@@ -2071,6 +2094,29 @@
         }
       }
     },
+    "Masse von Hand eingeben": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter dimensions by hand"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saisir les dimensions à la main"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inserisci le dimensioni a mano"
+          }
+        }
+      }
+    },
     "Mehrere Patronen im Bild erkannt.": {
       "extractionState": "manual",
       "localizations": {
@@ -2228,6 +2274,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Senza foto"
+          }
+        }
+      }
+    },
+    "Ohne LiDAR-Messung zeigt das Foto nicht, wie gross die Patrone ist. Miss Länge und Durchmesser mit einer Schieblehre für ein sicheres Ergebnis.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Without a LiDAR measurement the photo can't tell how big the cartridge is. Measure length and diameter with a calliper for a sure result."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sans mesure LiDAR, la photo ne montre pas la taille de la cartouche. Mesurez la longueur et le diamètre au pied à coulisse pour un résultat sûr."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Senza misura LiDAR la foto non mostra quanto è grande la cartuccia. Misura lunghezza e diametro con un calibro a corsoio per un risultato sicuro."
           }
         }
       }

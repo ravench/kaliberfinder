@@ -87,4 +87,20 @@ final class MatcherTests: XCTestCase {
         XCTAssertFalse(Match(cartridge: c, score: 1, shapeDistance: 0.25, sizeDeviation: 0.1).fitsWell)
         XCTAssertFalse(Match(cartridge: c, score: 0, shapeDistance: nil).fitsWell)
     }
+
+    // Weak photo results ask for measurements by hand.
+    func testManualEntryIsSuggestedUnlessARowFitsWell() throws {
+        let c = try XCTUnwrap(CartridgeCatalog.current.first)
+        let good = Match(cartridge: c, score: 2, shapeDistance: 0.05, sizeDeviation: 0.1)
+        let roughSize = Match(cartridge: c, score: 1, shapeDistance: 0.05, sizeDeviation: 0.8)
+        let shapeOnly = Match(cartridge: c, score: 1, shapeDistance: 0.05)
+        XCTAssertNil(MatchesView.manualEntryHint([good, roughSize]))
+        XCTAssertEqual(MatchesView.manualEntryHint([]),
+                       "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc)
+        XCTAssertEqual(MatchesView.manualEntryHint([roughSize]),
+                       "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc)
+        // Without LiDAR even a perfect shape can't tell 9 mm from .45 ACP.
+        XCTAssertEqual(MatchesView.manualEntryHint([shapeOnly]),
+                       "Ohne LiDAR-Messung zeigt das Foto nicht, wie gross die Patrone ist. Miss Länge und Durchmesser mit einer Schieblehre für ein sicheres Ergebnis.".loc)
+    }
 }
