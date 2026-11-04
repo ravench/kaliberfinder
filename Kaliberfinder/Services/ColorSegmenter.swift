@@ -338,9 +338,23 @@ enum ColorSegmenter {
 enum SubjectPicker {
     struct Instance: Equatable {
         let label: Int
+        /// Vision labels that make up this object: more than one when parts were joined.
+        var labels: IndexSet
         var blob = Blob()
         var count: Int { blob.count }
         var bounds = ColorSegmenter.Box(x0: Int.max, y0: Int.max, x1: Int.min, y1: Int.min)
+
+        init(label: Int) {
+            self.label = label
+            labels = [label]
+        }
+
+        mutating func join(_ other: Instance) {
+            labels.formUnion(other.labels)
+            blob.join(other.blob)
+            bounds = ColorSegmenter.Box(x0: min(bounds.x0, other.bounds.x0), y0: min(bounds.y0, other.bounds.y0),
+                                        x1: max(bounds.x1, other.bounds.x1), y1: max(bounds.y1, other.bounds.y1))
+        }
     }
 
     /// Largest share of the photo a cartridge may cover.
@@ -360,9 +374,47 @@ enum SubjectPicker {
         return byLabel.values.sorted { $0.label < $1.label }
     }
 
+    /// A smaller piece touching a bigger one is part of it, not another cartridge: Vision can cut
+    /// a fired blank's star crimp off its case. Pieces up to this share of the bigger one are joined.
+    static let partShare = 0.5
+
+    /// The instances with pieces of one object joined: an instance inside the frame that touches
+    /// a bigger one (4-neighbours in the label map) and has at most `partShare` of its pixels.
+    static func joiningParts(_ instances: [Instance], labels: [Int], width w: Int, height h: Int) -> [Instance] {
+        let inFrame = Set(candidates(instances, width: w, height: h).map(\.label))
+        let byLabel = Dictionary(uniqueKeysWithValues: instances.map { ($0.label, $0) })
+        var touching = Set<[Int]>()
+        for i in labels.indices where labels[i] > 0 && inFrame.contains(labels[i]) {
+            let x = i % w
+            for j in [x < w - 1 ? i + 1 : -1, i + w < labels.count ? i + w : -1] where j >= 0 {
+                let a = labels[i], b = labels[j]
+                if b > 0, b != a, inFrame.contains(b) { touching.insert([min(a, b), max(a, b)]) }
+            }
+        }
+        // Union-find: each piece goes to the bigger instance it touches.
+        var root = Dictionary(uniqueKeysWithValues: instances.map { ($0.label, $0.label) })
+        func find(_ l: Int) -> Int { root[l] == l ? l : find(root[l] ?? l) }
+        for pair in touching.sorted(by: { $0.lexicographicallyPrecedes($1) }) {
+            guard let a = byLabel[pair[0]], let b = byLabel[pair[1]] else { continue }
+            let (small, big) = a.count <= b.count ? (a, b) : (b, a)
+            guard Double(small.count) <= partShare * Double(big.count) else { continue }
+            let rs = find(small.label), rb = find(big.label)
+            if rs != rb { root[rs] = rb }
+        }
+        var joined: [Int: Instance] = [:]
+        for s in instances where find(s.label) == s.label { joined[s.label] = s }
+        for s in instances where find(s.label) != s.label { joined[find(s.label)]?.join(s) }
+        return joined.values.sorted { $0.label < $1.label }
+    }
+
     /// The largest instance that lies inside the frame and isn't too big, nil if none does.
     static func pick(_ instances: [Instance], width w: Int, height h: Int) -> Int? {
-        candidates(instances, width: w, height: h).max { $0.count < $1.count }?.label
+        pickInstance(instances, width: w, height: h)?.label
+    }
+
+    /// Like `pick`, with all the labels the picked object is made of.
+    static func pickInstance(_ instances: [Instance], width w: Int, height h: Int) -> Instance? {
+        candidates(instances, width: w, height: h).max { $0.count < $1.count }
     }
 
     /// How many cartridges compete for the measurement: the one `pick` takes, plus instances
@@ -412,6 +464,14 @@ struct Blob: Equatable {
     static let competingShare = 0.4
     /// Largest distance between the two mean colours (chroma, 0…255 per channel).
     static let maxColourDistance: Float = 40
+
+    /// Adds another patch's pixels (its colour is kept only if this one has none).
+    mutating func join(_ other: Blob) {
+        count += other.count
+        sx += other.sx; sy += other.sy
+        sxx += other.sxx; syy += other.syy; sxy += other.sxy
+        if colour == nil { colour = other.colour }
+    }
 
     mutating func add(x: Int, y: Int) {
         let px = Double(x), py = Double(y)
