@@ -1,6 +1,11 @@
 import PhotosUI
 import SwiftUI
 
+/// The home screen's settings and actions, top to bottom.
+enum HomeSection: CaseIterable {
+    case photo, withoutPhoto, recognition, realSize, units
+}
+
 struct HomeView: View {
     @EnvironmentObject private var scale: ScaleModel
     @Environment(\.scenePhase) private var scenePhase
@@ -12,56 +17,65 @@ struct HomeView: View {
 
     var body: some View {
         List {
-            Section {
-                if LiDARCamera.isAvailable || CameraPicker.isAvailable {
-                    Button { showCamera = true } label: {
-                        Label("Patrone fotografieren", systemImage: "camera")
+            ForEach(HomeSection.allCases, id: \.self) { section in
+                switch section {
+                case .photo:
+                    Section {
+                        if LiDARCamera.isAvailable || CameraPicker.isAvailable {
+                            Button { showCamera = true } label: {
+                                Label("Patrone fotografieren", systemImage: "camera")
+                            }
+                        }
+                        PhotosPicker(selection: $libraryItem, matching: .images) {
+                            Label("Foto auswählen", systemImage: "photo")
+                        }
+                    } header: {
+                        Text("Patrone erkennen")
+                    } footer: {
+                        Text("Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren.")
+                }
+                case .withoutPhoto:
+                Section {
+                    NavigationLink { MeasureView() } label: {
+                        Label("Masse eingeben", systemImage: "ruler")
                     }
-                }
-                PhotosPicker(selection: $libraryItem, matching: .images) {
-                    Label("Foto auswählen", systemImage: "photo")
-                }
-            } header: {
-                Text("Patrone erkennen")
-            } footer: {
-                Text("Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren.")
-            }
-            Section {
-                NavigationLink { MeasureView() } label: {
-                    Label("Masse eingeben", systemImage: "ruler")
-                }
-                NavigationLink { CatalogView(selecting: true) } label: {
-                    Label("Auswählen und vergleichen", systemImage: "square.split.2x1")
-                }
-                NavigationLink { CatalogView() } label: {
-                    Label("Alle Kaliber", systemImage: "list.bullet")
-                }
-            } header: {
-                Text("Ohne Foto")
-            }
-            Section {
-                NavigationLink { CalibrationView() } label: {
-                    LabeledContent {
-                        Text(verbatim: unit.scaleText(pointsPerMM: scale.pointsPerMM))
-                    } label: {
-                        Text("Bildschirm")
-                        Text(scale.resolution.source.title.loc)
+                    NavigationLink { CatalogView(selecting: true) } label: {
+                        Label("Auswählen und vergleichen", systemImage: "square.split.2x1")
                     }
+                    NavigationLink { CatalogView() } label: {
+                        Label("Alle Kaliber", systemImage: "list.bullet")
+                    }
+                } header: {
+                    Text("Ohne Foto")
                 }
-            } header: {
-                Text("Originalgrösse")
-            } footer: {
-                Text("Bildschirmzoom und Kalibrierung werden berücksichtigt. Prüfe die Grösse einmal mit einer Bankkarte.")
-            }
-            Section("Einheiten") {
-                UnitPicker(unit: $unit)
-            }
-            Section {
-                Toggle("Veraltete Kaliber berücksichtigen", isOn: $includeObsolete)
-            } header: {
-                Text("Erkennung")
-            } footer: {
-                Text("Auch Kaliber vorschlagen, die nicht mehr regulär hergestellt werden, z. B. GP 1890 oder Vetterli. «Alle Kaliber» zeigt sie immer.")
+                case .realSize:
+                Section {
+                    NavigationLink { CalibrationView() } label: {
+                        LabeledContent {
+                            Text(verbatim: unit.scaleText(pointsPerMM: scale.pointsPerMM))
+                        } label: {
+                            Text("Bildschirm")
+                            Text(scale.resolution.source.title.loc)
+                        }
+                    }
+                } header: {
+                    Text("Originalgrösse")
+                } footer: {
+                    Text("Bildschirmzoom und Kalibrierung werden berücksichtigt. Prüfe die Grösse einmal mit einer Bankkarte.")
+                }
+                case .units:
+                Section("Einheiten") {
+                    UnitPicker(unit: $unit)
+                }
+                case .recognition:
+                Section {
+                    Toggle("Veraltete Kaliber berücksichtigen", isOn: $includeObsolete)
+                } header: {
+                    Text("Erkennung")
+                } footer: {
+                    Text("Auch Kaliber vorschlagen, die nicht mehr regulär hergestellt werden, z. B. GP 1890 oder Vetterli. «Alle Kaliber» zeigt sie immer.")
+                }
+                }
             }
             Section {
                 Text(verbatim: "© 2026 Simon Giotta · PolyForm Noncommercial 1.0.0")
