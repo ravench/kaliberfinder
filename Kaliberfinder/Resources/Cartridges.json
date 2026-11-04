@@ -253,6 +253,40 @@
    }
   },
   {
+   "id": ".22 Blank (6.8/11)",
+   "name": ".22 Blank (6.8/11)",
+   "category": "Randfeuer",
+   "kind": "rimfire",
+   "aliases": [
+    "22blank",
+    "6.8/11",
+    "6.8x11",
+    "platzpatrone",
+    "kartusche",
+    "setzkartusche",
+    "bolzensetzer"
+   ],
+   "displayAliases": [
+    ".22 Platzpatrone",
+    "Setzkartusche 6.8/11"
+   ],
+   "headstamps": [],
+   "obsolete": false,
+   "dimensions": {
+    "rim": 6.8,
+    "base": 5.7,
+    "neck": 3.4,
+    "caseLength": 11.0,
+    "overallLength": 11.0,
+    "bullet": 5.7
+   },
+   "outline": {
+    "width": 6.8,
+    "height": 11.0,
+    "case": "M6.80 11.00 L6.80 9.90 L6.25 9.90 L6.25 4.18 L5.67 0.35 L5.10 0.00 L1.70 0.00 L1.12 0.35 L0.55 4.18 L0.55 9.90 L0.00 9.90 L0.00 11.00 Z"
+   }
+  },
+  {
    "id": ".44 Henry",
    "name": ".44 Henry",
    "category": "Randfeuer",

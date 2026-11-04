@@ -56,7 +56,8 @@ final class EmptyCaseTests: XCTestCase {
     }
 
     func testLoadedCartridgesAreNotTakenForCases() throws {
-        for c in CartridgeCatalog.all where c.hasCase && c.kind != "shot" {
+        // A blank has no bullet: cartridge and case look the same.
+        for c in CartridgeCatalog.all where c.hasCase && c.kind != "shot" && c.hasBullet {
             let shape = try photo(c, part: .cartridge)
             XCTAssertEqual(ScanMode.auto.part(for: shape), .cartridge, c.id)
             XCTAssertEqual(ScanMode.auto.part(for: try photo(c, part: .emptyCase)), .emptyCase, c.id)
