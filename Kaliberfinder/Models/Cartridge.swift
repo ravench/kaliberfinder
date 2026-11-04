@@ -71,6 +71,9 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     var hasCase: Bool { dimensions.caseLength > 0 }
 
+    /// False for a crimped blank: its case is the whole cartridge.
+    var hasBullet: Bool { dimensions.overallLength > dimensions.caseLength + 0.05 || !hasCase }
+
     /// Diameter of the case head seen from below: the rim, or the base where it is wider.
     var headDiameter: Double { max(dimensions.rim, dimensions.base) }
 
