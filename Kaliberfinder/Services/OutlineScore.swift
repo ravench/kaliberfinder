@@ -73,17 +73,17 @@ struct OutlineScore: Equatable {
         let symmetry = 1 - min(1, offsets[offsets.count / 2] / (body / 2))
         let solidity = min(1, n / (length * body))
         // Outline: mask cells with a 4-neighbour outside the mask.
-        var sum = 0.0, count = 0
+        var sum = 0.0, outlineCells = 0
         for i in mask.indices where mask[i] {
             let x = i % w, y = i / w
             let inside = x > 0 && y > 0 && x < w - 1 && y < h - 1 && mask[i - 1] && mask[i + 1] && mask[i - w] && mask[i + w]
             guard !inside else { continue }
             let px = origin.x + x * step, py = origin.y + y * step
-            sum += Double(edges.value(x: px, y: py)); count += 1
+            sum += Double(edges.value(x: px, y: py)); outlineCells += 1
         }
-        guard count > 0 else { return nil }
+        guard outlineCells > 0 else { return nil }
         let x0 = origin.x, y0 = origin.y, x1 = origin.x + w * step, y1 = origin.y + h * step
-        let edgeStrength = (sum / Double(count)) / (Double(edges.mean(x0: x0, y0: y0, x1: x1, y1: y1)) + 1e-3)
+        let edgeStrength = (sum / Double(outlineCells)) / (Double(edges.mean(x0: x0, y0: y0, x1: x1, y1: y1)) + 1e-3)
         return OutlineScore(aspect: length / body, symmetry: symmetry, solidity: solidity,
                             edgeStrength: edgeStrength, size: n * Double(step * step))
     }
