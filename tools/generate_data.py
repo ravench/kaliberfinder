@@ -6,7 +6,7 @@
 The catalogue (cartridges.py) and the outline drawing (outline.py) live in the shared
 calibre-data repository (github.com/ravench/calibre-data), included at calibre-data/ and
 also used by Schiesstagebuch and the calibre poster. Extra headstamp spellings for the
-photo matcher live in tools/headstamps.py.
+catalogue search live in tools/headstamps.py.
 
 Each entry carries its dimensions in millimetres (for the 1:1 drawing and the
 dimension table) and a side-view outline as SVG path data (M/L/Z only), tip at
