@@ -58,6 +58,17 @@ final class EmptyCaseTests: XCTestCase {
         XCTAssertLessThanOrEqual(Double(missed.count) / Double(cases.count), 0.05, missed.joined(separator: "\n"))
     }
 
+    func testLiDARSizeSeparatesLookAlikeCases() throws {
+        // Without a scale the .32 S&W Long case can rank behind .44 Magnum (the same tube, longer).
+        // With the size from LiDAR, calibres more than 3 mm off are dropped.
+        let c = try cartridge(".32 S&W Long")
+        let d = c.dimensions
+        let size = MeasuredSize(length: d.caseLength, diameter: d.base, lengthError: 1, diameterError: 0.25)
+        let matches = Matcher.rank(shape: try photo(c, part: .emptyCase), hits: [], size: size, limit: 5)
+        XCTAssertEqual(matches.first?.cartridge.id, c.id, "\(matches.map(\.cartridge.id))")
+        XCTAssertFalse(matches.contains { $0.cartridge.id == ".44 Magnum" })
+    }
+
     func testLoadedCartridgesAreNotTakenForCases() throws {
         // The Nagant bullet sits wholly inside the case, so the loaded round looks like an empty case.
         for c in CartridgeCatalog.all where c.hasCase && c.kind != "shot" && c.dimensions.overallLength > c.dimensions.caseLength {
