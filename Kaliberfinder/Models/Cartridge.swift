@@ -12,8 +12,13 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     let aliases: [String]
     /// Printable alternative names, e.g. "9 mm Luger" for 9x19 mm.
     let displayAliases: [String]
-    /// Spellings found on headstamps, e.g. "WIN 308".
+    /// Spellings found on headstamps, e.g. "WIN 308", for the catalogue search.
     let headstamps: [String]
+    /// No longer in regular factory production (only surplus, boutique loads or reloading).
+    /// Matching skips these unless the «Veraltete Kaliber» switch is on.
+    let obsolete: Bool
+    /// A crimped blank (power-tool load, starter pistol blank): no bullet, the case is the whole cartridge.
+    let blank: Bool
     let dimensions: Dimensions
     let outline: Outline
     /// Nil for rimfire and for balls, Minié bullets and pellets.

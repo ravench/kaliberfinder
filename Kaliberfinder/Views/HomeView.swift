@@ -1,60 +1,81 @@
 import PhotosUI
 import SwiftUI
 
+/// The home screen's settings and actions, top to bottom.
+enum HomeSection: CaseIterable {
+    case photo, withoutPhoto, recognition, units, realSize
+}
+
 struct HomeView: View {
     @EnvironmentObject private var scale: ScaleModel
     @Environment(\.scenePhase) private var scenePhase
     @State private var showCamera = false
     @State private var libraryItem: PhotosPickerItem?
     @State private var photo: PickedPhoto?
-    @State private var sortingShared = false
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
+    @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
 
     var body: some View {
         List {
-            Section {
-                if LiDARCamera.isAvailable || CameraPicker.isAvailable {
-                    Button { showCamera = true } label: {
-                        Label("Patrone fotografieren", systemImage: "camera")
+            ForEach(HomeSection.allCases, id: \.self) { section in
+                switch section {
+                case .photo:
+                    Section {
+                        if LiDARCamera.isAvailable || CameraPicker.isAvailable {
+                            Button { showCamera = true } label: {
+                                Label("Patrone fotografieren", systemImage: "camera")
+                            }
+                        }
+                        PhotosPicker(selection: $libraryItem, matching: .images) {
+                            Label("Foto auswählen", systemImage: "photo")
+                        }
+                    } header: {
+                        Text("Patrone erkennen")
+                    } footer: {
+                        Text("Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren.")
+                }
+                case .withoutPhoto:
+                Section {
+                    NavigationLink { MeasureView() } label: {
+                        Label("Masse eingeben", systemImage: "ruler")
                     }
-                }
-                PhotosPicker(selection: $libraryItem, matching: .images) {
-                    Label("Foto auswählen", systemImage: "photo")
-                }
-            } header: {
-                Text("Patrone erkennen")
-            } footer: {
-                Text("Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren. Für die Aufschrift danach den Boden fotografieren.")
-            }
-            Section {
-                NavigationLink { MeasureView() } label: {
-                    Label("Masse eingeben", systemImage: "ruler")
-                }
-                NavigationLink { CatalogView(selecting: true) } label: {
-                    Label("Auswählen und vergleichen", systemImage: "square.split.2x1")
-                }
-                NavigationLink { CatalogView() } label: {
-                    Label("Alle Kaliber", systemImage: "list.bullet")
-                }
-            } header: {
-                Text("Ohne Foto")
-            }
-            Section {
-                NavigationLink { CalibrationView() } label: {
-                    LabeledContent {
-                        Text(verbatim: unit.scaleText(pointsPerMM: scale.pointsPerMM))
-                    } label: {
-                        Text("Bildschirm")
-                        Text(scale.resolution.source.title.loc)
+                    NavigationLink { CatalogView(selecting: true) } label: {
+                        Label("Auswählen und vergleichen", systemImage: "square.split.2x1")
                     }
+                    NavigationLink { CatalogView() } label: {
+                        Label("Alle Kaliber", systemImage: "list.bullet")
+                    }
+                } header: {
+                    Text("Ohne Foto")
                 }
-            } header: {
-                Text("Originalgrösse")
-            } footer: {
-                Text("Bildschirmzoom und Kalibrierung werden berücksichtigt. Prüfe die Grösse einmal mit einer Bankkarte.")
-            }
-            Section("Einheiten") {
-                UnitPicker(unit: $unit)
+                case .realSize:
+                Section {
+                    NavigationLink { CalibrationView() } label: {
+                        LabeledContent {
+                            Text(verbatim: unit.scaleText(pointsPerMM: scale.pointsPerMM))
+                        } label: {
+                            Text("Bildschirm")
+                            Text(scale.resolution.source.title.loc)
+                        }
+                    }
+                } header: {
+                    Text("Originalgrösse")
+                } footer: {
+                    Text("Bildschirmzoom und Kalibrierung werden berücksichtigt. Prüfe die Grösse einmal mit einer Bankkarte.")
+                }
+                case .units:
+                Section("Einheiten") {
+                    UnitPicker(unit: $unit)
+                }
+                case .recognition:
+                Section {
+                    Toggle("Veraltete Kaliber berücksichtigen", isOn: $includeObsolete)
+                } header: {
+                    Text("Erkennung")
+                } footer: {
+                    Text("Auch Kaliber vorschlagen, die nicht mehr regulär hergestellt werden, z. B. GP 1890 oder Vetterli. «Alle Kaliber» zeigt sie immer.")
+                }
+                }
             }
             Section {
                 Text(verbatim: "© 2026 Simon Giotta · PolyForm Noncommercial 1.0.0")
@@ -65,20 +86,13 @@ struct HomeView: View {
         .navigationTitle("Kaliberfinder")
         .navigationDestination(item: $photo) {
             // New identity per photo, so a photo shared while the matches are open is analysed afresh.
-            MatchesView(photo: $0.image, depth: $0.depth, base: $0.base).id($0.id)
+            MatchesView(photo: $0.image, depth: $0.depth).id($0.id)
         }
         // Photos shared from other apps: the extension opens the app with this URL. If iOS did not
         // let it, they wait in the inbox until the app comes to the front.
-        .onOpenURL { if SharedInbox.isOpenURL($0) { Task { await takeSharedPhotos() } } }
-        .onChange(of: scenePhase) { _, phase in if phase == .active { Task { await takeSharedPhotos() } } }
-        .task { await takeSharedPhotos() }
-        .overlay {
-            if sortingShared {
-                ProgressView { Text("Geteilte Fotos werden geprüft …") }
-                    .padding()
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
-            }
-        }
+        .onOpenURL { if SharedInbox.isOpenURL($0) { takeSharedPhoto() } }
+        .onChange(of: scenePhase) { _, phase in if phase == .active { takeSharedPhoto() } }
+        .onAppear { takeSharedPhoto() }
         .fullScreenCover(isPresented: $showCamera) {
             if LiDARCamera.isAvailable {
                 LiDARCameraView { photo = PickedPhoto(image: $0, depth: $1) }
@@ -98,20 +112,10 @@ struct HomeView: View {
         }
     }
 
-    /// Opens the matches for photos shared from another app. With several photos, their
-    /// silhouettes decide which is the side photo and which the base photo, not their order.
-    private func takeSharedPhotos() async {
-        let images = (SharedInbox.shared?.take() ?? []).compactMap(UIImage.init(data:))
-        guard !images.isEmpty else { return }
+    /// Opens the matches for a photo shared from another app.
+    private func takeSharedPhoto() {
+        guard let image = (SharedInbox.shared?.take() ?? []).lazy.compactMap(UIImage.init(data:)).first else { return }
         showCamera = false
-        var views: [SharedPhotoSorter.View] = [.side]
-        if images.count > 1 {
-            sortingShared = true
-            views = []
-            for image in images { views.append(.init(await PhotoAnalyzer.analyze(image, kind: .side).shape)) }
-            sortingShared = false
-        }
-        guard let (side, base) = SharedPhotoSorter.assign(views) else { return }
-        photo = PickedPhoto(image: images[side], base: base.map { images[$0] })
+        photo = PickedPhoto(image: image)
     }
 }

@@ -40,8 +40,6 @@ struct PickedPhoto: Identifiable, Hashable {
     let image: UIImage
     /// From the LiDAR camera; nil for the system camera and the photo library.
     var depth: DepthScale?
-    /// A second photo of the case head that came along (shared from another app).
-    var base: UIImage?
 
     static func == (a: PickedPhoto, b: PickedPhoto) -> Bool { a.id == b.id }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }

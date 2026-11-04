@@ -1,5 +1,5 @@
-"""Extra spellings found on headstamps (the stamp on the case base), for the
-photo matcher's text recognition. Kept apart from cartridges.py so that file
+"""Extra spellings found on headstamps (the stamp on the case base), so the
+catalogue search finds a calibre by what is written on the case. Kept apart from cartridges.py so that file
 stays an exact copy of the Schiesstagebuch catalogue.
 
 Matching ignores case, spaces, dots and "mm", so "9MM LUGER", "9 mm Luger"
