@@ -95,6 +95,7 @@ Every change should come with tests.
 
 Every push to `main` whose **Build** workflow passes is archived and uploaded to TestFlight
 by `.github/workflows/testflight.yml` (it can also be started by hand under Actions).
+Merges less than a minute apart give one upload, from the newest commit on `main`.
 The build number is the workflow run number plus 1000 (`tools/testflight.py`); bump
 `MARKETING_VERSION` in `project.yml` for a new version.
 
