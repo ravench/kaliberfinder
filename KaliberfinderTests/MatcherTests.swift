@@ -55,7 +55,8 @@ final class MatcherTests: XCTestCase {
         XCTAssertTrue(MatchesView.notes(for: PhotoAnalysis(shape: side)).isEmpty)
         // Only the side profile counts: no hint sends the user to photograph the base.
         let disc = ShapeMeasurement(aspect: 1, profile: [1])
-        let all = MatchesView.notes(for: PhotoAnalysis(shape: disc)) + MatchesView.notes(for: PhotoAnalysis(shape: nil), depth: DepthScale(tableDistance: 0.25, focalLength: 3000, referenceLongSide: 4032))
+        let depth = DepthScale(tableDistance: 250, focalLength: 3000, referenceLongSide: 4032)
+        let all = MatchesView.notes(for: PhotoAnalysis(shape: disc)) + MatchesView.notes(for: PhotoAnalysis(shape: nil), depth: depth)
         XCTAssertFalse(all.contains { $0.contains("Aufschrift") || $0.localizedCaseInsensitiveContains("headstamp") }, all.joined(separator: "\n"))
     }
 
