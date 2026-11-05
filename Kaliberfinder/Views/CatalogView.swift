@@ -82,10 +82,11 @@ struct CatalogView: View {
 struct CartridgeRow: View {
     let cartridge: Cartridge
     var detail: String?
-    /// Shows the detail in green with a check mark, for a calibre that fits well.
+    /// Shows the detail in green, for a calibre that fits well.
     var highlighted = false
     /// Calibres that look exactly like `cartridge` from the side, shown in the same row.
     var merged: [Cartridge] = []
+    @ScaledMetric(relativeTo: .body) private var flagSlot: CGFloat = 24
 
     var body: some View {
         HStack(spacing: 12) {
@@ -106,14 +107,19 @@ struct CartridgeRow: View {
                         .fontWeight(highlighted ? .semibold : nil)
                         .foregroundStyle(highlighted ? AnyShapeStyle(.green) : AnyShapeStyle(.secondary))
                 }
+                let tags = CalibreTag.of(cartridge)
+                if !tags.isEmpty {
+                    // Own line, so the tags never wrap into the detail text.
+                    HStack(spacing: 4) { ForEach(tags, id: \.self) { TagChip(tag: $0) } }
+                        .padding(.top, 1)
+                }
             }
-            if highlighted {
-                Spacer()
-                Image(systemName: "checkmark.seal.fill")
-                    .font(.title2)
-                    .foregroundStyle(.green)
-                    .accessibilityLabel(Text("Passt genau"))
+            Spacer(minLength: 0)
+            // Fixed slot: rows without a country keep the same layout.
+            Group {
+                if let country = cartridge.country { CountryFlag(country: country) }
             }
+            .frame(width: flagSlot)
         }
     }
 }

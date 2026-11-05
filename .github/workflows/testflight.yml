@@ -13,6 +13,39 @@ defaults:
     # pipefail: otherwise a failing xcodebuild piped into xcpretty still passes.
     shell: bash -eo pipefail {0}
 jobs:
+  retry:
+    # GitHub sometimes gives up on a queued macOS job ("The job was not acquired by Runner of type
+    # hosted even after multiple attempts", 2026-11-04). Build then fails without running anything
+    # and nothing would upload: start its failed jobs again, at most twice. A green re-run
+    # triggers this workflow again and uploads as usual.
+    if: >-
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion == 'failure' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.run_attempt < 3
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: read
+    steps:
+      - name: Re-run Build if no runner picked it up
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN: ${{ github.event.workflow_run.id }}
+          ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        run: |
+          REPO="${{ github.repository }}"
+          FAILED=$(gh api "repos/$REPO/actions/runs/$RUN/attempts/$ATTEMPT/jobs" \
+            --jq '.jobs[] | select(.conclusion == "failure" or .conclusion == "cancelled") | .id')
+          for JOB in $FAILED; do
+            if ! gh api "repos/$REPO/check-runs/$JOB/annotations" --jq '.[].message' | grep -q "not acquired by Runner"; then
+              echo "::notice::Build failed on its own (job $JOB); not re-running."
+              exit 0
+            fi
+          done
+          [ -n "$FAILED" ] || exit 0
+          echo "::notice::No runner picked up Build attempt $ATTEMPT; re-running its failed jobs."
+          gh run rerun "$RUN" --failed --repo "$REPO"
   wait:
     # Only builds whose tests passed, and only pushes to main (not PRs from a branch named main).
     if: >-
