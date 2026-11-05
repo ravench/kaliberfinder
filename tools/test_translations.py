@@ -50,7 +50,8 @@ class TranslationTests(unittest.TestCase):
         for name in os.listdir(views):
             for i, line in enumerate(open(os.path.join(views, name)), 1):
                 literal = re.search(r'Text\(verbatim:\s*"([^"]*)"', line)
-                self.assertFalse(literal and re.search("[A-Za-zÄÖÜäöü]{2}", literal.group(1)), f"{name}:{i}: {line.strip()}")
+                text = re.sub(r"\\\([^)]*\)", "", literal.group(1)) if literal else ""  # interpolations are data
+                self.assertFalse(re.search("[A-Za-zÄÖÜäöü]{2}", text), f"{name}:{i}: {line.strip()}")
 
     def test_copyright_line_names_the_licence(self):
         for value in T["© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0"]:
