@@ -133,7 +133,8 @@ final class NeckShapeTests: XCTestCase {
             let name = String(format: "set-gp11-case-%02d", i)
             let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: name, withExtension: "jpg"), name)
             let image = try XCTUnwrap(UIImage(contentsOfFile: url.path), name)
-            let shape = try XCTUnwrap(await PhotoAnalyzer.analyze(image).shape, name)
+            let analysis = await PhotoAnalyzer.analyze(image)
+            let shape = try XCTUnwrap(analysis.shape, name)
             let neck = shape.mouthFirst().neck
             if let neck, abs(neck.width - ratio) < 0.08 { found += 1 }
             lines.append(String(format: "NECK %@ aspect %.2f neck %@ widths %@", name, shape.aspect,
