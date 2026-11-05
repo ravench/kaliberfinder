@@ -10,26 +10,51 @@ final class HiddenMatchesTests: XCTestCase {
         DimensionMatch(cartridge: c, maxDeviation: deviation, meanDeviation: deviation)
     }
 
-    func testSwitchOffHidesObsoleteCalibres() {
-        XCTAssertEqual(HiddenTag.hidden(includeObsolete: false), [.obsolete])
-        XCTAssertEqual(HiddenTag.hidden(includeObsolete: true), [])
+    private let bothOff: Set<HiddenTag> = [.obsolete, .rare]
+
+    func testSwitchesMapToHiddenTags() {
+        XCTAssertEqual(HiddenTag.hidden(includeObsolete: false, includeRare: false), [.obsolete, .rare])
+        XCTAssertEqual(HiddenTag.hidden(includeObsolete: true, includeRare: false), [.rare])
+        XCTAssertEqual(HiddenTag.hidden(includeObsolete: false, includeRare: true), [.obsolete])
+        XCTAssertEqual(HiddenTag.hidden(includeObsolete: true, includeRare: true), [])
+    }
+
+    func testHiddenRareMatchIsCountedAsRare() throws {
+        let rifle = try XCTUnwrap(CartridgeCatalog.cartridge(id: ".450 No. 2 Nitro Express"))
+        XCTAssertTrue(rifle.rare)
+        XCTAssertFalse(rifle.obsolete)
+        let measured = MeasuredDimensions(overallLength: 109.98, caseLength: 88.9, rim: 16.76)
+        let r = DimensionMatcher.rankHiding(bothOff, measured)
+        XCTAssertFalse(r.shown.contains { $0.cartridge.rare || $0.cartridge.obsolete })
+        XCTAssertEqual(r.list(revealing: true).first?.cartridge.id, rifle.id)
+        XCTAssertTrue(r.counts.contains { $0.tag == .rare })
+        XCTAssertTrue(try XCTUnwrap(r.summary).contains(HiddenTag.rare.countText(r.counts.first { $0.tag == .rare }?.count ?? 0)))
+        // With the rare switch on it is the first match.
+        XCTAssertEqual(DimensionMatcher.rankHiding([.obsolete], measured).shown.first?.cartridge.id, rifle.id)
+    }
+
+    func testCalibreWithBothTagsCountsOnceUnderObsolete() throws {
+        let gras = try XCTUnwrap(CartridgeCatalog.cartridge(id: "11x59 mm R Gras"))
+        XCTAssertEqual(HiddenMatches([match(gras, 0)], hiding: bothOff, limit: 5).counts.map(\.tag), [.obsolete])
+        XCTAssertEqual(HiddenMatches([match(gras, 0)], hiding: [.rare], limit: 5).counts.map(\.tag), [.rare])
+        XCTAssertEqual(HiddenMatches([match(gras, 0)], hiding: [.rare], limit: 5).summary,
+                       "1 weiterer Treffer".loc + ": " + "1 seltener".loc)
     }
 
     func testHiddenObsoleteMatchIsCountedAndRevealedInRankOrder() throws {
-        let r = DimensionMatcher.rankHiding([.obsolete], gp1890)
-        XCTAssertFalse(r.shown.contains { $0.cartridge.obsolete })
-        XCTAssertFalse(r.revealed.contains { $0.cartridge.rare }, "rare calibres stay out until their switch exists")
+        let r = DimensionMatcher.rankHiding(bothOff, gp1890)
+        XCTAssertFalse(r.shown.contains { $0.cartridge.obsolete || $0.cartridge.rare })
         XCTAssertFalse(r.hidden.isEmpty)
-        XCTAssertTrue(r.hidden.allSatisfy { $0.cartridge.obsolete && $0.fit != .poor })
+        XCTAssertTrue(r.hidden.allSatisfy { ($0.cartridge.obsolete || $0.cartridge.rare) && $0.fit != .poor })
         XCTAssertTrue(r.hidden.contains { $0.cartridge.id == gp1890ID })
         // Revealing puts GP 1890 back at the top, in place, and keeps every shown row.
         XCTAssertEqual(r.list(revealing: true).first?.cartridge.id, gp1890ID)
         XCTAssertEqual(r.revealed.count, r.shown.count + r.hidden.count)
         XCTAssertEqual(r.list(revealing: false).map(\.id), r.shown.map(\.id))
-        XCTAssertEqual(r.counts.map { $0.tag }, [.obsolete])
-        XCTAssertEqual(r.counts.first?.count, r.hidden.count)
+        XCTAssertEqual(r.counts.first?.tag, .obsolete)
+        XCTAssertEqual(r.counts.map(\.count).reduce(0, +), r.hidden.count)
         let summary = try XCTUnwrap(r.summary)
-        XCTAssertTrue(summary.hasSuffix(HiddenTag.obsolete.countText(r.hidden.count)), summary)
+        XCTAssertTrue(summary.contains(HiddenTag.obsolete.countText(r.counts[0].count)), summary)
     }
 
     func testNothingIsHiddenWithTheSwitchOn() {
@@ -41,7 +66,7 @@ final class HiddenMatchesTests: XCTestCase {
     }
 
     func testShownListMatchesRankingWithoutObsoleteCalibres() {
-        let r = DimensionMatcher.rankHiding([.obsolete], gp1890)
+        let r = DimensionMatcher.rankHiding(bothOff, gp1890)
         let old = DimensionMatcher.rank(gp1890, cartridges: CartridgeCatalog.matchable(includeObsolete: false))
         XCTAssertEqual(r.shown.count, old.count)
         XCTAssertEqual(Set(r.shown.prefix(5).map(\.id)), Set(old.prefix(5).map(\.id)))
@@ -75,11 +100,12 @@ final class HiddenMatchesTests: XCTestCase {
 
     func testPhotoResultsHideObsoleteCalibres() throws {
         let shape = try XCTUnwrap(ShapeMatcher.catalogue[gp1890ID])
-        let r = Matcher.rankHiding([.obsolete], shape: shape)
-        XCTAssertFalse(r.shown.contains { $0.cartridge.obsolete })
+        let r = Matcher.rankHiding(bothOff, shape: shape)
+        XCTAssertFalse(r.shown.contains { $0.cartridge.obsolete || $0.cartridge.rare })
         XCTAssertTrue(r.hidden.contains { $0.cartridge.id == gp1890ID })
-        // Calibres with the same proportions score the same, so GP 1890 is among the first.
-        XCTAssertTrue(r.revealed.prefix(3).contains { $0.cartridge.id == gp1890ID })
+        // Calibres with the same proportions score the same, so GP 1890 is among the first
+        // non-rare ones (rare look-alikes may tie with it).
+        XCTAssertTrue(r.revealed.filter { !$0.cartridge.rare }.prefix(3).contains { $0.cartridge.id == gp1890ID })
         XCTAssertTrue(Matcher.rankHiding([], shape: shape).hidden.isEmpty)
     }
 }

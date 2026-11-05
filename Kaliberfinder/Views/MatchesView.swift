@@ -20,6 +20,7 @@ struct MatchesView: View {
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(ScanMode.storageKey) private var mode: ScanMode = .auto
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
+    @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
 
     var body: some View {
         List {
@@ -81,6 +82,7 @@ struct MatchesView: View {
         }
         .onChange(of: mode) { rank() }
         .onChange(of: includeObsolete) { rank() }
+        .onChange(of: includeRare) { rank() }
     }
 
     /// The calibres listed: the ones the switches let through, plus the hidden ones once revealed.
@@ -165,7 +167,7 @@ struct MatchesView: View {
         revealed = false
         guard let analysis else { ranked = .none; return }
         let size = try? analysis.size(depth: depth).get()
-        ranked = Matcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete), shape: analysis.shape,
+        ranked = Matcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), shape: analysis.shape,
                                     size: size, mode: mode, brass: analysis.isBrass)
     }
 
