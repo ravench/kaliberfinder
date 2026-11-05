@@ -18,7 +18,8 @@ struct MatchesView: View {
     /// The user tapped «Einblenden»: hidden matching calibres are listed too, for this result only.
     @State private var revealed = false
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
-    @AppStorage(ScanMode.storageKey) private var mode: ScanMode = .auto
+    /// Every photo starts on «Automatisch»; a manual choice applies to this photo only.
+    @State private var mode: ScanMode = .auto
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
 
