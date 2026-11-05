@@ -153,6 +153,8 @@ class BulletMaterialTests(unittest.TestCase):
         by_name = {c["name"]: c for c in generate_data.build()}
         self.assertEqual(by_name[".44 Henry"]["outline"]["caseMaterial"], "copper")
         self.assertNotIn("caseMaterial", by_name["9x19 mm"]["outline"])
+        self.assertEqual(by_name[".45-70 Government"]["outline"]["currentCaseMaterials"], ["brass"])
+        self.assertEqual(by_name["9x19 mm"]["outline"]["currentCaseMaterials"], ["steel"])
         self.assertTrue(set(generate_data.CASE_COLOURS) >= {c["outline"]["caseMaterial"] for c in by_name.values()
                                                              if "caseMaterial" in c["outline"]})
 
