@@ -35,12 +35,13 @@ enum CartridgeCatalog {
 
     /// UserDefaults key of the «Veraltete Kaliber berücksichtigen» switch. Off by default.
     static let includeObsoleteKey = "includeObsoleteCalibres"
+    /// UserDefaults key of the «Seltene Kaliber berücksichtigen» switch. Off by default.
+    static let includeRareKey = "includeRareCalibres"
 
-    /// The calibres photo and dimension matching compare against: obsolete ones only when asked,
-    /// rare ones never yet (their switch comes next). The catalogue list and search always show
-    /// every calibre.
-    static func matchable(includeObsolete: Bool, in cartridges: [Cartridge] = all) -> [Cartridge] {
-        cartridges.filter { !$0.rare && (includeObsolete || !$0.obsolete) }
+    /// The calibres photo and dimension matching compare against: obsolete and rare ones only
+    /// when asked. The catalogue list and search always show every calibre.
+    static func matchable(includeObsolete: Bool, includeRare: Bool = false, in cartridges: [Cartridge] = all) -> [Cartridge] {
+        cartridges.filter { (includeRare || !$0.rare) && (includeObsolete || !$0.obsolete) }
     }
 
     /// Calibres still in regular production: what matching uses with the switch off (the default).

@@ -104,6 +104,21 @@ targets:
         CODE_SIGN_STYLE: Automatic
         SWIFT_VERSION: "5.10"
         GENERATE_INFOPLIST_FILE: YES
+  KaliberfinderUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [KaliberfinderUITests]
+    dependencies:
+      - target: Kaliberfinder
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ch.giotta.kaliberfinder.uitests
+        DEVELOPMENT_TEAM: PD9YC6KM5T
+        CODE_SIGN_STYLE: Automatic
+        SWIFT_VERSION: "5.10"
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: Kaliberfinder
 schemes:
   Kaliberfinder:
     build:
@@ -119,3 +134,13 @@ schemes:
         - KaliberfinderTests
     archive:
       config: Release
+  # Own scheme so the screen tour (.github/workflows/pr-screens.yml) stays out of the unit test run.
+  KaliberfinderScreens:
+    build:
+      targets:
+        Kaliberfinder: all
+        KaliberfinderUITests: [test]
+    test:
+      config: Debug
+      targets:
+        - KaliberfinderUITests
