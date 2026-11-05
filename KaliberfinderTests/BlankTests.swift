@@ -20,7 +20,34 @@ final class BlankTests: XCTestCase {
         XCTAssertNil(blank.outline.bullet)
         XCTAssertLessThan(blank.dimensions.neck, blank.dimensions.base, "the crimp is narrower than the body")
         XCTAssertFalse(blank.obsolete)
-        XCTAssertEqual(CartridgeCatalog.all.filter(\.blank).map(\.id), [blankID])
+        XCTAssertEqual(Set(CartridgeCatalog.all.filter(\.blank).map(\.id)), Self.crimpedIDs)
+    }
+
+    /// The star-crimped alarm blanks from C.I.P. Tab. VIII (calibre-data #45) next to the power-tool .22 blank.
+    /// The 8 mm and .315 Knall are closed flat like the 9 mm P.A.K., so they are not flagged.
+    private static let crimpedIDs: Set = [
+        ".22 Blank (6.8/11)", ".22 Long Knall", "6 mm Flobert Knall", "9 mm R Knall", ".320 Knall", ".45 Knall",
+    ]
+
+    func testAlarmBlanksAreCrimpedAndWithoutBullet() throws {
+        for id in Self.crimpedIDs {
+            let blank = try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)
+            XCTAssertNil(blank.outline.bullet, id)
+            XCTAssertEqual(blank.dimensions.caseLength, blank.dimensions.overallLength, accuracy: 0.001, id)
+        }
+        for id in ["8 mm Knall", ".315 Knall"] {
+            let flat = try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)
+            XCTAssertFalse(flat.blank, id)
+        }
+        XCTAssertEqual(try XCTUnwrap(CartridgeCatalog.cartridge(id: "9 mm R Knall")).kind, "rimmed")
+    }
+
+    func testSearchFindsTheAlarmBlanks() {
+        let queries = ["9 mm R.K.": "9 mm R Knall", "8 mm P.A.K.": "8 mm Knall", "6mm Flobert": "6 mm Flobert Knall",
+                       ".22 lang Knall": ".22 Long Knall", ".45 Knall": ".45 Knall"]
+        for (query, id) in queries {
+            XCTAssertTrue(CartridgeCatalog.search(query).contains { $0.id == id }, query)
+        }
     }
 
     func testSearchFindsTheBlank() {
