@@ -5,8 +5,9 @@ enum SettingsSection: CaseIterable {
     case units, realSize, copyright
 }
 
-/// Settings opened from the last row of the home screen: units, screen size and the licence line.
+/// Settings opened as a sheet by the home screen's gear button: units, screen size and the licence line.
 struct SettingsView: View {
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var scale: ScaleModel
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     /// Hidden developer switch: five taps on the copyright line (`TrainingCapture`).
@@ -55,5 +56,11 @@ struct SettingsView: View {
             }
         }
         .navigationTitle("Einstellungen")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Fertig") { dismiss() }
+            }
+        }
     }
 }
