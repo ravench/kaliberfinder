@@ -1772,6 +1772,29 @@
         }
       }
     },
+    "Hellblau: Verjüngung des Körpers.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light blue: body taper."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bleu clair : conicité du corps."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Azzurro: conicità del corpo."
+          }
+        }
+      }
+    },
     "Herkunft": {
       "extractionState": "manual",
       "localizations": {
@@ -2734,6 +2757,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Senza foto"
+          }
+        }
+      }
+    },
+    "Orange: Hals und Schulter, hellblau: Verjüngung des Körpers.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orange: neck and shoulder, light blue: body taper."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orange : collet et épaulement, bleu clair : conicité du corps."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arancione: colletto e spalla, azzurro: conicità del corpo."
           }
         }
       }
