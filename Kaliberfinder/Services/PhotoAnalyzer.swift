@@ -16,8 +16,9 @@ struct PhotoAnalysis {
     /// photo (x of the width, y of the height); nil if nothing was measured. Drawn as the frame,
     /// so it shows exactly what was matched.
     var outline: [CGPoint]?
-    /// The detected neck and taper, in the same fractions as `outline`; nil if nothing was measured.
-    var lines: ShapeLines?
+    /// The measured silhouette's own outline (case and bullet), in the same fractions as `outline`;
+    /// drawn instead of the box when there is one.
+    var contour: [CGPoint]?
     /// The silhouette is brass-coloured: a case, not a lead ball or pellet.
     var isBrass = false
 
@@ -66,7 +67,7 @@ enum PhotoAnalyzer {
         // From the cut-out back to the whole photo.
         let toPhoto = { (p: CGPoint) in CGPoint(x: region.minX + p.x * region.width, y: region.minY + p.y * region.height) }
         analysis.outline = analysis.outline?.map(toPhoto)
-        analysis.lines = analysis.lines?.map(toPhoto)
+        analysis.contour = analysis.contour?.map(toPhoto)
         return analysis
     }
 
@@ -97,7 +98,7 @@ enum PhotoAnalyzer {
         var measured: (shape: ShapeMeasurement, length: Double)?
         var candidates: [CGRect] = []
         var outline: [CGPoint]?
-        var lines: ShapeLines?
+        var contour: [CGPoint]?
         let normalize = { (box: [Point]?) in
             box?.map { CGPoint(x: $0.x / Double(cgImage.width), y: $0.y / Double(cgImage.height)) }
         }
@@ -110,7 +111,7 @@ enum PhotoAnalyzer {
                 measured = (vision.shape, vision.length)
                 candidates = boxes
                 outline = normalize(vision.box)
-                lines = vision.box.flatMap { ShapeLines(points: vision.points, pixelSize: Double(step), shape: vision.shape, box: $0) }?.map(fraction)
+                contour = vision.box.flatMap { ShapeContour.polygon(vision.points, pixelSize: Double(step), box: $0) }?.map(fraction)
                 measuredPoints = vision.points
             }
         }
@@ -123,14 +124,14 @@ enum PhotoAnalyzer {
                 measured = fromColour
                 let box = ShapeMatcher.orientedBox(sampled, pixelSize: Double(step))
                 outline = normalize(box)
-                lines = box.flatMap { ShapeLines(points: sampled, pixelSize: Double(step), shape: fromColour.shape, box: $0) }?.map(fraction)
+                contour = box.flatMap { ShapeContour.polygon(sampled, pixelSize: Double(step), box: $0) }?.map(fraction)
                 candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
                 measuredPoints = sampled
             }
         }
         return PhotoAnalysis(shape: measured?.shape, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)),
-                             candidates: candidates.count > 1 ? candidates : [], outline: outline, lines: lines,
+                             candidates: candidates.count > 1 ? candidates : [], outline: outline, contour: contour,
                              isBrass: rgb.map { isBrass($0, points: measuredPoints) } ?? false)
     }
 

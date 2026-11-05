@@ -421,6 +421,10 @@ final class ColorSegmenterTests: XCTestCase {
         let after = MatchesView.frames(overview: several, measured: picked, picking: false)
         XCTAssertTrue(after.candidates.isEmpty)
         XCTAssertEqual(after.measured, corners)
+        // With the silhouette's own outline, that is drawn instead of the box.
+        let contour = [CGPoint(x: 0.1, y: 0.2), CGPoint(x: 0.3, y: 0.15), CGPoint(x: 0.2, y: 0.3)]
+        let traced = PhotoAnalysis(shape: shape, outline: corners, contour: contour)
+        XCTAssertEqual(MatchesView.frames(overview: nil, measured: traced, picking: false).measured, contour)
         // One cartridge: the preview crops around the outline's bounds.
         let bounds = try? XCTUnwrap(MatchesView.detectedBoxes(picked).first)
         XCTAssertEqual(bounds?.minX ?? 0, 0.1, accuracy: 1e-9)

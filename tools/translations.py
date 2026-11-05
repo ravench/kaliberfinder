@@ -55,8 +55,6 @@ T = {
     "Automatisch": ("Automatic", "Automatique", "Automatico"),
     "Erkannt: %@": ("Detected: %@", "Détecté : %@", "Riconosciuto: %@"),
     "Flaschenhals": ("bottleneck", "à goulot", "a collo di bottiglia"),
-    "Orange: Hals und Schulter, hellblau: Verjüngung des Körpers.": ("Orange: neck and shoulder, light blue: body taper.", "Orange : collet et épaulement, bleu clair : conicité du corps.", "Arancione: colletto e spalla, azzurro: conicità del corpo."),
-    "Hellblau: Verjüngung des Körpers.": ("Light blue: body taper.", "Bleu clair : conicité du corps.", "Azzurro: conicità del corpo."),
     "Leere Hülse": ("Empty case", "Douille vide", "Bossolo vuoto"),
     "leere Hülse": ("empty case", "douille vide", "bossolo vuoto"),
     "Patrone": ("Cartridge", "Cartouche", "Cartuccia"),
