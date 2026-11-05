@@ -21,6 +21,10 @@ final class PRScreensTests: XCTestCase {
         snap("02-Start-unten")
         scroll(up: false)
 
+        if open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]) {
+            snap("06-Einstellungen")
+            app.buttons["Fertig"].firstMatch.tap()
+        }
         if open(app.buttons["Masse eingeben"].firstMatch) {
             snap("03-Masse-eingeben")
             back()
