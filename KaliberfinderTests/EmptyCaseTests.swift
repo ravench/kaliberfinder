@@ -33,7 +33,9 @@ final class EmptyCaseTests: XCTestCase {
     // MARK: - The reported case
 
     func testEmptyRifleCaseFindsRifleCalibres() throws {
-        let shape = try photo(cartridge(".308 Winchester"), part: .emptyCase)
+        // Sampled every 0.15 mm: on a 0.3 mm grid the rounding of the body width outweighs the
+        // difference to similar cases now that heads and shoulders follow the drawings.
+        let shape = try photo(cartridge(".308 Winchester"), part: .emptyCase, step: 0.15)
         XCTAssertEqual(ScanMode.auto.part(for: shape), .emptyCase)
         let matches = Matcher.rank(shape: shape, limit: .max)
         // Without a scale the GP 1890 case (same shape, only 2 mm longer) can tie with the .308 twins.
