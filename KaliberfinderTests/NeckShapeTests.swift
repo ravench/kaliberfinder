@@ -132,8 +132,8 @@ final class NeckShapeTests: XCTestCase {
 
     // MARK: - Raven's photos
 
-    /// The nine empty GP 11 cases of `PhotoSetTests`, through the photo analysis (the colour cut-out on
-    /// the simulator): the neck must be found in most of them, with about the catalogue's width.
+    /// Raven's nine photos of empty GP 11 cases (2026-11-04), through the photo analysis (the colour
+    /// cut-out on the simulator): the neck must be found in most of them, with about the catalogue's width.
     func testRealGP11CasePhotosShowTheNeck() async throws {
         let ratio = 8.5 / 12.6
         var found = 0, lines: [String] = []

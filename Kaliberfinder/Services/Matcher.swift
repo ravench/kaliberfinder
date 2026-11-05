@@ -37,8 +37,6 @@ enum ScanMode: String, CaseIterable, Identifiable {
     case cartridge
     case emptyCase
 
-    static let storageKey = "scanMode"
-
     var id: String { rawValue }
 
     /// German text, used as localization key.
