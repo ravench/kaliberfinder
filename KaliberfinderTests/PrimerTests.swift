@@ -13,6 +13,7 @@ final class PrimerTests: XCTestCase {
         XCTAssertEqual(try cartridge("7.5x55 mm Swiss (GP 11)").primer, Cartridge.Primer(type: "large-rifle", diameter: 5.33))
         XCTAssertEqual(try cartridge(".50 BMG").primer?.diameter ?? 0, 8.03, accuracy: 0.001)
         XCTAssertEqual(try cartridge("12/70").primer?.type, "shotshell-209")
+        XCTAssertEqual(try cartridge("9.3x72 mm R").primer, Cartridge.Primer(type: "berdan-nitro", diameter: 6.45))
     }
 
     func testRimfireAndCaselessHaveNoPrimer() throws {
@@ -30,9 +31,9 @@ final class PrimerTests: XCTestCase {
         }
     }
 
-    func testOnlyFourBoxerSizesPlus209AndBMG() {
+    func testOnlyFourBoxerSizesPlus209BMGAndBerdanNitro() {
         let sizes = Set(CartridgeCatalog.all.compactMap { $0.primer?.diameter })
-        XCTAssertEqual(sizes, [4.45, 5.33, 6.15, 8.03])
+        XCTAssertEqual(sizes, [4.45, 5.33, 6.15, 8.03, 6.45])
     }
 
     func testHeadGeometry() throws {
@@ -47,7 +48,7 @@ final class PrimerTests: XCTestCase {
     func testTextsAreTranslated() throws {
         let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "en"))
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
-        for type in ["small-pistol", "large-pistol", "small-rifle", "large-rifle", "shotshell-209", "bmg-35"] {
+        for type in ["small-pistol", "large-pistol", "small-rifle", "large-rifle", "shotshell-209", "bmg-35", "berdan-nitro"] {
             let title = Cartridge.Primer(type: type, diameter: 1).title
             XCTAssertNotNil(en[title], title)
         }
