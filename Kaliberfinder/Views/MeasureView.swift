@@ -10,6 +10,8 @@ struct MeasureView: View {
     @State private var selection: [Cartridge] = []
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
+    /// The user tapped «Einblenden»: hidden matching calibres are listed too, until the input changes.
+    @State private var revealed = false
 
     private var measured: MeasuredDimensions {
         MeasuredDimensions(overallLength: unit.parse(overallLength),
@@ -20,7 +22,8 @@ struct MeasureView: View {
     }
 
     var body: some View {
-        let matches = DimensionMatcher.rank(measured, cartridges: CartridgeCatalog.matchable(includeObsolete: includeObsolete))
+        let ranked = DimensionMatcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete), measured)
+        let matches = ranked.list(revealing: revealed)
         List {
             Section {
                 UnitPicker(unit: $unit)
@@ -37,7 +40,7 @@ struct MeasureView: View {
             } footer: {
                 Text("Fülle aus, was du messen kannst. Schon eine Länge und ein Durchmesser grenzen die Auswahl stark ein.")
             }
-            if !matches.isEmpty {
+            if !matches.isEmpty || ranked.summary != nil {
                 Section {
                     // Calibres with identical measurements share one row; picking it picks the first.
                     ForEach(DimensionMatcher.grouped(matches)) { g in
@@ -53,6 +56,7 @@ struct MeasureView: View {
                         }
                         .foregroundStyle(.primary)
                     }
+                    if let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
                 } header: {
                     Text("Mögliche Kaliber")
                 } footer: {
@@ -75,7 +79,8 @@ struct MeasureView: View {
             }
         }
         .onChange(of: measured) { _, _ in
-            let ids = Set(matches.map(\.id))
+            revealed = false
+            let ids = Set(DimensionMatcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete), measured).shown.map(\.id))
             selection.removeAll { !ids.contains($0.id) }
         }
     }
