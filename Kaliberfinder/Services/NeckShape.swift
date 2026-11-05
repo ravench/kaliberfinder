@@ -35,12 +35,16 @@ struct NeckShape: Equatable {
         var i = bodyEnd
         while i >= 0 && w[i] >= Self.bodyFrom { i -= 1 }
         guard i >= 0, i < bodyEnd else { return nil }
-        // Down the shoulder, as long as it keeps narrowing.
-        var start = i
-        while start > 0 && i - start < Self.maxShoulderSlices && w[start - 1] < w[start] - Self.straightWithin { start -= 1 }
-        guard w[start] <= Self.neckUpTo else { return nil }
+        // The narrowest slice down the shoulder is in the neck. A blurred photo can show a short
+        // flat step on the shoulder, so do not stop at the first slice that stops narrowing.
+        let shoulder = max(0, i - Self.maxShoulderSlices)...i
+        guard var start = shoulder.min(by: { w[$0] < w[$1] || (w[$0] == w[$1] && $0 > $1) }),
+              w[start] <= Self.neckUpTo else { return nil }
+        // The neck: the straight run around it.
+        let narrowest = w[start]
         var end = start
-        while end > 0 && abs(w[end - 1] - w[start]) <= Self.straightWithin { end -= 1 }
+        while end > 0 && abs(w[end - 1] - narrowest) <= Self.straightWithin { end -= 1 }
+        while start + 1 < i && abs(w[start + 1] - narrowest) <= Self.straightWithin { start += 1 }
         guard start > end else { return nil }
         let run = w[end...start].sorted()
         width = run[run.count / 2]
