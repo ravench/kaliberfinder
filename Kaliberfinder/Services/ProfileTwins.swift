@@ -4,9 +4,14 @@ import Foundation
 /// .223 Rem, 5.56 NATO and GP 90) look exactly the same from the side. A photo or a calliper
 /// cannot tell them apart, so the results list them as one suggestion and say so.
 extension CartridgeCatalog {
-    /// Same kind, same dimensions and the same outline: indistinguishable in the side view.
+    /// Same kind, same dimensions and the same silhouette: indistinguishable in the side view.
+    /// Colours (bullet tip, case material) do not count, so .308 Win (soft point) and 7.62 NATO stay twins.
     static func sameProfile(_ a: Cartridge, _ b: Cartridge) -> Bool {
-        a.kind == b.kind && a.dimensions == b.dimensions && a.outline == b.outline
+        a.kind == b.kind && a.dimensions == b.dimensions && silhouette(a.outline) == silhouette(b.outline)
+    }
+
+    private static func silhouette(_ o: Cartridge.Outline) -> [String?] {
+        [String(o.width), String(o.height), o.case, o.head, o.bullet]
     }
 
     /// The other catalogue calibres that look exactly like `c` from the side, in catalogue order.
