@@ -158,9 +158,11 @@ struct CaptureShot: Codable, Equatable {
 struct SavedCapture: Identifiable, Hashable {
     let url: URL
     let package: CapturePackage
+    /// Read with the list, so a list reloaded after new photos differs and SwiftUI redraws its row.
+    var shotCount = 0
     var id: URL { url }
 
-    static func == (a: SavedCapture, b: SavedCapture) -> Bool { a.url == b.url }
+    static func == (a: SavedCapture, b: SavedCapture) -> Bool { a.url == b.url && a.shotCount == b.shotCount }
     func hash(into hasher: inout Hasher) { hasher.combine(url) }
 
     var shots: [SavedShot] { CaptureStore.shots(in: url) }
@@ -203,7 +205,7 @@ struct CaptureStore {
         return folders.compactMap { url in
             guard let data = try? Data(contentsOf: url.appendingPathComponent(TrainingCapture.packageFile)),
                   let package = try? TrainingCapture.decoder.decode(CapturePackage.self, from: data) else { return nil }
-            return SavedCapture(url: url, package: package)
+            return SavedCapture(url: url, package: package, shotCount: Self.shots(in: url).count)
         }
         .sorted { ($0.package.created, $0.url.lastPathComponent) > ($1.package.created, $1.url.lastPathComponent) }
     }

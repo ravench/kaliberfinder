@@ -99,6 +99,16 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(store.packages().map(\.package.calibre), ["9x19 mm"])
     }
 
+    func testListedPackageChangesWhenAShotIsAdded() throws {
+        let url = try store.create(package())
+        let before = try XCTUnwrap(store.packages().first)
+        XCTAssertEqual(before.shotCount, 0)
+        try CaptureStore.save(CaptureShot(photo: "photo.jpg", source: "library", captured: Date()), photo: try jpeg(), in: url)
+        let after = try XCTUnwrap(store.packages().first)
+        XCTAssertEqual(after.shotCount, 1)
+        XCTAssertNotEqual(before, after, "an equal value would keep SwiftUI showing «0 Fotos»")
+    }
+
     func testFolderNameIsASlugOfTheCalibre() {
         XCTAssertEqual(CaptureStore.folderName(package("7.5x55 mm Swiss (GP 11)")), "7-5x55-mm-swiss-gp-11-20270115-080000")
     }
