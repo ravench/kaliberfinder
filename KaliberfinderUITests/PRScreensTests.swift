@@ -42,6 +42,21 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// Loose balls in other materials: the steel BB and the plastic airsoft BBs.
+    func testBBs() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("BB")
+        }
+        snap("08-BBs")
+        if open(app.staticTexts["6 mm Airsoft-BB"].firstMatch) {
+            snap("09-Airsoft-BB")
+        }
+    }
+
     /// The matches for one of Raven's photos (an empty GP 11 case), with the measured frame and the
     /// detected neck and taper drawn over it.
     func testPhotoMatches() {
