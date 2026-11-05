@@ -2,14 +2,16 @@ import PhotosUI
 import SwiftUI
 
 /// The home screen's actions and switches, top to bottom. The rest of the settings are on
-/// `SettingsView`, reached from the last row.
+/// `SettingsView`, opened as a sheet by the gear button in the navigation bar.
 enum HomeSection: CaseIterable {
-    case photo, withoutPhoto, recognition, settings
+    case photo, withoutPhoto, recognition
 }
 
 struct HomeView: View {
+    @EnvironmentObject private var scale: ScaleModel
     @Environment(\.scenePhase) private var scenePhase
     @State private var showCamera = false
+    @State private var showSettings = false
     @State private var libraryItem: PhotosPickerItem?
     @State private var photo: PickedPhoto?
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
@@ -61,16 +63,21 @@ struct HomeView: View {
                 } footer: {
                     Text("Gilt für Fotos und «Masse eingeben». Veraltet: nicht mehr regulär hergestellt, z. B. GP 1890 oder Vetterli. Selten: kaum je zu finden, ein Treffer ist meist eine ähnliche Patrone. «Alle Kaliber» zeigt immer alle.")
                 }
-                case .settings:
-                Section {
-                    NavigationLink { SettingsView() } label: {
-                        Label { Text("Einstellungen") } icon: { Image(systemName: "gearshape").foregroundStyle(.secondary) }
-                    }
-                }
                 }
             }
         }
         .navigationTitle("Kaliberfinder")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button { showSettings = true } label: {
+                    Label("Einstellungen", systemImage: "gearshape")
+                }
+            }
+        }
+        .sheet(isPresented: $showSettings) {
+            NavigationStack { SettingsView() }
+                .environmentObject(scale)
+        }
         .navigationDestination(item: $photo) {
             // New identity per photo, so a photo shared while the matches are open is analysed afresh.
             MatchesView(photo: $0.image, depth: $0.depth).id($0.id)

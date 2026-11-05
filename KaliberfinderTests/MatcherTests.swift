@@ -20,7 +20,11 @@ final class MatcherTests: XCTestCase {
         let disc = ShapeMeasurement(aspect: 1, profile: ShapeMatcher.fractions.map { _ in 1 })
         let matches = Matcher.rank(shape: disc, limit: .max)
         XCTAssertFalse(matches.isEmpty)
-        XCTAssertTrue(matches.allSatisfy { $0.cartridge.kind == "ball" || $0.cartridge.kind == "pellet" }, matches.map(\.cartridge.id).joined(separator: ", "))
+        // Besides balls and pellets only cartridges that are themselves about as long as wide,
+        // like the 6 mm Flobert and .45 Knall blanks, whose side view also looks round.
+        XCTAssertTrue(matches.allSatisfy { $0.cartridge.kind == "ball" || $0.cartridge.kind == "pellet" || ShapeMatcher.catalogue[$0.cartridge.id]?.isEndView == true },
+                      matches.map(\.cartridge.id).joined(separator: ", "))
+        XCTAssertTrue(matches.contains { $0.cartridge.kind == "ball" })
     }
 
     func testFarOffShapesAreNeverListed() throws {

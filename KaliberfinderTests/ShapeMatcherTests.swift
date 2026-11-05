@@ -26,13 +26,13 @@ final class ShapeMatcherTests: XCTestCase {
         return points
     }
 
-    private func rank(of c: Cartridge, angle: Double, pixelsPerMM: Double) throws -> Int {
-        try XCTUnwrap(rankIfListed(of: c, angle: angle, pixelsPerMM: pixelsPerMM), c.name)
+    private func rank(of c: Cartridge, angle: Double, pixelsPerMM: Double, step: Double = 0.3) throws -> Int {
+        try XCTUnwrap(rankIfListed(of: c, angle: angle, pixelsPerMM: pixelsPerMM, step: step), c.name)
     }
 
     /// Nil when the calibre is not listed at all, e.g. the .22 BB Cap, which is nearly as wide as long.
-    private func rankIfListed(of c: Cartridge, angle: Double, pixelsPerMM: Double) throws -> Int? {
-        let m = try XCTUnwrap(measure(c, angle: angle, pixelsPerMM: pixelsPerMM), c.name)
+    private func rankIfListed(of c: Cartridge, angle: Double, pixelsPerMM: Double, step: Double = 0.3) throws -> Int? {
+        let m = try XCTUnwrap(measure(c, angle: angle, pixelsPerMM: pixelsPerMM, step: step), c.name)
         let ranked = Matcher.rank(shape: m, cartridges: CartridgeCatalog.all, limit: .max)
         return ranked.firstIndex { $0.cartridge.id == c.id }
     }
@@ -40,9 +40,11 @@ final class ShapeMatcherTests: XCTestCase {
     func testCommonCalibresAreAmongTheFirstFive() throws {
         let ids = ["9x19 mm", ".308 Winchester", "7.5x55 mm Swiss (GP 11)", "5.6 mm GP 90", ".22 LR",
                    ".45 ACP", ".38 Special", ".357 Magnum", "12/70", ".50 BMG"]
+        // Sampled every 0.15 mm: a 0.3 mm grid rounds the body width by about 2.5 %, as much as
+        // GP 11 and .338 Lapua differ now that both are drawn with their own shoulder and head.
         for (i, id) in ids.enumerated() {
             let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: id))
-            let r = try rank(of: c, angle: 0.4 + Double(i) * 0.55, pixelsPerMM: 4 + Double(i))
+            let r = try rank(of: c, angle: 0.4 + Double(i) * 0.55, pixelsPerMM: 4 + Double(i), step: 0.15)
             XCTAssertLessThan(r, 5, "\(id) ranked \(r + 1)")
         }
     }
