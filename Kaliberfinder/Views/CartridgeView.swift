@@ -11,21 +11,41 @@ struct CartridgeView: View {
     static let shotShell = Color(red: 0.75, green: 0.22, blue: 0.17)
     static let steel = Color(red: 0.65, green: 0.68, blue: 0.71)
     static let paper = Color(red: 0.95, green: 0.93, blue: 0.88)
+    static let lacqueredSteel = Color(red: 0.42, green: 0.42, blue: 0.33)
+    static let nickel = Color(red: 0.78, green: 0.80, blue: 0.81)
+    /// Plastic tip (V-Max, ELD, FTX, Ballistic Tip): most makers use red.
+    static let polymer = Color(red: 0.80, green: 0.10, blue: 0.14)
 
-    /// Fill of the bullet: steel cap (GP 1890), copper jacket, or bare lead without a case.
+    /// Fill of the bullet: steel cap (GP 1890), bare lead, or copper jacket; balls and pellets are lead.
     static func bulletFill(for cartridge: Cartridge) -> Color {
-        if cartridge.outline.bulletMaterial == "steel" { return steel }
-        return cartridge.hasCase ? copper : lead
+        switch cartridge.outline.bulletMaterial {
+        case "steel": steel
+        case "lead": lead
+        default: cartridge.hasCase ? copper : lead
+        }
+    }
+
+    /// Fill of the case: brass unless the outline names another material; shot shells are plastic.
+    static func caseFill(for cartridge: Cartridge) -> Color {
+        if cartridge.kind == "shot" { return shotShell }
+        switch cartridge.outline.caseMaterial {
+        case "copper": return copper
+        case "steel": return lacqueredSteel
+        case "nickel": return nickel
+        case "paper": return paper
+        default: return brass
+        }
     }
 
     var body: some View {
         let o = cartridge.outline
         let lineWidth = max(0.3, min(0.8, pointsPerMM * 0.08))
         ZStack(alignment: .topLeading) {
-            part(o.case, fill: cartridge.kind == "shot" ? Self.shotShell : Self.brass, lineWidth: lineWidth)
-            part(o.head, fill: Self.brass, lineWidth: lineWidth)
+            part(o.case, fill: Self.caseFill(for: cartridge), lineWidth: lineWidth)
+            part(o.head, fill: o.headMaterial == "steel" ? Self.steel : Self.brass, lineWidth: lineWidth)
             part(o.bullet, fill: Self.bulletFill(for: cartridge), lineWidth: lineWidth)
             part(o.patch, fill: Self.paper, lineWidth: lineWidth)
+            part(o.tip, fill: o.tipMaterial == "polymer" ? Self.polymer : Self.lead, lineWidth: lineWidth)
         }
         .frame(width: o.width * pointsPerMM, height: o.height * pointsPerMM, alignment: .topLeading)
         .accessibilityElement()
