@@ -82,13 +82,19 @@ def build():
     return cartridges
 
 
+# Preview fills of cases that are not brass (CartridgeView uses the same colours).
+CASE_COLOURS = {"copper": "#b87333", "steel": "#6b6a55", "nickel": "#c8cbce", "paper": "#f2ede0"}
+
+
 def preview(cartridges, path):
     cells = []
     for c in cartridges:
         o = c["outline"]
-        bullet = "#a7adb4" if o.get("bulletMaterial") == "steel" else "#b87333"
+        bullet = {"steel": "#a7adb4", "lead": "#8a8c91"}.get(o.get("bulletMaterial"), "#b87333")
+        case = CASE_COLOURS.get(o.get("caseMaterial"), "#e3c16f")
         parts = "".join(f'<path d="{o[k]}" fill="{col}" stroke="#333" stroke-width="0.25"/>'
-                        for k, col in (("case", "#e3c16f"), ("head", "#e3c16f"), ("bullet", bullet), ("patch", "#f2ede0"))
+                        for k, col in (("case", case), ("head", "#e3c16f"), ("bullet", bullet), ("patch", "#f2ede0"),
+                                       ("tip", "#8a8c91"))
                         if k in o)
         cells.append(f'<div class=c><svg width="{o["width"] * 3}" height="{o["height"] * 3}" '
                      f'viewBox="0 0 {o["width"]} {o["height"]}">{parts}</svg><span>{c["name"]}</span></div>')

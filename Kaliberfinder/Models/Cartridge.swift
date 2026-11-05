@@ -84,8 +84,13 @@ struct Cartridge: Decodable, Identifiable, Hashable {
         /// Paper band drawn over the bullet (paper-patched GP 1890 bullet); nil for jacketed bullets.
         /// Not part of the silhouette: `bullet` already covers it.
         let patch: String?
-        /// "steel" for a steel-capped nose; nil means copper (or lead without a case).
+        /// Bare lead tip of a soft point, drawn over the bullet (not part of the silhouette).
+        let tip: String?
+        /// "steel" for a steel-capped nose, "lead" for a bare lead bullet; nil means copper
+        /// (or lead without a case).
         let bulletMaterial: String?
+        /// "copper", "steel" (lacquered), "nickel" or "paper" where the case is not brass.
+        let caseMaterial: String?
     }
 
     var hasCase: Bool { dimensions.caseLength > 0 }

@@ -130,10 +130,29 @@ class PatchedBulletTests(unittest.TestCase):
         self.assertTrue(all(b[1] >= a[1] for a, b in zip(pts, pts[1:])), "profile runs from base to tip")
 
     def test_jacketed_bullets_have_no_patch(self):
-        for name in ("7.5x55 mm Swiss (GP 11)", "9x19 mm", ".22 LR"):
+        for name in ("7.5x55 mm Swiss (GP 11)", "9x19 mm"):
             o = generate_data.outline(spec(name))
             self.assertNotIn("patch", o, name)
             self.assertNotIn("bulletMaterial", o, name)
+
+
+class BulletMaterialTests(unittest.TestCase):
+    """Original bullets and cases (Raven 2026-11-05): lead, paper-patched lead, soft point tips."""
+
+    def test_lead_paper_and_soft_point(self):
+        self.assertEqual(generate_data.outline(spec(".22 LR"))["bulletMaterial"], "lead")
+        gras = generate_data.outline(spec("11x59 mm R Gras"))
+        self.assertEqual(gras["bulletMaterial"], "lead")
+        self.assertIn("patch", gras)
+        self.assertIn("tip", generate_data.outline(spec("9.3x62 mm")))
+        self.assertNotIn("tip", generate_data.outline(spec("7.62x51 mm NATO")))
+
+    def test_case_materials_reach_the_json(self):
+        by_name = {c["name"]: c for c in generate_data.build()}
+        self.assertEqual(by_name[".44 Henry"]["outline"]["caseMaterial"], "copper")
+        self.assertNotIn("caseMaterial", by_name["9x19 mm"]["outline"])
+        self.assertTrue(set(generate_data.CASE_COLOURS) >= {c["outline"]["caseMaterial"] for c in by_name.values()
+                                                             if "caseMaterial" in c["outline"]})
 
 
 if __name__ == "__main__":
