@@ -145,7 +145,7 @@ final class NeckShapeTests: XCTestCase {
             let shape = try XCTUnwrap(analysis.shape, name)
             let neck = shape.mouthFirst().neck
             if let neck, abs(neck.width - ratio) < 0.08 { found += 1 }
-            lines.append(String(format: "NECK %@ aspect %.2f neck %@ widths %@", name, shape.aspect,
+            lines.append(String(format: "PHOTOSET neck %@ aspect %.2f neck %@ widths %@", name, shape.aspect,
                                 neck.map { String(format: "%.2f x %.2f", $0.width, $0.length) } ?? "-",
                                 shape.widths.map { String(format: "%.2f", $0) }.joined(separator: " ")))
         }
