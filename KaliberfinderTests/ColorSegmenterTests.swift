@@ -147,7 +147,7 @@ final class ColorSegmenterTests: XCTestCase {
     }
 
     /// Each photo once through the analysis (the colour cut-out on the simulator): one cartridge,
-    /// handgun calibres as the matches, and the frame exactly around the measured silhouette.
+    /// handgun calibres as the matches, and the frame along the measured silhouette.
     func testRealPhotosShowOneHandgunCartridge() async throws {
         for (name, id) in [("photo-9x19-wood", "9x19 mm"), ("photo-45acp-wood", ".45 ACP")] {
             let analysis = await PhotoAnalyzer.analyze(try realPhoto(name))
@@ -168,10 +168,13 @@ final class ColorSegmenterTests: XCTestCase {
             let box = try XCTUnwrap(MatchesView.detectedBoxes(analysis).first, name)
             XCTAssertLessThan(box.width * box.height, 0.2, "\(name): \(box)")
             XCTAssertGreaterThan(box.width * box.height, 0.001, "\(name): \(box)")
-            // The frame is exactly what was measured.
+            // The frame is the measured silhouette's own outline, inside its box.
             let frames = MatchesView.frames(overview: analysis, measured: analysis, picking: false)
             XCTAssertTrue(frames.candidates.isEmpty, name)
-            XCTAssertEqual(frames.measured, outline, name)
+            let contour = try XCTUnwrap(analysis.contour, name)
+            XCTAssertEqual(frames.measured, contour, name)
+            let around = box.insetBy(dx: -0.005, dy: -0.005)
+            XCTAssertTrue(contour.allSatisfy { around.contains($0) }, name)
         }
     }
 

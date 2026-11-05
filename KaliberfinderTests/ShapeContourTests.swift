@@ -42,7 +42,8 @@ final class ShapeContourTests: XCTestCase {
     }
 
     /// The polygon for a cartridge, checked against the silhouette: it covers about the silhouette's
-    /// area (far less than its box when the shape narrows), and no corner lies far off its edge.
+    /// area (far less than its box when the shape narrows), and no corner lies far off its edge
+    /// (a pointed tip's corner sits up to half a slice ahead of the last silhouette point).
     private func check(_ id: String, caseOnly: Bool, angle: Double) throws -> (polygon: [CGPoint], boxArea: Double, silhouetteArea: Double) {
         let c = try cartridge(id)
         let (points, _, _) = silhouette(c, caseOnly: caseOnly, angle: angle)
@@ -53,7 +54,7 @@ final class ShapeContourTests: XCTestCase {
         XCTAssertEqual(area(polygon), silhouetteArea, accuracy: 0.06 * silhouetteArea, "\(id) angle \(angle)")
         for corner in polygon {
             let nearest = points.map { hypot($0.x - corner.x, $0.y - corner.y) }.min() ?? .infinity
-            XCTAssertLessThan(nearest, 2.5 * pixelSize, "\(id) angle \(angle)")
+            XCTAssertLessThan(nearest, 5 * pixelSize, "\(id) angle \(angle)")
         }
         let boxArea = hypot(box[1].x - box[0].x, box[1].y - box[0].y) * hypot(box[3].x - box[0].x, box[3].y - box[0].y)
         return (polygon, boxArea, silhouetteArea)
