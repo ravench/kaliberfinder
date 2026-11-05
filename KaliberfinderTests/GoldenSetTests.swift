@@ -93,7 +93,7 @@ final class GoldenSetTests: XCTestCase {
         let json = try TrainingCapture.encoder.encode(now)
         lines.append(String(format: "GOLDEN %d shots: first %.1f%%, top 5 %.1f%%, part %.1f%%, neck %.1f%%",
                             results.count, scores.top1, scores.top5, scores.part, scores.neck))
-        lines.append("GOLDEN baseline.json:\n" + String(decoding: json, as: UTF8.self))
+        lines.append("GOLDEN baseline.json:\n" + (String(bytes: json, encoding: .utf8) ?? ""))
         print(lines.joined(separator: "\n"))
 
         let data = try Data(contentsOf: try root.appendingPathComponent("baseline.json"))
@@ -113,22 +113,22 @@ final class GoldenSetTests: XCTestCase {
     func testReplayScalesTheMaskToThePhoto() throws {
         var labels = [UInt8](repeating: 0, count: 100 * 100)
         for y in 45..<55 { for x in 30..<70 { labels[y * 100 + x] = 1 } }
-        let analysis = PhotoAnalyzer.analyze(instanceLabels: labels, width: 100, height: 100, imageWidth: 800, imageHeight: 400, isBrass: true)
+        let analysis = PhotoAnalyzer.analyze(instanceLabels: labels, mask: (100, 100), image: (800, 400), isBrass: true)
         XCTAssertEqual(try XCTUnwrap(analysis.shape?.aspect), 8, accuracy: 0.5)
         XCTAssertEqual(try XCTUnwrap(analysis.lengthPixels), 320, accuracy: 10)
         XCTAssertEqual(analysis.imageLongSide, 800)
         XCTAssertTrue(analysis.isBrass)
         XCTAssertEqual(analysis.outline?.count, 4)
-        XCTAssertNil(PhotoAnalyzer.analyze(instanceLabels: [UInt8](repeating: 0, count: 100 * 100), width: 100, height: 100,
-                                           imageWidth: 800, imageHeight: 400, isBrass: true).shape, "nothing in the mask")
+        XCTAssertNil(PhotoAnalyzer.analyze(instanceLabels: [UInt8](repeating: 0, count: 100 * 100), mask: (100, 100), image: (800, 400),
+                                           isBrass: true).shape, "nothing in the mask")
     }
 
     /// One shot through the phone's path, and its report line.
     private func replay(_ entry: SavedShot, of package: CapturePackage) throws -> (ShotResult, String) {
         let shot = entry.shot
         let info = try XCTUnwrap(shot.mask), labels = try XCTUnwrap(CaptureStore.mask(of: shot, at: entry.url))
-        let analysis = PhotoAnalyzer.analyze(instanceLabels: labels, width: info.width, height: info.height,
-                                             imageWidth: try XCTUnwrap(info.imageWidth), imageHeight: try XCTUnwrap(info.imageHeight),
+        let image = (width: try XCTUnwrap(info.imageWidth), height: try XCTUnwrap(info.imageHeight))
+        let analysis = PhotoAnalyzer.analyze(instanceLabels: labels, mask: (info.width, info.height), image: image,
                                              isBrass: shot.analysis?.isBrass ?? true)
         let size = try? analysis.size(depth: shot.scale?.depthScale).get()
         let ranked = Matcher.rank(shape: analysis.shape, size: size, mode: .auto, cartridges: CartridgeCatalog.all,

@@ -155,11 +155,12 @@ enum PhotoAnalyzer {
 
     /// The phone's path on a stored Vision instance mask (a training capture or golden shot): the
     /// same subject picking, measurement, frame and neck as `analyzeNow`, without Vision and without
-    /// the photo, so it runs on the simulator. `labels` is Vision's instance mask (`width` × `height`,
-    /// 0 = background) over the upright photo as analysed (`imageWidth` × `imageHeight`, see
-    /// `maxDimension`). `isBrass` comes from the phone: it needs the photo's colours.
-    static func analyze(instanceLabels labels: [UInt8], width: Int, height: Int,
-                        imageWidth: Int, imageHeight: Int, isBrass: Bool) -> PhotoAnalysis {
+    /// the photo, so it runs on the simulator. `labels` is Vision's instance mask (`mask` pixels,
+    /// 0 = background) over the upright photo as analysed (`image` pixels, see `maxDimension`).
+    /// `isBrass` comes from the phone: it needs the photo's colours.
+    static func analyze(instanceLabels labels: [UInt8], mask: (width: Int, height: Int), image: (width: Int, height: Int),
+                        isBrass: Bool) -> PhotoAnalysis {
+        let (width, height) = mask, (imageWidth, imageHeight) = image
         let map = labels.map(Int.init)
         let found = silhouette(labels: map, width: width, height: height, imagePixels: imageWidth * imageHeight) { picked, step in
             // The label nearest each sampled photo pixel, as Vision scales the mask to the photo.
