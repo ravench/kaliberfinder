@@ -51,7 +51,10 @@ final class PRScreensTests: XCTestCase {
         app.launchArguments += ["-screenTourPhoto", photo.path]
         app.launch()
         if app.navigationBars["Treffer"].waitForExistence(timeout: 10) {
-            _ = app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 20)
+            // The colour cut-out on the simulator can take a while on a busy runner.
+            let busy = app.staticTexts["Foto wird ausgewertet …"]
+            let done = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: busy)
+            _ = XCTWaiter.wait(for: [done], timeout: 90)
             snap("07-Foto-Treffer")
         }
     }
