@@ -73,7 +73,7 @@ jobs:
           echo "Testing on $UDID"
           echo "UDID=$UDID" >> "$GITHUB_ENV"
           echo "DERIVED_DATA=$RUNNER_TEMP/DerivedData" >> "$GITHUB_ENV"
-      - name: Build app and tests
+      - name: Build app and unit tests
         # Compiled once here; the unit tests below run on this build (test-without-building).
         run: |
           xcodebuild build-for-testing \
@@ -89,8 +89,18 @@ jobs:
             -scheme Kaliberfinder \
             -destination "id=$UDID" \
             -derivedDataPath "$DERIVED_DATA" \
+            -resultBundlePath "$RUNNER_TEMP/UnitTests.xcresult" \
             CODE_SIGNING_ALLOWED=NO | tee "$RUNNER_TEMP/test.log" | xcpretty
       # xcpretty hides print(); show the photo set and training capture reports (PhotoSetTests, CaptureFixtureTests).
       - name: Photo set report
         if: always()
         run: grep -E "^(PHOTOSET|CAPTURE)" "$RUNNER_TEMP/test.log" || true
+      - name: Test summary
+        # Passed, failed and skipped counts and the failed tests by name, on the run's summary page.
+        if: always()
+        run: |
+          if [ -d "$RUNNER_TEMP/UnitTests.xcresult" ]; then
+            xcrun xcresulttool get test-results summary --path "$RUNNER_TEMP/UnitTests.xcresult" \
+              > "$RUNNER_TEMP/UnitTests.json" || true
+          fi
+          python3 tools/test_summary.py "Unit tests=$RUNNER_TEMP/UnitTests.json"
