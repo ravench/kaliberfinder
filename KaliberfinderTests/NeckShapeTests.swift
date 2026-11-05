@@ -75,6 +75,14 @@ final class NeckShapeTests: XCTestCase {
         let a = ShapeMatcher.measurement(aspect: 4, relativeWidths: widths(neck: 4))
         let b = ShapeMatcher.measurement(aspect: 4, relativeWidths: widths(neck: 8))
         XCTAssertEqual(NeckShape.distance(photo: a, expected: b, neckRatio: 0.6), NeckShape.lengthWeight * 0.4, accuracy: 1e-9)
+        // Raven's GP 11 case on granite (set-gp11-case-01, colour cut-out): the blurred shoulder
+        // shows a flat step at 0.8, but the neck is the run at about 0.6 in front of it.
+        let granite = "0.50 0.62 0.59 0.60 0.59 0.61 0.80 0.78 0.87 1.01 0.95 0.92 0.93 0.90 1.00 1.01 1.02 1.02 1.00 1.00 "
+            + "0.97 1.01 0.94 0.99 1.00 0.94 1.00 0.97 1.01 0.99 0.98 0.96 0.96 0.94 0.94 0.95 0.92 0.95 0.92 0.75"
+        let real = try XCTUnwrap(NeckShape(widths: granite.split(separator: " ").compactMap { Double($0) }, aspect: 3.9))
+        XCTAssertEqual(real.width, 0.6, accuracy: 0.01)
+        XCTAssertEqual(real.slices, 1...5)
+        XCTAssertEqual(real.shoulderSlice, 8)
         // Too wide for a neck: the bullet of a straight case.
         XCTAssertNil(NeckShape(widths: Array(repeating: 0.88, count: 6) + Array(repeating: 1.0, count: 34), aspect: 3))
     }
