@@ -824,7 +824,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Carabina piccolo"
+            "value": "Carabina piccola"
           }
         }
       }
@@ -864,7 +864,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Impossible de reprendre la photo."
+            "value": "Impossible de recevoir la photo."
           }
         },
         "it": {
@@ -939,7 +939,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Confronta i migliori tre 1:1"
+            "value": "Confronta i tre migliori 1:1"
           }
         }
       }
@@ -1140,7 +1140,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "à goulot"
+            "value": "à épaulement"
           }
         },
         "it": {
@@ -1738,13 +1738,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Douille à ceinture"
+            "value": "À ceinture"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bossolo con cintura"
+            "value": "Con cintura"
           }
         }
       }
@@ -1830,7 +1830,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Douille à goulot"
+            "value": "Douille à épaulement"
           }
         },
         "it": {
@@ -1916,19 +1916,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Looks identical in profile to"
+            "value": "Indistinguishable in profile from"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Identique de profil à"
+            "value": "Indiscernable de profil de"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Identica di profilo a"
+            "value": "Indistinguibile di profilo da"
           }
         }
       }
@@ -3009,7 +3009,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pistola piccolo"
+            "value": "Pistola piccola"
           }
         }
       }
@@ -3233,7 +3233,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cartouche de chasse (209)"
+            "value": "Cartouche à plombs (209)"
           }
         },
         "it": {
@@ -3394,7 +3394,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rare : presque jamais trouvé. Une correspondance est plutôt une cartouche semblable, mesure donc avec soin."
+            "value": "Rare : presque jamais trouvé. Une correspondance est plutôt une cartouche semblable, mesurez donc avec soin."
           }
         },
         "it": {
