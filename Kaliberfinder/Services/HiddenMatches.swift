@@ -81,10 +81,11 @@ extension Matcher {
     /// How many photo matches the list shows.
     static let shownLimit = 12
 
-    /// Ranks against every calibre, then hides the tags whose switch is off.
+    /// Ranks against every calibre (except rare ones until their switch exists), then hides the
+    /// tags whose switch is off.
     static func rankHiding(_ tags: Set<HiddenTag>, shape: ShapeMeasurement?, size: MeasuredSize? = nil,
                            mode: ScanMode = .auto, brass: Bool = false,
-                           cartridges: [Cartridge] = CartridgeCatalog.all) -> HiddenMatches<Match> {
+                           cartridges: [Cartridge] = CartridgeCatalog.matchable(includeObsolete: true)) -> HiddenMatches<Match> {
         HiddenMatches(rank(shape: shape, size: size, mode: mode, cartridges: cartridges, brass: brass, limit: .max),
                       hiding: tags, limit: shownLimit)
     }
@@ -94,10 +95,11 @@ extension DimensionMatcher {
     /// How many dimension matches the list shows.
     static let shownLimit = 15
 
-    /// Ranks against every calibre, then hides the tags whose switch is off. Only hidden calibres
+    /// Ranks against every calibre (except rare ones until their switch exists), then hides the
+    /// tags whose switch is off. Only hidden calibres
     /// that fit at least roughly are offered: this list always has entries, however far off.
     static func rankHiding(_ tags: Set<HiddenTag>, _ measured: MeasuredDimensions,
-                           cartridges: [Cartridge] = CartridgeCatalog.all) -> HiddenMatches<DimensionMatch> {
+                           cartridges: [Cartridge] = CartridgeCatalog.matchable(includeObsolete: true)) -> HiddenMatches<DimensionMatch> {
         HiddenMatches(rank(measured, cartridges: cartridges, limit: .max), hiding: tags, limit: shownLimit) { $0.fit != .poor }
     }
 }

@@ -12,6 +12,41 @@ INFO_PLIST = {
 }
 
 T = {
+    # Calibre tags and countries (CartridgeRow, CartridgeDetailView). Country names come from
+    # generate_data.COUNTRY_NAMES.
+    "Selten": ("Rare", "Rare", "Raro"),
+    "Veraltet": ("Obsolete", "Obsolète", "Obsoleto"),
+    "Herkunft": ("Origin", "Origine", "Origine"),
+    "Selten: wird kaum je gefunden. Ein Treffer ist eher eine ähnliche Patrone, also genau nachmessen.": (
+        "Rare: hardly ever found. A match is more likely a similar cartridge, so measure carefully.",
+        "Rare : presque jamais trouvé. Une correspondance est plutôt une cartouche semblable, mesure donc avec soin.",
+        "Raro: non si trova quasi mai. Una corrispondenza è più probabilmente una cartuccia simile, quindi misura con cura."),
+    "Veraltet: wird nicht mehr regulär hergestellt.": (
+        "Obsolete: no longer in regular production.",
+        "Obsolète : n'est plus fabriqué en série.",
+        "Obsoleto: non più prodotto regolarmente."),
+    "Schweiz": ("Switzerland", "Suisse", "Svizzera"),
+    "Deutschland": ("Germany", "Allemagne", "Germania"),
+    "Österreich-Ungarn": ("Austria-Hungary", "Autriche-Hongrie", "Austria-Ungheria"),
+    "Österreich": ("Austria", "Autriche", "Austria"),
+    "Frankreich": ("France", "France", "Francia"),
+    "Italien": ("Italy", "Italie", "Italia"),
+    "Grossbritannien": ("United Kingdom", "Royaume-Uni", "Regno Unito"),
+    "USA": ("United States", "États-Unis", "Stati Uniti"),
+    "Schweden": ("Sweden", "Suède", "Svezia"),
+    "Dänemark": ("Denmark", "Danemark", "Danimarca"),
+    "Belgien": ("Belgium", "Belgique", "Belgio"),
+    "Spanien": ("Spain", "Espagne", "Spagna"),
+    "Portugal": ("Portugal", "Portugal", "Portogallo"),
+    "Tschechien": ("Czechia", "Tchéquie", "Cechia"),
+    "Japan": ("Japan", "Japon", "Giappone"),
+    "Polen": ("Poland", "Pologne", "Polonia"),
+    "Israel": ("Israel", "Israël", "Israele"),
+    "Weltweit verbreitet": ("Used worldwide", "Répandu dans le monde entier", "Diffuso in tutto il mondo"),
+    "Russisches Kaiserreich": ("Russian Empire", "Empire russe", "Impero russo"),
+    "Sowjetunion": ("Soviet Union", "Union soviétique", "Unione Sovietica"),
+    "Tschechoslowakei": ("Czechoslovakia", "Tchécoslovaquie", "Cecoslovacchia"),
+    "China": ("China", "Chine", "Cina"),
     "Alle passenden 1:1 vergleichen (%lld)": ("Compare all matches 1:1 (%lld)", "Comparer toutes les correspondances 1:1 (%lld)", "Confronta tutte le corrispondenze 1:1 (%lld)"),
     "Beliebige Form": ("Any shape", "Toute forme", "Qualsiasi forma"),
     "Form": ("Shape", "Forme", "Forma"),
