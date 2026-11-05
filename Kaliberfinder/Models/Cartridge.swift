@@ -57,6 +57,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
             case "large-rifle": "Büchse gross"
             case "shotshell-209": "Schrot (209)"
             case "bmg-35": ".50 BMG (#35)"
+            case "berdan-nitro": "Berdan Nitro (Kynoch #40)"
             default: type
             }
         }
