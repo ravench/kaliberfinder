@@ -49,7 +49,7 @@ final class PRScreensTests: XCTestCase {
         let search = app.searchFields.firstMatch
         if search.waitForExistence(timeout: 5) {
             search.tap()
-            search.typeText("BB")
+            search.typeText("BB\n") // return hides the keyboard, so all BB rows show
         }
         snap("08-BBs")
         if open(app.staticTexts["6 mm Airsoft-BB"].firstMatch) {
