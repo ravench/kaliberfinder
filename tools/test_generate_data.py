@@ -146,6 +146,8 @@ class BulletMaterialTests(unittest.TestCase):
         self.assertIn("patch", gras)
         self.assertIn("tip", generate_data.outline(spec("9.3x62 mm")))
         self.assertNotIn("tip", generate_data.outline(spec("7.62x51 mm NATO")))
+        self.assertEqual(generate_data.outline(spec(".17 HMR"))["tipMaterial"], "polymer")
+        self.assertEqual(generate_data.outline(spec(".277 SIG Fury"))["headMaterial"], "steel")
 
     def test_case_materials_reach_the_json(self):
         by_name = {c["name"]: c for c in generate_data.build()}
