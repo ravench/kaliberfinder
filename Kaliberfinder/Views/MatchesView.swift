@@ -28,6 +28,7 @@ struct MatchesView: View {
             Section {
                 let frames = Self.frames(overview: overview, measured: analysis, picking: needsPick)
                 CandidatePhotoView(photo: preview?.image ?? photo, candidates: frames.candidates, measured: frames.measured,
+                                   lines: frames.measured == nil ? nil : analysis?.lines,
                                    region: preview?.region ?? CGRect(x: 0, y: 0, width: 1, height: 1),
                                    maxHeight: needsPick ? 420 : 220) { choose($0) }
                 if needsPick {
@@ -223,7 +224,12 @@ struct MatchesView: View {
         let part = mode.part(for: shape)
         guard let f = (part == .emptyCase ? shape.mouthFirst() : shape).features else { return nil }
         var parts: [String] = [part == .emptyCase ? "leere Hülse".loc : "Patrone".loc]
-        if part == .emptyCase { parts.append(f.hasNeck ? "Flaschenhals".loc : "gerade Hülse".loc) }
+        // A loaded round shows its neck where the shoulder steps down to it (SHAPE-06).
+        if part == .emptyCase {
+            parts.append(f.hasNeck ? "Flaschenhals".loc : "gerade Hülse".loc)
+        } else if shape.neck != nil {
+            parts.append("Flaschenhals".loc)
+        }
         parts.append(f.isRimmed ? "mit Rand".loc : "ohne Rand".loc)
         return String(format: "Erkannt: %@".loc, parts.joined(separator: " · "))
     }
@@ -239,6 +245,9 @@ struct MatchesView: View {
     static func notes(for a: PhotoAnalysis, depth: DepthScale? = nil, unit: LengthUnit = .metric, mode: ScanMode = .auto) -> [String] {
         var notes: [String] = []
         if let shape = a.shape, !shape.isEndView, let text = featuresText(shape, mode: mode) { notes.append(text) }
+        if let lines = a.lines, a.shape?.isEndView == false, !lines.isEmpty {
+            notes.append(lines.neck.isEmpty ? "Hellblau: Verjüngung des Körpers.".loc : "Orange: Hals und Schulter, hellblau: Verjüngung des Körpers.".loc)
+        }
         if depth != nil {
             switch a.size(depth: depth) {
             case .success(let size): notes.append(measuredText(size, unit: unit))

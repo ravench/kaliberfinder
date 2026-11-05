@@ -144,13 +144,16 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertTrue(p.system.hasPrefix("iOS "))
     }
 
-    /// The analysis stored with a shot is the one the results screen would show.
+    /// The analysis stored with a shot is what the results screen shows: the example package's
+    /// photo (a 9 mm from the library, no depth) gives its shape, frame and matches.
     func testAnalysisOfAPhoto() throws {
-        let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "set-9x19-05", withExtension: "jpg"))
-        let image = try XCTUnwrap(UIImage(contentsOfFile: url.path))
+        let root = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "Captures", withExtension: nil))
+        let image = try XCTUnwrap(UIImage(contentsOfFile: root.appendingPathComponent("9x19-mm-example/01/photo.jpg").path))
         let analysis = TrainingRecorder.analyse(image, scale: nil, mode: .cartridge)
-        XCTAssertEqual(analysis.aspect, PhotoAnalyzer.analyzeNow(image).shape?.aspect)
+        XCTAssertEqual(try XCTUnwrap(analysis.aspect), 3, accuracy: 0.5)
+        XCTAssertEqual(analysis.imageLongSide, 1200)
         XCTAssertNil(analysis.size, "no depth, no size")
+        XCTAssertFalse(analysis.matches.isEmpty)
         XCTAssertLessThanOrEqual(analysis.matches.count, 5)
         XCTAssertEqual(analysis.outline?.count, 4)
     }

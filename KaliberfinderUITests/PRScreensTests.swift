@@ -42,6 +42,21 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// The matches for one of Raven's photos (an empty GP 11 case), with the measured frame and the
+    /// detected neck and taper drawn over it.
+    func testPhotoMatches() {
+        let photo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("KaliberfinderTests/Fixtures/set-gp11-case-02.jpg")
+        app.terminate()
+        app.launchArguments += ["-screenTourPhoto", photo.path]
+        app.launch()
+        if app.navigationBars["Treffer"].waitForExistence(timeout: 10) {
+            // The colour cut-out on the simulator can take a while on a busy runner.
+            _ = app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90)
+            snap("07-Foto-Treffer")
+        }
+    }
+
     private func open(_ element: XCUIElement) -> Bool {
         guard element.waitForExistence(timeout: 5) else {
             XCTFail("\(element) not found")
