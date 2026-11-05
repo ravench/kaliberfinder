@@ -83,6 +83,13 @@ final class NeckShapeTests: XCTestCase {
         XCTAssertEqual(real.width, 0.6, accuracy: 0.01)
         XCTAssertEqual(real.slices, 1...5)
         XCTAssertEqual(real.shoulderSlice, 8)
+        // The same with a body slice a little under 0.9, as in the photo itself.
+        var noisy = granite.split(separator: " ").compactMap { Double($0) }
+        noisy[13] = 0.89
+        XCTAssertEqual(NeckShape(widths: noisy, aspect: 3.9)?.slices, 1...5)
+        // A round-nose bullet with a short flat on its curve is no neck.
+        let roundNose = [0.2, 0.3, 0.4, 0.5, 0.6, 0.62, 0.75, 0.8, 0.84] + Array(repeating: 1.0, count: 31)
+        XCTAssertNil(NeckShape(widths: roundNose, aspect: 3))
         // Too wide for a neck: the bullet of a straight case.
         XCTAssertNil(NeckShape(widths: Array(repeating: 0.88, count: 6) + Array(repeating: 1.0, count: 34), aspect: 3))
     }
