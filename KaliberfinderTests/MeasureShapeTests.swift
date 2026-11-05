@@ -38,8 +38,9 @@ final class MeasureShapeTests: XCTestCase {
     func testCompareTakesEveryMatch() {
         let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 32.3))
         let compare = DimensionMatcher.toCompare(matches)
-        // .22 WMR, .45 ACP, .32 S&W Long, .38 Super, 10 mm Auto and .17 HMR (and others) are all within 1 mm.
-        XCTAssertTrue(Set(compare.map(\.id)).isSuperset(of: [".22 WMR", ".45 ACP", ".32 S&W Long", ".38 Super", "10 mm Auto", ".17 HMR"]),
+        // .45 ACP, .32 S&W Long, .38 Super, 10 mm Auto and .17 HMR (and others) are all within 1 mm.
+        // (The .22 WMR is 34.3 mm long since calibre-data's municion.org check, so it no longer is.)
+        XCTAssertTrue(Set(compare.map(\.id)).isSuperset(of: [".45 ACP", ".32 S&W Long", ".38 Super", "10 mm Auto", ".17 HMR"]),
                       "\(compare.map(\.id))")
         XCTAssertTrue(compare.allSatisfy { c in matches.first { $0.cartridge == c }?.fit != .poor })
         XCTAssertEqual(MeasureView.compareTitle(matches: matches, selected: 0),

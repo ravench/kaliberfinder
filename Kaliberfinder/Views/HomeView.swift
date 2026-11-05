@@ -1,22 +1,21 @@
 import PhotosUI
 import SwiftUI
 
-/// The home screen's settings and actions, top to bottom.
+/// The home screen's actions and switches, top to bottom. The rest of the settings are on
+/// `SettingsView`, opened as a sheet by the gear button in the navigation bar.
 enum HomeSection: CaseIterable {
-    case photo, withoutPhoto, recognition, units, realSize
+    case photo, withoutPhoto, recognition
 }
 
 struct HomeView: View {
     @EnvironmentObject private var scale: ScaleModel
     @Environment(\.scenePhase) private var scenePhase
     @State private var showCamera = false
+    @State private var showSettings = false
     @State private var libraryItem: PhotosPickerItem?
     @State private var photo: PickedPhoto?
-    @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
-    /// Hidden developer switch: five taps on the copyright line (`TrainingCapture`).
-    @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
 
     var body: some View {
         List {
@@ -51,25 +50,6 @@ struct HomeView: View {
                 } header: {
                     Text("Ohne Foto")
                 }
-                case .realSize:
-                Section {
-                    NavigationLink { CalibrationView() } label: {
-                        LabeledContent {
-                            Text(verbatim: unit.scaleText(pointsPerMM: scale.pointsPerMM))
-                        } label: {
-                            Text("Bildschirm")
-                            Text(scale.resolution.source.title.loc)
-                        }
-                    }
-                } header: {
-                    Text("Originalgrösse")
-                } footer: {
-                    Text("Bildschirmzoom und Kalibrierung werden berücksichtigt. Prüfe die Grösse einmal mit einer Bankkarte.")
-                }
-                case .units:
-                Section("Einheiten") {
-                    UnitPicker(unit: $unit)
-                }
                 case .recognition:
                 Section {
                     Toggle(isOn: $includeObsolete) {
@@ -85,23 +65,19 @@ struct HomeView: View {
                 }
                 }
             }
-            if trainingCapture {
-                Section {
-                    NavigationLink { TrainingCaptureView() } label: {
-                        Label { Text(verbatim: "Trainingsdaten aufnehmen") } icon: { Image(systemName: "tray.and.arrow.down") }
-                    }
-                } footer: {
-                    Text(verbatim: "Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.")
-                }
-            }
-            Section {
-                Text(verbatim: "© 2026 Simon Giotta · PolyForm Noncommercial 1.0.0")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .onTapGesture(count: 5) { trainingCapture.toggle() }
-            }
         }
         .navigationTitle("Kaliberfinder")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button { showSettings = true } label: {
+                    Label("Einstellungen", systemImage: "gearshape")
+                }
+            }
+        }
+        .sheet(isPresented: $showSettings) {
+            NavigationStack { SettingsView() }
+                .environmentObject(scale)
+        }
         .navigationDestination(item: $photo) {
             // New identity per photo, so a photo shared while the matches are open is analysed afresh.
             MatchesView(photo: $0.image, depth: $0.depth).id($0.id)
