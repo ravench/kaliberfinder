@@ -1,0 +1,30 @@
+name: Cancel runs of closed pull requests
+# A merged or closed pull request's runs that are still queued or running only hold runners:
+# its next push would cancel them (concurrency), but there is no next push.
+on:
+  pull_request:
+    types: [closed]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  cancel:
+    # Pull requests from forks get a read-only token, which can't cancel runs.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Cancel the pull request's open runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+          RUN: ${{ github.run_id }}
+        run: |
+          for ID in $(gh api "repos/$REPO/actions/runs?branch=$BRANCH&event=pull_request&per_page=100" --paginate \
+                        --jq '.workflow_runs[]' | python3 tools/ci_runs.py open-pr-runs "$RUN"); do
+            echo "Cancelling run $ID"
+            gh api -X POST "repos/$REPO/actions/runs/$ID/cancel" >/dev/null || echo "::notice::Run $ID already finished."
+          done
