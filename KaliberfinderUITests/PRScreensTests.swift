@@ -46,7 +46,7 @@ final class PRScreensTests: XCTestCase {
     /// detected neck and taper drawn over it.
     func testPhotoMatches() {
         let photo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
-            .appendingPathComponent("KaliberfinderTests/Fixtures/set-gp11-case-01.jpg")
+            .appendingPathComponent("KaliberfinderTests/Fixtures/set-gp11-case-02.jpg")
         app.terminate()
         app.launchArguments += ["-screenTourPhoto", photo.path]
         app.launch()
