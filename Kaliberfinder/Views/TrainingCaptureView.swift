@@ -1,8 +1,8 @@
 import PhotosUI
 import SwiftUI
 
-// Hidden developer screens for recording training data (see `TrainingCapture`). German only and
-// with verbatim texts: they are not part of the app users see, and go away with the feature.
+// Hidden developer screens for recording training data (see `TrainingCapture`). Reached by
+// tapping the copyright line in Settings five times; translated like the rest of the app.
 
 /// The saved series and a button for a new one.
 struct TrainingCaptureView: View {
@@ -15,13 +15,10 @@ struct TrainingCaptureView: View {
         List {
             Section {
                 Button { showNew = true } label: {
-                    Label { Text(verbatim: "Neue Aufnahmeserie") } icon: { Image(systemName: "plus.circle") }
+                    Label { Text("Neue Aufnahmeserie") } icon: { Image(systemName: "plus.circle") }
                 }
             } footer: {
-                Text(verbatim: """
-                Wähle das Kaliber, das du fotografierst, und mache mehrere Fotos davon. Gespeichert werden das Foto, \
-                die LiDAR-Tiefe, die Kameradaten und die Vision-Maske. Teile die Serie als ZIP, sie kommt in die Tests.
-                """)
+                Text("Wähle das Kaliber, das du fotografierst, und mache mehrere Fotos davon. Gespeichert werden das Foto, die LiDAR-Tiefe, die Kameradaten und die Vision-Maske. Teile die Serie als ZIP, sie kommt in die Tests.")
             }
             if !captures.isEmpty {
                 Section {
@@ -33,11 +30,11 @@ struct TrainingCaptureView: View {
                         reload()
                     }
                 } header: {
-                    Text(verbatim: "Gespeichert")
+                    Text("Gespeichert")
                 }
             }
         }
-        .navigationTitle(Text(verbatim: "Trainingsdaten"))
+        .navigationTitle("Trainingsdaten")
         .navigationDestination(for: SavedCapture.self) { TrainingPackageView(capture: $0) }
         .navigationDestination(item: $opened) { TrainingPackageView(capture: $0) }
         .sheet(isPresented: $showNew) {
@@ -63,8 +60,9 @@ private struct TrainingCaptureRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(verbatim: CartridgeCatalog.cartridge(id: capture.package.calibre)?.name ?? capture.package.calibre)
-            Text(verbatim: "\(capture.package.scanMode == .emptyCase ? "Leere Hülse" : "Patrone") · \(capture.shots.count) Fotos · "
-                 + capture.package.created.formatted(date: .abbreviated, time: .shortened))
+            let partName = (capture.package.scanMode == .emptyCase ? "Leere Hülse" : "Patrone").loc
+            let dateText = capture.package.created.formatted(date: .abbreviated, time: .shortened)
+            Text("\(partName) · \(capture.shots.count) Fotos · \(dateText)")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
@@ -84,35 +82,35 @@ private struct NewTrainingSeriesView: View {
             Section {
                 NavigationLink { TrainingCalibrePicker(selection: $calibre) } label: {
                     LabeledContent {
-                        Text(verbatim: calibre?.name ?? "Wählen")
+                        Text(calibre?.name ?? "Wählen".loc)
                     } label: {
-                        Text(verbatim: "Kaliber")
+                        Text("Fotografiertes Kaliber")
                     }
                 }
                 Picker(selection: $mode) {
                     ForEach(TrainingCapture.parts) { part in
-                        Text(verbatim: part == .emptyCase ? "Leere Hülse" : "Patrone").tag(part)
+                        Text(part == .emptyCase ? "Leere Hülse".loc : "Patrone".loc).tag(part)
                     }
                 } label: {
-                    Text(verbatim: "Im Bild")
+                    Text("Im Bild")
                 }
                 .pickerStyle(.segmented)
-                TextField(text: $note, prompt: Text(verbatim: "z. B. Holztisch, Tageslicht")) { Text(verbatim: "Notiz") }
+                TextField("Notiz", text: $note, prompt: Text("z. B. Holztisch, Tageslicht"))
             } footer: {
-                Text(verbatim: "Alle Fotos dieser Serie zeigen dieses Kaliber.")
+                Text("Alle Fotos dieser Serie zeigen dieses Kaliber.")
             }
         }
-        .navigationTitle(Text(verbatim: "Neue Serie"))
+        .navigationTitle("Neue Serie")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button { dismiss() } label: { Text(verbatim: "Abbrechen") }
+                Button("Abbrechen") { dismiss() }
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button {
                     if let calibre { onStart(TrainingRecorder.package(calibre: calibre.id, mode: mode, note: note)) }
                 } label: {
-                    Text(verbatim: "Starten")
+                    Text("Starten")
                 }
                 .disabled(calibre == nil)
             }
@@ -140,7 +138,7 @@ private struct TrainingCalibrePicker: View {
             }
         }
         .searchable(text: $query)
-        .navigationTitle(Text(verbatim: "Kaliber"))
+        .navigationTitle("Kaliber")
     }
 }
 
@@ -158,14 +156,14 @@ struct TrainingPackageView: View {
             Section {
                 if LiDARCamera.isAvailable {
                     Button { showCamera = true } label: {
-                        Label { Text(verbatim: "Fotografieren") } icon: { Image(systemName: "camera") }
+                        Label { Text("Fotografieren") } icon: { Image(systemName: "camera") }
                     }
                 }
                 PhotosPicker(selection: $libraryItems, matching: .images, preferredItemEncoding: .current) {
-                    Label { Text(verbatim: "Aus Fotos hinzufügen (ohne Tiefe)") } icon: { Image(systemName: "photo") }
+                    Label { Text("Aus Fotos hinzufügen (ohne Tiefe)") } icon: { Image(systemName: "photo") }
                 }
                 Button(action: share) {
-                    Label { Text(verbatim: "Als ZIP teilen") } icon: { Image(systemName: "square.and.arrow.up") }
+                    Label { Text("Als ZIP teilen") } icon: { Image(systemName: "square.and.arrow.up") }
                 }
                 .disabled(shots.isEmpty)
                 if let status { Text(verbatim: status).font(.footnote).foregroundStyle(.secondary) }
@@ -179,7 +177,7 @@ struct TrainingPackageView: View {
                     Text(verbatim: Self.summary(entry.url.lastPathComponent, entry.shot)).font(.footnote.monospaced())
                 }
             } header: {
-                Text(verbatim: "\(shots.count) Fotos")
+                Text("\(shots.count) Fotos")
             }
         }
         .navigationTitle(Text(verbatim: capture.url.lastPathComponent))
@@ -199,7 +197,7 @@ struct TrainingPackageView: View {
                         saved += 1
                     }
                 }
-                status = "\(saved) von \(items.count) Fotos hinzugefügt"
+                status = String(format: "%lld von %lld Fotos hinzugefügt".loc, saved, items.count)
                 libraryItems = []
                 reload()
             }
@@ -208,9 +206,9 @@ struct TrainingPackageView: View {
 
     /// E.g. "03  LiDAR 251 mm  3.02  9x19 mm".
     static func summary(_ name: String, _ shot: CaptureShot) -> String {
-        let depth = shot.scale.map { String(format: "LiDAR %.0f mm", $0.tableDistance) } ?? (shot.depth == nil ? "ohne Tiefe" : "Tiefe relativ")
+        let depth = shot.scale.map { String(format: "LiDAR %.0f mm".loc, $0.tableDistance) } ?? (shot.depth == nil ? "ohne Tiefe".loc : "Tiefe relativ".loc)
         let aspect = shot.analysis?.aspect.map { String(format: "%.2f", $0) } ?? "–"
-        return "\(name)  \(depth)  \(aspect)  \(shot.analysis?.matches.first ?? "kein Treffer")"
+        return "\(name)  \(depth)  \(aspect)  \(shot.analysis?.matches.first ?? "kein Treffer".loc)"
     }
 
     private func reload() { shots = capture.shots }
@@ -219,7 +217,7 @@ struct TrainingPackageView: View {
         do {
             shared = SharedFile(url: try CaptureStore.zip(capture.url))
         } catch {
-            status = "ZIP fehlgeschlagen: \(error.localizedDescription)"
+            status = String(format: "ZIP fehlgeschlagen: %@".loc, error.localizedDescription)
         }
     }
 }
@@ -233,12 +231,14 @@ private struct TrainingCameraView: View {
     @State private var saved = 0
     @State private var failure: String?
 
+    private var calibreName: String { CartridgeCatalog.cartridge(id: capture.package.calibre)?.name ?? capture.package.calibre }
+
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
             CameraPreview(session: camera.session).ignoresSafeArea()
             VStack(spacing: 12) {
-                Text(verbatim: "\(CartridgeCatalog.cartridge(id: capture.package.calibre)?.name ?? capture.package.calibre) · \(saved) neue Fotos")
+                Text("\(calibreName) · \(saved) neue Fotos")
                     .font(.headline)
                     .padding(10)
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
@@ -251,7 +251,7 @@ private struct TrainingCameraView: View {
                     .background(camera.guidance == .ready ? Color.green.opacity(0.85) : Color.black.opacity(0.6), in: Capsule())
                     .foregroundStyle(.white)
                 HStack {
-                    Button { dismiss() } label: { Text(verbatim: "Fertig") }
+                    Button("Fertig") { dismiss() }
                         .foregroundStyle(.white)
                     Spacer()
                     Button(action: shoot) {
@@ -260,7 +260,7 @@ private struct TrainingCameraView: View {
                     }
                     .disabled(saving || !camera.isRunning)
                     Spacer()
-                    Text(verbatim: "Fertig").hidden()
+                    Text("Fertig").hidden()
                 }
                 .padding(.horizontal, 24)
             }
@@ -280,7 +280,7 @@ private struct TrainingCameraView: View {
                     saved += 1
                     failure = nil
                 } catch {
-                    failure = "Nicht gespeichert: \(error)"
+                    failure = String(format: "Nicht gespeichert: %@".loc, String(describing: error))
                 }
                 saving = false
             }
