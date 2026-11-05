@@ -33,6 +33,46 @@ class ObsoleteFlagTests(unittest.TestCase):
         self.assertNotIn("5.6 mm GP 90 (Swiss)", names)
 
 
+class RareAndCountryTests(unittest.TestCase):
+    """The rare tag and the country come from calibre-data, for the tags on the result rows."""
+
+    def setUp(self):
+        self.by_name = {c["name"]: c for c in generate_data.build()}
+
+    def test_every_entry_has_the_rare_flag(self):
+        self.assertTrue(all(isinstance(c["rare"], bool) for c in self.by_name.values()))
+        self.assertTrue(self.by_name["11x59 mm R Gras"]["rare"])
+        self.assertFalse(self.by_name[GP1890]["rare"])
+        self.assertFalse(self.by_name["9x19 mm"]["rare"])
+
+    def test_countries_with_flag_emoji(self):
+        self.assertEqual(self.by_name["7.5x55 mm Swiss (GP 11)"]["country"],
+                         {"code": "CH", "name": "Schweiz", "flag": "🇨🇭"})
+        self.assertEqual(self.by_name["9x19 mm"]["country"]["code"], "WW")
+        self.assertEqual(self.by_name["9x19 mm"]["country"]["name"], "Weltweit verbreitet")
+
+    def test_former_states_have_no_emoji_and_are_drawn(self):
+        self.assertEqual(self.by_name["7.62x54 mm R"]["country"], {"code": "RUE", "name": "Russisches Kaiserreich"})
+        self.assertEqual(self.by_name["7.62x39 mm"]["country"]["code"], "SU")
+        flagless = {c["country"]["code"] for c in self.by_name.values() if "country" in c and "flag" not in c["country"]}
+        self.assertLessEqual(flagless, generate_data.DRAWN_FLAGS)
+
+    def test_drawn_flags_match_the_swift_view(self):
+        src = open(os.path.join(ROOT, "Kaliberfinder", "Views", "CalibreTags.swift")).read()
+        for code in generate_data.DRAWN_FLAGS:
+            self.assertIn(f'case "{code}":', src, code)
+
+    def test_every_catalogue_country_has_a_translated_name(self):
+        from cartridges import COUNTRIES
+        from translations import T
+        self.assertEqual(set(COUNTRIES), set(generate_data.COUNTRY_NAMES))
+        for name in generate_data.COUNTRY_NAMES.values():
+            self.assertIn(name, T, name)
+
+    def test_no_country_means_no_key(self):
+        self.assertNotIn("country", self.by_name[".308 Norma Magnum"])
+
+
 class BlankFlagTests(unittest.TestCase):
     """Crimped blanks are flagged, so the app can leave out the bullet diameter."""
 

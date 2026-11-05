@@ -14,6 +14,8 @@ struct HomeView: View {
     @State private var photo: PickedPhoto?
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
+    /// Hidden developer switch: five taps on the copyright line (`TrainingCapture`).
+    @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
 
     var body: some View {
         List {
@@ -77,10 +79,20 @@ struct HomeView: View {
                 }
                 }
             }
+            if trainingCapture {
+                Section {
+                    NavigationLink { TrainingCaptureView() } label: {
+                        Label { Text(verbatim: "Trainingsdaten aufnehmen") } icon: { Image(systemName: "tray.and.arrow.down") }
+                    }
+                } footer: {
+                    Text(verbatim: "Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.")
+                }
+            }
             Section {
                 Text(verbatim: "© 2026 Simon Giotta · PolyForm Noncommercial 1.0.0")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
+                    .onTapGesture(count: 5) { trainingCapture.toggle() }
             }
         }
         .navigationTitle("Kaliberfinder")

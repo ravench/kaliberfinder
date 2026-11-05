@@ -47,12 +47,14 @@ final class EmptyCaseTests: XCTestCase {
 
     func testAlmostEveryEmptyCaseIsAmongTheFirstFive() throws {
         // Without a scale some straight cases are the same tube (.32 S&W Long vs .44 Magnum),
-        // so with over 200 calibres a few rank lower. Checked with every calibre, obsolete ones too.
+        // so with over 200 calibres a few rank lower. Checked with every calibre matching uses,
+        // obsolete ones too; rare ones are left out of matching (CartridgeCatalog.matchable).
         var missed: [String] = []
-        let cases = CartridgeCatalog.all.enumerated().filter { $0.element.hasCase }
+        let pool = CartridgeCatalog.matchable(includeObsolete: true)
+        let cases = pool.enumerated().filter { $0.element.hasCase }
         for (i, c) in cases {
             let shape = try photo(c, part: .emptyCase, angle: Double(i % 7) * 0.45, pixelsPerMM: 5 + Double(i % 4))
-            let ids = Matcher.rank(shape: shape, cartridges: CartridgeCatalog.all, limit: 5).map(\.cartridge.id)
+            let ids = Matcher.rank(shape: shape, cartridges: pool, limit: 5).map(\.cartridge.id)
             if !ids.contains(c.id) { missed.append("\(c.id): \(ids)") }
         }
         XCTAssertLessThanOrEqual(Double(missed.count) / Double(cases.count), 0.05, missed.joined(separator: "\n"))
