@@ -75,11 +75,40 @@ final class NeckShapeTests: XCTestCase {
         let a = ShapeMatcher.measurement(aspect: 4, relativeWidths: widths(neck: 4))
         let b = ShapeMatcher.measurement(aspect: 4, relativeWidths: widths(neck: 8))
         XCTAssertEqual(NeckShape.distance(photo: a, expected: b, neckRatio: 0.6), NeckShape.lengthWeight * 0.4, accuracy: 1e-9)
+        // Raven's GP 11 case on granite (set-gp11-case-01, colour cut-out): the blurred shoulder
+        // shows a flat step at 0.8, but the neck is the run at about 0.6 in front of it.
+        let granite = "0.50 0.62 0.59 0.60 0.59 0.61 0.80 0.78 0.87 1.01 0.95 0.92 0.93 0.90 1.00 1.01 1.02 1.02 1.00 1.00 "
+            + "0.97 1.01 0.94 0.99 1.00 0.94 1.00 0.97 1.01 0.99 0.98 0.96 0.96 0.94 0.94 0.95 0.92 0.95 0.92 0.75"
+        let real = try XCTUnwrap(NeckShape(widths: granite.split(separator: " ").compactMap { Double($0) }, aspect: 3.9))
+        XCTAssertEqual(real.width, 0.6, accuracy: 0.01)
+        XCTAssertEqual(real.slices, 1...5)
+        XCTAssertEqual(real.shoulderSlice, 8)
+        // The same with a body slice a little under 0.9, as in the photo itself.
+        var noisy = granite.split(separator: " ").compactMap { Double($0) }
+        noisy[13] = 0.89
+        XCTAssertEqual(NeckShape(widths: noisy, aspect: 3.9)?.slices, 1...5)
+        // A round-nose bullet with a short flat on its curve is no neck.
+        let roundNose = [0.2, 0.3, 0.4, 0.5, 0.6, 0.62, 0.75, 0.8, 0.84] + Array(repeating: 1.0, count: 31)
+        XCTAssertNil(NeckShape(widths: roundNose, aspect: 3))
         // Too wide for a neck: the bullet of a straight case.
         XCTAssertNil(NeckShape(widths: Array(repeating: 0.88, count: 6) + Array(repeating: 1.0, count: 34), aspect: 3))
     }
 
     // MARK: - Matching
+
+    func testNeckUpToTheMouthIsAnEmptyCase() {
+        // Raven's set-gp11-case-02 (colour cut-out): the half-filled first slice hides the square
+        // mouth, but the neck runs up to it. Raven 2026-11-05: «Erkannt: Patrone» for this case.
+        let widths = "0.51 0.60 0.63 0.72 0.61 0.70 1.03 1.07 0.91 0.94 0.97 0.98 0.99 0.98 0.99 0.96 0.98 0.96 0.97 0.97 "
+            + "0.97 0.98 0.97 0.98 0.99 1.01 1.00 1.02 0.99 1.00 1.03 1.01 1.04 0.99 1.01 0.99 0.98 0.90 0.86 0.86"
+        let shape = ShapeMatcher.measurement(aspect: 4.47, relativeWidths: widths.split(separator: " ").compactMap { Double($0) })
+        XCTAssertEqual(shape.features?.isFlatEnd, false)
+        XCTAssertEqual(ScanMode.auto.part(for: shape), .emptyCase)
+        // Loaded bottleneck rounds stay cartridges: the bullet narrows in front of the neck.
+        for id in ["7.5x55 mm Swiss (GP 11)", ".223 Remington", "6.5 mm Creedmoor", "7.62x39 mm"] {
+            XCTAssertEqual(ScanMode.auto.part(for: try XCTUnwrap(ShapeMatcher.catalogue[id])), .cartridge, id)
+        }
+    }
 
     func testNeckedCaseTakenForACartridgeListsNoStraightCalibres() throws {
         // Raven 2026-11-05: an empty GP 11 case with the picker on «Patrone» listed .30 Carbine,
@@ -124,11 +153,11 @@ final class NeckShapeTests: XCTestCase {
 
     // MARK: - Raven's photos
 
-    /// The nine empty GP 11 cases of `PhotoSetTests`, through the photo analysis (the colour cut-out on
-    /// the simulator): the neck must be found in most of them, with about the catalogue's width.
+    /// Raven's nine photos of empty GP 11 cases (2026-11-04), through the photo analysis (the colour
+    /// cut-out on the simulator): the neck must be found in most of them, with about the catalogue's width.
     func testRealGP11CasePhotosShowTheNeck() async throws {
         let ratio = 8.5 / 12.6
-        var found = 0, lines: [String] = []
+        var found = 0, empty = 0, lines: [String] = []
         for i in 1...9 {
             let name = String(format: "set-gp11-case-%02d", i)
             let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: name, withExtension: "jpg"), name)
@@ -137,11 +166,14 @@ final class NeckShapeTests: XCTestCase {
             let shape = try XCTUnwrap(analysis.shape, name)
             let neck = shape.mouthFirst().neck
             if let neck, abs(neck.width - ratio) < 0.08 { found += 1 }
-            lines.append(String(format: "NECK %@ aspect %.2f neck %@ widths %@", name, shape.aspect,
+            if ScanMode.auto.part(for: shape) == .emptyCase { empty += 1 }
+            lines.append(String(format: "PHOTOSET neck %@ aspect %.2f neck %@ widths %@", name, shape.aspect,
                                 neck.map { String(format: "%.2f x %.2f", $0.width, $0.length) } ?? "-",
                                 shape.widths.map { String(format: "%.2f", $0) }.joined(separator: " ")))
         }
         print(lines.joined(separator: "\n"))
         XCTAssertGreaterThanOrEqual(found, 7, lines.joined(separator: "\n"))
+        // Automatic mode takes most of them for what they are: empty cases.
+        XCTAssertGreaterThanOrEqual(empty, 6, lines.joined(separator: "\n"))
     }
 }

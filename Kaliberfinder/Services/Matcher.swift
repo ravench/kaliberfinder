@@ -49,12 +49,15 @@ enum ScanMode: String, CaseIterable, Identifiable {
     }
 
     /// What to compare the photo with. Automatic: a square-cut end is a case mouth, a
-    /// narrowing end a bullet tip (SCAN-02).
+    /// narrowing end a bullet tip (SCAN-02). In a photo the first slice is often only partly
+    /// filled, so a neck that runs right up to the end also marks an empty case: on a loaded
+    /// round the bullet narrows in front of it.
     func part(for shape: ShapeMeasurement) -> ShapePart {
         switch self {
         case .cartridge: .cartridge
         case .emptyCase: .emptyCase
-        case .auto: shape.features?.isFlatEnd == true ? .emptyCase : .cartridge
+        case .auto:
+            shape.features?.isFlatEnd == true || (shape.neck?.slices.lowerBound ?? .max) <= 2 ? .emptyCase : .cartridge
         }
     }
 }
