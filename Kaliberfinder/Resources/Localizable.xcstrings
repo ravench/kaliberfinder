@@ -760,6 +760,14 @@
         }
       }
     },
+    "Berdan Nitro (Kynoch #40)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Berdan Nitro (Kynoch #40)"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Berdan Nitro (Kynoch n° 40)"}},
+        "it": {"stringUnit": {"state": "translated", "value": "Berdan Nitro (Kynoch n. 40)"}}
+      }
+    },
     "Büchse gross": {
       "extractionState": "manual",
       "localizations": {

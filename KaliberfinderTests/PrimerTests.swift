@@ -31,8 +31,10 @@ final class PrimerTests: XCTestCase {
     }
 
     func testOnlyFourBoxerSizesPlus209AndBMG() {
+        // Plus the 6.45 mm Berdan Nitro cap of a few old rounds (calibre-data PRIMERS).
         let sizes = Set(CartridgeCatalog.all.compactMap { $0.primer?.diameter })
-        XCTAssertEqual(sizes, [4.45, 5.33, 6.15, 8.03])
+        XCTAssertEqual(sizes, [4.45, 5.33, 6.15, 6.45, 8.03])
+        XCTAssertEqual(CartridgeCatalog.cartridge(id: "9.3x72 mm R")?.primer?.title, "Berdan Nitro (Kynoch #40)")
     }
 
     func testHeadGeometry() throws {
@@ -47,7 +49,7 @@ final class PrimerTests: XCTestCase {
     func testTextsAreTranslated() throws {
         let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "en"))
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
-        for type in ["small-pistol", "large-pistol", "small-rifle", "large-rifle", "shotshell-209", "bmg-35"] {
+        for type in ["small-pistol", "large-pistol", "small-rifle", "large-rifle", "shotshell-209", "bmg-35", "berdan-nitro"] {
             let title = Cartridge.Primer(type: type, diameter: 1).title
             XCTAssertNotNil(en[title], title)
         }
