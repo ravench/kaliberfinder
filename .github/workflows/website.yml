@@ -1,0 +1,55 @@
+name: Website
+# Builds kaliberfinder.apps.giotta.ch (tools/website.py) and publishes it with GitHub Pages.
+# Pull requests only run the tests; merges to main that touch the site deploy it.
+# One-time setup: Settings → Pages → Source "GitHub Actions", custom domain
+# kaliberfinder.apps.giotta.ch, and a DNS CNAME record pointing it to ravench.github.io.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - tools/website.py
+      - tools/website_content.py
+      - tools/test_website.py
+      - .github/workflows/website.yml
+      - Kaliberfinder/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon.png
+  pull_request:
+    paths:
+      - tools/website.py
+      - tools/website_content.py
+      - tools/test_website.py
+      - .github/workflows/website.yml
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Tests
+        run: python3 -m unittest discover -s tools -p 'test_website.py'
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build
+        run: python3 tools/website.py build _site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
