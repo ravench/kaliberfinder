@@ -1,0 +1,61 @@
+{
+  "analysis": {
+    "aspect": 4.545465041524122,
+    "candidates": 0,
+    "imageLongSide": 1600,
+    "isBrass": true,
+    "lengthPixels": 312.3805015173056,
+    "matches": [
+      "7.5x55 mm Swiss (GP 11)",
+      "7x57 mm Mauser",
+      ".257 Roberts",
+      "6 mm Remington",
+      "6.5x57 mm Mauser"
+    ],
+    "outline": [
+      [
+        0.5304842400957639,
+        0.4134211272733218
+      ],
+      [
+        0.5728257777861118,
+        0.6060590013524185
+      ],
+      [
+        0.5151515517634396,
+        0.6131896535019412
+      ],
+      [
+        0.47281001407309164,
+        0.4205517794228445
+      ]
+    ],
+    "size": [
+      58.36245940961004,
+      12.839711421483235
+    ]
+  },
+  "captured": "2026-11-05T11:49:34Z",
+  "gravity": [
+    -0.0021902602165937424,
+    0.012481220066547394,
+    -0.9999197125434875
+  ],
+  "mask": {
+    "file": "vision-instances.png",
+    "height": 512,
+    "imageHeight": 1600,
+    "imageWidth": 1200,
+    "instances": 1,
+    "width": 512
+  },
+  "orientation": 6,
+  "photo": "photo.jpg",
+  "scale": {
+    "focalLength": 2931.700927734375,
+    "referenceLongSide": 4032,
+    "tableDistance": 223.77443313598633
+  },
+  "source": "lidarCamera",
+  "tilt": 0.7260681790424236
+}

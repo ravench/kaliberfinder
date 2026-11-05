@@ -3,8 +3,8 @@ import ImageIO
 import UniformTypeIdentifiers
 
 /// Training data for the photo detection (Raven, 2026-11-04): a series of photos of one known
-/// calibre with everything the phone measured, saved as a package that can be copied into
-/// KaliberfinderTests/Captures and checked by the tests.
+/// calibre with everything the phone measured, saved as a package for the private training repo
+/// (ravench/kaliberfinder-training), whose golden shots come back as KaliberfinderTests/Golden.
 ///
 /// A hidden developer tool, switched on by tapping the copyright line five times. It can be removed
 /// with TrainingCapture*.swift, TrainingRecorder.swift and its lines in SettingsView and LiDARCamera.
@@ -136,6 +136,10 @@ struct CaptureShot: Codable, Equatable {
         let width: Int
         let height: Int
         let instances: Int
+        /// Size of the upright photo as analysed (`PhotoAnalyzer.maxDimension`), which the mask
+        /// covers; lets a shot be replayed without its photo (golden set).
+        var imageWidth: Int?
+        var imageHeight: Int?
     }
 
     struct Analysis: Codable, Equatable {

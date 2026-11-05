@@ -1,0 +1,61 @@
+{
+  "analysis": {
+    "aspect": 4.358345907360698,
+    "candidates": 0,
+    "imageLongSide": 1600,
+    "isBrass": true,
+    "lengthPixels": 281.8296099358348,
+    "matches": [
+      "7.5x55 mm Swiss (GP 11)",
+      ".284 Winchester",
+      "6.5-284 Norma",
+      "6.5x55 mm Swedish",
+      "7.5x54 mm French"
+    ],
+    "outline": [
+      [
+        0.4402229986484024,
+        0.4760651195266609
+      ],
+      [
+        0.6070361446894859,
+        0.600057287941026
+      ],
+      [
+        0.5678313766183144,
+        0.6297259139259197
+      ],
+      [
+        0.40101823057723107,
+        0.5057337455115546
+      ]
+    ],
+    "size": [
+      58.23773778007305,
+      13.362348702455405
+    ]
+  },
+  "captured": "2026-11-05T11:49:30Z",
+  "gravity": [
+    -0.0029162392020225525,
+    0.0064961593598127365,
+    -0.9999746680259705
+  ],
+  "mask": {
+    "file": "vision-instances.png",
+    "height": 512,
+    "imageHeight": 1600,
+    "imageWidth": 1200,
+    "instances": 1,
+    "width": 512
+  },
+  "orientation": 6,
+  "photo": "photo.jpg",
+  "scale": {
+    "focalLength": 2917.486572265625,
+    "referenceLongSide": 4032,
+    "tableDistance": 245.91699242591858
+  },
+  "source": "lidarCamera",
+  "tilt": 0.4079901766476892
+}

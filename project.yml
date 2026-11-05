@@ -90,10 +90,13 @@ targets:
     platform: iOS
     sources:
       - path: KaliberfinderTests
-        excludes: ["Captures/**"]
+        excludes: ["Captures/**", "Golden/**"]
       # Training capture packages (TrainingCapture) as a folder, so their shots keep their own
       # subfolders: every shot has a photo.jpg and a shot.json.
       - path: KaliberfinderTests/Captures
+        type: folder
+      # The golden set (GoldenSetTests): capture packages with Vision masks, no photos.
+      - path: KaliberfinderTests/Golden
         type: folder
     dependencies:
       - target: Kaliberfinder

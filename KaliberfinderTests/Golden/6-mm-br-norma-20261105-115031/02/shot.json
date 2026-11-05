@@ -1,0 +1,60 @@
+{
+  "analysis": {
+    "aspect": 3.42102255987322,
+    "candidates": 0,
+    "imageLongSide": 1600,
+    "isBrass": true,
+    "lengthPixels": 260.0324630532527,
+    "matches": [
+      "6 mm BR Norma",
+      "6.5 mm Grendel",
+      ".22 ARC",
+      "6 mm ARC"
+    ],
+    "outline": [
+      [
+        0.38199664862781957,
+        0.41474244268993615
+      ],
+      [
+        0.5986899065382135,
+        0.41440709816112614
+      ],
+      [
+        0.5988240202257655,
+        0.46315431268670815
+      ],
+      [
+        0.3821307623153716,
+        0.46348965721551816
+      ]
+    ],
+    "size": [
+      41.52843293332089,
+      12.139187101665856
+    ]
+  },
+  "captured": "2026-11-05T11:50:46Z",
+  "gravity": [
+    -0.010032864287495613,
+    0.00697390828281641,
+    -0.9999253749847412
+  ],
+  "mask": {
+    "file": "vision-instances.png",
+    "height": 512,
+    "imageHeight": 1600,
+    "imageWidth": 1200,
+    "instances": 1,
+    "width": 512
+  },
+  "orientation": 6,
+  "photo": "photo.jpg",
+  "scale": {
+    "focalLength": 2966.733642578125,
+    "referenceLongSide": 4032,
+    "tableDistance": 194.08610463142395
+  },
+  "source": "lidarCamera",
+  "tilt": 0.7000906221612184
+}
