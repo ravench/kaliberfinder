@@ -45,6 +45,14 @@ final class BulletMaterialTests: XCTestCase {
         XCTAssertNotNil(fury.outline.head)
     }
 
+    func testAirGunBallsAreLeadSteelOrPlastic() throws {
+        // calibre-data #47: steel BB and white airsoft BBs; plain balls and pellets stay lead.
+        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge("4.4 mm Stahl-BB (.177 BB)")), CartridgeView.steel)
+        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge("6 mm Airsoft-BB")), CartridgeView.plastic)
+        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge("8 mm Airsoft-BB")), CartridgeView.plastic)
+        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge("4.5 mm Diabolo (.177)")), CartridgeView.lead)
+    }
+
     func testCaseMaterials() throws {
         XCTAssertEqual(CartridgeView.caseFill(for: try cartridge(".44 Henry")), CartridgeView.copper)
         XCTAssertEqual(CartridgeView.caseFill(for: try cartridge("5.45x39 mm")), CartridgeView.lacqueredSteel)

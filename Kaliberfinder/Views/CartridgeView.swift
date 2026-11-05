@@ -15,11 +15,15 @@ struct CartridgeView: View {
     static let nickel = Color(red: 0.78, green: 0.80, blue: 0.81)
     /// Plastic tip (V-Max, ELD, FTX, Ballistic Tip): most makers use red.
     static let polymer = Color(red: 0.80, green: 0.10, blue: 0.14)
+    /// Airsoft BB: most are white.
+    static let plastic = Color(red: 0.93, green: 0.93, blue: 0.90)
 
-    /// Fill of the bullet: steel cap (GP 1890), bare lead, or copper jacket; balls and pellets are lead.
+    /// Fill of the bullet: steel cap (GP 1890) or steel BB, plastic airsoft BB, bare lead, or copper
+    /// jacket; other balls and pellets are lead.
     static func bulletFill(for cartridge: Cartridge) -> Color {
         switch cartridge.outline.bulletMaterial {
         case "steel": steel
+        case "plastic": plastic
         case "lead": lead
         default: cartridge.hasCase ? copper : lead
         }
