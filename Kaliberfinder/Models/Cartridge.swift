@@ -41,9 +41,9 @@ struct Cartridge: Decodable, Identifiable, Hashable {
         static let worldwide = "WW"
     }
 
-    /// The primer in the centre of the case head (Boxer size of commercial brass).
+    /// The primer in the centre of the case head (that of the original factory ammunition).
     struct Primer: Decodable, Hashable {
-        /// small-pistol, large-pistol, small-rifle, large-rifle, shotshell-209 or bmg-35.
+        /// small-pistol, large-pistol, small-rifle, large-rifle, shotshell-209, bmg-35 or berdan-nitro.
         let type: String
         /// Cup diameter in mm.
         let diameter: Double
@@ -57,6 +57,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
             case "large-rifle": "Büchse gross"
             case "shotshell-209": "Schrot (209)"
             case "bmg-35": ".50 BMG (#35)"
+            case "berdan-nitro": "Berdan Nitro (.254)"
             default: type
             }
         }
