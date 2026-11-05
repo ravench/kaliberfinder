@@ -5,6 +5,11 @@ on:
   push:
     branches: [main]
   pull_request:
+# A newer push to the same pull request cancels this run. On main a running build
+# finishes; a newer merge only replaces a run that is still waiting for a runner.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 defaults:
   run:
     # pipefail: otherwise a failing xcodebuild piped into xcpretty still passes.
