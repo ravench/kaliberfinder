@@ -3,6 +3,7 @@
 included:
   - Kaliberfinder
   - KaliberfinderTests
+  - KaliberfinderUITests
   - KaliberfinderShare
 excluded:
   - DerivedData
