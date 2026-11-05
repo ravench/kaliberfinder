@@ -3,12 +3,14 @@ import XCTest
 @testable import Kaliberfinder
 
 /// Raven's photos of known calibres on different surfaces (2026-11-04): eight 9x19 cartridges and
-/// nine empty GP 11 cases and nine empty 6 mm BR Norma cases, some with shadows, tarnish or an annealed neck.
+/// nine empty GP 11 cases and nine empty 6 mm BR Norma cases, some with shadows, tarnish or an annealed neck;
+/// two .45 ACP and a 9x19 with a long shadow that build 1042 got wrong.
 final class PhotoSetTests: XCTestCase {
     static let photos: [(name: String, calibre: String, aspect: Double)] =
         (1...8).map { (String(format: "set-9x19-%02d", $0), "9x19 mm", 3.0) }
         + (1...9).map { (String(format: "set-gp11-case-%02d", $0), "7.5x55 mm Swiss (GP 11)", 4.5) }
         + (1...9).map { (String(format: "set-6mmbr-case-%02d", $0), "6 mm BR Norma (case)", 3.3) }
+        + [("set-45acp-01", ".45 ACP", 2.7), ("set-45acp-02", ".45 ACP", 2.7), ("set-9x19-shadow", "9x19 mm", 3.0)]
 
     private func photo(_ name: String) throws -> UIImage {
         let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: name, withExtension: "jpg"), name)
@@ -32,7 +34,31 @@ final class PhotoSetTests: XCTestCase {
         print(lines.joined(separator: "\n"))
         let close = errors.filter { $0 < 0.15 }.count
         print("PHOTOSET within 15%: \(close) of \(errors.count), worst \(Int(100 * (errors.max() ?? 0)))%")
-        XCTAssertGreaterThanOrEqual(close, 17, lines.joined(separator: "\n"))
+        XCTAssertGreaterThanOrEqual(close, 19, lines.joined(separator: "\n"))
         XCTAssertLessThan(errors.max() ?? 1, 0.5, lines.joined(separator: "\n"))
+    }
+
+    /// Loaded rounds are cartridges in Automatic mode: build 1042 read a .45 ACP as an empty
+    /// bottleneck case.
+    func testLoadedRoundsAreCartridgesInAutomaticMode() async throws {
+        for name in ["set-45acp-01", "set-45acp-02", "set-9x19-shadow"] {
+            let analysis = await PhotoAnalyzer.analyze(try photo(name))
+            let shape = try XCTUnwrap(analysis.shape, name)
+            XCTAssertEqual(ScanMode.auto.part(for: shape), .cartridge, name)
+        }
+    }
+
+    /// On the shelf the brass case is measured, not the grey stone block next to it, which has
+    /// as clean an outline (build 1042 measured the stone).
+    func testShelfPhotoMeasuresTheCaseNotTheStone() async throws {
+        // Cut down to the 9 mm case (left third) and the stone (right of the middle).
+        let cropped = await PhotoAnalyzer.analyze(try photo("shelf-cases-crop"))
+        let crop = try XCTUnwrap(cropped.outline)
+        XCTAssertLessThan(crop.map(\.x).reduce(0, +) / 4, 0.4, "\(crop)")
+        // The whole shelf: five cases, the stone at about 0.68…0.76 of the width, the nearest case at 0.64.
+        let whole = await PhotoAnalyzer.analyze(try photo("shelf-cases"))
+        let shelf = try XCTUnwrap(whole.outline)
+        let x = shelf.map(\.x).reduce(0, +) / 4
+        XCTAssertFalse((0.69...0.76).contains(x), "\(shelf)")
     }
 }

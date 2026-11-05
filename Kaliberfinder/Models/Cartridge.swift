@@ -17,12 +17,29 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     /// No longer in regular factory production (only surplus, boutique loads or reloading).
     /// Matching skips these unless the «Veraltete Kaliber» switch is on.
     let obsolete: Bool
+    /// Hardly ever found, so a photo or measurement that matches it is more likely a similar,
+    /// common calibre (calibre-data RARE). Shown with the «Selten» tag.
+    let rare: Bool
+    /// The country the calibre is linked to, or «Weltweit verbreitet»; nil when neither applies.
+    let country: Country?
     /// A crimped blank (power-tool load, starter pistol blank): no bullet, the case is the whole cartridge.
     let blank: Bool
     let dimensions: Dimensions
     let outline: Outline
     /// Nil for rimfire and for balls, Minié bullets and pellets.
     let primer: Primer?
+
+    /// A country from calibre-data ORIGIN.
+    struct Country: Decodable, Hashable {
+        /// ISO code; RUE, AH, SU and CS for former states, WW for calibres in use worldwide.
+        let code: String
+        /// German name, used as localization key.
+        let name: String
+        /// Flag emoji; nil for former states, whose flag `DrawnFlag` draws.
+        let flag: String?
+
+        static let worldwide = "WW"
+    }
 
     /// The primer in the centre of the case head (Boxer size of commercial brass).
     struct Primer: Decodable, Hashable {

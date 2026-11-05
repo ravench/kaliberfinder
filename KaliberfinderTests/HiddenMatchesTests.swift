@@ -18,6 +18,7 @@ final class HiddenMatchesTests: XCTestCase {
     func testHiddenObsoleteMatchIsCountedAndRevealedInRankOrder() throws {
         let r = DimensionMatcher.rankHiding([.obsolete], gp1890)
         XCTAssertFalse(r.shown.contains { $0.cartridge.obsolete })
+        XCTAssertFalse(r.revealed.contains { $0.cartridge.rare }, "rare calibres stay out until their switch exists")
         XCTAssertFalse(r.hidden.isEmpty)
         XCTAssertTrue(r.hidden.allSatisfy { $0.cartridge.obsolete && $0.fit != .poor })
         XCTAssertTrue(r.hidden.contains { $0.cartridge.id == gp1890ID })
