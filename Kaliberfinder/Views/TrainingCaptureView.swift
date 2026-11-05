@@ -63,7 +63,7 @@ private struct TrainingCaptureRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(verbatim: CartridgeCatalog.cartridge(id: capture.package.calibre)?.name ?? capture.package.calibre)
-            Text(verbatim: "\(capture.package.scanMode == .emptyCase ? "Leere Hülse" : "Patrone") · \(capture.shots.count) Fotos · "
+            Text(verbatim: "\(capture.package.scanMode == .emptyCase ? "Leere Hülse" : "Patrone") · \(capture.shotCount) Fotos · "
                  + capture.package.created.formatted(date: .abbreviated, time: .shortened))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
