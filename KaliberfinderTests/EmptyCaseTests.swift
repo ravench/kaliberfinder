@@ -1,4 +1,5 @@
 import XCTest
+import SwiftUI
 @testable import Kaliberfinder
 
 /// Empty cases, rim and neck detection, the scan mode and dropping far-off matches (SCAN-01 to SCAN-04).
@@ -33,7 +34,9 @@ final class EmptyCaseTests: XCTestCase {
     // MARK: - The reported case
 
     func testEmptyRifleCaseFindsRifleCalibres() throws {
-        let shape = try photo(cartridge(".308 Winchester"), part: .emptyCase)
+        // Sampled every 0.15 mm: on a 0.3 mm grid the rounding of the body width outweighs the
+        // difference to similar cases now that heads and shoulders follow the drawings.
+        let shape = try photo(cartridge(".308 Winchester"), part: .emptyCase, step: 0.15)
         XCTAssertEqual(ScanMode.auto.part(for: shape), .emptyCase)
         let matches = Matcher.rank(shape: shape, limit: .max)
         // Without a scale the GP 1890 case (same shape, only 2 mm longer) can tie with the .308 twins.
@@ -47,12 +50,14 @@ final class EmptyCaseTests: XCTestCase {
 
     func testAlmostEveryEmptyCaseIsAmongTheFirstFive() throws {
         // Without a scale some straight cases are the same tube (.32 S&W Long vs .44 Magnum),
-        // so with over 200 calibres a few rank lower. Checked with every calibre, obsolete ones too.
+        // so with over 200 calibres a few rank lower. Checked with every calibre matching uses,
+        // obsolete ones too; rare ones are left out of matching (CartridgeCatalog.matchable).
         var missed: [String] = []
-        let cases = CartridgeCatalog.all.enumerated().filter { $0.element.hasCase }
+        let pool = CartridgeCatalog.matchable(includeObsolete: true)
+        let cases = pool.enumerated().filter { $0.element.hasCase }
         for (i, c) in cases {
             let shape = try photo(c, part: .emptyCase, angle: Double(i % 7) * 0.45, pixelsPerMM: 5 + Double(i % 4))
-            let ids = Matcher.rank(shape: shape, cartridges: CartridgeCatalog.all, limit: 5).map(\.cartridge.id)
+            let ids = Matcher.rank(shape: shape, cartridges: pool, limit: 5).map(\.cartridge.id)
             if !ids.contains(c.id) { missed.append("\(c.id): \(ids)") }
         }
         XCTAssertLessThanOrEqual(Double(missed.count) / Double(cases.count), 0.05, missed.joined(separator: "\n"))
@@ -85,6 +90,16 @@ final class EmptyCaseTests: XCTestCase {
         let loaded = try photo(cartridge("9x19 mm"), part: .cartridge)
         XCTAssertEqual(ScanMode.emptyCase.part(for: loaded), .emptyCase)
         XCTAssertEqual(Set(ScanMode.allCases.map(\.rawValue)).count, 3)
+    }
+
+    /// Each photo starts on «Automatisch», whatever was picked for an earlier photo
+    /// (the choice used to be saved under "scanMode" and stuck to every later photo).
+    func testEveryPhotoStartsOnAutomatic() throws {
+        UserDefaults.standard.set(ScanMode.cartridge.rawValue, forKey: "scanMode")
+        defer { UserDefaults.standard.removeObject(forKey: "scanMode") }
+        let view = MatchesView(photo: UIImage())
+        let state = try XCTUnwrap(Mirror(reflecting: view).children.first { $0.label == "_mode" }?.value as? State<ScanMode>)
+        XCTAssertEqual(state.wrappedValue, .auto)
     }
 
     // MARK: - Rim and neck

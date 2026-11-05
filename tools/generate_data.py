@@ -16,12 +16,36 @@ import json, os, sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
-from cartridges import CATALOGUE, DISPLAY_ALIASES, is_obsolete, PRIMERS, PRIMER_DIAMETERS, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
+from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, is_obsolete, is_rare, origin, PRIMERS, PRIMER_DIAMETERS, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
 from outline import outline, bullet_profile  # noqa: E402,F401  (bullet_profile re-exported for tests)
 from headstamps import HEADSTAMPS  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json")
+
+# German names of the calibre-data COUNTRIES, the app's localization keys (en/fr/it in
+# translations.py). "WW" is not a country: calibres in common use worldwide.
+COUNTRY_NAMES = {
+    "CH": "Schweiz", "DE": "Deutschland", "AH": "Österreich-Ungarn", "AT": "Österreich",
+    "FR": "Frankreich", "IT": "Italien", "GB": "Grossbritannien", "US": "USA", "SE": "Schweden",
+    "DK": "Dänemark", "BE": "Belgien", "ES": "Spanien", "PT": "Portugal", "CZ": "Tschechien",
+    "JP": "Japan", "PL": "Polen", "IL": "Israel", "WW": "Weltweit verbreitet",
+    "RUE": "Russisches Kaiserreich", "SU": "Sowjetunion", "CS": "Tschechoslowakei", "CN": "China",
+}
+# Former states without a flag emoji; the app draws these flags itself (DrawnFlag).
+DRAWN_FLAGS = {"RUE", "AH", "SU", "CS"}
+
+
+def country(name):
+    """{"code", "name" (German), "flag" (emoji, absent for drawn flags)} or {} without a country."""
+    o = origin(name)
+    if not o:
+        return {}
+    code, _, flag = o
+    assert code in COUNTRY_NAMES, f"{code}: add its German name to COUNTRY_NAMES"
+    assert flag or code in DRAWN_FLAGS, f"{code} has no flag emoji: draw it in DrawnFlag"
+    return {"country": {"code": code, "name": COUNTRY_NAMES[code], **({"flag": flag} if flag else {})}}
+
 
 def dimensions(s):
     """Dimensions as shown in the app. Shoulder only for bottleneck cases."""
@@ -48,6 +72,7 @@ def build():
             cartridges.append({"id": s["name"], "name": s["name"], "category": category, "kind": s["kind"],
                                "aliases": s["aliases"], "displayAliases": DISPLAY_ALIASES.get(s["name"], []),
                                "headstamps": HEADSTAMPS.get(s["name"], []), "obsolete": is_obsolete(s["name"]),
+                               "rare": is_rare(s["name"]), **country(s["name"]),
                                "blank": s["profile"] == CRIMPED,
                                "dimensions": dimensions(s), "outline": outline(s),
                                **primer(s)})

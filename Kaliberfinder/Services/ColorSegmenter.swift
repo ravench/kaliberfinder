@@ -45,11 +45,6 @@ enum ColorSegmenter {
         var x0: Int, y0: Int, x1: Int, y1: Int
     }
 
-    /// Pixels of the cartridge (x, y in image pixels), nil if nothing stands out.
-    static func segment(_ image: RGBImage) -> [Point]? {
-        best(image)?.points
-    }
-
     /// Crops around the located cluster, as factors of the first padding.
     static let paddings: [Double] = [1, 2, 4]
     /// Thresholds tried, as factors of Otsu's threshold on the colour distance.
@@ -68,22 +63,46 @@ enum ColorSegmenter {
         let edges = edges ?? GradientImage(image)
         let longSide = Double(max(image.width, image.height))
         let pad = max(Double(max(box.x1 - box.x0, box.y1 - box.y0)) * 0.6, longSide / 16)
-        var chosen: (mask: [Bool], box: Box, score: OutlineScore)?
+        var chosen: (mask: [Bool], box: Box, score: OutlineScore, value: Double)?
         for factor in paddings {
             let p = Int(pad * factor)
             let crop = Box(x0: max(0, box.x0 - p), y0: max(0, box.y0 - p),
                            x1: min(image.width, box.x1 + p), y1: min(image.height, box.y1 + p))
-            for candidate in candidates(image, crop, edges: edges) where candidate.score.value > (chosen?.score.value ?? 0) {
-                chosen = candidate
+            for candidate in candidates(image, crop, edges: edges) {
+                let value = candidate.score.value * (isGrey(image, candidate.mask, candidate.box) ? greyWeight : 1)
+                if value > (chosen?.value ?? 0) { chosen = (candidate.mask, candidate.box, candidate.score, value) }
             }
         }
         guard let found = chosen else { return nil }
-        let w = found.box.x1 - found.box.x0
-        var points: [Point] = []
-        for i in found.mask.indices where found.mask[i] {
-            points.append(Point(x: Double(found.box.x0 + i % w), y: Double(found.box.y0 + i / w)))
+        return (ShapeMatcher.mirrorTrimmed(points(found.mask, found.box)), found.score)
+    }
+
+    /// A grey patch counts this much of its score: a stone or tool next to the cases has as clean
+    /// an outline as a case (shelf photo, 2026-11-04), but most cases are brass. A nickel case
+    /// still wins over anything with a less cartridge-like outline.
+    static let greyWeight = 0.5
+    /// Saturation ((max − min) / max of the mean colour) below which a patch is grey. Under warm
+    /// light a grey stone reaches about 0.27, brass 0.65 and more, so `PhotoAnalyzer.isBrass`
+    /// (made for daylight) can't tell them apart there.
+    static let greyBelow: Float = 0.4
+
+    /// The image pixels of a patch's mask (`box`: where the mask lies in the image).
+    static func points(_ mask: [Bool], _ box: Box) -> [Point] {
+        let w = box.x1 - box.x0
+        return mask.indices.filter { mask[$0] }.map { Point(x: Double(box.x0 + $0 % w), y: Double(box.y0 + $0 / w)) }
+    }
+
+    /// Whether a patch is, on average, grey: stone, lead, nickel or steel rather than brass.
+    static func isGrey(_ image: RGBImage, _ mask: [Bool], _ box: Box) -> Bool {
+        let w = box.x1 - box.x0
+        var sum: [Float] = [0, 0, 0]
+        for i in mask.indices where mask[i] {
+            let x = box.x0 + i % w, y = box.y0 + i / w
+            guard x >= 0, y >= 0, x < image.width, y < image.height else { continue }
+            for c in 0..<3 { sum[c] += image.pixels[(y * image.width + x) * 3 + c] }
         }
-        return (ShapeMatcher.mirrorTrimmed(points), found.score)
+        guard let high = sum.max(), let low = sum.min(), high > 0 else { return true }
+        return (high - low) / high < greyBelow
     }
 
     // MARK: - Locate

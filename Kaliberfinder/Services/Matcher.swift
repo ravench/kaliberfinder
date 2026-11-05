@@ -37,8 +37,6 @@ enum ScanMode: String, CaseIterable, Identifiable {
     case cartridge
     case emptyCase
 
-    static let storageKey = "scanMode"
-
     var id: String { rawValue }
 
     /// German text, used as localization key.
@@ -89,7 +87,9 @@ enum Matcher {
             if let shape, var e = expected(c, part), e.isEndView == shape.isEndView {
                 if c.blank { e = ShapeMatcher.tilted(e, toward: shape) }
                 // Rim and neck only mean something for side views of calibres with a case.
-                distance = c.hasCase && !shape.isEndView ? ShapeMatcher.distance(shape, to: e, part: part) : ShapeMatcher.distance(shape, e)
+                distance = c.hasCase && !shape.isEndView
+                    ? ShapeMatcher.distance(shape, to: e, part: part, neckRatio: c.dimensions.neck / c.dimensions.base)
+                    : ShapeMatcher.distance(shape, e)
             }
             // The size only says something about cartridges compared from the side.
             var sizeDeviation: Double?
