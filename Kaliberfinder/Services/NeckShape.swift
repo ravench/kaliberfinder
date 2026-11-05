@@ -1,0 +1,79 @@
+import Foundation
+
+/// The neck of a bottleneck case as the silhouette shows it (SHAPE-06): the narrow, straight part
+/// in front of the shoulder. Found in the slice widths, so the photo and the catalogue outline are
+/// measured the same way. A loaded round's neck runs on over the bullet's straight part when the
+/// two are about as wide.
+struct NeckShape: Equatable {
+    /// Width relative to the body: GP 11 about 0.68, .223 Remington about 0.67.
+    let width: Double
+    /// Length in body diameters.
+    let length: Double
+    /// Slices (tip first) the neck covers, and the first slice of the shoulder behind it.
+    let slices: ClosedRange<Int>
+    let shoulderSlice: Int
+
+    /// The body is at least this wide; the first narrower slice in front of it starts the shoulder.
+    static let bodyFrom = 0.9
+    /// A neck is no wider than this. Straight cases narrow to 0.88 or more at the bullet, and their
+    /// bullets taper off without a straight run, so they show none.
+    static let neckUpTo = 0.85
+    /// Slices of one neck differ by no more than this.
+    static let straightWithin = 0.04
+    /// A shoulder narrows over at most this many slices.
+    static let maxShoulderSlices = 4
+    /// Necks at least this narrow are clearly there: a photo showing one rules out calibres with a
+    /// much wider neck, and a calibre with one is unlikely when the photo shows none.
+    static let clearUpTo = 0.8
+
+    /// Nil when the widths show no neck. `widths` run tip (or case mouth) first, relative to the body.
+    init?(widths w: [Double], aspect: Double) {
+        let n = w.count
+        // The rim, belt and extractor groove sit in the last 15 %; the body starts in front of them.
+        let bodyEnd = n - 1 - n * 15 / 100
+        guard bodyEnd > 0 else { return nil }
+        var i = bodyEnd
+        while i >= 0 && w[i] >= Self.bodyFrom { i -= 1 }
+        guard i >= 0, i < bodyEnd else { return nil }
+        // Down the shoulder, as long as it keeps narrowing.
+        var start = i
+        while start > 0 && i - start < Self.maxShoulderSlices && w[start - 1] < w[start] - Self.straightWithin { start -= 1 }
+        guard w[start] <= Self.neckUpTo else { return nil }
+        var end = start
+        while end > 0 && abs(w[end - 1] - w[start]) <= Self.straightWithin { end -= 1 }
+        guard start > end else { return nil }
+        let run = w[end...start].sorted()
+        width = run[run.count / 2]
+        length = Double(run.count) / Double(n) * aspect
+        slices = end...start
+        shoulderSlice = i
+    }
+
+    var isClear: Bool { width <= Self.clearUpTo }
+
+    /// Added to the distance when the photo shows a clear neck and the calibre's (catalogue neck
+    /// over base) is much wider: a straight case, or a slight bottleneck like the .32-20.
+    static let widerPenalty = 0.3
+    /// Added when the calibre has a clear neck and the photo shows none.
+    static let missingPenalty = 0.15
+    /// How much the neck counts when both have one: per unit of width and per body diameter of length.
+    static let widthWeight = 1.0
+    static let lengthWeight = 0.15
+    /// The calibre's neck is much wider than the photo's beyond this.
+    static let widthTolerance = 0.15
+
+    /// What the neck adds to the distance between a photo and a calibre's expected shape.
+    /// `neckRatio` is the calibre's catalogue neck diameter over its base diameter.
+    static func distance(photo: ShapeMeasurement, expected: ShapeMeasurement, neckRatio: Double) -> Double {
+        let a = photo.neck, b = expected.neck
+        if let a, a.isClear, neckRatio > a.width + widthTolerance { return widerPenalty }
+        if let b, b.isClear, a == nil { return missingPenalty }
+        guard let a, let b else { return 0 }
+        return widthWeight * abs(a.width - b.width) + lengthWeight * abs(a.length - b.length)
+    }
+}
+
+extension ShapeMeasurement {
+    /// The neck, if the slice widths are known and show one.
+    var neck: NeckShape? { widths.count == ShapeMatcher.bins ? NeckShape(widths: widths, aspect: aspect) : nil }
+}
