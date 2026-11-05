@@ -1,19 +1,21 @@
 import PhotosUI
 import SwiftUI
 
-/// The home screen's settings and actions, top to bottom.
+/// The home screen's actions and switches, top to bottom. The rest of the settings are on
+/// `SettingsView`, opened as a sheet by the gear button in the navigation bar.
 enum HomeSection: CaseIterable {
-    case photo, withoutPhoto, recognition, units, realSize
+    case photo, withoutPhoto, recognition
 }
 
 struct HomeView: View {
     @EnvironmentObject private var scale: ScaleModel
     @Environment(\.scenePhase) private var scenePhase
     @State private var showCamera = false
+    @State private var showSettings = false
     @State private var libraryItem: PhotosPickerItem?
     @State private var photo: PickedPhoto?
-    @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
+    @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
 
     var body: some View {
         List {
@@ -48,42 +50,34 @@ struct HomeView: View {
                 } header: {
                     Text("Ohne Foto")
                 }
-                case .realSize:
-                Section {
-                    NavigationLink { CalibrationView() } label: {
-                        LabeledContent {
-                            Text(verbatim: unit.scaleText(pointsPerMM: scale.pointsPerMM))
-                        } label: {
-                            Text("Bildschirm")
-                            Text(scale.resolution.source.title.loc)
-                        }
-                    }
-                } header: {
-                    Text("Originalgrösse")
-                } footer: {
-                    Text("Bildschirmzoom und Kalibrierung werden berücksichtigt. Prüfe die Grösse einmal mit einer Bankkarte.")
-                }
-                case .units:
-                Section("Einheiten") {
-                    UnitPicker(unit: $unit)
-                }
                 case .recognition:
                 Section {
-                    Toggle("Veraltete Kaliber berücksichtigen", isOn: $includeObsolete)
+                    Toggle(isOn: $includeObsolete) {
+                        Label { Text("Veraltete Kaliber berücksichtigen") } icon: { TagIcon(tag: .obsolete).foregroundStyle(.secondary) }
+                    }
+                    Toggle(isOn: $includeRare) {
+                        Label { Text("Seltene Kaliber berücksichtigen") } icon: { TagIcon(tag: .rare).foregroundStyle(.orange) }
+                    }
                 } header: {
                     Text("Erkennung")
                 } footer: {
-                    Text("Auch Kaliber vorschlagen, die nicht mehr regulär hergestellt werden, z. B. GP 1890 oder Vetterli. «Alle Kaliber» zeigt sie immer.")
+                    Text("Gilt für Fotos und «Masse eingeben». Veraltet: nicht mehr regulär hergestellt, z. B. GP 1890 oder Vetterli. Selten: kaum je zu finden, ein Treffer ist meist eine ähnliche Patrone. «Alle Kaliber» zeigt immer alle.")
                 }
                 }
-            }
-            Section {
-                Text(verbatim: "© 2026 Simon Giotta · PolyForm Noncommercial 1.0.0")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
             }
         }
         .navigationTitle("Kaliberfinder")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button { showSettings = true } label: {
+                    Label("Einstellungen", systemImage: "gearshape")
+                }
+            }
+        }
+        .sheet(isPresented: $showSettings) {
+            NavigationStack { SettingsView() }
+                .environmentObject(scale)
+        }
         .navigationDestination(item: $photo) {
             // New identity per photo, so a photo shared while the matches are open is analysed afresh.
             MatchesView(photo: $0.image, depth: $0.depth).id($0.id)

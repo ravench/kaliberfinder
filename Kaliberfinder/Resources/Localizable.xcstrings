@@ -1,6 +1,75 @@
 {
   "sourceLanguage": "de",
   "strings": {
+    "%lld seltene": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld rare"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld rares"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld rari"
+          }
+        }
+      }
+    },
+    "%lld veraltete": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld obsolete"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld obsolètes"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld obsoleti"
+          }
+        }
+      }
+    },
+    "%lld weitere Treffer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld more matches"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld autres correspondances"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld altre corrispondenze"
+          }
+        }
+      }
+    },
     ".50 BMG (#35)": {
       "extractionState": "manual",
       "localizations": {
@@ -20,6 +89,75 @@
           "stringUnit": {
             "state": "translated",
             "value": ".50 BMG (#35)"
+          }
+        }
+      }
+    },
+    "1 seltener": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 rare"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 rare"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 raro"
+          }
+        }
+      }
+    },
+    "1 veralteter": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 obsolete"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 obsolète"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 obsoleto"
+          }
+        }
+      }
+    },
+    "1 weiterer Treffer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 more match"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 autre correspondance"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 altra corrispondenza"
           }
         }
       }
@@ -277,29 +415,6 @@
         }
       }
     },
-    "Auch Kaliber vorschlagen, die nicht mehr regulär hergestellt werden, z. B. GP 1890 oder Vetterli. «Alle Kaliber» zeigt sie immer.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Also suggest calibres that are no longer in regular production, e.g. GP 1890 or Vetterli. “All calibres” always shows them."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Proposer aussi des calibres qui ne sont plus fabriqués en série, p. ex. GP 1890 ou Vetterli. « Tous les calibres » les affiche toujours."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Proporre anche calibri non più prodotti regolarmente, p. es. GP 1890 o Vetterli. «Tutti i calibri» li mostra sempre."
-          }
-        }
-      }
-    },
     "Auch bekannt als": {
       "extractionState": "manual",
       "localizations": {
@@ -319,6 +434,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noto anche come"
+          }
+        }
+      }
+    },
+    "Ausblenden": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hide"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masquer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nascondi"
           }
         }
       }
@@ -438,6 +576,29 @@
         }
       }
     },
+    "Belgien": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belgium"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belgique"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belgio"
+          }
+        }
+      }
+    },
     "Beliebige Form": {
       "extractionState": "manual",
       "localizations": {
@@ -457,6 +618,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Qualsiasi forma"
+          }
+        }
+      }
+    },
+    "Berdan Nitro (.254)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berdan Nitro (.254)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berdan Nitro (.254)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berdan Nitro (.254)"
           }
         }
       }
@@ -645,6 +829,29 @@
         }
       }
     },
+    "China": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "China"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cina"
+          }
+        }
+      }
+    },
     "Das Foto konnte nicht übernommen werden.": {
       "extractionState": "manual",
       "localizations": {
@@ -664,6 +871,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Impossibile ricevere la foto."
+          }
+        }
+      }
+    },
+    "Deutschland": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Germany"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allemagne"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Germania"
           }
         }
       }
@@ -714,6 +944,52 @@
         }
       }
     },
+    "Dänemark": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Denmark"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Danemark"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Danimarca"
+          }
+        }
+      }
+    },
+    "Einblenden": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra"
+          }
+        }
+      }
+    },
     "Einheiten": {
       "extractionState": "manual",
       "localizations": {
@@ -733,6 +1009,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Unità"
+          }
+        }
+      }
+    },
+    "Einstellungen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglages"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impostazioni"
           }
         }
       }
@@ -1059,6 +1358,29 @@
         }
       }
     },
+    "Frankreich": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "France"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "France"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Francia"
+          }
+        }
+      }
+    },
     "Fülle aus, was du messen kannst. Schon eine Länge und ein Durchmesser grenzen die Auswahl stark ein.": {
       "extractionState": "manual",
       "localizations": {
@@ -1243,6 +1565,52 @@
         }
       }
     },
+    "Gilt für Fotos und «Masse eingeben». Veraltet: nicht mehr regulär hergestellt, z. B. GP 1890 oder Vetterli. Selten: kaum je zu finden, ein Treffer ist meist eine ähnliche Patrone. «Alle Kaliber» zeigt immer alle.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Applies to photos and “Enter dimensions”. Obsolete: no longer in regular production, e.g. GP 1890 or Vetterli. Rare: hardly ever found, a match is usually a similar cartridge. “All calibres” always shows all."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S'applique aux photos et à « Saisir les dimensions ». Obsolète : n'est plus fabriqué en série, p. ex. GP 1890 ou Vetterli. Rare : presque jamais trouvé, une correspondance est le plus souvent une cartouche semblable. « Tous les calibres » les affiche toujours tous."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vale per le foto e per «Inserisci le dimensioni». Obsoleto: non più prodotto regolarmente, p. es. GP 1890 o Vetterli. Raro: non si trova quasi mai, una corrispondenza è di solito una cartuccia simile. «Tutti i calibri» li mostra sempre tutti."
+          }
+        }
+      }
+    },
+    "Grossbritannien": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "United Kingdom"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Royaume-Uni"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regno Unito"
+          }
+        }
+      }
+    },
     "Grösse nicht messbar: Treffer nur nach Form.": {
       "extractionState": "manual",
       "localizations": {
@@ -1400,6 +1768,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diametro del colletto"
+          }
+        }
+      }
+    },
+    "Herkunft": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Origin"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Origine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Origine"
           }
         }
       }
@@ -1584,6 +1975,75 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mostra a grandezza reale"
+          }
+        }
+      }
+    },
+    "Israel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Israel"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Israël"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Israele"
+          }
+        }
+      }
+    },
+    "Italien": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Italy"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Italie"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Italia"
+          }
+        }
+      }
+    },
+    "Japan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Japan"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Japon"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giappone"
           }
         }
       }
@@ -2508,6 +2968,52 @@
         }
       }
     },
+    "Polen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poland"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pologne"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Polonia"
+          }
+        }
+      }
+    },
+    "Portugal": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portugal"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portugal"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portogallo"
+          }
+        }
+      }
+    },
     "Randdurchmesser": {
       "extractionState": "manual",
       "localizations": {
@@ -2646,6 +3152,29 @@
         }
       }
     },
+    "Russisches Kaiserreich": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Russian Empire"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empire russe"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impero russo"
+          }
+        }
+      }
+    },
     "Schrot (209)": {
       "extractionState": "manual",
       "localizations": {
@@ -2734,6 +3263,167 @@
           "stringUnit": {
             "state": "translated",
             "value": "Polvere nera"
+          }
+        }
+      }
+    },
+    "Schweden": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sweden"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suède"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Svezia"
+          }
+        }
+      }
+    },
+    "Schweiz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switzerland"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suisse"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Svizzera"
+          }
+        }
+      }
+    },
+    "Selten": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rare"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rare"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raro"
+          }
+        }
+      }
+    },
+    "Selten: wird kaum je gefunden. Ein Treffer ist eher eine ähnliche Patrone, also genau nachmessen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rare: hardly ever found. A match is more likely a similar cartridge, so measure carefully."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rare : presque jamais trouvé. Une correspondance est plutôt une cartouche semblable, mesure donc avec soin."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raro: non si trova quasi mai. Una corrispondenza è più probabilmente una cartuccia simile, quindi misura con cura."
+          }
+        }
+      }
+    },
+    "Seltene Kaliber berücksichtigen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Include rare calibres"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inclure les calibres rares"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Includi calibri rari"
+          }
+        }
+      }
+    },
+    "Sowjetunion": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soviet Union"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Union soviétique"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unione Sovietica"
+          }
+        }
+      }
+    },
+    "Spanien": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spain"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espagne"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spagna"
           }
         }
       }
@@ -2853,6 +3543,121 @@
         }
       }
     },
+    "Tschechien": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Czechia"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tchéquie"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cechia"
+          }
+        }
+      }
+    },
+    "Tschechoslowakei": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Czechoslovakia"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tchécoslovaquie"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cecoslovacchia"
+          }
+        }
+      }
+    },
+    "USA": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "United States"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "États-Unis"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stati Uniti"
+          }
+        }
+      }
+    },
+    "Veraltet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsolete"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsolète"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsoleto"
+          }
+        }
+      }
+    },
+    "Veraltet: wird nicht mehr regulär hergestellt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsolete: no longer in regular production."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsolète : n'est plus fabriqué en série."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsoleto: non più prodotto regolarmente."
+          }
+        }
+      }
+    },
     "Veraltete Kaliber berücksichtigen": {
       "extractionState": "manual",
       "localizations": {
@@ -2918,6 +3723,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cosa c'è nella foto?"
+          }
+        }
+      }
+    },
+    "Weltweit verbreitet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Used worldwide"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Répandu dans le monde entier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diffuso in tutto il mondo"
           }
         }
       }
@@ -3102,6 +3930,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "senza orlo"
+          }
+        }
+      }
+    },
+    "Österreich": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Austria"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autriche"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Austria"
+          }
+        }
+      }
+    },
+    "Österreich-Ungarn": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Austria-Hungary"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autriche-Hongrie"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Austria-Ungheria"
           }
         }
       }

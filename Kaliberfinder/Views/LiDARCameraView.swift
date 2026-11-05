@@ -54,8 +54,8 @@ struct LiDARCameraView: View {
     }
 }
 
-/// The live camera image.
-private struct CameraPreview: UIViewRepresentable {
+/// The live camera image (also the training capture camera).
+struct CameraPreview: UIViewRepresentable {
     let session: AVCaptureSession
 
     func makeUIView(context: Context) -> PreviewView {

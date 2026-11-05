@@ -69,25 +69,29 @@ final class ColorSegmenterTests: XCTestCase {
 
     func testFindsTheCartridgeOnWoodWithShadowAndABox() throws {
         let nine = try cartridge("9x19 mm")
-        let points = try XCTUnwrap(ColorSegmenter.segment(photo(nine)))
+        let image = photo(nine)
+        let points = try XCTUnwrap(ColorSegmenter.best(image)?.points)
         let measured = try XCTUnwrap(ShapeMatcher.measureWithLength(points))
         XCTAssertEqual(measured.shape.aspect, nine.dimensions.overallLength / nine.dimensions.base, accuracy: 0.3)
         // Length in pixels: 29.7 mm at 6 px/mm.
         XCTAssertEqual(measured.length, 29.7 * 6, accuracy: 12)
         let ids = Matcher.rank(shape: measured.shape, limit: 5).map(\.cartridge.id)
         XCTAssertTrue(ids.contains(nine.id), "\(ids)")
+        XCTAssertEqual(ColorSegmenter.objectCount(image), 1)
     }
 
     func testFindsARifleCartridge() throws {
         let gp11 = try cartridge("7.5x55 mm Swiss (GP 11)")
-        let points = try XCTUnwrap(ColorSegmenter.segment(photo(gp11, angle: 1.2, pixelsPerMM: 5)))
+        let image = photo(gp11, angle: 1.2, pixelsPerMM: 5)
+        let points = try XCTUnwrap(ColorSegmenter.best(image)?.points)
         let shape = try XCTUnwrap(ShapeMatcher.measure(points))
         XCTAssertEqual(shape.aspect, gp11.dimensions.overallLength / gp11.dimensions.base, accuracy: 0.5)
+        XCTAssertEqual(ColorSegmenter.objectCount(image), 1)
     }
 
     func testPlainImageHasNoCartridge() {
         let plain = RGBImage(width: 200, height: 300, pixels: [Float](repeating: 180, count: 200 * 300 * 3))
-        XCTAssertNil(ColorSegmenter.segment(plain))
+        XCTAssertNil(ColorSegmenter.best(plain))
     }
 
     func testHolesAreFilled() {
@@ -135,33 +139,40 @@ final class ColorSegmenterTests: XCTestCase {
 
     // MARK: - Real photos
 
-    /// Raven's photos from 2026-11-03: Vision took the board as the subject, so no cartridge was found.
+    /// Raven's photos from 2026-11-03: a 9 mm and a .45 ACP on wood, where Vision took the board as
+    /// the subject, and a 9 mm lying diagonally next to a dark chair and a table edge.
     private func realPhoto(_ name: String) throws -> UIImage {
         let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: name, withExtension: "jpg"), name)
         return try XCTUnwrap(UIImage(contentsOfFile: url.path), name)
     }
 
-    func testRealPhotosFindHandgunCalibres() throws {
+    /// Each photo once through the analysis (the colour cut-out on the simulator): one cartridge,
+    /// handgun calibres as the matches, and the frame exactly around the measured silhouette.
+    func testRealPhotosShowOneHandgunCartridge() async throws {
         for (name, id) in [("photo-9x19-wood", "9x19 mm"), ("photo-45acp-wood", ".45 ACP")] {
-            let image = try realPhoto(name)
-            let rgb = try XCTUnwrap(PhotoAnalyzer.rgbImage(XCTUnwrap(image.cgImage)), name)
-            let points = try XCTUnwrap(ColorSegmenter.segment(rgb), name)
-            let (sampled, step) = PhotoAnalyzer.thinned(points)
-            let shape = try XCTUnwrap(ShapeMatcher.measure(sampled, pixelSize: Double(step)), name)
+            let analysis = await PhotoAnalyzer.analyze(try realPhoto(name))
+            XCTAssertFalse(analysis.hasSeveralObjects, "\(name): \(analysis.candidates)")
+            let shape = try XCTUnwrap(analysis.shape, name)
             XCTAssertFalse(shape.isEndView, name)
+            XCTAssertNotNil(analysis.lengthPixels, name)
             XCTAssertEqual(shape.aspect, 2.85, accuracy: 0.35, name)
             let top = Matcher.rank(shape: shape)
             XCTAssertTrue(top.contains { $0.cartridge.id == id }, "\(name): \(top.map(\.cartridge.id))")
             let handgun = CartridgeCatalog.Category.handgun.rawValue
             XCTAssertTrue(top.prefix(5).allSatisfy { $0.cartridge.category == handgun }, "\(name): \(top.map(\.cartridge.id))")
+            // The frame: four corners inside the photo, around a small part of it (a cartridge, not the board).
+            let outline = try XCTUnwrap(analysis.outline, name)
+            XCTAssertEqual(outline.count, 4, name)
+            let unit = CGRect(x: -0.01, y: -0.01, width: 1.02, height: 1.02)
+            XCTAssertTrue(outline.allSatisfy { unit.contains($0) }, "\(name): \(outline)")
+            let box = try XCTUnwrap(MatchesView.detectedBoxes(analysis).first, name)
+            XCTAssertLessThan(box.width * box.height, 0.2, "\(name): \(box)")
+            XCTAssertGreaterThan(box.width * box.height, 0.001, "\(name): \(box)")
+            // The frame is exactly what was measured.
+            let frames = MatchesView.frames(overview: analysis, measured: analysis, picking: false)
+            XCTAssertTrue(frames.candidates.isEmpty, name)
+            XCTAssertEqual(frames.measured, outline, name)
         }
-    }
-
-    func testAnalyzerFindsTheCartridgeInARealPhoto() async throws {
-        let analysis = await PhotoAnalyzer.analyze(try realPhoto("photo-45acp-wood"))
-        let shape = try XCTUnwrap(analysis.shape)
-        XCTAssertFalse(shape.isEndView)
-        XCTAssertNotNil(analysis.lengthPixels)
     }
 
     func testThinningKeepsAtMostMaxPoints() {
@@ -173,13 +184,6 @@ final class ColorSegmenterTests: XCTestCase {
     }
 
     // MARK: - Several cartridges in one photo
-
-    func testOneCartridgeCountsAsOne() throws {
-        let nine = try cartridge("9x19 mm")
-        XCTAssertEqual(ColorSegmenter.objectCount(photo(nine)), 1)
-        let gp11 = try cartridge("7.5x55 mm Swiss (GP 11)")
-        XCTAssertEqual(ColorSegmenter.objectCount(photo(gp11, angle: 1.2, pixelsPerMM: 5)), 1)
-    }
 
     func testTwoCartridgesAreCounted() throws {
         let nine = try cartridge("9x19 mm")
@@ -208,11 +212,9 @@ final class ColorSegmenterTests: XCTestCase {
 
     /// Raven's photo from 2026-11-03 (taken from the app screen): one 9 mm lying diagonally, a dark
     /// chair and a table edge on the left, things cut off at the top. It was reported as several cartridges.
-    func testRealPhotosShowOneCartridge() throws {
-        for name in ["photo-9x19-wood", "photo-45acp-wood", "photo-9x19-diagonal"] {
-            let rgb = try XCTUnwrap(PhotoAnalyzer.rgbImage(XCTUnwrap(realPhoto(name).cgImage)), name)
-            XCTAssertEqual(ColorSegmenter.objectCount(rgb), 1, name)
-        }
+    func testDiagonalCartridgeNextToAChairIsOne() throws {
+        let rgb = try XCTUnwrap(PhotoAnalyzer.rgbImage(XCTUnwrap(realPhoto("photo-9x19-diagonal").cgImage)))
+        XCTAssertEqual(ColorSegmenter.objectCount(rgb), 1)
     }
 
     /// The middle of the photo copied a quarter of the width to the right, next to the original.
@@ -225,22 +227,6 @@ final class ColorSegmenterTests: XCTestCase {
             }
         }
         return RGBImage(width: w, height: h, pixels: p)
-    }
-
-    func testRealPhotosWithASecondCartridgeShowTwo() throws {
-        for name in ["photo-9x19-wood", "photo-45acp-wood"] {
-            let rgb = try XCTUnwrap(PhotoAnalyzer.rgbImage(XCTUnwrap(realPhoto(name).cgImage)), name)
-            XCTAssertEqual(ColorSegmenter.objectCount(withSecondCopy(rgb)), 2, name)
-        }
-    }
-
-    func testAnalyzerReportsOneCartridgeInARealPhoto() async throws {
-        let analysis = await PhotoAnalyzer.analyze(try realPhoto("photo-9x19-wood"))
-        XCTAssertNotNil(analysis.shape)
-        XCTAssertEqual(analysis.objectCount, 1)
-        XCTAssertFalse(analysis.hasSeveralObjects)
-        let diagonal = await PhotoAnalyzer.analyze(try realPhoto("photo-9x19-diagonal"))
-        XCTAssertFalse(diagonal.hasSeveralObjects, "\(diagonal.objectCount)")
     }
 
     func testVisionInstancesCountCartridgesOnly() {
@@ -334,6 +320,8 @@ final class ColorSegmenterTests: XCTestCase {
         XCTAssertGreaterThan(first.x0 + first.x1, second.x0 + second.x1)
     }
 
+    /// The .45 ACP photo with a copy of its middle beside it: both cartridges are offered, and the
+    /// picked one is measured on its own, with its frame placed in the whole photo.
     func testAnalyzerOffersBothCartridgesAndMeasuresThePickedOne() async throws {
         let rgb = try XCTUnwrap(PhotoAnalyzer.rgbImage(XCTUnwrap(realPhoto("photo-45acp-wood").cgImage)))
         let image = try uiImage(withSecondCopy(rgb))
@@ -351,24 +339,11 @@ final class ColorSegmenterTests: XCTestCase {
             XCTAssertEqual(picked.imageLongSide, 1200, accuracy: 1)
             let top = Matcher.rank(shape: shape).map(\.cartridge.id)
             XCTAssertTrue(top.contains(".45 ACP"), "\(top)")
+            // The frame lies on the picked cartridge, not somewhere in the crop's own coordinates.
+            let outline = try XCTUnwrap(picked.outline, "\(candidate)")
+            let centre = CGPoint(x: outline.reduce(0) { $0 + $1.x } / 4, y: outline.reduce(0) { $0 + $1.y } / 4)
+            XCTAssertTrue(candidate.insetBy(dx: -0.02, dy: -0.02).contains(centre), "\(centre) \(candidate)")
         }
-    }
-
-    func testASingleCartridgeIsOutlinedToo() async throws {
-        let analysis = await PhotoAnalyzer.analyze(try realPhoto("photo-9x19-wood"))
-        XCTAssertFalse(analysis.hasSeveralObjects)
-        let outline = try XCTUnwrap(analysis.outline)
-        XCTAssertEqual(outline.count, 4)
-        let unit = CGRect(x: -0.01, y: -0.01, width: 1.02, height: 1.02)
-        XCTAssertTrue(outline.allSatisfy { unit.contains($0) }, "\(outline)")
-        // A cartridge, not the board: a small part of the photo.
-        let box = try XCTUnwrap(MatchesView.detectedBoxes(analysis).first)
-        XCTAssertLessThan(box.width * box.height, 0.2, "\(box)")
-        XCTAssertGreaterThan(box.width * box.height, 0.001, "\(box)")
-        // The frame is exactly what was measured.
-        let frames = MatchesView.frames(overview: analysis, measured: analysis, picking: false)
-        XCTAssertTrue(frames.candidates.isEmpty)
-        XCTAssertEqual(frames.measured, outline)
     }
 
     func testTheFrameTurnsWithADiagonalCartridge() async throws {
@@ -454,19 +429,6 @@ final class ColorSegmenterTests: XCTestCase {
         XCTAssertEqual(bounds?.maxY ?? 0, 0.3, accuracy: 1e-9)
     }
 
-    func testPickedOutlineIsGivenInTheWholePhoto() async throws {
-        let rgb = try XCTUnwrap(PhotoAnalyzer.rgbImage(XCTUnwrap(realPhoto("photo-45acp-wood").cgImage)))
-        let image = try uiImage(withSecondCopy(rgb))
-        let overview = await PhotoAnalyzer.analyze(image)
-        for candidate in overview.candidates {
-            let picked = await PhotoAnalyzer.analyze(image, focusingOn: candidate)
-            let outline = try XCTUnwrap(picked.outline)
-            // The frame lies on the picked cartridge, not somewhere in the crop's own coordinates.
-            let centre = CGPoint(x: outline.reduce(0) { $0 + $1.x } / 4, y: outline.reduce(0) { $0 + $1.y } / 4)
-            XCTAssertTrue(candidate.insetBy(dx: -0.02, dy: -0.02).contains(centre), "\(centre) \(candidate)")
-        }
-    }
-
     func testPointsFollowTheCroppedPreview() {
         let region = CGRect(x: 0.2, y: 0.3, width: 0.5, height: 0.4)
         let p = CandidatePhotoView.point(CGPoint(x: 0.45, y: 0.5), in: region, size: CGSize(width: 200, height: 100))
@@ -540,5 +502,24 @@ final class ColorSegmenterTests: XCTestCase {
     func testCandidateOutlineScalesToTheView() {
         let frame = CandidatePhotoView.frame(of: CGRect(x: 0.25, y: 0.5, width: 0.5, height: 0.25), in: CGSize(width: 200, height: 400))
         XCTAssertEqual(frame, CGRect(x: 44, y: 194, width: 112, height: 112))
+    }
+
+    /// Vision's mask is sampled by the object's size: a handgun cartridge of about 20 000 pixels
+    /// keeps every pixel. From the whole 1600 × 1200 photo the step was 7, leaving it 8 or 9
+    /// points wide (build 1042).
+    func testVisionMaskStepFollowsTheObjectNotThePhoto() {
+        XCTAssertEqual(PhotoAnalyzer.maskStep(objectPixels: 20_000), 1)
+        XCTAssertEqual(PhotoAnalyzer.maskStep(objectPixels: 160_000), 2)
+        XCTAssertEqual(PhotoAnalyzer.maskStep(objectPixels: 1600 * 1200), 7)
+    }
+
+    /// The colour cut-out tells a grey patch from a brass one, also under warm light (shelf photo:
+    /// the stone 118/103/86, a 9 mm case 92/66/29).
+    func testColourCutOutTellsGreyFromBrass() {
+        let image = RGBImage(width: 3, height: 1, pixels: [118, 103, 86, 92, 66, 29, 200, 200, 205])
+        let box = ColorSegmenter.Box(x0: 0, y0: 0, x1: 3, y1: 1)
+        XCTAssertTrue(ColorSegmenter.isGrey(image, [true, false, false], box), "stone")
+        XCTAssertFalse(ColorSegmenter.isGrey(image, [false, true, false], box), "brass")
+        XCTAssertTrue(ColorSegmenter.isGrey(image, [false, false, true], box), "nickel")
     }
 }
