@@ -55,7 +55,7 @@ jobs:
             -scheme Kaliberfinder \
             -destination "id=$UDID" \
             CODE_SIGNING_ALLOWED=NO | tee "$RUNNER_TEMP/test.log" | xcpretty
-      # xcpretty hides print(); show the photo set and training capture reports (PhotoSetTests, CaptureFixtureTests).
+      # xcpretty hides print(); show the real-photo reports (CaptureFixtureTests, NeckShapeTests).
       - name: Photo set report
         if: always()
         run: grep -E "^(PHOTOSET|CAPTURE)" "$RUNNER_TEMP/test.log" || true
