@@ -13,6 +13,8 @@ struct CartridgeView: View {
     static let paper = Color(red: 0.95, green: 0.93, blue: 0.88)
     static let lacqueredSteel = Color(red: 0.42, green: 0.42, blue: 0.33)
     static let nickel = Color(red: 0.78, green: 0.80, blue: 0.81)
+    /// Plastic tip (V-Max, ELD, FTX, Ballistic Tip): most makers use red.
+    static let polymer = Color(red: 0.80, green: 0.10, blue: 0.14)
 
     /// Fill of the bullet: steel cap (GP 1890), bare lead, or copper jacket; balls and pellets are lead.
     static func bulletFill(for cartridge: Cartridge) -> Color {
@@ -40,10 +42,10 @@ struct CartridgeView: View {
         let lineWidth = max(0.3, min(0.8, pointsPerMM * 0.08))
         ZStack(alignment: .topLeading) {
             part(o.case, fill: Self.caseFill(for: cartridge), lineWidth: lineWidth)
-            part(o.head, fill: Self.brass, lineWidth: lineWidth)
+            part(o.head, fill: o.headMaterial == "steel" ? Self.steel : Self.brass, lineWidth: lineWidth)
             part(o.bullet, fill: Self.bulletFill(for: cartridge), lineWidth: lineWidth)
             part(o.patch, fill: Self.paper, lineWidth: lineWidth)
-            part(o.tip, fill: Self.lead, lineWidth: lineWidth)
+            part(o.tip, fill: o.tipMaterial == "polymer" ? Self.polymer : Self.lead, lineWidth: lineWidth)
         }
         .frame(width: o.width * pointsPerMM, height: o.height * pointsPerMM, alignment: .topLeading)
         .accessibilityElement()

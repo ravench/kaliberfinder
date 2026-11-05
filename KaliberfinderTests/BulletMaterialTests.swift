@@ -35,6 +35,16 @@ final class BulletMaterialTests: XCTestCase {
         XCTAssertNil(try cartridge("7.62x51 mm NATO").outline.tip, "military ball is a full metal jacket")
     }
 
+    func testPolymerTipIsRedAndHybridHeadIsSteel() throws {
+        let hmr = try cartridge(".17 HMR")
+        XCTAssertNotNil(hmr.outline.tip)
+        XCTAssertEqual(hmr.outline.tipMaterial, "polymer")
+        XCTAssertNil(try cartridge("9.3x62 mm").outline.tipMaterial, "a soft point's tip is lead")
+        let fury = try cartridge(".277 SIG Fury")
+        XCTAssertEqual(fury.outline.headMaterial, "steel")
+        XCTAssertNotNil(fury.outline.head)
+    }
+
     func testCaseMaterials() throws {
         XCTAssertEqual(CartridgeView.caseFill(for: try cartridge(".44 Henry")), CartridgeView.copper)
         XCTAssertEqual(CartridgeView.caseFill(for: try cartridge("5.45x39 mm")), CartridgeView.lacqueredSteel)
