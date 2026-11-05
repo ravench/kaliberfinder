@@ -79,11 +79,13 @@ class BlankFlagTests(unittest.TestCase):
     def test_only_the_crimped_blank_is_a_blank(self):
         cartridges = generate_data.build()
         self.assertTrue(all(isinstance(c["blank"], bool) for c in cartridges))
-        self.assertEqual({c["name"] for c in cartridges if c["blank"]}, {
-            ".22 Blank (6.8/11)", ".22 Long Knall", "6 mm Flobert Knall", "9 mm R Knall", ".320 Knall", ".45 Knall"})
+        # The flat-capped 8 mm and .315 Knall are drawn like shot shells, not as crimped blanks.
+        self.assertEqual([c["name"] for c in cartridges if c["blank"]],
+                         [".22 Blank (6.8/11)", "9 mm R Knall", ".320 Knall", ".45 Knall",
+                          ".22 Long Knall", "6 mm Flobert Knall"])
         for blank in (c for c in cartridges if c["blank"]):
-            self.assertNotIn("bullet", blank["outline"], blank["name"])
-            self.assertEqual(blank["dimensions"]["caseLength"], blank["dimensions"]["overallLength"], blank["name"])
+            self.assertNotIn("bullet", blank["outline"])
+            self.assertEqual(blank["dimensions"]["caseLength"], blank["dimensions"]["overallLength"])
 
 
 class CalibreDataSubmoduleTests(unittest.TestCase):

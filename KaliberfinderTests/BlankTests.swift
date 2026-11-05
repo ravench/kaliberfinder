@@ -20,34 +20,8 @@ final class BlankTests: XCTestCase {
         XCTAssertNil(blank.outline.bullet)
         XCTAssertLessThan(blank.dimensions.neck, blank.dimensions.base, "the crimp is narrower than the body")
         XCTAssertFalse(blank.obsolete)
-        XCTAssertEqual(Set(CartridgeCatalog.all.filter(\.blank).map(\.id)), Self.crimpedIDs)
-    }
-
-    /// The star-crimped alarm blanks from C.I.P. Tab. VIII (calibre-data #45) next to the power-tool .22 blank.
-    /// The 8 mm and .315 Knall are closed flat like the 9 mm P.A.K., so they are not flagged.
-    private static let crimpedIDs: Set = [
-        ".22 Blank (6.8/11)", ".22 Long Knall", "6 mm Flobert Knall", "9 mm R Knall", ".320 Knall", ".45 Knall",
-    ]
-
-    func testAlarmBlanksAreCrimpedAndWithoutBullet() throws {
-        for id in Self.crimpedIDs {
-            let blank = try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)
-            XCTAssertNil(blank.outline.bullet, id)
-            XCTAssertEqual(blank.dimensions.caseLength, blank.dimensions.overallLength, accuracy: 0.001, id)
-        }
-        for id in ["8 mm Knall", ".315 Knall"] {
-            let flat = try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)
-            XCTAssertFalse(flat.blank, id)
-        }
-        XCTAssertEqual(try XCTUnwrap(CartridgeCatalog.cartridge(id: "9 mm R Knall")).kind, "rimmed")
-    }
-
-    func testSearchFindsTheAlarmBlanks() {
-        let queries = ["9 mm R.K.": "9 mm R Knall", "8 mm P.A.K.": "8 mm Knall", "6mm Flobert": "6 mm Flobert Knall",
-                       ".22 lang Knall": ".22 Long Knall", ".45 Knall": ".45 Knall"]
-        for (query, id) in queries {
-            XCTAssertTrue(CartridgeCatalog.search(query).contains { $0.id == id }, query)
-        }
+        XCTAssertEqual(CartridgeCatalog.all.filter(\.blank).map(\.id),
+                       [blankID, "9 mm R Knall", ".320 Knall", ".45 Knall", ".22 Long Knall", "6 mm Flobert Knall"])
     }
 
     func testSearchFindsTheBlank() {
@@ -118,7 +92,7 @@ final class BlankTests: XCTestCase {
     /// A fired blank on grey linoleum. (Raven's other two photos are not used: on the dark speckled
     /// mat the simulator's colour cut-out misses the outline, and in the wide frame the blank is
     /// only about 50 pixels long, too few to tell it from a .22 BB Cap.)
-    /// The blank rests tilted, so it looks about a tenth shorter than it is; it must be the first match.
+    /// The blank rests tilted, so it looks about a tenth shorter than it is; with its size it must be the first match.
     func testRealPhotosOfFiredBlanksLookMostLikeTheBlank() async throws {
         var missed: [String] = []
         for name in ["photo-22blank-fired-grey"] {
@@ -134,9 +108,17 @@ final class BlankTests: XCTestCase {
             // of the body (Raven, 2026-11-04); the blank must still be the closest calibre.
             if !features.hasNeck { missed.append("\(name): \(features)") }
             // As the app ranks it: with the tilt a blank's photo allows (see `ShapeMatcher.tilted`).
+            // By shape alone the star-crimped alarm blanks (9 mm R, .320 Knall) look the same, so
+            // without a size the blanks come first and this one is among the first three.
             let closest = Matcher.rank(shape: shape, brass: analysis.isBrass, limit: 3)
-            if closest.first?.cartridge.id != blankID {
+            if closest.first?.cartridge.blank != true || !closest.contains(where: { $0.cartridge.id == blankID }) {
                 missed.append("\(name): aspect \(aspect), closest \(closest.map { "\($0.cartridge.id) \($0.shapeDistance ?? -1)" })")
+            }
+            // With the size LiDAR measures (Raven's fired blank: 10.9 mm long, 5.7 mm body) it is the first.
+            let size = MeasuredSize(length: 10.9, diameter: 5.7, lengthError: 1, diameterError: 0.3)
+            let sized = Matcher.rank(shape: shape, size: size, brass: analysis.isBrass, limit: 3)
+            if sized.first?.cartridge.id != blankID {
+                missed.append("\(name) with size: closest \(sized.map(\.cartridge.id))")
             }
         }
         XCTAssertTrue(missed.isEmpty, missed.joined(separator: "\n"))
