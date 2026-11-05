@@ -46,6 +46,19 @@ struct CartridgeDetailView: View {
             Section {
                 LabeledContent("Kategorie", value: cartridge.category.loc)
                 LabeledContent("Bauart", value: Self.kindTitle(cartridge.kind).loc)
+                if let country = cartridge.country {
+                    LabeledContent("Herkunft") {
+                        HStack(spacing: 6) {
+                            Text(country.name.loc)
+                            CountryFlag(country: country).accessibilityHidden(true)
+                        }
+                    }
+                }
+                ForEach(CalibreTag.of(cartridge), id: \.self) { tag in
+                    Label { Text(tag.explanation.loc).font(.footnote) } icon: {
+                        TagIcon(tag: tag).frame(width: 16, height: 16).foregroundStyle(tag.color)
+                    }
+                }
                 if !cartridge.displayAliases.isEmpty {
                     LabeledContent("Auch bekannt als", value: cartridge.displayAliases.joined(separator: ", "))
                 }

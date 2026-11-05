@@ -48,12 +48,19 @@ final class CatalogTests: XCTestCase {
         XCTAssertFalse(try XCTUnwrap(CartridgeCatalog.cartridge(id: "5.6 mm GP 90")).obsolete)
     }
 
+    func testMatchingSkipsRareCalibres() {
+        XCTAssertFalse(CartridgeCatalog.matchable(includeObsolete: true).contains(where: \.rare))
+        XCTAssertFalse(CartridgeCatalog.matchable(includeObsolete: false).contains { $0.id == "11x59 mm R Gras" })
+        XCTAssertTrue(CartridgeCatalog.search("Gras").contains { $0.id == "11x59 mm R Gras" })
+    }
+
     func testMatchingSkipsObsoleteCalibresUnlessSwitchedOn() {
         let current = CartridgeCatalog.matchable(includeObsolete: false)
         XCTAssertFalse(current.isEmpty)
         XCTAssertFalse(current.contains(where: \.obsolete))
         XCTAssertFalse(current.contains { $0.id == "7.5x53.5 mm Swiss (GP 1890)" })
-        XCTAssertEqual(CartridgeCatalog.matchable(includeObsolete: true), CartridgeCatalog.all)
+        XCTAssertEqual(CartridgeCatalog.matchable(includeObsolete: true), CartridgeCatalog.all.filter { !$0.rare })
+        XCTAssertTrue(CartridgeCatalog.matchable(includeObsolete: true).contains { $0.id == "7.5x53.5 mm Swiss (GP 1890)" })
         // The catalogue list and search still show obsolete calibres.
         XCTAssertTrue(CartridgeCatalog.search("GP 1890").contains { $0.id == "7.5x53.5 mm Swiss (GP 1890)" })
     }
