@@ -51,14 +51,12 @@ final class PRScreensTests: XCTestCase {
         app.navigationBars.buttons.element(boundBy: 0).tap()
     }
 
-    /// Drags the screen by a fixed distance and holds before letting go, so there is no momentum
-    /// and both runs end on the same scroll position (a swipe's distance varies).
+    /// Swipes to the very end (or start): a single swipe or drag stops at a different place on
+    /// each run, the end of the content does not.
     private func scroll(up: Bool = true) {
-        let window = app.windows.firstMatch
-        let low = window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.75))
-        let high = window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.3))
-        let (from, to) = up ? (low, high) : (high, low)
-        from.press(forDuration: 0.2, thenDragTo: to, withVelocity: .slow, thenHoldForDuration: 0.5)
+        for _ in 0..<6 {
+            if up { app.swipeUp(velocity: .fast) } else { app.swipeDown(velocity: .fast) }
+        }
     }
 
     private func snap(_ name: String) {
