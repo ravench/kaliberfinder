@@ -45,11 +45,6 @@ enum ColorSegmenter {
         var x0: Int, y0: Int, x1: Int, y1: Int
     }
 
-    /// Pixels of the cartridge (x, y in image pixels), nil if nothing stands out.
-    static func segment(_ image: RGBImage) -> [Point]? {
-        best(image)?.points
-    }
-
     /// Crops around the located cluster, as factors of the first padding.
     static let paddings: [Double] = [1, 2, 4]
     /// Thresholds tried, as factors of Otsu's threshold on the colour distance.
