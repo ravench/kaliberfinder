@@ -73,11 +73,35 @@ def _pngs(folder):
     return set(n for n in os.listdir(folder) if n.endswith(".png")) if os.path.isdir(folder) else set()
 
 
+def same(a, b, tolerance=24, max_pixels=20):
+    """True if two screenshots look the same.
+
+    Identical files are the same. Otherwise, with Pillow, a few pixels off by a few levels
+    (blur and anti-aliasing differ from run to run) still count as the same; without Pillow
+    any difference counts.
+    """
+    if filecmp.cmp(a, b, shallow=False):
+        return True
+    try:
+        from PIL import Image, ImageChops
+    except ImportError:
+        return False
+    try:
+        ia, ib = Image.open(a).convert("RGB"), Image.open(b).convert("RGB")
+    except OSError:  # not an image Pillow can read
+        return False
+    if ia.size != ib.size:
+        return False
+    r, g, bl = ImageChops.difference(ia, ib).split()
+    worst = ImageChops.lighter(ImageChops.lighter(r, g), bl)
+    return sum(worst.histogram()[tolerance + 1:]) <= max_pixels
+
+
 def changes(before_dir, after_dir):
     """[(name, status)] for screens that are new, changed or gone, by name.
 
-    Both runs use the same simulator and status bar minutes apart, so an
-    unchanged screen gives the same bytes.
+    Both runs use the same simulator and status bar minutes apart, so an unchanged
+    screen gives (almost) the same image.
     """
     before, after = _pngs(before_dir), _pngs(after_dir)
     result = []
@@ -86,7 +110,7 @@ def changes(before_dir, after_dir):
             result.append((name, "new"))
         elif name not in after:
             result.append((name, "gone"))
-        elif not filecmp.cmp(os.path.join(before_dir, name), os.path.join(after_dir, name), shallow=False):
+        elif not same(os.path.join(before_dir, name), os.path.join(after_dir, name)):
             result.append((name, "changed"))
     return result
 

@@ -1,7 +1,7 @@
 name: PR screens
 # Screenshots of the screens a pull request changes, before and after, as a comment on the pull request.
 # Takes the tour in KaliberfinderUITests/PRScreensTests.swift on an iPhone simulator, first on the pull
-# request, then on its base branch, and shows the screens whose pixels differ. The images are kept on
+# request, then on its base branch, and shows the screens that look different. The images are kept on
 # the pr-screens branch; all screens of a run are in its "pr-screens" artifact.
 on:
   pull_request:
@@ -69,13 +69,15 @@ jobs:
         if: always()
         run: |
           cd "$SCREENS"
+          # Pillow lets the comparison ignore faint rendering noise.
+          python3 -m venv venv && venv/bin/pip install -q pillow
           for side in after before; do
             mkdir -p "$side"
             [ -d "$side.xcresult" ] || continue
             xcrun xcresulttool export attachments --path "$side.xcresult" --output-path "raw-$side"
             python3 pr_screens.py rename "raw-$side" "$side"
           done
-          python3 pr_screens.py changes before after changed
+          venv/bin/python pr_screens.py changes before after changed
           # Smaller copies for the comment; the artifact keeps the full size.
           find changed -name '*.png' -exec sips -Z 1200 {} \; >/dev/null
       - uses: actions/upload-artifact@v5
