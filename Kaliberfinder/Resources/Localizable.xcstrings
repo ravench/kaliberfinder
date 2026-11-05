@@ -1,6 +1,52 @@
 {
   "sourceLanguage": "de",
   "strings": {
+    "%lld veraltete": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld obsolete"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld obsolètes"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld obsoleti"
+          }
+        }
+      }
+    },
+    "%lld weitere Treffer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld more matches"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld autres correspondances"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld altre corrispondenze"
+          }
+        }
+      }
+    },
     ".50 BMG (#35)": {
       "extractionState": "manual",
       "localizations": {
@@ -20,6 +66,52 @@
           "stringUnit": {
             "state": "translated",
             "value": ".50 BMG (#35)"
+          }
+        }
+      }
+    },
+    "1 veralteter": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 obsolete"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 obsolète"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 obsoleto"
+          }
+        }
+      }
+    },
+    "1 weiterer Treffer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 more match"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 autre correspondance"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 altra corrispondenza"
           }
         }
       }
@@ -319,6 +411,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noto anche come"
+          }
+        }
+      }
+    },
+    "Ausblenden": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hide"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masquer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nascondi"
           }
         }
       }
@@ -802,6 +917,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Danimarca"
+          }
+        }
+      }
+    },
+    "Einblenden": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra"
           }
         }
       }
