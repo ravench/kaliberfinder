@@ -27,19 +27,21 @@ jobs:
   changes:
     # Pull requests that change only docs, tools or other workflows skip the Mac job (see
     # tools/ci_changes.py); lint and the tools job still check them. Pushes to main always build.
+    # Pull requests that change the GUI also get the PR screens in the Mac job.
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: read
     outputs:
       mac: ${{ steps.check.outputs.mac }}
+      screens: ${{ steps.check.outputs.screens }}
     steps:
       - uses: actions/checkout@v5
       - id: check
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if [ "${{ github.event_name }}" != pull_request ]; then echo mac=true >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [ "${{ github.event_name }}" != pull_request ]; then printf 'mac=true\nscreens=false\n' >> "$GITHUB_OUTPUT"; exit 0; fi
           gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" --paginate \
             --jq '.[] | .filename, (.previous_filename // empty)' | python3 tools/ci_changes.py | tee -a "$GITHUB_OUTPUT"
   tools:
@@ -61,10 +63,18 @@ jobs:
     needs: changes
     if: needs.changes.outputs.mac == 'true'
     runs-on: macos-26
+    permissions:
+      contents: write # the PR screens below push their images to the pr-screens branch
+      pull-requests: write # and comment on the pull request
+    env:
+      # Pull requests that change the GUI (tools/ci_changes.py) also get the PR screens.
+      SCREENS_TOUR: ${{ needs.changes.outputs.screens }}
     steps:
       - uses: actions/checkout@v5
         with:
           submodules: true
+          # The merge commit and its first parent, the base branch, for the PR screens.
+          fetch-depth: 2
       - run: brew install xcodegen
       - run: xcodegen generate
       - name: Pick an iPhone simulator and a build folder
@@ -73,8 +83,24 @@ jobs:
           echo "Testing on $UDID"
           echo "UDID=$UDID" >> "$GITHUB_ENV"
           echo "DERIVED_DATA=$RUNNER_TEMP/DerivedData" >> "$GITHUB_ENV"
+          # Outside the checkout, which the base branch tour replaces; upload-artifact rejects '..' paths.
+          echo "SCREENS=$RUNNER_TEMP/screens" >> "$GITHUB_ENV"
+          # A fresh simulator takes minutes to boot; it boots while the app compiles.
+          xcrun simctl boot "$UDID"
+      # Compiled once in the build steps; the tests below run on that build (test-without-building).
+      # The unit test scheme goes last: building the app for KaliberfinderScreens drops the unit
+      # test bundle from the app's PlugIns, and the unit tests then fail to load it.
+      - name: Build the screen tour
+        id: build-tour
+        if: env.SCREENS_TOUR == 'true'
+        run: |
+          xcodebuild build-for-testing \
+            -project Kaliberfinder.xcodeproj \
+            -scheme KaliberfinderScreens \
+            -destination "id=$UDID" \
+            -derivedDataPath "$DERIVED_DATA" \
+            CODE_SIGNING_ALLOWED=NO | xcpretty
       - name: Build app and unit tests
-        # Compiled once here; the unit tests below run on this build (test-without-building).
         run: |
           xcodebuild build-for-testing \
             -project Kaliberfinder.xcodeproj \
@@ -104,3 +130,112 @@ jobs:
               > "$RUNNER_TEMP/UnitTests.json" || true
           fi
           python3 tools/test_summary.py "Unit tests=$RUNNER_TEMP/UnitTests.json"
+      # PR screens: the screen tour (KaliberfinderUITests/PRScreensTests.swift) on this pull request
+      # and on its base branch, and one comment with the screens that look different. The images
+      # are kept on the pr-screens branch; all screens of a run are in its "pr-screens" artifact.
+      # In this job rather than its own, so it reuses this build and simulator and needs no
+      # second Mac runner.
+      - name: Screens of this pull request
+        if: "!cancelled() && steps.build-tour.outcome == 'success'"
+        run: |
+          mkdir -p "$SCREENS"
+          # The base branch is toured with this pull request's tour and tools.
+          cp KaliberfinderUITests/PRScreensTests.swift tools/pr_screens.py "$SCREENS/"
+          xcrun simctl bootstatus "$UDID" >/dev/null
+          # Same clock and bars in both tours, so unchanged screens give the same image.
+          xcrun simctl status_bar "$UDID" override --time 9:41 --dataNetwork wifi --wifiBars 3 \
+            --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
+          # Without what the unit tests left in the app's container.
+          xcrun simctl uninstall "$UDID" ch.giotta.kaliberfinder
+          xcodebuild test-without-building \
+            -project Kaliberfinder.xcodeproj \
+            -scheme KaliberfinderScreens \
+            -destination "id=$UDID" \
+            -derivedDataPath "$DERIVED_DATA" \
+            -only-testing:KaliberfinderUITests/PRScreensTests \
+            -resultBundlePath "$SCREENS/after.xcresult" \
+            CODE_SIGNING_ALLOWED=NO | xcpretty
+      - name: Screens of the base branch
+        # A base without some of the screens still gives the others.
+        if: "!cancelled() && steps.build-tour.outcome == 'success'"
+        continue-on-error: true
+        run: |
+          git checkout -q HEAD^1
+          git submodule update -q
+          cp "$SCREENS/PRScreensTests.swift" KaliberfinderUITests/
+          xcodegen generate
+          # Same build folder: only what the pull request changed compiles again.
+          xcodebuild build-for-testing \
+            -project Kaliberfinder.xcodeproj \
+            -scheme KaliberfinderScreens \
+            -destination "id=$UDID" \
+            -derivedDataPath "$DERIVED_DATA" \
+            CODE_SIGNING_ALLOWED=NO | xcpretty
+          xcrun simctl uninstall "$UDID" ch.giotta.kaliberfinder
+          xcodebuild test-without-building \
+            -project Kaliberfinder.xcodeproj \
+            -scheme KaliberfinderScreens \
+            -destination "id=$UDID" \
+            -derivedDataPath "$DERIVED_DATA" \
+            -only-testing:KaliberfinderUITests/PRScreensTests \
+            -resultBundlePath "$SCREENS/before.xcresult" \
+            CODE_SIGNING_ALLOWED=NO | xcpretty
+      - name: Compare
+        id: compare
+        if: "!cancelled() && steps.build-tour.outcome == 'success'"
+        run: |
+          cd "$SCREENS"
+          # Pillow lets the comparison ignore faint rendering noise.
+          python3 -m venv venv && venv/bin/pip install -q pillow
+          for side in after before; do
+            mkdir -p "$side"
+            [ -d "$side.xcresult" ] || continue
+            # A run that broke off early leaves no readable result: that side just has no screens.
+            xcrun xcresulttool export attachments --path "$side.xcresult" --output-path "raw-$side" || continue
+            python3 pr_screens.py rename "raw-$side" "$side"
+          done
+          venv/bin/python pr_screens.py changes before after changed
+          # Smaller copies for the comment; the artifact keeps the full size.
+          find changed -name '*.png' -exec sips -Z 1200 {} \; >/dev/null
+      - uses: actions/upload-artifact@v5
+        if: "!cancelled() && steps.build-tour.outcome == 'success'"
+        with:
+          name: pr-screens
+          path: |
+            ${{ env.SCREENS }}/after
+            ${{ env.SCREENS }}/before
+      - name: Comment on the pull request
+        # Pull requests from forks get a read-only token, so they only get the artifact.
+        if: "!cancelled() && steps.compare.outcome == 'success' && github.event.pull_request.head.repo.full_name == github.repository"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          cd "$SCREENS"
+          # Each pull request has its own folder on the pr-screens branch; retry if another run pushed first.
+          for attempt in 1 2 3 4 5 fail; do
+            [ "$attempt" != fail ] || { echo "Could not push to pr-screens"; exit 1; }
+            rm -rf branch && git init -q branch && cd branch
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git"
+            if git fetch -q --depth 1 origin pr-screens; then git checkout -q -b pr-screens FETCH_HEAD; else git checkout -q --orphan pr-screens; fi
+            rm -rf "$PR" && mkdir "$PR" && cp -R ../changed/before ../changed/after "$PR/"
+            git add -A
+            git commit -q --allow-empty -m "Screens for #$PR at ${{ github.event.pull_request.head.sha }}"
+            git push -q origin pr-screens && break
+            cd .. && sleep $((attempt * 3))
+          done
+          BASE_URL="https://raw.githubusercontent.com/${REPO}/$(git rev-parse HEAD)/${PR}"
+          cd ..
+          python3 pr_screens.py comment changed "$BASE_URL" "$RUN_URL" > comment.md
+          # One comment per pull request, updated on every run.
+          ID=$(gh api "repos/$REPO/issues/$PR/comments" --paginate \
+            --jq '.[] | select(.body | startswith("<!-- pr-screens -->")) | .id' | head -1)
+          if [ -n "$ID" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$ID" -F body=@comment.md >/dev/null
+          else
+            gh api "repos/$REPO/issues/$PR/comments" -F body=@comment.md >/dev/null
+          fi
