@@ -622,6 +622,29 @@
         }
       }
     },
+    "Berdan Nitro (.254)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berdan Nitro (.254)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berdan Nitro (.254)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berdan Nitro (.254)"
+          }
+        }
+      }
+    },
     "Bildschirm": {
       "extractionState": "manual",
       "localizations": {
