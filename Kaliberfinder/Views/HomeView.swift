@@ -101,8 +101,16 @@ struct HomeView: View {
 
     /// Opens the matches for a photo shared from another app.
     private func takeSharedPhoto() {
-        guard let image = (SharedInbox.shared?.take() ?? []).lazy.compactMap(UIImage.init(data:)).first else { return }
+        guard let image = (SharedInbox.shared?.take() ?? []).lazy.compactMap(UIImage.init(data:)).first ?? Self.takeTourPhoto() else { return }
         showCamera = false
         photo = PickedPhoto(image: image)
+    }
+
+    /// For the PR screens tour only: the photo file given as `-screenTourPhoto <path>` at launch, once.
+    private static var tourPhotoTaken = false
+    private static func takeTourPhoto() -> UIImage? {
+        guard !tourPhotoTaken, let path = UserDefaults.standard.string(forKey: "screenTourPhoto") else { return nil }
+        tourPhotoTaken = true
+        return UIImage(contentsOfFile: path)
     }
 }
