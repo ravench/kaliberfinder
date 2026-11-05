@@ -13,6 +13,7 @@ final class PrimerTests: XCTestCase {
         XCTAssertEqual(try cartridge("7.5x55 mm Swiss (GP 11)").primer, Cartridge.Primer(type: "large-rifle", diameter: 5.33))
         XCTAssertEqual(try cartridge(".50 BMG").primer?.diameter ?? 0, 8.03, accuracy: 0.001)
         XCTAssertEqual(try cartridge("12/70").primer?.type, "shotshell-209")
+        XCTAssertEqual(try cartridge("9.3x72 mm R").primer, Cartridge.Primer(type: "berdan-nitro", diameter: 6.45))
     }
 
     func testRimfireAndCaselessHaveNoPrimer() throws {
@@ -30,11 +31,9 @@ final class PrimerTests: XCTestCase {
         }
     }
 
-    func testOnlyFourBoxerSizesPlus209AndBMG() {
-        // Plus the 6.45 mm Berdan Nitro cap of a few old rounds (calibre-data PRIMERS).
+    func testOnlyFourBoxerSizesPlus209BMGAndBerdanNitro() {
         let sizes = Set(CartridgeCatalog.all.compactMap { $0.primer?.diameter })
-        XCTAssertEqual(sizes, [4.45, 5.33, 6.15, 6.45, 8.03])
-        XCTAssertEqual(CartridgeCatalog.cartridge(id: "9.3x72 mm R")?.primer?.title, "Berdan Nitro (Kynoch #40)")
+        XCTAssertEqual(sizes, [4.45, 5.33, 6.15, 8.03, 6.45])
     }
 
     func testHeadGeometry() throws {
