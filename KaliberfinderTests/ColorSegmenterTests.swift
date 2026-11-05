@@ -541,4 +541,23 @@ final class ColorSegmenterTests: XCTestCase {
         let frame = CandidatePhotoView.frame(of: CGRect(x: 0.25, y: 0.5, width: 0.5, height: 0.25), in: CGSize(width: 200, height: 400))
         XCTAssertEqual(frame, CGRect(x: 44, y: 194, width: 112, height: 112))
     }
+
+    /// Vision's mask is sampled by the object's size: a handgun cartridge of about 20 000 pixels
+    /// keeps every pixel. From the whole 1600 × 1200 photo the step was 7, leaving it 8 or 9
+    /// points wide (build 1042).
+    func testVisionMaskStepFollowsTheObjectNotThePhoto() {
+        XCTAssertEqual(PhotoAnalyzer.maskStep(objectPixels: 20_000), 1)
+        XCTAssertEqual(PhotoAnalyzer.maskStep(objectPixels: 160_000), 2)
+        XCTAssertEqual(PhotoAnalyzer.maskStep(objectPixels: 1600 * 1200), 7)
+    }
+
+    /// The colour cut-out tells a grey patch from a brass one, also under warm light (shelf photo:
+    /// the stone 118/103/86, a 9 mm case 92/66/29).
+    func testColourCutOutTellsGreyFromBrass() {
+        let image = RGBImage(width: 3, height: 1, pixels: [118, 103, 86, 92, 66, 29, 200, 200, 205])
+        let box = ColorSegmenter.Box(x0: 0, y0: 0, x1: 3, y1: 1)
+        XCTAssertTrue(ColorSegmenter.isGrey(image, [true, false, false], box), "stone")
+        XCTAssertFalse(ColorSegmenter.isGrey(image, [false, true, false], box), "brass")
+        XCTAssertTrue(ColorSegmenter.isGrey(image, [false, false, true], box), "nickel")
+    }
 }
