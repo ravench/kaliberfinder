@@ -10,6 +10,7 @@ struct MeasureView: View {
     @State private var selection: [Cartridge] = []
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
+    @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
     /// The user tapped «Einblenden»: hidden matching calibres are listed too, until the input changes.
     @State private var revealed = false
 
@@ -22,7 +23,7 @@ struct MeasureView: View {
     }
 
     var body: some View {
-        let ranked = DimensionMatcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete), measured)
+        let ranked = DimensionMatcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), measured)
         let matches = ranked.list(revealing: revealed)
         List {
             Section {
@@ -80,7 +81,7 @@ struct MeasureView: View {
         }
         .onChange(of: measured) { _, _ in
             revealed = false
-            let ids = Set(DimensionMatcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete), measured).shown.map(\.id))
+            let ids = Set(DimensionMatcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), measured).shown.map(\.id))
             selection.removeAll { !ids.contains($0.id) }
         }
     }
