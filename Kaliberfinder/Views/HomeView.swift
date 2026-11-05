@@ -8,12 +8,10 @@ enum HomeSection: CaseIterable {
 }
 
 struct HomeView: View {
-    @EnvironmentObject private var scale: ScaleModel
     @Environment(\.scenePhase) private var scenePhase
     @State private var showCamera = false
     @State private var libraryItem: PhotosPickerItem?
     @State private var photo: PickedPhoto?
-    @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
 
@@ -66,12 +64,7 @@ struct HomeView: View {
                 case .settings:
                 Section {
                     NavigationLink { SettingsView() } label: {
-                        Label {
-                            Text("Einstellungen")
-                            Text(verbatim: SettingsView.summary(unit: unit, source: scale.resolution.source))
-                        } icon: {
-                            Image(systemName: "gearshape").foregroundStyle(.secondary)
-                        }
+                        Label { Text("Einstellungen") } icon: { Image(systemName: "gearshape").foregroundStyle(.secondary) }
                     }
                 }
                 }
