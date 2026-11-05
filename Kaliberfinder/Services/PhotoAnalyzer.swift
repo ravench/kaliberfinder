@@ -16,6 +16,8 @@ struct PhotoAnalysis {
     /// photo (x of the width, y of the height); nil if nothing was measured. Drawn as the frame,
     /// so it shows exactly what was matched.
     var outline: [CGPoint]?
+    /// The detected neck and taper, in the same fractions as `outline`; nil if nothing was measured.
+    var lines: ShapeLines?
     /// The silhouette is brass-coloured: a case, not a lead ball or pellet.
     var isBrass = false
 
@@ -62,9 +64,9 @@ enum PhotoAnalyzer {
         analysis.imageLongSide = Double(max(size.width, size.height) * scale)
         analysis.candidates = []
         // From the cut-out back to the whole photo.
-        analysis.outline = analysis.outline?.map {
-            CGPoint(x: region.minX + $0.x * region.width, y: region.minY + $0.y * region.height)
-        }
+        let toPhoto = { (p: CGPoint) in CGPoint(x: region.minX + p.x * region.width, y: region.minY + p.y * region.height) }
+        analysis.outline = analysis.outline?.map(toPhoto)
+        analysis.lines = analysis.lines?.map(toPhoto)
         return analysis
     }
 
@@ -95,9 +97,11 @@ enum PhotoAnalyzer {
         var measured: (shape: ShapeMeasurement, length: Double)?
         var candidates: [CGRect] = []
         var outline: [CGPoint]?
+        var lines: ShapeLines?
         let normalize = { (box: [Point]?) in
             box?.map { CGPoint(x: $0.x / Double(cgImage.width), y: $0.y / Double(cgImage.height)) }
         }
+        let fraction = { (p: CGPoint) in CGPoint(x: p.x / Double(cgImage.width), y: p.y / Double(cgImage.height)) }
         let rgb = rgbImage(cgImage)
         var measuredPoints: [Point] = []
         if (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
@@ -106,6 +110,7 @@ enum PhotoAnalyzer {
                 measured = (vision.shape, vision.length)
                 candidates = boxes
                 outline = normalize(vision.box)
+                lines = vision.box.flatMap { ShapeLines(points: vision.points, pixelSize: Double(step), shape: vision.shape, box: $0) }?.map(fraction)
                 measuredPoints = vision.points
             }
         }
@@ -116,14 +121,16 @@ enum PhotoAnalyzer {
             let (sampled, step) = thinned(colour.points)
             if let fromColour = ShapeMatcher.measureWithLength(sampled, pixelSize: Double(step)) {
                 measured = fromColour
-                outline = normalize(ShapeMatcher.orientedBox(sampled, pixelSize: Double(step)))
+                let box = ShapeMatcher.orientedBox(sampled, pixelSize: Double(step))
+                outline = normalize(box)
+                lines = box.flatMap { ShapeLines(points: sampled, pixelSize: Double(step), shape: fromColour.shape, box: $0) }?.map(fraction)
                 candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
                 measuredPoints = sampled
             }
         }
         return PhotoAnalysis(shape: measured?.shape, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)),
-                             candidates: candidates.count > 1 ? candidates : [], outline: outline,
+                             candidates: candidates.count > 1 ? candidates : [], outline: outline, lines: lines,
                              isBrass: rgb.map { isBrass($0, points: measuredPoints) } ?? false)
     }
 
