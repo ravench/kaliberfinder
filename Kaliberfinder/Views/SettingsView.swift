@@ -12,11 +12,6 @@ struct SettingsView: View {
     /// Hidden developer switch: five taps on the copyright line (`TrainingCapture`).
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
 
-    /// Second line of the home screen's settings row, e.g. "Metrisch (mm) · Vom iPhone-Modell".
-    static func summary(unit: LengthUnit, source: ScreenScale.Source) -> String {
-        unit.title.loc + " · " + source.title.loc
-    }
-
     var body: some View {
         List {
             ForEach(SettingsSection.allCases, id: \.self) { section in
