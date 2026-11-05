@@ -1,4 +1,5 @@
 import XCTest
+import SwiftUI
 @testable import Kaliberfinder
 
 /// Empty cases, rim and neck detection, the scan mode and dropping far-off matches (SCAN-01 to SCAN-04).
@@ -89,6 +90,16 @@ final class EmptyCaseTests: XCTestCase {
         let loaded = try photo(cartridge("9x19 mm"), part: .cartridge)
         XCTAssertEqual(ScanMode.emptyCase.part(for: loaded), .emptyCase)
         XCTAssertEqual(Set(ScanMode.allCases.map(\.rawValue)).count, 3)
+    }
+
+    /// Each photo starts on «Automatisch», whatever was picked for an earlier photo
+    /// (the choice used to be saved under "scanMode" and stuck to every later photo).
+    func testEveryPhotoStartsOnAutomatic() throws {
+        UserDefaults.standard.set(ScanMode.cartridge.rawValue, forKey: "scanMode")
+        defer { UserDefaults.standard.removeObject(forKey: "scanMode") }
+        let view = MatchesView(photo: UIImage())
+        let state = try XCTUnwrap(Mirror(reflecting: view).children.first { $0.label == "_mode" }?.value as? State<ScanMode>)
+        XCTAssertEqual(state.wrappedValue, .auto)
     }
 
     // MARK: - Rim and neck
