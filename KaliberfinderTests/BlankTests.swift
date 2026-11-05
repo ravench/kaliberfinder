@@ -20,7 +20,8 @@ final class BlankTests: XCTestCase {
         XCTAssertNil(blank.outline.bullet)
         XCTAssertLessThan(blank.dimensions.neck, blank.dimensions.base, "the crimp is narrower than the body")
         XCTAssertFalse(blank.obsolete)
-        XCTAssertEqual(CartridgeCatalog.all.filter(\.blank).map(\.id), [blankID])
+        XCTAssertEqual(CartridgeCatalog.all.filter(\.blank).map(\.id),
+                       [blankID, "9 mm R Knall", ".320 Knall", ".45 Knall", ".22 Long Knall", "6 mm Flobert Knall"])
     }
 
     func testSearchFindsTheBlank() {

@@ -503,6 +503,284 @@
    }
   },
   {
+   "id": "8 mm Knall",
+   "name": "8 mm Knall",
+   "category": "Randfeuer",
+   "kind": "rimless",
+   "aliases": [
+    "8mmknall",
+    "8mmpak",
+    "8pak",
+    "8x20",
+    "8mmblanc",
+    "8mmblank"
+   ],
+   "displayAliases": [
+    "8 mm P.A.K.",
+    "8 mm Blanc"
+   ],
+   "headstamps": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "blank": false,
+   "dimensions": {
+    "rim": 8.0,
+    "base": 8.0,
+    "neck": 8.0,
+    "caseLength": 20.3,
+    "overallLength": 20.3,
+    "bullet": 8.0
+   },
+   "outline": {
+    "width": 8.0,
+    "height": 20.3,
+    "case": "M8.00 20.30 L8.00 19.00 L7.28 19.00 L7.28 17.70 L8.00 17.00 L8.00 0.00 L0.00 0.00 L0.00 17.00 L0.72 17.70 L0.72 19.00 L0.00 19.00 L0.00 20.30 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".315 Knall",
+   "name": ".315 Knall",
+   "category": "Randfeuer",
+   "kind": "rimless",
+   "aliases": [
+    "315knall",
+    "315",
+    "315blanc"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "blank": false,
+   "dimensions": {
+    "rim": 8.0,
+    "base": 8.0,
+    "neck": 8.0,
+    "caseLength": 17.65,
+    "overallLength": 17.65,
+    "bullet": 8.0
+   },
+   "outline": {
+    "width": 8.0,
+    "height": 17.65,
+    "case": "M8.00 17.65 L8.00 16.35 L7.28 16.35 L7.28 15.05 L8.00 14.35 L8.00 0.00 L0.00 0.00 L0.00 14.35 L0.72 15.05 L0.72 16.35 L0.00 16.35 L0.00 17.65 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": "9 mm R Knall",
+   "name": "9 mm R Knall",
+   "category": "Randfeuer",
+   "kind": "rimmed",
+   "aliases": [
+    "9mmrk",
+    "9rk",
+    "9mmr",
+    "380r",
+    "380knall",
+    "9x17r",
+    "revolverknall"
+   ],
+   "displayAliases": [
+    "9 mm R.K.",
+    ".380 R Blanc"
+   ],
+   "headstamps": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "blank": true,
+   "dimensions": {
+    "rim": 11.0,
+    "base": 9.58,
+    "neck": 5.7,
+    "caseLength": 17.5,
+    "overallLength": 17.5,
+    "bullet": 9.58
+   },
+   "outline": {
+    "width": 11.0,
+    "height": 17.5,
+    "case": "M11.00 17.50 L11.00 16.00 L10.29 16.00 L10.29 6.65 L9.32 0.35 L8.35 0.00 L2.65 0.00 L1.68 0.35 L0.71 6.65 L0.71 16.00 L0.00 16.00 L0.00 17.50 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".320 Knall",
+   "name": ".320 Knall",
+   "category": "Randfeuer",
+   "kind": "rimmed",
+   "aliases": [
+    "320knall",
+    "320",
+    "320blanc"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "blank": true,
+   "dimensions": {
+    "rim": 9.55,
+    "base": 8.09,
+    "neck": 4.9,
+    "caseLength": 16.0,
+    "overallLength": 16.0,
+    "bullet": 8.09
+   },
+   "outline": {
+    "width": 9.55,
+    "height": 16.0,
+    "case": "M9.55 16.00 L9.55 14.50 L8.82 14.50 L8.82 6.08 L8.02 0.35 L7.23 0.00 L2.33 0.00 L1.53 0.35 L0.73 6.08 L0.73 14.50 L0.00 14.50 L0.00 16.00 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".45 Knall",
+   "name": ".45 Knall",
+   "category": "Randfeuer",
+   "kind": "rimmed",
+   "aliases": [
+    "45knall",
+    "45k",
+    "45shortknall",
+    "45kblanc"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "blank": true,
+   "dimensions": {
+    "rim": 13.0,
+    "base": 12.1,
+    "neck": 7.3,
+    "caseLength": 16.6,
+    "overallLength": 16.6,
+    "bullet": 12.1
+   },
+   "outline": {
+    "width": 13.0,
+    "height": 16.6,
+    "case": "M13.00 16.60 L13.00 15.10 L12.55 15.10 L12.55 6.31 L11.35 0.35 L10.15 0.00 L2.85 0.00 L1.65 0.35 L0.45 6.31 L0.45 15.10 L0.00 15.10 L0.00 16.60 Z"
+   },
+   "primer": {
+    "type": "small-pistol",
+    "diameter": 4.45
+   }
+  },
+  {
+   "id": ".22 Long Knall",
+   "name": ".22 Long Knall",
+   "category": "Randfeuer",
+   "kind": "rimfire",
+   "aliases": [
+    "22longknall",
+    "22langknall",
+    "22longblank",
+    "5.6/16",
+    "5.6x16"
+   ],
+   "displayAliases": [
+    ".22 lang Knall",
+    "Setzkartusche 5.6/16"
+   ],
+   "headstamps": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "IT",
+    "name": "Italien",
+    "flag": "🇮🇹"
+   },
+   "blank": true,
+   "dimensions": {
+    "rim": 7.06,
+    "base": 5.74,
+    "neck": 3.4,
+    "caseLength": 15.0,
+    "overallLength": 15.0,
+    "bullet": 5.74
+   },
+   "outline": {
+    "width": 7.06,
+    "height": 15.0,
+    "case": "M7.06 15.00 L7.06 13.90 L6.40 13.90 L6.40 5.70 L5.81 0.35 L5.23 0.00 L1.83 0.00 L1.24 0.35 L0.66 5.70 L0.66 13.90 L0.00 13.90 L0.00 15.00 Z"
+   }
+  },
+  {
+   "id": "6 mm Flobert Knall",
+   "name": "6 mm Flobert Knall",
+   "category": "Randfeuer",
+   "kind": "rimfire",
+   "aliases": [
+    "6mmflobert",
+    "6mmknall",
+    "6mmflobertblanc",
+    "flobertknall"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "FR",
+    "name": "Frankreich",
+    "flag": "🇫🇷"
+   },
+   "blank": true,
+   "dimensions": {
+    "rim": 7.15,
+    "base": 5.75,
+    "neck": 3.4,
+    "caseLength": 6.6,
+    "overallLength": 6.6,
+    "bullet": 5.75
+   },
+   "outline": {
+    "width": 7.15,
+    "height": 6.6,
+    "case": "M7.15 6.60 L7.15 5.50 L6.45 5.50 L6.45 2.51 L5.86 0.35 L5.28 0.00 L1.88 0.00 L1.29 0.35 L0.70 2.51 L0.70 5.50 L0.00 5.50 L0.00 6.60 Z"
+   }
+  },
+  {
    "id": ".44 Henry",
    "name": ".44 Henry",
    "category": "Randfeuer",
@@ -1317,8 +1595,8 @@
     "bullet": "M11.10 7.20 L11.10 5.04 L11.09 4.68 L11.05 4.32 L10.98 3.96 L10.89 3.60 L10.76 3.24 L10.61 2.88 L10.42 2.52 L10.19 2.16 L9.91 1.80 L9.57 1.44 L9.15 1.08 L8.80 0.72 L8.80 0.36 L8.80 0.00 L6.00 0.00 L3.19 0.00 L3.19 0.36 L3.19 0.72 L2.85 1.08 L2.43 1.44 L2.09 1.80 L1.81 2.16 L1.58 2.52 L1.39 2.88 L1.24 3.24 L1.11 3.60 L1.02 3.96 L0.95 4.32 L0.91 4.68 L0.90 5.04 L0.90 7.20 Z"
    },
    "primer": {
-    "type": "large-pistol",
-    "diameter": 5.33
+    "type": "small-pistol",
+    "diameter": 4.45
    }
   },
   {
@@ -2279,7 +2557,7 @@
     "bullet": "M7.65 6.17 L7.65 4.20 L7.62 3.90 L7.57 3.60 L7.48 3.30 L7.38 3.00 L7.25 2.70 L7.10 2.40 L6.92 2.10 L6.73 1.80 L6.51 1.50 L6.27 1.20 L5.99 0.90 L5.68 0.60 L5.32 0.30 L4.94 0.00 L4.80 0.00 L4.66 0.00 L4.28 0.30 L3.92 0.60 L3.61 0.90 L3.33 1.20 L3.09 1.50 L2.87 1.80 L2.68 2.10 L2.50 2.40 L2.35 2.70 L2.22 3.00 L2.12 3.30 L2.03 3.60 L1.98 3.90 L1.95 4.20 L1.95 6.17 Z"
    },
    "primer": {
-    "type": "small-rifle",
+    "type": "small-pistol",
     "diameter": 4.45
    }
   },
@@ -3591,8 +3869,8 @@
     "bullet": "M12.30 10.00 L12.30 7.80 L12.29 7.24 L12.24 6.69 L12.17 6.13 L12.06 5.57 L11.92 5.01 L11.74 4.46 L11.52 3.90 L11.26 3.34 L10.94 2.79 L10.56 2.23 L10.09 1.67 L9.49 1.11 L8.65 0.56 L7.43 0.00 L6.50 0.00 L5.57 0.00 L4.35 0.56 L3.51 1.11 L2.91 1.67 L2.44 2.23 L2.06 2.79 L1.74 3.34 L1.48 3.90 L1.26 4.46 L1.08 5.01 L0.94 5.57 L0.83 6.13 L0.76 6.69 L0.71 7.24 L0.70 7.80 L0.70 10.00 Z"
    },
    "primer": {
-    "type": "large-pistol",
-    "diameter": 5.33
+    "type": "small-pistol",
+    "diameter": 4.45
    }
   },
   {
@@ -3629,8 +3907,8 @@
     "bullet": "M12.55 12.00 L12.55 9.36 L12.54 8.69 L12.49 8.02 L12.42 7.35 L12.31 6.69 L12.17 6.02 L11.99 5.35 L11.77 4.68 L11.51 4.01 L11.19 3.34 L10.81 2.67 L10.34 2.01 L9.74 1.34 L8.90 0.67 L7.68 0.00 L6.75 0.00 L5.82 0.00 L4.60 0.67 L3.76 1.34 L3.16 2.01 L2.69 2.67 L2.31 3.34 L1.99 4.01 L1.73 4.68 L1.51 5.35 L1.33 6.02 L1.19 6.69 L1.08 7.35 L1.01 8.02 L0.96 8.69 L0.95 9.36 L0.95 12.00 Z"
    },
    "primer": {
-    "type": "large-pistol",
-    "diameter": 5.33
+    "type": "small-pistol",
+    "diameter": 4.45
    }
   },
   {
@@ -5051,8 +5329,8 @@
     "bullet": "M9.62 17.30 L9.62 11.76 L9.59 10.92 L9.51 10.08 L9.39 9.24 L9.24 8.40 L9.07 7.56 L8.86 6.72 L8.62 5.88 L8.35 5.04 L8.05 4.20 L7.71 3.36 L7.33 2.52 L6.90 1.68 L6.39 0.84 L5.87 0.00 L5.67 0.00 L5.48 0.00 L4.96 0.84 L4.45 1.68 L4.02 2.52 L3.64 3.36 L3.30 4.20 L3.00 5.04 L2.73 5.88 L2.49 6.72 L2.28 7.56 L2.11 8.40 L1.96 9.24 L1.84 10.08 L1.76 10.92 L1.72 11.76 L1.72 17.30 Z"
    },
    "primer": {
-    "type": "small-rifle",
-    "diameter": 4.45
+    "type": "large-rifle",
+    "diameter": 5.33
    }
   },
   {
@@ -6031,8 +6309,8 @@
     "bullet": "M14.60 19.00 L14.60 14.82 L14.58 13.76 L14.54 12.70 L14.46 11.64 L14.34 10.59 L14.19 9.53 L14.01 8.47 L13.78 7.41 L13.50 6.35 L13.16 5.29 L12.75 4.23 L12.25 3.18 L11.62 2.12 L10.73 1.06 L9.43 0.00 L8.45 0.00 L7.47 0.00 L6.17 1.06 L5.28 2.12 L4.65 3.18 L4.15 4.23 L3.74 5.29 L3.40 6.35 L3.12 7.41 L2.89 8.47 L2.71 9.53 L2.56 10.59 L2.44 11.64 L2.36 12.70 L2.32 13.76 L2.30 14.82 L2.30 19.00 Z"
    },
    "primer": {
-    "type": "large-rifle",
-    "diameter": 5.33
+    "type": "berdan-nitro",
+    "diameter": 6.45
    }
   },
   {
@@ -6890,8 +7168,8 @@
     "bullet": "M9.53 20.58 L9.53 13.99 L9.49 12.99 L9.42 12.00 L9.32 11.00 L9.19 10.00 L9.03 9.00 L8.84 8.00 L8.63 7.00 L8.38 6.00 L8.11 5.00 L7.81 4.00 L7.47 3.00 L7.09 2.00 L6.64 1.00 L6.17 0.00 L6.00 0.00 L5.82 0.00 L5.35 1.00 L4.90 2.00 L4.52 3.00 L4.18 4.00 L3.88 5.00 L3.61 6.00 L3.36 7.00 L3.15 8.00 L2.96 9.00 L2.80 10.00 L2.67 11.00 L2.57 12.00 L2.50 12.99 L2.47 13.99 L2.47 20.58 Z"
    },
    "primer": {
-    "type": "small-rifle",
-    "diameter": 4.45
+    "type": "large-rifle",
+    "diameter": 5.33
    }
   },
   {
@@ -7563,8 +7841,8 @@
     "bullet": "M12.09 14.20 L12.09 9.66 L12.04 8.97 L11.92 8.28 L11.75 7.59 L11.54 6.90 L11.28 6.21 L10.97 5.52 L10.63 4.83 L10.23 4.14 L9.79 3.45 L9.30 2.76 L8.75 2.07 L8.12 1.38 L7.39 0.69 L6.64 0.00 L6.35 0.00 L6.06 0.00 L5.31 0.69 L4.58 1.38 L3.95 2.07 L3.40 2.76 L2.91 3.45 L2.47 4.14 L2.07 4.83 L1.73 5.52 L1.42 6.21 L1.16 6.90 L0.95 7.59 L0.78 8.28 L0.66 8.97 L0.61 9.66 L0.61 14.20 Z"
    },
    "primer": {
-    "type": "large-rifle",
-    "diameter": 5.33
+    "type": "small-rifle",
+    "diameter": 4.45
    }
   },
   {
@@ -7597,8 +7875,8 @@
     "bullet": "M8.85 14.60 L8.85 9.93 L8.82 9.22 L8.75 8.51 L8.64 7.80 L8.51 7.09 L8.35 6.38 L8.17 5.67 L7.96 4.96 L7.72 4.25 L7.45 3.55 L7.15 2.84 L6.81 2.13 L6.43 1.42 L5.98 0.71 L5.52 0.00 L5.35 0.00 L5.17 0.00 L4.72 0.71 L4.27 1.42 L3.89 2.13 L3.55 2.84 L3.25 3.55 L2.98 4.25 L2.74 4.96 L2.53 5.67 L2.35 6.38 L2.19 7.09 L2.06 7.80 L1.95 8.51 L1.88 9.22 L1.85 9.93 L1.85 14.60 Z"
    },
    "primer": {
-    "type": "small-rifle",
-    "diameter": 4.45
+    "type": "large-rifle",
+    "diameter": 5.33
    }
   },
   {
@@ -8180,8 +8458,8 @@
     "bullet": "M11.39 14.45 L11.39 11.27 L11.38 10.47 L11.35 9.66 L11.28 8.86 L11.20 8.05 L11.08 7.25 L10.94 6.44 L10.76 5.64 L10.54 4.83 L10.29 4.03 L9.97 3.22 L9.59 2.42 L9.10 1.61 L8.41 0.81 L7.41 0.00 L6.66 0.00 L5.90 0.00 L4.90 0.81 L4.21 1.61 L3.72 2.42 L3.34 3.22 L3.02 4.03 L2.77 4.83 L2.55 5.64 L2.37 6.44 L2.23 7.25 L2.11 8.05 L2.03 8.86 L1.96 9.66 L1.93 10.47 L1.92 11.27 L1.92 14.45 Z"
    },
    "primer": {
-    "type": "large-rifle",
-    "diameter": 5.33
+    "type": "berdan-nitro",
+    "diameter": 6.45
    }
   },
   {
@@ -8330,8 +8608,8 @@
     "bullet": "M13.12 18.10 L13.12 14.12 L13.11 13.11 L13.07 12.10 L13.00 11.09 L12.90 10.08 L12.77 9.08 L12.61 8.07 L12.41 7.06 L12.17 6.05 L11.89 5.04 L11.54 4.03 L11.11 3.03 L10.56 2.02 L9.81 1.01 L8.69 0.00 L7.85 0.00 L7.01 0.00 L5.89 1.01 L5.14 2.02 L4.59 3.03 L4.16 4.03 L3.81 5.04 L3.53 6.05 L3.29 7.06 L3.09 8.07 L2.93 9.08 L2.80 10.08 L2.70 11.09 L2.63 12.10 L2.59 13.11 L2.58 14.12 L2.58 18.10 Z"
    },
    "primer": {
-    "type": "large-rifle",
-    "diameter": 5.33
+    "type": "berdan-nitro",
+    "diameter": 6.45
    }
   },
   {
@@ -8407,8 +8685,8 @@
     "bullet": "M10.08 10.16 L10.08 7.92 L10.07 7.36 L10.03 6.79 L9.97 6.23 L9.89 5.66 L9.78 5.09 L9.64 4.53 L9.46 3.96 L9.26 3.40 L9.00 2.83 L8.70 2.26 L8.33 1.70 L7.85 1.13 L7.19 0.57 L6.22 0.00 L5.49 0.00 L4.75 0.00 L3.78 0.57 L3.12 1.13 L2.64 1.70 L2.27 2.26 L1.97 2.83 L1.71 3.40 L1.51 3.96 L1.33 4.53 L1.19 5.09 L1.08 5.66 L1.00 6.23 L0.94 6.79 L0.90 7.36 L0.89 7.92 L0.89 10.16 Z"
    },
    "primer": {
-    "type": "large-pistol",
-    "diameter": 5.33
+    "type": "small-pistol",
+    "diameter": 4.45
    }
   },
   {
@@ -8631,8 +8909,8 @@
     "bullet": "M14.15 16.00 L14.15 12.48 L14.13 11.59 L14.09 10.70 L14.01 9.81 L13.90 8.91 L13.76 8.02 L13.58 7.13 L13.35 6.24 L13.08 5.35 L12.76 4.46 L12.36 3.57 L11.88 2.67 L11.26 1.78 L10.41 0.89 L9.15 0.00 L8.20 0.00 L7.25 0.00 L5.99 0.89 L5.14 1.78 L4.52 2.67 L4.04 3.57 L3.64 4.46 L3.32 5.35 L3.05 6.24 L2.82 7.13 L2.64 8.02 L2.50 8.91 L2.39 9.81 L2.31 10.70 L2.27 11.59 L2.25 12.48 L2.25 16.00 Z"
    },
    "primer": {
-    "type": "large-rifle",
-    "diameter": 5.33
+    "type": "berdan-nitro",
+    "diameter": 6.45
    }
   },
   {
@@ -9333,8 +9611,8 @@
     "bullet": "M10.96 14.00 L10.96 10.92 L10.95 10.14 L10.91 9.36 L10.85 8.58 L10.76 7.80 L10.64 7.02 L10.50 6.24 L10.32 5.46 L10.10 4.68 L9.84 3.90 L9.52 3.12 L9.13 2.34 L8.64 1.56 L7.95 0.78 L6.94 0.00 L6.17 0.00 L5.41 0.00 L4.40 0.78 L3.71 1.56 L3.22 2.34 L2.83 3.12 L2.51 3.90 L2.25 4.68 L2.03 5.46 L1.85 6.24 L1.71 7.02 L1.59 7.80 L1.50 8.58 L1.44 9.36 L1.40 10.14 L1.39 10.92 L1.39 14.00 Z"
    },
    "primer": {
-    "type": "large-rifle",
-    "diameter": 5.33
+    "type": "berdan-nitro",
+    "diameter": 6.45
    }
   },
   {
@@ -11398,8 +11676,8 @@
     "bullet": "M10.26 18.00 L10.26 12.24 L10.22 11.37 L10.15 10.49 L10.03 9.62 L9.88 8.74 L9.71 7.87 L9.50 6.99 L9.26 6.12 L9.00 5.25 L8.70 4.37 L8.36 3.50 L7.99 2.62 L7.56 1.75 L7.06 0.87 L6.55 0.00 L6.35 0.00 L6.15 0.00 L5.64 0.87 L5.14 1.75 L4.71 2.62 L4.34 3.50 L4.00 4.37 L3.70 5.25 L3.44 6.12 L3.20 6.99 L2.99 7.87 L2.82 8.74 L2.67 9.62 L2.55 10.49 L2.48 11.37 L2.44 12.24 L2.44 18.00 Z"
    },
    "primer": {
-    "type": "large-rifle",
-    "diameter": 5.33
+    "type": "small-rifle",
+    "diameter": 4.45
    }
   },
   {
@@ -13149,8 +13427,8 @@
     "bullet": "M14.10 17.00 L14.10 13.26 L14.09 12.31 L14.04 11.37 L13.97 10.42 L13.86 9.47 L13.73 8.52 L13.55 7.58 L13.34 6.63 L13.09 5.68 L12.78 4.74 L12.40 3.79 L11.95 2.84 L11.36 1.89 L10.55 0.95 L9.35 0.00 L8.45 0.00 L7.55 0.00 L6.35 0.95 L5.54 1.89 L4.95 2.84 L4.50 3.79 L4.12 4.74 L3.81 5.68 L3.56 6.63 L3.35 7.58 L3.17 8.52 L3.04 9.47 L2.93 10.42 L2.86 11.37 L2.81 12.31 L2.80 13.26 L2.80 17.00 Z"
    },
    "primer": {
-    "type": "large-rifle",
-    "diameter": 5.33
+    "type": "berdan-nitro",
+    "diameter": 6.45
    }
   },
   {
