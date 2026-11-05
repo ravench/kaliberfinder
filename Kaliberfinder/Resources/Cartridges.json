@@ -14254,6 +14254,111 @@
     "height": 6.5,
     "bullet": "M5.50 6.50 L5.22 5.33 L4.40 3.25 L4.46 2.73 L5.50 2.21 L5.48 1.96 L5.43 1.72 L5.35 1.48 L5.23 1.25 L5.08 1.03 L4.90 0.83 L4.69 0.65 L4.46 0.48 L4.21 0.34 L3.94 0.22 L3.66 0.12 L3.36 0.06 L3.16 0.01 L3.16 0.00 L2.75 0.00 L2.34 0.00 L2.34 0.01 L2.14 0.06 L1.84 0.12 L1.56 0.22 L1.29 0.34 L1.04 0.48 L0.81 0.65 L0.60 0.83 L0.42 1.03 L0.27 1.25 L0.15 1.48 L0.07 1.72 L0.02 1.96 L0.00 2.21 L1.04 2.73 L1.10 3.25 L0.27 5.33 L0.00 6.50 Z"
    }
+  },
+  {
+   "id": "4.4 mm Stahl-BB (.177 BB)",
+   "name": "4.4 mm Stahl-BB (.177 BB)",
+   "category": "Luftdruck",
+   "kind": "ball",
+   "aliases": [
+    "bb",
+    "steelbb",
+    "stahlbb",
+    "4.4mm"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "WW",
+    "name": "Weltweit verbreitet",
+    "flag": "🌐"
+   },
+   "blank": false,
+   "dimensions": {
+    "rim": 4.35,
+    "base": 4.35,
+    "neck": 4.35,
+    "caseLength": 0,
+    "overallLength": 4.35,
+    "bullet": 4.35
+   },
+   "outline": {
+    "width": 4.35,
+    "height": 4.35,
+    "bullet": "M2.18 4.35 L2.42 4.34 L2.66 4.30 L2.89 4.23 L3.12 4.13 L3.33 4.02 L3.53 3.88 L3.71 3.71 L3.88 3.53 L4.02 3.33 L4.13 3.12 L4.23 2.89 L4.30 2.66 L4.34 2.42 L4.35 2.17 L4.34 1.93 L4.30 1.69 L4.23 1.46 L4.13 1.23 L4.02 1.02 L3.88 0.82 L3.71 0.64 L3.53 0.47 L3.33 0.33 L3.12 0.22 L2.89 0.12 L2.66 0.05 L2.42 0.01 L2.18 0.00 L1.93 0.01 L1.69 0.05 L1.46 0.12 L1.23 0.22 L1.02 0.33 L0.82 0.47 L0.64 0.64 L0.47 0.82 L0.33 1.02 L0.22 1.23 L0.12 1.46 L0.05 1.69 L0.01 1.93 L0.00 2.17 L0.01 2.42 L0.05 2.66 L0.12 2.89 L0.22 3.12 L0.33 3.33 L0.47 3.53 L0.64 3.71 L0.82 3.88 L1.02 4.02 L1.23 4.13 L1.46 4.23 L1.69 4.30 L1.93 4.34 Z",
+    "bulletMaterial": "steel"
+   }
+  },
+  {
+   "id": "6 mm Airsoft-BB",
+   "name": "6 mm Airsoft-BB",
+   "category": "Luftdruck",
+   "kind": "ball",
+   "aliases": [
+    "airsoft",
+    "6mmbb",
+    "6mmairsoft"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "WW",
+    "name": "Weltweit verbreitet",
+    "flag": "🌐"
+   },
+   "blank": false,
+   "dimensions": {
+    "rim": 6.0,
+    "base": 6.0,
+    "neck": 6.0,
+    "caseLength": 0,
+    "overallLength": 6.0,
+    "bullet": 6.0
+   },
+   "outline": {
+    "width": 6.0,
+    "height": 6.0,
+    "bullet": "M3.00 6.00 L3.34 5.98 L3.67 5.92 L3.99 5.83 L4.30 5.70 L4.60 5.54 L4.87 5.35 L5.12 5.12 L5.35 4.87 L5.54 4.60 L5.70 4.30 L5.83 3.99 L5.92 3.67 L5.98 3.34 L6.00 3.00 L5.98 2.66 L5.92 2.33 L5.83 2.01 L5.70 1.70 L5.54 1.40 L5.35 1.13 L5.12 0.88 L4.87 0.65 L4.60 0.46 L4.30 0.30 L3.99 0.17 L3.67 0.08 L3.34 0.02 L3.00 0.00 L2.66 0.02 L2.33 0.08 L2.01 0.17 L1.70 0.30 L1.40 0.46 L1.13 0.65 L0.88 0.88 L0.65 1.13 L0.46 1.40 L0.30 1.70 L0.17 2.01 L0.08 2.33 L0.02 2.66 L0.00 3.00 L0.02 3.34 L0.08 3.67 L0.17 3.99 L0.30 4.30 L0.46 4.60 L0.65 4.87 L0.88 5.12 L1.13 5.35 L1.40 5.54 L1.70 5.70 L2.01 5.83 L2.33 5.92 L2.66 5.98 Z",
+    "bulletMaterial": "plastic"
+   }
+  },
+  {
+   "id": "8 mm Airsoft-BB",
+   "name": "8 mm Airsoft-BB",
+   "category": "Luftdruck",
+   "kind": "ball",
+   "aliases": [
+    "8mmbb",
+    "8mmairsoft"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "WW",
+    "name": "Weltweit verbreitet",
+    "flag": "🌐"
+   },
+   "blank": false,
+   "dimensions": {
+    "rim": 8.0,
+    "base": 8.0,
+    "neck": 8.0,
+    "caseLength": 0,
+    "overallLength": 8.0,
+    "bullet": 8.0
+   },
+   "outline": {
+    "width": 8.0,
+    "height": 8.0,
+    "bullet": "M4.00 8.00 L4.45 7.97 L4.89 7.90 L5.32 7.78 L5.74 7.60 L6.13 7.39 L6.49 7.13 L6.83 6.83 L7.13 6.49 L7.39 6.13 L7.60 5.74 L7.78 5.32 L7.90 4.89 L7.97 4.45 L8.00 4.00 L7.97 3.55 L7.90 3.11 L7.78 2.68 L7.60 2.26 L7.39 1.87 L7.13 1.51 L6.83 1.17 L6.49 0.87 L6.13 0.61 L5.74 0.40 L5.32 0.22 L4.89 0.10 L4.45 0.03 L4.00 0.00 L3.55 0.03 L3.11 0.10 L2.68 0.22 L2.26 0.40 L1.87 0.61 L1.51 0.87 L1.17 1.17 L0.87 1.51 L0.61 1.87 L0.40 2.26 L0.22 2.68 L0.10 3.11 L0.03 3.55 L0.00 4.00 L0.03 4.45 L0.10 4.89 L0.22 5.32 L0.40 5.74 L0.61 6.13 L0.87 6.49 L1.17 6.83 L1.51 7.13 L1.87 7.39 L2.26 7.60 L2.68 7.78 L3.11 7.90 L3.55 7.97 Z",
+    "bulletMaterial": "plastic"
+   }
   }
  ]
 }
