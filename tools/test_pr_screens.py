@@ -99,6 +99,40 @@ class RenameTests(unittest.TestCase):
             self.assertEqual(pr_screens.rename(raw, out), ["05-Kaliber.png"])
 
 
+try:
+    from PIL import Image
+except ImportError:
+    Image = None
+
+
+@unittest.skipUnless(Image, "needs Pillow (installed by the workflow's Compare step)")
+class SameTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def png(self, name, changes=(), size=(40, 40)):
+        img = Image.new("RGB", size, (240, 240, 245))
+        for xy, colour in changes:
+            img.putpixel(xy, colour)
+        path = os.path.join(self.tmp.name, name)
+        img.save(path)
+        return path
+
+    def test_faint_noise_is_the_same(self):
+        noise = [((x, 3), (250, 245, 250)) for x in range(40)]
+        self.assertTrue(pr_screens.same(self.png("a.png"), self.png("b.png", noise)))
+
+    def test_visible_change_differs(self):
+        text = [((x, y), (0, 0, 0)) for x in range(10) for y in range(5)]
+        self.assertFalse(pr_screens.same(self.png("a.png"), self.png("b.png", text)))
+
+    def test_other_size_differs(self):
+        self.assertFalse(pr_screens.same(self.png("a.png"), self.png("b.png", size=(40, 41))))
+
+
 class CommentTests(unittest.TestCase):
     def test_table_with_before_and_after(self):
         summary = {"changes": [["02-Eintrag.png", "changed"], ["04-Neu.png", "new"], ["03-Weg.png", "gone"]],
