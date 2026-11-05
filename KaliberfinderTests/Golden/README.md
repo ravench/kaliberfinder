@@ -15,6 +15,6 @@ Same layout as a capture package (see `../Captures/README.md`), without photo an
 (cartridge or empty case) right in automatic mode, and neck found on calibres with a clear neck,
 plus each shot's result. The test fails when a score falls more than 2 points below it, or when
 the shots changed. A change that improves matching updates `baseline.json` in the same pull request:
-the test prints the new one after the `GOLDEN` lines (CI log, step «Photo set report»).
+the test prints the new one after the `GOLDEN` lines (CI log, step «Golden set report»).
 
 The masks come from Git LFS: clone with Git LFS installed (`brew install git-lfs && git lfs install`).
