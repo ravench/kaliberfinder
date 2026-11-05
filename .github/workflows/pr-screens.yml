@@ -75,7 +75,8 @@ jobs:
           for side in after before; do
             mkdir -p "$side"
             [ -d "$side.xcresult" ] || continue
-            xcrun xcresulttool export attachments --path "$side.xcresult" --output-path "raw-$side"
+            # A run that broke off early leaves no readable result: that side just has no screens.
+            xcrun xcresulttool export attachments --path "$side.xcresult" --output-path "raw-$side" || continue
             python3 pr_screens.py rename "raw-$side" "$side"
           done
           venv/bin/python pr_screens.py changes before after changed
