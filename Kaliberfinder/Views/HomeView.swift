@@ -14,6 +14,7 @@ struct HomeView: View {
     @State private var photo: PickedPhoto?
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
+    @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
     /// Hidden developer switch: five taps on the copyright line (`TrainingCapture`).
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
 
@@ -71,11 +72,16 @@ struct HomeView: View {
                 }
                 case .recognition:
                 Section {
-                    Toggle("Veraltete Kaliber berücksichtigen", isOn: $includeObsolete)
+                    Toggle(isOn: $includeObsolete) {
+                        Label { Text("Veraltete Kaliber berücksichtigen") } icon: { TagIcon(tag: .obsolete).foregroundStyle(.secondary) }
+                    }
+                    Toggle(isOn: $includeRare) {
+                        Label { Text("Seltene Kaliber berücksichtigen") } icon: { TagIcon(tag: .rare).foregroundStyle(.orange) }
+                    }
                 } header: {
                     Text("Erkennung")
                 } footer: {
-                    Text("Auch Kaliber vorschlagen, die nicht mehr regulär hergestellt werden, z. B. GP 1890 oder Vetterli. «Alle Kaliber» zeigt sie immer.")
+                    Text("Gilt für Fotos und «Masse eingeben». Veraltet: nicht mehr regulär hergestellt, z. B. GP 1890 oder Vetterli. Selten: kaum je zu finden, ein Treffer ist meist eine ähnliche Patrone. «Alle Kaliber» zeigt immer alle.")
                 }
                 }
             }
