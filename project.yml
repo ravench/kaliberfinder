@@ -88,7 +88,13 @@ targets:
   KaliberfinderTests:
     type: bundle.unit-test
     platform: iOS
-    sources: [KaliberfinderTests]
+    sources:
+      - path: KaliberfinderTests
+        excludes: ["Captures/**"]
+      # Training capture packages (TrainingCapture) as a folder, so their shots keep their own
+      # subfolders: every shot has a photo.jpg and a shot.json.
+      - path: KaliberfinderTests/Captures
+        type: folder
     dependencies:
       - target: Kaliberfinder
     settings:
