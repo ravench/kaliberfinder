@@ -27,14 +27,22 @@ jobs:
     permissions:
       actions: write
       checks: read
+      contents: read
     steps:
       - name: Re-run Build if no runner picked it up
         env:
           GH_TOKEN: ${{ github.token }}
           RUN: ${{ github.event.workflow_run.id }}
           ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
           REPO="${{ github.repository }}"
+          # A newer commit on main has its own Build, which uploads; re-running this one only holds a Mac.
+          MAIN=$(gh api "repos/$REPO/commits/main" --jq .sha)
+          if [ "$MAIN" != "$SHA" ]; then
+            echo "::notice::Not re-running: main has moved on to $MAIN."
+            exit 0
+          fi
           FAILED=$(gh api "repos/$REPO/actions/runs/$RUN/attempts/$ATTEMPT/jobs" \
             --jq '.jobs[] | select(.conclusion == "failure" or .conclusion == "cancelled") | .id')
           for JOB in $FAILED; do
