@@ -269,14 +269,19 @@ enum ShapeMatcher {
 
     /// Distance to an expected shape. For an empty case, nil when rim or neck rule the calibre out,
     /// and the case is tried both ways round; for a cartridge a misfitting rim only adds `rimPenalty`.
-    static func distance(_ photo: ShapeMeasurement, to expected: ShapeMeasurement, part: ShapePart) -> Double? {
+    /// With the calibre's `neckRatio` (catalogue neck over base), the neck counts too (`NeckShape.distance`).
+    static func distance(_ photo: ShapeMeasurement, to expected: ShapeMeasurement, part: ShapePart,
+                         neckRatio: Double? = nil) -> Double? {
+        func neck(_ p: ShapeMeasurement) -> Double {
+            neckRatio.map { NeckShape.distance(photo: p, expected: expected, neckRatio: $0) } ?? 0
+        }
         if part == .cartridge {
             let rimFits = featuresFit(photo, expected, part: .cartridge)
-            return distance(photo, expected) + (rimFits ? 0 : rimPenalty)
+            return distance(photo, expected) + (rimFits ? 0 : rimPenalty) + neck(photo)
         }
         return [photo, photo.reversed()]
             .filter { featuresFit($0, expected, part: part) }
-            .map { distance($0, expected) }
+            .map { distance($0, expected) + neck($0) }
             .min()
     }
 
