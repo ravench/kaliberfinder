@@ -90,7 +90,7 @@ def preview(cartridges, path):
     cells = []
     for c in cartridges:
         o = c["outline"]
-        bullet = {"steel": "#a7adb4", "lead": "#8a8c91"}.get(o.get("bulletMaterial"), "#b87333")
+        bullet = {"steel": "#a7adb4", "lead": "#8a8c91", "plastic": "#f7f7f5"}.get(o.get("bulletMaterial"), "#b87333")
         case = CASE_COLOURS.get(o.get("caseMaterial"), "#e3c16f")
         parts = "".join(f'<path d="{o[k]}" fill="{col}" stroke="#333" stroke-width="0.25"/>'
                         for k, col in (("case", case), ("head", "#a7adb4" if o.get("headMaterial") == "steel" else "#e3c16f"),

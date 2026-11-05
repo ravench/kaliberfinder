@@ -52,4 +52,14 @@ final class BulletMaterialTests: XCTestCase {
         XCTAssertEqual(CartridgeView.caseFill(for: try cartridge(".577 Snider")), CartridgeView.paper)
         XCTAssertEqual(CartridgeView.caseFill(for: try cartridge("9x19 mm")), CartridgeView.brass)
     }
+
+    func testSteelBBIsSteelAndAirsoftBBsArePlastic() throws {
+        let steelBB = try cartridge("4.4 mm Stahl-BB (.177 BB)")
+        XCTAssertEqual(steelBB.kind, "ball")
+        XCTAssertEqual(CartridgeView.bulletFill(for: steelBB), CartridgeView.steel)
+        for id in ["6 mm Airsoft-BB", "8 mm Airsoft-BB"] {
+            XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge(id)), CartridgeView.plastic, id)
+        }
+        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge(".44 Rundkugel (.454)")), CartridgeView.lead)
+    }
 }
