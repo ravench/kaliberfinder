@@ -7,7 +7,7 @@ import UniformTypeIdentifiers
 /// KaliberfinderTests/Captures and checked by the tests.
 ///
 /// A hidden developer tool, switched on by tapping the copyright line five times. It can be removed
-/// with TrainingCapture*.swift, TrainingRecorder.swift and its lines in HomeView and LiDARCamera.
+/// with TrainingCapture*.swift, TrainingRecorder.swift and its lines in SettingsView and LiDARCamera.
 ///
 /// Package layout (format 1):
 ///

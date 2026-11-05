@@ -94,6 +94,7 @@ T = {
     "Näher heran": ("Move closer", "Rapprochez-vous", "Avvicinati"),
     "iPhone parallel zum Tisch halten": ("Hold the iPhone parallel to the table", "Tenez l'iPhone parallèle à la table", "Tieni l'iPhone parallelo al tavolo"),
     "Einheiten": ("Units", "Unités", "Unità"),
+    "Einstellungen": ("Settings", "Réglages", "Impostazioni"),
     "Erkennung": ("Recognition", "Reconnaissance", "Riconoscimento"),
     "Veraltete Kaliber berücksichtigen": ("Include obsolete calibres", "Inclure les calibres obsolètes", "Includi calibri obsoleti"),
     "Seltene Kaliber berücksichtigen": ("Include rare calibres", "Inclure les calibres rares", "Includi calibri rari"),
