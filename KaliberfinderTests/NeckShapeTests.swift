@@ -1,3 +1,4 @@
+import UIKit
 import XCTest
 @testable import Kaliberfinder
 
@@ -119,5 +120,27 @@ final class NeckShapeTests: XCTestCase {
         XCTAssertEqual(NeckShape.distance(photo: nine, expected: own, neckRatio: ratio), NeckShape.missingPenalty)
         // Shapes built by hand have no slice widths and no neck.
         XCTAssertNil(ShapeMeasurement(aspect: 3, profile: ShapeMatcher.fractions.map { _ in 1 }).neck)
+    }
+
+    // MARK: - Raven's photos
+
+    /// The nine empty GP 11 cases of `PhotoSetTests`, through the photo analysis (the colour cut-out on
+    /// the simulator): the neck must be found in most of them, with about the catalogue's width.
+    func testRealGP11CasePhotosShowTheNeck() async throws {
+        let ratio = 8.5 / 12.6
+        var found = 0, lines: [String] = []
+        for i in 1...9 {
+            let name = String(format: "set-gp11-case-%02d", i)
+            let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: name, withExtension: "jpg"), name)
+            let image = try XCTUnwrap(UIImage(contentsOfFile: url.path), name)
+            let shape = try XCTUnwrap(await PhotoAnalyzer.analyze(image).shape, name)
+            let neck = shape.mouthFirst().neck
+            if let neck, abs(neck.width - ratio) < 0.08 { found += 1 }
+            lines.append(String(format: "NECK %@ aspect %.2f neck %@ widths %@", name, shape.aspect,
+                                neck.map { String(format: "%.2f x %.2f", $0.width, $0.length) } ?? "-",
+                                shape.widths.map { String(format: "%.2f", $0) }.joined(separator: " ")))
+        }
+        print(lines.joined(separator: "\n"))
+        XCTAssertGreaterThanOrEqual(found, 7, lines.joined(separator: "\n"))
     }
 }
