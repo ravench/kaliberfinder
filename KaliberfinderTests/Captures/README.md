@@ -1,7 +1,7 @@
 # Training captures
 
-Packages recorded with Kaliberfinder's hidden training capture screen: tap the copyright line on
-the home screen five times, then «Trainingsdaten aufnehmen». Pick the calibre, take the photos and
+Packages recorded with Kaliberfinder's hidden training capture screen: tap the copyright line in
+«Einstellungen» five times, then «Trainingsdaten aufnehmen». Pick the calibre, take the photos and
 share the series as a ZIP. Unzip it here (one folder per series) and commit it;
 `CaptureFixtureTests` runs every shot through the photo analysis and reports `CAPTURE` lines in
 the CI log.
