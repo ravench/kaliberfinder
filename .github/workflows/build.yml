@@ -64,7 +64,7 @@ jobs:
     if: needs.changes.outputs.mac == 'true'
     runs-on: macos-26
     permissions:
-      contents: write # the PR screens below push their images to the pr-screens branch
+      contents: read # the PR screens below push their images to ravench/app-screens with a deploy key
       pull-requests: write # and comment on the pull request
     env:
       # Pull requests that change the GUI (tools/ci_changes.py) also get the PR screens.
@@ -137,7 +137,8 @@ jobs:
           python3 tools/test_summary.py "Unit tests=$RUNNER_TEMP/UnitTests.json"
       # PR screens: the screen tour (KaliberfinderUITests/PRScreensTests.swift) on this pull request
       # and on its base branch, and one comment with the screens that look different. The images
-      # are kept on the pr-screens branch; all screens of a run are in its "pr-screens" artifact.
+      # are kept in ravench/app-screens on its kaliberfinder/pr-screens branch, outside this repo's history;
+      # all screens of a run are in its "pr-screens" artifact.
       # In this job rather than its own, so it reuses this build and simulator and needs no
       # second Mac runner.
       - name: Screens of this pull request
@@ -217,23 +218,31 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SCREENS_REPO: ravench/app-screens
+          SCREENS_BRANCH: ${{ github.event.repository.name }}/pr-screens
+          SCREENS_DEPLOY_KEY: ${{ secrets.SCREENS_DEPLOY_KEY }}
         run: |
           cd "$SCREENS"
-          # Each pull request has its own folder on the pr-screens branch; retry if another run pushed first.
+          # ravench/app-screens accepts this repo's deploy key; the host key is GitHub's published one.
+          [ -n "$SCREENS_DEPLOY_KEY" ] || { echo "::error::The SCREENS_DEPLOY_KEY secret is missing"; exit 1; }
+          mkdir -p ~/.ssh && printf '%s\n' "$SCREENS_DEPLOY_KEY" > ~/.ssh/app-screens && chmod 600 ~/.ssh/app-screens
+          echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" >> ~/.ssh/known_hosts
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/app-screens -o IdentitiesOnly=yes"
+          # Each pull request has its own folder on the branch; retry if another run pushed first.
           for attempt in 1 2 3 4 5 fail; do
-            [ "$attempt" != fail ] || { echo "Could not push to pr-screens"; exit 1; }
+            [ "$attempt" != fail ] || { echo "Could not push to $SCREENS_REPO"; exit 1; }
             rm -rf branch && git init -q branch && cd branch
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git"
-            if git fetch -q --depth 1 origin pr-screens; then git checkout -q -b pr-screens FETCH_HEAD; else git checkout -q --orphan pr-screens; fi
+            git remote add origin "git@github.com:${SCREENS_REPO}.git"
+            if git fetch -q --depth 1 origin "$SCREENS_BRANCH"; then git checkout -q -b screens FETCH_HEAD; else git checkout -q --orphan screens; fi
             rm -rf "$PR" && mkdir "$PR" && cp -R ../changed/before ../changed/after "$PR/"
             git add -A
             git commit -q --allow-empty -m "Screens for #$PR at ${{ github.event.pull_request.head.sha }}"
-            git push -q origin pr-screens && break
+            git push -q origin "HEAD:refs/heads/$SCREENS_BRANCH" && break
             cd .. && sleep $((attempt * 3))
           done
-          BASE_URL="https://raw.githubusercontent.com/${REPO}/$(git rev-parse HEAD)/${PR}"
+          BASE_URL="https://raw.githubusercontent.com/${SCREENS_REPO}/$(git rev-parse HEAD)/${PR}"
           cd ..
           python3 pr_screens.py comment changed "$BASE_URL" "$RUN_URL" > comment.md
           # One comment per pull request, updated on every run.
