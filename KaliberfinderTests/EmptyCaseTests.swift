@@ -76,11 +76,12 @@ final class EmptyCaseTests: XCTestCase {
 
     func testLoadedCartridgesAreNotTakenForCases() throws {
         // The Nagant bullet sits wholly inside the case and a blank has none, so the loaded round looks like an empty case.
-        // Sampled every 0.5 mm, not 0.3 mm: the whole catalogue twice takes a third of the time.
+        // Sampled every 0.3 mm: at 0.5 mm the bullet of short rounds (.22 Long, .32 S&W Long) is too
+        // few slices for the bullet to show, and they are taken for empty cases.
         for c in CartridgeCatalog.all where c.hasCase && c.kind != "shot" && c.dimensions.overallLength > c.dimensions.caseLength {
-            let shape = try photo(c, part: .cartridge, step: 0.5)
+            let shape = try photo(c, part: .cartridge)
             XCTAssertEqual(ScanMode.auto.part(for: shape), .cartridge, c.id)
-            XCTAssertEqual(ScanMode.auto.part(for: try photo(c, part: .emptyCase, step: 0.5)), .emptyCase, c.id)
+            XCTAssertEqual(ScanMode.auto.part(for: try photo(c, part: .emptyCase)), .emptyCase, c.id)
         }
     }
 
