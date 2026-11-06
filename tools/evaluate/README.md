@@ -43,8 +43,9 @@ change there. The Mac's Vision is close to the phone's but not always the same.
 ## The report
 
 Scores overall, by calibre and part, by kind of shot (cartridge or empty case, with or without a
-LiDAR size, where the outline came from), the calibres most often ranked first instead of the right
-one, and every shot whose calibre is not first. It holds shot names and numbers only, never a photo.
+LiDAR size, where the outline came from), the calibres most often in the phone's first row instead of
+the right one, and every shot whose calibre is not in the first row. It holds shot names and numbers
+only, never a photo.
 
 The scores are the golden set's: calibre first and in the first five rows of the list as the phone
 shows it, the same among all calibres, part (cartridge or empty case) right in automatic mode, and

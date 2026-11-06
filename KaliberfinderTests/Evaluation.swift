@@ -199,19 +199,25 @@ enum Evaluation {
     private static func number(_ n: Int?) -> String { n.map(String.init) ?? "–" }
 
     /// The scores against an earlier run, on the shots both have, and the shots that changed. A run
-    /// from before the phone's list was counted has no rows: its first two scores show as «–».
+    /// from before the phone's list was counted has no rows: its first two scores show as «–», and a
+    /// shot counts as changed only when its rank, part or neck did.
     private static func comparison(_ shots: [Shot], with before: Baseline) -> [String] {
         let common = shots.filter { before.shots[$0.name] != nil }
         let earlier = common.compactMap { before.shots[$0.name] }
         let was = Scores(earlier), now = Scores(common.map(\.result))
-        let hadRows = earlier.contains { $0.row != nil }
+        // A run with ranks but no rows comes from before the rows were counted.
+        let hadRows = earlier.contains { $0.row != nil } || !earlier.contains { $0.rank != nil }
         let rows = [("First", hadRows ? was.top1 : nil, now.top1), ("Top 5", hadRows ? was.top5 : nil, now.top5),
                     ("First of all", was.top1All, now.top1All), ("Top 5 of all", was.top5All, now.top5All),
                     ("Part", was.part, now.part), ("Neck", was.neck, now.neck)]
             .map { label, a, b in
                 "| \(label) | \(a.map(percent) ?? "–") | \(percent(b)) | \(a.map { String(format: "%+.1f", b - $0) } ?? "–") |"
             }
-        let changed = common.filter { before.shots[$0.name] != $0.result }.sorted { $0.name < $1.name }.map { shot in
+        let changed = common.filter { shot in
+            var now = shot.result
+            if !hadRows { now.row = nil }
+            return before.shots[shot.name] != now
+        }.sorted { $0.name < $1.name }.map { shot in
             "| \(shot.name) | \(describe(before.shots[shot.name])) | \(describe(shot.result)) |"
         }
         var lines = ["## Against the earlier run", "", "\(common.count) shots in both runs.", "",

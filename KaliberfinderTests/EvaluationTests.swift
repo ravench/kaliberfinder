@@ -76,6 +76,12 @@ final class EvaluationTests: XCTestCase {
         let report = Evaluation.report(shots, title: "Matching", before: before)
         XCTAssertTrue(report.contains("| First | – | 100.0 % | – |"), report)
         XCTAssertTrue(report.contains("| First of all | 100.0 % | 0.0 % | -100.0 |"), report)
+        XCTAssertTrue(report.contains("| 9x19-a/01 | row –, rank 1, part ok | row 1, rank 2, part ok |"), report)
+
+        let same = #"{"scores":{"top1":0,"top5":0,"part":100,"neck":0},"shots":{"9x19-a/01":{"rank":2,"part":true}}}"#
+        let unchanged = Evaluation.report(shots, title: "Matching",
+                                          before: try TrainingCapture.decoder.decode(Evaluation.Baseline.self, from: Data(same.utf8)))
+        XCTAssertFalse(unchanged.contains("| 9x19-a/01 |"), "a new row alone is no change")
     }
 
     /// The tool's --json output is what --compare reads back.
@@ -104,7 +110,20 @@ final class EvaluationTests: XCTestCase {
         let cases = CapturePackage(calibre: gp90.id, part: "emptyCase", created: Date())
         let scored = Evaluation.shot("gp90/01", analysis: PhotoAnalysis(shape: caseShape, isBrass: true), depth: nil, package: cases)
         XCTAssertEqual(scored.result.row, 1)
-        XCTAssertGreaterThan(try XCTUnwrap(scored.result.rank), 1, "a twin comes first among all")
+        XCTAssertLessThanOrEqual(try XCTUnwrap(scored.result.rank), 3, "its two twins score the same")
+    }
+
+    /// The first row is the first calibre the phone shows: an obsolete calibre ranked first among
+    /// all is hidden.
+    func testTheFirstIsTheFirstListedCalibre() throws {
+        let enfield = try XCTUnwrap(CartridgeCatalog.cartridge(id: ".476 Enfield"))
+        XCTAssertTrue(enfield.obsolete)
+        let shape = try XCTUnwrap(ShapeMatcher.catalogue[enfield.id])
+        let rounds = CapturePackage(calibre: ".45 ACP", part: "cartridge", created: Date())
+        let scored = Evaluation.shot("acp/01", analysis: PhotoAnalysis(shape: shape, isBrass: true), depth: nil, package: rounds)
+        let first = try XCTUnwrap(scored.first.flatMap(CartridgeCatalog.cartridge(id:)))
+        XCTAssertNotEqual(first.id, enfield.id)
+        XCTAssertFalse(first.obsolete || first.rare, first.id)
     }
 
     /// Drawn from the calibre's own outline, so it ranks near the top (twins with the same outline
