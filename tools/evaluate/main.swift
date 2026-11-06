@@ -6,12 +6,13 @@ import Foundation
 import ImageIO
 
 let usage = """
-usage: evaluate [shots] [--holdout] [--mac-vision] [--json FILE] [--compare FILE] [--report FILE]
+usage: evaluate [shots] [--holdout] [--mac-vision] [--one-look] [--json FILE] [--compare FILE] [--report FILE]
 
   shots         the training repo (its captures/ and splits.json), or a folder of capture packages
                 such as KaliberfinderTests/Golden; default $KALIBERFINDER_TRAINING or ../kaliberfinder-training
   --holdout     the held-back packages of splits.json instead of the tuning shots
   --mac-vision  Vision on the Mac also for shots where the phone's Vision found nothing
+  --one-look    without the second look at the cartridge cut out of the full-size photo
   --json FILE   writes every shot's result, for --compare in a later run
   --compare FILE  compares with such an earlier run
   --report FILE writes the report there too (it always goes to the standard output)
@@ -26,6 +27,7 @@ struct Options {
     var shots: URL
     var holdout = false
     var macVision = false
+    var oneLook = false
     var json: URL?
     var compare: URL?
     var report: URL?
@@ -42,6 +44,7 @@ struct Options {
             switch argument {
             case "--holdout": holdout = true
             case "--mac-vision": macVision = true
+            case "--one-look": oneLook = true
             case "--json": json = file()
             case "--compare": compare = file()
             case "--report": report = file()
@@ -52,18 +55,47 @@ struct Options {
     }
 }
 
-/// The photo upright and scaled down as the phone analyses it (`PhotoAnalyzer.maxDimension`).
-func uprightPhoto(_ url: URL) -> CGImage? {
+/// The photo upright, at most `maxSide` pixels long: as the phone analyses it (`PhotoAnalyzer.maxDimension`),
+/// or at full size for the second look.
+func uprightPhoto(_ url: URL, maxSide: Int = Int(PhotoAnalyzer.maxDimension)) -> CGImage? {
     guard let source = CGImageSourceCreateWithURL(url as CFURL, nil) else { return nil }
     let thumbnail: [CFString: Any] = [kCGImageSourceCreateThumbnailFromImageAlways: true, kCGImageSourceCreateThumbnailWithTransform: true,
-                                      kCGImageSourceThumbnailMaxPixelSize: Int(PhotoAnalyzer.maxDimension)]
+                                      kCGImageSourceThumbnailMaxPixelSize: maxSide]
     return CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnail as CFDictionary)
 }
 
+/// The part `region` (fractions) of the full-size photo `full`, scaled to at most `PhotoAnalyzer.maxDimension`.
+func part(_ full: CGImage, region: CGRect) -> CGImage? {
+    let pixels = CGRect(x: region.minX * Double(full.width), y: region.minY * Double(full.height),
+                        width: region.width * Double(full.width), height: region.height * Double(full.height)).integral
+    guard let crop = full.cropping(to: pixels) else { return nil }
+    let factor = min(1, Double(PhotoAnalyzer.maxDimension) / Double(max(crop.width, crop.height)))
+    guard factor < 1 else { return crop }
+    let width = Int((Double(crop.width) * factor).rounded()), height = Int((Double(crop.height) * factor).rounded())
+    guard let context = CGContext(data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: 0,
+                                  space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue) else { return nil }
+    context.interpolationQuality = .high
+    context.draw(crop, in: CGRect(x: 0, y: 0, width: width, height: height))
+    return context.makeImage()
+}
+
+/// The phone's second look (`PhotoAnalyzer.secondLook`): the cartridge cut out of the full-size photo
+/// and analysed again, with Vision on the Mac (the phone's mask of it isn't stored). Nil when the
+/// first look found nothing to look at again or the second look kept it.
+func secondLook(_ first: PhotoAnalysis, photo url: URL) -> PhotoAnalysis? {
+    guard let region = PhotoAnalyzer.secondLookRegion(of: first), let full = uprightPhoto(url, maxSide: 1_000_000),
+          let image = part(full, region: region) else { return nil }
+    let second = PhotoAnalyzer.inPhoto(PhotoAnalyzer.analyzeNow(image), region: region,
+                                       photoSize: CGSize(width: full.width, height: full.height))
+    let looked = PhotoAnalyzer.secondLook(first, then: second)
+    return looked.outline == first.outline ? nil : looked
+}
+
 /// What the phone does with the shot: its own Vision mask where it stored one, the colour cut-out
-/// where its Vision found nothing, and Vision on the Mac for photos it never analysed. Without the
-/// photo (the golden set) the mask is replayed with the phone's colour test, as GoldenSetTests does.
-func analyse(_ entry: SavedShot, macVision: Bool) -> (PhotoAnalysis, Evaluation.Source) {
+/// where its Vision found nothing, and Vision on the Mac for photos it never analysed; then the second
+/// look, with Vision on the Mac. Without the photo (the golden set) the mask is replayed with the
+/// phone's colour test, as GoldenSetTests does, and there is no second look.
+func analyse(_ entry: SavedShot, macVision: Bool, oneLook: Bool) -> (PhotoAnalysis, Evaluation.Source, secondLook: Bool) {
     let shot = entry.shot, path = entry.url.path
     let labels = CaptureStore.mask(of: shot, at: entry.url)
     if shot.mask != nil && labels == nil { fail("\(path): Vision mask unreadable (is Git LFS installed?)") }
@@ -74,7 +106,7 @@ func analyse(_ entry: SavedShot, macVision: Bool) -> (PhotoAnalysis, Evaluation.
         }
         let analysis = PhotoAnalyzer.analyze(instanceLabels: labels, mask: (info.width, info.height), image: (width, height),
                                              isBrass: shot.analysis?.isBrass ?? true)
-        return (analysis, .phone)
+        return (analysis, .phone, false)
     }
     guard let photo = uprightPhoto(photoURL) else { fail("\(path): photo unreadable (is Git LFS installed?)") }
     let vision: PhotoAnalyzer.VisionResult?, source: Evaluation.Source
@@ -88,7 +120,9 @@ func analyse(_ entry: SavedShot, macVision: Bool) -> (PhotoAnalysis, Evaluation.
         vision = PhotoAnalyzer.visionResult(of: photo)
         source = .mac
     }
-    return (PhotoAnalyzer.analysis(of: photo, vision: vision), vision == nil ? .colour : source)
+    let first = PhotoAnalyzer.analysis(of: photo, vision: vision)
+    let looked = oneLook ? nil : secondLook(first, photo: photoURL)
+    return (looked ?? first, vision == nil ? .colour : source, looked != nil)
 }
 
 let options = Options(Array(CommandLine.arguments.dropFirst()))
@@ -105,12 +139,15 @@ guard !packages.isEmpty else { fail("no capture packages in \(root.path)\n\n\(us
 
 let started = Date()
 var shots: [Evaluation.Shot] = []
+var secondLooks = 0
 for package in packages {
     for entry in package.shots {
         let name = "\(package.url.lastPathComponent)/\(entry.url.lastPathComponent)"
-        let (analysis, source) = analyse(entry, macVision: options.macVision)
+        let (analysis, source, looked) = analyse(entry, macVision: options.macVision, oneLook: options.oneLook)
         let shot = Evaluation.shot(name, analysis: analysis, depth: entry.shot.scale?.depthScale, package: package.package, source: source)
-        FileHandle.standardError.write(Data("\(name) rank \(shot.result.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue))\n".utf8))
+        if looked { secondLooks += 1 }
+        let look = looked ? ", second look" : ""
+        FileHandle.standardError.write(Data("\(name) rank \(shot.result.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look))\n".utf8))
         shots.append(shot)
     }
 }
@@ -122,7 +159,8 @@ let before = options.compare.map { url -> Evaluation.Baseline in
     return baseline
 }
 let kind = options.holdout ? "held-back" : "tuning"
-let report = Evaluation.report(shots, title: "Matching on \(shots.count) \(kind) shots", before: before)
+let looks = options.oneLook ? "one look only" : "second look on \(secondLooks)"
+let report = Evaluation.report(shots, title: "Matching on \(shots.count) \(kind) shots (\(looks))", before: before)
 print(report)
 do {
     if let url = options.report { try Data(report.utf8).write(to: url) }

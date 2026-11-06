@@ -55,6 +55,67 @@ enum PhotoAnalyzer {
         analysis(of: cgImage, vision: visionResult(of: cgImage))
     }
 
+    // MARK: - Second look
+
+    /// The second look leaves out photos where the cartridge's region is at least this
+    /// share of the photo both ways: cutting it out gains next to nothing.
+    static let secondLookUpTo = 0.9
+
+    /// Where the second look analyses the photo: the frame the first look measured (`outline`), with
+    /// the margin `focusRegion` gives a picked cartridge. Nil when nothing was measured, or when the
+    /// region is nearly the whole photo.
+    ///
+    /// The first look sees the photo scaled to `maxDimension` pixels, and Vision's mask covers it with
+    /// only about 512 × 512 labels: a .45 ACP case is some 20 labels wide, and its ends come out
+    /// rounded. That shortens the rim, hides the flat case mouth and blurs the neck. Cut out of the
+    /// full-size photo, the same cartridge fills the mask several times over.
+    static func secondLookRegion(of first: PhotoAnalysis) -> CGRect? {
+        guard first.shape != nil, let outline = first.outline, let minX = outline.map(\.x).min(), let maxX = outline.map(\.x).max(),
+              let minY = outline.map(\.y).min(), let maxY = outline.map(\.y).max() else { return nil }
+        let region = focusRegion(CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY))
+        guard !region.isEmpty, region.width < secondLookUpTo || region.height < secondLookUpTo else { return nil }
+        return region
+    }
+
+    /// An analysis of the part `region` of a photo (fractions of the photo, which is `photoSize`
+    /// pixels upright), cut out at full size and analysed at up to `maxDimension` pixels, as one of the
+    /// whole photo: frames in fractions of the photo, and the long side the size measurement compares
+    /// pixels with at the scale the part was analysed at. A part has no competing cartridges of its own.
+    static func inPhoto(_ part: PhotoAnalysis, region: CGRect, photoSize: CGSize) -> PhotoAnalysis {
+        var analysis = part
+        let cropLongSide = max(region.width * photoSize.width, region.height * photoSize.height)
+        let scale = min(1, maxDimension / max(1, cropLongSide))
+        analysis.imageLongSide = max(photoSize.width, photoSize.height) * scale
+        analysis.candidates = []
+        let toPhoto = { (p: CGPoint) in CGPoint(x: region.minX + p.x * region.width, y: region.minY + p.y * region.height) }
+        analysis.outline = part.outline?.map(toPhoto)
+        analysis.contour = part.contour?.map(toPhoto)
+        return analysis
+    }
+
+    /// The first look's analysis, improved by the second look's (`inPhoto` of the part at
+    /// `secondLookRegion`) where that measured the same cartridge: its frame's centre lies in the first
+    /// look's frame. The cartridges competing for the measurement stay the first look's.
+    static func secondLook(_ first: PhotoAnalysis, then second: PhotoAnalysis) -> PhotoAnalysis {
+        guard second.shape != nil, let outline = second.outline, !outline.isEmpty,
+              let frame = first.outline, frame.count == 4 else { return first }
+        let centre = CGPoint(x: outline.map(\.x).reduce(0, +) / Double(outline.count),
+                             y: outline.map(\.y).reduce(0, +) / Double(outline.count))
+        guard contains(frame, centre) else { return first }
+        var analysis = second
+        analysis.candidates = first.candidates
+        return analysis
+    }
+
+    /// Whether the convex quadrilateral `corners` (in order) contains `p`.
+    static func contains(_ corners: [CGPoint], _ p: CGPoint) -> Bool {
+        let crossings = corners.indices.map { i -> Double in
+            let a = corners[i], b = corners[(i + 1) % corners.count]
+            return (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x)
+        }
+        return crossings.allSatisfy { $0 >= 0 } || crossings.allSatisfy { $0 <= 0 }
+    }
+
     /// Vision's foreground object in an upright photo (see `SubjectPicker`); nil when Vision finds
     /// none, only the table, box or paper, or isn't available (the simulator).
     static func visionResult(of cgImage: CGImage) -> VisionResult? {

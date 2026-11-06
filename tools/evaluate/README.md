@@ -24,7 +24,7 @@ tools/evaluate/build.sh
 
 Options: a path to another training repo or a folder of capture packages (for example
 `KaliberfinderTests/Golden`), `--holdout` for the held-back packages in `splits.json` instead of the
-tuning shots, `--mac-vision`, `--json FILE`, `--compare FILE` and `--report FILE`.
+tuning shots, `--mac-vision`, `--one-look`, `--json FILE`, `--compare FILE` and `--report FILE`.
 
 ## What each shot goes through
 
@@ -36,6 +36,13 @@ The phone's path as far as the shot allows:
 | taken with the capture screen, the phone's Vision found nothing | the colour cut-out, as on the phone | colour |
 | an older photo the phone never analysed | Vision on the Mac, else the colour cut-out | mac |
 | a golden shot (mask, no photo) | the mask, with the phone's brass colour test | phone |
+
+Then, as on the phone, the **second look**: the cartridge the first look found is cut out of the
+full-size photo (with the margin of a picked cartridge) and analysed again, so Vision's 512 × 512 mask
+covers it several times finer. The phone doesn't store its mask of the second look, so the tool runs
+Vision on the Mac there, with the colour cut-out where it finds nothing. The report's title says on how
+many shots the second look was taken; `--one-look` leaves it out. A golden shot has no photo and gets
+the first look only.
 
 `--mac-vision` also runs Vision on the Mac for the second kind, to see what a working Vision would
 change there. The Mac's Vision is close to the phone's but not always the same.
