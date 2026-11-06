@@ -18,8 +18,8 @@ struct MatchesView: View {
     /// The user tapped «Einblenden»: hidden matching calibres are listed too, for this result only.
     @State private var revealed = false
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
-    /// Every photo starts on «Automatisch»; a manual choice applies to this photo only.
-    @State private var mode: ScanMode = .auto
+    /// Set when the user taps the segment the app did not detect; applies to this photo only.
+    @State private var override: ScanMode?
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
 
@@ -40,16 +40,21 @@ struct MatchesView: View {
                         Button {
                             chosen = nil
                             analysis = nil
+                            override = nil
                             ranked = .none
                         } label: {
                             Label("Andere Patrone wählen", systemImage: "hand.tap")
                         }
                     }
                     if let analysis {
-                        Picker("Was liegt im Bild?", selection: $mode) {
-                            ForEach(ScanMode.allCases) { Text($0.title.loc).tag($0) }
+                        // Highlights what the app detected; tapping the other segment overrides it.
+                        if let shape = analysis.shape, !shape.isEndView {
+                            let detected = ScanMode.detected(in: shape)
+                            Picker("Was liegt im Bild?", selection: Binding { override ?? detected } set: { override = $0 }) {
+                                ForEach(ScanMode.choices) { Text($0.title.loc).tag($0) }
+                            }
+                            .pickerStyle(.segmented)
                         }
-                        .pickerStyle(.segmented)
                         ForEach(Self.notes(for: analysis, depth: depth, unit: unit, mode: mode), id: \.self) { note in
                             Text(note).font(.footnote).foregroundStyle(.secondary)
                         }
@@ -82,10 +87,13 @@ struct MatchesView: View {
                 rank()
             }
         }
-        .onChange(of: mode) { rank() }
+        .onChange(of: override) { rank() }
         .onChange(of: includeObsolete) { rank() }
         .onChange(of: includeRare) { rank() }
     }
+
+    /// What the photo is compared with: the detection, unless the user overrode it.
+    private var mode: ScanMode { override ?? .auto }
 
     /// The calibres listed: the ones the switches let through, plus the hidden ones once revealed.
     private var matches: [Match] { ranked.list(revealing: revealed) }
