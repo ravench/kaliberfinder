@@ -58,7 +58,7 @@ final class BulletMaterialTests: XCTestCase {
         XCTAssertEqual(CartridgeView.headFill(for: try cartridge("5.45x39 mm")), CartridgeView.lacqueredSteel)
         XCTAssertEqual(CartridgeView.headFill(for: try cartridge(".44 Henry")), CartridgeView.copper)
         XCTAssertEqual(CartridgeView.headFill(for: try cartridge("7 mm Backcountry")), CartridgeView.nickel)
-        XCTAssertEqual(CartridgeView.headFill(for: try cartridge(".577 Snider")), CartridgeView.paper)
+        XCTAssertEqual(CartridgeView.headFill(for: try cartridge(".577 Snider")), CartridgeView.brass, "brass cup, paper body")
         XCTAssertEqual(CartridgeView.headFill(for: try cartridge("9x19 mm")), CartridgeView.brass)
         XCTAssertEqual(CartridgeView.headFill(for: try cartridge(".277 SIG Fury")), CartridgeView.steel, "steel head, brass body")
         XCTAssertEqual(CartridgeView.headFill(for: try cartridge("12/70")), CartridgeView.brass, "brass head, plastic hull")
