@@ -30,10 +30,10 @@ struct PhotoAnalysis {
     var hasSeveralObjects: Bool { candidates.count > 1 }
 
     /// Size from the silhouette and the LiDAR distance, if the photo was taken with depth: the length
-    /// at the axis's height, without the ends' rise (`EndRise`).
-    func size(depth: DepthScale?) -> Result<MeasuredSize, SizeFailure> {
+    /// at the axis's height, without the ends' rise (`EndRise`) for the part `mode` sees.
+    func size(depth: DepthScale?, mode: ScanMode = .auto) -> Result<MeasuredSize, SizeFailure> {
         guard let shape, let lengthPixels else { return .failure(depth == nil ? .noDepth : .endView) }
-        let rise = endRise(depth: depth)
+        let rise = endRise(depth: depth, mode: mode)
         return SizeEstimator.estimate(lengthPixels: lengthPixels / rise, aspect: shape.aspect / rise, imageLongSide: imageLongSide, depth: depth)
     }
 }

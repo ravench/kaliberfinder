@@ -24,6 +24,27 @@ final class EndRiseTests: XCTestCase {
         XCTAssertEqual(PhotoAnalysis(shape: nil).endRise(depth: depth(200)), 1)
     }
 
+    /// A photo without depth showing the body wider than the 1× camera can (cropped or zoomed) has no
+    /// known focal length: no correction.
+    func testACroppedPhotoWithoutDepthIsLeftAsIs() throws {
+        var close = try photo(".45 ACP", part: .emptyCase)
+        XCTAssertGreaterThan(close.endRise(depth: nil), 1.02)
+        close.imageLongSide /= 3
+        XCTAssertNil(close.perspective(depth: nil))
+        XCTAssertEqual(close.endRise(depth: nil), 1)
+        XCTAssertNotNil(close.perspective(depth: depth(200)), "with depth the calibration says")
+    }
+
+    /// The user's choice of part decides the front: a case mouth rises, a tip doesn't.
+    func testTheChosenPartDecidesTheFront() throws {
+        let analysis = try photo(".45 ACP", part: .emptyCase)
+        let asCase = analysis.endRise(depth: depth(200), mode: .emptyCase)
+        let asRound = analysis.endRise(depth: depth(200), mode: .cartridge)
+        XCTAssertEqual(asCase, analysis.endRise(depth: depth(200)), "automatic mode sees the mouth")
+        XCTAssertEqual(asCase - 1, 2 * (asRound - 1), accuracy: 0.002)
+        XCTAssertLessThan(try analysis.size(depth: depth(200), mode: .cartridge).get().length - 22.8, 0.6)
+    }
+
     /// At 20 cm both ends of an empty .45 ACP case rise half a diameter above its axis (about 3 %);
     /// a loaded round's tip lies on the axis, so only its head rises (half as much).
     func testAnEmptyCaseRisesAtBothEndsALoadedRoundAtOne() throws {
