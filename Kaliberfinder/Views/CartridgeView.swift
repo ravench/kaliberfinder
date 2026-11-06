@@ -41,11 +41,11 @@ struct CartridgeView: View {
         }
     }
 
-    /// Fill of the case head, in the side view and seen from below: the steel head of a hybrid case,
-    /// the brass head of a shot shell, otherwise the case's own material.
+    /// Fill of the case head, in the side view and seen from below: a separate head part is brass
+    /// (shot shell) or steel (hybrid case); without one, the case's own material reaches the rim.
     static func headFill(for cartridge: Cartridge) -> Color {
-        if cartridge.outline.headMaterial == "steel" { return steel }
-        return cartridge.kind == "shot" ? brass : caseFill(for: cartridge)
+        guard cartridge.outline.head != nil else { return caseFill(for: cartridge) }
+        return cartridge.outline.headMaterial == "steel" ? steel : brass
     }
 
     var body: some View {
