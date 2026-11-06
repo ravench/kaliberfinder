@@ -46,6 +46,9 @@ jobs:
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v5
+        with:
+          # Binaries may be stored in Git LFS.
+          lfs: true
       - name: Build
         run: python3 tools/website.py build _site
       - uses: actions/upload-pages-artifact@v3

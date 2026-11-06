@@ -1,6 +1,8 @@
 """Tests for the website builder (tools/website.py) and its texts (tools/website_content.py)."""
 import re
+import struct
 import tempfile
+import zlib
 import unittest
 from html.parser import HTMLParser
 from pathlib import Path
@@ -9,6 +11,14 @@ from unittest import mock
 import website as app_site
 
 content = app_site.content
+
+def tiny_png():
+    """A valid 1x1 PNG, so the tests need no Git LFS checkout of the real icon."""
+    def chunk(kind, data):
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data))
+    return (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 2, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(b"\x00\xff\xff\xff")) + chunk(b"IEND", b""))
+
 
 TEST_CONTACT = {"email": "test@example.org", "address": ["Test Person", "Teststrasse 1", "8000 Zürich"],
                 "uid": "CHE-000.000.000"}
@@ -40,7 +50,9 @@ class SiteTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = tempfile.TemporaryDirectory()
-        with mock.patch.dict(content.CONTACT, TEST_CONTACT):
+        cls.icon = Path(cls.tmp.name) / "icon.png"
+        cls.icon.write_bytes(tiny_png())
+        with mock.patch.dict(content.CONTACT, TEST_CONTACT), mock.patch.object(content, "ICON", cls.icon):
             cls.out = app_site.build(Path(cls.tmp.name) / "site")
 
     @classmethod
@@ -61,7 +73,15 @@ class SiteTests(unittest.TestCase):
     def test_cname_and_icon(self):
         self.assertEqual((self.out / "CNAME").read_text().strip(), content.DOMAIN)
         self.assertTrue(content.DOMAIN.endswith(".apps.giotta.ch"))
-        self.assertGreater((self.out / "icon.png").stat().st_size, 1000)
+        self.assertEqual((self.out / "icon.png").read_bytes(), tiny_png())
+        self.assertTrue((app_site.ROOT / content.ICON).is_file(), content.ICON)
+
+    def test_build_refuses_an_lfs_pointer_as_icon(self):
+        pointer = Path(self.tmp.name) / "pointer.png"
+        pointer.write_text("version https://git-lfs.github.com/spec/v1\noid sha256:0\nsize 1\n")
+        with mock.patch.dict(content.CONTACT, TEST_CONTACT), mock.patch.object(content, "ICON", pointer):
+            with self.assertRaises(SystemExit):
+                app_site.build(Path(self.tmp.name) / "pointer-site")
 
     def test_html_is_well_formed_and_links_resolve(self):
         for lang, page, path in self.pages():
@@ -114,7 +134,8 @@ class SiteTests(unittest.TestCase):
             self.assertIn(lang, content.UPDATED)
 
     def test_build_refuses_missing_contact(self):
-        with mock.patch.dict(content.CONTACT, {"email": "", "address": []}):
+        with mock.patch.dict(content.CONTACT, {"email": "", "address": []}), \
+                mock.patch.object(content, "ICON", self.icon):
             with self.assertRaises(SystemExit):
                 app_site.build(Path(self.tmp.name) / "refused")
 

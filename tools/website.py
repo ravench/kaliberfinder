@@ -284,7 +284,11 @@ def build(out):
             target = out / page_path(lang, page)
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(render(lang, page), encoding="utf-8")
-    shutil.copyfile(ROOT / content.ICON, out / "icon.png")
+    icon = (ROOT / content.ICON).read_bytes()
+    if not icon.startswith(b"\x89PNG"):
+        # A Git LFS pointer instead of the image: the checkout ran without LFS.
+        raise SystemExit(f"{content.ICON} is not a PNG; fetch it with `git lfs pull`")
+    (out / "icon.png").write_bytes(icon)
     (out / "CNAME").write_text(content.DOMAIN + "\n", encoding="utf-8")
     # GitHub Pages: serve files as they are.
     (out / ".nojekyll").write_text("", encoding="utf-8")
