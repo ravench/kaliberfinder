@@ -530,29 +530,6 @@
         }
       }
     },
-    "Automatisch": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Automatic"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Automatique"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Automatico"
-          }
-        }
-      }
-    },
     "Bauart": {
       "extractionState": "manual",
       "localizations": {

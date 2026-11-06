@@ -89,8 +89,8 @@ struct Cartridge: Decodable, Identifiable, Hashable {
         /// plastic tip when `tipMaterial` is "polymer".
         let tip: String?
         let tipMaterial: String?
-        /// "steel" for a steel-capped nose, "lead" for a bare lead bullet; nil means copper
-        /// (or lead without a case).
+        /// "steel" for a steel-capped nose or a steel BB, "lead" for a bare lead bullet, "plastic"
+        /// for an airsoft BB; nil means copper (or lead without a case).
         let bulletMaterial: String?
         /// "copper", "steel" (lacquered), "nickel", "paper" or "hybrid" where the case is not brass.
         let caseMaterial: String?

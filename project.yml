@@ -137,7 +137,7 @@ schemes:
         - KaliberfinderTests
     archive:
       config: Release
-  # Own scheme so the screen tour (.github/workflows/pr-screens.yml) stays out of the unit test run.
+  # Own scheme so the screen tour (PR screens in .github/workflows/build.yml) stays out of the unit test run.
   KaliberfinderScreens:
     build:
       targets:

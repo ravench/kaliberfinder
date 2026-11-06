@@ -31,7 +31,8 @@ struct Match: Identifiable, Equatable {
     var fitsWell: Bool { shapeFit == .good && sizeFit == .good }
 }
 
-/// What the user is photographing (SCAN-01): the app decides by itself, or the user says so.
+/// What the user is photographing (SCAN-01): the app decides by itself (`auto`), or the user
+/// overrides that with one of the `choices`.
 enum ScanMode: String, CaseIterable, Identifiable {
     case auto
     case cartridge
@@ -39,13 +40,20 @@ enum ScanMode: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
-    /// German text, used as localization key.
+    /// The two segments of the picker; the one the app detects is highlighted until the user taps the other.
+    static let choices: [ScanMode] = [.cartridge, .emptyCase]
+
+    /// German text of a choice, used as localization key.
     var title: String {
         switch self {
-        case .auto: "Automatisch"
-        case .cartridge: "Patrone"
         case .emptyCase: "Leere Hülse"
+        default: "Patrone"
         }
+    }
+
+    /// The choice that matches what the app detects in this outline.
+    static func detected(in shape: ShapeMeasurement) -> ScanMode {
+        auto.part(for: shape) == .emptyCase ? .emptyCase : .cartridge
     }
 
     /// What to compare the photo with. Automatic: a square-cut end is a case mouth, a
