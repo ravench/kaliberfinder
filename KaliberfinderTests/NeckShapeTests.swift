@@ -75,7 +75,7 @@ final class NeckShapeTests: XCTestCase {
         let a = ShapeMatcher.measurement(aspect: 4, relativeWidths: widths(neck: 4))
         let b = ShapeMatcher.measurement(aspect: 4, relativeWidths: widths(neck: 8))
         XCTAssertEqual(NeckShape.distance(photo: a, expected: b, neckRatio: 0.6), NeckShape.lengthWeight * 0.4, accuracy: 1e-9)
-        // Raven's GP 11 case on granite (set-gp11-case-01, colour cut-out): the blurred shoulder
+        // Raven's GP 11 case on granite (colour cut-out; the photo is in the training data): the blurred shoulder
         // shows a flat step at 0.8, but the neck is the run at about 0.6 in front of it.
         let granite = "0.50 0.62 0.59 0.60 0.59 0.61 0.80 0.78 0.87 1.01 0.95 0.92 0.93 0.90 1.00 1.01 1.02 1.02 1.00 1.00 "
             + "0.97 1.01 0.94 0.99 1.00 0.94 1.00 0.97 1.01 0.99 0.98 0.96 0.96 0.94 0.94 0.95 0.92 0.95 0.92 0.75"
@@ -149,31 +149,5 @@ final class NeckShapeTests: XCTestCase {
         XCTAssertEqual(NeckShape.distance(photo: nine, expected: own, neckRatio: ratio), NeckShape.missingPenalty)
         // Shapes built by hand have no slice widths and no neck.
         XCTAssertNil(ShapeMeasurement(aspect: 3, profile: ShapeMatcher.fractions.map { _ in 1 }).neck)
-    }
-
-    // MARK: - Raven's photos
-
-    /// Raven's nine photos of empty GP 11 cases (2026-11-04), through the photo analysis (the colour
-    /// cut-out on the simulator): the neck must be found in most of them, with about the catalogue's width.
-    func testRealGP11CasePhotosShowTheNeck() async throws {
-        let ratio = 8.5 / 12.6
-        var found = 0, empty = 0, lines: [String] = []
-        for i in 1...9 {
-            let name = String(format: "set-gp11-case-%02d", i)
-            let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: name, withExtension: "jpg"), name)
-            let image = try XCTUnwrap(UIImage(contentsOfFile: url.path), name)
-            let analysis = await PhotoAnalyzer.analyze(image)
-            let shape = try XCTUnwrap(analysis.shape, name)
-            let neck = shape.mouthFirst().neck
-            if let neck, abs(neck.width - ratio) < 0.08 { found += 1 }
-            if ScanMode.auto.part(for: shape) == .emptyCase { empty += 1 }
-            lines.append(String(format: "PHOTOSET neck %@ aspect %.2f neck %@ widths %@", name, shape.aspect,
-                                neck.map { String(format: "%.2f x %.2f", $0.width, $0.length) } ?? "-",
-                                shape.widths.map { String(format: "%.2f", $0) }.joined(separator: " ")))
-        }
-        print(lines.joined(separator: "\n"))
-        XCTAssertGreaterThanOrEqual(found, 7, lines.joined(separator: "\n"))
-        // Automatic mode takes most of them for what they are: empty cases.
-        XCTAssertGreaterThanOrEqual(empty, 6, lines.joined(separator: "\n"))
     }
 }

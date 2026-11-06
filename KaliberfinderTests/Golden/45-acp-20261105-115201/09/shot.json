@@ -1,0 +1,55 @@
+{
+  "analysis": {
+    "aspect": 1.9562299508921934,
+    "candidates": 0,
+    "imageLongSide": 1600,
+    "isBrass": true,
+    "lengthPixels": 164.47839333677058,
+    "matches": [],
+    "outline": [
+      [
+        0.4853719526840771,
+        0.44682457017751637
+      ],
+      [
+        0.6224130990553655,
+        0.44489366158759347
+      ],
+      [
+        0.6237622378909904,
+        0.49875392077194697
+      ],
+      [
+        0.48672109151970216,
+        0.5006848293618699
+      ]
+    ],
+    "size": [
+      25.212681139775576,
+      12.888403599115035
+    ]
+  },
+  "captured": "2026-11-05T11:52:42Z",
+  "gravity": [
+    -0.021441228687763214,
+    0.009690118953585625,
+    -0.9997231364250183
+  ],
+  "mask": {
+    "file": "vision-instances.png",
+    "height": 512,
+    "imageHeight": 1600,
+    "imageWidth": 1200,
+    "instances": 1,
+    "width": 512
+  },
+  "orientation": 6,
+  "photo": "photo.jpg",
+  "scale": {
+    "focalLength": 2965.97705078125,
+    "referenceLongSide": 4032,
+    "tableDistance": 186.86118721961975
+  },
+  "source": "lidarCamera",
+  "tilt": 1.348250049995818
+}

@@ -1,0 +1,52 @@
+{
+  "analysis": {
+    "aspect": 4.766563998446626,
+    "candidates": 0,
+    "imageLongSide": 1600,
+    "isBrass": true,
+    "lengthPixels": 377.2997754878288,
+    "matches": [
+      ".17 Remington",
+      ".223 Remington",
+      "5.56x45 mm NATO",
+      "5.6 mm GP 90",
+      "7 mm PRC"
+    ],
+    "outline": [
+      [
+        0.4941293853109295,
+        0.6217387906737298
+      ],
+      [
+        0.5045038930453488,
+        0.3860548351914723
+      ],
+      [
+        0.5732029906484709,
+        0.3877558615356702
+      ],
+      [
+        0.5628284829140515,
+        0.6234398170179277
+      ]
+    ]
+  },
+  "captured": "2026-11-05T11:49:12Z",
+  "gravity": [
+    -0.024839140474796295,
+    0.025599386543035507,
+    -0.9993636608123779
+  ],
+  "mask": {
+    "file": "vision-instances.png",
+    "height": 512,
+    "imageHeight": 1600,
+    "imageWidth": 1200,
+    "instances": 1,
+    "width": 512
+  },
+  "orientation": 6,
+  "photo": "photo.jpg",
+  "source": "lidarCamera",
+  "tilt": 2.0441439925095444
+}

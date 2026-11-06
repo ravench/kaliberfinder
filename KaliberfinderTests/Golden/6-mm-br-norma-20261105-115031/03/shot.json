@@ -1,0 +1,52 @@
+{
+  "analysis": {
+    "aspect": 3.9146815525536653,
+    "candidates": 0,
+    "imageLongSide": 1600,
+    "isBrass": false,
+    "lengthPixels": 276.22051640165785,
+    "matches": [
+      "6.5x47 mm Lapua",
+      "6.5 PRC",
+      "8.5x55 mm Blaser",
+      "5.45x39 mm",
+      "6 mm Creedmoor"
+    ],
+    "outline": [
+      [
+        0.46287548014047825,
+        0.54212771959758
+      ],
+      [
+        0.48660132489381785,
+        0.37040941027163865
+      ],
+      [
+        0.547561704705854,
+        0.37514719442917177
+      ],
+      [
+        0.5238358599525144,
+        0.546865503755113
+      ]
+    ]
+  },
+  "captured": "2026-11-05T11:50:53Z",
+  "gravity": [
+    -0.007603097707033157,
+    0.0005694925785064697,
+    -0.9999709129333496
+  ],
+  "mask": {
+    "file": "vision-instances.png",
+    "height": 512,
+    "imageHeight": 1600,
+    "imageWidth": 1200,
+    "instances": 1,
+    "width": 512
+  },
+  "orientation": 6,
+  "photo": "photo.jpg",
+  "source": "lidarCamera",
+  "tilt": 0.4368499619751699
+}
