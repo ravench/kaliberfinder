@@ -41,12 +41,19 @@ struct CartridgeView: View {
         }
     }
 
+    /// Fill of the case head, in the side view and seen from below: the steel head of a hybrid case,
+    /// the brass head of a shot shell, otherwise the case's own material.
+    static func headFill(for cartridge: Cartridge) -> Color {
+        if cartridge.outline.headMaterial == "steel" { return steel }
+        return cartridge.kind == "shot" ? brass : caseFill(for: cartridge)
+    }
+
     var body: some View {
         let o = cartridge.outline
         let lineWidth = max(0.3, min(0.8, pointsPerMM * 0.08))
         ZStack(alignment: .topLeading) {
             part(o.case, fill: Self.caseFill(for: cartridge), lineWidth: lineWidth)
-            part(o.head, fill: o.headMaterial == "steel" ? Self.steel : Self.brass, lineWidth: lineWidth)
+            part(o.head, fill: Self.headFill(for: cartridge), lineWidth: lineWidth)
             part(o.bullet, fill: Self.bulletFill(for: cartridge), lineWidth: lineWidth)
             part(o.patch, fill: Self.paper, lineWidth: lineWidth)
             part(o.tip, fill: o.tipMaterial == "polymer" ? Self.polymer : Self.lead, lineWidth: lineWidth)
