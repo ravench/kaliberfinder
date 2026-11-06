@@ -8,12 +8,14 @@ import Vision
 enum TrainingRecorder {
     /// Saves a photo from the LiDAR camera with everything it carries.
     @discardableResult
-    static func save(_ photo: AVCapturePhoto, gravity: [Double]?, tilt: Double?, mode: ScanMode, in package: URL) async throws -> URL {
+    static func save(_ photo: AVCapturePhoto, gravity: [Double]?, tilt: Double?, focus: CaptureShot.Focus?,
+                     mode: ScanMode, in package: URL) async throws -> URL {
         guard let data = photo.fileDataRepresentation() else { throw CaptureError.noPhoto }
         var shot = CaptureShot(photo: TrainingCapture.photoName(for: data), source: "lidarCamera", captured: Date())
         shot.orientation = photo.metadata[kCGImagePropertyOrientation as String] as? Int
         shot.gravity = gravity
         shot.tilt = tilt
+        shot.focus = focus
         var depthValues: [Float]?
         if let depthData = photo.depthData {
             if let map = LiDARCamera.depthValues(depthData) {

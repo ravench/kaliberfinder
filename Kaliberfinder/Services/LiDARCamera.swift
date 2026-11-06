@@ -22,6 +22,7 @@ final class LiDARCamera: NSObject, ObservableObject {
     private(set) var tilt: Double?
     /// Gravity in device coordinates, for the training data (`TrainingCapture`).
     private(set) var gravity: [Double]?
+    private var device: AVCaptureDevice?
     private var lastDepthUpdate = Date.distantPast
     private var onPhoto: ((UIImage, DepthScale?) -> Void)?
     private var onRawPhoto: ((AVCapturePhoto) -> Void)?
@@ -49,6 +50,13 @@ final class LiDARCamera: NSObject, ObservableObject {
     func stop() {
         motion.stopDeviceMotionUpdates()
         queue.async { [self] in session.stopRunning() }
+    }
+
+    /// The camera's closest focus distance and lens position now, for the training data; nil before
+    /// the camera is set up.
+    var focus: CaptureShot.Focus? {
+        device.map { CaptureShot.Focus(minimumDistance: $0.minimumFocusDistance >= 0 ? $0.minimumFocusDistance : nil,
+                                       lensPosition: Double($0.lensPosition)) }
     }
 
     /// Takes a photo; `completion` gets the image and, when the depth was usable, its scale.
@@ -86,6 +94,7 @@ final class LiDARCamera: NSObject, ObservableObject {
         defer { session.commitConfiguration() }
         session.sessionPreset = .photo
         guard session.canAddInput(input), session.canAddOutput(photoOutput), session.canAddOutput(depthOutput) else { return }
+        self.device = device
         session.addInput(input)
         session.addOutput(photoOutput)
         session.addOutput(depthOutput)

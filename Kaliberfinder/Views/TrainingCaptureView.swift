@@ -275,7 +275,7 @@ private struct TrainingCameraView: View {
         camera.captureRaw { photo in
             Task { @MainActor in
                 do {
-                    try await TrainingRecorder.save(photo, gravity: camera.gravity, tilt: camera.tilt,
+                    try await TrainingRecorder.save(photo, gravity: camera.gravity, tilt: camera.tilt, focus: camera.focus,
                                                     mode: capture.package.scanMode, in: capture.url)
                     saved += 1
                     failure = nil

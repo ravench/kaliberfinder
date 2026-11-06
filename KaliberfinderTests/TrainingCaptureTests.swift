@@ -42,6 +42,7 @@ final class TrainingCaptureTests: XCTestCase {
         shot.scale = .init(tableDistance: 250, focalLength: 2794, referenceLongSide: 4032)
         shot.gravity = [0.01, -0.02, -0.99]
         shot.tilt = 1.3
+        shot.focus = .init(minimumDistance: 150, lensPosition: 0.62)
         shot.mask = .init(width: 4, height: 3, instances: 2, imageWidth: 1600, imageHeight: 1200)
         shot.analysis = .init(aspect: 3.0, lengthPixels: 300, imageLongSide: 1600, outline: [[0.1, 0.2], [0.3, 0.2], [0.3, 0.3], [0.1, 0.3]],
                               isBrass: true, candidates: 0, size: [29.7, 9.9], matches: ["9x19 mm"])
@@ -152,6 +153,15 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(p.format, TrainingCapture.format)
         XCTAssertFalse(p.device.isEmpty)
         XCTAssertTrue(p.system.hasPrefix("iOS "))
+    }
+
+    /// Shots from before the focus was recorded (the example package's) still read, without it.
+    func testOlderShotsHaveNoFocus() throws {
+        let root = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "Captures", withExtension: nil))
+        let saved = try XCTUnwrap(CaptureStore(root: root).packages().first { $0.url.lastPathComponent == "9x19-mm-example" })
+        let shot = try XCTUnwrap(saved.shots.first).shot
+        XCTAssertNil(shot.focus)
+        XCTAssertEqual(shot.photo, "photo.jpg")
     }
 
     /// The analysis stored with a shot is what the results screen shows: the example package's

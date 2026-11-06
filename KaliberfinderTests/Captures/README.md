@@ -12,7 +12,8 @@ their photos in `../Golden` (see its README).
   package.json            calibre (catalogue id), part (cartridge | emptyCase), note, device, iOS, app version
   01/
     shot.json             source, EXIF orientation, depth map size and accuracy, camera calibration,
-                          LiDAR table distance and focal length, gravity and tilt, the app's analysis then
+                          LiDAR table distance and focal length, gravity and tilt, closest focus
+                          distance and lens position, the app's analysis then
     photo.heic | .jpg     the photo exactly as delivered (EXIF kept)
     depth.f32             LiDAR depth, Float32 little-endian, metres, row by row (photo's stored pixel frame)
     vision-instances.png  Vision foreground instances, 8-bit label per pixel, 0 = background (upright photo, 1600 px)
