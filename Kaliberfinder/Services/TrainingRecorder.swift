@@ -58,7 +58,7 @@ enum TrainingRecorder {
     static func analyse(_ image: UIImage, scale: DepthScale?, mode: ScanMode) -> CaptureShot.Analysis {
         let analysis = PhotoAnalyzer.analyzeNow(image)
         let size = try? analysis.size(depth: scale).get()
-        let matches = Matcher.rank(shape: analysis.shape, size: size, mode: mode, brass: analysis.isBrass, limit: 5)
+        let matches = Matcher.rank(shape: analysis.shapeAtAxis(depth: scale), size: size, mode: mode, brass: analysis.isBrass, limit: 5)
         return .init(aspect: analysis.shape?.aspect, lengthPixels: analysis.lengthPixels, imageLongSide: analysis.imageLongSide,
                      outline: analysis.outline?.map { [Double($0.x), Double($0.y)] }, isBrass: analysis.isBrass,
                      candidates: analysis.candidates.count, size: size.map { [$0.length, $0.diameter] },

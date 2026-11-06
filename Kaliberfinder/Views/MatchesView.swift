@@ -178,7 +178,7 @@ struct MatchesView: View {
         revealed = false
         guard let analysis else { ranked = .none; return }
         let size = try? analysis.size(depth: depth).get()
-        ranked = Matcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), shape: analysis.shape,
+        ranked = Matcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), shape: analysis.shapeAtAxis(depth: depth),
                                     size: size, mode: mode, brass: analysis.isBrass)
     }
 

@@ -76,7 +76,7 @@ enum Evaluation {
     static func shot(_ name: String, analysis: PhotoAnalysis, depth: DepthScale?, package: CapturePackage,
                      source: Source = .phone) -> Shot {
         let size = try? analysis.size(depth: depth).get()
-        let ranked = Matcher.rank(shape: analysis.shape, size: size, mode: .auto, cartridges: CartridgeCatalog.all,
+        let ranked = Matcher.rank(shape: analysis.shapeAtAxis(depth: depth), size: size, mode: .auto, cartridges: CartridgeCatalog.all,
                                   brass: analysis.isBrass, limit: .max)
         let rank = ranked.firstIndex { $0.cartridge.id == package.calibre }.map { $0 + 1 }
         let part = analysis.shape.map { ScanMode.auto.part(for: $0) == package.scanMode.part(for: $0) } ?? false
