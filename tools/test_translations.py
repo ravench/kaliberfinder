@@ -44,6 +44,19 @@ class TranslationTests(unittest.TestCase):
     def test_share_extension_texts_pair_up(self):
         self.assertEqual(T["Das Foto konnte nicht übernommen werden."][FR], "Impossible de recevoir la photo.")
 
+    def test_no_verbatim_german_in_the_views(self):
+        """Every literal shown to the user goes through the string table, the developer screen too."""
+        views = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Kaliberfinder", "Views")
+        for name in os.listdir(views):
+            for i, line in enumerate(open(os.path.join(views, name)), 1):
+                literal = re.search(r'Text\(verbatim:\s*"([^"]*)"', line)
+                text = re.sub(r"\\\([^)]*\)", "", literal.group(1)) if literal else ""  # interpolations are data
+                self.assertFalse(re.search("[A-Za-zÄÖÜäöü]{2}", text), f"{name}:{i}: {line.strip()}")
+
+    def test_copyright_line_names_the_licence(self):
+        for value in T["© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0"]:
+            self.assertIn("PolyForm Noncommercial 1.0.0", value)
+
     def test_placeholders_survive_translation(self):
         for key, values in T.items():
             for value in values:
