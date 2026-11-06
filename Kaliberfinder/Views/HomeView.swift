@@ -16,6 +16,12 @@ struct HomeView: View {
     @State private var photo: PickedPhoto?
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
+    private let canTakePhoto: Bool
+
+    /// `canTakePhoto`: tests lay out a phone's home screen on the simulator, which has no camera.
+    init(canTakePhoto: Bool = LiDARCamera.isAvailable || CameraPicker.isAvailable) {
+        self.canTakePhoto = canTakePhoto
+    }
 
     var body: some View {
         List {
@@ -23,7 +29,7 @@ struct HomeView: View {
                 switch section {
                 case .photo:
                     Section {
-                        if LiDARCamera.isAvailable || CameraPicker.isAvailable {
+                        if canTakePhoto {
                             Button { showCamera = true } label: {
                                 Label("Patrone fotografieren", systemImage: "camera")
                             }
@@ -66,6 +72,8 @@ struct HomeView: View {
                 }
             }
         }
+        // Scrolls only when the screen is too small for it: otherwise a drag just stretches and shrinks the large title.
+        .scrollBounceBehavior(.basedOnSize)
         .navigationTitle("Kaliberfinder")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
