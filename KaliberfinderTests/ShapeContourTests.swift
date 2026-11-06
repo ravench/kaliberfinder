@@ -44,8 +44,8 @@ final class ShapeContourTests: XCTestCase {
 
     /// The polygon for a cartridge, checked against the silhouette: it covers about the silhouette's
     /// area (straight lines cut a round bullet nose a little; far less than its box when the shape
-    /// narrows), and no corner lies far off its edge
-    /// (a pointed tip's corner sits up to half a slice ahead of the last silhouette point).
+    /// narrows), and no corner lies more than 1 mm off its edge (the straight lines are fitted,
+    /// and the neck's width runs on over a slimmer bullet).
     private func check(_ id: String, caseOnly: Bool, angle: Double) throws -> (polygon: ShapeContour, boxArea: Double, silhouetteArea: Double) {
         let c = try cartridge(id)
         let (points, _, _) = silhouette(c, caseOnly: caseOnly, angle: angle)
@@ -58,7 +58,7 @@ final class ShapeContourTests: XCTestCase {
         XCTAssertEqual(area(polygon.points), silhouetteArea, accuracy: 0.1 * silhouetteArea, "\(id) angle \(angle)")
         for corner in polygon.points {
             let nearest = points.map { hypot($0.x - corner.x, $0.y - corner.y) }.min() ?? .infinity
-            XCTAssertLessThan(nearest, 5 * pixelSize, "\(id) angle \(angle)")
+            XCTAssertLessThan(nearest / ppm, 1, "\(id) angle \(angle)")
         }
         let boxArea = hypot(box[1].x - box[0].x, box[1].y - box[0].y) * hypot(box[3].x - box[0].x, box[3].y - box[0].y)
         return (polygon, boxArea, silhouetteArea)
