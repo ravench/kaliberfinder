@@ -193,6 +193,16 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn(pr_screens.MARKER, self.workflow)
         self.assertIn("PATCH", self.workflow)
 
+    def test_images_go_to_app_screens_with_a_deploy_key(self):
+        # The images stay out of this repo's history: ravench/app-screens holds them.
+        comment = self.workflow.split("name: Comment on the pull request")[1]
+        self.assertIn("SCREENS_REPO: ravench/app-screens", comment)
+        self.assertIn("SCREENS_BRANCH: ${{ github.event.repository.name }}/pr-screens", comment)
+        self.assertIn("secrets.SCREENS_DEPLOY_KEY", comment)
+        self.assertIn('git remote add origin "git@github.com:${SCREENS_REPO}.git"', comment)
+        self.assertIn("https://raw.githubusercontent.com/${SCREENS_REPO}/", comment)
+        self.assertNotIn("contents: write", self.workflow)
+
     def test_tour_exists_and_matches_the_comment_hint(self):
         self.assertTrue(os.path.exists(os.path.join(ROOT, pr_screens.TOUR)))
 
