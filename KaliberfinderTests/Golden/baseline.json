@@ -1,9 +1,9 @@
 {
   "scores" : {
     "neck" : 80,
-    "part" : 57.5,
-    "top1" : 10,
-    "top5" : 27.5
+    "part" : 62.5,
+    "top1" : 17.5,
+    "top5" : 32.5
   },
   "shots" : {
     "45-acp-20261105-115201/02" : {
@@ -17,7 +17,7 @@
     },
     "45-acp-20261105-115201/08" : {
       "part" : true,
-      "rank" : 4
+      "rank" : 6
     },
     "45-acp-20261105-115201/09" : {
       "part" : false
@@ -26,7 +26,8 @@
       "part" : false
     },
     "45-acp-20261105-115201/11" : {
-      "part" : false
+      "part" : true,
+      "rank" : 1
     },
     "45-acp-20261105-224631/04" : {
       "part" : true,
@@ -99,15 +100,17 @@
     },
     "6-mm-br-norma-20261105-115031/08" : {
       "neck" : false,
-      "part" : false
+      "part" : true
     },
     "6-mm-br-norma-20261105-115031/09" : {
       "neck" : true,
-      "part" : true
+      "part" : true,
+      "rank" : 1
     },
     "6-mm-br-norma-20261105-115031/10" : {
       "neck" : true,
-      "part" : true
+      "part" : true,
+      "rank" : 1
     },
     "6-mm-br-norma-20261105-115031/11" : {
       "neck" : true,
@@ -116,12 +119,12 @@
     "7-5x55-mm-swiss-gp-11-20261105-114838/01" : {
       "neck" : true,
       "part" : true,
-      "rank" : 13
+      "rank" : 16
     },
     "7-5x55-mm-swiss-gp-11-20261105-114838/02" : {
       "neck" : true,
       "part" : true,
-      "rank" : 10
+      "rank" : 11
     },
     "7-5x55-mm-swiss-gp-11-20261105-114838/03" : {
       "neck" : true,
