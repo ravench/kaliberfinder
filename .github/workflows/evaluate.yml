@@ -1,0 +1,91 @@
+# Evaluate matching (tools/evaluate): the app's photo analysis on every shot of the private
+# training repo, on a Mac, with a report of how often the right calibre comes first. Started by
+# hand from the Actions tab on a branch (for example a tuning pull request's); compares with main
+# or another branch. Pull requests that change the tool run it too. The report holds shot names
+# and numbers only, never a photo: this repo and its run downloads are public.
+name: Evaluate matching
+on:
+  workflow_dispatch:
+    inputs:
+      compare:
+        description: Branch or commit to compare with (empty for none)
+        default: main
+      holdout:
+        description: The held-back shots instead of the tuning shots
+        type: boolean
+        default: false
+  pull_request:
+    paths:
+      - tools/evaluate/**
+      - KaliberfinderTests/Evaluation.swift
+      - .github/workflows/evaluate.yml
+# A newer push to the pull request, or a newer run started by hand on the branch, cancels this one.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash -eo pipefail {0}
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: macos-26
+    env:
+      # A fine-grained token that can only read ravench/kaliberfinder-training. Without it (forks
+      # get no secrets) the job evaluates the public golden set instead.
+      TRAINING_TOKEN: ${{ secrets.KALIBERFINDER_TRAINING_TOKEN }}
+      COMPARE: ${{ github.event_name == 'pull_request' && github.base_ref || inputs.compare }}
+      HOLDOUT: ${{ inputs.holdout && '--holdout' || '' }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # The golden set's masks, for runs without the training repo.
+          lfs: true
+          # Every branch, for the comparison.
+          fetch-depth: 0
+      - uses: actions/checkout@v5
+        if: env.TRAINING_TOKEN != ''
+        with:
+          repository: ravench/kaliberfinder-training
+          token: ${{ secrets.KALIBERFINDER_TRAINING_TOKEN }}
+          path: training
+          lfs: true
+      - name: Shots
+        run: |
+          if [ -n "$TRAINING_TOKEN" ]; then
+            echo "SHOTS=$PWD/training" >> "$GITHUB_ENV"
+          else
+            echo "::notice::No KALIBERFINDER_TRAINING_TOKEN secret: evaluating the golden set only"
+            echo "SHOTS=$PWD/KaliberfinderTests/Golden" >> "$GITHUB_ENV"
+          fi
+          echo "REPORT=$RUNNER_TEMP/evaluation" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/evaluation"
+      - name: Evaluate ${{ env.COMPARE }} for the comparison
+        if: env.COMPARE != ''
+        # A branch from before the tool, or one where it fails, just gives no comparison.
+        continue-on-error: true
+        env:
+          # Its golden set is not needed: the same shots as below are evaluated.
+          GIT_LFS_SKIP_SMUDGE: 1
+        run: |
+          git worktree add -q "$RUNNER_TEMP/before" "origin/$COMPARE" || git worktree add -q "$RUNNER_TEMP/before" "$COMPARE"
+          if [ ! -x "$RUNNER_TEMP/before/tools/evaluate/build.sh" ]; then
+            echo "::notice::$COMPARE has no evaluation tool yet: no comparison"
+            exit 0
+          fi
+          "$RUNNER_TEMP/before/tools/evaluate/build.sh"
+          "$RUNNER_TEMP/before/.build/evaluate/evaluate" "$SHOTS" $HOLDOUT --json "$RUNNER_TEMP/before.json" > /dev/null
+      - run: tools/evaluate/build.sh
+      - name: Evaluate
+        run: |
+          ARGS="--json $REPORT/results.json --report $REPORT/report.md"
+          if [ -f "$RUNNER_TEMP/before.json" ]; then ARGS="$ARGS --compare $RUNNER_TEMP/before.json"; fi
+          .build/evaluate/evaluate "$SHOTS" $HOLDOUT $ARGS > /dev/null
+          cat "$REPORT/report.md" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v5
+        if: "!cancelled()"
+        with:
+          name: evaluation
+          # The report and the results: names and numbers, no photos.
+          path: ${{ env.REPORT }}
