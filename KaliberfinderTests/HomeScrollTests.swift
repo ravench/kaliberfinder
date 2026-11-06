@@ -17,7 +17,8 @@ final class HomeScrollTests: XCTestCase {
     func testHomeFitsAnIPhone17ProAndDoesNotScroll() throws {
         let list = try homeList()
         // Raven's phone and the simulator CI tests on.
-        try XCTSkipIf(list.bounds.height < 874, "Needs an iPhone 17 Pro or larger, this is \(list.bounds.size)")
+        let screen = try XCTUnwrap(window).bounds.size
+        try XCTSkipIf(screen.height < 874, "Needs an iPhone 17 Pro or larger, this is \(screen)")
         XCTAssertLessThanOrEqual(list.contentSize.height, room(in: list), "The home screen no longer fits: it scrolls again")
         XCTAssertFalse(canDrag(list))
     }
@@ -28,13 +29,14 @@ final class HomeScrollTests: XCTestCase {
         XCTAssertTrue(canDrag(list))
     }
 
-    /// Lays out the home screen as on a phone with a camera and returns its list.
+    /// Lays out the home screen in German, as on a phone with a camera, and returns its list.
     private func homeList(textSize: DynamicTypeSize = .large) throws -> UIScrollView {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         let window = UIWindow(windowScene: scene)
         let home = NavigationStack { HomeView(canTakePhoto: true) }
             .environmentObject(ScaleModel())
             .environment(\.dynamicTypeSize, textSize)
+            .environment(\.locale, Locale(identifier: "de_CH"))
         window.rootViewController = UIHostingController(rootView: home)
         window.makeKeyAndVisible()
         self.window = window
@@ -59,6 +61,6 @@ final class HomeScrollTests: XCTestCase {
     }
 
     private func canDrag(_ list: UIScrollView) -> Bool {
-        list.isScrollEnabled && (list.contentSize.height > room(in: list) || list.alwaysBounceVertical && list.bounces)
+        list.isScrollEnabled && (list.contentSize.height > room(in: list) || (list.alwaysBounceVertical && list.bounces))
     }
 }
