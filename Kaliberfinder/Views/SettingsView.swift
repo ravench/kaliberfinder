@@ -57,7 +57,11 @@ struct SettingsView: View {
                     Text("© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                        .onTapGesture(count: 5) { trainingCapture.toggle() }
+                        .onTapGesture(count: 5) {
+                            trainingCapture.toggle()
+                            // Hiding the developer section also turns its outline colours off.
+                            if !trainingCapture { partColours = false }
+                        }
                 }
                 }
             }

@@ -99,7 +99,10 @@ final class ShapeContourTests: XCTestCase {
         let square = [Point(x: 0, y: 0), Point(x: 1, y: 0), Point(x: 1, y: 1), Point(x: 0, y: 1)]
         XCTAssertNil(ShapeContour.polygon([Point(x: 1, y: 1)], pixelSize: 1, shape: shape, box: []))
         XCTAssertNil(ShapeContour.polygon([], pixelSize: 1, shape: shape, box: square))
-        XCTAssertNil(ShapeContour.polygon([Point(x: 1, y: 1)], pixelSize: 1, shape: ShapeMeasurement(aspect: 1, profile: [1]), box: square))
+        // Seen end on: round, so no outline even with a full set of widths.
+        let endView = ShapeMatcher.measurement(aspect: 1, relativeWidths: Array(repeating: 1, count: ShapeMatcher.bins))
+        XCTAssertTrue(endView.isEndView)
+        XCTAssertNil(ShapeContour.polygon([Point(x: 1, y: 1)], pixelSize: 1, shape: endView, box: square))
     }
 
     func testPartsKeepTheirEdgesWhenMoved() {
