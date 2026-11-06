@@ -79,23 +79,30 @@ func part(_ full: CGImage, region: CGRect) -> CGImage? {
     return context.makeImage()
 }
 
+/// How the analysis looked at the shot a second time.
+enum SecondLook { case none, again, picked }
+
 /// The phone's second look (`PhotoAnalyzer.secondLook`): the cartridge cut out of the full-size photo
-/// and analysed again, with Vision on the Mac (the phone's mask of it isn't stored). Nil when the
-/// first look found nothing to look at again or the second look kept it.
-func secondLook(_ first: PhotoAnalysis, photo url: URL) -> PhotoAnalysis? {
-    guard let region = PhotoAnalyzer.secondLookRegion(of: first), let full = uprightPhoto(url, maxSide: 1_000_000),
+/// and analysed again, with Vision on the Mac (the phone's mask of it isn't stored). Where several
+/// cartridges compete, the phone waits for the user to pick one and looks at that one alone
+/// (`focusingOn:`): here the one the first look measured is picked. Nil when the first look found nothing
+/// to look at again or the second look kept it.
+func secondLook(_ first: PhotoAnalysis, photo url: URL) -> (PhotoAnalysis, SecondLook)? {
+    let picked = first.hasSeveralObjects ? first.outline.flatMap(PhotoAnalyzer.focusRegion(around:)) : nil
+    guard let region = picked ?? PhotoAnalyzer.secondLookRegion(of: first), let full = uprightPhoto(url, maxSide: 1_000_000),
           let image = part(full, region: region) else { return nil }
     let second = PhotoAnalyzer.inPhoto(PhotoAnalyzer.analyzeNow(image), region: region,
                                        photoSize: CGSize(width: full.width, height: full.height))
+    if picked != nil { return (second, .picked) }
     let looked = PhotoAnalyzer.secondLook(first, then: second)
-    return looked.outline == first.outline ? nil : looked
+    return looked.outline == first.outline ? nil : (looked, .again)
 }
 
 /// What the phone does with the shot: its own Vision mask where it stored one, the colour cut-out
 /// where its Vision found nothing, and Vision on the Mac for photos it never analysed; then the second
 /// look, with Vision on the Mac. Without the photo (the golden set) the mask is replayed with the
 /// phone's colour test, as GoldenSetTests does, and there is no second look.
-func analyse(_ entry: SavedShot, macVision: Bool, oneLook: Bool) -> (PhotoAnalysis, Evaluation.Source, secondLook: Bool) {
+func analyse(_ entry: SavedShot, macVision: Bool, oneLook: Bool) -> (PhotoAnalysis, Evaluation.Source, SecondLook) {
     let shot = entry.shot, path = entry.url.path
     let labels = CaptureStore.mask(of: shot, at: entry.url)
     if shot.mask != nil && labels == nil { fail("\(path): Vision mask unreadable (is Git LFS installed?)") }
@@ -106,7 +113,7 @@ func analyse(_ entry: SavedShot, macVision: Bool, oneLook: Bool) -> (PhotoAnalys
         }
         let analysis = PhotoAnalyzer.analyze(instanceLabels: labels, mask: (info.width, info.height), image: (width, height),
                                              isBrass: shot.analysis?.isBrass ?? true)
-        return (analysis, .phone, false)
+        return (analysis, .phone, .none)
     }
     guard let photo = uprightPhoto(photoURL) else { fail("\(path): photo unreadable (is Git LFS installed?)") }
     let vision: PhotoAnalyzer.VisionResult?, source: Evaluation.Source
@@ -122,7 +129,7 @@ func analyse(_ entry: SavedShot, macVision: Bool, oneLook: Bool) -> (PhotoAnalys
     }
     let first = PhotoAnalyzer.analysis(of: photo, vision: vision)
     let looked = oneLook ? nil : secondLook(first, photo: photoURL)
-    return (looked ?? first, vision == nil ? .colour : source, looked != nil)
+    return (looked?.0 ?? first, vision == nil ? .colour : source, looked?.1 ?? .none)
 }
 
 let options = Options(Array(CommandLine.arguments.dropFirst()))
@@ -139,14 +146,16 @@ guard !packages.isEmpty else { fail("no capture packages in \(root.path)\n\n\(us
 
 let started = Date()
 var shots: [Evaluation.Shot] = []
-var secondLooks = 0
+var secondLooks = 0, byColour = 0, picks = 0
 for package in packages {
     for entry in package.shots {
         let name = "\(package.url.lastPathComponent)/\(entry.url.lastPathComponent)"
         let (analysis, source, looked) = analyse(entry, macVision: options.macVision, oneLook: options.oneLook)
         let shot = Evaluation.shot(name, analysis: analysis, depth: entry.shot.scale?.depthScale, package: package.package, source: source)
-        if looked { secondLooks += 1 }
-        let look = looked ? ", second look" : ""
+        if looked == .again { secondLooks += 1 }
+        if looked == .again && analysis.byColour { byColour += 1 }
+        if looked == .picked { picks += 1 }
+        let look = looked == .none ? "" : looked == .picked ? ", picked" : ", second look"
         FileHandle.standardError.write(Data("\(name) rank \(shot.result.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look))\n".utf8))
         shots.append(shot)
     }
@@ -159,7 +168,8 @@ let before = options.compare.map { url -> Evaluation.Baseline in
     return baseline
 }
 let kind = options.holdout ? "held-back" : "tuning"
-let looks = options.oneLook ? "one look only" : "second look on \(secondLooks)"
+let looks = options.oneLook ? "one look only"
+    : "second look on \(secondLooks), \(byColour) of them by the colour cut-out; first of several cartridges picked on \(picks)"
 let report = Evaluation.report(shots, title: "Matching on \(shots.count) \(kind) shots (\(looks))", before: before)
 print(report)
 do {

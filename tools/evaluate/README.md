@@ -40,9 +40,12 @@ The phone's path as far as the shot allows:
 Then, as on the phone, the **second look**: the cartridge the first look found is cut out of the
 full-size photo (with the margin of a picked cartridge) and analysed again, so Vision's 512 × 512 mask
 covers it several times finer. The phone doesn't store its mask of the second look, so the tool runs
-Vision on the Mac there, with the colour cut-out where it finds nothing. The report's title says on how
-many shots the second look was taken; `--one-look` leaves it out. A golden shot has no photo and gets
-the first look only.
+Vision on the Mac there, with the colour cut-out where it finds nothing (only where the first look was
+the colour cut-out too). Where several cartridges compete, the phone asks which one to identify and
+looks at that one alone: the tool picks the one the first look measured. The report's title says on how many
+shots the second look was taken (and on how many of them by the colour cut-out) and on how many a
+cartridge was picked; `--one-look` leaves both out. «Outline from» in the report is where the
+first look found the cartridge. A golden shot has no photo and gets the first look only.
 
 `--mac-vision` also runs Vision on the Mac for the second kind, to see what a working Vision would
 change there. The Mac's Vision is close to the phone's but not always the same.

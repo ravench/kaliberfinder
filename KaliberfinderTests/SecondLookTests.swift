@@ -67,6 +67,18 @@ final class SecondLookTests: XCTestCase {
         XCTAssertEqual(PhotoAnalyzer.secondLook(first, then: PhotoAnalysis(shape: nil)).outline, first.outline)
         let beside = try analysis(frame: CGRect(x: 0.62, y: 0.45, width: 0.1, height: 0.05))
         XCTAssertEqual(PhotoAnalyzer.secondLook(first, then: beside).outline, first.outline, "another object in the margin")
+        var cutOut = try analysis(frame: CGRect(x: 0.42, y: 0.46, width: 0.16, height: 0.03))
+        cutOut.byColour = true
+        XCTAssertEqual(PhotoAnalyzer.secondLook(first, then: cutOut).outline, first.outline, "the colour cut-out never replaces Vision")
+        var firstByColour = first
+        firstByColour.byColour = true
+        XCTAssertEqual(PhotoAnalyzer.secondLook(firstByColour, then: cutOut).outline, cutOut.outline, "a cut-out improves a cut-out")
+    }
+
+    func testNoSecondLookWhileSeveralCartridgesCompete() throws {
+        let competitors = [CGRect(x: 0.1, y: 0.1, width: 0.2, height: 0.1), CGRect(x: 0.6, y: 0.6, width: 0.2, height: 0.1)]
+        XCTAssertNil(PhotoAnalyzer.secondLookRegion(of: try analysis(frame: CGRect(x: 0.1, y: 0.1, width: 0.2, height: 0.1),
+                                                                     candidates: competitors)))
     }
 
     func testAFrameContainsItsInsideOnly() {
@@ -74,6 +86,30 @@ final class SecondLookTests: XCTestCase {
         XCTAssertTrue(PhotoAnalyzer.contains(turned, CGPoint(x: 0.5, y: 0.5)))
         XCTAssertTrue(PhotoAnalyzer.contains(Array(turned.reversed()), CGPoint(x: 0.5, y: 0.5)), "either way round")
         XCTAssertFalse(PhotoAnalyzer.contains(turned, CGPoint(x: 0.15, y: 0.15)))
+    }
+
+    /// A 4000 × 3000 photo of a small brass-coloured rod: the second look analyses it at full size, so
+    /// sizes compare with the whole photo at full size (the first look saw it at 1600 px), and its frame
+    /// lies on the rod in the whole photo.
+    func testALargePhotoIsLookedAtAgainAtFullSize() async throws {
+        let size = CGSize(width: 4000, height: 3000)
+        let rod = CGRect(x: 1800, y: 1400, width: 300, height: 100)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let image = UIGraphicsImageRenderer(size: size, format: format).image { context in
+            UIColor(white: 0.45, alpha: 1).setFill()
+            context.fill(CGRect(origin: .zero, size: size))
+            UIColor(red: 0.85, green: 0.65, blue: 0.25, alpha: 1).setFill()
+            context.fill(rod)
+        }
+        let analysis = await PhotoAnalyzer.analyze(image)
+        XCTAssertEqual(analysis.imageLongSide, 4000, accuracy: 1, "measured in the full-size part")
+        XCTAssertEqual(try XCTUnwrap(analysis.lengthPixels), 300, accuracy: 8)
+        XCTAssertEqual(try XCTUnwrap(analysis.shape?.aspect), 3, accuracy: 0.2)
+        let outline = try XCTUnwrap(analysis.outline)
+        let centre = CGPoint(x: outline.map(\.x).reduce(0, +) / 4 * size.width, y: outline.map(\.y).reduce(0, +) / 4 * size.height)
+        XCTAssertEqual(centre.x, rod.midX, accuracy: 6)
+        XCTAssertEqual(centre.y, rod.midY, accuracy: 6)
     }
 
     /// The real .45 ACP photo goes through both looks: the frame still lies on the cartridge and

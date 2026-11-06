@@ -21,7 +21,8 @@ extension PhotoAnalyzer {
     /// The part `region` of the photo (fractions of the upright photo) cut out at full size and
     /// analysed on its own (one look), as an analysis of the whole photo (`inPhoto`).
     private static func analyzeNow(_ image: UIImage, in region: CGRect) -> PhotoAnalysis {
-        inPhoto(firstLook(cropped(image, to: region)), region: region, photoSize: image.size)
+        guard let part = upright(image, region: region, maxSide: maxDimension) else { return PhotoAnalysis(shape: nil) }
+        return inPhoto(analyzeNow(part), region: region, photoSize: image.size)
     }
 
     /// The part of the photo inside `region` (fractions of the upright photo), upright.
@@ -50,16 +51,22 @@ extension PhotoAnalyzer {
         return analyzeNow(cgImage)
     }
 
-    /// The image scaled down and with its orientation applied, so pixels are upright.
-    private static func upright(_ image: UIImage, maxSide: CGFloat) -> CGImage? {
-        let longSide = max(image.size.width, image.size.height)
+    /// The part `region` of the image (fractions, by default all of it) with its orientation applied,
+    /// so pixels are upright, and scaled down to at most `maxSide` pixels: drawn in one go, so a part of
+    /// a full-size photo is never rendered at full size first.
+    private static func upright(_ image: UIImage, region: CGRect = CGRect(x: 0, y: 0, width: 1, height: 1),
+                                maxSide: CGFloat) -> CGImage? {
+        let crop = CGRect(x: region.minX * image.size.width, y: region.minY * image.size.height,
+                          width: region.width * image.size.width, height: region.height * image.size.height)
+        let longSide = max(crop.width, crop.height)
         guard longSide > 0 else { return nil }
         let factor = min(1, maxSide / longSide)
-        let size = CGSize(width: image.size.width * factor, height: image.size.height * factor)
+        let size = CGSize(width: crop.width * factor, height: crop.height * factor)
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
         return UIGraphicsImageRenderer(size: size, format: format).image { _ in
-            image.draw(in: CGRect(origin: .zero, size: size))
+            image.draw(in: CGRect(x: -crop.minX * factor, y: -crop.minY * factor,
+                                  width: image.size.width * factor, height: image.size.height * factor))
         }.cgImage
     }
 }
