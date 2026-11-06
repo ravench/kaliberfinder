@@ -34,7 +34,7 @@ jobs:
     env:
       # A fine-grained token that can only read ravench/kaliberfinder-training. Without it (forks
       # get no secrets) the job evaluates the public golden set instead.
-      TRAINING_TOKEN: ${{ secrets.KALIBERFINDER_TRAINING_TOKEN }}
+      TRAINING_TOKEN: ${{ secrets.TRAINING_DATA_TOKEN }}
       COMPARE: ${{ github.event_name == 'pull_request' && github.base_ref || inputs.compare }}
       HOLDOUT: ${{ inputs.holdout && '--holdout' || '' }}
     steps:
@@ -48,7 +48,7 @@ jobs:
         if: env.TRAINING_TOKEN != ''
         with:
           repository: ravench/kaliberfinder-training
-          token: ${{ secrets.KALIBERFINDER_TRAINING_TOKEN }}
+          token: ${{ secrets.TRAINING_DATA_TOKEN }}
           path: training
           lfs: true
       - name: Shots
@@ -56,7 +56,7 @@ jobs:
           if [ -n "$TRAINING_TOKEN" ]; then
             echo "SHOTS=$PWD/training" >> "$GITHUB_ENV"
           else
-            echo "::notice::No KALIBERFINDER_TRAINING_TOKEN secret: evaluating the golden set only"
+            echo "::notice::No TRAINING_DATA_TOKEN secret: evaluating the golden set only"
             echo "SHOTS=$PWD/KaliberfinderTests/Golden" >> "$GITHUB_ENV"
           fi
           echo "REPORT=$RUNNER_TEMP/evaluation" >> "$GITHUB_ENV"

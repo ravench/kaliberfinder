@@ -19,7 +19,7 @@ class EvaluateWorkflowTests(unittest.TestCase):
     def test_it_reads_the_training_repo_with_its_own_token_and_lfs(self):
         text = EVALUATE.read_text()
         checkout = text.split("repository: ravench/kaliberfinder-training", 1)[1].split("\n      - ", 1)[0]
-        self.assertIn("token: ${{ secrets.KALIBERFINDER_TRAINING_TOKEN }}", checkout)
+        self.assertIn("token: ${{ secrets.TRAINING_DATA_TOKEN }}", checkout)
         self.assertIn("lfs: true", checkout)
 
     def test_only_the_report_is_uploaded(self):

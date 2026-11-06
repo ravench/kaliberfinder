@@ -54,7 +54,7 @@ case) right in automatic mode, and neck found on calibres with a clear neck.
 *Evaluate matching* (`.github/workflows/evaluate.yml`) runs the tool on a macOS runner: start it by
 hand from the Actions tab on a branch, for example a tuning pull request's. It compares with `main`
 (or the branch you name) and puts the report on the run's page and in its `evaluation` download.
-It checks out the training repo with the `KALIBERFINDER_TRAINING_TOKEN` secret, a fine-grained token
+It checks out the training repo with the `TRAINING_DATA_TOKEN` secret, a fine-grained token
 that can only read that repo's contents. Without the secret, as on forks, it evaluates the golden set.
 Pull requests that change the tool run it too.
 
