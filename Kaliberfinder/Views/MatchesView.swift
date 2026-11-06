@@ -27,7 +27,7 @@ struct MatchesView: View {
         List {
             Section {
                 let frames = Self.frames(overview: overview, measured: analysis, picking: needsPick)
-                CandidatePhotoView(photo: preview?.image ?? photo, candidates: frames.candidates, measured: frames.measured,
+                CandidatePhotoView(photo: preview?.image ?? photo, candidates: frames.candidates, measured: frames.measured, parts: frames.parts,
                                    region: preview?.region ?? CGRect(x: 0, y: 0, width: 1, height: 1),
                                    maxHeight: needsPick ? 420 : 220) { choose($0) }
                 if needsPick {
@@ -127,12 +127,14 @@ struct MatchesView: View {
     }
 
     /// Frames on the photo: the competing cartridges while the user picks one; afterwards, or when
-    /// there is only one, the outline of the silhouette that was measured (its box if there's none).
+    /// there is only one, the outline of the silhouette that was measured (its box if there's none),
+    /// with what found each of its edges.
     static func frames(overview: PhotoAnalysis?, measured: PhotoAnalysis?,
-                       picking: Bool) -> (candidates: [CGRect], measured: [CGPoint]?) {
-        if picking { return (overview?.candidates ?? [], nil) }
-        guard let measured, measured.shape != nil else { return ([], nil) }
-        return ([], measured.contour ?? measured.outline)
+                       picking: Bool) -> (candidates: [CGRect], measured: [CGPoint]?, parts: [ShapeContour.Part]) {
+        if picking { return (overview?.candidates ?? [], nil, []) }
+        guard let measured, measured.shape != nil else { return ([], nil, []) }
+        if let contour = measured.contour { return ([], contour.points, contour.parts) }
+        return ([], measured.outline, [])
     }
 
     /// Boxes around everything detected in the whole photo, for cropping the preview.

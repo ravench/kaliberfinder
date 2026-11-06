@@ -271,6 +271,11 @@ T = {
         "Developer feature. Tapping the copyright line five times hides it again.",
         "Fonction pour développeurs. Touchez cinq fois la ligne de copyright pour la masquer à nouveau.",
         "Funzione per sviluppatori. Tocca cinque volte la riga del copyright per nasconderla di nuovo."),
+    "Erkennung farbig zeigen": ("Show detection in colour", "Afficher la détection en couleur", "Mostra il rilevamento a colori"),
+    "Umriss auf dem Foto: grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Verjüngung des Körpers.": (
+        "Outline on the photo: green tip and base, purple bullet, orange neck and shoulder, light blue body taper.",
+        "Contour sur la photo : vert pointe et culot, violet projectile, orange collet et épaulement, bleu clair conicité du corps.",
+        "Contorno sulla foto: verde punta e fondello, viola palla, arancione colletto e spalla, azzurro conicità del corpo."),
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
     "Neue Aufnahmeserie": ("New capture series", "Nouvelle série de prises", "Nuova serie di scatti"),
     "Wähle das Kaliber, das du fotografierst, und mache mehrere Fotos davon. Gespeichert werden das Foto, die LiDAR-Tiefe, die Kameradaten und die Vision-Maske. Teile die Serie als ZIP, sie kommt in die Tests.": (

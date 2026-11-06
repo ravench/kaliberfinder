@@ -46,16 +46,17 @@ final class ShapeContourTests: XCTestCase {
     /// area (straight lines cut a round bullet nose a little; far less than its box when the shape
     /// narrows), and no corner lies far off its edge
     /// (a pointed tip's corner sits up to half a slice ahead of the last silhouette point).
-    private func check(_ id: String, caseOnly: Bool, angle: Double) throws -> (polygon: [CGPoint], boxArea: Double, silhouetteArea: Double) {
+    private func check(_ id: String, caseOnly: Bool, angle: Double) throws -> (polygon: ShapeContour, boxArea: Double, silhouetteArea: Double) {
         let c = try cartridge(id)
         let (points, _, _) = silhouette(c, caseOnly: caseOnly, angle: angle)
         let pixelSize = ppm * step
         let box = try XCTUnwrap(ShapeMatcher.orientedBox(points, pixelSize: pixelSize))
         let shape = try XCTUnwrap(ShapeMatcher.measure(points, pixelSize: pixelSize), id)
         let polygon = try XCTUnwrap(ShapeContour.polygon(points, pixelSize: pixelSize, shape: shape, box: box), id)
+        XCTAssertEqual(polygon.parts.count, polygon.points.count, id)
         let silhouetteArea = Double(points.count) * pixelSize * pixelSize
-        XCTAssertEqual(area(polygon), silhouetteArea, accuracy: 0.1 * silhouetteArea, "\(id) angle \(angle)")
-        for corner in polygon {
+        XCTAssertEqual(area(polygon.points), silhouetteArea, accuracy: 0.1 * silhouetteArea, "\(id) angle \(angle)")
+        for corner in polygon.points {
             let nearest = points.map { hypot($0.x - corner.x, $0.y - corner.y) }.min() ?? .infinity
             XCTAssertLessThan(nearest, 5 * pixelSize, "\(id) angle \(angle)")
         }
@@ -68,8 +69,8 @@ final class ShapeContourTests: XCTestCase {
             let (polygon, boxArea, silhouetteArea) = try check("7.5x55 mm Swiss (GP 11)", caseOnly: true, angle: angle)
             // The neck and shoulder are cut out of the box.
             XCTAssertLessThan(silhouetteArea, 0.95 * boxArea, "angle \(angle)")
-            // Straight lines only: mouth, neck end, shoulder, head on each side.
-            XCTAssertEqual(polygon.count, 8, "angle \(angle)")
+            // Straight lines only: mouth, neck end, shoulder, head on each side; each edge from its detection.
+            XCTAssertEqual(polygon.parts, [.neck, .neck, .body, .end, .body, .neck, .neck, .end], "angle \(angle)")
         }
     }
 
@@ -79,12 +80,18 @@ final class ShapeContourTests: XCTestCase {
         // The pointed bullet: the outline comes close to the tip.
         let gp11 = try cartridge("7.5x55 mm Swiss (GP 11)")
         let tip = pixel(gp11.outline.width / 2, 0, angle: 0.7)
-        let nearest = polygon.map { hypot($0.x - tip.x, $0.y - tip.y) }.min() ?? .infinity
+        let nearest = polygon.points.map { hypot($0.x - tip.x, $0.y - tip.y) }.min() ?? .infinity
         XCTAssertLessThan(nearest / ppm, 1.5)
+        // The bullet's edges start each side, from the tip, and the tip is an end.
+        XCTAssertEqual(polygon.parts.first, .bullet)
+        XCTAssertEqual(polygon.parts.last, .end)
+        XCTAssertTrue(polygon.parts.contains(.neck))
     }
 
     func testStraightCartridge() throws {
-        _ = try check("9x19 mm", caseOnly: false, angle: 2.0)
+        let (polygon, _, _) = try check("9x19 mm", caseOnly: false, angle: 2.0)
+        XCTAssertFalse(polygon.parts.contains(.neck))
+        XCTAssertTrue(polygon.parts.contains(.body))
     }
 
     func testNoOutlineWithoutABoxOrForAnEndView() throws {
@@ -95,9 +102,21 @@ final class ShapeContourTests: XCTestCase {
         XCTAssertNil(ShapeContour.polygon([Point(x: 1, y: 1)], pixelSize: 1, shape: ShapeMeasurement(aspect: 1, profile: [1]), box: square))
     }
 
+    func testPartsKeepTheirEdgesWhenMoved() {
+        let contour = ShapeContour(points: [CGPoint(x: 0.5, y: 0.5), CGPoint(x: 1, y: 0)], parts: [.body, .end])
+        let moved = contour.map { CGPoint(x: 0.1 + $0.x * 0.5, y: 0.2 + $0.y * 0.5) }
+        XCTAssertEqual(moved.points, [CGPoint(x: 0.35, y: 0.45), CGPoint(x: 0.6, y: 0.2)])
+        XCTAssertEqual(moved.parts, [.body, .end])
+        // Coloured drawing: each part's edges only, the last edge back to the first corner.
+        let corners = [CGPoint(x: 0, y: 0), CGPoint(x: 10, y: 0), CGPoint(x: 10, y: 5)]
+        XCTAssertEqual(CandidatePhotoView.path(edges: [2], of: corners).boundingRect, CGRect(x: 0, y: 0, width: 10, height: 5))
+        XCTAssertTrue(CandidatePhotoView.path(edges: [], of: corners).isEmpty)
+        XCTAssertEqual(Set(CandidatePhotoView.coloured.map(\.part)).count, 4)
+    }
+
     func testNoColourLegendUnderThePhoto() throws {
         let gp11 = try cartridge("7.5x55 mm Swiss (GP 11)")
-        let notes = MatchesView.notes(for: PhotoAnalysis(shape: ShapeMatcher.catalogue[gp11.id], contour: [.zero]), mode: .cartridge)
+        let notes = MatchesView.notes(for: PhotoAnalysis(shape: ShapeMatcher.catalogue[gp11.id], contour: ShapeContour(points: [.zero], parts: [.end])), mode: .cartridge)
         XCTAssertEqual(notes.count, 1)
         XCTAssertTrue(notes[0].contains("Flaschenhals".loc), notes[0])
     }

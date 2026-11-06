@@ -2,13 +2,39 @@ import CoreGraphics
 import Foundation
 
 /// The measured silhouette's outline, drawn over the photo in green (SHAPE-07): the detected bullet,
-/// neck and body taper as straight lines, joined into one outline.
-enum ShapeContour {
+/// neck and body taper as straight lines, joined into one outline. A hidden switch colours each
+/// edge by the detection it comes from.
+struct ShapeContour: Equatable {
+    /// What found an edge of the outline.
+    enum Part: Equatable {
+        /// The tip, case mouth or head: the ends of the measured silhouette.
+        case end
+        /// What lies in front of the case: its tip width, straight to the case.
+        case bullet
+        /// The neck and shoulder (`NeckShape`).
+        case neck
+        /// The body's taper, a straight line fitted to its slices.
+        case body
+    }
+
+    /// Hidden developer switch in the settings: colour each edge by its `Part` instead of all green.
+    static let partColoursKey = "outlinePartColours"
+
+    /// The outline's corners, in order.
+    var points: [CGPoint]
+    /// Where each edge comes from: edge `i` runs from `points[i]` to the next (the last back to the first).
+    var parts: [Part]
+
+    /// Every point passed through `transform`, e.g. from pixels to fractions of the photo.
+    func map(_ transform: (CGPoint) -> CGPoint) -> ShapeContour {
+        ShapeContour(points: points.map(transform), parts: parts)
+    }
+
     /// A closed polygon around the silhouette `points` (pixels, `pixelSize` apart) whose measurement
     /// is `shape`, inside `box`, the rotated box `ShapeMatcher.orientedBox` gives for them. From the
     /// tip (or case mouth): a straight line along the bullet, the neck and shoulder, the body's taper (a
     /// straight line fitted to its slices) down to the head, and back up the other side. Nil for an end view.
-    static func polygon(_ points: [Point], pixelSize: Double, shape: ShapeMeasurement, box: [Point]) -> [CGPoint]? {
+    static func polygon(_ points: [Point], pixelSize: Double, shape: ShapeMeasurement, box: [Point]) -> ShapeContour? {
         let bins = ShapeMatcher.bins
         guard box.count == 4, shape.widths.count == bins, !shape.isEndView, !points.isEmpty else { return nil }
         let c0 = box[0]
@@ -41,8 +67,8 @@ enum ShapeContour {
         let bodyEnd = bins - 1 - k
         var front = bodyEnd
         while front > 0 && w[front - 1] >= NeckShape.bodyFrom { front -= 1 }
-        // One side, from the tip to the head, as (fraction of the length, half width) pairs.
-        var side: [(Double, Double)] = []
+        // One side, from the tip to the head: (fraction of the length, half width, the edge to the next corner).
+        var side: [(f: Double, half: Double, part: Part)] = []
         var caseFrom = front
         if let neck = found?.0 {
             front = min(bodyEnd, neck.shoulderSlice + 1)
@@ -50,11 +76,11 @@ enum ShapeContour {
             caseFrom = neck.slices.lowerBound <= 2 ? 0 : neck.slices.lowerBound
             let start = Double(caseFrom) / Double(bins), end = Double(neck.slices.upperBound + 1) / Double(bins)
             // The shoulder runs from the neck's end to where the body's line starts.
-            side = [(start, neck.width / 2), (end, neck.width / 2)]
+            side = [(start, neck.width / 2, .neck), (end, neck.width / 2, .neck)]
         }
         // The bullet (or what lies in front of the case): a straight line from its tip to the case.
         let hasBullet = caseFrom > 0
-        if hasBullet { side = [(0, w[0] / 2)] + side }
+        if hasBullet { side.insert((0, w[0] / 2, .bullet), at: 0) }
         // The body: a straight line through its widths (least squares), run on to the head.
         let from = max(front, 0), to = max(bodyEnd, from)
         let xs = (from...to).map(at), ys = (from...to).map { w[$0] }
@@ -63,7 +89,10 @@ enum ShapeContour {
         let slope = sxx > 0 ? zip(xs, ys).reduce(0) { $0 + ($1.0 - mx) * ($1.1 - my) } / sxx : 0
         func width(_ x: Double) -> Double { my + slope * (x - mx) }
         let bodyStart = found == nil && !hasBullet ? 0 : xs[0]
-        side += [(bodyStart, width(bodyStart) / 2), (1, width(1) / 2)]
-        return side.map { point($0.0, $0.1) } + side.reversed().map { point($0.0, -$0.1) }
+        side += [(bodyStart, width(bodyStart) / 2, .body), (1, width(1) / 2, .end)]
+        // Down one side, across the head, back up the other side and across the tip (or mouth).
+        let edges = side.dropLast().map(\.part)
+        return ShapeContour(points: side.map { point($0.f, $0.half) } + side.reversed().map { point($0.f, -$0.half) },
+                            parts: edges + [.end] + edges.reversed() + [.end])
     }
 }

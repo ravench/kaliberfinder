@@ -1243,6 +1243,29 @@
         }
       }
     },
+    "Erkennung farbig zeigen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show detection in colour"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher la détection en couleur"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra il rilevamento a colori"
+          }
+        }
+      }
+    },
     "Etwas weiter weg": {
       "extractionState": "manual",
       "localizations": {
@@ -4068,6 +4091,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stati Uniti"
+          }
+        }
+      }
+    },
+    "Umriss auf dem Foto: grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Verjüngung des Körpers.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Outline on the photo: green tip and base, purple bullet, orange neck and shoulder, light blue body taper."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contour sur la photo : vert pointe et culot, violet projectile, orange collet et épaulement, bleu clair conicité du corps."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contorno sulla foto: verde punta e fondello, viola palla, arancione colletto e spalla, azzurro conicità del corpo."
           }
         }
       }

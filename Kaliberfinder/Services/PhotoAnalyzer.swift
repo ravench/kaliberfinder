@@ -19,7 +19,7 @@ struct PhotoAnalysis {
     var outline: [CGPoint]?
     /// The measured silhouette's outline (detected bullet, neck and taper as straight lines), in the
     /// same fractions as `outline`; drawn instead of the box when there is one.
-    var contour: [CGPoint]?
+    var contour: ShapeContour?
     /// The silhouette is brass-coloured: a case, not a lead ball or pellet.
     var isBrass = false
 
@@ -105,7 +105,7 @@ enum PhotoAnalyzer {
         let points: [Point]
         let candidates: [CGRect]
         let outline: [CGPoint]?
-        let contour: [CGPoint]?
+        let contour: ShapeContour?
     }
 
     /// Measurement, frame and outline of a silhouette in a `width` × `height` photo (see

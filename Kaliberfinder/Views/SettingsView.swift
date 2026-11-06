@@ -12,6 +12,8 @@ struct SettingsView: View {
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     /// Hidden developer switch: five taps on the copyright line (`TrainingCapture`).
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
+    /// Hidden with it: the photo's outline coloured by detection (`ShapeContour.partColoursKey`).
+    @AppStorage(ShapeContour.partColoursKey) private var partColours = false
 
     var body: some View {
         List {
@@ -44,6 +46,11 @@ struct SettingsView: View {
                         }
                     } footer: {
                         Text("Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.")
+                    }
+                    Section {
+                        Toggle("Erkennung farbig zeigen", isOn: $partColours)
+                    } footer: {
+                        Text("Umriss auf dem Foto: grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Verjüngung des Körpers.")
                     }
                 }
                 Section {
