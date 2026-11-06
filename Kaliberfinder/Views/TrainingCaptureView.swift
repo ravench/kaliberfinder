@@ -62,7 +62,7 @@ private struct TrainingCaptureRow: View {
             Text(verbatim: CartridgeCatalog.cartridge(id: capture.package.calibre)?.name ?? capture.package.calibre)
             let partName = (capture.package.scanMode == .emptyCase ? "Leere Hülse" : "Patrone").loc
             let dateText = capture.package.created.formatted(date: .abbreviated, time: .shortened)
-            Text("\(partName) · \(capture.shots.count) Fotos · \(dateText)")
+            Text("\(partName) · \(capture.shotCount) Fotos · \(dateText)")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
