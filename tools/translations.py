@@ -52,7 +52,6 @@ T = {
     "Form": ("Shape", "Forme", "Forma"),
     "Gerade Hülse": ("Straight case", "Douille droite", "Bossolo dritto"),
     "Hülse mit Flaschenhals": ("Bottleneck case", "Douille à épaulement", "Bossolo a collo di bottiglia"),
-    "Automatisch": ("Automatic", "Automatique", "Automatico"),
     "Erkannt: %@": ("Detected: %@", "Détecté : %@", "Riconosciuto: %@"),
     "Flaschenhals": ("bottleneck", "à épaulement", "a collo di bottiglia"),
     "Orange: Hals und Schulter, hellblau: Verjüngung des Körpers.": ("Orange: neck and shoulder, light blue: body taper.", "Orange : collet et épaulement, bleu clair : conicité du corps.", "Arancione: colletto e spalla, azzurro: conicità del corpo."),
