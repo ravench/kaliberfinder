@@ -140,16 +140,18 @@ final class ColorSegmenterTests: XCTestCase {
     // MARK: - Real photos
 
     /// Raven's photos from 2026-11-03: a 9 mm and a .45 ACP on wood, where Vision took the board as
-    /// the subject, and a 9 mm lying diagonally next to a dark chair and a table edge.
+    /// the subject, and a 9 mm lying diagonally next to a dark chair and a table edge. Real photos
+    /// through the phone's own path (Vision's mask) are the golden set's job (GoldenSetTests).
     private func realPhoto(_ name: String) throws -> UIImage {
         let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: name, withExtension: "jpg"), name)
         return try XCTUnwrap(UIImage(contentsOfFile: url.path), name)
     }
 
-    /// Each photo once through the analysis (the colour cut-out on the simulator): one cartridge,
+    /// The 9 mm photo through the analysis (the colour cut-out on the simulator): one cartridge,
     /// handgun calibres as the matches, and the frame exactly around the measured silhouette.
+    /// (The .45 ACP photo is checked the same way in testAnalyzerOffersBothCartridgesAndMeasuresThePickedOne.)
     func testRealPhotosShowOneHandgunCartridge() async throws {
-        for (name, id) in [("photo-9x19-wood", "9x19 mm"), ("photo-45acp-wood", ".45 ACP")] {
+        for (name, id) in [("photo-9x19-wood", "9x19 mm")] {
             let analysis = await PhotoAnalyzer.analyze(try realPhoto(name))
             XCTAssertFalse(analysis.hasSeveralObjects, "\(name): \(analysis.candidates)")
             let shape = try XCTUnwrap(analysis.shape, name)
@@ -347,17 +349,17 @@ final class ColorSegmenterTests: XCTestCase {
     }
 
     func testTheFrameTurnsWithADiagonalCartridge() async throws {
-        // A brass-coloured 300 × 90 px "cartridge" turned by 35° on a grey board.
-        let size = CGSize(width: 900, height: 700)
+        // A brass-coloured 150 × 45 px "cartridge" turned by 35° on a grey board.
+        let size = CGSize(width: 450, height: 350)
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
         let image = UIGraphicsImageRenderer(size: size, format: format).image { context in
             UIColor(white: 0.55, alpha: 1).setFill()
             context.fill(CGRect(origin: .zero, size: size))
-            context.cgContext.translateBy(x: 450, y: 350)
+            context.cgContext.translateBy(x: 225, y: 175)
             context.cgContext.rotate(by: 35 * .pi / 180)
             UIColor(red: 0.8, green: 0.62, blue: 0.25, alpha: 1).setFill()
-            UIBezierPath(roundedRect: CGRect(x: -150, y: -45, width: 300, height: 90), cornerRadius: 20).fill()
+            UIBezierPath(roundedRect: CGRect(x: -75, y: -22.5, width: 150, height: 45), cornerRadius: 10).fill()
         }
         let analysis = await PhotoAnalyzer.analyze(image)
         XCTAssertNotNil(analysis.shape)
@@ -365,9 +367,9 @@ final class ColorSegmenterTests: XCTestCase {
         let pixels = outline.map { CGPoint(x: $0.x * size.width, y: $0.y * size.height) }
         let side = hypot(pixels[1].x - pixels[0].x, pixels[1].y - pixels[0].y)
         let other = hypot(pixels[2].x - pixels[1].x, pixels[2].y - pixels[1].y)
-        // Turned with the cartridge: about 300 × 90, not an upright box around a diagonal.
-        XCTAssertEqual(max(side, other), 300, accuracy: 20)
-        XCTAssertEqual(min(side, other), 90, accuracy: 15)
+        // Turned with the cartridge: about 150 × 45, not an upright box around a diagonal.
+        XCTAssertEqual(max(side, other), 150, accuracy: 10)
+        XCTAssertEqual(min(side, other), 45, accuracy: 8)
         let edge = side >= other ? (pixels[1].x - pixels[0].x, pixels[1].y - pixels[0].y)
                                  : (pixels[2].x - pixels[1].x, pixels[2].y - pixels[1].y)
         var degrees = atan2(edge.1, edge.0) * 180 / .pi

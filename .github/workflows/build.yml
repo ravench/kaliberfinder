@@ -93,12 +93,12 @@ jobs:
             -derivedDataPath "$DERIVED_DATA" \
             -resultBundlePath "$RUNNER_TEMP/UnitTests.xcresult" \
             CODE_SIGNING_ALLOWED=NO | tee "$RUNNER_TEMP/test.log" | xcpretty
-      # xcpretty hides print(); show the real-photo reports (GoldenSetTests, NeckShapeTests),
-      # with the golden set's new baseline.json after its GOLDEN lines.
-      - name: Photo set report
+      # xcpretty hides print(); show GoldenSetTests' report, with the golden set's new
+      # baseline.json after its GOLDEN lines.
+      - name: Golden set report
         if: always()
         run: |
-          grep -E "^(PHOTOSET|GOLDEN)" "$RUNNER_TEMP/test.log" || true
+          grep -E "^GOLDEN" "$RUNNER_TEMP/test.log" || true
           sed -n '/^GOLDEN baseline.json:/,/^}/p' "$RUNNER_TEMP/test.log"
       - name: Test summary
         # Passed, failed and skipped counts and the failed tests by name, on the run's summary page.
