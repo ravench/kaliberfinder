@@ -89,6 +89,10 @@ jobs:
           echo "SCREENS=$RUNNER_TEMP/screens" >> "$GITHUB_ENV"
           # A fresh simulator takes minutes to boot; it boots while the app compiles.
           xcrun simctl boot "$UDID"
+      # The evaluation tool (tools/evaluate) compiles the analysis code for macOS, so a change to it
+      # must keep it free of UIKit. Only type-checked: a few seconds while the simulator boots.
+      - name: Evaluation tool compiles
+        run: tools/evaluate/build.sh --typecheck
       # Compiled once in the build steps; the tests below run on that build (test-without-building).
       # The unit test scheme goes last: building the app for KaliberfinderScreens drops the unit
       # test bundle from the app's PlugIns, and the unit tests then fail to load it.
