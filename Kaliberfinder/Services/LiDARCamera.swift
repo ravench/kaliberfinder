@@ -25,7 +25,9 @@ final class LiDARCamera: NSObject, ObservableObject {
     private var device: AVCaptureDevice?
     private var lastDepthUpdate = Date.distantPast
     private var onPhoto: ((UIImage, DepthScale?) -> Void)?
-    private var onRawPhoto: ((AVCapturePhoto) -> Void)?
+    private var onRawPhoto: ((AVCapturePhoto, CaptureShot.Focus?) -> Void)?
+    /// The focus when the raw photo was taken, read just before it.
+    private var rawFocus: CaptureShot.Focus?
 
     func start() {
         AVCaptureDevice.requestAccess(for: .video) { [self] granted in
@@ -52,13 +54,6 @@ final class LiDARCamera: NSObject, ObservableObject {
         queue.async { [self] in session.stopRunning() }
     }
 
-    /// The camera's closest focus distance and lens position now, for the training data; nil before
-    /// the camera is set up.
-    var focus: CaptureShot.Focus? {
-        device.map { CaptureShot.Focus(minimumDistance: $0.minimumFocusDistance >= 0 ? $0.minimumFocusDistance : nil,
-                                       lensPosition: Double($0.lensPosition)) }
-    }
-
     /// Takes a photo; `completion` gets the image and, when the depth was usable, its scale.
     func capture(_ completion: @escaping (UIImage, DepthScale?) -> Void) {
         queue.async { [self] in
@@ -69,9 +64,11 @@ final class LiDARCamera: NSObject, ObservableObject {
 
     /// Takes a photo and hands it over as the camera delivered it, with depth and calibration
     /// (`TrainingRecorder`), on the main queue.
-    func captureRaw(_ completion: @escaping (AVCapturePhoto) -> Void) {
+    func captureRaw(_ completion: @escaping (AVCapturePhoto, CaptureShot.Focus?) -> Void) {
         queue.async { [self] in
             onRawPhoto = completion
+            // The lens keeps focusing: its position as the photo is taken, not once it is delivered.
+            rawFocus = device.map { CaptureShot.Focus(minimumFocusDistance: $0.minimumFocusDistance, lensPosition: $0.lensPosition) }
             takePhoto()
         }
     }
@@ -166,7 +163,8 @@ extension LiDARCamera: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let raw = onRawPhoto {
             onRawPhoto = nil
-            DispatchQueue.main.async { raw(photo) }
+            let focus = rawFocus
+            DispatchQueue.main.async { raw(photo, focus) }
             return
         }
         let completion = onPhoto

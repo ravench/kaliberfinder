@@ -155,6 +155,11 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertTrue(p.system.hasPrefix("iOS "))
     }
 
+    func testFocusAsTheCameraReportsIt() {
+        XCTAssertEqual(CaptureShot.Focus(minimumFocusDistance: 150, lensPosition: 0.62), .init(minimumDistance: 150, lensPosition: 0.62))
+        XCTAssertNil(CaptureShot.Focus(minimumFocusDistance: -1, lensPosition: 0.5).minimumDistance, "-1: the camera doesn't say")
+    }
+
     /// Shots from before the focus was recorded (the example package's) still read, without it.
     func testOlderShotsHaveNoFocus() throws {
         let root = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "Captures", withExtension: nil))

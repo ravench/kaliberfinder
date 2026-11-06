@@ -14,7 +14,7 @@ import UniformTypeIdentifiers
 ///     9x19-mm-20261105-143000/
 ///       package.json            CapturePackage: calibre, part, note, device
 ///       01/
-///         shot.json             CaptureShot: calibration, depth size, gravity, the app's analysis
+///         shot.json             CaptureShot: calibration, depth size, gravity, focus, the app's analysis
 ///         photo.heic|jpg        the photo exactly as the camera or library delivered it (with EXIF)
 ///         depth.f32             LiDAR depth, Float32 little-endian, metres, row by row
 ///         vision-instances.png  Vision's foreground instances, one 8-bit label per pixel (0 = none)
@@ -128,6 +128,17 @@ struct CaptureShot: Codable, Equatable {
     struct Focus: Codable, Equatable {
         let minimumDistance: Int?
         let lensPosition: Double
+
+        init(minimumDistance: Int?, lensPosition: Double) {
+            self.minimumDistance = minimumDistance
+            self.lensPosition = lensPosition
+        }
+
+        /// As the camera reports them: -1 for an unknown distance, the position to four decimals.
+        init(minimumFocusDistance: Int, lensPosition: Float) {
+            self.init(minimumDistance: minimumFocusDistance >= 0 ? minimumFocusDistance : nil,
+                      lensPosition: (Double(lensPosition) * 10_000).rounded() / 10_000)
+        }
     }
 
     struct Scale: Codable, Equatable {
