@@ -111,7 +111,7 @@ enum PhotoAnalyzer {
                 measured = (vision.shape, vision.length)
                 candidates = boxes
                 outline = normalize(vision.box)
-                contour = vision.box.flatMap { ShapeContour.polygon(vision.points, pixelSize: Double(step), box: $0) }?.map(fraction)
+                contour = vision.box.flatMap { ShapeContour.polygon(vision.points, pixelSize: Double(step), shape: vision.shape, box: $0) }?.map(fraction)
                 measuredPoints = vision.points
             }
         }
@@ -124,7 +124,7 @@ enum PhotoAnalyzer {
                 measured = fromColour
                 let box = ShapeMatcher.orientedBox(sampled, pixelSize: Double(step))
                 outline = normalize(box)
-                contour = box.flatMap { ShapeContour.polygon(sampled, pixelSize: Double(step), box: $0) }?.map(fraction)
+                contour = box.flatMap { ShapeContour.polygon(sampled, pixelSize: Double(step), shape: fromColour.shape, box: $0) }?.map(fraction)
                 candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
                 measuredPoints = sampled
             }

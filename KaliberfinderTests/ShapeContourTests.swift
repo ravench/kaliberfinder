@@ -2,7 +2,8 @@ import CoreGraphics
 import XCTest
 @testable import Kaliberfinder
 
-/// The green outline drawn over the photo follows the cartridge's shape (SHAPE-07).
+/// The green outline drawn over the photo follows the cartridge's shape (SHAPE-07): straight lines
+/// along the bullet, neck and body from what was detected, joined into one.
 final class ShapeContourTests: XCTestCase {
     private let ppm = 6.0
     private let step = 0.15
@@ -42,16 +43,18 @@ final class ShapeContourTests: XCTestCase {
     }
 
     /// The polygon for a cartridge, checked against the silhouette: it covers about the silhouette's
-    /// area (far less than its box when the shape narrows), and no corner lies far off its edge
+    /// area (straight lines cut a round bullet nose a little; far less than its box when the shape
+    /// narrows), and no corner lies far off its edge
     /// (a pointed tip's corner sits up to half a slice ahead of the last silhouette point).
     private func check(_ id: String, caseOnly: Bool, angle: Double) throws -> (polygon: [CGPoint], boxArea: Double, silhouetteArea: Double) {
         let c = try cartridge(id)
         let (points, _, _) = silhouette(c, caseOnly: caseOnly, angle: angle)
         let pixelSize = ppm * step
         let box = try XCTUnwrap(ShapeMatcher.orientedBox(points, pixelSize: pixelSize))
-        let polygon = try XCTUnwrap(ShapeContour.polygon(points, pixelSize: pixelSize, box: box), id)
+        let shape = try XCTUnwrap(ShapeMatcher.measure(points, pixelSize: pixelSize), id)
+        let polygon = try XCTUnwrap(ShapeContour.polygon(points, pixelSize: pixelSize, shape: shape, box: box), id)
         let silhouetteArea = Double(points.count) * pixelSize * pixelSize
-        XCTAssertEqual(area(polygon), silhouetteArea, accuracy: 0.06 * silhouetteArea, "\(id) angle \(angle)")
+        XCTAssertEqual(area(polygon), silhouetteArea, accuracy: 0.1 * silhouetteArea, "\(id) angle \(angle)")
         for corner in polygon {
             let nearest = points.map { hypot($0.x - corner.x, $0.y - corner.y) }.min() ?? .infinity
             XCTAssertLessThan(nearest, 5 * pixelSize, "\(id) angle \(angle)")
@@ -62,9 +65,11 @@ final class ShapeContourTests: XCTestCase {
 
     func testOutlineFollowsTheNeckOfAnEmptyGP11Case() throws {
         for angle in [0.7, 0.7 + .pi, 2.0] {
-            let (_, boxArea, silhouetteArea) = try check("7.5x55 mm Swiss (GP 11)", caseOnly: true, angle: angle)
+            let (polygon, boxArea, silhouetteArea) = try check("7.5x55 mm Swiss (GP 11)", caseOnly: true, angle: angle)
             // The neck and shoulder are cut out of the box.
             XCTAssertLessThan(silhouetteArea, 0.95 * boxArea, "angle \(angle)")
+            // Straight lines only: mouth, neck end, shoulder, head on each side.
+            XCTAssertEqual(polygon.count, 8, "angle \(angle)")
         }
     }
 
@@ -82,9 +87,12 @@ final class ShapeContourTests: XCTestCase {
         _ = try check("9x19 mm", caseOnly: false, angle: 2.0)
     }
 
-    func testNoOutlineWithoutABox() {
-        XCTAssertNil(ShapeContour.polygon([Point(x: 1, y: 1)], pixelSize: 1, box: []))
-        XCTAssertNil(ShapeContour.polygon([], pixelSize: 1, box: [Point(x: 0, y: 0), Point(x: 1, y: 0), Point(x: 1, y: 1), Point(x: 0, y: 1)]))
+    func testNoOutlineWithoutABoxOrForAnEndView() throws {
+        let shape = try XCTUnwrap(ShapeMatcher.catalogue["9x19 mm"])
+        let square = [Point(x: 0, y: 0), Point(x: 1, y: 0), Point(x: 1, y: 1), Point(x: 0, y: 1)]
+        XCTAssertNil(ShapeContour.polygon([Point(x: 1, y: 1)], pixelSize: 1, shape: shape, box: []))
+        XCTAssertNil(ShapeContour.polygon([], pixelSize: 1, shape: shape, box: square))
+        XCTAssertNil(ShapeContour.polygon([Point(x: 1, y: 1)], pixelSize: 1, shape: ShapeMeasurement(aspect: 1, profile: [1]), box: square))
     }
 
     func testNoColourLegendUnderThePhoto() throws {
