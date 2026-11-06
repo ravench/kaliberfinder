@@ -33,6 +33,14 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(en["Gesamtlänge"], "Overall length")
     }
 
+    func testDeveloperScreenAndCopyrightAreTranslated() throws {
+        let en = try table("en")
+        XCTAssertEqual(en["Trainingsdaten aufnehmen"], "Record training data")
+        XCTAssertEqual(en["Neue Aufnahmeserie"], "New capture series")
+        XCTAssertEqual(en["%lld von %lld Fotos hinzugefügt"], "%lld of %lld photos added")
+        XCTAssertEqual(en["© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0"], "© 2026 Simon Giotta · Licence: PolyForm Noncommercial 1.0.0")
+    }
+
     func testPickAndCompareHasShortTitle() throws {
         let expected = ["en": "Pick and compare", "fr": "Choisir et comparer", "it": "Scegli e confronta"]
         for (lang, title) in expected {
