@@ -104,15 +104,14 @@ enum PhotoAnalyzer {
         let fraction = { (p: CGPoint) in CGPoint(x: p.x / Double(cgImage.width), y: p.y / Double(cgImage.height)) }
         let rgb = rgbImage(cgImage)
         var measuredPoints: [Point] = []
-        if (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first {
-            let (found, step, boxes) = silhouette(of: observation, handler: handler)
-            if let vision = measureSilhouette(found, step: step) {
-                measured = (vision.shape, vision.length)
-                candidates = boxes
-                outline = normalize(vision.box)
-                lines = vision.box.flatMap { ShapeLines(points: vision.points, pixelSize: Double(step), shape: vision.shape, box: $0) }?.map(fraction)
-                measuredPoints = vision.points
-            }
+        if (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first,
+           let vision = visionResult(silhouette(of: observation, handler: handler, imagePixels: cgImage.width * cgImage.height),
+                                     width: cgImage.width, height: cgImage.height) {
+            measured = (vision.shape, vision.length)
+            candidates = vision.candidates
+            outline = vision.outline
+            lines = vision.lines
+            measuredPoints = vision.points
         }
         // Vision found only the table, box or paper (or isn't available, on the simulator): take
         // the colour cut-out. Never instead of Vision's object: the cut-out also takes in shadows
@@ -132,6 +131,56 @@ enum PhotoAnalyzer {
                              imageLongSide: Double(max(cgImage.width, cgImage.height)),
                              candidates: candidates.count > 1 ? candidates : [], outline: outline, lines: lines,
                              isBrass: rgb.map { isBrass($0, points: measuredPoints) } ?? false)
+    }
+
+    /// What the analysis takes from Vision's silhouette of the cartridge.
+    struct VisionResult {
+        let shape: ShapeMeasurement
+        let length: Double
+        let points: [Point]
+        let candidates: [CGRect]
+        let outline: [CGPoint]?
+        let lines: ShapeLines?
+    }
+
+    /// Measurement, frame and neck lines of a silhouette in a `width` × `height` photo (see
+    /// `silhouette`); nil when it can't be measured.
+    static func visionResult(_ found: (points: [Point], step: Int, boxes: [CGRect]), width: Int, height: Int) -> VisionResult? {
+        guard let vision = measureSilhouette(found.points, step: found.step) else { return nil }
+        let fraction = { (p: CGPoint) in CGPoint(x: p.x / Double(width), y: p.y / Double(height)) }
+        let lines = vision.box.flatMap { ShapeLines(points: vision.points, pixelSize: Double(found.step), shape: vision.shape, box: $0) }
+        return VisionResult(shape: vision.shape, length: vision.length, points: vision.points, candidates: found.boxes,
+                            outline: vision.box?.map { fraction(CGPoint(x: $0.x, y: $0.y)) }, lines: lines?.map(fraction))
+    }
+
+    /// The phone's path on a stored Vision instance mask (a training capture or golden shot): the
+    /// same subject picking, measurement, frame and neck as `analyzeNow`, without Vision and without
+    /// the photo, so it runs on the simulator. `labels` is Vision's instance mask (`mask` pixels,
+    /// 0 = background) over the upright photo as analysed (`image` pixels, see `maxDimension`).
+    /// `isBrass` comes from the phone: it needs the photo's colours.
+    static func analyze(instanceLabels labels: [UInt8], mask: (width: Int, height: Int), image: (width: Int, height: Int),
+                        isBrass: Bool) -> PhotoAnalysis {
+        let (width, height) = mask, (imageWidth, imageHeight) = image
+        let map = labels.map(Int.init)
+        let found = silhouette(labels: map, width: width, height: height, imagePixels: imageWidth * imageHeight) { picked, step in
+            // The label nearest each sampled photo pixel, as Vision scales the mask to the photo.
+            var points: [Point] = []
+            for y in stride(from: 0, to: imageHeight, by: step) {
+                let row = min(height - 1, (2 * y + 1) * height / (2 * imageHeight)) * width
+                for x in stride(from: 0, to: imageWidth, by: step)
+                where picked.contains(map[row + min(width - 1, (2 * x + 1) * width / (2 * imageWidth))]) {
+                    points.append(Point(x: Double(x), y: Double(y)))
+                }
+            }
+            return points
+        }
+        let longSide = Double(max(imageWidth, imageHeight))
+        guard let vision = visionResult(found, width: imageWidth, height: imageHeight) else {
+            return PhotoAnalysis(shape: nil, imageLongSide: longSide, isBrass: isBrass)
+        }
+        return PhotoAnalysis(shape: vision.shape, lengthPixels: vision.length, imageLongSide: longSide,
+                             candidates: vision.candidates.count > 1 ? vision.candidates : [],
+                             outline: vision.outline, lines: vision.lines, isBrass: isBrass)
     }
 
     /// The measurement of Vision's silhouette (`step`: pixels between the points): made
@@ -213,29 +262,39 @@ enum PhotoAnalyzer {
     /// Pixels of the foreground instance that is the cartridge (see `SubjectPicker`), sampled every
     /// `step` pixels, and where the instances that compete with it are (fractions of the photo);
     /// empty if every instance is the table, a box or the paper.
-    private static func silhouette(of observation: VNInstanceMaskObservation,
-                                   handler: VNImageRequestHandler) -> (points: [Point], step: Int, boxes: [CGRect]) {
+    private static func silhouette(of observation: VNInstanceMaskObservation, handler: VNImageRequestHandler,
+                                   imagePixels: Int) -> (points: [Point], step: Int, boxes: [CGRect]) {
         let labels = observation.instanceMask
         var map: [Int] = []
         forEachPixel(labels, step: 1) { _, _, value in map.append(Int(value.rounded())) }
         let width = CVPixelBufferGetWidth(labels), height = CVPixelBufferGetHeight(labels)
+        return silhouette(labels: map, width: width, height: height, imagePixels: imagePixels) { picked, step in
+            guard let mask = try? observation.generateScaledMaskForImage(forInstances: picked, from: handler) else { return nil }
+            var result: [Point] = []
+            forEachPixel(mask, step: step) { x, y, value in
+                if value > 0.5 { result.append(Point(x: Double(x), y: Double(y))) }
+            }
+            return result
+        }
+    }
+
+    /// The cartridge among Vision's foreground instances (`labels`, `width` × `height`, 0 =
+    /// background): `mask` gives the picked labels' pixels in the photo (`imagePixels` of them),
+    /// sampled every `step` pixels. Also where the instances competing with it are.
+    static func silhouette(labels map: [Int], width: Int, height: Int, imagePixels: Int,
+                           mask: (_ labels: IndexSet, _ step: Int) -> [Point]?) -> (points: [Point], step: Int, boxes: [CGRect]) {
         let pieces = map.count == width * height ? SubjectPicker.instances(labels: map, width: width) : []
         let instances = SubjectPicker.joiningParts(pieces, labels: map, width: width, height: height)
-        guard let picked = SubjectPicker.pickInstance(instances, width: width, height: height),
-              let mask = try? observation.generateScaledMaskForImage(forInstances: picked.labels, from: handler)
-        else { return ([], 1, []) }
+        guard let picked = SubjectPicker.pickInstance(instances, width: width, height: height) else { return ([], 1, []) }
         // The step from the object's size, not the photo's: from the whole photo it was 7 pixels
         // at 1600 px, which left a handgun cartridge only 8 or 9 points wide.
-        let scale = Double(CVPixelBufferGetWidth(mask) * CVPixelBufferGetHeight(mask)) / Double(width * height)
+        let scale = Double(imagePixels) / Double(width * height)
         let step = maskStep(objectPixels: Double(picked.count) * scale)
-        var result: [Point] = []
-        forEachPixel(mask, step: step) { x, y, value in
-            if value > 0.5 { result.append(Point(x: Double(x), y: Double(y))) }
-        }
+        guard let points = mask(picked.labels, step) else { return ([], 1, []) }
         let boxes = SubjectPicker.competitors(instances, width: width, height: height).map {
             normalized($0.bounds, width: width, height: height)
         }
-        return (result, step, boxes)
+        return (points, step, boxes)
     }
 
     /// Calls `body` with the value of every `step`-th pixel of a one-channel buffer

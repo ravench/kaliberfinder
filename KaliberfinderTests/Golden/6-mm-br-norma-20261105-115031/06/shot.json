@@ -1,0 +1,60 @@
+{
+  "analysis": {
+    "aspect": 3.817271396644536,
+    "candidates": 0,
+    "imageLongSide": 1600,
+    "isBrass": true,
+    "lengthPixels": 259.07807743350713,
+    "matches": [
+      "5.45x39 mm",
+      "6.8 mm Remington SPC",
+      "6.5x47 mm Lapua",
+      ".300 Savage"
+    ],
+    "outline": [
+      [
+        0.4693624092394746,
+        0.5491464054734042
+      ],
+      [
+        0.5113063105025039,
+        0.3903077597285302
+      ],
+      [
+        0.5690783421279073,
+        0.39888905436957656
+      ],
+      [
+        0.5271344408648782,
+        0.5577277001144506
+      ]
+    ],
+    "size": [
+      41.11346572846352,
+      10.770380582476568
+    ]
+  },
+  "captured": "2026-11-05T11:51:05Z",
+  "gravity": [
+    0.02122735045850277,
+    -0.03913688287138939,
+    -0.9990083575248718
+  ],
+  "mask": {
+    "file": "vision-instances.png",
+    "height": 512,
+    "imageHeight": 1600,
+    "imageWidth": 1200,
+    "instances": 1,
+    "width": 512
+  },
+  "orientation": 6,
+  "photo": "photo.jpg",
+  "scale": {
+    "focalLength": 2966.46484375,
+    "referenceLongSide": 4032,
+    "tableDistance": 192.1917349100113
+  },
+  "source": "lidarCamera",
+  "tilt": 2.5518225719096805
+}

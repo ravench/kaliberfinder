@@ -50,7 +50,7 @@ enum TrainingRecorder {
             (analyse(image, scale: scale, mode: mode), instanceMask(image))
         }.value
         shot.analysis = analysis
-        if let mask { shot.mask = .init(width: mask.width, height: mask.height, instances: mask.instances) }
+        shot.mask = mask?.info
         return try CaptureStore.save(shot, photo: data, depth: depth, mask: mask?.labels, in: package)
     }
 
@@ -67,7 +67,7 @@ enum TrainingRecorder {
 
     /// Vision's foreground instance labels for the upright photo, at the size the app analyses
     /// (`PhotoAnalyzer.maxDimension`). Nil where Vision can't run it (the simulator).
-    static func instanceMask(_ image: UIImage) -> (labels: [UInt8], width: Int, height: Int, instances: Int)? {
+    static func instanceMask(_ image: UIImage) -> (labels: [UInt8], info: CaptureShot.Mask)? {
         guard let cgImage = upright(image, maxSide: PhotoAnalyzer.maxDimension) else { return nil }
         let request = VNGenerateForegroundInstanceMaskRequest()
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
@@ -83,7 +83,8 @@ enum TrainingRecorder {
         for y in 0..<height {
             labels.append(contentsOf: UnsafeBufferPointer(start: base.advanced(by: y * rowBytes).assumingMemoryBound(to: UInt8.self), count: width))
         }
-        return (labels, width, height, observation.allInstances.count)
+        return (labels, CaptureShot.Mask(width: width, height: height, instances: observation.allInstances.count,
+                                         imageWidth: cgImage.width, imageHeight: cgImage.height))
     }
 
     /// The image with its orientation applied, at most `maxSide` pixels long.

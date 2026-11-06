@@ -1,0 +1,61 @@
+{
+  "analysis": {
+    "aspect": 4.730079484744449,
+    "candidates": 0,
+    "imageLongSide": 1600,
+    "isBrass": true,
+    "lengthPixels": 393.5664383970319,
+    "matches": [
+      "7x57 mm Mauser",
+      "7.7x58 mm Arisaka",
+      "8x57 mm IS",
+      ".257 Roberts",
+      "6 mm Remington"
+    ],
+    "outline": [
+      [
+        0.4923772322837211,
+        0.6123743803174628
+      ],
+      [
+        0.5008452364020993,
+        0.36647735917477753
+      ],
+      [
+        0.5714010988249307,
+        0.36784409136849283
+      ],
+      [
+        0.5629330947065525,
+        0.6137411125111781
+      ]
+    ],
+    "size": [
+      58.87297585426447,
+      12.446508783656345
+    ]
+  },
+  "captured": "2026-11-05T11:48:56Z",
+  "gravity": [
+    -0.014168608002364635,
+    0.003845002967864275,
+    -0.9998922348022461
+  ],
+  "mask": {
+    "file": "vision-instances.png",
+    "height": 512,
+    "imageHeight": 1600,
+    "imageWidth": 1200,
+    "instances": 1,
+    "width": 512
+  },
+  "orientation": 6,
+  "photo": "photo.jpg",
+  "scale": {
+    "focalLength": 2964.6513671875,
+    "referenceLongSide": 4032,
+    "tableDistance": 182.2063773870468
+  },
+  "source": "lidarCamera",
+  "tilt": 0.8411929467033953
+}
