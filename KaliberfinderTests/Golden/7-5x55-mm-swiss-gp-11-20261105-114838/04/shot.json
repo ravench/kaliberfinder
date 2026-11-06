@@ -1,0 +1,52 @@
+{
+  "analysis": {
+    "aspect": 5.265905161521519,
+    "candidates": 0,
+    "imageLongSide": 1600,
+    "isBrass": true,
+    "lengthPixels": 369.62702755630744,
+    "matches": [
+      "5.6x50 mm Magnum",
+      ".300 PRC",
+      ".300 Winchester Magnum",
+      ".30-06 Springfield",
+      ".404 Jeffery"
+    ],
+    "outline": [
+      [
+        0.4993228964267504,
+        0.6518670314357259
+      ],
+      [
+        0.5065635701719408,
+        0.42091397537384767
+      ],
+      [
+        0.567500604651189,
+        0.42198860573885705
+      ],
+      [
+        0.5602599309059987,
+        0.6529416618007352
+      ]
+    ]
+  },
+  "captured": "2026-11-05T11:49:19Z",
+  "gravity": [
+    -0.003623604541644454,
+    0.01658628322184086,
+    -0.9998558759689331
+  ],
+  "mask": {
+    "file": "vision-instances.png",
+    "height": 512,
+    "imageHeight": 1600,
+    "imageWidth": 1200,
+    "instances": 1,
+    "width": 512
+  },
+  "orientation": 6,
+  "photo": "photo.jpg",
+  "source": "lidarCamera",
+  "tilt": 0.9727854820986602
+}

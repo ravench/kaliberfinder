@@ -1,3 +1,6 @@
+# Every binary goes through Git LFS. The golden set's Vision masks are the first; the older test
+# fixtures stay as plain files until they are moved.
+KaliberfinderTests/Golden/**/*.png filter=lfs diff=lfs merge=lfs -text
 *.png filter=lfs diff=lfs merge=lfs -text
 *.jpg filter=lfs diff=lfs merge=lfs -text
 *.jpeg filter=lfs diff=lfs merge=lfs -text

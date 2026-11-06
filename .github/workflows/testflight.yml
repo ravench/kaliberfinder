@@ -112,6 +112,8 @@ jobs:
         with:
           # The commit the Build workflow tested, not whatever main is now.
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          # Images (app icon) are in Git LFS.
+          lfs: true
       - name: Prepare
         if: steps.secrets.outputs.ready == 'true'
         run: |

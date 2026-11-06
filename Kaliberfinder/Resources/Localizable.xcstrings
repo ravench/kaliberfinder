@@ -1,6 +1,75 @@
 {
   "sourceLanguage": "de",
   "strings": {
+    "%@ · %lld Fotos · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld photos · %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld photos · %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld foto · %@"
+          }
+        }
+      }
+    },
+    "%@ · %lld neue Fotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld new photos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld nouvelles photos"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld nuove foto"
+          }
+        }
+      }
+    },
+    "%lld Fotos": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld photos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld photos"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld foto"
+          }
+        }
+      }
+    },
     "%lld seltene": {
       "extractionState": "manual",
       "localizations": {
@@ -43,6 +112,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld obsoleti"
+          }
+        }
+      }
+    },
+    "%lld von %lld Fotos hinzugefügt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld of %lld photos added"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld photos sur %lld ajoutées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld foto su %lld aggiunte"
           }
         }
       }
@@ -300,6 +392,29 @@
         }
       }
     },
+    "Alle Fotos dieser Serie zeigen dieses Kaliber.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All photos in this series show this calibre."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toutes les photos de cette série montrent ce calibre."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutte le foto di questa serie mostrano questo calibro."
+          }
+        }
+      }
+    },
     "Alle Kaliber": {
       "extractionState": "manual",
       "localizations": {
@@ -369,6 +484,29 @@
         }
       }
     },
+    "Als ZIP teilen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share as ZIP"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager en ZIP"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condividi come ZIP"
+          }
+        }
+      }
+    },
     "Andere": {
       "extractionState": "manual",
       "localizations": {
@@ -434,6 +572,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Noto anche come"
+          }
+        }
+      }
+    },
+    "Aus Fotos hinzufügen (ohne Tiefe)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add from Photos (no depth)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter depuis Photos (sans profondeur)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi da Foto (senza profondità)"
           }
         }
       }
@@ -526,29 +687,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Scegli e confronta"
-          }
-        }
-      }
-    },
-    "Automatisch": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Automatic"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Automatique"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Automatico"
           }
         }
       }
@@ -824,7 +962,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Carabina piccolo"
+            "value": "Carabina piccola"
           }
         }
       }
@@ -864,7 +1002,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Impossible de reprendre la photo."
+            "value": "Impossible de recevoir la photo."
           }
         },
         "it": {
@@ -939,7 +1077,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Confronta i migliori tre 1:1"
+            "value": "Confronta i tre migliori 1:1"
           }
         }
       }
@@ -1032,6 +1170,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Impostazioni"
+          }
+        }
+      }
+    },
+    "Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Developer feature. Tapping the copyright line five times hides it again."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fonction pour développeurs. Touchez cinq fois la ligne de copyright pour la masquer à nouveau."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Funzione per sviluppatori. Tocca cinque volte la riga del copyright per nasconderla di nuovo."
           }
         }
       }
@@ -1140,7 +1301,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "à goulot"
+            "value": "à épaulement"
           }
         },
         "it": {
@@ -1358,6 +1519,52 @@
         }
       }
     },
+    "Fotografieren": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take photos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photographier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografa"
+          }
+        }
+      }
+    },
+    "Fotografiertes Kaliber": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photographed calibre"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibre photographié"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibro fotografato"
+          }
+        }
+      }
+    },
     "Frankreich": {
       "extractionState": "manual",
       "localizations": {
@@ -1565,6 +1772,29 @@
         }
       }
     },
+    "Gespeichert": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrées"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salvate"
+          }
+        }
+      }
+    },
     "Gilt für Fotos und «Masse eingeben». Veraltet: nicht mehr regulär hergestellt, z. B. GP 1890 oder Vetterli. Selten: kaum je zu finden, ein Treffer ist meist eine ähnliche Patrone. «Alle Kaliber» zeigt immer alle.": {
       "extractionState": "manual",
       "localizations": {
@@ -1738,13 +1968,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Douille à ceinture"
+            "value": "À ceinture"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bossolo con cintura"
+            "value": "Con cintura"
           }
         }
       }
@@ -1807,7 +2037,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Douille à goulot"
+            "value": "Douille à épaulement"
           }
         },
         "it": {
@@ -1864,6 +2094,29 @@
         }
       }
     },
+    "Im Bild": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In the photo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur la photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nella foto"
+          }
+        }
+      }
+    },
     "Im Profil nicht unterscheidbar": {
       "extractionState": "manual",
       "localizations": {
@@ -1893,19 +2146,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Looks identical in profile to"
+            "value": "Indistinguishable in profile from"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Identique de profil à"
+            "value": "Indiscernable de profil de"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Identica di profilo a"
+            "value": "Indistinguibile di profilo da"
           }
         }
       }
@@ -2416,6 +2669,29 @@
         }
       }
     },
+    "LiDAR %.0f mm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LiDAR %.0f mm"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LiDAR %.0f mm"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LiDAR %.0f mm"
+          }
+        }
+      }
+    },
     "Lineal in Zentimetern": {
       "extractionState": "manual",
       "localizations": {
@@ -2692,6 +2968,98 @@
         }
       }
     },
+    "Neue Aufnahmeserie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New capture series"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelle série de prises"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuova serie di scatti"
+          }
+        }
+      }
+    },
+    "Neue Serie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New series"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelle série"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuova serie"
+          }
+        }
+      }
+    },
+    "Nicht gespeichert: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not saved: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non enregistré : %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non salvato: %@"
+          }
+        }
+      }
+    },
+    "Notiz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Note"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remarque"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nota"
+          }
+        }
+      }
+    },
     "Näher heran": {
       "extractionState": "manual",
       "localizations": {
@@ -2963,7 +3331,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pistola piccolo"
+            "value": "Pistola piccola"
           }
         }
       }
@@ -3187,7 +3555,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cartouche de chasse (209)"
+            "value": "Cartouche à plombs (209)"
           }
         },
         "it": {
@@ -3348,7 +3716,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rare : presque jamais trouvé. Une correspondance est plutôt une cartouche semblable, mesure donc avec soin."
+            "value": "Rare : presque jamais trouvé. Une correspondance est plutôt une cartouche semblable, mesurez donc avec soin."
           }
         },
         "it": {
@@ -3451,6 +3819,29 @@
         }
       }
     },
+    "Starten": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Démarrer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvia"
+          }
+        }
+      }
+    },
     "Suche nach Namen und tippe die Kaliber an, die du nebeneinander sehen willst.": {
       "extractionState": "manual",
       "localizations": {
@@ -3470,6 +3861,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cerca per nome e tocca i calibri che vuoi vedere uno accanto all'altro."
+          }
+        }
+      }
+    },
+    "Tiefe relativ": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "relative depth"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "profondeur relative"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "profondità relativa"
           }
         }
       }
@@ -3516,6 +3930,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tocca la cartuccia da identificare."
+          }
+        }
+      }
+    },
+    "Trainingsdaten": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Training data"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Données d'entraînement"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dati di addestramento"
+          }
+        }
+      }
+    },
+    "Trainingsdaten aufnehmen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record training data"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer des données d'entraînement"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registra dati di addestramento"
           }
         }
       }
@@ -3773,6 +4233,75 @@
         }
       }
     },
+    "Wähle das Kaliber, das du fotografierst, und mache mehrere Fotos davon. Gespeichert werden das Foto, die LiDAR-Tiefe, die Kameradaten und die Vision-Maske. Teile die Serie als ZIP, sie kommt in die Tests.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the calibre you are photographing and take several photos of it. The photo, the LiDAR depth, the camera data and the Vision mask are saved. Share the series as a ZIP; it goes into the tests."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez le calibre que vous photographiez et prenez-en plusieurs photos. La photo, la profondeur LiDAR, les données de l'appareil photo et le masque Vision sont enregistrés. Partagez la série en ZIP, elle sera ajoutée aux tests."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli il calibro che stai fotografando e scatta più foto. Vengono salvati la foto, la profondità LiDAR, i dati della fotocamera e la maschera Vision. Condividi la serie come ZIP: finirà nei test."
+          }
+        }
+      }
+    },
+    "Wählen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisir"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli"
+          }
+        }
+      }
+    },
+    "ZIP fehlgeschlagen: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP failed: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Échec du ZIP : %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP non riuscito: %@"
+          }
+        }
+      }
+    },
     "Zurücksetzen": {
       "extractionState": "manual",
       "localizations": {
@@ -3865,6 +4394,29 @@
         }
       }
     },
+    "kein Treffer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no match"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aucun résultat"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nessun risultato"
+          }
+        }
+      }
+    },
     "leere Hülse": {
       "extractionState": "manual",
       "localizations": {
@@ -3930,6 +4482,75 @@
           "stringUnit": {
             "state": "translated",
             "value": "senza orlo"
+          }
+        }
+      }
+    },
+    "ohne Tiefe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no depth"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sans profondeur"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "senza profondità"
+          }
+        }
+      }
+    },
+    "z. B. Holztisch, Tageslicht": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. wooden table, daylight"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "p. ex. table en bois, lumière du jour"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "p. es. tavolo di legno, luce diurna"
+          }
+        }
+      }
+    },
+    "© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "© 2026 Simon Giotta · Licence: PolyForm Noncommercial 1.0.0"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "© 2026 Simon Giotta · Licence : PolyForm Noncommercial 1.0.0"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "© 2026 Simon Giotta · Licenza: PolyForm Noncommercial 1.0.0"
           }
         }
       }

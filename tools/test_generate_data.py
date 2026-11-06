@@ -138,6 +138,19 @@ class PatchedBulletTests(unittest.TestCase):
             self.assertNotIn("bulletMaterial", o, name)
 
 
+class BBTests(unittest.TestCase):
+    """Steel and airsoft BBs: loose balls drawn in steel or plastic (calibre-data #47)."""
+
+    def test_bbs_are_balls_with_their_material(self):
+        by_name = {c["name"]: c for c in generate_data.build()}
+        for name, material in (("4.4 mm Stahl-BB (.177 BB)", "steel"), ("6 mm Airsoft-BB", "plastic"),
+                               ("8 mm Airsoft-BB", "plastic")):
+            self.assertEqual(by_name[name]["kind"], "ball", name)
+            self.assertEqual(by_name[name]["category"], "Luftdruck", name)
+            self.assertEqual(by_name[name]["outline"]["bulletMaterial"], material, name)
+        self.assertNotIn("bulletMaterial", by_name[".44 Rundkugel (.454)"]["outline"])
+
+
 class BulletMaterialTests(unittest.TestCase):
     """Original bullets and cases (Raven 2026-11-05): lead, paper-patched lead, soft point tips."""
 

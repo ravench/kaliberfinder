@@ -1,4 +1,4 @@
-"""Helpers for .github/workflows/pr-screens.yml: before/after screenshots on pull requests.
+"""Helpers for the PR screens in .github/workflows/build.yml: before/after screenshots on pull requests.
 
     xcrun simctl list devices available -j | python3 tools/pr_screens.py pick-iphone
     python3 tools/pr_screens.py rename <xcresulttool export dir> <out dir>

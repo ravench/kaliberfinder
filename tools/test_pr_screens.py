@@ -1,4 +1,4 @@
-"""Unit tests for tools/pr_screens.py and the PR screens workflow.
+"""Unit tests for tools/pr_screens.py and the PR screens in the Build workflow.
 
     python3 -m unittest discover -s tools -p 'test_*.py'
 """
@@ -160,17 +160,30 @@ class CommentTests(unittest.TestCase):
 class WorkflowTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        with open(os.path.join(ROOT, ".github", "workflows", "pr-screens.yml")) as f:
+        with open(os.path.join(ROOT, ".github", "workflows", "build.yml")) as f:
             cls.workflow = f.read()
 
     def test_runs_on_gui_pull_requests(self):
         self.assertIn("pull_request:", self.workflow)
-        for path in ("Kaliberfinder/**", "KaliberfinderUITests/**"):
-            self.assertIn(f"- {path}", self.workflow)
+        self.assertIn("SCREENS_TOUR: ${{ needs.changes.outputs.screens }}", self.workflow)
+        self.assertIn("if: env.SCREENS_TOUR == 'true'", self.workflow)
         self.assertRegex(self.workflow, r"runs-on: macos-2[6-9]")
+
+    def test_reuses_the_build_and_its_simulator(self):
+        # No second Mac runner: the tour runs on the Build job's build, without compiling it again.
+        self.assertFalse(os.path.exists(os.path.join(ROOT, ".github", "workflows", "pr-screens.yml")))
+        self.assertNotIn("xcodebuild test ", self.workflow)
+        self.assertIn('xcrun simctl boot "$UDID"', self.workflow)
+        # The tour scheme is built before the unit test scheme, which must be built last.
+        self.assertLess(self.workflow.index("-scheme KaliberfinderScreens"),
+                        self.workflow.index("-scheme Kaliberfinder \\"))
+
+    def test_tours_start_without_the_unit_tests_data(self):
+        self.assertEqual(self.workflow.count("xcrun simctl uninstall \"$UDID\" ch.giotta.kaliberfinder"), 2)
 
     def test_tours_head_and_base_with_the_same_tour(self):
         self.assertEqual(self.workflow.count("-only-testing:KaliberfinderUITests/PRScreensTests"), 2)
+        self.assertIn("fetch-depth: 2", self.workflow)
         self.assertIn("git checkout -q HEAD^1", self.workflow)
         self.assertIn('cp "$SCREENS/PRScreensTests.swift" KaliberfinderUITests/', self.workflow)
         self.assertIn("status_bar", self.workflow)
@@ -179,6 +192,16 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("pull-requests: write", self.workflow)
         self.assertIn(pr_screens.MARKER, self.workflow)
         self.assertIn("PATCH", self.workflow)
+
+    def test_images_go_to_app_screens_with_a_deploy_key(self):
+        # The images stay out of this repo's history: ravench/app-screens holds them.
+        comment = self.workflow.split("name: Comment on the pull request")[1]
+        self.assertIn("SCREENS_REPO: ravench/app-screens", comment)
+        self.assertIn("SCREENS_BRANCH: ${{ github.event.repository.name }}/pr-screens", comment)
+        self.assertIn("secrets.SCREENS_DEPLOY_KEY", comment)
+        self.assertIn('git remote add origin "git@github.com:${SCREENS_REPO}.git"', comment)
+        self.assertIn("https://raw.githubusercontent.com/${SCREENS_REPO}/", comment)
+        self.assertNotIn("contents: write", self.workflow)
 
     def test_tour_exists_and_matches_the_comment_hint(self):
         self.assertTrue(os.path.exists(os.path.join(ROOT, pr_screens.TOUR)))

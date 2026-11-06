@@ -3,8 +3,8 @@ import ImageIO
 import UniformTypeIdentifiers
 
 /// Training data for the photo detection (Raven, 2026-11-04): a series of photos of one known
-/// calibre with everything the phone measured, saved as a package that can be copied into
-/// KaliberfinderTests/Captures and checked by the tests.
+/// calibre with everything the phone measured, saved as a package for the private training repo
+/// (ravench/kaliberfinder-training), whose golden shots come back as KaliberfinderTests/Golden.
 ///
 /// A hidden developer tool, switched on by tapping the copyright line five times. It can be removed
 /// with TrainingCapture*.swift, TrainingRecorder.swift and its lines in SettingsView and LiDARCamera.
@@ -136,6 +136,10 @@ struct CaptureShot: Codable, Equatable {
         let width: Int
         let height: Int
         let instances: Int
+        /// Size of the upright photo as analysed (`PhotoAnalyzer.maxDimension`), which the mask
+        /// covers; lets a shot be replayed without its photo (golden set).
+        var imageWidth: Int?
+        var imageHeight: Int?
     }
 
     struct Analysis: Codable, Equatable {
@@ -158,9 +162,11 @@ struct CaptureShot: Codable, Equatable {
 struct SavedCapture: Identifiable, Hashable {
     let url: URL
     let package: CapturePackage
+    /// Read with the list, so a list reloaded after new photos differs and SwiftUI redraws its row.
+    var shotCount = 0
     var id: URL { url }
 
-    static func == (a: SavedCapture, b: SavedCapture) -> Bool { a.url == b.url }
+    static func == (a: SavedCapture, b: SavedCapture) -> Bool { a.url == b.url && a.shotCount == b.shotCount }
     func hash(into hasher: inout Hasher) { hasher.combine(url) }
 
     var shots: [SavedShot] { CaptureStore.shots(in: url) }
@@ -203,7 +209,7 @@ struct CaptureStore {
         return folders.compactMap { url in
             guard let data = try? Data(contentsOf: url.appendingPathComponent(TrainingCapture.packageFile)),
                   let package = try? TrainingCapture.decoder.decode(CapturePackage.self, from: data) else { return nil }
-            return SavedCapture(url: url, package: package)
+            return SavedCapture(url: url, package: package, shotCount: Self.shots(in: url).count)
         }
         .sorted { ($0.package.created, $0.url.lastPathComponent) > ($1.package.created, $1.url.lastPathComponent) }
     }

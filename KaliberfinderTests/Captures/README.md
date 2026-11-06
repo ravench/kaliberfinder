@@ -2,9 +2,10 @@
 
 Packages recorded with Kaliberfinder's hidden training capture screen: tap the copyright line in
 «Einstellungen» five times, then «Trainingsdaten aufnehmen». Pick the calibre, take the photos and
-share the series as a ZIP. Unzip it here (one folder per series) and commit it;
-`CaptureFixtureTests` runs every shot through the photo analysis and reports `CAPTURE` lines in
-the CI log.
+share the series as a ZIP. New series go into the private training repo
+(`ravench/kaliberfinder-training`, `tools/import_capture.py`), not here: this folder only keeps
+the example package that `TrainingCaptureTests` reads. Shots picked as golden come back without
+their photos in `../Golden` (see its README).
 
 ```
 <calibre>-<yyyyMMdd-HHmmss>/

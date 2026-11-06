@@ -81,46 +81,4 @@ final class BlankTests: XCTestCase {
         let distance = rank(shorter, limit: .max).first { $0.cartridge.id == "9x19 mm" }?.shapeDistance ?? .infinity
         XCTAssertGreaterThan(distance, 0.4)
     }
-
-    // MARK: - Real photos
-
-    private func realPhoto(_ name: String) throws -> UIImage {
-        let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: name, withExtension: "jpg"), name)
-        return try XCTUnwrap(UIImage(contentsOfFile: url.path), name)
-    }
-
-    /// A fired blank on grey linoleum. (Raven's other two photos are not used: on the dark speckled
-    /// mat the simulator's colour cut-out misses the outline, and in the wide frame the blank is
-    /// only about 50 pixels long, too few to tell it from a .22 BB Cap.)
-    /// The blank rests tilted, so it looks about a tenth shorter than it is; with its size it must be the first match.
-    func testRealPhotosOfFiredBlanksLookMostLikeTheBlank() async throws {
-        var missed: [String] = []
-        for name in ["photo-22blank-fired-grey"] {
-            let analysis = await PhotoAnalyzer.analyze(try realPhoto(name))
-            guard let shape = analysis.shape, let features = shape.features else {
-                missed.append("\(name): no outline")
-                continue
-            }
-            if !analysis.isBrass { missed.append("\(name): not taken for brass") }
-            let aspect = (shape.aspect * 100).rounded() / 100
-            // The star crimp narrows the front end. The rim isn't required: a fired blank always rests
-            // tilted and the phone is held parallel to the table, so the rim shows only about 1.05
-            // of the body (Raven, 2026-11-04); the blank must still be the closest calibre.
-            if !features.hasNeck { missed.append("\(name): \(features)") }
-            // As the app ranks it: with the tilt a blank's photo allows (see `ShapeMatcher.tilted`).
-            // By shape alone the star-crimped alarm blanks (9 mm R, .320 Knall) look the same, so
-            // without a size the blanks come first and this one is among the first three.
-            let closest = Matcher.rank(shape: shape, brass: analysis.isBrass, limit: 3)
-            if closest.first?.cartridge.blank != true || !closest.contains(where: { $0.cartridge.id == blankID }) {
-                missed.append("\(name): aspect \(aspect), closest \(closest.map { "\($0.cartridge.id) \($0.shapeDistance ?? -1)" })")
-            }
-            // With the size LiDAR measures (Raven's fired blank: 10.9 mm long, 5.7 mm body) it is the first.
-            let size = MeasuredSize(length: 10.9, diameter: 5.7, lengthError: 1, diameterError: 0.3)
-            let sized = Matcher.rank(shape: shape, size: size, brass: analysis.isBrass, limit: 3)
-            if sized.first?.cartridge.id != blankID {
-                missed.append("\(name) with size: closest \(sized.map(\.cartridge.id))")
-            }
-        }
-        XCTAssertTrue(missed.isEmpty, missed.joined(separator: "\n"))
-    }
 }

@@ -90,10 +90,13 @@ targets:
     platform: iOS
     sources:
       - path: KaliberfinderTests
-        excludes: ["Captures/**"]
+        excludes: ["Captures/**", "Golden/**"]
       # Training capture packages (TrainingCapture) as a folder, so their shots keep their own
       # subfolders: every shot has a photo.jpg and a shot.json.
       - path: KaliberfinderTests/Captures
+        type: folder
+      # The golden set (GoldenSetTests): capture packages with Vision masks, no photos.
+      - path: KaliberfinderTests/Golden
         type: folder
     dependencies:
       - target: Kaliberfinder
@@ -134,7 +137,7 @@ schemes:
         - KaliberfinderTests
     archive:
       config: Release
-  # Own scheme so the screen tour (.github/workflows/pr-screens.yml) stays out of the unit test run.
+  # Own scheme so the screen tour (PR screens in .github/workflows/build.yml) stays out of the unit test run.
   KaliberfinderScreens:
     build:
       targets:

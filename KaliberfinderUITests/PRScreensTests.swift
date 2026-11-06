@@ -1,6 +1,6 @@
 import XCTest
 
-/// A tour of the main screens, one screenshot per stop. The PR screens workflow runs it on the
+/// A tour of the main screens, one screenshot per stop. The Build job's PR screens run it on the
 /// pull request and on its base branch and posts the screens that changed as a comment.
 /// A pull request that changes a screen the tour does not reach adds a stop.
 final class PRScreensTests: XCTestCase {
@@ -39,6 +39,21 @@ final class PRScreensTests: XCTestCase {
             if open(app.staticTexts["9x19 mm"].firstMatch) {
                 snap("05-Kaliber")
             }
+        }
+    }
+
+    /// Loose balls in other materials: the steel BB and the plastic airsoft BBs.
+    func testBBs() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("BB\n") // return hides the keyboard, so all BB rows show
+        }
+        snap("08-BBs")
+        if open(app.staticTexts["6 mm Airsoft-BB"].firstMatch) {
+            snap("09-Airsoft-BB")
         }
     }
 

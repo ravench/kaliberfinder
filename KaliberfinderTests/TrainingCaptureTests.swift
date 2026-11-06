@@ -42,7 +42,7 @@ final class TrainingCaptureTests: XCTestCase {
         shot.scale = .init(tableDistance: 250, focalLength: 2794, referenceLongSide: 4032)
         shot.gravity = [0.01, -0.02, -0.99]
         shot.tilt = 1.3
-        shot.mask = .init(width: 4, height: 3, instances: 2)
+        shot.mask = .init(width: 4, height: 3, instances: 2, imageWidth: 1600, imageHeight: 1200)
         shot.analysis = .init(aspect: 3.0, lengthPixels: 300, imageLongSide: 1600, outline: [[0.1, 0.2], [0.3, 0.2], [0.3, 0.3], [0.1, 0.3]],
                               isBrass: true, candidates: 0, size: [29.7, 9.9], matches: ["9x19 mm"])
         return shot
@@ -97,6 +97,16 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(store.packages().map(\.package.calibre), [".45 ACP", "9x19 mm"])
         try store.delete(store.packages()[0])
         XCTAssertEqual(store.packages().map(\.package.calibre), ["9x19 mm"])
+    }
+
+    func testListedPackageChangesWhenAShotIsAdded() throws {
+        let url = try store.create(package())
+        let before = try XCTUnwrap(store.packages().first)
+        XCTAssertEqual(before.shotCount, 0)
+        try CaptureStore.save(CaptureShot(photo: "photo.jpg", source: "library", captured: Date()), photo: try jpeg(), in: url)
+        let after = try XCTUnwrap(store.packages().first)
+        XCTAssertEqual(after.shotCount, 1)
+        XCTAssertNotEqual(before, after, "an equal value would keep SwiftUI showing «0 Fotos»")
     }
 
     func testFolderNameIsASlugOfTheCalibre() {

@@ -40,14 +40,14 @@ struct SettingsView: View {
                 if trainingCapture {
                     Section {
                         NavigationLink { TrainingCaptureView() } label: {
-                            Label { Text(verbatim: "Trainingsdaten aufnehmen") } icon: { Image(systemName: "tray.and.arrow.down") }
+                            Label { Text("Trainingsdaten aufnehmen") } icon: { Image(systemName: "tray.and.arrow.down") }
                         }
                     } footer: {
-                        Text(verbatim: "Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.")
+                        Text("Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.")
                     }
                 }
                 Section {
-                    Text(verbatim: "© 2026 Simon Giotta · PolyForm Noncommercial 1.0.0")
+                    Text("© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .onTapGesture(count: 5) { trainingCapture.toggle() }

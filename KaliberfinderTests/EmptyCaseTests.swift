@@ -76,6 +76,7 @@ final class EmptyCaseTests: XCTestCase {
 
     func testLoadedCartridgesAreNotTakenForCases() throws {
         // The Nagant bullet sits wholly inside the case and a blank has none, so the loaded round looks like an empty case.
+        // Sampled every 0.3 mm: at 0.5 mm five short rounds (.22 Long, .32 S&W Long …) come out as empty cases.
         for c in CartridgeCatalog.all where c.hasCase && c.kind != "shot" && c.dimensions.overallLength > c.dimensions.caseLength {
             let shape = try photo(c, part: .cartridge)
             XCTAssertEqual(ScanMode.auto.part(for: shape), .cartridge, c.id)
@@ -92,14 +93,30 @@ final class EmptyCaseTests: XCTestCase {
         XCTAssertEqual(Set(ScanMode.allCases.map(\.rawValue)).count, 3)
     }
 
-    /// Each photo starts on «Automatisch», whatever was picked for an earlier photo
+    /// Each photo starts on what the app detects, whatever was picked for an earlier photo
     /// (the choice used to be saved under "scanMode" and stuck to every later photo).
-    func testEveryPhotoStartsOnAutomatic() throws {
+    func testEveryPhotoStartsOnTheDetection() throws {
         UserDefaults.standard.set(ScanMode.cartridge.rawValue, forKey: "scanMode")
         defer { UserDefaults.standard.removeObject(forKey: "scanMode") }
         let view = MatchesView(photo: UIImage())
-        let state = try XCTUnwrap(Mirror(reflecting: view).children.first { $0.label == "_mode" }?.value as? State<ScanMode>)
-        XCTAssertEqual(state.wrappedValue, .auto)
+        let state = try XCTUnwrap(Mirror(reflecting: view).children.first { $0.label == "_override" }?.value as? State<ScanMode?>)
+        XCTAssertNil(state.wrappedValue)
+    }
+
+    /// The picker has no «Automatisch» segment: it highlights what the app detected, and the
+    /// other segment overrides it.
+    func testPickerHighlightsTheDetectedPart() throws {
+        XCTAssertEqual(ScanMode.choices, [.cartridge, .emptyCase])
+        let empty = try photo(cartridge(".308 Winchester"), part: .emptyCase)
+        let loaded = try photo(cartridge("9x19 mm"), part: .cartridge)
+        XCTAssertEqual(ScanMode.detected(in: empty), .emptyCase)
+        XCTAssertEqual(ScanMode.detected(in: loaded), .cartridge)
+        for shape in [empty, loaded] {
+            let detected = ScanMode.detected(in: shape)
+            XCTAssertEqual(detected.part(for: shape), ScanMode.auto.part(for: shape))
+            let other = try XCTUnwrap(ScanMode.choices.first { $0 != detected })
+            XCTAssertNotEqual(other.part(for: shape), ScanMode.auto.part(for: shape))
+        }
     }
 
     // MARK: - Rim and neck
@@ -194,7 +211,8 @@ final class EmptyCaseTests: XCTestCase {
     func testNewTextsAreTranslated() throws {
         let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "en"))
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
-        for mode in ScanMode.allCases { XCTAssertNotNil(en[mode.title], mode.title) }
+        for mode in ScanMode.choices { XCTAssertNotNil(en[mode.title], mode.title) }
+        XCTAssertNil(en["Automatisch"])
         XCTAssertEqual(en["Leere Hülse"], "Empty case")
         XCTAssertEqual(en["Flaschenhals"], "bottleneck")
         XCTAssertEqual(en["Was liegt im Bild?"], "What is in the photo?")
