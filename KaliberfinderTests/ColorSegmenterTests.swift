@@ -148,7 +148,7 @@ final class ColorSegmenterTests: XCTestCase {
     }
 
     /// The 9 mm photo through the analysis (the colour cut-out on the simulator): one cartridge,
-    /// handgun calibres as the matches, and the frame exactly around the measured silhouette.
+    /// handgun calibres as the matches, and the frame along the measured silhouette.
     /// (The .45 ACP photo is checked the same way in testAnalyzerOffersBothCartridgesAndMeasuresThePickedOne.)
     func testRealPhotosShowOneHandgunCartridge() async throws {
         for (name, id) in [("photo-9x19-wood", "9x19 mm")] {
@@ -170,10 +170,14 @@ final class ColorSegmenterTests: XCTestCase {
             let box = try XCTUnwrap(MatchesView.detectedBoxes(analysis).first, name)
             XCTAssertLessThan(box.width * box.height, 0.2, "\(name): \(box)")
             XCTAssertGreaterThan(box.width * box.height, 0.001, "\(name): \(box)")
-            // The frame is exactly what was measured.
+            // The frame is the measured silhouette's own outline, inside its box.
             let frames = MatchesView.frames(overview: analysis, measured: analysis, picking: false)
             XCTAssertTrue(frames.candidates.isEmpty, name)
-            XCTAssertEqual(frames.measured, outline, name)
+            let contour = try XCTUnwrap(analysis.contour, name)
+            XCTAssertEqual(frames.measured, contour.points, name)
+            XCTAssertEqual(frames.parts, contour.parts, name)
+            let around = box.insetBy(dx: -0.005, dy: -0.005)
+            XCTAssertTrue(contour.points.allSatisfy { around.contains($0) }, name)
         }
     }
 
@@ -423,6 +427,13 @@ final class ColorSegmenterTests: XCTestCase {
         let after = MatchesView.frames(overview: several, measured: picked, picking: false)
         XCTAssertTrue(after.candidates.isEmpty)
         XCTAssertEqual(after.measured, corners)
+        // With the silhouette's own outline, that is drawn instead of the box.
+        XCTAssertTrue(after.parts.isEmpty)
+        let contour = ShapeContour(points: [CGPoint(x: 0.1, y: 0.2), CGPoint(x: 0.3, y: 0.15), CGPoint(x: 0.2, y: 0.3)],
+                                   parts: [.neck, .body, .end])
+        let traced = MatchesView.frames(overview: nil, measured: PhotoAnalysis(shape: shape, outline: corners, contour: contour), picking: false)
+        XCTAssertEqual(traced.measured, contour.points)
+        XCTAssertEqual(traced.parts, contour.parts)
         // One cartridge: the preview crops around the outline's bounds.
         let bounds = try? XCTUnwrap(MatchesView.detectedBoxes(picked).first)
         XCTAssertEqual(bounds?.minX ?? 0, 0.1, accuracy: 1e-9)

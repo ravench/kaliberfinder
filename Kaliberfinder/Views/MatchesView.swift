@@ -27,8 +27,7 @@ struct MatchesView: View {
         List {
             Section {
                 let frames = Self.frames(overview: overview, measured: analysis, picking: needsPick)
-                CandidatePhotoView(photo: preview?.image ?? photo, candidates: frames.candidates, measured: frames.measured,
-                                   lines: frames.measured == nil ? nil : analysis?.lines,
+                CandidatePhotoView(photo: preview?.image ?? photo, candidates: frames.candidates, measured: frames.measured, parts: frames.parts,
                                    region: preview?.region ?? CGRect(x: 0, y: 0, width: 1, height: 1),
                                    maxHeight: needsPick ? 420 : 220) { choose($0) }
                 if needsPick {
@@ -128,12 +127,14 @@ struct MatchesView: View {
     }
 
     /// Frames on the photo: the competing cartridges while the user picks one; afterwards, or when
-    /// there is only one, exactly the silhouette that was measured.
+    /// there is only one, the outline of the silhouette that was measured (its box if there's none),
+    /// with what found each of its edges.
     static func frames(overview: PhotoAnalysis?, measured: PhotoAnalysis?,
-                       picking: Bool) -> (candidates: [CGRect], measured: [CGPoint]?) {
-        if picking { return (overview?.candidates ?? [], nil) }
-        guard let measured, measured.shape != nil else { return ([], nil) }
-        return ([], measured.outline)
+                       picking: Bool) -> (candidates: [CGRect], measured: [CGPoint]?, parts: [ShapeContour.Part]) {
+        if picking { return (overview?.candidates ?? [], nil, []) }
+        guard let measured, measured.shape != nil else { return ([], nil, []) }
+        if let contour = measured.contour { return ([], contour.points, contour.parts) }
+        return ([], measured.outline, [])
     }
 
     /// Boxes around everything detected in the whole photo, for cropping the preview.
@@ -253,9 +254,6 @@ struct MatchesView: View {
     static func notes(for a: PhotoAnalysis, depth: DepthScale? = nil, unit: LengthUnit = .metric, mode: ScanMode = .auto) -> [String] {
         var notes: [String] = []
         if let shape = a.shape, !shape.isEndView, let text = featuresText(shape, mode: mode) { notes.append(text) }
-        if let lines = a.lines, a.shape?.isEndView == false, !lines.isEmpty {
-            notes.append(lines.neck.isEmpty ? "Hellblau: Verjüngung des Körpers.".loc : "Orange: Hals und Schulter, hellblau: Verjüngung des Körpers.".loc)
-        }
         if depth != nil {
             switch a.size(depth: depth) {
             case .success(let size): notes.append(measuredText(size, unit: unit))

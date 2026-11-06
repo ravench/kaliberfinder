@@ -29,7 +29,7 @@ extension PhotoAnalyzer {
         // From the cut-out back to the whole photo.
         let toPhoto = { (p: CGPoint) in CGPoint(x: region.minX + p.x * region.width, y: region.minY + p.y * region.height) }
         analysis.outline = analysis.outline?.map(toPhoto)
-        analysis.lines = analysis.lines?.map(toPhoto)
+        analysis.contour = analysis.contour?.map(toPhoto)
         return analysis
     }
 

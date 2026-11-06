@@ -17,8 +17,9 @@ struct PhotoAnalysis {
     /// photo (x of the width, y of the height); nil if nothing was measured. Drawn as the frame,
     /// so it shows exactly what was matched.
     var outline: [CGPoint]?
-    /// The detected neck and taper, in the same fractions as `outline`; nil if nothing was measured.
-    var lines: ShapeLines?
+    /// The measured silhouette's outline (detected bullet, neck and taper as straight lines), in the
+    /// same fractions as `outline`; drawn instead of the box when there is one.
+    var contour: ShapeContour?
     /// The silhouette is brass-coloured: a case, not a lead ball or pellet.
     var isBrass = false
 
@@ -70,7 +71,7 @@ enum PhotoAnalyzer {
         var measured: (shape: ShapeMeasurement, length: Double)? = vision.map { ($0.shape, $0.length) }
         var candidates = vision?.candidates ?? []
         var outline = vision?.outline
-        var lines = vision?.lines
+        var contour = vision?.contour
         var measuredPoints = vision?.points ?? []
         let normalize = { (box: [Point]?) in
             box?.map { CGPoint(x: $0.x / Double(cgImage.width), y: $0.y / Double(cgImage.height)) }
@@ -86,14 +87,14 @@ enum PhotoAnalyzer {
                 measured = fromColour
                 let box = ShapeMatcher.orientedBox(sampled, pixelSize: Double(step))
                 outline = normalize(box)
-                lines = box.flatMap { ShapeLines(points: sampled, pixelSize: Double(step), shape: fromColour.shape, box: $0) }?.map(fraction)
+                contour = box.flatMap { ShapeContour.polygon(sampled, pixelSize: Double(step), shape: fromColour.shape, box: $0) }?.map(fraction)
                 candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
                 measuredPoints = sampled
             }
         }
         return PhotoAnalysis(shape: measured?.shape, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)),
-                             candidates: candidates.count > 1 ? candidates : [], outline: outline, lines: lines,
+                             candidates: candidates.count > 1 ? candidates : [], outline: outline, contour: contour,
                              isBrass: rgb.map { isBrass($0, points: measuredPoints) } ?? false)
     }
 
@@ -104,17 +105,17 @@ enum PhotoAnalyzer {
         let points: [Point]
         let candidates: [CGRect]
         let outline: [CGPoint]?
-        let lines: ShapeLines?
+        let contour: ShapeContour?
     }
 
-    /// Measurement, frame and neck lines of a silhouette in a `width` × `height` photo (see
+    /// Measurement, frame and outline of a silhouette in a `width` × `height` photo (see
     /// `silhouette`); nil when it can't be measured.
     static func visionResult(_ found: (points: [Point], step: Int, boxes: [CGRect]), width: Int, height: Int) -> VisionResult? {
         guard let vision = measureSilhouette(found.points, step: found.step) else { return nil }
         let fraction = { (p: CGPoint) in CGPoint(x: p.x / Double(width), y: p.y / Double(height)) }
-        let lines = vision.box.flatMap { ShapeLines(points: vision.points, pixelSize: Double(found.step), shape: vision.shape, box: $0) }
+        let contour = vision.box.flatMap { ShapeContour.polygon(vision.points, pixelSize: Double(found.step), shape: vision.shape, box: $0) }
         return VisionResult(shape: vision.shape, length: vision.length, points: vision.points, candidates: found.boxes,
-                            outline: vision.box?.map { fraction(CGPoint(x: $0.x, y: $0.y)) }, lines: lines?.map(fraction))
+                            outline: vision.box?.map { fraction(CGPoint(x: $0.x, y: $0.y)) }, contour: contour?.map(fraction))
     }
 
     /// The phone's path on a stored Vision instance mask (a training capture or golden shot): the
@@ -130,7 +131,7 @@ enum PhotoAnalyzer {
         }
         return PhotoAnalysis(shape: vision.shape, lengthPixels: vision.length, imageLongSide: longSide,
                              candidates: vision.candidates.count > 1 ? vision.candidates : [],
-                             outline: vision.outline, lines: vision.lines, isBrass: isBrass)
+                             outline: vision.outline, contour: vision.contour, isBrass: isBrass)
     }
 
     /// Vision's object in a stored instance mask, as `visionResult(of:)` finds it in the photo.

@@ -1,20 +1,22 @@
 import SwiftUI
 
 /// The photo with the frames of what was found: a numbered yellow box around each cartridge the
-/// user can pick (tapping one picks it), and a green frame exactly around the measured silhouette,
-/// turned with the cartridge, with the detected neck (orange) and the body's taper (cyan) inside it.
+/// user can pick (tapping one picks it), and a green line along the measured silhouette: around the
+/// case, its neck and shoulder, and the bullet if there is one. With the hidden developer switch
+/// each edge has the colour of the detection it comes from.
 struct CandidatePhotoView: View {
     let photo: UIImage
     /// Cartridges to pick from, as boxes in fractions of the whole photo; empty when there's no choice.
     var candidates: [CGRect] = []
-    /// Corners of the measured silhouette's rotated box, as fractions of the whole photo.
+    /// The measured silhouette's outline (or its rotated box's corners), as fractions of the whole photo.
     var measured: [CGPoint]?
-    /// The detected neck and taper, as fractions of the whole photo.
-    var lines: ShapeLines?
+    /// What found each edge of `measured` (see `ShapeContour.parts`); empty for a box.
+    var parts: [ShapeContour.Part] = []
     /// The part of the photo `photo` shows, as fractions of the whole photo (all of it by default).
     var region = CGRect(x: 0, y: 0, width: 1, height: 1)
     var maxHeight: CGFloat = 220
     var onSelect: ((Int) -> Void)?
+    @AppStorage(ShapeContour.partColoursKey) private var partColours = false
 
     var body: some View {
         Image(uiImage: photo)
@@ -23,17 +25,18 @@ struct CandidatePhotoView: View {
             .overlay {
                 GeometryReader { geo in
                     if let measured {
-                        Self.path(through: measured.map { Self.point($0, in: region, size: geo.size) })
-                            .stroke(Color.green, style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+                        let corners = measured.map { Self.point($0, in: region, size: geo.size) }
+                        if partColours && parts.count == corners.count {
+                            ForEach(Self.coloured, id: \.part) { item in
+                                Self.path(edges: parts.indices.filter { parts[$0] == item.part }, of: corners)
+                                    .stroke(item.colour, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                            }
                             .accessibilityHidden(true)
-                    }
-                    if let lines {
-                        Self.path(along: lines.taper.map { $0.map { Self.point($0, in: region, size: geo.size) } })
-                            .stroke(Color.cyan, style: StrokeStyle(lineWidth: 2, lineCap: .round))
-                            .accessibilityHidden(true)
-                        Self.path(along: lines.neck.map { $0.map { Self.point($0, in: region, size: geo.size) } })
-                            .stroke(Color.orange, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-                            .accessibilityHidden(true)
+                        } else {
+                            Self.path(through: corners)
+                                .stroke(Color.green, style: StrokeStyle(lineWidth: 3, lineJoin: .round))
+                                .accessibilityHidden(true)
+                        }
                     }
                     ForEach(candidates.indices, id: \.self) { i in
                         candidate(i, in: geo.size)
@@ -65,6 +68,20 @@ struct CandidatePhotoView: View {
             .accessibilityAddTraits(.isButton)
     }
 
+    /// The colour of each part with the developer switch on: green for the ends as for the whole
+    /// outline, the others as the neck and taper lines were drawn before (#62).
+    static let coloured: [(part: ShapeContour.Part, colour: Color)] = [(.end, .green), (.bullet, .purple), (.neck, .orange), (.body, .cyan)]
+
+    /// The edges `edges` of the closed outline through `corners`: edge `i` from corner `i` to the next.
+    static func path(edges: [Int], of corners: [CGPoint]) -> Path {
+        var path = Path()
+        for i in edges where corners.count > 1 {
+            path.move(to: corners[i])
+            path.addLine(to: corners[(i + 1) % corners.count])
+        }
+        return path
+    }
+
     /// A closed path through the points.
     static func path(through points: [CGPoint]) -> Path {
         var path = Path()
@@ -72,13 +89,6 @@ struct CandidatePhotoView: View {
         path.move(to: first)
         for p in points.dropFirst() { path.addLine(to: p) }
         path.closeSubpath()
-        return path
-    }
-
-    /// Open polylines through each list of points.
-    static func path(along lines: [[CGPoint]]) -> Path {
-        var path = Path()
-        for line in lines where line.count > 1 { path.addLines(line) }
         return path
     }
 
