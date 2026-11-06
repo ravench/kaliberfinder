@@ -110,7 +110,8 @@ for package in packages {
         let name = "\(package.url.lastPathComponent)/\(entry.url.lastPathComponent)"
         let (analysis, source) = analyse(entry, macVision: options.macVision)
         let shot = Evaluation.shot(name, analysis: analysis, depth: entry.shot.scale?.depthScale, package: package.package, source: source)
-        FileHandle.standardError.write(Data("\(name) rank \(shot.result.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue))\n".utf8))
+        let row = shot.result.row.map(String.init) ?? "–", rank = shot.result.rank.map(String.init) ?? "–"
+        FileHandle.standardError.write(Data("\(name) row \(row) rank \(rank) first \(shot.first ?? "–") (\(source.rawValue))\n".utf8))
         shots.append(shot)
     }
 }

@@ -68,6 +68,8 @@ final class GoldenSetTests: XCTestCase {
         let baseline = try TrainingCapture.decoder.decode(Evaluation.Baseline.self, from: data)
         XCTAssertEqual(Set(baseline.shots.keys), Set(results.keys), "golden shots changed: update Golden/baseline.json from the GOLDEN lines")
         for (label, was, isNow) in [("first", baseline.scores.top1, scores.top1), ("top 5", baseline.scores.top5, scores.top5),
+                                    ("first of all", baseline.scores.top1All, scores.top1All),
+                                    ("top 5 of all", baseline.scores.top5All, scores.top5All),
                                     ("part", baseline.scores.part, scores.part), ("neck", baseline.scores.neck, scores.neck)] {
             XCTAssertGreaterThanOrEqual(isNow, was - Self.tolerance, "\(label): \(isNow) % against \(was) % in Golden/baseline.json")
         }
@@ -100,8 +102,9 @@ final class GoldenSetTests: XCTestCase {
                                              isBrass: shot.analysis?.isBrass ?? true)
         let scored = Evaluation.shot(name, analysis: analysis, depth: shot.scale?.depthScale, package: package)
         let result = scored.result
-        let line = String(format: "%@ %@ rank %@ aspect %.2f (phone %.2f)%@ part %@ neck %@ first %@",
-                          package.calibre, package.part, result.rank.map { "\($0)" } ?? "–", analysis.shape?.aspect ?? 0,
+        let line = String(format: "%@ %@ row %@ rank %@ aspect %.2f (phone %.2f)%@ part %@ neck %@ first %@",
+                          package.calibre, package.part, result.row.map { "\($0)" } ?? "–", result.rank.map { "\($0)" } ?? "–",
+                          analysis.shape?.aspect ?? 0,
                           shot.analysis?.aspect ?? 0, scored.size.map { String(format: " size %.1f x %.1f mm", $0.length, $0.diameter) } ?? "",
                           result.part ? "ok" : "wrong", result.neck.map { $0 ? "found" : "missed" } ?? "–", scored.first ?? "–")
         return (scored, line)

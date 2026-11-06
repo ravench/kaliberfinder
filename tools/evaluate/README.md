@@ -46,8 +46,12 @@ Scores overall, by calibre and part, by kind of shot (cartridge or empty case, w
 LiDAR size, where the outline came from), the calibres most often ranked first instead of the right
 one, and every shot whose calibre is not first. It holds shot names and numbers only, never a photo.
 
-The scores are the golden set's: calibre first, calibre in the first five, part (cartridge or empty
-case) right in automatic mode, and neck found on calibres with a clear neck.
+The scores are the golden set's: calibre first and in the first five rows of the list as the phone
+shows it, the same among all calibres, part (cartridge or empty case) right in automatic mode, and
+neck found on calibres with a clear neck. The phone's list is the headline: it hides rare and obsolete
+calibres (unless the shot's own calibre is one, as for a user who switched them on) and shows
+calibres that look exactly the same from the side, such as GP 90 and .223 Remington, as one row.
+«Among all calibres» ranks against every catalogue calibre, each on its own.
 
 ## In CI
 
