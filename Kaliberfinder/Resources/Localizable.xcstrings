@@ -1795,6 +1795,29 @@
         }
       }
     },
+    "Geschosse beim Vergleich mit leeren Hülsen zeigen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show bullets when comparing empty cases"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher les projectiles en comparant des douilles vides"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra le palle nel confronto con bossoli vuoti"
+          }
+        }
+      }
+    },
     "Geschätzt, bitte kalibrieren": {
       "extractionState": "manual",
       "localizations": {
@@ -2067,6 +2090,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Origine"
+          }
+        }
+      }
+    },
+    "Hülse %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Case %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Douille %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bossolo %@"
           }
         }
       }

@@ -44,6 +44,26 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// Calibres picked long, short, middle stand by length: in the picked list and on the 1:1 screen.
+    func testPickAndCompare() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Auswählen und vergleichen"].firstMatch) else { return }
+        for (query, name) in [("GP 11", "7.5x55 mm Swiss (GP 11)"), ("9x19", "9x19 mm"), (".45 ACP", ".45 ACP")] {
+            let search = app.searchFields.firstMatch
+            if search.waitForExistence(timeout: 5) {
+                search.tap()
+                // Clears the previous query; return hides the keyboard, so the rows can be tapped.
+                search.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 10) + query + "\n")
+            }
+            _ = open(app.staticTexts[name].firstMatch)
+        }
+        snap("19-Auswahl")
+        if open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "1:1 vergleichen")).firstMatch),
+           app.navigationBars["1:1"].waitForExistence(timeout: 5) {
+            snap("20-Auswahl-1zu1")
+        }
+    }
+
     /// Loose balls in other materials: the steel BB and the plastic airsoft BBs.
     func testBBs() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
@@ -80,19 +100,21 @@ final class PRScreensTests: XCTestCase {
     }
 
     /// The matches for one of Raven's photos (an empty GP 11 case), with the measured frame and the
-    /// detected neck and taper drawn over it.
+    /// detected neck and taper drawn over it. Then its matches at 1:1, by case length.
     func testPhotoMatches() {
-        photoMatches("set-gp11-case-02", shot: "07-Foto-Treffer")
+        photoMatches("set-gp11-case-02", shot: "07-Foto-Treffer", compareShot: "17-Foto-Huelse-1zu1")
     }
 
-    /// A loaded 9 mm: the outline follows its round bullet nose. Then all its matches at 1:1, by length.
+    /// A loaded 9 mm: the outline follows its round bullet nose. Then all its matches at 1:1, by overall length.
     func testLoadedCartridgePhoto() {
         photoMatches("photo-9x19-wood", shot: "13-Foto-Patrone", compareShot: "14-Foto-1zu1")
     }
 
     /// One of Raven's empty 6 mm BR cases: its outline ends flat at the mouth, without a bullet.
+    /// Then its match at 1:1 with «Geschosse beim Vergleich mit leeren Hülsen zeigen» off (the matches don't use it).
     func testEmptyCasePhoto() {
-        photoMatches("photo-6mmbr-case", shot: "15-Foto-leere-Huelse")
+        app.launchArguments += ["-showBulletsOnEmptyCases", "NO"]
+        photoMatches("photo-6mmbr-case", shot: "15-Foto-leere-Huelse", compareShot: "18-Foto-Huelse-ohne-Geschoss")
     }
 
     /// The loaded 9 mm with the hidden switch that colours the outline by detection: the bullet up to

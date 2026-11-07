@@ -5,6 +5,8 @@ import SwiftUI
 struct CompareButton: View {
     let title: String
     let cartridges: [Cartridge]
+    /// Calibres compared as empty cases (`TrueScaleView.emptyCases`).
+    var emptyCases: Set<String> = []
 
     /// Two items side by side.
     static let symbol = "square.and.line.vertical.and.square"
@@ -14,7 +16,7 @@ struct CompareButton: View {
     static let margin: CGFloat = 24
 
     var body: some View {
-        NavigationLink { TrueScaleView(cartridges: cartridges) } label: {
+        NavigationLink { TrueScaleView(cartridges: cartridges, emptyCases: emptyCases) } label: {
             Label(title, systemImage: Self.symbol)
                 .font(.headline)
                 .lineLimit(1)

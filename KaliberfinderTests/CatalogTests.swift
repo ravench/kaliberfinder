@@ -22,6 +22,16 @@ final class CatalogTests: XCTestCase {
         }
     }
 
+    func testPicksStandByLengthNotInTheOrderPicked() throws {
+        func c(_ id: String) throws -> Cartridge { try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id) }
+        var picks: [Cartridge] = []
+        for id in ["7.5x55 mm Swiss (GP 11)", "9x19 mm", ".22 LR", ".30 Super Carry"] { picks = picks.toggling(try c(id)) }
+        // 9x19 and .30 Super Carry are both 29.7 mm long: the narrower one (Ø 8.74 against 9.96) first.
+        XCTAssertEqual(picks.map(\.id), [".22 LR", ".30 Super Carry", "9x19 mm", "7.5x55 mm Swiss (GP 11)"])
+        // Tapping a pick again takes it out and leaves the others in order.
+        XCTAssertEqual(picks.toggling(try c("9x19 mm")).map(\.id), [".22 LR", ".30 Super Carry", "7.5x55 mm Swiss (GP 11)"])
+    }
+
     func testKnownDimensions() throws {
         let nine = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
         XCTAssertEqual(nine.dimensions.caseLength, 19.15, accuracy: 0.001)

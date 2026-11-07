@@ -33,9 +33,27 @@ struct TrueScaleLayout: Equatable {
 /// Lay the real cartridge on the screen, base on the line, to compare.
 struct TrueScaleView: View {
     let cartridges: [Cartridge]
+    /// Calibres a photo was compared with as empty cases: their labels add the case length, and
+    /// their drawings leave out the bullet when «Geschosse beim Vergleich mit leeren Hülsen zeigen» is off;
+    /// then «L» is the case length.
+    var emptyCases: Set<String> = []
     @EnvironmentObject private var scale: ScaleModel
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
+    @AppStorage(Self.bulletsOnCasesKey) private var bulletsOnCases = true
     @State private var showZoomHint = false
+
+    /// Settings switch, on by default: empty cases are compared with the bullet drawn.
+    static let bulletsOnCasesKey = "showBulletsOnEmptyCases"
+
+    /// E.g. "Hülse 51.2 mm", under each calibre compared as an empty case with its bullet drawn.
+    static func caseLengthText(_ c: Cartridge, unit: LengthUnit) -> String {
+        String(format: "Hülse %@".loc, unit.format(c.dimensions.caseLength))
+    }
+
+    /// "L …": the length of what is drawn, the case alone when `caseOnly`, else the whole cartridge.
+    static func lengthText(_ c: Cartridge, caseOnly: Bool, unit: LengthUnit) -> String {
+        "L " + unit.format(caseOnly ? c.dimensions.caseLength : c.dimensions.overallLength)
+    }
 
     var body: some View {
         let ppmm = scale.pointsPerMM
@@ -66,7 +84,7 @@ struct TrueScaleView: View {
                             HStack(alignment: .top, spacing: 8 * ppmm) {
                                 ForEach(cartridges) { c in
                                     VStack(spacing: 6) {
-                                        CartridgeView(cartridge: c, pointsPerMM: ppmm)
+                                        drawing(of: c, ppmm: ppmm)
                                             .frame(height: layout.bandHeight, alignment: .bottom)
                                         label(for: c)
                                         CaseBaseView(cartridge: c, pointsPerMM: ppmm)
@@ -118,7 +136,7 @@ struct TrueScaleView: View {
             HStack(alignment: .bottom, spacing: TrueScaleLayout.singleGapMM * ppmm) {
                 RulerView(lengthMM: layout.rulerMM, pointsPerMM: ppmm, unit: unit)
                     .padding(.trailing, 4)
-                CartridgeView(cartridge: c, pointsPerMM: ppmm)
+                drawing(of: c, ppmm: ppmm)
             }
             .frame(height: layout.bandHeight, alignment: .bottom)
             .overlay(alignment: .bottom) {
@@ -135,6 +153,15 @@ struct TrueScaleView: View {
         .padding(.bottom)
     }
 
+    /// Drawn without its bullet: compared as an empty case, with the bullets switched off.
+    private func caseOnly(_ c: Cartridge) -> Bool {
+        !bulletsOnCases && emptyCases.contains(c.id)
+    }
+
+    private func drawing(of c: Cartridge, ppmm: Double) -> some View {
+        CartridgeView(cartridge: c, pointsPerMM: ppmm, caseOnly: caseOnly(c))
+    }
+
     private func label(for c: Cartridge) -> some View {
         VStack(spacing: 2) {
             Text(verbatim: c.name).font(.caption.bold())
@@ -142,10 +169,19 @@ struct TrueScaleView: View {
             ForEach(CartridgeCatalog.twins(of: c)) { twin in
                 Text(verbatim: "= \(twin.name)").font(.caption2).foregroundStyle(.secondary)
             }
-            Text(verbatim: "L \(unit.format(c.dimensions.overallLength))").font(.caption2)
+            // Without the bullet, «L» below already is the case length.
+            if emptyCases.contains(c.id) && !caseOnly(c) {
+                // One line like «L» and «Ø», shrunk to fit the column rather than wrapped.
+                Text(verbatim: Self.caseLengthText(c, unit: unit)).font(.caption2)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+            }
+            Text(verbatim: Self.lengthText(c, caseOnly: caseOnly(c), unit: unit)).font(.caption2)
             Text(verbatim: "Ø \(unit.format(max(c.dimensions.rim, c.dimensions.base)))").font(.caption2)
         }
         .multilineTextAlignment(.center)
+        // Takes the height it needs, so a long name wraps instead of being cut short.
+        .fixedSize(horizontal: false, vertical: true)
         .frame(width: max(70, c.outline.width * scale.pointsPerMM))
         .foregroundStyle(.secondary)
     }
