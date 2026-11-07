@@ -172,6 +172,8 @@ struct CaptureShot: Codable, Equatable {
 
     struct Analysis: Codable, Equatable {
         var aspect: Double?
+        /// `PhotoAnalysis.lengthPixels` and `imageLongSide`: after the second look the whole photo's
+        /// long side at the scale of the part looked at, so mostly larger than the mask's `imageWidth`.
         var lengthPixels: Double?
         var imageLongSide: Double
         /// The measured silhouette's rotated box, fractions of the upright photo.
