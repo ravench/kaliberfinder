@@ -168,10 +168,11 @@ final class DarkSideTests: XCTestCase {
     /// The analysis measures Vision's silhouette with its dark side given back.
     func testTheAnalysisMeasuresTheRestoredSilhouette() throws {
         let shot = photo(try cartridge("9x19 mm"))
+        let truth = try aspect(shot.whole)
         let vision = try XCTUnwrap(PhotoAnalyzer.visionResult((shot.cut, 1, []), width: 600, height: 600))
-        XCTAssertGreaterThan(vision.shape.aspect / aspect(shot.whole), 1.1)
+        XCTAssertGreaterThan(vision.shape.aspect / truth, 1.1)
         let analysis = PhotoAnalyzer.analysis(of: try cgImage(shot.image), vision: vision)
-        XCTAssertEqual(try XCTUnwrap(analysis.shape).aspect / aspect(shot.whole), 1, accuracy: 0.03)
+        XCTAssertEqual(try XCTUnwrap(analysis.shape).aspect / truth, 1, accuracy: 0.03)
     }
 
     private func cgImage(_ rgb: RGBImage) throws -> CGImage {
