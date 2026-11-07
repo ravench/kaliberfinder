@@ -1,3 +1,5 @@
+import ImageIO
+import UIKit
 import XCTest
 
 /// A tour of the main screens, one screenshot per stop. The Build job's PR screens run it on the
@@ -80,23 +82,59 @@ final class PRScreensTests: XCTestCase {
     /// The matches for one of Raven's photos (an empty GP 11 case), with the measured frame and the
     /// detected neck and taper drawn over it.
     func testPhotoMatches() {
-        photoMatches("set-gp11-case-02", shot: "07-Foto-Treffer")
+        photoMatches(fixture("set-gp11-case-02"), shot: "07-Foto-Treffer")
     }
 
-    /// A loaded 9 mm: the outline follows its round bullet nose. Taken for an empty case, it has none.
+    /// A loaded 9 mm: the outline follows its round bullet nose.
     func testLoadedCartridgePhoto() {
-        photoMatches("photo-9x19-wood", shot: "13-Foto-Patrone")
-        let emptyCase = app.buttons["Leere Hülse"].firstMatch
-        if emptyCase.waitForExistence(timeout: 5) {
-            emptyCase.tap()
-            snap("14-Foto-als-leere-Huelse")
-        }
+        photoMatches(fixture("photo-9x19-wood"), shot: "13-Foto-Patrone")
     }
 
-    /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`.
-    private func photoMatches(_ fixture: String, shot: String) {
-        let photo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
-            .appendingPathComponent("KaliberfinderTests/Fixtures/\(fixture).jpg")
+    /// An empty .45 ACP case: its outline ends flat at the mouth. The simulator has no Vision, so the
+    /// tour paints the case Vision found in one of Raven's photos (its mask in the golden set), whose
+    /// outline had a nose at the mouth.
+    func testEmptyCasePhoto() {
+        guard let photo = paintedMask("45-acp-20261105-115201/11") else { return XCTFail("golden mask missing") }
+        photoMatches(photo, shot: "14-Foto-leere-Huelse")
+    }
+
+    /// The repository's folder, for the test photos and the golden set.
+    private let sources = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+
+    private func fixture(_ name: String) -> URL {
+        sources.appendingPathComponent("KaliberfinderTests/Fixtures/\(name).jpg")
+    }
+
+    /// A golden-set shot's Vision mask (KaliberfinderTests/Golden) as a photo of the size it was taken
+    /// at: the object brass on a grey table. Saved as a JPEG for `-screenTourPhoto`.
+    private func paintedMask(_ shot: String) -> URL? {
+        let folder = sources.appendingPathComponent("KaliberfinderTests/Golden/\(shot)")
+        guard let json = try? Data(contentsOf: folder.appendingPathComponent("shot.json")),
+              let mask = (try? JSONSerialization.jsonObject(with: json) as? [String: Any])?["mask"] as? [String: Any],
+              let width = mask["imageWidth"] as? Int, let height = mask["imageHeight"] as? Int,
+              let source = CGImageSourceCreateWithURL(folder.appendingPathComponent("vision-instances.png") as CFURL, nil),
+              let labels = CGImageSourceCreateImageAtIndex(source, 0, nil), labels.bitsPerPixel == 8,
+              let bytes = labels.dataProvider?.data as Data? else { return nil }
+        var pixels = [UInt8](repeating: 255, count: width * height * 4)
+        for y in 0..<height {
+            // The label nearest each photo pixel, as Vision scales its mask to the photo.
+            let row = min(labels.height - 1, (2 * y + 1) * labels.height / (2 * height)) * labels.bytesPerRow
+            for x in 0..<width {
+                let label = bytes[row + min(labels.width - 1, (2 * x + 1) * labels.width / (2 * width))]
+                let rgb: [UInt8] = label == 0 ? [128, 126, 122] : [200, 160, 60]
+                for c in 0..<3 { pixels[(y * width + x) * 4 + c] = rgb[c] }
+            }
+        }
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("tour-\(shot.replacingOccurrences(of: "/", with: "-")).jpg")
+        guard let context = CGContext(data: &pixels, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width * 4,
+                                      space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue),
+              let image = context.makeImage(), let jpeg = UIImage(cgImage: image).jpegData(compressionQuality: 0.9),
+              (try? jpeg.write(to: url)) != nil else { return nil }
+        return url
+    }
+
+    /// Opens the matches for the photo file `photo` and takes the screenshot `shot`.
+    private func photoMatches(_ photo: URL, shot: String) {
         app.terminate()
         app.launchArguments += ["-screenTourPhoto", photo.path]
         app.launch()
