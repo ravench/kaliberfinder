@@ -28,6 +28,11 @@ struct ShapeContour: Equatable {
     var nose: NoseCurve?
     /// The outline to draw when the photo shows an empty case (`withoutBullet`); nil when it is this one.
     var empty: Outline?
+    /// The case mouth as a fraction of the length from the tip, where the photo's colours change from
+    /// the bullet's to the case's (`CaseMouth`); nil when they show no change, or without a photo.
+    var mouth: Double?
+    /// A line across the case at `mouth`, from one side to the other, drawn with the developer switch.
+    var mouthLine: [CGPoint]?
 
     /// Corners and the parts of the edges between them, as `points` and `parts`.
     struct Outline: Equatable {
@@ -42,7 +47,8 @@ struct ShapeContour: Equatable {
     /// Every point passed through `transform`, e.g. from pixels to fractions of the photo.
     func map(_ transform: (CGPoint) -> CGPoint) -> ShapeContour {
         ShapeContour(points: points.map(transform), parts: parts, nose: nose,
-                     empty: empty.map { Outline(points: $0.points.map(transform), parts: $0.parts) })
+                     empty: empty.map { Outline(points: $0.points.map(transform), parts: $0.parts) },
+                     mouth: mouth, mouthLine: mouthLine?.map(transform))
     }
 
     /// The outline of an empty case: no bullet in front of it. Its neck, or its body, runs on to the
@@ -55,7 +61,10 @@ struct ShapeContour: Equatable {
     /// is `shape`, inside `box`, the rotated box `ShapeMatcher.orientedBox` gives for them. From the
     /// tip (or case mouth): the bullet's nose curve, the neck and shoulder, the body's taper (a straight
     /// line fitted to its slices) down to the head, and back up the other side. Nil for an end view.
-    static func polygon(_ points: [Point], pixelSize: Double, shape: ShapeMeasurement, box: [Point]) -> ShapeContour? {
+    /// With the `photo` the points come from, the bullet ends where its colour meets the case's
+    /// (`CaseMouth`): its nose and straight part in front, a step out to the case at the mouth.
+    static func polygon(_ points: [Point], pixelSize: Double, shape: ShapeMeasurement, box: [Point],
+                        photo: RGBImage? = nil) -> ShapeContour? {
         let bins = ShapeMatcher.bins
         guard box.count == 4, shape.widths.count == bins, !shape.isEndView, !points.isEmpty else { return nil }
         let c0 = box[0]
@@ -88,18 +97,23 @@ struct ShapeContour: Equatable {
         let bodyEnd = bins - 1 - k
         var front = bodyEnd
         while front > 0 && w[front - 1] >= NeckShape.bodyFrom { front -= 1 }
+        // A neck starting in the first slices is the mouth of an empty case: nothing in front of it.
+        var neck = found?.0
+        let caseFrom = neck.map { $0.slices.lowerBound <= 2 ? 0 : $0.slices.lowerBound } ?? front
+        let hasBullet = caseFrom > 0
+        let mouth = hasBullet ? photo.flatMap { CaseMouth.find(in: $0, widths: w, neck: neck, length: length, point: point) } : nil
+        // A neck in front of the mouth is the bullet's straight part, on a straight case.
+        if let mouth, let n = neck, mouth >= Double(n.slices.upperBound + 1) / Double(bins) { neck = nil }
         // One side, from the tip to the head.
         var side: [Corner] = []
-        var caseFrom = front
-        if let neck = found?.0 {
+        if let neck {
             front = min(bodyEnd, neck.shoulderSlice + 1)
-            // A neck starting in the first slices is the mouth of an empty case: nothing in front of it.
-            caseFrom = neck.slices.lowerBound <= 2 ? 0 : neck.slices.lowerBound
-            let start = Double(caseFrom) / Double(bins), end = Double(neck.slices.upperBound + 1) / Double(bins)
+            let start = mouth ?? Double(caseFrom) / Double(bins), end = Double(neck.slices.upperBound + 1) / Double(bins)
             // The shoulder runs from the neck's end to where the body's line starts.
             side = [(start, neck.width / 2, .neck), (end, neck.width / 2, .neck)]
         }
-        let hasBullet = caseFrom > 0
+        // Behind the mouth, only the case's slices count for the body's line.
+        if let mouth { front = max(front, min(bodyEnd, Int(mouth * Double(bins)) + 1)) }
         // The body: a straight line through its widths (least squares), run on to the head.
         let from = max(front, 0), to = max(bodyEnd, from)
         let xs = (from...to).map(at), ys = (from...to).map { w[$0] }
@@ -107,18 +121,27 @@ struct ShapeContour: Equatable {
         let sxx = xs.reduce(0) { $0 + ($1 - mx) * ($1 - mx) }
         let slope = sxx > 0 ? zip(xs, ys).reduce(0) { $0 + ($1.0 - mx) * ($1.1 - my) } / sxx : 0
         func width(_ x: Double) -> Double { my + slope * (x - mx) }
-        let bodyStart = found == nil && !hasBullet ? 0 : xs[0]
+        let bodyStart = neck == nil ? mouth ?? (found == nil && !hasBullet ? 0 : xs[0]) : xs[0]
         side += [(bodyStart, width(bodyStart) / 2, .body), (1, width(1) / 2, .end)]
-        let emptyCase = emptySide(side, widths: w, hasNeck: found != nil, front: front)
-        // The bullet (or what lies in front of the case): a typical nose curve from its tip to the neck,
-        // or on a straight case to the body, over whose first slices a round nose may still narrow.
-        var bases = [(f: side[0].f, half: side[0].half)]
-        if found == nil { bases = xs.prefix(NoseCurve.maxReach + 1).map { (f: $0, half: width($0) / 2) } }
-        let nose = hasBullet ? NoseCurve.fitted(halfWidths: w.map { $0 / 2 }, bases: bases, body: { width($0) / 2 }) : nil
-        if let nose {
-            side[0].f = nose.length
-            side[0].half = nose.base
-            side.insert(contentsOf: nose.points().map { (f: $0.f, half: $0.half, part: Part.bullet) }, at: 0)
+        // In front of a mouth the photo shows a bullet, not a neck.
+        let emptyCase = emptySide(side, widths: w, hasNeck: neck != nil || mouth != nil, front: front)
+        let caseHalf = side[0].half
+        let nose: NoseCurve?
+        if let mouth {
+            let bullet = Self.bullet(upTo: mouth, widths: w, caseHalf: caseHalf)
+            nose = bullet.nose
+            side.insert(contentsOf: bullet.corners, at: 0)
+        } else {
+            // The bullet (or what lies in front of the case): a typical nose curve from its tip to the neck,
+            // or on a straight case to the body, over whose first slices a round nose may still narrow.
+            var bases = [(f: side[0].f, half: side[0].half)]
+            if found == nil { bases = xs.prefix(NoseCurve.maxReach + 1).map { (f: $0, half: width($0) / 2) } }
+            nose = hasBullet ? NoseCurve.fitted(halfWidths: w.map { $0 / 2 }, bases: bases, body: { width($0) / 2 }) : nil
+            if let nose {
+                side[0].f = nose.length
+                side[0].half = nose.base
+                side.insert(contentsOf: nose.points().map { (f: $0.f, half: $0.half, part: Part.bullet) }, at: 0)
+            }
         }
         // Down one side, across the head, back up the other side and across the tip (or mouth).
         func outline(_ side: [Corner]) -> Outline {
@@ -127,7 +150,25 @@ struct ShapeContour: Equatable {
                            parts: edges + [.end] + edges.reversed() + [.end])
         }
         let loaded = outline(side)
-        return ShapeContour(points: loaded.points, parts: loaded.parts, nose: nose, empty: nose == nil ? nil : outline(emptyCase))
+        return ShapeContour(points: loaded.points, parts: loaded.parts, nose: nose,
+                            empty: nose == nil && mouth == nil ? nil : outline(emptyCase),
+                            mouth: mouth, mouthLine: mouth.map { [point($0, caseHalf), point($0, -caseHalf)] })
+    }
+
+    /// The bullet in front of the case mouth at `mouth` (a fraction of the length from the tip), as one
+    /// side's corners from the tip: its nose curve fitted to the widths `w`, its straight part as wide as
+    /// just in front of the mouth (no wider than the case there, `caseHalf`), and a step out to the case.
+    static func bullet(upTo mouth: Double, widths w: [Double], caseHalf: Double) -> (nose: NoseCurve?, corners: [Corner]) {
+        let bins = w.count
+        let last = max(2, min(bins - 1, Int(mouth * Double(bins))))
+        let half = min(caseHalf, (w[(last - 2)..<last].max() ?? 0) / 2)
+        var bases = (2...last).map { (f: Double($0) / Double(bins), half: half) }
+        if mouth > Double(last) / Double(bins) { bases.append((f: mouth, half: half)) }
+        let nose = NoseCurve.fitted(halfWidths: w.map { $0 / 2 }, bases: bases, body: { _ in half })
+        var corners: [Corner] = (nose?.points() ?? []).map { (f: $0.f, half: $0.half, part: Part.bullet) }
+        if let nose, nose.length < mouth { corners.append((f: nose.length, half: half, part: .bullet)) }
+        corners.append((f: mouth, half: half, part: .end))
+        return (nose, corners)
     }
 
     /// One side of the outline of an empty case, mouth first, from `side`, the side behind the bullet:

@@ -18,8 +18,8 @@ struct PhotoAnalysis {
     /// photo (x of the width, y of the height); nil if nothing was measured. Drawn as the frame,
     /// so it shows exactly what was matched.
     var outline: [CGPoint]?
-    /// The measured silhouette's outline (detected bullet as a nose curve, neck and taper), in the
-    /// same fractions as `outline`; drawn instead of the box when there is one.
+    /// The measured silhouette's outline (detected bullet as a nose curve up to the case mouth, neck
+    /// and taper), in the same fractions as `outline`; drawn instead of the box when there is one.
     var contour: ShapeContour?
     /// The silhouette is brass-coloured: a case, not a lead ball or pellet.
     var isBrass = false
@@ -153,6 +153,10 @@ enum PhotoAnalyzer {
         }
         let fraction = { (p: CGPoint) in CGPoint(x: p.x / Double(cgImage.width), y: p.y / Double(cgImage.height)) }
         let rgb = rgbImage(cgImage)
+        // Vision's outline again with the photo's colours, for the case mouth.
+        if let vision, let rgb, let box = vision.box {
+            contour = ShapeContour.polygon(vision.points, pixelSize: Double(vision.step), shape: vision.shape, box: box, photo: rgb)?.map(fraction)
+        }
         // Vision found only the table, box or paper (or isn't available, on the simulator): take
         // the colour cut-out. Never instead of Vision's object: the cut-out also takes in shadows
         // and can pick a stone or a tool next to the cartridge (build 1042).
@@ -162,7 +166,7 @@ enum PhotoAnalyzer {
                 measured = fromColour
                 let box = ShapeMatcher.orientedBox(sampled, pixelSize: Double(step))
                 outline = normalize(box)
-                contour = box.flatMap { ShapeContour.polygon(sampled, pixelSize: Double(step), shape: fromColour.shape, box: $0) }?.map(fraction)
+                contour = box.flatMap { ShapeContour.polygon(sampled, pixelSize: Double(step), shape: fromColour.shape, box: $0, photo: rgb) }?.map(fraction)
                 candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
                 measuredPoints = sampled
             }
@@ -181,7 +185,11 @@ enum PhotoAnalyzer {
         let points: [Point]
         let candidates: [CGRect]
         let outline: [CGPoint]?
+        /// Without the photo's colours (see `analysis(of:vision:)`).
         let contour: ShapeContour?
+        /// The silhouette's rotated box in pixels and the pixels between its `points`.
+        let box: [Point]?
+        let step: Int
     }
 
     /// Measurement, frame and outline of a silhouette in a `width` × `height` photo (see
@@ -191,7 +199,8 @@ enum PhotoAnalyzer {
         let fraction = { (p: CGPoint) in CGPoint(x: p.x / Double(width), y: p.y / Double(height)) }
         let contour = vision.box.flatMap { ShapeContour.polygon(vision.points, pixelSize: Double(found.step), shape: vision.shape, box: $0) }
         return VisionResult(shape: vision.shape, length: vision.length, points: vision.points, candidates: found.boxes,
-                            outline: vision.box?.map { fraction(CGPoint(x: $0.x, y: $0.y)) }, contour: contour?.map(fraction))
+                            outline: vision.box?.map { fraction(CGPoint(x: $0.x, y: $0.y)) }, contour: contour?.map(fraction),
+                            box: vision.box, step: found.step)
     }
 
     /// The phone's path on a stored Vision instance mask (a training capture or golden shot): the
