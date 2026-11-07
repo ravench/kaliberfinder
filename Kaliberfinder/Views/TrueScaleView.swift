@@ -159,12 +159,17 @@ struct TrueScaleView: View {
                 Text(verbatim: "= \(twin.name)").font(.caption2).foregroundStyle(.secondary)
             }
             if emptyCases.contains(c.id) {
+                // One line like «L» and «Ø», shrunk to fit the column rather than wrapped.
                 Text(verbatim: Self.caseLengthText(c, unit: unit)).font(.caption2)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
             }
             Text(verbatim: "L \(unit.format(c.dimensions.overallLength))").font(.caption2)
             Text(verbatim: "Ø \(unit.format(max(c.dimensions.rim, c.dimensions.base)))").font(.caption2)
         }
         .multilineTextAlignment(.center)
+        // Takes the height it needs, so a long name wraps instead of being cut short.
+        .fixedSize(horizontal: false, vertical: true)
         .frame(width: max(70, c.outline.width * scale.pointsPerMM))
         .foregroundStyle(.secondary)
     }
