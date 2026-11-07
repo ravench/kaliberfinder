@@ -156,7 +156,9 @@ for package in packages {
         if looked == .picked { picks += 1 }
         let look = looked == .none ? "" : looked == .picked ? ", picked" : ", second look"
         let r = shot.result, rows = [r.row, r.rowObsolete, r.rowAll].map { $0.map(String.init) ?? "–" }.joined(separator: "/")
-        FileHandle.standardError.write(Data("\(name) rows \(rows) rank \(r.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look))\n".utf8))
+        let truth = CartridgeCatalog.cartridge(id: shot.calibre).map { $0.outline.height / $0.outline.width } ?? .nan
+        let measuredAspect = String(format: ", aspect %.3f of %.3f", analysis.shape?.aspect ?? .nan, truth)
+        FileHandle.standardError.write(Data("\(name) rows \(rows) rank \(r.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look)\(measuredAspect))\n".utf8))
         shots.append(shot)
     }
 }

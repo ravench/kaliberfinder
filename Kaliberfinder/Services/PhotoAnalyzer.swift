@@ -159,7 +159,10 @@ enum PhotoAnalyzer {
         if let found = vision, let rgb, let restored = DarkSide.restored(found.raw, step: found.step, maskPixel: found.maskPixel, photo: rgb),
            var again = visionResult((restored, found.step, found.candidates), width: cgImage.width, height: cgImage.height) {
             again.maskPixel = found.maskPixel
+            debugLog(String(format: "  DS restored: aspect %.3f -> %.3f (%dx%d)", found.shape.aspect, again.shape.aspect, cgImage.width, cgImage.height))
             vision = again
+        } else if let found = vision {
+            debugLog(String(format: "  DS kept: aspect %.3f (%dx%d)", found.shape.aspect, cgImage.width, cgImage.height))
         }
         var measured: (shape: ShapeMeasurement, length: Double)? = vision.map { ($0.shape, $0.length) }
         var candidates = vision?.candidates ?? []

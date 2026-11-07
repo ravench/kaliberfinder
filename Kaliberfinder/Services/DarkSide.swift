@@ -66,6 +66,9 @@ enum DarkSide {
         }
         let cut = frame.shorterSide
         let lit = frame.reach(side: -cut), short = frame.reach(side: cut)
+        let table = tableStart(frame, side: cut, photo: photo)
+        debugLog(String(format: "  DS tip %.2f body %.0f need %.0f asym %.3f table %@", frame.tipWidth, frame.bodyWidth,
+                        stepsAcross * max(Double(step), maskPixel), (lit - short) / (lit + short), table.map { String(format: "%.1f", $0) } ?? "nil"))
         guard frame.tipWidth <= tipWidthUpTo, frame.bodyWidth >= stepsAcross * max(Double(step), maskPixel),
               short > 0, (lit - short) / (lit + short) >= asymmetryFrom,
               let tableStart = tableStart(frame, side: cut, photo: photo) else { return nil }
@@ -103,6 +106,7 @@ enum DarkSide {
             while Double(offset) < 0.4 * frame.bodyWidth, let b = at(offset), b < tableShare * table { offset += 1 }
             starts.append(edge + side * Double(offset))
         }
+        if !steps.isEmpty { debugLog(String(format: "  DS side %.0f step %.2f dark %.2f", side, median(steps), median(darks))) }
         guard !steps.isEmpty, median(steps) < stepBelow, median(darks) < tableShare else { return nil }
         return median(starts)
     }
@@ -241,3 +245,6 @@ extension RGBImage {
         return Double(pixels[i] + pixels[i + 1] + pixels[i + 2]) / (3 * 255)
     }
 }
+
+/// TEMPORARY (evaluation diagnostics, not for merging).
+func debugLog(_ line: String) { FileHandle.standardError.write(Data((line + "\n").utf8)) }
