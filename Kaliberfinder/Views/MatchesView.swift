@@ -198,10 +198,14 @@ struct MatchesView: View {
         "Tippe auf die Patrone, die bestimmt werden soll.".loc
     }
 
-    /// Every listed row goes to the 1:1 screen, in rank order; it scrolls sideways. Calibres that
-    /// look exactly the same from the side are shown once.
+    /// Every listed row goes to the 1:1 screen; it scrolls sideways. The user holds the cartridge
+    /// against all of them anyway, so they stand by length, shortest first, then by the Ø shown
+    /// under each (rank order where both are equal); the list above keeps its rank order.
+    /// Calibres that look exactly the same from the side are shown once.
     static func toCompare(_ matches: [Match]) -> [Cartridge] {
+        // `sorted` is stable, so ties keep their rank order.
         Matcher.grouped(matches).map(\.lead.cartridge)
+            .sorted { ($0.dimensions.overallLength, $0.headDiameter) < ($1.dimensions.overallLength, $1.headDiameter) }
     }
 
     /// E.g. "Alle passenden 1:1 vergleichen (5)", counting identical-looking calibres once.
