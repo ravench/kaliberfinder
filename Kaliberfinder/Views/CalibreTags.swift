@@ -144,23 +144,39 @@ struct WorldwideMark: View {
 
 /// A globe when one of a row's calibres is in use worldwide, then the flags of the calibres (the lead
 /// and the look-alikes merged into it, each country once; Raven 2026-11-07: globe left of the flag).
-/// A trailing slot at least `slot` wide keeps rows without marks aligned; wider content grows the
-/// slot instead of overlapping the text to its left.
+/// `slot` is the least width, trailing-aligned, so catalogue rows without marks keep their layout;
+/// wider content grows the slot instead of overlapping the text to its left. The detail view passes 0.
 struct OriginMarks: View {
-    let cartridges: [Cartridge]
-    @ScaledMetric(relativeTo: .body) private var slot: CGFloat = 42
+    enum Mark: Hashable {
+        case worldwide
+        case country(Cartridge.Country)
+    }
 
-    /// The countries of `cartridges` in row order, each once; calibres without one add nothing.
-    static func countries(of cartridges: [Cartridge]) -> [Cartridge.Country] {
-        var seen: [Cartridge.Country] = []
-        for country in cartridges.compactMap(\.country) where !seen.contains(country) { seen.append(country) }
-        return seen
+    let cartridges: [Cartridge]
+    @ScaledMetric(relativeTo: .body) private var slot: CGFloat
+
+    init(cartridges: [Cartridge], slot: CGFloat = 42) {
+        self.cartridges = cartridges
+        _slot = ScaledMetric(wrappedValue: slot, relativeTo: .body)
+    }
+
+    /// The marks in display order: the globe first, then each country once in row order.
+    static func marks(of cartridges: [Cartridge]) -> [Mark] {
+        var marks: [Mark] = cartridges.contains(where: \.worldwide) ? [.worldwide] : []
+        for country in cartridges.compactMap(\.country) where !marks.contains(.country(country)) {
+            marks.append(.country(country))
+        }
+        return marks
     }
 
     var body: some View {
         HStack(spacing: 4) {
-            if cartridges.contains(where: \.worldwide) { WorldwideMark() }
-            ForEach(Self.countries(of: cartridges), id: \.code) { CountryFlag(country: $0) }
+            ForEach(Self.marks(of: cartridges), id: \.self) { mark in
+                switch mark {
+                case .worldwide: WorldwideMark()
+                case .country(let country): CountryFlag(country: country)
+                }
+            }
         }
         .fixedSize()
         .frame(minWidth: slot, alignment: .trailing)
