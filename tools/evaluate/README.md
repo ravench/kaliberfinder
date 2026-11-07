@@ -43,11 +43,18 @@ change there. The Mac's Vision is close to the phone's but not always the same.
 ## The report
 
 Scores overall, by calibre and part, by kind of shot (cartridge or empty case, with or without a
-LiDAR size, where the outline came from), the calibres most often ranked first instead of the right
-one, and every shot whose calibre is not first. It holds shot names and numbers only, never a photo.
+LiDAR size, where the outline came from), the calibres most often in the phone's first row (switches off) instead of
+the right one, and every shot whose calibre is not in the first row. It holds shot names and numbers
+only, never a photo.
 
-The scores are the golden set's: calibre first, calibre in the first five, part (cartridge or empty
-case) right in automatic mode, and neck found on calibres with a clear neck.
+The scores are the golden set's: calibre first and in the first five rows of the list as the phone
+shows it, for each setting of the «Erkennung» switches (both off, obsolete calibres on, obsolete and
+rare on), part (cartridge or empty case) right in automatic mode, and neck found on calibres with a
+clear neck. The headline is with both switches off, as the app starts: the target is the right calibre
+in the first row there. A shot of a rare or obsolete calibre has its own kind switched on, as its user
+would. The phone's list shows calibres that look exactly the same from the side, such as GP 90 and
+.223 Remington, as one row. Each shot's rank among every calibre, each on its own, is kept in the
+`--json` results for comparisons with older runs.
 
 ## In CI
 
