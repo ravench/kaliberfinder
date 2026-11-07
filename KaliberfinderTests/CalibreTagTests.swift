@@ -17,8 +17,23 @@ final class CalibreTagTests: XCTestCase {
         let gp11 = try XCTUnwrap(try cartridge("7.5x55 mm Swiss (GP 11)").country)
         XCTAssertEqual(gp11.code, "CH")
         XCTAssertEqual(gp11.flag, "🇨🇭")
-        XCTAssertEqual(try cartridge("9x19 mm").country?.code, Cartridge.Country.worldwide)
-        XCTAssertNil(try cartridge(".308 Norma Magnum").country)
+        // Raven 2026-11-07: worldwide rounds keep the state that introduced them and get the globe as well
+        let luger = try cartridge("9x19 mm")
+        XCTAssertEqual(luger.country?.code, "DE")
+        XCTAssertTrue(luger.worldwide)
+        XCTAssertFalse(try cartridge("7.62x39 mm").worldwide)
+        XCTAssertEqual(try cartridge(".338 Lapua Magnum").country?.code, "FI")
+        let gauge = try cartridge("12/70")
+        XCTAssertNil(gauge.country)  // a gauge, not a cartridge
+        XCTAssertTrue(gauge.worldwide)
+    }
+
+    func testMergedRowShowsEachCountryOnce() throws {
+        let remington = try cartridge(".223 Remington"), nato = try cartridge("5.56x45 mm NATO")
+        XCTAssertEqual(OriginMarks.countries(of: [remington, nato]).map(\.code), ["US"])
+        XCTAssertEqual(OriginMarks.countries(of: [remington, remington]).count, 1)
+        XCTAssertEqual(OriginMarks.countries(of: [try cartridge("12/70")]), [])
+        XCTAssertEqual(OriginMarks.countries(of: [try cartridge("7.62x39 mm"), remington]).map(\.code), ["SU", "US"])
     }
 
     func testEveryCountryHasAFlagToShow() {

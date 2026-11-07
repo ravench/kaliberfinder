@@ -68,11 +68,30 @@ final class MatcherTests: XCTestCase {
     func testCompareButtonTakesAllMatches() throws {
         let matches = Matcher.rank(shape: try expected("7.5x55 mm Swiss (GP 11)"))
         XCTAssertGreaterThan(matches.count, 3)
-        // Every listed row, not just the best three, in rank order; identical-looking calibres once.
+        // Every listed row, not just the best three; identical-looking calibres once.
         let rows = Matcher.grouped(matches)
-        XCTAssertEqual(MatchesView.toCompare(matches).map(\.id), rows.map(\.lead.cartridge.id))
+        let compare = MatchesView.toCompare(matches)
+        XCTAssertEqual(compare.map(\.id).sorted(), rows.map(\.lead.cartridge.id).sorted())
         XCTAssertEqual(MatchesView.compareTitle(matches), String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, rows.count))
         XCTAssertTrue(MatchesView.compareTitle(matches).contains("\(rows.count)"))
+        // The 1:1 screen stands them by length, while the list keeps the best match on top.
+        let lengths = compare.map(\.dimensions.overallLength)
+        XCTAssertEqual(lengths, lengths.sorted(), compare.map(\.id).joined(separator: ", "))
+        XCTAssertEqual(rows.first?.lead.cartridge.id, "7.5x55 mm Swiss (GP 11)")
+    }
+
+    func testCompareSortsByLengthThenDiameter() throws {
+        func match(_ id: String) throws -> Match {
+            Match(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: id)), score: 1, shapeDistance: 0.1)
+        }
+        // All three are 29.7 mm long: the narrower .30 Super Carry (Ø 8.74) comes first, and
+        // 9x21 IMI and 9x19 (both Ø 9.96) keep their rank order.
+        let ranked = [try match("9x21 mm IMI"), try match("9x19 mm"), try match(".30 Super Carry"), try match(".45 ACP"),
+                      try match("9 mm Browning kurz (.380 ACP)")]
+        XCTAssertEqual(MatchesView.toCompare(ranked).map(\.id),
+                       ["9 mm Browning kurz (.380 ACP)", ".30 Super Carry", "9x21 mm IMI", "9x19 mm", ".45 ACP"])
+        XCTAssertEqual(MatchesView.toCompare(Array(ranked.reversed())).map(\.id),
+                       ["9 mm Browning kurz (.380 ACP)", ".30 Super Carry", "9x19 mm", "9x21 mm IMI", ".45 ACP"])
     }
 
     func testCompareButtonLooksLikeAButton() {
