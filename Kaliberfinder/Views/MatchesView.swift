@@ -181,8 +181,8 @@ struct MatchesView: View {
     private func rank() {
         revealed = false
         guard let analysis else { ranked = .none; return }
-        let size = try? analysis.size(depth: depth).get()
-        ranked = Matcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), shape: analysis.shape,
+        let size = try? analysis.size(depth: depth, mode: mode).get()
+        ranked = Matcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), shape: analysis.shapeAtAxis(depth: depth, mode: mode),
                                     size: size, mode: mode, brass: analysis.isBrass)
     }
 
@@ -263,7 +263,7 @@ struct MatchesView: View {
         var notes: [String] = []
         if let shape = a.shape, !shape.isEndView, let text = featuresText(shape, mode: mode) { notes.append(text) }
         if depth != nil {
-            switch a.size(depth: depth) {
+            switch a.size(depth: depth, mode: mode) {
             case .success(let size): notes.append(measuredText(size, unit: unit))
             case .failure(.outOfRange): notes.append("Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form.".loc)
             case .failure: notes.append("Grösse nicht messbar: Treffer nur nach Form.".loc)

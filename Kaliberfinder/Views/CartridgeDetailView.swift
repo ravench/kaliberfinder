@@ -50,14 +50,12 @@ struct CartridgeDetailView: View {
                     LabeledContent("Herkunft") {
                         HStack(spacing: 6) {
                             Text(country.name.loc)
-                            CountryFlag(country: country).accessibilityHidden(true)
+                            OriginMarks(cartridges: [cartridge], slot: 0).accessibilityHidden(true)
                         }
                     }
                 }
                 if cartridge.worldwide {
-                    LabeledContent("Verbreitung") {
-                        Label { Text("Weltweit verbreitet") } icon: { WorldwideMark().accessibilityHidden(true) }
-                    }
+                    LabeledContent("Verbreitung", value: "Weltweit verbreitet".loc)  // the globe is in the row above
                 }
                 ForEach(CalibreTag.of(cartridge), id: \.self) { tag in
                     Label { Text(tag.explanation.loc).font(.footnote) } icon: {

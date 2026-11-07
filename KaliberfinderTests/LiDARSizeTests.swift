@@ -132,30 +132,19 @@ final class LiDARSizeTests: XCTestCase {
         XCTAssertTrue(matches.allSatisfy { $0.sizeDeviation == nil })
     }
 
-    /// From silhouette pixels through depth to the ranking: a GP 11 photographed from 25 cm.
+    /// From silhouette pixels through depth to the ranking: a GP 11 photographed from 25 cm, as the
+    /// camera sees it (`SeenFromAbove`).
     func testPhotoWithDepthEndToEnd() throws {
         let gp11 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x55 mm Swiss (GP 11)"))
         let distance = 250.0
         let f = camera.focal * imageLongSide / camera.reference
-        let pixelsPerMM = f / (distance - gp11.dimensions.base / 2)
-        let g = OutlineGeometry(gp11.outline)
-        let step = 0.25
-        var points: [Point] = []
-        var y = step / 2
-        while y < gp11.outline.height {
-            var x = step / 2
-            while x < gp11.outline.width {
-                if g.contains(Point(x: x, y: y)) { points.append(Point(x: x * pixelsPerMM + 400, y: y * pixelsPerMM + 300)) }
-                x += step
-            }
-            y += step
-        }
-        let measured = try XCTUnwrap(ShapeMatcher.measureWithLength(points, pixelSize: step * pixelsPerMM))
+        let seen = SeenFromAbove.silhouette(of: gp11, distance: distance, focal: f, step: 0.25)
+        let measured = try XCTUnwrap(ShapeMatcher.measureWithLength(seen.points, pixelSize: seen.pixelSize))
         let analysis = PhotoAnalysis(shape: measured.shape, lengthPixels: measured.length, imageLongSide: imageLongSide)
         let size = try analysis.size(depth: depth(distance)).get()
         XCTAssertEqual(size.length, gp11.dimensions.overallLength, accuracy: 0.5)
         XCTAssertEqual(size.diameter, gp11.dimensions.base, accuracy: 0.6)
-        let matches = Matcher.rank(shape: measured.shape, size: size)
+        let matches = Matcher.rank(shape: analysis.shapeAtAxis(depth: depth(distance)), size: size)
         XCTAssertEqual(matches.first?.cartridge.id, gp11.id)
         XCTAssertEqual(matches.first?.sizeFit, .good)
         XCTAssertTrue(MatchesView.reason(for: try XCTUnwrap(matches.first)).contains(" · "))
