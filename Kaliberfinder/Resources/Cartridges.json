@@ -12,10 +12,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 6.9,
@@ -52,10 +53,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 6.9,
@@ -92,10 +94,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 7.5,
@@ -127,10 +130,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 7.5,
@@ -160,6 +164,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 6.9,
@@ -191,6 +201,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 6.9,
@@ -226,6 +242,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 6.95,
@@ -261,6 +278,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.47,
@@ -296,6 +314,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.51,
@@ -327,6 +346,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "FR",
+    "name": "Frankreich",
+    "flag": "🇫🇷"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 6.9,
@@ -357,6 +382,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 8.3,
@@ -386,6 +417,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 8.5,
@@ -417,6 +454,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 7.6,
@@ -455,6 +498,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": true,
    "dimensions": {
     "rim": 6.8,
@@ -497,6 +541,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.5,
@@ -541,6 +586,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 8.0,
@@ -579,6 +625,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 8.0,
@@ -624,6 +671,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": true,
    "dimensions": {
     "rim": 11.0,
@@ -662,6 +710,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": true,
    "dimensions": {
     "rim": 9.55,
@@ -701,6 +750,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": true,
    "dimensions": {
     "rim": 13.0,
@@ -744,6 +794,7 @@
     "name": "Italien",
     "flag": "🇮🇹"
    },
+   "worldwide": false,
    "blank": true,
    "dimensions": {
     "rim": 7.06,
@@ -779,6 +830,7 @@
     "name": "Frankreich",
     "flag": "🇫🇷"
    },
+   "worldwide": false,
    "blank": true,
    "dimensions": {
     "rim": 7.15,
@@ -806,6 +858,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.2,
@@ -836,6 +894,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 7.4,
@@ -865,6 +929,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 8.5,
@@ -895,6 +965,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.9,
@@ -925,6 +1001,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.4,
@@ -960,11 +1042,7 @@
    ],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
-   },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 7.6,
@@ -1005,11 +1083,7 @@
    ],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
-   },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 9.1,
@@ -1050,6 +1124,7 @@
     "name": "Schweiz",
     "flag": "🇨🇭"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.9,
@@ -1085,6 +1160,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.5,
@@ -1116,6 +1197,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.5,
@@ -1155,6 +1242,7 @@
     "code": "SU",
     "name": "Sowjetunion"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.9,
@@ -1199,10 +1287,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 9.5,
@@ -1242,6 +1331,7 @@
     "code": "SU",
     "name": "Sowjetunion"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.9,
@@ -1294,10 +1384,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 9.96,
@@ -1338,6 +1429,7 @@
     "name": "Israel",
     "flag": "🇮🇱"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.96,
@@ -1372,6 +1464,7 @@
    ],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.77,
@@ -1414,10 +1507,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 11.2,
@@ -1458,10 +1552,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 11.2,
@@ -1498,6 +1593,12 @@
    ],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.2,
@@ -1533,6 +1634,7 @@
    ],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.8,
@@ -1572,10 +1674,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 10.8,
@@ -1608,6 +1711,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -1641,6 +1750,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.01,
@@ -1673,6 +1788,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.0,
@@ -1705,6 +1826,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.2,
@@ -1739,6 +1866,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.2,
@@ -1772,6 +1905,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.5,
@@ -1808,6 +1947,12 @@
    ],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.1,
@@ -1847,10 +1992,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 13.1,
@@ -1894,10 +2040,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -1939,6 +2086,7 @@
     "name": "Tschechien",
     "flag": "🇨🇿"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.8,
@@ -1973,6 +2121,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.8,
@@ -2013,6 +2167,12 @@
    ],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.9,
@@ -2046,6 +2206,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -2078,6 +2239,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.1,
@@ -2110,6 +2277,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.2,
@@ -2142,6 +2315,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.2,
@@ -2178,10 +2357,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "BE",
+    "name": "Belgien",
+    "flag": "🇧🇪"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 7.9,
@@ -2220,6 +2400,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 8.0,
@@ -2259,6 +2440,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.98,
@@ -2297,6 +2479,7 @@
     "code": "RUE",
     "name": "Russisches Kaiserreich"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.86,
@@ -2335,6 +2518,7 @@
     "name": "Schweiz",
     "flag": "🇨🇭"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.4,
@@ -2374,6 +2558,7 @@
     "name": "Frankreich",
     "flag": "🇫🇷"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 8.5,
@@ -2407,6 +2592,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 8.74,
@@ -2440,6 +2631,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.5,
@@ -2474,6 +2671,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.5,
@@ -2507,6 +2710,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.4,
@@ -2546,6 +2755,7 @@
     "code": "SU",
     "name": "Sowjetunion"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 7.64,
@@ -2579,6 +2789,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -2618,6 +2829,7 @@
     "name": "Japan",
     "flag": "🇯🇵"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.5,
@@ -2657,6 +2869,7 @@
     "name": "Frankreich",
     "flag": "🇫🇷"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.43,
@@ -2694,6 +2907,7 @@
     "code": "AH",
     "name": "Österreich-Ungarn"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 8.85,
@@ -2731,6 +2945,7 @@
     "name": "Italien",
     "flag": "🇮🇹"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.98,
@@ -2769,6 +2984,7 @@
     "name": "Belgien",
     "flag": "🇧🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.2,
@@ -2805,6 +3021,7 @@
     "code": "AH",
     "name": "Österreich-Ungarn"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.7,
@@ -2843,6 +3060,7 @@
     "name": "Spanien",
     "flag": "🇪🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.9,
@@ -2877,6 +3095,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.2,
@@ -2910,6 +3134,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.3,
@@ -2944,6 +3174,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.3,
@@ -2978,6 +3214,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.3,
@@ -3018,6 +3260,7 @@
     "name": "Schweiz",
     "flag": "🇨🇭"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.3,
@@ -3051,6 +3294,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.1,
@@ -3090,6 +3339,7 @@
     "name": "Frankreich",
     "flag": "🇫🇷"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.5,
@@ -3124,6 +3374,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.2,
@@ -3162,6 +3418,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.09,
@@ -3201,6 +3463,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -3234,6 +3497,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.7,
@@ -3266,6 +3535,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.1,
@@ -3299,6 +3574,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.37,
@@ -3331,6 +3612,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.2,
@@ -3363,6 +3650,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.0,
@@ -3395,6 +3688,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.2,
@@ -3427,6 +3726,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -3459,6 +3764,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.2,
@@ -3491,6 +3802,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.7,
@@ -3523,6 +3840,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -3557,6 +3880,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 8.6,
@@ -3590,6 +3919,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.5,
@@ -3623,6 +3958,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.5,
@@ -3664,6 +4005,7 @@
     "name": "Frankreich",
     "flag": "🇫🇷"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 7.78,
@@ -3701,6 +4043,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.83,
@@ -3734,6 +4077,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 8.85,
@@ -3767,6 +4116,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.3,
@@ -3800,6 +4155,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.0,
@@ -3833,6 +4194,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.3,
@@ -3872,6 +4239,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.8,
@@ -3911,6 +4279,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.0,
@@ -3950,6 +4319,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -3981,6 +4351,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -4017,10 +4393,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -4061,10 +4438,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -4107,11 +4485,7 @@
    ],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
-   },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -4160,6 +4534,7 @@
     "name": "Schweiz",
     "flag": "🇨🇭"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -4197,10 +4572,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -4240,10 +4616,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -4282,6 +4659,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -4315,6 +4693,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.2,
@@ -4350,6 +4734,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.2,
@@ -4384,6 +4774,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.3,
@@ -4423,6 +4819,7 @@
     "code": "SU",
     "name": "Sowjetunion"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.35,
@@ -4463,10 +4860,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -4503,6 +4901,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.96,
@@ -4537,6 +4941,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.99,
@@ -4574,6 +4984,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.99,
@@ -4612,6 +5028,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.01,
@@ -4646,6 +5068,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -4681,6 +5109,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.99,
@@ -4714,6 +5148,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.2,
@@ -4749,6 +5189,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -4786,6 +5232,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.25,
@@ -4820,6 +5272,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.9,
@@ -4853,6 +5311,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.7,
@@ -4895,6 +5359,7 @@
     "name": "Schweden",
     "flag": "🇸🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.2,
@@ -4928,6 +5393,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "FI",
+    "name": "Finnland",
+    "flag": "🇫🇮"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -4961,6 +5432,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.0,
@@ -4994,6 +5471,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -5033,10 +5516,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -5074,6 +5558,12 @@
    ],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -5113,6 +5603,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -5153,6 +5644,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -5191,10 +5683,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -5229,6 +5722,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.4,
@@ -5278,6 +5777,7 @@
     "name": "Schweiz",
     "flag": "🇨🇭"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.6,
@@ -5330,6 +5830,7 @@
     "name": "Schweiz",
     "flag": "🇨🇭"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.5,
@@ -5370,6 +5871,7 @@
     "name": "Frankreich",
     "flag": "🇫🇷"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.25,
@@ -5410,6 +5912,7 @@
     "code": "SU",
     "name": "Sowjetunion"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.35,
@@ -5456,10 +5959,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -5499,6 +6003,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -5538,10 +6043,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 11.9,
@@ -5584,10 +6090,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 11.9,
@@ -5633,10 +6140,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -5677,6 +6185,12 @@
    ],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.8,
@@ -5716,10 +6230,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 13.0,
@@ -5754,6 +6269,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.4,
@@ -5790,6 +6311,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "SE",
+    "name": "Schweden",
+    "flag": "🇸🇪"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.9,
@@ -5830,6 +6357,7 @@
     "name": "Portugal",
     "flag": "🇵🇹"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.78,
@@ -5869,6 +6397,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -5904,6 +6433,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "FI",
+    "name": "Finnland",
+    "flag": "🇫🇮"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.93,
@@ -5937,6 +6472,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.7,
@@ -5971,6 +6512,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.4,
@@ -6013,6 +6560,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -6053,6 +6601,7 @@
     "code": "RUE",
     "name": "Russisches Kaiserreich"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.5,
@@ -6102,6 +6651,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.95,
@@ -6140,6 +6690,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.3,
@@ -6181,6 +6732,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -6220,6 +6772,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.0,
@@ -6260,10 +6813,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "FI",
+    "name": "Finnland",
+    "flag": "🇫🇮"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 14.9,
@@ -6302,10 +6856,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "GB",
+    "name": "Grossbritannien",
+    "flag": "🇬🇧"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 13.0,
@@ -6340,6 +6895,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.7,
@@ -6380,6 +6941,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.7,
@@ -6420,6 +6982,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.9,
@@ -6460,6 +7023,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.2,
@@ -6499,6 +7063,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.1,
@@ -6539,6 +7104,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.4,
@@ -6578,6 +7144,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -6618,6 +7185,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -6656,6 +7224,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.9,
@@ -6695,6 +7264,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.99,
@@ -6735,6 +7305,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.25,
@@ -6777,6 +7348,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.2,
@@ -6820,10 +7392,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 20.4,
@@ -6863,6 +7436,7 @@
     "name": "Italien",
     "flag": "🇮🇹"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.45,
@@ -6902,6 +7476,7 @@
     "name": "Japan",
     "flag": "🇯🇵"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.08,
@@ -6941,6 +7516,7 @@
     "name": "Japan",
     "flag": "🇯🇵"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.07,
@@ -6980,6 +7556,7 @@
     "name": "Frankreich",
     "flag": "🇫🇷"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.0,
@@ -7018,6 +7595,7 @@
     "name": "Österreich",
     "flag": "🇦🇹"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.05,
@@ -7056,6 +7634,7 @@
     "code": "AH",
     "name": "Österreich-Ungarn"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.11,
@@ -7095,6 +7674,7 @@
     "name": "Italien",
     "flag": "🇮🇹"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.4,
@@ -7133,6 +7713,7 @@
     "code": "AH",
     "name": "Österreich-Ungarn"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.52,
@@ -7173,6 +7754,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.8,
@@ -7213,6 +7795,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.95,
@@ -7251,6 +7834,7 @@
     "code": "SU",
     "name": "Sowjetunion"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.0,
@@ -7292,6 +7876,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.99,
@@ -7338,6 +7923,7 @@
     "name": "China",
     "flag": "🇨🇳"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.42,
@@ -7373,10 +7959,11 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
    },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 8.89,
@@ -7411,6 +7998,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -7445,6 +8038,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -7479,6 +8078,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -7513,6 +8118,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -7548,6 +8159,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "GB",
+    "name": "Grossbritannien",
+    "flag": "🇬🇧"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -7583,6 +8200,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -7617,6 +8240,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.1,
@@ -7651,6 +8280,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -7684,6 +8319,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -7723,6 +8364,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -7762,6 +8404,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.95,
@@ -7801,6 +8444,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.0,
@@ -7841,6 +8485,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -7881,6 +8526,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.95,
@@ -7920,6 +8566,7 @@
     "code": "AH",
     "name": "Österreich-Ungarn"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.89,
@@ -7954,6 +8601,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -7989,6 +8642,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.01,
@@ -8024,6 +8683,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.7,
@@ -8057,6 +8722,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -8091,6 +8762,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -8124,6 +8801,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.4,
@@ -8159,6 +8842,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.9,
@@ -8194,6 +8883,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.9,
@@ -8228,6 +8923,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.7,
@@ -8262,6 +8963,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.9,
@@ -8295,6 +9002,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.5,
@@ -8329,6 +9042,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -8363,6 +9082,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -8398,6 +9123,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -8432,6 +9163,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -8471,6 +9208,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.6,
@@ -8510,6 +9248,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.76,
@@ -8544,6 +9283,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.64,
@@ -8583,6 +9323,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.35,
@@ -8623,6 +9364,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.31,
@@ -8663,6 +9405,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 20.3,
@@ -8703,6 +9446,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.44,
@@ -8736,6 +9480,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "FI",
+    "name": "Finnland",
+    "flag": "🇫🇮"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.4,
@@ -8775,6 +9525,7 @@
     "name": "Schweiz",
     "flag": "🇨🇭"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.7,
@@ -8816,6 +9567,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -8855,6 +9607,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.97,
@@ -8893,6 +9646,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.8,
@@ -8931,6 +9685,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.6,
@@ -8969,6 +9724,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 19.0,
@@ -9007,6 +9763,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 20.6,
@@ -9045,6 +9802,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 22.6,
@@ -9084,6 +9842,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.4,
@@ -9124,6 +9883,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.8,
@@ -9158,6 +9918,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -9192,6 +9958,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.9,
@@ -9226,6 +9998,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -9260,6 +10038,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -9295,6 +10079,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.4,
@@ -9330,6 +10120,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.01,
@@ -9364,6 +10160,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -9398,6 +10200,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -9432,6 +10240,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -9466,6 +10280,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -9500,6 +10320,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.01,
@@ -9534,6 +10360,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -9569,6 +10401,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.5,
@@ -9603,6 +10441,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.6,
@@ -9637,6 +10481,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.7,
@@ -9671,6 +10521,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.3,
@@ -9704,6 +10560,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.4,
@@ -9737,6 +10599,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.6,
@@ -9770,6 +10638,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.3,
@@ -9808,6 +10682,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.35,
@@ -9846,6 +10721,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.35,
@@ -9886,6 +10762,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.95,
@@ -9921,6 +10798,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "FI",
+    "name": "Finnland",
+    "flag": "🇫🇮"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.95,
@@ -9955,6 +10838,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.59,
@@ -9989,6 +10878,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.59,
@@ -10024,6 +10919,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.59,
@@ -10058,6 +10959,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.59,
@@ -10094,6 +11001,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.59,
@@ -10134,6 +11047,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.87,
@@ -10173,6 +11087,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.49,
@@ -10212,6 +11127,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.93,
@@ -10251,6 +11167,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.37,
@@ -10290,6 +11207,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.72,
@@ -10329,6 +11247,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -10369,6 +11288,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.05,
@@ -10409,6 +11329,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -10448,6 +11369,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -10482,6 +11404,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.8,
@@ -10516,6 +11444,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.9,
@@ -10550,6 +11484,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -10584,6 +11524,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -10619,6 +11565,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -10653,6 +11605,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -10688,6 +11646,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -10727,6 +11691,7 @@
     "name": "Österreich",
     "flag": "🇦🇹"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.55,
@@ -10762,6 +11727,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.2,
@@ -10799,6 +11770,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -10833,6 +11810,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.9,
@@ -10867,6 +11850,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 8.9,
@@ -10902,6 +11891,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.9,
@@ -10935,6 +11930,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.8,
@@ -10968,6 +11969,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.4,
@@ -11001,6 +12008,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -11040,6 +12053,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.1,
@@ -11077,6 +12091,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.0,
@@ -11113,6 +12128,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.85,
@@ -11153,6 +12174,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.0,
@@ -11187,6 +12209,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -11220,6 +12248,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.9,
@@ -11254,6 +12288,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.9,
@@ -11288,6 +12328,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -11322,6 +12368,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -11356,6 +12408,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -11390,6 +12448,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.0,
@@ -11424,6 +12488,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -11458,6 +12528,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -11492,6 +12568,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -11526,6 +12608,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -11560,6 +12648,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -11594,6 +12688,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.7,
@@ -11629,6 +12729,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -11664,6 +12770,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -11698,6 +12810,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -11733,6 +12851,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -11768,6 +12892,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -11803,6 +12933,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.56,
@@ -11838,6 +12974,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -11873,6 +13015,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -11906,6 +13054,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.01,
@@ -11941,6 +13095,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.5,
@@ -11975,6 +13135,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.9,
@@ -12010,6 +13176,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -12044,6 +13216,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 10.7,
@@ -12077,6 +13255,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.01,
@@ -12110,6 +13294,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.3,
@@ -12142,6 +13332,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.6,
@@ -12176,6 +13372,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.0,
@@ -12215,6 +13412,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.01,
@@ -12255,6 +13453,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.01,
@@ -12294,6 +13493,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.01,
@@ -12327,6 +13527,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.7,
@@ -12366,6 +13572,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.95,
@@ -12401,6 +13608,11 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "AH",
+    "name": "Österreich-Ungarn"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.4,
@@ -12440,6 +13652,7 @@
     "name": "Dänemark",
     "flag": "🇩🇰"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.65,
@@ -12478,6 +13691,7 @@
     "code": "CS",
     "name": "Tschechoslowakei"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.3,
@@ -12517,6 +13731,7 @@
     "name": "Polen",
     "flag": "🇵🇱"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.36,
@@ -12557,6 +13772,7 @@
     "name": "Belgien",
     "flag": "🇧🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.96,
@@ -12590,6 +13806,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "SE",
+    "name": "Schweden",
+    "flag": "🇸🇪"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.93,
@@ -12623,6 +13845,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "SE",
+    "name": "Schweden",
+    "flag": "🇸🇪"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -12657,6 +13885,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "SE",
+    "name": "Schweden",
+    "flag": "🇸🇪"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -12696,6 +13930,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.6,
@@ -12738,6 +13973,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.95,
@@ -12777,6 +14013,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.9,
@@ -12816,6 +14053,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.0,
@@ -12855,6 +14093,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.0,
@@ -12889,6 +14128,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -12923,6 +14168,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -12957,6 +14208,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.6,
@@ -12992,6 +14249,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -13026,6 +14289,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.7,
@@ -13066,6 +14335,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.79,
@@ -13105,6 +14375,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.3,
@@ -13145,6 +14416,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.6,
@@ -13179,6 +14451,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 20.4,
@@ -13217,6 +14495,7 @@
     "code": "SU",
     "name": "Sowjetunion"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 21.7,
@@ -13252,6 +14531,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 9.5,
@@ -13282,6 +14562,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.5,
@@ -13310,6 +14591,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 11.2,
@@ -13339,6 +14621,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.4,
@@ -13368,6 +14651,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.5,
@@ -13396,6 +14680,7 @@
    "headstamps": [],
    "obsolete": true,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.6,
@@ -13424,6 +14709,7 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 17.3,
@@ -13459,6 +14745,7 @@
     "name": "Schweiz",
     "flag": "🇨🇭"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.7,
@@ -13504,6 +14791,7 @@
     "name": "Schweiz",
     "flag": "🇨🇭"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 20.72,
@@ -13541,6 +14829,7 @@
     "name": "Schweiz",
     "flag": "🇨🇭"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.7,
@@ -13576,6 +14865,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 19.2,
@@ -13620,6 +14910,7 @@
     "name": "Grossbritannien",
     "flag": "🇬🇧"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 19.0,
@@ -13660,6 +14951,7 @@
     "name": "USA",
     "flag": "🇺🇸"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.9,
@@ -13698,6 +14990,12 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.1,
@@ -13738,6 +15036,7 @@
     "name": "Frankreich",
     "flag": "🇫🇷"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.9,
@@ -13779,6 +15078,7 @@
     "name": "Deutschland",
     "flag": "🇩🇪"
    },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 14.9,
@@ -13814,6 +15114,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 12.9,
@@ -13848,6 +15154,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 16.8,
@@ -13881,6 +15193,12 @@
    "headstamps": [],
    "obsolete": true,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 15.81,
@@ -13918,11 +15236,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
-   },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 22.3,
@@ -13955,11 +15269,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
-   },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 22.3,
@@ -13992,6 +15302,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 22.3,
@@ -14025,6 +15336,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 20.5,
@@ -14058,11 +15370,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
-   },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 19.0,
@@ -14095,11 +15403,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
-   },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 19.0,
@@ -14133,6 +15437,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 17.5,
@@ -14166,6 +15471,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "worldwide": false,
    "blank": false,
    "dimensions": {
     "rim": 13.3,
@@ -14203,11 +15509,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
-   },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 4.5,
@@ -14236,11 +15538,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
-   },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 5.5,
@@ -14271,11 +15569,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
-   },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 4.35,
@@ -14306,11 +15600,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
-   },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 6.0,
@@ -14340,11 +15630,7 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "WW",
-    "name": "Weltweit verbreitet",
-    "flag": "🌐"
-   },
+   "worldwide": true,
    "blank": false,
    "dimensions": {
     "rim": 8.0,

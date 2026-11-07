@@ -128,6 +128,44 @@ struct CountryFlag: View {
     }
 }
 
+/// Globe for a calibre in common use worldwide, shown next to the flag of the state that introduced it.
+struct WorldwideMark: View {
+    @ScaledMetric(relativeTo: .body) private var size: CGFloat = 14
+
+    var body: some View {
+        Image(systemName: "globe")
+            .resizable()
+            .scaledToFit()
+            .frame(width: size, height: size)
+            .foregroundStyle(.secondary)
+            .accessibilityLabel(Text("Weltweit verbreitet"))
+    }
+}
+
+/// Flags of a row's calibres (the lead and the look-alikes merged into it, each country once) and a
+/// globe when one of them is in use worldwide. A trailing slot at least `slot` wide keeps rows without
+/// marks aligned; wider content grows the slot instead of overlapping the text to its left.
+struct OriginMarks: View {
+    let cartridges: [Cartridge]
+    @ScaledMetric(relativeTo: .body) private var slot: CGFloat = 42
+
+    /// The countries of `cartridges` in row order, each once; calibres without one add nothing.
+    static func countries(of cartridges: [Cartridge]) -> [Cartridge.Country] {
+        var seen: [Cartridge.Country] = []
+        for country in cartridges.compactMap(\.country) where !seen.contains(country) { seen.append(country) }
+        return seen
+    }
+
+    var body: some View {
+        HStack(spacing: 4) {
+            ForEach(Self.countries(of: cartridges), id: \.code) { CountryFlag(country: $0) }
+            if cartridges.contains(where: \.worldwide) { WorldwideMark() }
+        }
+        .fixedSize()
+        .frame(minWidth: slot, alignment: .trailing)
+    }
+}
+
 /// Simple flags for former states, which have no flag emoji (calibre-data COUNTRIES without one).
 struct DrawnFlag: View {
     let code: String
