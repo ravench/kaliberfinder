@@ -28,14 +28,18 @@ enum DarkSide {
     static let slices = 120
     /// The tip end is pointed: its last slices are at most this share of the body's width.
     static let tipWidthUpTo = 0.5
-    /// The body at least this many point steps across. The axis through the tip is found to about half
-    /// a step and the mirror image doubles that: on smaller silhouettes it would be off by more than 3 %.
+    /// The body at least this many point steps across, or pixels of Vision's mask where that is coarser
+    /// (its 512 × 512 map over a whole photo). The axis is found to about half a step and the mirror
+    /// image doubles that: on smaller silhouettes it would be off by more than 3 %.
     static let stepsAcross = 30.0
     /// The case's body, as shares of the length from the head: past the rim and extractor groove, and
     /// short of the case mouth of every cartridge (a 9 mm Luger's case is 64 % of its length, a .223's
     /// body up to the shoulder 64 %).
     static let bodyFrom = 0.08, bodyTo = 0.45
-    /// The points near the tip that give the axis: this share of the length.
+    /// The nose's slices that give the axis: from this share of the body width to that one. Narrower,
+    /// the mask's rounding of the tip shows; wider, the bullet's shank may be cut too.
+    static let noseFrom = 0.2, noseTo = 0.6
+    /// Without enough such slices, the points near the tip give it: this share of the length.
     static let tipShare = 0.02
     /// How much nearer to the axis one side must end than the other ((lit − cut) / (lit + cut)) to
     /// count as cut. Whole silhouettes mostly stay within 0.05 of the tip's axis; the photo tells the rest.
@@ -49,9 +53,10 @@ enum DarkSide {
     /// Where the table "further out" is, in body widths beyond the edge.
     static let tableFrom = 0.3, tableTo = 0.45
 
-    /// The silhouette (`points`, every `step` pixels of `photo`) with its cut dark side given back,
-    /// or nil when no side looks cut (see the type's description).
-    static func restored(_ points: [Point], step: Int, photo: RGBImage) -> [Point]? {
+    /// The silhouette (`points`, every `step` pixels of `photo`, from a mask with `maskPixel` photo
+    /// pixels per pixel) with its cut dark side given back, or nil when no side looks cut (see the
+    /// type's description).
+    static func restored(_ points: [Point], step: Int, maskPixel: Double = 1, photo: RGBImage) -> [Point]? {
         guard var frame = Frame(points, step: step) else { return nil }
         // The lit side's edge narrows with the case's taper, the cut one only by its share of the half
         // width: weighted so that the taper cancels out, the edges' slope is the axis's.
@@ -63,15 +68,19 @@ enum DarkSide {
         }
         let cut = frame.shorterSide
         let lit = frame.reach(side: -cut), short = frame.reach(side: cut)
-        guard frame.tipWidth <= tipWidthUpTo, frame.bodyWidth >= stepsAcross * Double(step),
-              lit > 0, (lit - short) / (lit + short) >= asymmetryFrom,
+        guard frame.tipWidth <= tipWidthUpTo, frame.bodyWidth >= stepsAcross * max(Double(step), maskPixel),
+              short > 0, (lit - short) / (lit + short) >= asymmetryFrom,
               let tableStart = tableStart(frame, side: cut, photo: photo) else { return nil }
-        // The lit side's mirror image about the axis, added on the cut side up to where the table begins.
+        // The lit side's mirror image about the axis, added on the cut side up to where the table
+        // begins; a rim or belt reaches past that by as much as it stands out from the body.
+        let mirroredEdge = { (i: Int) in 2 * frame.axis - (cut > 0 ? frame.low[i] : frame.high[i]) }
+        let bodyEdge = median(frame.body.map(mirroredEdge))
         let pixel = Double(step)
         var all = Set(points)
         for (u, v) in zip(frame.u, frame.v) where (v - frame.axis) * cut < 0 {
             let mirrored = 2 * frame.axis - v
-            guard (mirrored - tableStart) * cut <= 0 else { continue }
+            let standsOut = max(0, (mirroredEdge(frame.slice(u: u)) - bodyEdge) * cut)
+            guard (mirrored - tableStart) * cut <= standsOut else { continue }
             let p = frame.point(u: u, v: mirrored)
             all.insert(Point(x: (p.x / pixel).rounded() * pixel, y: (p.y / pixel).rounded() * pixel))
         }
@@ -111,7 +120,7 @@ enum DarkSide {
         let bodyWidth: Double
         /// The tip end's width (its last slices) as a share of the body width.
         let tipWidth: Double
-        /// `v` of the axis: the middle of the points near the tip.
+        /// `v` of the axis: the middle of the nose (see `noseFrom`), or of the points near the tip.
         let axis: Double
         /// Slopes of the body's edges against `u`.
         let slopeHigh: Double, slopeLow: Double
@@ -171,9 +180,13 @@ enum DarkSide {
             self.lo = lo; self.length = length; self.count = count
             self.low = low; self.high = high
             self.body = body
-            bodyWidth = median(body.map { widths[$0] })
-            tipWidth = mean(widths.suffix(4).dropLast().filter { $0 > 0 }) / bodyWidth
-            axis = mean(nearTip)
+            let typical = median(body.map { widths[$0] })
+            bodyWidth = typical
+            tipWidth = mean(widths.suffix(4).dropLast().filter { $0 > 0 }) / typical
+            let nose = (count / 2..<count).filter {
+                widths[$0] >= DarkSide.noseFrom * typical && widths[$0] <= DarkSide.noseTo * typical
+            }
+            axis = nose.count >= 3 ? median(nose.map { (low[$0] + high[$0]) / 2 }) : mean(nearTip)
             slopeHigh = Frame.slope(centres, body.map { high[$0] }); slopeLow = Frame.slope(centres, body.map { low[$0] })
         }
 
@@ -183,6 +196,9 @@ enum DarkSide {
         }
 
         func centre(slice i: Int) -> Double { lo + (Double(i) + 0.5) / Double(count) * length }
+
+        /// The slice at `u`.
+        func slice(u: Double) -> Int { max(0, min(count - 1, Int((u - lo) / length * Double(count)))) }
 
         /// The photo point at `u` along and `v` across the axis.
         func point(u: Double, v: Double) -> Point {

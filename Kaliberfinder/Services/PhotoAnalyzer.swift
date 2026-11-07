@@ -136,8 +136,17 @@ enum PhotoAnalyzer {
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
         let maskRequest = VNGenerateForegroundInstanceMaskRequest()
         guard (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first else { return nil }
-        return visionResult(silhouette(of: observation, handler: handler, imagePixels: cgImage.width * cgImage.height),
-                            width: cgImage.width, height: cgImage.height)
+        var result = visionResult(silhouette(of: observation, handler: handler, imagePixels: cgImage.width * cgImage.height),
+                                  width: cgImage.width, height: cgImage.height)
+        let labels = observation.instanceMask
+        result?.maskPixel = maskPixel(image: (cgImage.width, cgImage.height),
+                                      mask: (CVPixelBufferGetWidth(labels), CVPixelBufferGetHeight(labels)))
+        return result
+    }
+
+    /// The size of a pixel of Vision's instance mask (`mask` pixels) in the photo (`image` pixels).
+    static func maskPixel(image: (width: Int, height: Int), mask: (width: Int, height: Int)) -> Double {
+        (Double(image.width * image.height) / Double(max(1, mask.width * mask.height))).squareRoot()
     }
 
     /// The analysis of an upright photo with Vision's object `vision` (`visionResult`), or with
@@ -146,8 +155,9 @@ enum PhotoAnalyzer {
         let rgb = rgbImage(cgImage)
         var vision = vision
         // Vision often leaves out the cartridge's dark side: give it back (see `DarkSide`).
-        if let found = vision, let rgb, let restored = DarkSide.restored(found.raw, step: found.step, photo: rgb),
-           let again = visionResult((restored, found.step, found.candidates), width: cgImage.width, height: cgImage.height) {
+        if let found = vision, let rgb, let restored = DarkSide.restored(found.raw, step: found.step, maskPixel: found.maskPixel, photo: rgb),
+           var again = visionResult((restored, found.step, found.candidates), width: cgImage.width, height: cgImage.height) {
+            again.maskPixel = found.maskPixel
             vision = again
         }
         var measured: (shape: ShapeMeasurement, length: Double)? = vision.map { ($0.shape, $0.length) }
@@ -192,6 +202,8 @@ enum PhotoAnalyzer {
         let points: [Point]
         /// The silhouette as Vision found it.
         let raw: [Point]
+        /// A pixel of Vision's instance mask in photo pixels: the mask is coarser than the photo.
+        var maskPixel = 1.0
         let candidates: [CGRect]
         let outline: [CGPoint]?
         /// Without the photo's colours (see `analysis(of:vision:)`).
@@ -214,8 +226,9 @@ enum PhotoAnalyzer {
 
     /// The phone's path on a stored Vision instance mask (a training capture or golden shot): the
     /// same subject picking, measurement, frame and neck as `analyzeNow`, without Vision and without
-    /// the photo, so it runs on the simulator. `labels` is Vision's instance mask (`mask` pixels,
-    /// 0 = background) over the upright photo as analysed (`image` pixels, see `maxDimension`).
+    /// the photo (so also without `DarkSide`, which needs it), so it runs on the simulator. `labels`
+    /// is Vision's instance mask (`mask` pixels, 0 = background) over the upright photo as analysed
+    /// (`image` pixels, see `maxDimension`).
     /// `isBrass` comes from the phone: it needs the photo's colours.
     static func analyze(instanceLabels labels: [UInt8], mask: (width: Int, height: Int), image: (width: Int, height: Int),
                         isBrass: Bool) -> PhotoAnalysis {
@@ -245,7 +258,9 @@ enum PhotoAnalyzer {
             }
             return points
         }
-        return visionResult(found, width: imageWidth, height: imageHeight)
+        var result = visionResult(found, width: imageWidth, height: imageHeight)
+        result?.maskPixel = maskPixel(image: image, mask: mask)
+        return result
     }
 
     /// The measurement of Vision's silhouette (`step`: pixels between the points): made

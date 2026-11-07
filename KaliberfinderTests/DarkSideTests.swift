@@ -15,12 +15,12 @@ final class DarkSideTests: XCTestCase {
         try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)
     }
 
-    /// A 600 × 600 px photo of `c` (or only its case, `ppm` pixels per millimetre) lying in the middle at
-    /// `angle` on a light table. The metal more
-    /// than `darkFrom` of the case's half width off the axis on one side is nearly black; next to that side the
-    /// table lies in a shadow `shadow` mm wide, at `shadowLevel` of its brightness. With the pixels the
-    /// cartridge covers (`whole`) and the ones Vision keeps when it stops in the black strip, `cutFrom`
-    /// of the half width off the axis, along the case (`cut`; along the bullet too with `cutBullet`).
+    /// A 600 × 600 px photo of `c` (or only its case, `ppm` pixels per millimetre) lying in the middle
+    /// at `angle` on a light table. The metal more than `darkFrom` of the case's half width off the
+    /// axis on one side is nearly black; next to that side the table lies in a shadow `shadow` mm wide,
+    /// at `shadowLevel` of its brightness. With the pixels the cartridge covers (`whole`) and the ones
+    /// Vision keeps when it stops in the black strip, `cutFrom` of the half width off the axis, along
+    /// the case (`cut`; along the bullet too with `cutBullet`).
     private func photo(_ c: Cartridge, darkFrom: Double = 0.3, cutFrom: Double = 0.5, shadow: Double = 0, shadowLevel: Float = 0.3,
                        caseOnly: Bool = false, cutBullet: Bool = false, darkMetal: Bool = true,
                        angle: Double = 0.7, ppm: Double = 6) -> (image: RGBImage, whole: [Point], cut: [Point]) {
@@ -109,9 +109,6 @@ final class DarkSideTests: XCTestCase {
         let lit = photo(try cartridge("9x19 mm"), darkMetal: false)
         let narrower = photo(try cartridge("9x19 mm"))
         XCTAssertNil(DarkSide.restored(narrower.cut, step: 1, photo: lit.image), "brass beyond the edge, brighter than the strip")
-        // A shadow beside a lit edge: the case is brighter than the shadow, so the edge is real.
-        let shaded = photo(try cartridge("9x19 mm"), darkFrom: 0.97, cutFrom: 1, shadow: 2)
-        XCTAssertNil(DarkSide.restored(shaded.whole, step: 1, photo: shaded.image))
     }
 
     /// An empty case has no bullet tip on its axis to mirror about.
@@ -119,6 +116,33 @@ final class DarkSideTests: XCTestCase {
         let shot = photo(try cartridge("9x19 mm"), caseOnly: true)
         XCTAssertGreaterThan(try aspect(shot.cut) / aspect(shot.whole), 1.1)
         XCTAssertNil(DarkSide.restored(shot.cut, step: 1, photo: shot.image))
+    }
+
+    /// A rimmed case keeps its rim: the mirror image is cut back where the table shows by the same
+    /// amount all along, not to one line.
+    func testKeepsTheRim() throws {
+        for (id, angle) in [(".38 Special", 0.7), (".303 British", 2.0)] {
+            let shot = photo(try cartridge(id), angle: angle)
+            let restored = try XCTUnwrap(DarkSide.restored(shot.cut, step: 1, photo: shot.image), id)
+            let whole = try XCTUnwrap(PhotoAnalyzer.measureSilhouette(shot.whole, step: 1)?.shape, id)
+            let given = try XCTUnwrap(PhotoAnalyzer.measureSilhouette(restored, step: 1)?.shape, id)
+            XCTAssertTrue(try XCTUnwrap(whole.features).isRimmed, id)
+            XCTAssertEqual(try XCTUnwrap(given.features).rim, try XCTUnwrap(whole.features).rim, accuracy: 0.03, id)
+            XCTAssertEqual(given.aspect / whole.aspect, 1, accuracy: 0.03, id)
+        }
+    }
+
+    /// Where the lit metal ends next to its shadow, the photo shows an edge: that side is real, even
+    /// though it is dark beyond.
+    func testAnEdgeFromLitMetalToShadowIsReal() throws {
+        let shot = photo(try cartridge("9x19 mm"), shadow: 2, darkMetal: false)
+        let frame = try XCTUnwrap(DarkSide.Frame(shot.whole, step: 1))
+        XCTAssertNil(DarkSide.tableStart(frame, side: 1, photo: shot.image))
+        XCTAssertNil(DarkSide.tableStart(frame, side: -1, photo: shot.image))
+        // The black strip instead: no edge, dark beyond.
+        let strip = photo(try cartridge("9x19 mm"), shadow: 2)
+        let cut = try XCTUnwrap(DarkSide.Frame(strip.cut, step: 1))
+        XCTAssertNotNil(DarkSide.tableStart(cut, side: cut.shorterSide, photo: strip.image))
     }
 
     /// Points every few pixels, as Vision's mask is sampled for a large cartridge.
@@ -130,12 +154,15 @@ final class DarkSideTests: XCTestCase {
         XCTAssertEqual(try XCTUnwrap(ShapeMatcher.measure(restored, pixelSize: 2)).aspect / aspect(shot.whole), 1, accuracy: 0.03)
     }
 
-    /// Fewer than 30 points across: the mirror image would be less exact than the silhouette.
+    /// Fewer than 30 points across, or 30 pixels of Vision's mask (its 512 × 512 map over the whole
+    /// photo is coarser than the photo): the mirror image would be less exact than the silhouette.
     func testLeavesASmallSilhouetteAlone() throws {
         let shot = photo(try cartridge("9x19 mm"))
         let sampled = shot.cut.filter { Int($0.x) % 2 == 0 && Int($0.y) % 2 == 0 }
         XCTAssertNotNil(DarkSide.restored(shot.cut, step: 1, photo: shot.image))
         XCTAssertNil(DarkSide.restored(sampled, step: 2, photo: shot.image))
+        XCTAssertNil(DarkSide.restored(shot.cut, step: 1, maskPixel: 2, photo: shot.image))
+        XCTAssertEqual(PhotoAnalyzer.maskPixel(image: (1200, 1600), mask: (512, 512)), 2.7, accuracy: 0.01)
     }
 
     /// The analysis measures Vision's silhouette with its dark side given back.
