@@ -147,6 +147,18 @@ final class EmptyCaseTests: XCTestCase {
         let own = try XCTUnwrap(ShapeMatcher.caseCatalogue[".223 Remington"])
         XCTAssertNotNil(ShapeMatcher.distance(bottleneck, to: own, part: .emptyCase))
         XCTAssertNotNil(ShapeMatcher.distance(bottleneck.reversed(), to: own, part: .emptyCase))
+        // A head narrower than the calibre's (rounded off or in shadow) only costs the rim penalty.
+        let rimlessPhoto = try photo(cartridge("9x19 mm"), part: .emptyCase)
+        let rimmedCase = try XCTUnwrap(ShapeMatcher.caseCatalogue[".38 Special"])
+        let narrow = try XCTUnwrap(ShapeMatcher.distance(rimlessPhoto, to: rimmedCase, part: .emptyCase))
+        let plainDistance = [rimlessPhoto, rimlessPhoto.reversed()].map { ShapeMatcher.distance($0, rimmedCase) }.min() ?? 0
+        XCTAssertGreaterThanOrEqual(narrow, plainDistance + ShapeMatcher.rimPenalty - 1e-9)
+        // A bottleneck case the other way round shows its neck where the head should be: as narrow as a
+        // clear neck (7.62x39 mm, 0.76 of the body), it is no head, even within a rim's width of one.
+        let shortNeck = try photo(cartridge("7.62x39 mm"), part: .emptyCase)
+        let straightRimless = try XCTUnwrap(ShapeMatcher.caseCatalogue[".45 ACP"])
+        XCTAssertLessThanOrEqual(try XCTUnwrap(shortNeck.mouthFirst().features).mouth, NeckShape.clearUpTo)
+        XCTAssertFalse(ShapeMatcher.featuresFit(shortNeck.mouthFirst().reversed(), straightRimless, part: .emptyCase))
         // Shapes built by hand have no slice widths, so nothing is ruled out.
         let plain = ShapeMeasurement(aspect: 3, profile: ShapeMatcher.fractions.map { _ in 1 })
         XCTAssertTrue(ShapeMatcher.featuresFit(plain, own, part: .emptyCase))
@@ -160,6 +172,20 @@ final class EmptyCaseTests: XCTestCase {
         XCTAssertEqual(empty.aspect, 51.2 / 11.9, accuracy: 0.1)
         XCTAssertTrue(try XCTUnwrap(empty.features).isFlatEnd)
         XCTAssertFalse(try XCTUnwrap(ShapeMatcher.catalogue[".308 Winchester"]?.features).isFlatEnd)
+    }
+
+    /// A case mouth whose first slice is only partly filled (the mask rounds its corners) is still
+    /// flat; a bullet's tip narrows over several slices. Widths from the second look at a .45 ACP case
+    /// and a 9 mm round (2026-11-05).
+    func testAMouthWithARoundedCornerIsFlat() {
+        func shape(_ front: [Double]) -> ShapeMeasurement {
+            ShapeMatcher.measurement(aspect: 2, relativeWidths: front + Array(repeating: 1, count: ShapeMatcher.bins - front.count))
+        }
+        XCTAssertEqual(shape([0.82, 0.97, 0.99, 0.99]).features?.isFlatEnd, true)
+        XCTAssertEqual(ScanMode.auto.part(for: shape([0.82, 0.97, 0.99, 0.99])), .emptyCase)
+        XCTAssertEqual(shape([0.33, 0.44, 0.53, 0.60]).features?.isFlatEnd, false)
+        XCTAssertEqual(shape([0.40, 0.57, 0.67, 0.73]).features?.isFlatEnd, false, ".45 ACP round nose")
+        XCTAssertEqual(shape([0.30, 0.62, 0.70, 0.78]).features?.isFlatEnd, false, "a flat nose behind a partly filled slice")
     }
 
     // MARK: - Far-off matches
