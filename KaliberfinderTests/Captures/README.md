@@ -28,5 +28,6 @@ the library have no depth, but are still useful for the shape.
 Keep the photos reasonably small: a HEIC from the camera is about 2–4 MB.
 
 A round the catalogue lacks (an old or unknown one) is recorded under «Nicht in der Liste» with a
-name of its own: `calibre` is then that name and `unlisted` is true. The evaluation tool and the
-scores leave such series out until the calibre is in the catalogue and the package gets its id.
+name of its own: `calibre` is then that name and `unlisted` is true. The evaluation tool leaves such
+series out, and they cannot go into the golden set (`GoldenSetTests` needs a catalogue calibre), until
+the calibre is in the catalogue and the package gets its id.

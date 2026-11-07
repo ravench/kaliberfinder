@@ -84,7 +84,7 @@ private struct NewTrainingSeriesView: View {
     private var package: CapturePackage? {
         switch calibre {
         case .listed(let c): TrainingRecorder.package(calibre: c.id, mode: mode, note: note)
-        case .unlisted where !name.trimmingCharacters(in: .whitespaces).isEmpty:
+        case .unlisted where !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty:
             TrainingRecorder.package(calibre: name, unlisted: true, mode: mode, note: note)
         default: nil
         }
@@ -157,7 +157,7 @@ private struct TrainingCalibrePicker: View {
             Section {
                 Button {
                     selection = .unlisted
-                    if name.trimmingCharacters(in: .whitespaces).isEmpty { name = query }
+                    if name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { name = query }
                     dismiss()
                 } label: {
                     HStack {
