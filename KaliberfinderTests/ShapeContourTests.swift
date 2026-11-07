@@ -253,10 +253,15 @@ final class ShapeContourTests: XCTestCase {
         XCTAssertEqual(side[1].half, side[0].half)
         XCTAssertEqual(side[2].f, behind[0].f)
         XCTAssertEqual(side[3].f, behind[1].f)
-        // A detected neck, or a front that narrows like a bullet's nose (9×19), only runs on to the mouth.
-        for (widths, neck) in [(w, true), ([0.35, 0.5, 0.61, 0.7, 0.76, 0.81, 0.84, 0.87, 0.89] + [Double](repeating: 0.95, count: 31), false)] {
-            let straight = ShapeContour.emptySide(behind, widths: widths, hasNeck: neck, front: neck ? 11 : 9)
-            XCTAssertEqual(straight.map(\.part), [.body, .end], "neck \(neck)")
+        // A detected neck, or a front that narrows like a bullet's nose (9×19, a blunt nose that widens
+        // all the way to the body), only runs on to the mouth.
+        let body = [Double](repeating: 0.95, count: 31)
+        let rows: [(widths: [Double], neck: Bool, front: Int)] = [(w, true, 11),
+                                                                  ([0.35, 0.5, 0.61, 0.7, 0.76, 0.81, 0.84, 0.87, 0.89] + body, false, 9),
+                                                                  ([0.6, 0.72, 0.8, 0.85, 0.88] + body + [0.95, 0.95, 0.95, 0.95], false, 5)]
+        for (widths, neck, front) in rows {
+            let straight = ShapeContour.emptySide(behind, widths: widths, hasNeck: neck, front: front)
+            XCTAssertEqual(straight.map(\.part), [.body, .end], "neck \(neck), front \(front)")
             XCTAssertEqual(straight[0].f, 0)
             XCTAssertEqual(straight[0].half, behind[0].half)
         }

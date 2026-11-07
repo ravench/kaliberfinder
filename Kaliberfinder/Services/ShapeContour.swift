@@ -132,18 +132,21 @@ struct ShapeContour: Equatable {
 
     /// One side of the outline of an empty case, mouth first, from `side`, the side behind the bullet:
     /// the neck, or the body, runs on to the mouth. Where `NeckShape` finds no neck in the widths `w`
-    /// (tip first, the body from slice `front` on), at least three slices in front of the body about as
-    /// narrow as the narrowest are the neck, if that is narrow enough for one: a neck whose widths vary
-    /// too much for `NeckShape` (Raven's 6 mm BR, 2026-11-07) is still drawn. The first slice is left
-    /// out, as there: it is often only partly filled.
+    /// (tip first, the body from slice `front` on), the slices in front of the body about as narrow as
+    /// the narrowest are the neck, if that is narrow enough for one: a neck whose widths vary
+    /// too much for `NeckShape` (Raven's 6 mm BR, 2026-11-07) is still drawn. At least three of them lie
+    /// within `NeckShape.straightWithin` of their middle width: a bullet's nose, which widens all the
+    /// way to the body, has no such straight part. The first slice is left out, as there: it is often
+    /// only partly filled.
     static func emptySide(_ side: [Corner], widths w: [Double], hasNeck: Bool, front: Int) -> [Corner] {
         if !hasNeck, front > 1 {
             // The second narrowest: one slice cut short by noise does not set the neck's width.
             let ahead = w[1..<front].sorted(), narrow = ahead[min(1, ahead.count - 1)]
             let slices = (1..<front).filter { w[$0] <= narrow + 2 * NeckShape.straightWithin }
-            let run = slices.map { w[$0] }.sorted()
-            if run.count >= 3, run[run.count / 2] <= NeckShape.neckUpTo, let last = slices.last {
-                let half = run[run.count / 2] / 2, end = Double(last + 1) / Double(w.count)
+            let run = slices.map { w[$0] }.sorted(), middle = run[run.count / 2]
+            let straight = run.filter { abs($0 - middle) <= NeckShape.straightWithin }.count
+            if straight >= 3, middle <= NeckShape.neckUpTo, let last = slices.last {
+                let half = middle / 2, end = Double(last + 1) / Double(w.count)
                 let neck: [Corner] = [(0, half, .neck), (end, half, .neck)]
                 return neck + side
             }
