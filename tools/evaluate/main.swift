@@ -167,7 +167,7 @@ for package in packages {
             let neck = found.map { "\($0.0.slices) \($0.0.isClear ? "clear" : "unclear")\($0.1 ? " reversed" : "")" } ?? "none"
             func xy(_ p: [CGPoint]?) -> String { (p ?? []).map { String(format: "%.5f,%.5f", $0.x, $0.y) }.joined(separator: " ") }
             let range = area.map { String(format: "%.3f-%.3f tip %.3f", $0.range.lowerBound, $0.range.upperBound, $0.tipEnd) } ?? "none"
-            FileHandle.standardError.write(Data("MOUTH \(name) neck \(neck) range \(range) mouth \(contour.mouth.map { String(format: "%.3f", $0) } ?? "none") box \(xy(analysis.outline)) line \(xy(contour.mouthLine)) widths \(w.map { String(format: "%.2f", $0) }.joined(separator: ","))\n".utf8))
+            FileHandle.standardError.write(Data("MOUTH \(name) neck \(neck) range \(range) mouth \(contour.mouth.map { String(format: "%.3f", $0) } ?? "none") box \(xy(analysis.outline)) line \(xy(contour.mouthLine)) tip \(xy(Array(contour.points.prefix(1)))) widths \(w.map { String(format: "%.2f", $0) }.joined(separator: ","))\n".utf8))
         }
         FileHandle.standardError.write(Data("\(name) rows \(rows) rank \(r.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look)\(share))\n".utf8))
         shots.append(shot)
