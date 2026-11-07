@@ -57,6 +57,26 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// Cases that are not brass, from the side and from below: lacquered steel, a brass body on a
+    /// steel head, and a paper case in a brass cup.
+    func testCaseMaterials() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        for (query, name, shot) in [("5.45", "5.45x39 mm", "10-Stahlhuelse"), ("Fury", ".277 SIG Fury", "11-Hybridhuelse"),
+                                    ("Snider", ".577 Snider", "12-Papierhuelse")] {
+            let search = app.searchFields.firstMatch
+            if search.waitForExistence(timeout: 5) {
+                search.tap()
+                // Clears the previous query first.
+                search.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 8) + query)
+            }
+            if open(app.staticTexts[name].firstMatch) {
+                snap(shot)
+                back()
+            }
+        }
+    }
+
     /// The matches for one of Raven's photos (an empty GP 11 case), with the measured frame and the
     /// detected neck and taper drawn over it.
     func testPhotoMatches() {
