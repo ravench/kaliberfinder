@@ -7,7 +7,8 @@ import Vision
 struct PhotoAnalysis {
     /// Silhouette of the largest foreground object, nil if none was found.
     let shape: ShapeMeasurement?
-    /// The silhouette's length in pixels of the analysed image, and that image's long side.
+    /// The silhouette's length in pixels of the analysed image, and the whole photo's long side at
+    /// that image's scale (more than the image's own after a look at a part, see `inPhoto`).
     var lengthPixels: Double?
     var imageLongSide: Double = 0
     /// Where the cartridges that compete for the measurement are, as fractions of the upright
@@ -22,6 +23,8 @@ struct PhotoAnalysis {
     var contour: ShapeContour?
     /// The silhouette is brass-coloured: a case, not a lead ball or pellet.
     var isBrass = false
+    /// The silhouette is the colour cut-out's: Vision found no cartridge.
+    var byColour = false
 
     /// How many cartridges compete for the measurement.
     var objectCount: Int { max(1, candidates.count) }
@@ -53,6 +56,76 @@ enum PhotoAnalyzer {
     /// Vision's object, or the colour cut-out where Vision finds none.
     static func analyzeNow(_ cgImage: CGImage) -> PhotoAnalysis {
         analysis(of: cgImage, vision: visionResult(of: cgImage))
+    }
+
+    // MARK: - Second look
+
+    /// The second look leaves out photos where the cartridge's region is at least this
+    /// share of the photo both ways: cutting it out gains next to nothing.
+    static let secondLookUpTo = 0.9
+
+    /// Where the second look analyses the photo: the frame the first look measured (`outline`), with
+    /// the margin `focusRegion` gives a picked cartridge. Nil when nothing was measured, when several
+    /// cartridges compete (the picked one gets its own look), or when the region is nearly the whole photo.
+    ///
+    /// The first look sees the photo scaled to `maxDimension` pixels, and Vision's mask covers it with
+    /// only about 512 × 512 labels: a .45 ACP case is some 20 labels wide, and its ends come out
+    /// rounded. That shortens the rim, hides the flat case mouth and blurs the neck. Cut out of the
+    /// full-size photo, the same cartridge fills the mask several times over.
+    static func secondLookRegion(of first: PhotoAnalysis) -> CGRect? {
+        guard first.shape != nil, !first.hasSeveralObjects, let outline = first.outline,
+              let region = focusRegion(around: outline), region.width < secondLookUpTo || region.height < secondLookUpTo else { return nil }
+        return region
+    }
+
+    /// `focusRegion` of the box around the frame `outline` (fractions of the photo); nil for no frame.
+    static func focusRegion(around outline: [CGPoint]) -> CGRect? {
+        guard let minX = outline.map(\.x).min(), let maxX = outline.map(\.x).max(),
+              let minY = outline.map(\.y).min(), let maxY = outline.map(\.y).max() else { return nil }
+        let region = focusRegion(CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY))
+        return region.isEmpty ? nil : region
+    }
+
+    /// An analysis of the part `region` of a photo (fractions of the photo, which is `photoSize`
+    /// pixels upright), cut out at full size and analysed at up to `maxDimension` pixels, as one of the
+    /// whole photo: frames in fractions of the photo, and the long side the size measurement compares
+    /// pixels with at the scale the part was analysed at. A part has no competing cartridges of its own.
+    static func inPhoto(_ part: PhotoAnalysis, region: CGRect, photoSize: CGSize) -> PhotoAnalysis {
+        var analysis = part
+        let cropLongSide = max(region.width * photoSize.width, region.height * photoSize.height)
+        let scale = min(1, maxDimension / max(1, cropLongSide))
+        analysis.imageLongSide = max(photoSize.width, photoSize.height) * scale
+        analysis.candidates = []
+        let toPhoto = { (p: CGPoint) in CGPoint(x: region.minX + p.x * region.width, y: region.minY + p.y * region.height) }
+        analysis.outline = part.outline?.map(toPhoto)
+        analysis.contour = part.contour?.map(toPhoto)
+        return analysis
+    }
+
+    /// The first look's analysis, improved by the second look's (`inPhoto` of the part at
+    /// `secondLookRegion`) where Vision found the same cartridge there: its frame's centre lies in the
+    /// first look's frame. The colour cut-out of the part never replaces anything: it can pick a piece of
+    /// the cartridge, such as a case without its neck (simulator screenshot of #88, 2026-11-07), and never
+    /// replaces Vision's object (see `analysis(of:vision:)`). The cartridges competing for the
+    /// measurement stay the first look's.
+    static func secondLook(_ first: PhotoAnalysis, then second: PhotoAnalysis) -> PhotoAnalysis {
+        guard second.shape != nil, !second.byColour, let outline = second.outline, !outline.isEmpty,
+              let frame = first.outline, frame.count == 4 else { return first }
+        let centre = CGPoint(x: outline.map(\.x).reduce(0, +) / Double(outline.count),
+                             y: outline.map(\.y).reduce(0, +) / Double(outline.count))
+        guard contains(frame, centre) else { return first }
+        var analysis = second
+        analysis.candidates = first.candidates
+        return analysis
+    }
+
+    /// Whether the convex quadrilateral `corners` (in order) contains `p`.
+    static func contains(_ corners: [CGPoint], _ p: CGPoint) -> Bool {
+        let crossings = corners.indices.map { i -> Double in
+            let a = corners[i], b = corners[(i + 1) % corners.count]
+            return (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x)
+        }
+        return crossings.allSatisfy { $0 >= 0 } || crossings.allSatisfy { $0 <= 0 }
     }
 
     /// Vision's foreground object in an upright photo (see `SubjectPicker`); nil when Vision finds
@@ -95,7 +168,8 @@ enum PhotoAnalyzer {
         return PhotoAnalysis(shape: measured?.shape, lengthPixels: measured?.length,
                              imageLongSide: Double(max(cgImage.width, cgImage.height)),
                              candidates: candidates.count > 1 ? candidates : [], outline: outline, contour: contour,
-                             isBrass: rgb.map { isBrass($0, points: measuredPoints) } ?? false)
+                             isBrass: rgb.map { isBrass($0, points: measuredPoints) } ?? false,
+                             byColour: vision == nil && measured != nil)
     }
 
     /// What the analysis takes from Vision's silhouette of the cartridge.
