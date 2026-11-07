@@ -17,7 +17,7 @@ struct PhotoAnalysis {
     /// photo (x of the width, y of the height); nil if nothing was measured. Drawn as the frame,
     /// so it shows exactly what was matched.
     var outline: [CGPoint]?
-    /// The measured silhouette's outline (detected bullet, neck and taper as straight lines), in the
+    /// The measured silhouette's outline (detected bullet as a nose curve, neck and taper), in the
     /// same fractions as `outline`; drawn instead of the box when there is one.
     var contour: ShapeContour?
     /// The silhouette is brass-coloured: a case, not a lead ball or pellet.
