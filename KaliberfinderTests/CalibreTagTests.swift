@@ -28,6 +28,14 @@ final class CalibreTagTests: XCTestCase {
         XCTAssertTrue(gauge.worldwide)
     }
 
+    func testMergedRowShowsEachCountryOnce() throws {
+        let remington = try cartridge(".223 Remington"), nato = try cartridge("5.56x45 mm NATO")
+        XCTAssertEqual(OriginMarks.countries(of: [remington, nato]).map(\.code), ["US"])
+        XCTAssertEqual(OriginMarks.countries(of: [remington, remington]).count, 1)
+        XCTAssertEqual(OriginMarks.countries(of: [try cartridge("12/70")]), [])
+        XCTAssertEqual(OriginMarks.countries(of: [try cartridge("7.62x39 mm"), remington]).map(\.code), ["SU", "US"])
+    }
+
     func testEveryCountryHasAFlagToShow() {
         for c in CartridgeCatalog.all {
             guard let country = c.country else { continue }

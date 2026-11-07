@@ -56,7 +56,7 @@ struct CartridgeDetailView: View {
                 }
                 if cartridge.worldwide {
                     LabeledContent("Verbreitung") {
-                        Label("Weltweit verbreitet", systemImage: "globe")
+                        Label { Text("Weltweit verbreitet") } icon: { WorldwideMark().accessibilityHidden(true) }
                     }
                 }
                 ForEach(CalibreTag.of(cartridge), id: \.self) { tag in

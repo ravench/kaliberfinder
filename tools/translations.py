@@ -44,7 +44,7 @@ T = {
     "Israel": ("Israel", "Israël", "Israele"),
     "Finnland": ("Finland", "Finlande", "Finlandia"),
     "Philippinen": ("Philippines", "Philippines", "Filippine"),
-    "Verbreitung": ("Distribution", "Diffusion", "Diffusione"),
+    "Verbreitung": ("Prevalence", "Diffusion", "Diffusione"),
     "Weltweit verbreitet": ("Used worldwide", "Répandu dans le monde entier", "Diffuso in tutto il mondo"),
     "Russisches Kaiserreich": ("Russian Empire", "Empire russe", "Impero russo"),
     "Sowjetunion": ("Soviet Union", "Union soviétique", "Unione Sovietica"),
