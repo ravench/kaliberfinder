@@ -1,0 +1,245 @@
+{
+  "scores" : {
+    "neck" : 95.7,
+    "part" : 100,
+    "top1" : 54.5,
+    "top1All" : 48.5,
+    "top1Obsolete" : 54.5,
+    "top5" : 78.8,
+    "top5All" : 75.8,
+    "top5Obsolete" : 75.8
+  },
+  "shots" : {
+    "45-acp-20261104-224647/01" : {
+      "part" : true,
+      "rank" : 2,
+      "row" : 2,
+      "rowAll" : 2,
+      "rowObsolete" : 2
+    },
+    "45-acp-20261104-224647/02" : {
+      "part" : true
+    },
+    "5-6-mm-gp-90-20261105-225100/01" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 3,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "5-6-mm-gp-90-20261105-225100/02" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 3,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "5-6-mm-gp-90-20261105-225100/03" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 3,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "5-6-mm-gp-90-20261105-225100/04" : {
+      "neck" : true,
+      "part" : true
+    },
+    "5-6-mm-gp-90-20261105-225100/05" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 3,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "5-6-mm-gp-90-20261105-225100/06" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 3,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "5-6-mm-gp-90-20261105-225100/07" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 5,
+      "row" : 2,
+      "rowAll" : 3,
+      "rowObsolete" : 2
+    },
+    "5-6-mm-gp-90-20261105-225100/08" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 3,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "5-6-mm-gp-90-20261105-225100/09" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 3,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "5-6-mm-gp-90-20261105-225100/10" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 3,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "5-6-mm-gp-90-20261105-225100/11" : {
+      "neck" : false,
+      "part" : true
+    },
+    "5-6-mm-gp-90-20261105-225100/12" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 3,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "5-6-mm-gp-90-20261105-225100/13" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 3,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "5-6-mm-gp-90-20261105-225100/14" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 3,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "7-5x55-mm-swiss-gp-11-20261104-054131/01" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 4,
+      "row" : 3,
+      "rowAll" : 4,
+      "rowObsolete" : 3
+    },
+    "7-5x55-mm-swiss-gp-11-20261104-054131/02" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 11,
+      "row" : 6,
+      "rowAll" : 10,
+      "rowObsolete" : 7
+    },
+    "7-5x55-mm-swiss-gp-11-20261104-054131/03" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 9,
+      "row" : 5,
+      "rowAll" : 8,
+      "rowObsolete" : 6
+    },
+    "7-5x55-mm-swiss-gp-11-20261104-054131/04" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 3,
+      "row" : 2,
+      "rowAll" : 3,
+      "rowObsolete" : 3
+    },
+    "7-5x55-mm-swiss-gp-11-20261104-054131/05" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 2,
+      "row" : 2,
+      "rowAll" : 2,
+      "rowObsolete" : 2
+    },
+    "7-5x55-mm-swiss-gp-11-20261104-054131/06" : {
+      "neck" : true,
+      "part" : true
+    },
+    "7-5x55-mm-swiss-gp-11-20261104-054131/07" : {
+      "neck" : true,
+      "part" : true
+    },
+    "7-5x55-mm-swiss-gp-11-20261104-054131/08" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 2,
+      "row" : 2,
+      "rowAll" : 2,
+      "rowObsolete" : 2
+    },
+    "7-5x55-mm-swiss-gp-11-20261104-054131/09" : {
+      "neck" : true,
+      "part" : true,
+      "rank" : 41
+    },
+    "9x19-mm-20261104-054131/01" : {
+      "part" : true,
+      "rank" : 1,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "9x19-mm-20261104-054131/02" : {
+      "part" : true,
+      "rank" : 3,
+      "row" : 2,
+      "rowAll" : 3,
+      "rowObsolete" : 2
+    },
+    "9x19-mm-20261104-054131/03" : {
+      "part" : true,
+      "rank" : 1,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "9x19-mm-20261104-054131/04" : {
+      "part" : true,
+      "rank" : 1,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "9x19-mm-20261104-054131/05" : {
+      "part" : true,
+      "rank" : 2,
+      "row" : 1,
+      "rowAll" : 2,
+      "rowObsolete" : 1
+    },
+    "9x19-mm-20261104-054131/06" : {
+      "part" : true,
+      "rank" : 1,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    },
+    "9x19-mm-20261104-054131/07" : {
+      "part" : true,
+      "rank" : 2,
+      "row" : 1,
+      "rowAll" : 2,
+      "rowObsolete" : 1
+    },
+    "9x19-mm-20261104-054131/08" : {
+      "part" : true,
+      "rank" : 1,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
+    }
+  }
+}
