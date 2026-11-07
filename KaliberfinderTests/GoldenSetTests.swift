@@ -67,6 +67,10 @@ final class GoldenSetTests: XCTestCase {
         let data = try Data(contentsOf: try root.appendingPathComponent("baseline.json"))
         let baseline = try TrainingCapture.decoder.decode(Evaluation.Baseline.self, from: data)
         XCTAssertEqual(Set(baseline.shots.keys), Set(results.keys), "golden shots changed: update Golden/baseline.json from the GOLDEN lines")
+        // A baseline from before the list rows were counted would gate the phone's list against
+        // ranks among all calibres, and "of all" against nothing.
+        XCTAssertTrue(baseline.shots.values.contains { $0.row != nil } || baseline.shots.values.allSatisfy { $0.rank == nil },
+                      "Golden/baseline.json has no list rows: update it from the GOLDEN lines")
         for (label, was, isNow) in [("first", baseline.scores.top1, scores.top1), ("top 5", baseline.scores.top5, scores.top5),
                                     ("first of all", baseline.scores.top1All, scores.top1All),
                                     ("top 5 of all", baseline.scores.top5All, scores.top5All),
