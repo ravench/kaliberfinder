@@ -83,9 +83,14 @@ final class PRScreensTests: XCTestCase {
         photoMatches("set-gp11-case-02", shot: "07-Foto-Treffer")
     }
 
-    /// A loaded 9 mm: the outline follows its round bullet nose.
+    /// A loaded 9 mm: the outline follows its round bullet nose. Taken for an empty case, it has none.
     func testLoadedCartridgePhoto() {
         photoMatches("photo-9x19-wood", shot: "13-Foto-Patrone")
+        let emptyCase = app.buttons["Leere Hülse"].firstMatch
+        if emptyCase.waitForExistence(timeout: 5) {
+            emptyCase.tap()
+            snap("14-Foto-als-leere-Huelse")
+        }
     }
 
     /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`.

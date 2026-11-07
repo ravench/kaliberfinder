@@ -32,6 +32,20 @@ struct ShapeContour: Equatable {
         ShapeContour(points: points.map(transform), parts: parts, nose: nose)
     }
 
+    /// The outline of an empty case: no bullet in front of it. The corners where the bullet met the neck
+    /// or body move forward to where the tip was, so the neck or body runs on to the mouth, cut flat there.
+    func withoutBullet() -> ShapeContour {
+        let n = points.count, b = parts.prefix(while: { $0 == .bullet }).count, side = n / 2
+        guard b > 0, parts.count == n, side - 1 > b else { return self }
+        func middle(_ p: CGPoint, _ q: CGPoint) -> CGPoint { CGPoint(x: (p.x + q.x) / 2, y: (p.y + q.y) / 2) }
+        let tip = middle(points[0], points[n - 1]), base = middle(points[b], points[n - 1 - b])
+        func forward(_ p: CGPoint) -> CGPoint { CGPoint(x: p.x + tip.x - base.x, y: p.y + tip.y - base.y) }
+        let behind = Array(points[(b + 1)..<(n - 1 - b)])
+        let edges = Array(parts[b..<(side - 1)])
+        return ShapeContour(points: [forward(points[b])] + behind + [forward(points[n - 1 - b])],
+                            parts: edges + [.end] + edges.reversed() + [.end])
+    }
+
     /// A closed polygon around the silhouette `points` (pixels, `pixelSize` apart) whose measurement
     /// is `shape`, inside `box`, the rotated box `ShapeMatcher.orientedBox` gives for them. From the
     /// tip (or case mouth): the bullet's nose curve, the neck and shoulder, the body's taper (a straight

@@ -197,6 +197,44 @@ final class ShapeContourTests: XCTestCase {
         XCTAssertEqual(Set(CandidatePhotoView.coloured.map(\.part)).count, 4)
     }
 
+    private func middle(_ p: CGPoint, _ q: CGPoint) -> CGPoint { CGPoint(x: (p.x + q.x) / 2, y: (p.y + q.y) / 2) }
+
+    /// An empty case has no bullet: the nose goes, and the neck (or body) runs on to where the tip was.
+    func testOutlineWithoutTheBullet() throws {
+        let (loaded, _, _) = try check("7.5x55 mm Swiss (GP 11)", caseOnly: false, angle: 0.7)
+        let empty = loaded.withoutBullet()
+        XCTAssertNil(empty.nose)
+        XCTAssertEqual(empty.parts, [.neck, .neck, .body, .end, .body, .neck, .neck, .end])
+        XCTAssertEqual(empty.points.count, empty.parts.count)
+        let n = loaded.points.count, b = NoseCurve.segments, m = empty.points.count
+        // The mouth lies where the tip was, as wide as the neck; everything behind the neck's start stays.
+        let tip = middle(loaded.points[0], loaded.points[n - 1]), mouth = middle(empty.points[0], empty.points[m - 1])
+        XCTAssertEqual(mouth.x, tip.x, accuracy: 1e-9)
+        XCTAssertEqual(mouth.y, tip.y, accuracy: 1e-9)
+        let neck = hypot(loaded.points[b].x - loaded.points[n - 1 - b].x, loaded.points[b].y - loaded.points[n - 1 - b].y)
+        XCTAssertEqual(hypot(empty.points[0].x - empty.points[m - 1].x, empty.points[0].y - empty.points[m - 1].y), neck, accuracy: 1e-9)
+        XCTAssertEqual(Array(empty.points[1..<(m - 1)]), Array(loaded.points[(b + 1)..<(n - 1 - b)]))
+        // A straight case keeps its body up to the mouth; an outline without a bullet stays as it is.
+        let (straight, _, _) = try check("9x19 mm", caseOnly: false, angle: 2.0)
+        XCTAssertEqual(straight.withoutBullet().parts, [.body, .end, .body, .end])
+        let (emptyGP11, _, _) = try check("7.5x55 mm Swiss (GP 11)", caseOnly: true, angle: 0.7)
+        XCTAssertEqual(emptyGP11.withoutBullet(), emptyGP11)
+    }
+
+    /// The Matches photo draws no bullet on an empty case, whether the app reads one or the user picks «Leere Hülse».
+    func testMatchesDrawNoBulletOnAnEmptyCase() throws {
+        let id = "7.5x55 mm Swiss (GP 11)"
+        let (loaded, _, _) = try check(id, caseOnly: false, angle: 0.7)
+        let cartridge = PhotoAnalysis(shape: ShapeMatcher.catalogue[id], contour: loaded)
+        XCTAssertEqual(MatchesView.frames(overview: nil, measured: cartridge, picking: false).parts, loaded.parts)
+        XCTAssertEqual(MatchesView.frames(overview: nil, measured: cartridge, picking: false, mode: .emptyCase).measured,
+                       loaded.withoutBullet().points)
+        // Read as an empty case (its neck runs to the mouth): no bullet, unless the user picks «Patrone».
+        let emptyCase = PhotoAnalysis(shape: ShapeMatcher.caseCatalogue[id], contour: loaded)
+        XCTAssertFalse(MatchesView.frames(overview: nil, measured: emptyCase, picking: false).parts.contains(.bullet))
+        XCTAssertEqual(MatchesView.frames(overview: nil, measured: emptyCase, picking: false, mode: .cartridge).measured, loaded.points)
+    }
+
     func testNoColourLegendUnderThePhoto() throws {
         let gp11 = try cartridge("7.5x55 mm Swiss (GP 11)")
         let notes = MatchesView.notes(for: PhotoAnalysis(shape: ShapeMatcher.catalogue[gp11.id], contour: ShapeContour(points: [.zero], parts: [.end])), mode: .cartridge)
