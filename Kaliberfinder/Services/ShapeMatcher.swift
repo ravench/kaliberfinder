@@ -261,12 +261,13 @@ enum ShapeMatcher {
     /// Shapes without slice widths (built by hand) always fit. On an empty case a head clearly wider
     /// than the calibre's rules it out (only a rim makes it wider). One narrower by up to
     /// `narrowHeadUpTo` doesn't: the head's edge can be rounded off or in shadow, so that only costs
-    /// `rimPenalty` (`rimFits`). Narrower still, the end is no head at all (a neck, the case lying the
-    /// other way round).
+    /// `rimPenalty` (`rimFits`). Narrower still, or as narrow as a clear neck (`NeckShape.clearUpTo`),
+    /// the end is no head at all: a neck, the case lying the other way round.
     static func featuresFit(_ photo: ShapeMeasurement, _ expected: ShapeMeasurement, part: ShapePart) -> Bool {
         guard let a = photo.features, let b = expected.features else { return true }
         if part == .emptyCase {
-            if a.rim > b.rim + rimTolerance || a.rim < b.rim - narrowHeadUpTo || abs(a.mouth - b.mouth) > neckTolerance { return false }
+            if a.rim > b.rim + rimTolerance || abs(a.mouth - b.mouth) > neckTolerance { return false }
+            if a.rim < b.rim - rimTolerance && (a.rim < b.rim - narrowHeadUpTo || a.rim <= NeckShape.clearUpTo) { return false }
         } else if abs(a.rim - b.rim) > rimTolerance { return false }
         return true
     }

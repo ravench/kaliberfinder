@@ -153,6 +153,12 @@ final class EmptyCaseTests: XCTestCase {
         let narrow = try XCTUnwrap(ShapeMatcher.distance(rimlessPhoto, to: rimmedCase, part: .emptyCase))
         let plainDistance = [rimlessPhoto, rimlessPhoto.reversed()].map { ShapeMatcher.distance($0, rimmedCase) }.min() ?? 0
         XCTAssertGreaterThanOrEqual(narrow, plainDistance + ShapeMatcher.rimPenalty - 1e-9)
+        // A bottleneck case the other way round shows its neck where the head should be: as narrow as a
+        // clear neck (7.62x39 mm, 0.76 of the body), it is no head, even within a rim's width of one.
+        let shortNeck = try photo(cartridge("7.62x39 mm"), part: .emptyCase)
+        let straightRimless = try XCTUnwrap(ShapeMatcher.caseCatalogue[".45 ACP"])
+        XCTAssertLessThanOrEqual(try XCTUnwrap(shortNeck.mouthFirst().features).mouth, NeckShape.clearUpTo)
+        XCTAssertFalse(ShapeMatcher.featuresFit(shortNeck.mouthFirst().reversed(), straightRimless, part: .emptyCase))
         // Shapes built by hand have no slice widths, so nothing is ruled out.
         let plain = ShapeMeasurement(aspect: 3, profile: ShapeMatcher.fractions.map { _ in 1 })
         XCTAssertTrue(ShapeMatcher.featuresFit(plain, own, part: .emptyCase))
@@ -179,6 +185,7 @@ final class EmptyCaseTests: XCTestCase {
         XCTAssertEqual(ScanMode.auto.part(for: shape([0.82, 0.97, 0.99, 0.99])), .emptyCase)
         XCTAssertEqual(shape([0.33, 0.44, 0.53, 0.60]).features?.isFlatEnd, false)
         XCTAssertEqual(shape([0.40, 0.57, 0.67, 0.73]).features?.isFlatEnd, false, ".45 ACP round nose")
+        XCTAssertEqual(shape([0.30, 0.62, 0.70, 0.78]).features?.isFlatEnd, false, "a flat nose behind a partly filled slice")
     }
 
     // MARK: - Far-off matches
