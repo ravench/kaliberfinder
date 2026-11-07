@@ -235,6 +235,33 @@ final class ShapeContourTests: XCTestCase {
         XCTAssertEqual(MatchesView.frames(overview: nil, measured: emptyCase, picking: false, mode: .cartridge).measured, loaded.points)
     }
 
+    /// Raven's 6 mm BR (golden shot 6-mm-br-norma-20261105-115031/08, 2026-11-07): its neck's widths vary too
+    /// much for `NeckShape`, so the outline read the neck as a bullet. As an empty case it keeps the neck.
+    func testEmptyCaseKeepsANeckTooUnevenForNeckShape() {
+        let w = [0.47, 0.592, 0.582, 0.557, 0.578, 0.557, 0.524, 0.605, 0.685, 0.799, 0.849, 0.907, 0.936, 0.932, 0.983, 1.002,
+                 0.977, 0.981, 0.942, 0.963, 0.975, 0.994, 0.988, 0.983, 1.014, 0.992, 1.01, 1.004, 1.054, 1.0, 1.014, 0.992,
+                 1.014, 1.006, 0.992, 0.961, 0.979, 0.965, 0.903, 0.797]
+        XCTAssertNil(NeckShape(widths: w, aspect: 3.5))
+        XCTAssertNil(NeckShape(widths: Array(w.reversed()), aspect: 3.5))
+        let behind: [ShapeContour.Corner] = [(11.5 / 40, 0.47, .body), (1, 0.45, .end)]
+        let side = ShapeContour.emptySide(behind, widths: w, hasNeck: false, front: 11)
+        XCTAssertEqual(side.map(\.part), [.neck, .neck, .body, .end])
+        // The neck from the mouth to the shoulder (slices 1 to 7), as wide as its middle slice.
+        XCTAssertEqual(side[0].f, 0)
+        XCTAssertEqual(side[1].f, 8 / 40, accuracy: 1e-9)
+        XCTAssertEqual(side[0].half, 0.578 / 2, accuracy: 1e-9)
+        XCTAssertEqual(side[1].half, side[0].half)
+        XCTAssertEqual(side[2].f, behind[0].f)
+        XCTAssertEqual(side[3].f, behind[1].f)
+        // A detected neck, or a front that narrows like a bullet's nose (9×19), only runs on to the mouth.
+        for (widths, neck) in [(w, true), ([0.35, 0.5, 0.61, 0.7, 0.76, 0.81, 0.84, 0.87, 0.89] + [Double](repeating: 0.95, count: 31), false)] {
+            let straight = ShapeContour.emptySide(behind, widths: widths, hasNeck: neck, front: neck ? 11 : 9)
+            XCTAssertEqual(straight.map(\.part), [.body, .end], "neck \(neck)")
+            XCTAssertEqual(straight[0].f, 0)
+            XCTAssertEqual(straight[0].half, behind[0].half)
+        }
+    }
+
     func testNoColourLegendUnderThePhoto() throws {
         let gp11 = try cartridge("7.5x55 mm Swiss (GP 11)")
         let notes = MatchesView.notes(for: PhotoAnalysis(shape: ShapeMatcher.catalogue[gp11.id], contour: ShapeContour(points: [.zero], parts: [.end])), mode: .cartridge)

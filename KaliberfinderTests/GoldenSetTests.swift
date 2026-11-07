@@ -100,7 +100,8 @@ final class GoldenSetTests: XCTestCase {
     }
 
     /// Empty cases have no bullet: on every shot the replay reads as an empty case, the Matches photo's
-    /// outline ends at the mouth, also where the outline found something in front of the neck (6 mm BR).
+    /// outline ends at the mouth, also where the outline found something in front of the neck (6 mm BR),
+    /// and a bottleneck case keeps its neck.
     func testEmptyCasesAreOutlinedWithoutABullet() throws {
         var emptyCases = 0, withNose = 0
         for package in try golden() {
@@ -112,7 +113,12 @@ final class GoldenSetTests: XCTestCase {
                 guard let shape = analysis.shape, let contour = analysis.contour, ScanMode.auto.part(for: shape) == .emptyCase else { continue }
                 emptyCases += 1
                 if contour.nose != nil { withNose += 1 }
-                XCTAssertFalse(MatchesView.frames(overview: nil, measured: analysis, picking: false).parts.contains(.bullet), name)
+                let drawn = MatchesView.frames(overview: nil, measured: analysis, picking: false).parts
+                XCTAssertFalse(drawn.contains(.bullet), name)
+                // A bottleneck case keeps its neck, also one too uneven for `NeckShape` (6 mm BR 08).
+                if ShapeMatcher.caseCatalogue[package.package.calibre]?.neck?.isClear == true {
+                    XCTAssertTrue(drawn.contains(.neck), "\(name): \(drawn)")
+                }
             }
         }
         XCTAssertGreaterThan(emptyCases, 0)

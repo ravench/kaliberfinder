@@ -26,24 +26,29 @@ struct ShapeContour: Equatable {
     var parts: [Part]
     /// The nose curve drawn for the bullet; nil without one (an empty case).
     var nose: NoseCurve?
+    /// The outline to draw when the photo shows an empty case (`withoutBullet`); nil when it is this one.
+    var empty: Outline?
+
+    /// Corners and the parts of the edges between them, as `points` and `parts`.
+    struct Outline: Equatable {
+        var points: [CGPoint]
+        var parts: [Part]
+    }
+
+    /// One corner on one side of the outline: the fraction of the length from the tip, the half width
+    /// relative to the body, and the edge to the next corner.
+    typealias Corner = (f: Double, half: Double, part: Part)
 
     /// Every point passed through `transform`, e.g. from pixels to fractions of the photo.
     func map(_ transform: (CGPoint) -> CGPoint) -> ShapeContour {
-        ShapeContour(points: points.map(transform), parts: parts, nose: nose)
+        ShapeContour(points: points.map(transform), parts: parts, nose: nose,
+                     empty: empty.map { Outline(points: $0.points.map(transform), parts: $0.parts) })
     }
 
-    /// The outline of an empty case: no bullet in front of it. The corners where the bullet met the neck
-    /// or body move forward to where the tip was, so the neck or body runs on to the mouth, cut flat there.
+    /// The outline of an empty case: no bullet in front of it. Its neck, or its body, runs on to the
+    /// mouth, cut flat there.
     func withoutBullet() -> ShapeContour {
-        let n = points.count, b = parts.prefix(while: { $0 == .bullet }).count, side = n / 2
-        guard b > 0, parts.count == n, side - 1 > b else { return self }
-        func middle(_ p: CGPoint, _ q: CGPoint) -> CGPoint { CGPoint(x: (p.x + q.x) / 2, y: (p.y + q.y) / 2) }
-        let tip = middle(points[0], points[n - 1]), base = middle(points[b], points[n - 1 - b])
-        func forward(_ p: CGPoint) -> CGPoint { CGPoint(x: p.x + tip.x - base.x, y: p.y + tip.y - base.y) }
-        let behind = Array(points[(b + 1)..<(n - 1 - b)])
-        let edges = Array(parts[b..<(side - 1)])
-        return ShapeContour(points: [forward(points[b])] + behind + [forward(points[n - 1 - b])],
-                            parts: edges + [.end] + edges.reversed() + [.end])
+        empty.map { ShapeContour(points: $0.points, parts: $0.parts) } ?? self
     }
 
     /// A closed polygon around the silhouette `points` (pixels, `pixelSize` apart) whose measurement
@@ -83,8 +88,8 @@ struct ShapeContour: Equatable {
         let bodyEnd = bins - 1 - k
         var front = bodyEnd
         while front > 0 && w[front - 1] >= NeckShape.bodyFrom { front -= 1 }
-        // One side, from the tip to the head: (fraction of the length, half width, the edge to the next corner).
-        var side: [(f: Double, half: Double, part: Part)] = []
+        // One side, from the tip to the head.
+        var side: [Corner] = []
         var caseFrom = front
         if let neck = found?.0 {
             front = min(bodyEnd, neck.shoulderSlice + 1)
@@ -104,6 +109,7 @@ struct ShapeContour: Equatable {
         func width(_ x: Double) -> Double { my + slope * (x - mx) }
         let bodyStart = found == nil && !hasBullet ? 0 : xs[0]
         side += [(bodyStart, width(bodyStart) / 2, .body), (1, width(1) / 2, .end)]
+        let emptyCase = emptySide(side, widths: w, hasNeck: found != nil, front: front)
         // The bullet (or what lies in front of the case): a typical nose curve from its tip to the neck,
         // or on a straight case to the body, over whose first slices a round nose may still narrow.
         var bases = [(f: side[0].f, half: side[0].half)]
@@ -115,9 +121,36 @@ struct ShapeContour: Equatable {
             side.insert(contentsOf: nose.points().map { (f: $0.f, half: $0.half, part: Part.bullet) }, at: 0)
         }
         // Down one side, across the head, back up the other side and across the tip (or mouth).
-        let edges = side.dropLast().map(\.part)
-        return ShapeContour(points: side.map { point($0.f, $0.half) } + side.reversed().map { point($0.f, -$0.half) },
-                            parts: edges + [.end] + edges.reversed() + [.end], nose: nose)
+        func outline(_ side: [Corner]) -> Outline {
+            let edges = side.dropLast().map(\.part)
+            return Outline(points: side.map { point($0.f, $0.half) } + side.reversed().map { point($0.f, -$0.half) },
+                           parts: edges + [.end] + edges.reversed() + [.end])
+        }
+        let loaded = outline(side)
+        return ShapeContour(points: loaded.points, parts: loaded.parts, nose: nose, empty: nose == nil ? nil : outline(emptyCase))
+    }
+
+    /// One side of the outline of an empty case, mouth first, from `side`, the side behind the bullet:
+    /// the neck, or the body, runs on to the mouth. Where `NeckShape` finds no neck in the widths `w`
+    /// (tip first, the body from slice `front` on), at least three slices in front of the body about as
+    /// narrow as the narrowest are the neck, if that is narrow enough for one: a neck whose widths vary
+    /// too much for `NeckShape` (Raven's 6 mm BR, 2026-11-07) is still drawn. The first slice is left
+    /// out, as there: it is often only partly filled.
+    static func emptySide(_ side: [Corner], widths w: [Double], hasNeck: Bool, front: Int) -> [Corner] {
+        if !hasNeck, front > 1 {
+            // The second narrowest: one slice cut short by noise does not set the neck's width.
+            let ahead = w[1..<front].sorted(), narrow = ahead[min(1, ahead.count - 1)]
+            let slices = (1..<front).filter { w[$0] <= narrow + 2 * NeckShape.straightWithin }
+            let run = slices.map { w[$0] }.sorted()
+            if run.count >= 3, run[run.count / 2] <= NeckShape.neckUpTo, let last = slices.last {
+                let half = run[run.count / 2] / 2, end = Double(last + 1) / Double(w.count)
+                let neck: [Corner] = [(0, half, .neck), (end, half, .neck)]
+                return neck + side
+            }
+        }
+        var side = side
+        side[0].f = 0
+        return side
     }
 }
 
