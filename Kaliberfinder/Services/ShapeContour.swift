@@ -158,15 +158,18 @@ struct ShapeContour: Equatable {
     /// The bullet in front of the case mouth at `mouth` (a fraction of the length from the tip), as one
     /// side's corners from the tip: its nose curve fitted to the widths `w` in front of the mouth, its
     /// straight part as wide as just in front of the mouth (no wider than the case there, `caseHalf`),
-    /// and a step out to the case. A nose still narrowing at the mouth runs on under the case (as wide as
-    /// the case at most), drawn up to the mouth: a round 9 mm nose is not cut short into a slimmer curve.
+    /// and a step out to the case. A nose still narrowing at the mouth runs on under the case (to the
+    /// width in front of the mouth, or the case's), drawn up to the mouth: a round 9 mm nose is not cut
+    /// short into a slimmer curve.
     static func bullet(upTo mouth: Double, widths w: [Double], caseHalf: Double) -> (nose: NoseCurve?, corners: [Corner]) {
         let bins = w.count
         let last = max(2, min(bins - 1, Int(mouth * Double(bins))))
         let half = min(caseHalf, (w[(last - 2)..<last].max() ?? 0) / 2)
         var bases = (2...last).map { (f: Double($0) / Double(bins), half: half) }
         if mouth > Double(last) / Double(bins) { bases.append((f: mouth, half: half)) }
-        bases += ((last + 1)..<min(bins, last + 1 + NoseCurve.maxReach)).map { (f: Double($0) / Double(bins), half: caseHalf) }
+        bases += ((last + 1)..<min(bins, last + 1 + NoseCurve.maxReach)).flatMap { i in
+            [half, caseHalf].map { (f: Double(i) / Double(bins), half: $0) }
+        }
         let nose = NoseCurve.fitted(halfWidths: w.map { $0 / 2 }, bases: bases, upTo: mouth, body: { _ in half })
         var corners: [Corner] = (nose?.points(upTo: mouth) ?? []).map { (f: $0.f, half: $0.half, part: Part.bullet) }
         if let nose, nose.length < mouth { corners.append((f: nose.length, half: half, part: .bullet)) }

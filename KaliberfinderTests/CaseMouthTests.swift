@@ -93,18 +93,21 @@ final class CaseMouthTests: XCTestCase {
 
     /// A round nose still narrowing at the mouth (Raven's 9 mm on the simulator, 2026-11-07) runs on under
     /// the case: the outline follows it up to the mouth, not a slimmer pointed curve cut flat at the tip.
+    /// Its bullet may be as wide as the case, or narrower.
     func testRoundNoseRunsOnUnderTheCase() throws {
-        let curve = NoseCurve(kind: .round, cut: 1, length: 0.475, base: 0.477), mouth = 0.36
-        let bins = ShapeMatcher.bins
-        let w = (0..<bins).map { (Double($0) + 0.5) / Double(bins) < mouth ? 2 * curve.half(at: Double($0 + 1) / Double(bins)) : 0.96 }
-        let (nose, corners) = ShapeContour.bullet(upTo: mouth, widths: w, caseHalf: 0.48)
-        XCTAssertEqual(nose?.kind, .round)
-        XCTAssertGreaterThan(try XCTUnwrap(nose).length, mouth)
-        // Each corner on the bullet's curve: the nose's, then the last at the mouth, where the step out starts.
-        XCTAssertEqual(corners.map { $0.part }, Array(repeating: ShapeContour.Part.bullet, count: NoseCurve.segments) + [.end])
-        XCTAssertEqual(corners.last?.f, mouth)
-        for corner in corners {
-            XCTAssertEqual(corner.half, curve.half(at: corner.f), accuracy: 0.01, "\(corner)")
+        let mouth = 0.36, bins = ShapeMatcher.bins
+        for (length, base, caseHalf) in [(0.475, 0.477, 0.48), (0.5, 0.465, 0.5)] {
+            let curve = NoseCurve(kind: .round, cut: 1, length: length, base: base), name = "\(curve)"
+            let w = (0..<bins).map { (Double($0) + 0.5) / Double(bins) < mouth ? 2 * curve.half(at: Double($0 + 1) / Double(bins)) : 2 * caseHalf }
+            let (nose, corners) = ShapeContour.bullet(upTo: mouth, widths: w, caseHalf: caseHalf)
+            XCTAssertEqual(nose?.kind, .round, name)
+            XCTAssertGreaterThan(try XCTUnwrap(nose, name).length, mouth, name)
+            // Each corner on the bullet's curve: the nose's, then the last at the mouth, where the step out starts.
+            XCTAssertEqual(corners.map { $0.part }, Array(repeating: ShapeContour.Part.bullet, count: NoseCurve.segments) + [.end], name)
+            XCTAssertEqual(corners.last?.f, mouth, name)
+            for corner in corners {
+                XCTAssertEqual(corner.half, curve.half(at: corner.f), accuracy: 0.01, "\(name): \(corner)")
+            }
         }
     }
 
