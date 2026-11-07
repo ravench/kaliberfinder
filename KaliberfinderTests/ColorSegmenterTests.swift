@@ -181,6 +181,17 @@ final class ColorSegmenterTests: XCTestCase {
         }
     }
 
+    /// One of Raven's empty 6 mm BR cases on a grey table (2026-11-05), the empty case of the PR screens:
+    /// read as an empty case, the Matches photo's outline ends at the mouth.
+    func testRealEmptyCaseIsOutlinedWithoutABullet() async throws {
+        let analysis = await PhotoAnalyzer.analyze(try realPhoto("photo-6mmbr-case"))
+        let shape = try XCTUnwrap(analysis.shape)
+        let contour = try XCTUnwrap(analysis.contour)
+        let read = "flat end \(String(describing: shape.features?.isFlatEnd)), neck \(String(describing: shape.neck?.slices)), \(contour.parts)"
+        XCTAssertEqual(ScanMode.auto.part(for: shape), .emptyCase, read)
+        XCTAssertFalse(MatchesView.frames(overview: nil, measured: analysis, picking: false).parts.contains(.bullet), read)
+    }
+
     func testThinningKeepsAtMostMaxPoints() {
         let points = (0..<200).flatMap { y in (0..<400).map { x in Point(x: Double(x), y: Double(y)) } }
         let (thin, step) = PhotoAnalyzer.thinned(points)
