@@ -132,6 +132,8 @@ final class CatalogTests: XCTestCase {
         // Hyphens are like spaces, accents don't matter.
         XCTAssertTrue(finds("Martini Henry", ".577/450 Martini-Henry"))
         XCTAssertTrue(finds("Mannlicher Schonauer", "6.5x54 mm Mannlicher-Schönauer"))
+        // A headstamp typed as it is, where dropping "mm" joins two words.
+        XCTAssertTrue(finds("357 REM MAG", ".357 Magnum"))
         // Every word must be found.
         XCTAssertEqual(CartridgeCatalog.search("Vetterli 9").map(\.id), [])
         XCTAssertEqual(CartridgeCatalog.search("Mauser 8").map(\.id), ["8x57 mm IS"])

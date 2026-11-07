@@ -68,6 +68,7 @@ enum CartridgeCatalog {
         let words = query.split { $0.isWhitespace || $0 == "-" || $0 == "/" }.map { normalized(String($0)) }.filter { !$0.isEmpty }
         return cartridges.filter { c in
             let names = c.allNames.map(normalized)
+            // The whole query too: dropping "mm" can join its words («357 REM MAG» → "357reag").
             return names.contains { $0.contains(whole) } || words.allSatisfy { word in names.contains { $0.contains(word) } }
         }
     }
