@@ -10,7 +10,7 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var scale: ScaleModel
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
-    @AppStorage(TrueScaleView.casesWithoutBulletKey) private var casesWithoutBullet = false
+    @AppStorage(TrueScaleView.bulletsOnCasesKey) private var bulletsOnCases = true
     /// Hidden developer switch: five taps on the copyright line (`TrainingCapture`).
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
     /// Hidden with it: the photo's outline coloured by detection (`ShapeContour.partColoursKey`).
@@ -40,7 +40,7 @@ struct SettingsView: View {
                     Text("Bildschirmzoom und Kalibrierung werden berücksichtigt. Prüfe die Grösse einmal mit einer Bankkarte.")
                 }
                 Section {
-                    Toggle("Leere Hülsen ohne Geschoss vergleichen", isOn: $casesWithoutBullet)
+                    Toggle("Geschosse beim Vergleich mit leeren Hülsen zeigen", isOn: $bulletsOnCases)
                 }
                 case .copyright:
                 if trainingCapture {

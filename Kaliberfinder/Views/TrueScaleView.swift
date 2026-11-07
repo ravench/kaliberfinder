@@ -34,15 +34,15 @@ struct TrueScaleLayout: Equatable {
 struct TrueScaleView: View {
     let cartridges: [Cartridge]
     /// Calibres a photo was compared with as empty cases: their labels add the case length, and
-    /// their drawings leave out the bullet when «Leere Hülsen ohne Geschoss vergleichen» is on.
+    /// their drawings leave out the bullet when «Geschosse beim Vergleich mit leeren Hülsen zeigen» is off.
     var emptyCases: Set<String> = []
     @EnvironmentObject private var scale: ScaleModel
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
-    @AppStorage(Self.casesWithoutBulletKey) private var casesWithoutBullet = false
+    @AppStorage(Self.bulletsOnCasesKey) private var bulletsOnCases = true
     @State private var showZoomHint = false
 
-    /// Settings switch, off by default: empty cases are compared with the bullet drawn.
-    static let casesWithoutBulletKey = "compareCasesWithoutBullet"
+    /// Settings switch, on by default: empty cases are compared with the bullet drawn.
+    static let bulletsOnCasesKey = "showBulletsOnEmptyCases"
 
     /// E.g. "Hülse 51.2 mm", under each calibre compared as an empty case.
     static func caseLengthText(_ c: Cartridge, unit: LengthUnit) -> String {
@@ -148,7 +148,7 @@ struct TrueScaleView: View {
     }
 
     private func drawing(of c: Cartridge, ppmm: Double) -> some View {
-        CartridgeView(cartridge: c, pointsPerMM: ppmm, caseOnly: casesWithoutBullet && emptyCases.contains(c.id))
+        CartridgeView(cartridge: c, pointsPerMM: ppmm, caseOnly: !bulletsOnCases && emptyCases.contains(c.id))
     }
 
     private func label(for c: Cartridge) -> some View {

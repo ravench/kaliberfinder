@@ -72,7 +72,7 @@ final class TrueScaleLayoutTests: XCTestCase {
         XCTAssertEqual(en["Originalgrösse: nicht zoombar, damit die Masse stimmen."], "Real size: no zoom, so the measurements stay true.")
         XCTAssertNotNil(en["1:1 – Zoomen ist abgeschaltet, damit die Grösse stimmt."])
         XCTAssertEqual(en["Hülse %@"], "Case %@")
-        XCTAssertEqual(en["Leere Hülsen ohne Geschoss vergleichen"], "Compare empty cases without bullet")
+        XCTAssertEqual(en["Geschosse beim Vergleich mit leeren Hülsen zeigen"], "Show bullets when comparing empty cases")
     }
 
     func testEmptyCasesShowTheirCaseLength() throws {
@@ -81,7 +81,7 @@ final class TrueScaleLayoutTests: XCTestCase {
         XCTAssertEqual(TrueScaleView.caseLengthText(c, unit: .imperial), String(format: "Hülse %@".loc, LengthUnit.imperial.format(51.2)))
     }
 
-    /// «Leere Hülsen ohne Geschoss vergleichen» draws the case alone: where the bullet stood stays empty.
+    /// With «Geschosse beim Vergleich mit leeren Hülsen zeigen» off, the case is drawn alone: where the bullet stood stays empty.
     @MainActor
     func testCaseOnlyLeavesOutTheBullet() throws {
         let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: ".308 Winchester"))
