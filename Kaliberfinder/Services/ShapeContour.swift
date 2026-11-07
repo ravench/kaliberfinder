@@ -1,15 +1,15 @@
 import CoreGraphics
 import Foundation
 
-/// The measured silhouette's outline, drawn over the photo in green (SHAPE-07): the detected bullet,
-/// neck and body taper as straight lines, joined into one outline. A hidden switch colours each
-/// edge by the detection it comes from.
+/// The measured silhouette's outline, drawn over the photo in green (SHAPE-07): the detected bullet
+/// as a typical nose curve (`NoseCurve`), the neck and the body taper as straight lines, joined into
+/// one outline. A hidden switch colours each edge by the detection it comes from.
 struct ShapeContour: Equatable {
     /// What found an edge of the outline.
     enum Part: Equatable {
         /// The tip, case mouth or head: the ends of the measured silhouette.
         case end
-        /// What lies in front of the case: its tip width, straight to the case.
+        /// What lies in front of the case: a typical nose curve fitted to it (`NoseCurve`).
         case bullet
         /// The neck and shoulder (`NeckShape`).
         case neck
@@ -24,16 +24,18 @@ struct ShapeContour: Equatable {
     var points: [CGPoint]
     /// Where each edge comes from: edge `i` runs from `points[i]` to the next (the last back to the first).
     var parts: [Part]
+    /// The nose curve drawn for the bullet; nil without one (an empty case).
+    var nose: NoseCurve?
 
     /// Every point passed through `transform`, e.g. from pixels to fractions of the photo.
     func map(_ transform: (CGPoint) -> CGPoint) -> ShapeContour {
-        ShapeContour(points: points.map(transform), parts: parts)
+        ShapeContour(points: points.map(transform), parts: parts, nose: nose)
     }
 
     /// A closed polygon around the silhouette `points` (pixels, `pixelSize` apart) whose measurement
     /// is `shape`, inside `box`, the rotated box `ShapeMatcher.orientedBox` gives for them. From the
-    /// tip (or case mouth): a straight line along the bullet, the neck and shoulder, the body's taper (a
-    /// straight line fitted to its slices) down to the head, and back up the other side. Nil for an end view.
+    /// tip (or case mouth): the bullet's nose curve, the neck and shoulder, the body's taper (a straight
+    /// line fitted to its slices) down to the head, and back up the other side. Nil for an end view.
     static func polygon(_ points: [Point], pixelSize: Double, shape: ShapeMeasurement, box: [Point]) -> ShapeContour? {
         let bins = ShapeMatcher.bins
         guard box.count == 4, shape.widths.count == bins, !shape.isEndView, !points.isEmpty else { return nil }
@@ -78,9 +80,7 @@ struct ShapeContour: Equatable {
             // The shoulder runs from the neck's end to where the body's line starts.
             side = [(start, neck.width / 2, .neck), (end, neck.width / 2, .neck)]
         }
-        // The bullet (or what lies in front of the case): a straight line from its tip to the case.
         let hasBullet = caseFrom > 0
-        if hasBullet { side.insert((0, w[0] / 2, .bullet), at: 0) }
         // The body: a straight line through its widths (least squares), run on to the head.
         let from = max(front, 0), to = max(bodyEnd, from)
         let xs = (from...to).map(at), ys = (from...to).map { w[$0] }
@@ -90,9 +90,92 @@ struct ShapeContour: Equatable {
         func width(_ x: Double) -> Double { my + slope * (x - mx) }
         let bodyStart = found == nil && !hasBullet ? 0 : xs[0]
         side += [(bodyStart, width(bodyStart) / 2, .body), (1, width(1) / 2, .end)]
+        // The bullet (or what lies in front of the case): a typical nose curve from its tip to the neck,
+        // or on a straight case to the body, over whose first slices a round nose may still narrow.
+        var bases = [(f: side[0].f, half: side[0].half)]
+        if found == nil { bases = xs.prefix(NoseCurve.maxReach + 1).map { (f: $0, half: width($0) / 2) } }
+        let nose = hasBullet ? NoseCurve.fitted(halfWidths: w.map { $0 / 2 }, bases: bases, body: { width($0) / 2 }) : nil
+        if let nose {
+            side[0].f = nose.length
+            side[0].half = nose.base
+            side.insert(contentsOf: nose.points().map { (f: $0.f, half: $0.half, part: Part.bullet) }, at: 0)
+        }
         // Down one side, across the head, back up the other side and across the tip (or mouth).
         let edges = side.dropLast().map(\.part)
         return ShapeContour(points: side.map { point($0.f, $0.half) } + side.reversed().map { point($0.f, -$0.half) },
-                            parts: edges + [.end] + edges.reversed() + [.end])
+                            parts: edges + [.end] + edges.reversed() + [.end], nose: nose)
+    }
+}
+
+/// A bullet's nose drawn as a typical curve, not traced slice by slice: the round or pointed curve
+/// the catalogue draws its bullets with (calibre-data `outline.py`, `bullet_profile`), cut flat at
+/// the tip for a flat nose, and fitted to the bullet's slice widths, which matching compares with
+/// those of the catalogue's drawings.
+struct NoseCurve: Equatable {
+    /// The catalogue's two nose curves: half width relative to the bullet, from where the nose leaves
+    /// the bullet's full width (0) to a sharp tip (1). A flat nose is a round one cut flat.
+    enum Kind: CaseIterable {
+        case round
+        case pointed
+
+        func width(_ t: Double) -> Double {
+            switch self {
+            case .round: max(0, 1 - t * t).squareRoot()
+            case .pointed: pow(max(0, 1 - pow(t, 1.7)), 0.8)
+            }
+        }
+    }
+
+    let kind: Kind
+    /// How far along the curve the tip is cut flat: 1 runs out to a point, less leaves a flat tip.
+    let cut: Double
+    /// From the tip to where the nose meets the neck or body, as a fraction of the silhouette's length.
+    let length: Double
+    /// Half width there, relative to the body.
+    let base: Double
+
+    /// The tips the fit tries, from blunt (a flat nose) to a point.
+    static let cuts = (0...6).map { 0.7 + Double($0) * 0.05 }
+    /// How many of the body's first slices a nose may reach back over on a straight case.
+    static let maxReach = 8
+    /// Edges along each side of the nose.
+    static let segments = 10
+
+    /// Half width (relative to the body) at `f`, a fraction of the silhouette's length from the tip.
+    func half(at f: Double) -> Double {
+        base * kind.width(length > 0 ? cut * (1 - min(f, length) / length) : cut)
+    }
+
+    /// The corners along one side, from the tip toward the base (not the base itself, the next part's
+    /// first corner): closer together at the tip, where the curve bends most.
+    func points() -> [(f: Double, half: Double)] {
+        (0..<Self.segments).map { j in
+            let f = length * pow(Double(j) / Double(Self.segments), 2)
+            return (f, half(at: f))
+        }
+    }
+
+    /// The curve that fits the bullet's slices best (least squares). `halfWidths` are the slices' half
+    /// widths, tip first, relative to the body; `bases` where the nose may end (fraction of the length,
+    /// half width), and `body` the half width behind the nose, so every base is judged on the same slices.
+    /// A slice's width is its widest point: its back edge, on a nose that narrows to the tip.
+    static func fitted(halfWidths h: [Double], bases: [(f: Double, half: Double)], body: (Double) -> Double) -> NoseCurve? {
+        let upTo = bases.map(\.f).max() ?? 0
+        let curves: [NoseCurve] = bases.flatMap { b in
+            Kind.allCases.flatMap { kind in cuts.map { NoseCurve(kind: kind, cut: $0, length: b.f, base: b.half) } }
+        }
+        return curves.map { ($0, $0.error(halfWidths: h, upTo: upTo, body: body)) }.min { $0.1 < $1.1 }?.0
+    }
+
+    /// Sum of squared differences to the slices in front of `upTo`: this curve, and `body` behind it.
+    private func error(halfWidths h: [Double], upTo: Double, body: (Double) -> Double) -> Double {
+        let bins = Double(h.count)
+        var sum = 0.0
+        for i in h.indices where (Double(i) + 0.5) / bins < upTo {
+            let centre = (Double(i) + 0.5) / bins
+            let model = centre < length ? half(at: min(Double(i + 1) / bins, length)) : body(centre)
+            sum += (model - h[i]) * (model - h[i])
+        }
+        return sum
     }
 }
