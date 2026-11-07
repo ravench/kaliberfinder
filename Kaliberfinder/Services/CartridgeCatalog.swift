@@ -65,7 +65,7 @@ enum CartridgeCatalog {
     static func search(_ query: String, in cartridges: [Cartridge] = all) -> [Cartridge] {
         let whole = normalized(query)
         guard !whole.isEmpty else { return cartridges }
-        let words = query.split { $0.isWhitespace || $0 == "-" || $0 == "/" }.map(normalized).filter { !$0.isEmpty }
+        let words = query.split { $0.isWhitespace || $0 == "-" || $0 == "/" }.map { normalized(String($0)) }.filter { !$0.isEmpty }
         return cartridges.filter { c in
             let names = c.allNames.map(normalized)
             return names.contains { $0.contains(whole) } || words.allSatisfy { word in names.contains { $0.contains(word) } }
