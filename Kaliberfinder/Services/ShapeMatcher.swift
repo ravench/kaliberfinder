@@ -292,19 +292,22 @@ enum ShapeMatcher {
 
     /// How much the case's share of a loaded cartridge's length counts, per unit of share beyond
     /// `caseShareTolerance`, and at most: calibres whose outlines look alike can differ in it, such as
-    /// 9x19 mm (0.65) and 9x21 mm (0.71), or .38 Special and .357 Magnum. Factory rounds are often
-    /// seated a little shorter than the catalogue's length, and the mouth is found within a slice or so;
-    /// a mouth read in the wrong place (a stain, a cannelure) costs the right calibre no more than the cap.
+    /// 9x19 mm (0.65) and 9x21 mm (0.71), or .38 Special and .357 Magnum. The mouth is found within a
+    /// slice or so; a mouth read in the wrong place costs the right calibre no more than the cap.
     static let caseShareWeight = 3.0
     static let caseShareTolerance = 0.03
     static let maxCaseSharePenalty = 0.15
+    /// Factory rounds are seated a little shorter than the catalogue's (longest) length, so their case
+    /// takes up to this much more of it.
+    static let caseShareSeating = 0.02
 
     /// What the case's share of the length adds to a loaded cartridge's distance: the photo's
     /// (`ShapeMeasurement.caseShare`) against the calibre's `caseRatio` (case length over the length of
     /// its drawing). Nothing where the photo shows no mouth.
     static func caseShareDistance(_ photo: ShapeMeasurement, caseRatio: Double?) -> Double {
         guard let measured = photo.caseShare, let caseRatio else { return 0 }
-        return min(maxCaseSharePenalty, caseShareWeight * max(0, abs(measured - caseRatio) - caseShareTolerance))
+        let off = measured - caseRatio, allowed = caseShareTolerance + (off > 0 ? caseShareSeating : 0)
+        return min(maxCaseSharePenalty, caseShareWeight * max(0, abs(off) - allowed))
     }
 
     /// Distance to an expected shape. For an empty case, nil when rim or neck rule the calibre out,

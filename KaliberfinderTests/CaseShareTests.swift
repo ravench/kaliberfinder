@@ -31,16 +31,19 @@ final class CaseShareTests: XCTestCase {
         XCTAssertEqual(Matcher.rank(shape: try nine(caseShare: share(imi)), mode: .cartridge, cartridges: [para, imi], limit: .max).count, 2)
     }
 
+    /// Within the tolerance nothing, beyond it in proportion, up to the cap. A round seated shorter than
+    /// the catalogue's length shows a larger share: up to `caseShareSeating` more costs nothing either.
     func testCaseShareCountsBeyondItsToleranceUpToTheCap() throws {
-        let ratio = 0.65
+        let ratio = 0.65, tolerance = ShapeMatcher.caseShareTolerance, longer = tolerance + ShapeMatcher.caseShareSeating
         func added(_ measured: Double?) throws -> Double {
             ShapeMatcher.caseShareDistance(try nine(caseShare: measured), caseRatio: ratio)
         }
         XCTAssertEqual(try added(nil), 0, "no mouth in the photo")
         XCTAssertEqual(ShapeMatcher.caseShareDistance(try nine(caseShare: 0.7), caseRatio: nil), 0, "no case")
-        XCTAssertEqual(try added(ratio + ShapeMatcher.caseShareTolerance), 0, accuracy: 1e-12)
-        XCTAssertEqual(try added(ratio - ShapeMatcher.caseShareTolerance), 0, accuracy: 1e-12)
-        XCTAssertEqual(try added(ratio + ShapeMatcher.caseShareTolerance + 0.01), ShapeMatcher.caseShareWeight * 0.01, accuracy: 1e-12)
+        XCTAssertEqual(try added(ratio - tolerance), 0, accuracy: 1e-12)
+        XCTAssertEqual(try added(ratio + longer), 0, accuracy: 1e-12)
+        XCTAssertEqual(try added(ratio - tolerance - 0.01), ShapeMatcher.caseShareWeight * 0.01, accuracy: 1e-12)
+        XCTAssertEqual(try added(ratio + longer + 0.01), ShapeMatcher.caseShareWeight * 0.01, accuracy: 1e-12)
         XCTAssertEqual(try added(0.2), ShapeMatcher.maxCaseSharePenalty)
         XCTAssertEqual(try added(1), ShapeMatcher.maxCaseSharePenalty)
     }
