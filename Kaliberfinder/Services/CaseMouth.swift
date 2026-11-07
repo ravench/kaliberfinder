@@ -51,12 +51,15 @@ enum CaseMouth {
     static func find(in photo: RGBImage, widths w: [Double], neck: NeckShape?, length: Double,
                      point: (Double, Double) -> CGPoint) -> Double? {
         guard !w.isEmpty, let area = searched(widths: w, neck: neck) else { return nil }
-        let n = max(20, Int(length))
+        // One step per pixel of the length, and at least three in each window.
+        let n = max(Int(3 / window) + 1, Int(length))
         let f = (0..<n).map { (Double($0) + 0.5) / Double(n) }
         let colours = f.map { Self.colour(in: photo, at: $0, half: w[min(w.count - 1, Int($0 * Double(w.count)))] / 2, point: point) }
-        // The median colour of the steps from `a` up to `b`, nil with fewer than three.
+        // The median colour of the steps from `a` up to `b` (the steps with `a <= f[i] < b`), nil with fewer than three.
         func median(_ a: Double, _ b: Double) -> (Double, Double)? {
-            let inside = f.indices.filter { f[$0] >= a && f[$0] < b }.compactMap { colours[$0] }
+            let lo = max(0, Int((a * Double(n) - 0.5).rounded(.up))), hi = min(n, Int((b * Double(n) - 0.5).rounded(.up)))
+            guard lo < hi else { return nil }
+            let inside = colours[lo..<hi].compactMap { $0 }
             guard inside.count >= 3 else { return nil }
             func mid(_ v: [Double]) -> Double { v.sorted()[v.count / 2] }
             return (mid(inside.map(\.0)), mid(inside.map(\.1)))
