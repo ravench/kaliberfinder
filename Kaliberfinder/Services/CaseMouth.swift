@@ -16,11 +16,15 @@ enum CaseMouth {
     /// The colours just in front of and just behind the mouth are compared over this much of the
     /// length each.
     static let window = 0.05
-    /// How much the colour (green and blue, each relative to red) changes at least at the mouth, and
-    /// between the whole bullet and the case behind the mouth. Copper meeting brass changes it by
-    /// 0.1 to 0.3 in Raven's photos; the colour along one case changes less.
+    /// How far the colour (`chroma`) moves at least at the mouth, and between the whole bullet and the
+    /// case behind the mouth. Copper meeting brass moves it by 0.15 to 0.5 in Raven's photos; the
+    /// colour along one case moves less.
     static let minStep = 0.08
     static let minChange = 0.1
+    /// Saturation up to `grey` counts as none (`chroma`): grey metal, whose hue is the photo's noise.
+    /// Beyond it a colour lies halfway out on the disc at `grey + halfway`.
+    static let grey: Float = 0.08
+    static let halfway: Float = 0.08
     /// Steps next to the sharpest that change at least this share as much belong to the same edge.
     static let plateau = 0.9
     /// How far behind the mouth the case is compared with the bullet: the head's rim and groove are
@@ -83,10 +87,10 @@ enum CaseMouth {
         return mouth
     }
 
-    /// Green and blue relative to red at `f` of the length, the median over the middle of the width
-    /// (`half` body widths each side of the axis); nil when too few pixels there count.
+    /// The colour at `f` of the length (`chroma`), the median over the middle of the width (`half` body
+    /// widths each side of the axis); nil when too few pixels there count.
     private static func colour(in photo: RGBImage, at f: Double, half: Double, point: (Double, Double) -> CGPoint) -> (Double, Double)? {
-        var green: [Double] = [], blue: [Double] = []
+        var xs: [Double] = [], ys: [Double] = []
         for j in 0..<across {
             let p = point(f, (2 * Double(j) / Double(across - 1) - 1) * band * half)
             let x = Int(p.x.rounded(.down)), y = Int(p.y.rounded(.down))
@@ -94,10 +98,25 @@ enum CaseMouth {
             let i = (y * photo.width + x) * 3
             let r = photo.pixels[i], g = photo.pixels[i + 1], b = photo.pixels[i + 2]
             guard r + g + b > darkUpTo, max(r, g, b) < glareFrom else { continue }
-            green.append(Double(g / max(r, 1)))
-            blue.append(Double(b / max(r, 1)))
+            let c = chroma(r, g, b)
+            xs.append(c.0)
+            ys.append(c.1)
         }
-        guard green.count >= across / 2 else { return nil }
-        return (green.sorted()[green.count / 2], blue.sorted()[blue.count / 2])
+        guard xs.count >= across / 2 else { return nil }
+        return (xs.sorted()[xs.count / 2], ys.sorted()[ys.count / 2])
+    }
+
+    /// A colour as a point on a disc: its hue the direction, its saturation beyond `grey` the distance
+    /// from the middle, levelling off. Copper and brass differ in hue (about 30° against 55°); lead and
+    /// nickel lie in the middle. A highlight on a copper bullet adds white: its saturation drops but its
+    /// hue hardly changes, so where it leaves some colour it stays nearer copper than brass. (Green and
+    /// blue relative to red put such a highlight next to brass, and the mouth on the bullet: Raven's
+    /// training shots, 2026-11-07.)
+    static func chroma(_ r: Float, _ g: Float, _ b: Float) -> (Double, Double) {
+        let top = max(r, g, b), c = top - min(r, g, b), s = top > 0 ? c / top - grey : 0
+        guard s > 0 else { return (0, 0) }
+        let sector = top == r ? (g - b) / c : top == g ? (b - r) / c + 2 : (r - g) / c + 4
+        let out = Double(s / (s + halfway)), angle = Double(sector) * .pi / 3
+        return (out * cos(angle), out * sin(angle))
     }
 }

@@ -97,9 +97,10 @@ enum Matcher {
             // round with round and long with long only.
             if let shape, var e = expected(c, part), e.isEndView == shape.isEndView {
                 if c.blank { e = ShapeMatcher.tilted(e, toward: shape) }
-                // Rim and neck only mean something for side views of calibres with a case.
+                // Rim, neck and case length only mean something for side views of calibres with a case.
                 distance = c.hasCase && !shape.isEndView
-                    ? ShapeMatcher.distance(shape, to: e, part: part, neckRatio: c.dimensions.neck / c.dimensions.base)
+                    ? ShapeMatcher.distance(shape, to: e, part: part, neckRatio: c.dimensions.neck / c.dimensions.base,
+                                            caseRatio: c.dimensions.caseLength / c.outline.height)
                     : ShapeMatcher.distance(shape, e)
             }
             // The size only says something about cartridges compared from the side.

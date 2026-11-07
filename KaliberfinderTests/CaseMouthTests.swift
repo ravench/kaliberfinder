@@ -10,16 +10,19 @@ final class CaseMouthTests: XCTestCase {
     private let copper: [Float] = [190, 110, 70]
     private let brass: [Float] = [200, 160, 60]
     private let lead: [Float] = [120, 122, 125]
+    private let nickel: [Float] = [170, 170, 172]
 
     private func cartridge(_ id: String) throws -> Cartridge {
         try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)
     }
 
     /// A 1000 × 1000 px photo of the cartridge (or only its case) lying at `angle` on a grey table, its
-    /// bullet (and the case's first `caseFront` mm) in `bullet`'s colour, the rest brass; the pixels it
-    /// covers; and where its case mouth is, as a fraction of its length from the tip.
-    private func photo(_ c: Cartridge, bullet: [Float], caseOnly: Bool = false, caseFront: Double = 0, angle: Double = 0.7)
-        -> (image: RGBImage, points: [Point], mouth: Double) {
+    /// bullet (and the case's first `caseFront` mm) in `bullet`'s colour, the rest in `metal`'s; the
+    /// bullet's last `highlight` mm in front of the mouth lit by a highlight, its colour mixed with white;
+    /// each of the cartridge's pixels off by up to `noise` in each channel. With the pixels it covers, and
+    /// where its case mouth is, as a fraction of its length from the tip.
+    private func photo(_ c: Cartridge, bullet: [Float], metal: [Float]? = nil, caseOnly: Bool = false, caseFront: Double = 0,
+                       highlight: Double = 0, noise: Float = 0, angle: Double = 0.7) -> (image: RGBImage, points: [Point], mouth: Double) {
         let size = 1000
         let g = OutlineGeometry(c.outline, includeBullet: !caseOnly)
         let bulletEnd = c.outline.height - c.dimensions.caseLength
@@ -27,6 +30,8 @@ final class CaseMouthTests: XCTestCase {
         for i in 0..<(size * size) { pixels[i * 3] = 128; pixels[i * 3 + 1] = 126; pixels[i * 3 + 2] = 122 }
         var points: [Point] = []
         let cosine = cos(angle), sine = sin(angle)
+        let lit = bullet.map { 0.4 * $0 + 0.6 * 240 }
+        let metal = metal ?? brass
         for y in 0..<size {
             for x in 0..<size {
                 // Back to the outline's millimetres (x across, y from the tip), turned by -angle.
@@ -35,8 +40,12 @@ final class CaseMouthTests: XCTestCase {
                 guard u > -1, v > -1, u < c.outline.width + 1, v < c.outline.height + 1, g.contains(Point(x: u, y: v)) else { continue }
                 // Lit from one side: darker across the cartridge, the colour itself unchanged.
                 let light = Float(0.75 + 0.25 * u / c.outline.width)
-                let colour = v < bulletEnd + caseFront ? bullet : brass
-                for k in 0..<3 { pixels[(y * size + x) * 3 + k] = colour[k] * light }
+                let colour = v < bulletEnd - highlight ? bullet : v < bulletEnd ? lit : v < bulletEnd + caseFront ? bullet : metal
+                for k in 0..<3 {
+                    // The same noise on every run: a hash of the pixel and channel, -1 to 1.
+                    let hash = Float((x &* 73_856_093 ^ y &* 19_349_663 ^ (k + 1) &* 83_492_791) & 0xFFFF) / 32_767.5 - 1
+                    pixels[(y * size + x) * 3 + k] = colour[k] * light + noise * hash
+                }
                 points.append(Point(x: Double(x), y: Double(y)))
             }
         }
@@ -112,8 +121,27 @@ final class CaseMouthTests: XCTestCase {
     }
 
     func testLeadBulletMeetsTheCaseToo() throws {
-        let shot = photo(try cartridge("9x19 mm"), bullet: lead)
-        XCTAssertEqual(try outlines(shot, "lead").coloured.mouth ?? -1, shot.mouth, accuracy: 0.015)
+        for noise: Float in [0, 8] {
+            let shot = photo(try cartridge("9x19 mm"), bullet: lead, noise: noise)
+            XCTAssertEqual(try outlines(shot, "lead, noise \(noise)").coloured.mouth ?? -1, shot.mouth, accuracy: 0.015)
+        }
+    }
+
+    /// Grey metal meeting grey metal (a lead bullet in a nickel case) shows no mouth: a grey's hue is the
+    /// photo's noise, and saturation up to `CaseMouth.grey` counts as none (review of #101).
+    func testNoMouthBetweenGreyMetals() throws {
+        for noise: Float in [0, 8] {
+            let shot = photo(try cartridge("9x19 mm"), bullet: lead, metal: nickel, noise: noise)
+            XCTAssertNil(try outlines(shot, "lead in nickel, noise \(noise)").coloured.mouth)
+        }
+    }
+
+    /// A highlight on the bullet in front of the mouth mixes white into the copper: the colour changes as
+    /// much there as at the mouth by green and blue relative to red, but copper's hue stays, so the mouth
+    /// is where the copper meets the brass (Raven's training shots, 2026-11-07).
+    func testHighlightOnTheBulletIsNoMouth() throws {
+        let shot = photo(try cartridge("9x19 mm"), bullet: copper, highlight: 4)
+        XCTAssertEqual(try outlines(shot, "highlight").coloured.mouth ?? -1, shot.mouth, accuracy: 0.015)
     }
 
     func testNoMouthWhereTheColourDoesNotChange() throws {
@@ -187,6 +215,15 @@ final class CaseMouthTests: XCTestCase {
         let contour = try XCTUnwrap(analysis.contour)
         let mouth = try XCTUnwrap(contour.mouth, "\(contour.parts)")
         XCTAssertEqual(mouth, 1 - 19.15 / 29.7, accuracy: 0.08)
+        // Matching counts the case's share of the length (`shapeAtAxis`): it puts the 9 mm no lower than the
+        // outline alone (as testRealPhotosShowOneHandgunCartridge ranks it).
+        let outlineOnly = try XCTUnwrap(analysis.shape)
+        var withCase = outlineOnly
+        withCase.caseShare = try XCTUnwrap(analysis.shapeAtAxis(depth: nil)?.caseShare)
+        XCTAssertEqual(try XCTUnwrap(withCase.caseShare), 1 - mouth, accuracy: 1e-12)
+        func row(_ s: ShapeMeasurement) -> Int? { Matcher.rank(shape: s, limit: .max).firstIndex { $0.cartridge.id == "9x19 mm" } }
+        let plain = try XCTUnwrap(row(outlineOnly), "outline alone")
+        XCTAssertLessThanOrEqual(try XCTUnwrap(row(withCase), "case \(1 - mouth)"), plain, "case \(1 - mouth)")
         let b = contour.parts.prefix(while: { $0 == .bullet }).count
         XCTAssertEqual(contour.parts[b], .end)
         XCTAssertEqual(contour.parts[b + 1], .body)
