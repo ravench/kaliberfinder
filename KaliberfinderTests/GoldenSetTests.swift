@@ -99,6 +99,32 @@ final class GoldenSetTests: XCTestCase {
                                            isBrass: true).shape, "nothing in the mask")
     }
 
+    /// Empty cases have no bullet: on every shot the replay reads as an empty case, the Matches photo's
+    /// outline ends at the mouth, also where the outline found something in front of the neck (6 mm BR),
+    /// and a bottleneck case keeps its neck.
+    func testEmptyCasesAreOutlinedWithoutABullet() throws {
+        var emptyCases = 0, withNose = 0
+        for package in try golden() {
+            for entry in package.shots {
+                let name = "\(package.url.lastPathComponent)/\(entry.url.lastPathComponent)"
+                let info = try XCTUnwrap(entry.shot.mask, name), labels = try XCTUnwrap(CaptureStore.mask(of: entry.shot, at: entry.url), name)
+                let image = (width: try XCTUnwrap(info.imageWidth, name), height: try XCTUnwrap(info.imageHeight, name))
+                let analysis = PhotoAnalyzer.analyze(instanceLabels: labels, mask: (info.width, info.height), image: image, isBrass: true)
+                guard let shape = analysis.shape, let contour = analysis.contour, ScanMode.auto.part(for: shape) == .emptyCase else { continue }
+                emptyCases += 1
+                if contour.nose != nil { withNose += 1 }
+                let drawn = MatchesView.frames(overview: nil, measured: analysis, picking: false).parts
+                XCTAssertFalse(drawn.contains(.bullet), name)
+                // A bottleneck case keeps its neck, also one too uneven for `NeckShape` (6 mm BR 08).
+                if ShapeMatcher.caseCatalogue[package.package.calibre]?.neck?.isClear == true {
+                    XCTAssertTrue(drawn.contains(.neck), "\(name): \(drawn)")
+                }
+            }
+        }
+        XCTAssertGreaterThan(emptyCases, 0)
+        XCTAssertGreaterThan(withNose, 0, "no empty case with something in front of its neck left to check")
+    }
+
     /// One shot through the phone's path, and its report line.
     private func replay(_ entry: SavedShot, named name: String, of package: CapturePackage) throws -> (Evaluation.Shot, String) {
         let shot = entry.shot

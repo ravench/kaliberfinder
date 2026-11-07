@@ -90,6 +90,11 @@ final class PRScreensTests: XCTestCase {
         photoMatches("photo-9x19-wood", shot: "13-Foto-Patrone", compareShot: "14-Foto-1zu1")
     }
 
+    /// One of Raven's empty 6 mm BR cases: its outline ends flat at the mouth, without a bullet.
+    func testEmptyCasePhoto() {
+        photoMatches("photo-6mmbr-case", shot: "15-Foto-leere-Huelse")
+    }
+
     /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`;
     /// with `compareShot`, also one of the 1:1 screen that compares all of them.
     private func photoMatches(_ fixture: String, shot: String, compareShot: String? = nil) {

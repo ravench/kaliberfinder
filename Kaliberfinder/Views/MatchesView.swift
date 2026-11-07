@@ -26,7 +26,7 @@ struct MatchesView: View {
     var body: some View {
         List {
             Section {
-                let frames = Self.frames(overview: overview, measured: analysis, picking: needsPick)
+                let frames = Self.frames(overview: overview, measured: analysis, picking: needsPick, mode: mode)
                 CandidatePhotoView(photo: preview?.image ?? photo, candidates: frames.candidates, measured: frames.measured, parts: frames.parts,
                                    region: preview?.region ?? CGRect(x: 0, y: 0, width: 1, height: 1),
                                    maxHeight: needsPick ? 420 : 220) { choose($0) }
@@ -129,11 +129,15 @@ struct MatchesView: View {
     /// Frames on the photo: the competing cartridges while the user picks one; afterwards, or when
     /// there is only one, the outline of the silhouette that was measured (its box if there's none),
     /// with what found each of its edges.
-    static func frames(overview: PhotoAnalysis?, measured: PhotoAnalysis?,
-                       picking: Bool) -> (candidates: [CGRect], measured: [CGPoint]?, parts: [ShapeContour.Part]) {
+    /// An empty case (as `mode` reads the photo) has no bullet: its outline ends at the mouth.
+    static func frames(overview: PhotoAnalysis?, measured: PhotoAnalysis?, picking: Bool,
+                       mode: ScanMode = .auto) -> (candidates: [CGRect], measured: [CGPoint]?, parts: [ShapeContour.Part]) {
         if picking { return (overview?.candidates ?? [], nil, []) }
-        guard let measured, measured.shape != nil else { return ([], nil, []) }
-        if let contour = measured.contour { return ([], contour.points, contour.parts) }
+        guard let measured, let shape = measured.shape else { return ([], nil, []) }
+        if let contour = measured.contour {
+            let shown = mode.part(for: shape) == .emptyCase ? contour.withoutBullet() : contour
+            return ([], shown.points, shown.parts)
+        }
         return ([], measured.outline, [])
     }
 
