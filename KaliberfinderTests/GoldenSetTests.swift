@@ -69,11 +69,13 @@ final class GoldenSetTests: XCTestCase {
         XCTAssertEqual(Set(baseline.shots.keys), Set(results.keys), "golden shots changed: update Golden/baseline.json from the GOLDEN lines")
         // A baseline from before the list rows were counted would gate the phone's list against
         // ranks among all calibres, and "of all" against nothing.
-        XCTAssertTrue(baseline.shots.values.contains { $0.row != nil } || baseline.shots.values.allSatisfy { $0.rank == nil },
+        XCTAssertTrue(baseline.shots.values.contains(where: \.hasRows) || baseline.shots.values.allSatisfy { $0.rank == nil },
                       "Golden/baseline.json has no list rows: update it from the GOLDEN lines")
         for (label, was, isNow) in [("first", baseline.scores.top1, scores.top1), ("top 5", baseline.scores.top5, scores.top5),
-                                    ("first of all", baseline.scores.top1All, scores.top1All),
-                                    ("top 5 of all", baseline.scores.top5All, scores.top5All),
+                                    ("first, obsolete on", baseline.scores.top1Obsolete, scores.top1Obsolete),
+                                    ("top 5, obsolete on", baseline.scores.top5Obsolete, scores.top5Obsolete),
+                                    ("first, all on", baseline.scores.top1All, scores.top1All),
+                                    ("top 5, all on", baseline.scores.top5All, scores.top5All),
                                     ("part", baseline.scores.part, scores.part), ("neck", baseline.scores.neck, scores.neck)] {
             XCTAssertGreaterThanOrEqual(isNow, was - Self.tolerance, "\(label): \(isNow) % against \(was) % in Golden/baseline.json")
         }
@@ -106,8 +108,9 @@ final class GoldenSetTests: XCTestCase {
                                              isBrass: shot.analysis?.isBrass ?? true)
         let scored = Evaluation.shot(name, analysis: analysis, depth: shot.scale?.depthScale, package: package)
         let result = scored.result
-        let line = String(format: "%@ %@ row %@ rank %@ aspect %.2f (phone %.2f)%@ part %@ neck %@ first %@",
-                          package.calibre, package.part, result.row.map { "\($0)" } ?? "–", result.rank.map { "\($0)" } ?? "–",
+        let rows = [result.row, result.rowObsolete, result.rowAll].map { $0.map { "\($0)" } ?? "–" }.joined(separator: "/")
+        let line = String(format: "%@ %@ rows %@ rank %@ aspect %.2f (phone %.2f)%@ part %@ neck %@ first %@",
+                          package.calibre, package.part, rows, result.rank.map { "\($0)" } ?? "–",
                           analysis.shape?.aspect ?? 0,
                           shot.analysis?.aspect ?? 0, scored.size.map { String(format: " size %.1f x %.1f mm", $0.length, $0.diameter) } ?? "",
                           result.part ? "ok" : "wrong", result.neck.map { $0 ? "found" : "missed" } ?? "–", scored.first ?? "–")

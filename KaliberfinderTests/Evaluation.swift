@@ -7,28 +7,60 @@ import Foundation
 /// starts. GoldenSetTests scores the golden set with it on every pull request; the evaluation tool
 /// (tools/evaluate) compiles it with the app's analysis code and scores every training shot on a Mac.
 ///
-/// The headline is the list as the phone shows it: rare and obsolete calibres hidden (unless the
-/// shot's own calibre is one, as for a user who switched them on) and calibres that look exactly the
-/// same from the side in one row. Where the calibre ranks among every catalogue calibre, each on its
-/// own, is reported too.
+/// Scores go by the list as the phone shows it, with calibres that look exactly the same from the side
+/// in one row, for each setting of the «Erkennung» switches (`Switches`). The headline, with both
+/// switches off, is what a user sees first: the target is the right calibre in the first row there.
 enum Evaluation {
-    /// What one shot gave: the row of its calibre in the phone's list (nil: not listed), where it
-    /// ranks among every calibre (nil: not listed), whether automatic mode saw the right part, and
-    /// for calibres with a clear neck whether the neck was found.
+    /// The «Erkennung» switches on the home screen: which hidden calibres the phone's list shows.
+    enum Switches: CaseIterable {
+        /// Rare and obsolete calibres hidden, as the app starts.
+        case off
+        /// Obsolete calibres shown, rare ones hidden.
+        case obsolete
+        /// Every calibre shown.
+        case obsoleteAndRare
+
+        /// The tags hidden for a shot of `calibre`: a rare or obsolete calibre's own switch is on, as
+        /// its user would have it, or the phone could never list it.
+        func hidden(showing calibre: Cartridge?) -> Set<HiddenTag> {
+            HiddenTag.hidden(includeObsolete: self != .off || calibre?.obsolete == true,
+                             includeRare: self == .obsoleteAndRare || calibre?.rare == true)
+        }
+    }
+
+    /// What one shot gave: the row of its calibre in the phone's list with the switches off, with
+    /// obsolete calibres on, and with obsolete and rare on (nil: not listed, or a result from before
+    /// rows were counted); its rank among every calibre, each on its own; whether automatic mode saw
+    /// the right part; and for calibres with a clear neck whether the neck was found.
     struct ShotResult: Codable, Equatable {
-        /// Row in the list as the phone shows it; nil in results from before it was counted.
         var row: Int?
+        var rowObsolete: Int?
+        var rowAll: Int?
         var rank: Int?
         var part: Bool
         var neck: Bool?
+
+        /// The row with the switches set as `switches`.
+        func row(_ switches: Switches) -> Int? {
+            switch switches {
+            case .off: row
+            case .obsolete: rowObsolete
+            case .obsoleteAndRare: rowAll
+            }
+        }
+
+        /// Whether any row was counted (results from before have ranks only).
+        var hasRows: Bool { row != nil || rowObsolete != nil || rowAll != nil }
     }
 
-    /// Shares in percent: calibre in the first row and in the first five rows of the phone's list,
-    /// calibre first and in the first five among every calibre, part right, neck found (of the shots
-    /// of calibres with a neck).
+    /// Shares in percent: calibre in the first row and in the first five rows of the phone's list with
+    /// the switches off, with obsolete calibres on, and with obsolete and rare on; part right; neck
+    /// found (of the shots of calibres with a neck).
     struct Scores: Codable, Equatable {
         var top1: Double
         var top5: Double
+        var top1Obsolete: Double
+        var top5Obsolete: Double
         var top1All: Double
         var top5All: Double
         var part: Double
@@ -36,25 +68,40 @@ enum Evaluation {
 
         init(_ results: [ShotResult]) {
             func share(_ hits: Int, of n: Int) -> Double { n == 0 ? 0 : (1000 * Double(hits) / Double(n)).rounded() / 10 }
+            func first(_ s: Switches) -> Double { share(results.filter { $0.row(s) == 1 }.count, of: results.count) }
+            func five(_ s: Switches) -> Double { share(results.filter { ($0.row(s) ?? .max) <= 5 }.count, of: results.count) }
             let necked = results.compactMap(\.neck)
-            top1 = share(results.filter { $0.row == 1 }.count, of: results.count)
-            top5 = share(results.filter { ($0.row ?? .max) <= 5 }.count, of: results.count)
-            top1All = share(results.filter { $0.rank == 1 }.count, of: results.count)
-            top5All = share(results.filter { ($0.rank ?? .max) <= 5 }.count, of: results.count)
+            top1 = first(.off)
+            top5 = five(.off)
+            top1Obsolete = first(.obsolete)
+            top5Obsolete = five(.obsolete)
+            top1All = first(.obsoleteAndRare)
+            top5All = five(.obsoleteAndRare)
             part = share(results.filter(\.part).count, of: results.count)
             neck = share(necked.filter { $0 }.count, of: necked.count)
         }
 
-        /// Results from before the phone's list was counted have no `top1All` and `top5All`. A
-        /// comparison recounts the scores from the shots anyway.
+        /// Results from before the rows were counted lack the switched-on scores. A comparison
+        /// recounts the scores from the shots anyway.
         init(from decoder: Decoder) throws {
             let c = try decoder.container(keyedBy: CodingKeys.self)
             top1 = try c.decode(Double.self, forKey: .top1)
             top5 = try c.decode(Double.self, forKey: .top5)
+            top1Obsolete = try c.decodeIfPresent(Double.self, forKey: .top1Obsolete) ?? 0
+            top5Obsolete = try c.decodeIfPresent(Double.self, forKey: .top5Obsolete) ?? 0
             top1All = try c.decodeIfPresent(Double.self, forKey: .top1All) ?? 0
             top5All = try c.decodeIfPresent(Double.self, forKey: .top5All) ?? 0
             part = try c.decode(Double.self, forKey: .part)
             neck = try c.decode(Double.self, forKey: .neck)
+        }
+
+        /// First and top 5 with the switches set as `switches`.
+        func scores(_ switches: Switches) -> (top1: Double, top5: Double) {
+            switch switches {
+            case .off: (top1, top5)
+            case .obsolete: (top1Obsolete, top5Obsolete)
+            case .obsoleteAndRare: (top1All, top5All)
+            }
         }
     }
 
@@ -91,14 +138,14 @@ enum Evaluation {
         /// Measured with LiDAR; nil without depth or when the size failed.
         let size: MeasuredSize?
         let source: Source
-        /// The calibre in the first row of the phone's list; nil when nothing is listed.
+        /// The calibre in the first row of the phone's list with the switches off; nil when nothing is listed.
         let first: String?
         let result: ShotResult
     }
 
     /// Scores the analysis of a photo of `package`'s calibre and part, with the LiDAR scale it was
-    /// taken with, in automatic mode as the phone starts: its row in the list the phone shows (see
-    /// `Evaluation`) and its rank among every calibre.
+    /// taken with, in automatic mode as the phone starts: its row in the list the phone shows for each
+    /// setting of the switches (see `Evaluation`) and its rank among every calibre.
     static func shot(_ name: String, analysis: PhotoAnalysis, depth: DepthScale?, package: CapturePackage,
                      source: Source = .phone) -> Shot {
         let size = try? analysis.size(depth: depth).get()
@@ -106,31 +153,32 @@ enum Evaluation {
                                   brass: analysis.isBrass, limit: .max)
         let rank = ranked.firstIndex { $0.cartridge.id == package.calibre }.map { $0 + 1 }
         let calibre = CartridgeCatalog.cartridge(id: package.calibre)
-        let rows = Matcher.grouped(listed(ranked, showing: calibre))
-        let row = rows.firstIndex { $0.items.contains { $0.cartridge.id == package.calibre } }.map { $0 + 1 }
+        let rows = Dictionary(uniqueKeysWithValues: Switches.allCases.map { ($0, Matcher.grouped(listed(ranked, showing: calibre, switches: $0))) })
+        func row(_ s: Switches) -> Int? {
+            rows[s]?.firstIndex { $0.items.contains { $0.cartridge.id == package.calibre } }.map { $0 + 1 }
+        }
         let part = analysis.shape.map { ScanMode.auto.part(for: $0) == package.scanMode.part(for: $0) } ?? false
         let expected = calibre.flatMap {
             ShapeMatcher.expected(for: $0, part: package.scanMode == .emptyCase ? .emptyCase : .cartridge)
         }
         let neck = expected?.neck?.isClear == true ? analysis.shape?.neck != nil : nil
         return Shot(name: name, calibre: package.calibre, part: package.scanMode, size: size,
-                    source: analysis.shape == nil ? .none : source, first: rows.first?.lead.cartridge.id,
-                    result: ShotResult(row: row, rank: rank, part: part, neck: neck))
+                    source: analysis.shape == nil ? .none : source, first: rows[.off]?.first?.lead.cartridge.id,
+                    result: ShotResult(row: row(.off), rowObsolete: row(.obsolete), rowAll: row(.obsoleteAndRare),
+                                       rank: rank, part: part, neck: neck))
     }
 
-    /// What the phone lists of `ranked` (every calibre, in rank order): the rare and obsolete
-    /// calibres hidden, as with the switches off, except those of `calibre`'s own kind, whose switch
-    /// its user would have on.
-    static func listed(_ ranked: [Match], showing calibre: Cartridge?) -> [Match] {
-        let hidden = HiddenTag.hidden(includeObsolete: calibre?.obsolete ?? false, includeRare: calibre?.rare ?? false)
-        return HiddenMatches(ranked, hiding: hidden, limit: Matcher.shownLimit).shown
+    /// What the phone lists of `ranked` (every calibre, in rank order) with the switches set as
+    /// `switches`, for a shot of `calibre` (`Switches.hidden(showing:)`).
+    static func listed(_ ranked: [Match], showing calibre: Cartridge?, switches: Switches = .off) -> [Match] {
+        HiddenMatches(ranked, hiding: switches.hidden(showing: calibre), limit: Matcher.shownLimit).shown
     }
 
     // MARK: - Report
 
     /// The report in Markdown: the scores overall, by calibre and by kind of shot, what calibres
-    /// are taken for, and every shot whose calibre is not in the first row. Shot names and numbers
-    /// only, never a photo. `before`: an earlier run (`Baseline`) to compare with.
+    /// are taken for, and every shot whose calibre is not in the first row with the switches off. Shot
+    /// names and numbers only, never a photo. `before`: an earlier run (`Baseline`) to compare with.
     static func report(_ shots: [Shot], title: String, before: Baseline? = nil) -> String {
         var lines = ["# \(title)", "", summary(Scores(shots.map(\.result)), count: shots.count), ""]
         if let before { lines += comparison(shots, with: before) }
@@ -143,26 +191,26 @@ enum Evaluation {
     }
 
     static func summary(_ scores: Scores, count: Int) -> String {
-        String(format: "%d shots: calibre first %.1f %%, in the top 5 %.1f %% as the phone lists them; "
-               + "among all calibres first %.1f %%, in the top 5 %.1f %%; part right %.1f %%, neck found %.1f %%",
-               count, scores.top1, scores.top5, scores.top1All, scores.top5All, scores.part, scores.neck)
+        String(format: "%d shots: calibre first %.1f %%, in the top 5 %.1f %% as the phone lists them with the switches off; "
+               + "with obsolete calibres on %.1f %%, %.1f %%; with obsolete and rare on %.1f %%, %.1f %%; part right %.1f %%, neck found %.1f %%",
+               count, scores.top1, scores.top5, scores.top1Obsolete, scores.top5Obsolete, scores.top1All, scores.top5All, scores.part, scores.neck)
     }
 
     private static func partName(_ part: ScanMode) -> String { part == .emptyCase ? "empty case" : "cartridge" }
 
     private static func percent(_ value: Double) -> String { String(format: "%.1f %%", value) }
 
-    /// One row per group: shots, calibre first and in the top 5 as listed and among all calibres,
+    /// One row per group: shots, calibre first and in the top 5 for each setting of the switches,
     /// part right, neck found.
     private static func table(_ header: String, _ groups: [(String, [Shot])]) -> [String] {
         let rows = groups.filter { !$0.1.isEmpty }.map { label, shots in
             let s = Scores(shots.map(\.result))
             let neck = shots.contains { $0.result.neck != nil } ? percent(s.neck) : "–"
-            return "| \(label) | \(shots.count) | \(percent(s.top1)) | \(percent(s.top5)) | \(percent(s.top1All)) | "
-                + "\(percent(s.top5All)) | \(percent(s.part)) | \(neck) |"
+            let firsts = Switches.allCases.map { "\(percent(s.scores($0).top1)) | \(percent(s.scores($0).top5))" }.joined(separator: " | ")
+            return "| \(label) | \(shots.count) | \(firsts) | \(percent(s.part)) | \(neck) |"
         }
-        return ["| \(header) | Shots | First | Top 5 | First of all | Top 5 of all | Part | Neck |",
-                "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"] + rows + [""]
+        return ["| \(header) | Shots | First | Top 5 | First, obsolete on | Top 5, obsolete on | First, all on | Top 5, all on | Part | Neck |",
+                "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"] + rows + [""]
     }
 
     private static func kinds(_ shots: [Shot]) -> [(String, [Shot])] {
@@ -174,7 +222,7 @@ enum Evaluation {
          ("No outline", shots.filter { $0.source == .none })]
     }
 
-    /// The calibres most often in the first row instead of the right one.
+    /// The calibres most often in the first row instead of the right one (switches off).
     private static func confusions(_ shots: [Shot]) -> [String] {
         let wrong = shots.filter { $0.result.row != 1 }.compactMap { shot in shot.first.map { "\(shot.calibre) | \($0)" } }
         guard !wrong.isEmpty else { return [] }
@@ -183,39 +231,43 @@ enum Evaluation {
             + counts.prefix(20).map { "| \($0.key) | \($0.value) |" } + [""]
     }
 
-    /// Every shot whose calibre is not in the first row.
+    /// Every shot whose calibre is not in the first row with the switches off.
     private static func misses(_ shots: [Shot]) -> [String] {
         let missed = shots.filter { $0.result.row != 1 }.sorted { $0.name < $1.name }
         guard !missed.isEmpty else { return [] }
-        return ["## Not first", "", "| Shot | Calibre | Row | Rank of all | First | Part | Size | Outline |",
-                "| --- | --- | ---: | ---: | --- | --- | --- | --- |"]
+        return ["## Not first", "", "| Shot | Calibre | Row | Obsolete on | All on | First | Part | Size | Outline |",
+                "| --- | --- | ---: | ---: | ---: | --- | --- | --- | --- |"]
             + missed.map { shot in
                 let size = shot.size.map { String(format: "%.1f × %.1f mm", $0.length, $0.diameter) } ?? "–"
-                return "| \(shot.name) | \(shot.calibre) | \(number(shot.result.row)) | \(number(shot.result.rank)) | \(shot.first ?? "–") | "
-                    + "\(shot.result.part ? "ok" : "wrong") | \(size) | \(shot.source.rawValue) |"
+                let r = shot.result
+                return "| \(shot.name) | \(shot.calibre) | \(number(r.row)) | \(number(r.rowObsolete)) | \(number(r.rowAll)) | \(shot.first ?? "–") | "
+                    + "\(r.part ? "ok" : "wrong") | \(size) | \(shot.source.rawValue) |"
             } + [""]
     }
 
     private static func number(_ n: Int?) -> String { n.map(String.init) ?? "–" }
 
     /// The scores against an earlier run, on the shots both have, and the shots that changed. A run
-    /// from before the phone's list was counted has no rows: its first two scores show as «–», and a
-    /// shot counts as changed only when its rank, part or neck did.
+    /// from before the rows were counted has none: its row scores show as «–», and a shot counts as
+    /// changed only when its rank, part or neck did.
     private static func comparison(_ shots: [Shot], with before: Baseline) -> [String] {
         let common = shots.filter { before.shots[$0.name] != nil }
         let earlier = common.compactMap { before.shots[$0.name] }
         let was = Scores(earlier), now = Scores(common.map(\.result))
         // A run with ranks but no rows comes from before the rows were counted.
-        let hadRows = earlier.contains { $0.row != nil } || !earlier.contains { $0.rank != nil }
-        let rows = [("First", hadRows ? was.top1 : nil, now.top1), ("Top 5", hadRows ? was.top5 : nil, now.top5),
-                    ("First of all", was.top1All, now.top1All), ("Top 5 of all", was.top5All, now.top5All),
-                    ("Part", was.part, now.part), ("Neck", was.neck, now.neck)]
+        let hadRows = earlier.contains(where: \.hasRows) || !earlier.contains { $0.rank != nil }
+        let labels: [(Switches, String)] = [(.off, ""), (.obsolete, ", obsolete on"), (.obsoleteAndRare, ", all on")]
+        let rowScores = labels.flatMap { s, suffix in
+            [("First\(suffix)", hadRows ? was.scores(s).top1 : nil, now.scores(s).top1),
+             ("Top 5\(suffix)", hadRows ? was.scores(s).top5 : nil, now.scores(s).top5)]
+        }
+        let rows = (rowScores + [("Part", was.part, now.part), ("Neck", was.neck, now.neck)])
             .map { label, a, b in
                 "| \(label) | \(a.map(percent) ?? "–") | \(percent(b)) | \(a.map { String(format: "%+.1f", b - $0) } ?? "–") |"
             }
         let changed = common.filter { shot in
             var now = shot.result
-            if !hadRows { now.row = nil }
+            if !hadRows { (now.row, now.rowObsolete, now.rowAll) = (nil, nil, nil) }
             return before.shots[shot.name] != now
         }.sorted { $0.name < $1.name }.map { shot in
             "| \(shot.name) | \(describe(before.shots[shot.name])) | \(describe(shot.result)) |"
@@ -226,9 +278,11 @@ enum Evaluation {
         return lines
     }
 
+    /// E.g. "rows 1 · 1 · 2, rank 3, part ok": the rows with the switches off, obsolete on and all on.
     private static func describe(_ result: ShotResult?) -> String {
-        guard let result else { return "–" }
-        let neck = result.neck.map { $0 ? ", neck found" : ", neck missed" } ?? ""
-        return "row \(number(result.row)), rank \(number(result.rank)), part \(result.part ? "ok" : "wrong")\(neck)"
+        guard let r = result else { return "–" }
+        let neck = r.neck.map { $0 ? ", neck found" : ", neck missed" } ?? ""
+        let rows = r.hasRows ? "rows \(number(r.row)) · \(number(r.rowObsolete)) · \(number(r.rowAll)), " : ""
+        return "\(rows)rank \(number(r.rank)), part \(r.part ? "ok" : "wrong")\(neck)"
     }
 }

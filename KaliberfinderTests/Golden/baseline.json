@@ -4,8 +4,10 @@
     "part" : 57.5,
     "top1" : 20,
     "top1All" : 10,
+    "top1Obsolete" : 17.5,
     "top5" : 27.5,
-    "top5All" : 27.5
+    "top5All" : 27.5,
+    "top5Obsolete" : 27.5
   },
   "shots" : {
     "45-acp-20261105-115201/02" : {
@@ -20,7 +22,9 @@
     "45-acp-20261105-115201/08" : {
       "part" : true,
       "rank" : 4,
-      "row" : 2
+      "row" : 2,
+      "rowAll" : 4,
+      "rowObsolete" : 2
     },
     "45-acp-20261105-115201/09" : {
       "part" : false
@@ -34,7 +38,9 @@
     "45-acp-20261105-224631/04" : {
       "part" : true,
       "rank" : 2,
-      "row" : 2
+      "row" : 2,
+      "rowAll" : 2,
+      "rowObsolete" : 2
     },
     "45-acp-20261105-224631/12" : {
       "part" : false
@@ -45,7 +51,9 @@
     "45-acp-20261105-224631/15" : {
       "part" : true,
       "rank" : 1,
-      "row" : 1
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
     },
     "45-acp-20261105-224631/16" : {
       "part" : false
@@ -53,12 +61,16 @@
     "45-acp-20261105-224631/17" : {
       "part" : true,
       "rank" : 2,
-      "row" : 1
+      "row" : 1,
+      "rowAll" : 2,
+      "rowObsolete" : 1
     },
     "45-acp-20261105-224631/18" : {
       "part" : true,
       "rank" : 3,
-      "row" : 1
+      "row" : 1,
+      "rowAll" : 3,
+      "rowObsolete" : 2
     },
     "5-6-mm-gp-90-20261105-225100/01" : {
       "neck" : false,
@@ -76,13 +88,17 @@
       "neck" : true,
       "part" : true,
       "rank" : 2,
-      "row" : 1
+      "row" : 1,
+      "rowAll" : 2,
+      "rowObsolete" : 1
     },
     "6-mm-br-norma-20261105-115031/02" : {
       "neck" : true,
       "part" : true,
       "rank" : 2,
-      "row" : 1
+      "row" : 1,
+      "rowAll" : 2,
+      "rowObsolete" : 1
     },
     "6-mm-br-norma-20261105-115031/03" : {
       "neck" : true,
@@ -96,7 +112,9 @@
       "neck" : true,
       "part" : true,
       "rank" : 1,
-      "row" : 1
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
     },
     "6-mm-br-norma-20261105-115031/06" : {
       "neck" : true,
@@ -106,7 +124,9 @@
       "neck" : true,
       "part" : true,
       "rank" : 1,
-      "row" : 1
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
     },
     "6-mm-br-norma-20261105-115031/08" : {
       "neck" : false,
@@ -128,13 +148,16 @@
       "neck" : true,
       "part" : true,
       "rank" : 13,
-      "row" : 7
+      "row" : 7,
+      "rowObsolete" : 7
     },
     "7-5x55-mm-swiss-gp-11-20261105-114838/02" : {
       "neck" : true,
       "part" : true,
       "rank" : 10,
-      "row" : 7
+      "row" : 7,
+      "rowAll" : 10,
+      "rowObsolete" : 7
     },
     "7-5x55-mm-swiss-gp-11-20261105-114838/03" : {
       "neck" : true,
@@ -148,13 +171,17 @@
       "neck" : true,
       "part" : true,
       "rank" : 5,
-      "row" : 5
+      "row" : 5,
+      "rowAll" : 5,
+      "rowObsolete" : 5
     },
     "7-5x55-mm-swiss-gp-11-20261105-114838/06" : {
       "neck" : true,
       "part" : true,
       "rank" : 1,
-      "row" : 1
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
     },
     "9x19-mm-20261105-224844/06" : {
       "part" : false
