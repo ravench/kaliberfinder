@@ -95,6 +95,13 @@ final class PRScreensTests: XCTestCase {
         photoMatches("photo-6mmbr-case", shot: "15-Foto-leere-Huelse")
     }
 
+    /// The loaded 9 mm with the hidden switch that colours the outline by detection: the bullet up to
+    /// the case mouth, where its copper meets the brass, a line across the case there, and the case.
+    func testLoadedCartridgePartColours() {
+        app.launchArguments += ["-outlinePartColours", "YES"]
+        photoMatches("photo-9x19-wood", shot: "16-Foto-Erkennung-farbig")
+    }
+
     /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`;
     /// with `compareShot`, also one of the 1:1 screen that compares all of them.
     private func photoMatches(_ fixture: String, shot: String, compareShot: String? = nil) {

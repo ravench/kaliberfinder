@@ -28,6 +28,7 @@ struct MatchesView: View {
             Section {
                 let frames = Self.frames(overview: overview, measured: analysis, picking: needsPick, mode: mode)
                 CandidatePhotoView(photo: preview?.image ?? photo, candidates: frames.candidates, measured: frames.measured, parts: frames.parts,
+                                   mouthLine: Self.mouthLine(measured: analysis, picking: needsPick, mode: mode),
                                    region: preview?.region ?? CGRect(x: 0, y: 0, width: 1, height: 1),
                                    maxHeight: needsPick ? 420 : 220) { choose($0) }
                 if needsPick {
@@ -139,6 +140,13 @@ struct MatchesView: View {
             return ([], shown.points, shown.parts)
         }
         return ([], measured.outline, [])
+    }
+
+    /// The line across the case at its mouth, drawn with the developer switch: on a cartridge whose
+    /// colours show where its bullet meets the case, not on an empty case or while the user picks.
+    static func mouthLine(measured: PhotoAnalysis?, picking: Bool, mode: ScanMode = .auto) -> [CGPoint]? {
+        guard !picking, let measured, let shape = measured.shape, mode.part(for: shape) != .emptyCase else { return nil }
+        return measured.contour?.mouthLine
     }
 
     /// Boxes around everything detected in the whole photo, for cropping the preview.
