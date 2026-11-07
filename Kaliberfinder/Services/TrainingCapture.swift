@@ -219,11 +219,15 @@ enum CaptureError: Error, Equatable {
 struct CaptureStore {
     let root: URL
 
-    /// Documents/TrainingCaptures on the phone.
+    /// Documents/TrainingCaptures on the phone. The PR screens tour gives the folder of the example
+    /// package as `-screenTourCaptures <path>`, so its screens show the same series on every run.
     static var standard: CaptureStore {
+        if let tour = UserDefaults.standard.string(forKey: tourKey) { return CaptureStore(root: URL(fileURLWithPath: tour, isDirectory: true)) }
         let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         return CaptureStore(root: documents.appendingPathComponent("TrainingCaptures", isDirectory: true))
     }
+
+    static let tourKey = "screenTourCaptures"
 
     /// Creates the folder of a new series and writes its package.json.
     func create(_ package: CapturePackage) throws -> URL {

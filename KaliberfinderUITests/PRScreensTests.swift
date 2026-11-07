@@ -124,6 +124,23 @@ final class PRScreensTests: XCTestCase {
         photoMatches("photo-9x19-wood", shot: "16-Foto-Erkennung-farbig")
     }
 
+    /// The hidden «Trainingsdaten» screen, on the example package of KaliberfinderTests/Captures so
+    /// it shows the same series on every run: the saved series, and one of them opened from the list.
+    func testTrainingCapture() {
+        let captures = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("KaliberfinderTests/Captures")
+        app.terminate()
+        app.launchArguments += ["-trainingCaptureEnabled", "YES", "-screenTourCaptures", captures.path]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]),
+              open(app.buttons["Trainingsdaten aufnehmen"].firstMatch) else { return }
+        snap("21-Trainingsdaten")
+        guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
+        XCTAssertTrue(app.buttons["Als ZIP teilen"].waitForExistence(timeout: 5), "The saved series did not open")
+        snap("22-Trainingsdaten-Serie")
+    }
+
     /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`;
     /// with `compareShot`, also one of the 1:1 screen that compares all of them.
     private func photoMatches(_ fixture: String, shot: String, compareShot: String? = nil) {
