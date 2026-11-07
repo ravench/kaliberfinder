@@ -144,9 +144,10 @@ enum PhotoAnalyzer {
         return result
     }
 
-    /// The size of a pixel of Vision's instance mask (`mask` pixels) in the photo (`image` pixels).
+    /// The size of a pixel of Vision's instance mask (`mask` pixels) in the photo (`image` pixels): its
+    /// longer side, as the mask is square whatever the photo's shape.
     static func maskPixel(image: (width: Int, height: Int), mask: (width: Int, height: Int)) -> Double {
-        (Double(image.width * image.height) / Double(max(1, mask.width * mask.height))).squareRoot()
+        max(Double(image.width) / Double(max(1, mask.width)), Double(image.height) / Double(max(1, mask.height)))
     }
 
     /// The analysis of an upright photo with Vision's object `vision` (`visionResult`), or with

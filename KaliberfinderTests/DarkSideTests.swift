@@ -77,6 +77,17 @@ final class DarkSideTests: XCTestCase {
         }
     }
 
+    /// A bottleneck case with a narrow neck: the neck is cut too and its middle lies off the axis, so
+    /// the axis comes from the tip alone.
+    func testANarrowNeckDoesNotShiftTheAxis() throws {
+        for (id, angle, cutFrom) in [(".22-250 Remington", 0.7, 0.5), (".243 Winchester", 2.5, 0.5), ("6 mm BR Norma", 4.0, 0.5),
+                                     (".223 WSSM", 0.2, 0.5), (".22-250 Remington", 2.0, 0.75), ("6.5 PRC", 5.0, 0.75)] {
+            let shot = photo(try cartridge(id), cutFrom: cutFrom, angle: angle)
+            let restored = try XCTUnwrap(DarkSide.restored(shot.cut, step: 1, photo: shot.image), id)
+            XCTAssertEqual(try aspect(restored) / aspect(shot.whole), 1, accuracy: 0.03, "\(id) cut from \(cutFrom)")
+        }
+    }
+
     func testAlsoWhenTheBulletIsCut() throws {
         let shot = photo(try cartridge("9x19 mm"), cutBullet: true)
         let restored = try XCTUnwrap(DarkSide.restored(shot.cut, step: 1, photo: shot.image))
@@ -162,7 +173,7 @@ final class DarkSideTests: XCTestCase {
         XCTAssertNotNil(DarkSide.restored(shot.cut, step: 1, photo: shot.image))
         XCTAssertNil(DarkSide.restored(sampled, step: 2, photo: shot.image))
         XCTAssertNil(DarkSide.restored(shot.cut, step: 1, maskPixel: 2, photo: shot.image))
-        XCTAssertEqual(PhotoAnalyzer.maskPixel(image: (1200, 1600), mask: (512, 512)), 2.7, accuracy: 0.01)
+        XCTAssertEqual(PhotoAnalyzer.maskPixel(image: (1200, 1600), mask: (512, 512)), 3.125, accuracy: 0.001)
     }
 
     /// The analysis measures Vision's silhouette with its dark side given back.

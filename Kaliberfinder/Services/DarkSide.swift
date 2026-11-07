@@ -36,10 +36,8 @@ enum DarkSide {
     /// short of the case mouth of every cartridge (a 9 mm Luger's case is 64 % of its length, a .223's
     /// body up to the shoulder 64 %).
     static let bodyFrom = 0.08, bodyTo = 0.45
-    /// The nose's slices that give the axis: from this share of the body width to that one. Narrower,
-    /// the mask's rounding of the tip shows; wider, the bullet's shank may be cut too.
-    static let noseFrom = 0.2, noseTo = 0.6
-    /// Without enough such slices, the points near the tip give it: this share of the length.
+    /// The points near the tip that give the axis: this share of the length (never as far back as a
+    /// bottleneck's neck, which may be cut too).
     static let tipShare = 0.02
     /// How much nearer to the axis one side must end than the other ((lit − cut) / (lit + cut)) to
     /// count as cut. Whole silhouettes mostly stay within 0.05 of the tip's axis; the photo tells the rest.
@@ -120,7 +118,7 @@ enum DarkSide {
         let bodyWidth: Double
         /// The tip end's width (its last slices) as a share of the body width.
         let tipWidth: Double
-        /// `v` of the axis: the middle of the nose (see `noseFrom`), or of the points near the tip.
+        /// `v` of the axis: the middle of the points near the tip.
         let axis: Double
         /// Slopes of the body's edges against `u`.
         let slopeHigh: Double, slopeLow: Double
@@ -180,13 +178,9 @@ enum DarkSide {
             self.lo = lo; self.length = length; self.count = count
             self.low = low; self.high = high
             self.body = body
-            let typical = median(body.map { widths[$0] })
-            bodyWidth = typical
-            tipWidth = mean(widths.suffix(4).dropLast().filter { $0 > 0 }) / typical
-            let nose = (count / 2..<count).filter {
-                widths[$0] >= DarkSide.noseFrom * typical && widths[$0] <= DarkSide.noseTo * typical
-            }
-            axis = nose.count >= 3 ? median(nose.map { (low[$0] + high[$0]) / 2 }) : mean(nearTip)
+            bodyWidth = median(body.map { widths[$0] })
+            tipWidth = mean(widths.suffix(4).dropLast().filter { $0 > 0 }) / bodyWidth
+            axis = mean(nearTip)
             slopeHigh = Frame.slope(centres, body.map { high[$0] }); slopeLow = Frame.slope(centres, body.map { low[$0] })
         }
 
