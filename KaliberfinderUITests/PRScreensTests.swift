@@ -38,6 +38,8 @@ final class PRScreensTests: XCTestCase {
             }
             if open(app.staticTexts["9x19 mm"].firstMatch) {
                 snap("05-Kaliber")
+                scroll()
+                snap("05-Kaliber-unten")  // origin, prevalence and tags sit below the measurements
             }
         }
     }
