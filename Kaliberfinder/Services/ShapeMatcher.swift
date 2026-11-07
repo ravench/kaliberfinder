@@ -40,18 +40,21 @@ struct ShapeFeatures: Equatable {
     /// Width at the other end (median of the first three slices) relative to the body. For an empty
     /// case it is the neck: below about 0.9 the case has a bottleneck.
     let mouth: Double
-    /// The end is cut square (first slice about as wide as the next two), like a case mouth;
-    /// a bullet tip narrows instead.
+    /// The end is cut square, like a case mouth: the first slice about as wide as the next two. In a
+    /// photo the first slice is often only partly filled (the mask rounds the corners), so a second
+    /// slice already as wide as the two after it counts too. A bullet tip narrows over several slices.
     let isFlatEnd: Bool
 
     static let rimmedFrom = 1.08
     static let neckBelow = 0.9
     static let flatFrom = 0.85
+    /// How wide the second slice must be against the next two for a flat end behind a partly filled first one.
+    static let flatBehindFrom = 0.95
 
     init(widths w: [Double]) {
         rim = max(w[w.count - 1], w[w.count - 2])
         mouth = Array(w.prefix(3)).sorted()[1]
-        isFlatEnd = w[0] / max(w[1], w[2], 1e-9) >= Self.flatFrom
+        isFlatEnd = w[0] / max(w[1], w[2], 1e-9) >= Self.flatFrom || w[1] / max(w[2], w[3], 1e-9) >= Self.flatBehindFrom
     }
 
     var isRimmed: Bool { rim >= Self.rimmedFrom }
@@ -255,20 +258,38 @@ enum ShapeMatcher {
     static let neckTolerance = 0.15
 
     /// Whether the photo's rim, and for an empty case its neck, can belong to the expected shape.
-    /// Shapes without slice widths (built by hand) always fit.
+    /// Shapes without slice widths (built by hand) always fit. On an empty case a head clearly wider
+    /// than the calibre's rules it out (only a rim makes it wider). One narrower by up to
+    /// `narrowHeadUpTo` doesn't: the head's edge can be rounded off or in shadow, so that only costs
+    /// `rimPenalty` (`rimFits`). Narrower still, or as narrow as a clear neck (`NeckShape.clearUpTo`),
+    /// the end is no head at all: a neck, the case lying the other way round.
     static func featuresFit(_ photo: ShapeMeasurement, _ expected: ShapeMeasurement, part: ShapePart) -> Bool {
         guard let a = photo.features, let b = expected.features else { return true }
-        if abs(a.rim - b.rim) > rimTolerance { return false }
-        if part == .emptyCase, abs(a.mouth - b.mouth) > neckTolerance { return false }
+        if part == .emptyCase {
+            if a.rim > b.rim + rimTolerance || abs(a.mouth - b.mouth) > neckTolerance { return false }
+            if a.rim < b.rim - rimTolerance && (a.rim < b.rim - narrowHeadUpTo || a.rim <= NeckShape.clearUpTo) { return false }
+        } else if abs(a.rim - b.rim) > rimTolerance { return false }
         return true
     }
 
-    /// Added to a loaded cartridge's distance when its rim doesn't fit. On a loaded cartridge the
-    /// rim is only a hint: a shadow or the edge of the base can look like a rim in the photo.
+    /// How much narrower than the calibre's an empty case's head may look (relative to the body): as
+    /// much as the widest rims stand out (1.25).
+    static let narrowHeadUpTo = 0.25
+
+    /// Whether the photo's rim is as wide as the expected shape's, within `rimTolerance`.
+    static func rimFits(_ photo: ShapeMeasurement, _ expected: ShapeMeasurement) -> Bool {
+        guard let a = photo.features, let b = expected.features else { return true }
+        return abs(a.rim - b.rim) <= rimTolerance
+    }
+
+    /// Added to a loaded cartridge's distance when its rim doesn't fit, and to an empty case's when its
+    /// head is narrower than the calibre's. On a loaded cartridge the rim is only a hint: a shadow or
+    /// the edge of the base can look like a rim in the photo.
     static let rimPenalty = 0.1
 
     /// Distance to an expected shape. For an empty case, nil when rim or neck rule the calibre out,
-    /// and the case is tried both ways round; for a cartridge a misfitting rim only adds `rimPenalty`.
+    /// and the case is tried both ways round; a misfitting rim that doesn't rule it out adds `rimPenalty`,
+    /// as on a cartridge.
     /// With the calibre's `neckRatio` (catalogue neck over base), the neck counts too (`NeckShape.distance`).
     static func distance(_ photo: ShapeMeasurement, to expected: ShapeMeasurement, part: ShapePart,
                          neckRatio: Double? = nil) -> Double? {
@@ -281,7 +302,7 @@ enum ShapeMatcher {
         }
         return [photo, photo.reversed()]
             .filter { featuresFit($0, expected, part: part) }
-            .map { distance($0, expected) + neck($0) }
+            .map { distance($0, expected) + neck($0) + (rimFits($0, expected) ? 0 : rimPenalty) }
             .min()
     }
 

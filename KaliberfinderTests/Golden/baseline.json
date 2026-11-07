@@ -1,13 +1,13 @@
 {
   "scores" : {
     "neck" : 80,
-    "part" : 57.5,
-    "top1" : 27.5,
-    "top1All" : 22.5,
-    "top1Obsolete" : 27.5,
-    "top5" : 30,
-    "top5All" : 30,
-    "top5Obsolete" : 30
+    "part" : 62.5,
+    "top1" : 35,
+    "top1All" : 30,
+    "top1Obsolete" : 35,
+    "top5" : 37.5,
+    "top5All" : 37.5,
+    "top5Obsolete" : 37.5
   },
   "shots" : {
     "45-acp-20261105-115201/02" : {
@@ -33,7 +33,11 @@
       "part" : false
     },
     "45-acp-20261105-115201/11" : {
-      "part" : false
+      "part" : true,
+      "rank" : 1,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
     },
     "45-acp-20261105-224631/04" : {
       "part" : true
@@ -130,15 +134,23 @@
     },
     "6-mm-br-norma-20261105-115031/08" : {
       "neck" : false,
-      "part" : false
+      "part" : true
     },
     "6-mm-br-norma-20261105-115031/09" : {
       "neck" : true,
-      "part" : true
+      "part" : true,
+      "rank" : 1,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
     },
     "6-mm-br-norma-20261105-115031/10" : {
       "neck" : true,
-      "part" : true
+      "part" : true,
+      "rank" : 1,
+      "row" : 1,
+      "rowAll" : 1,
+      "rowObsolete" : 1
     },
     "6-mm-br-norma-20261105-115031/11" : {
       "neck" : true,

@@ -15,22 +15,14 @@ extension PhotoAnalyzer {
     }
 
     static func analyzeNow(_ image: UIImage, focusingOn candidate: CGRect) -> PhotoAnalysis {
-        let region = focusRegion(candidate)
-        let size = image.size
-        let crop = CGRect(x: region.minX * size.width, y: region.minY * size.height,
-                          width: region.width * size.width, height: region.height * size.height)
-        let cropped = Self.cropped(image, to: region)
-        var analysis = analyzeNow(cropped)
-        // The size measurement compares pixels with the whole photo's long side, at the scale
-        // the cut-out was analysed at.
-        let scale = min(1, maxDimension / max(crop.width, crop.height))
-        analysis.imageLongSide = Double(max(size.width, size.height) * scale)
-        analysis.candidates = []
-        // From the cut-out back to the whole photo.
-        let toPhoto = { (p: CGPoint) in CGPoint(x: region.minX + p.x * region.width, y: region.minY + p.y * region.height) }
-        analysis.outline = analysis.outline?.map(toPhoto)
-        analysis.contour = analysis.contour?.map(toPhoto)
-        return analysis
+        analyzeNow(image, in: focusRegion(candidate))
+    }
+
+    /// The part `region` of the photo (fractions of the upright photo) cut out at full size and
+    /// analysed on its own (one look), as an analysis of the whole photo (`inPhoto`).
+    private static func analyzeNow(_ image: UIImage, in region: CGRect) -> PhotoAnalysis {
+        guard let part = upright(image, region: region, maxSide: maxDimension) else { return PhotoAnalysis(shape: nil) }
+        return inPhoto(analyzeNow(part), region: region, photoSize: image.size)
     }
 
     /// The part of the photo inside `region` (fractions of the upright photo), upright.
@@ -45,21 +37,36 @@ extension PhotoAnalyzer {
         }
     }
 
+    /// Two looks: the whole photo, then the full-size part around the cartridge it found
+    /// (`secondLookRegion`).
     static func analyzeNow(_ image: UIImage) -> PhotoAnalysis {
+        let first = firstLook(image)
+        guard let region = secondLookRegion(of: first) else { return first }
+        return secondLook(first, then: analyzeNow(image, in: region))
+    }
+
+    /// One look at the photo, scaled to `maxDimension`.
+    private static func firstLook(_ image: UIImage) -> PhotoAnalysis {
         guard let cgImage = upright(image, maxSide: maxDimension) else { return PhotoAnalysis(shape: nil) }
         return analyzeNow(cgImage)
     }
 
-    /// The image scaled down and with its orientation applied, so pixels are upright.
-    private static func upright(_ image: UIImage, maxSide: CGFloat) -> CGImage? {
-        let longSide = max(image.size.width, image.size.height)
+    /// The part `region` of the image (fractions, by default all of it) with its orientation applied,
+    /// so pixels are upright, and scaled down to at most `maxSide` pixels: drawn in one go, so a part of
+    /// a full-size photo is never rendered at full size first.
+    private static func upright(_ image: UIImage, region: CGRect = CGRect(x: 0, y: 0, width: 1, height: 1),
+                                maxSide: CGFloat) -> CGImage? {
+        let crop = CGRect(x: region.minX * image.size.width, y: region.minY * image.size.height,
+                          width: region.width * image.size.width, height: region.height * image.size.height)
+        let longSide = max(crop.width, crop.height)
         guard longSide > 0 else { return nil }
         let factor = min(1, maxSide / longSide)
-        let size = CGSize(width: image.size.width * factor, height: image.size.height * factor)
+        let size = CGSize(width: crop.width * factor, height: crop.height * factor)
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
         return UIGraphicsImageRenderer(size: size, format: format).image { _ in
-            image.draw(in: CGRect(origin: .zero, size: size))
+            image.draw(in: CGRect(x: -crop.minX * factor, y: -crop.minY * factor,
+                                  width: image.size.width * factor, height: image.size.height * factor))
         }.cgImage
     }
 }

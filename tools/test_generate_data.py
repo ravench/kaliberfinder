@@ -48,8 +48,17 @@ class RareAndCountryTests(unittest.TestCase):
     def test_countries_with_flag_emoji(self):
         self.assertEqual(self.by_name["7.5x55 mm Swiss (GP 11)"]["country"],
                          {"code": "CH", "name": "Schweiz", "flag": "🇨🇭"})
-        self.assertEqual(self.by_name["9x19 mm"]["country"]["code"], "WW")
-        self.assertEqual(self.by_name["9x19 mm"]["country"]["name"], "Weltweit verbreitet")
+        # Raven 2026-11-07: worldwide rounds keep the state that introduced them
+        self.assertEqual(self.by_name["9x19 mm"]["country"], {"code": "DE", "name": "Deutschland", "flag": "🇩🇪"})
+        self.assertEqual(self.by_name[".338 Lapua Magnum"]["country"]["name"], "Finnland")
+
+    def test_worldwide_is_a_separate_flag(self):
+        self.assertTrue(all(isinstance(c["worldwide"], bool) for c in self.by_name.values()))
+        self.assertTrue(self.by_name["9x19 mm"]["worldwide"])  # German and worldwide
+        self.assertTrue(self.by_name["12/70"]["worldwide"])  # a gauge: worldwide without a country
+        self.assertFalse(self.by_name["7.62x39 mm"]["worldwide"])
+        self.assertFalse(self.by_name[GP1890]["worldwide"])
+        self.assertNotIn("WW", generate_data.COUNTRY_NAMES)
 
     def test_former_states_have_no_emoji_and_are_drawn(self):
         self.assertEqual(self.by_name["7.62x54 mm R"]["country"], {"code": "RUE", "name": "Russisches Kaiserreich"})
@@ -70,7 +79,9 @@ class RareAndCountryTests(unittest.TestCase):
             self.assertIn(name, T, name)
 
     def test_no_country_means_no_key(self):
-        self.assertNotIn("country", self.by_name[".308 Norma Magnum"])
+        self.assertNotIn("country", self.by_name["12/70"])
+        self.assertNotIn("country", self.by_name[".36 Rundkugel (.375)"])
+        self.assertEqual(self.by_name[".308 Norma Magnum"]["country"]["code"], "SE")
 
 
 class BlankFlagTests(unittest.TestCase):

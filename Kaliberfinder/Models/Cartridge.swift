@@ -20,8 +20,12 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     /// Hardly ever found, so a photo or measurement that matches it is more likely a similar,
     /// common calibre (calibre-data RARE). Shown with the «Selten» tag.
     let rare: Bool
-    /// The country the calibre is linked to, or «Weltweit verbreitet»; nil when neither applies.
+    /// The state that introduced the calibre (calibre-data ORIGIN); nil for gauges, balls, pellets,
+    /// blanks and calibres whose origin is still open.
     let country: Country?
+    /// In common use worldwide (calibre-data WORLDWIDE), shown as a globe next to the flag.
+    /// Independent of `country`: 9x19 mm is German and worldwide.
+    let worldwide: Bool
     /// A crimped blank (power-tool load, starter pistol blank): no bullet, the case is the whole cartridge.
     let blank: Bool
     let dimensions: Dimensions
@@ -31,14 +35,12 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     /// A country from calibre-data ORIGIN.
     struct Country: Decodable, Hashable {
-        /// ISO code; RUE, AH, SU and CS for former states, WW for calibres in use worldwide.
+        /// ISO code; RUE, AH, SU and CS for former states.
         let code: String
         /// German name, used as localization key.
         let name: String
         /// Flag emoji; nil for former states, whose flag `DrawnFlag` draws.
         let flag: String?
-
-        static let worldwide = "WW"
     }
 
     /// The primer in the centre of the case head (that of the original factory ammunition).

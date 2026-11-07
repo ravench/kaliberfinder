@@ -2,8 +2,8 @@ import CoreGraphics
 import XCTest
 @testable import Kaliberfinder
 
-/// The green outline drawn over the photo follows the cartridge's shape (SHAPE-07): straight lines
-/// along the bullet, neck and body from what was detected, joined into one.
+/// The green outline drawn over the photo follows the cartridge's shape (SHAPE-07): the bullet as a
+/// typical nose curve, straight lines along the neck and body, from what was detected, joined into one.
 final class ShapeContourTests: XCTestCase {
     private let ppm = 6.0
     private let step = 0.15
@@ -43,9 +43,8 @@ final class ShapeContourTests: XCTestCase {
     }
 
     /// The polygon for a cartridge, checked against the silhouette: it covers about the silhouette's
-    /// area (straight lines cut a round bullet nose a little; far less than its box when the shape
-    /// narrows), and no corner lies more than 1 mm off its edge (the straight lines are fitted,
-    /// and the neck's width runs on over a slimmer bullet).
+    /// area (far less than its box when the shape narrows), and no corner lies more than 1 mm off its
+    /// edge (the lines and curves are fitted, and the neck's width runs on over a slimmer bullet).
     private func check(_ id: String, caseOnly: Bool, angle: Double) throws -> (polygon: ShapeContour, boxArea: Double, silhouetteArea: Double) {
         let c = try cartridge(id)
         let (points, _, _) = silhouette(c, caseOnly: caseOnly, angle: angle)
@@ -71,6 +70,7 @@ final class ShapeContourTests: XCTestCase {
             XCTAssertLessThan(silhouetteArea, 0.95 * boxArea, "angle \(angle)")
             // Straight lines only: mouth, neck end, shoulder, head on each side; each edge from its detection.
             XCTAssertEqual(polygon.parts, [.neck, .neck, .body, .end, .body, .neck, .neck, .end], "angle \(angle)")
+            XCTAssertNil(polygon.nose, "angle \(angle)")
         }
     }
 
@@ -86,6 +86,84 @@ final class ShapeContourTests: XCTestCase {
         XCTAssertEqual(polygon.parts.first, .bullet)
         XCTAssertEqual(polygon.parts.last, .end)
         XCTAssertTrue(polygon.parts.contains(.neck))
+        XCTAssertEqual(polygon.nose?.kind, .pointed)
+    }
+
+    /// How far the nose curve, and a straight line from the tip to where the nose ends, are off the
+    /// silhouette's slices in front of that point, at most (in body widths, on each side).
+    private func noseMiss(_ id: String, angle: Double) throws -> (nose: NoseCurve, curve: Double, straight: Double) {
+        let (polygon, _, _) = try check(id, caseOnly: false, angle: angle)
+        let nose = try XCTUnwrap(polygon.nose, id)
+        // Each side has its nose corners, then the rest of the outline.
+        XCTAssertEqual(Array(polygon.parts.prefix(NoseCurve.segments)), Array(repeating: ShapeContour.Part.bullet, count: NoseCurve.segments), id)
+        XCTAssertEqual(polygon.parts.filter { $0 == .bullet }.count, 2 * NoseCurve.segments, id)
+        let (points, _, _) = silhouette(try cartridge(id), caseOnly: false, angle: angle)
+        let w = try XCTUnwrap(ShapeMatcher.measure(points, pixelSize: ppm * step), id).widths
+        let bins = Double(w.count), tip = w[0] / 2
+        var curve = 0.0, straight = 0.0
+        for i in w.indices where (Double(i) + 0.5) / bins < nose.length {
+            // A slice's width is its widest point: its back edge on a nose.
+            let f = min(Double(i + 1) / bins, nose.length)
+            curve = max(curve, abs(nose.half(at: f) - w[i] / 2))
+            straight = max(straight, abs(tip + (nose.base - tip) * f / nose.length - w[i] / 2))
+        }
+        return (nose, curve, straight)
+    }
+
+    func testRoundNosesAreDrawnRound() throws {
+        for id in ["9x19 mm", ".45 ACP", ".38 Special"] {
+            for angle in [0.7, 2.0] {
+                let (nose, curve, straight) = try noseMiss(id, angle: angle)
+                XCTAssertEqual(nose.kind, .round, "\(id) angle \(angle)")
+                // The curve stays within 2.5 % of the body width; a straight line cut off the round nose by twice that.
+                XCTAssertLessThan(curve, 0.025, "\(id) angle \(angle)")
+                XCTAssertGreaterThan(straight, 0.05, "\(id) angle \(angle)")
+            }
+        }
+    }
+
+    func testPointedNoseOfARifleBullet() throws {
+        for id in ["7.5x55 mm Swiss (GP 11)", "5.56x45 mm NATO"] {
+            let (nose, curve, _) = try noseMiss(id, angle: 0.7)
+            XCTAssertEqual(nose.kind, .pointed, id)
+            XCTAssertLessThan(curve, 0.04, id)
+        }
+    }
+
+    func testNoseCurves() {
+        // The catalogue's curves: full width where the nose starts, none at a sharp tip; a pointed nose
+        // is slimmer than a round one in between.
+        for kind in NoseCurve.Kind.allCases {
+            XCTAssertEqual(kind.width(0), 1, accuracy: 1e-12)
+            XCTAssertEqual(kind.width(1), 0, accuracy: 1e-12)
+        }
+        XCTAssertEqual(NoseCurve.Kind.round.width(0.6), 0.8, accuracy: 1e-12)
+        XCTAssertLessThan(NoseCurve.Kind.pointed.width(0.5), NoseCurve.Kind.round.width(0.5) - 0.1)
+        // Cut flat at the tip, it meets the case or body at its full width.
+        let nose = NoseCurve(kind: .round, cut: 0.8, length: 0.3, base: 0.4)
+        XCTAssertEqual(nose.half(at: 0), 0.4 * 0.6, accuracy: 1e-12)
+        XCTAssertEqual(nose.half(at: 0.3), 0.4, accuracy: 1e-12)
+        XCTAssertEqual(nose.half(at: 0.5), 0.4, accuracy: 1e-12)
+        // Corners from the tip back, closer together at the tip, the last short of the base.
+        let corners = nose.points()
+        XCTAssertEqual(corners.count, NoseCurve.segments)
+        XCTAssertEqual(corners.first?.f, 0)
+        XCTAssertEqual(corners.first?.half ?? 0, 0.24, accuracy: 1e-12)
+        let gaps = zip(corners.dropFirst(), corners).map { $0.f - $1.f }
+        XCTAssertTrue(gaps.allSatisfy { $0 > 0 })
+        XCTAssertEqual(gaps, gaps.sorted())
+        XCTAssertLessThan(corners.last?.f ?? 1, 0.3)
+    }
+
+    func testFitFindsTheCurveTheSlicesCameFrom() throws {
+        let bins = ShapeMatcher.bins
+        let truth = NoseCurve(kind: .pointed, cut: NoseCurve.cuts[4], length: 0.3, base: 0.4)
+        let halves = (0..<bins).map { i -> Double in
+            (Double(i) + 0.5) / Double(bins) < truth.length ? truth.half(at: min(Double(i + 1) / Double(bins), truth.length)) : 0.4
+        }
+        let bases = [0.25, 0.3, 0.35].map { (f: $0, half: 0.4) }
+        XCTAssertEqual(NoseCurve.fitted(halfWidths: halves, bases: bases) { _ in 0.4 }, truth)
+        XCTAssertNil(NoseCurve.fitted(halfWidths: halves, bases: []) { _ in 0.4 })
     }
 
     func testStraightCartridge() throws {
@@ -106,10 +184,12 @@ final class ShapeContourTests: XCTestCase {
     }
 
     func testPartsKeepTheirEdgesWhenMoved() {
-        let contour = ShapeContour(points: [CGPoint(x: 0.5, y: 0.5), CGPoint(x: 1, y: 0)], parts: [.body, .end])
+        let nose = NoseCurve(kind: .round, cut: 1, length: 0.2, base: 0.45)
+        let contour = ShapeContour(points: [CGPoint(x: 0.5, y: 0.5), CGPoint(x: 1, y: 0)], parts: [.body, .end], nose: nose)
         let moved = contour.map { CGPoint(x: 0.1 + $0.x * 0.5, y: 0.2 + $0.y * 0.5) }
         XCTAssertEqual(moved.points, [CGPoint(x: 0.35, y: 0.45), CGPoint(x: 0.6, y: 0.2)])
         XCTAssertEqual(moved.parts, [.body, .end])
+        XCTAssertEqual(moved.nose, nose)
         // Coloured drawing: each part's edges only, the last edge back to the first corner.
         let corners = [CGPoint(x: 0, y: 0), CGPoint(x: 10, y: 0), CGPoint(x: 10, y: 5)]
         XCTAssertEqual(CandidatePhotoView.path(edges: [2], of: corners).boundingRect, CGRect(x: 0, y: 0, width: 10, height: 5))

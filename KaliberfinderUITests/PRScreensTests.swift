@@ -80,15 +80,25 @@ final class PRScreensTests: XCTestCase {
     /// The matches for one of Raven's photos (an empty GP 11 case), with the measured frame and the
     /// detected neck and taper drawn over it.
     func testPhotoMatches() {
+        photoMatches("set-gp11-case-02", shot: "07-Foto-Treffer")
+    }
+
+    /// A loaded 9 mm: the outline follows its round bullet nose.
+    func testLoadedCartridgePhoto() {
+        photoMatches("photo-9x19-wood", shot: "13-Foto-Patrone")
+    }
+
+    /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`.
+    private func photoMatches(_ fixture: String, shot: String) {
         let photo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
-            .appendingPathComponent("KaliberfinderTests/Fixtures/set-gp11-case-02.jpg")
+            .appendingPathComponent("KaliberfinderTests/Fixtures/\(fixture).jpg")
         app.terminate()
         app.launchArguments += ["-screenTourPhoto", photo.path]
         app.launch()
         if app.navigationBars["Treffer"].waitForExistence(timeout: 10) {
             // The colour cut-out on the simulator can take a while on a busy runner.
             _ = app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90)
-            snap("07-Foto-Treffer")
+            snap(shot)
         }
     }
 
