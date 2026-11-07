@@ -272,11 +272,10 @@ private struct TrainingCameraView: View {
 
     private func shoot() {
         saving = true
-        camera.captureRaw { photo, focus in
+        camera.captureRaw { photo, moment in
             Task { @MainActor in
                 do {
-                    try await TrainingRecorder.save(photo, gravity: camera.gravity, tilt: camera.tilt, focus: focus,
-                                                    mode: capture.package.scanMode, in: capture.url)
+                    try await TrainingRecorder.save(photo, at: moment, mode: capture.package.scanMode, in: capture.url)
                     saved += 1
                     failure = nil
                 } catch {

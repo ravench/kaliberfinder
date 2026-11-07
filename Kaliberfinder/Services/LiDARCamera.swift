@@ -25,9 +25,9 @@ final class LiDARCamera: NSObject, ObservableObject {
     private var device: AVCaptureDevice?
     private var lastDepthUpdate = Date.distantPast
     private var onPhoto: ((UIImage, DepthScale?) -> Void)?
-    private var onRawPhoto: ((AVCapturePhoto, CaptureShot.Focus?) -> Void)?
-    /// The focus when the raw photo was taken, read just before it.
-    private var rawFocus: CaptureShot.Focus?
+    private var onRawPhoto: ((AVCapturePhoto, CaptureMoment) -> Void)?
+    /// How the phone and the camera stood when the raw photo was taken, read just before it.
+    private var rawMoment = CaptureMoment()
 
     func start() {
         AVCaptureDevice.requestAccess(for: .video) { [self] granted in
@@ -64,11 +64,15 @@ final class LiDARCamera: NSObject, ObservableObject {
 
     /// Takes a photo and hands it over as the camera delivered it, with depth and calibration
     /// (`TrainingRecorder`), on the main queue.
-    func captureRaw(_ completion: @escaping (AVCapturePhoto, CaptureShot.Focus?) -> Void) {
+    func captureRaw(_ completion: @escaping (AVCapturePhoto, CaptureMoment) -> Void) {
+        // Gravity and tilt as Core Motion last delivered them (on the main queue), the focus on the
+        // camera's queue: the lens keeps focusing, so its position as the photo is taken, not once it
+        // is delivered.
+        let pose = CaptureMoment(gravity: gravity, tilt: tilt)
         queue.async { [self] in
             onRawPhoto = completion
-            // The lens keeps focusing: its position as the photo is taken, not once it is delivered.
-            rawFocus = device.map { CaptureShot.Focus(minimumFocusDistance: $0.minimumFocusDistance, lensPosition: $0.lensPosition) }
+            rawMoment = pose
+            rawMoment.focus = device.map { CaptureShot.Focus(minimumFocusDistance: $0.minimumFocusDistance, lensPosition: $0.lensPosition) }
             takePhoto()
         }
     }
@@ -163,8 +167,8 @@ extension LiDARCamera: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let raw = onRawPhoto {
             onRawPhoto = nil
-            let focus = rawFocus
-            DispatchQueue.main.async { raw(photo, focus) }
+            let moment = rawMoment
+            DispatchQueue.main.async { raw(photo, moment) }
             return
         }
         let completion = onPhoto

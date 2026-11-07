@@ -72,6 +72,13 @@ struct CapturePackage: Codable, Equatable {
     var scanMode: ScanMode { ScanMode(rawValue: part) ?? .auto }
 }
 
+/// How the phone and its camera stood when a training photo was taken (see `CaptureShot`).
+struct CaptureMoment: Equatable {
+    var gravity: [Double]?
+    var tilt: Double?
+    var focus: CaptureShot.Focus?
+}
+
 /// One photo of a series: shot.json.
 struct CaptureShot: Codable, Equatable {
     /// File name of the photo next to shot.json.
