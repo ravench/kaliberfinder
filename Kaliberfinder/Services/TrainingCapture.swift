@@ -14,7 +14,7 @@ import UniformTypeIdentifiers
 ///     9x19-mm-20261105-143000/
 ///       package.json            CapturePackage: calibre, part, note, device
 ///       01/
-///         shot.json             CaptureShot: calibration, depth size, gravity, the app's analysis
+///         shot.json             CaptureShot: calibration, depth size, gravity, focus, the app's analysis
 ///         photo.heic|jpg        the photo exactly as the camera or library delivered it (with EXIF)
 ///         depth.f32             LiDAR depth, Float32 little-endian, metres, row by row
 ///         vision-instances.png  Vision's foreground instances, one 8-bit label per pixel (0 = none)
@@ -72,6 +72,13 @@ struct CapturePackage: Codable, Equatable {
     var scanMode: ScanMode { ScanMode(rawValue: part) ?? .auto }
 }
 
+/// How the phone and its camera stood when a training photo was taken (see `CaptureShot`).
+struct CaptureMoment: Equatable {
+    var gravity: [Double]?
+    var tilt: Double?
+    var focus: CaptureShot.Focus?
+}
+
 /// One photo of a series: shot.json.
 struct CaptureShot: Codable, Equatable {
     /// File name of the photo next to shot.json.
@@ -88,6 +95,8 @@ struct CaptureShot: Codable, Equatable {
     /// Gravity in device coordinates (Core Motion, units of g) and the tilt from lying flat, in degrees.
     var gravity: [Double]?
     var tilt: Double?
+    /// The camera's focus when the photo was taken; nil for library photos and older shots.
+    var focus: Focus?
     var mask: Mask?
     /// What the app made of the photo when it was taken.
     var analysis: Analysis?
@@ -118,6 +127,25 @@ struct CaptureShot: Codable, Equatable {
         let distortionCenter: [Double]
         let distortion: [Double]
         let inverseDistortion: [Double]
+    }
+
+    /// The closest distance the camera can focus at, in mm (`AVCaptureDevice.minimumFocusDistance`;
+    /// nil where it doesn't say), and where its lens stood (0 nearest … 1 farthest), to find how close
+    /// a photo can be taken.
+    struct Focus: Codable, Equatable {
+        let minimumDistance: Int?
+        let lensPosition: Double
+
+        init(minimumDistance: Int?, lensPosition: Double) {
+            self.minimumDistance = minimumDistance
+            self.lensPosition = lensPosition
+        }
+
+        /// As the camera reports them: -1 for an unknown distance, the position to four decimals.
+        init(minimumFocusDistance: Int, lensPosition: Float) {
+            self.init(minimumDistance: minimumFocusDistance >= 0 ? minimumFocusDistance : nil,
+                      lensPosition: (Double(lensPosition) * 10_000).rounded() / 10_000)
+        }
     }
 
     struct Scale: Codable, Equatable {
