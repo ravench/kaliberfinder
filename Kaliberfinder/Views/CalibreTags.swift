@@ -153,7 +153,7 @@ struct OriginMarks: View {
     }
 
     let cartridges: [Cartridge]
-    @ScaledMetric(relativeTo: .body) private var slot: CGFloat
+    @ScaledMetric private var slot: CGFloat  // relative to .body, set in init
 
     init(cartridges: [Cartridge], slot: CGFloat = 42) {
         self.cartridges = cartridges
