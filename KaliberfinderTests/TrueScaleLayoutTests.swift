@@ -1,4 +1,5 @@
 import XCTest
+import SwiftUI
 @testable import Kaliberfinder
 
 final class TrueScaleLayoutTests: XCTestCase {
@@ -70,5 +71,43 @@ final class TrueScaleLayoutTests: XCTestCase {
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
         XCTAssertEqual(en["Originalgrösse: nicht zoombar, damit die Masse stimmen."], "Real size: no zoom, so the measurements stay true.")
         XCTAssertNotNil(en["1:1 – Zoomen ist abgeschaltet, damit die Grösse stimmt."])
+        XCTAssertEqual(en["Hülse %@"], "Case %@")
+        XCTAssertEqual(en["Geschosse beim Vergleich mit leeren Hülsen zeigen"], "Show bullets when comparing empty cases")
+    }
+
+    func testEmptyCasesShowTheirCaseLength() throws {
+        let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: ".308 Winchester"))
+        XCTAssertEqual(TrueScaleView.caseLengthText(c, unit: .metric), String(format: "Hülse %@".loc, LengthUnit.metric.format(51.2)))
+        XCTAssertEqual(TrueScaleView.caseLengthText(c, unit: .imperial), String(format: "Hülse %@".loc, LengthUnit.imperial.format(51.2)))
+        // «L» is the length of what is drawn: the whole cartridge, or the case alone without its bullet.
+        XCTAssertEqual(TrueScaleView.lengthText(c, caseOnly: false, unit: .metric), "L " + LengthUnit.metric.format(71.1))
+        XCTAssertEqual(TrueScaleView.lengthText(c, caseOnly: true, unit: .metric), "L " + LengthUnit.metric.format(51.2))
+    }
+
+    /// With «Geschosse beim Vergleich mit leeren Hülsen zeigen» off, the case is drawn alone: where the bullet stood stays empty.
+    @MainActor
+    func testCaseOnlyLeavesOutTheBullet() throws {
+        let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: ".308 Winchester"))
+        let ppmm = 4.0, d = c.dimensions
+        // On the axis, half way along the bullet in front of the case mouth, and half way up the case.
+        let x = Int(c.outline.width * ppmm / 2)
+        let bulletY = Int((d.overallLength - d.caseLength) / 2 * ppmm)
+        let caseY = Int((d.overallLength - d.caseLength / 2) * ppmm)
+        func alpha(caseOnly: Bool, y: Int) throws -> UInt8 {
+            let renderer = ImageRenderer(content: CartridgeView(cartridge: c, pointsPerMM: ppmm, caseOnly: caseOnly))
+            renderer.scale = 1
+            let image = try XCTUnwrap(renderer.cgImage)
+            var pixel = [UInt8](repeating: 0, count: 4)
+            pixel.withUnsafeMutableBytes { buffer in
+                let context = CGContext(data: buffer.baseAddress, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
+                                        space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+                // Moves pixel (x, y), counted from the top, onto the context's only pixel.
+                context?.draw(image, in: CGRect(x: -x, y: y + 1 - image.height, width: image.width, height: image.height))
+            }
+            return pixel[3]
+        }
+        XCTAssertEqual(try alpha(caseOnly: false, y: bulletY), 255)
+        XCTAssertEqual(try alpha(caseOnly: true, y: bulletY), 0)
+        XCTAssertEqual(try alpha(caseOnly: true, y: caseY), 255)
     }
 }

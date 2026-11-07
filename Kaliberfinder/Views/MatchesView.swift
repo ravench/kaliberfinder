@@ -71,7 +71,7 @@ struct MatchesView: View {
         .safeAreaInset(edge: .bottom) {
             // A prominent button pinned to the bottom, like on the measure screen, so it is not missed.
             if analysis != nil, !matches.isEmpty {
-                CompareButton(title: Self.compareTitle(matches), cartridges: Self.toCompare(matches))
+                CompareButton(title: Self.compareTitle(matches), cartridges: Self.toCompare(matches), emptyCases: Self.emptyCases(matches))
             }
         }
         .navigationTitle("Treffer")
@@ -113,7 +113,7 @@ struct MatchesView: View {
             Section {
                 // Calibres that look exactly the same from the side share one row.
                 ForEach(Matcher.grouped(matches)) { g in
-                    NavigationLink { TrueScaleView(cartridges: [g.lead.cartridge]) } label: {
+                    NavigationLink { TrueScaleView(cartridges: [g.lead.cartridge], emptyCases: Self.emptyCases(g.items)) } label: {
                         CartridgeRow(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead),
                                      highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
                     }
@@ -216,8 +216,19 @@ struct MatchesView: View {
     /// Calibres that look exactly the same from the side are shown once.
     static func toCompare(_ matches: [Match]) -> [Cartridge] {
         // `sorted` is stable, so ties keep their rank order.
-        Matcher.grouped(matches).map(\.lead.cartridge)
-            .sorted { ($0.dimensions.overallLength, $0.headDiameter) < ($1.dimensions.overallLength, $1.headDiameter) }
+        Matcher.grouped(matches).map(\.lead)
+            .sorted { (comparedLength($0), $0.cartridge.headDiameter) < (comparedLength($1), $1.cartridge.headDiameter) }
+            .map(\.cartridge)
+    }
+
+    /// The length the photo was compared with: the case for an empty case, else the whole cartridge.
+    static func comparedLength(_ m: Match) -> Double {
+        m.part == .emptyCase ? m.cartridge.dimensions.caseLength : m.cartridge.dimensions.overallLength
+    }
+
+    /// The calibres the photo was compared with as empty cases; balls and blanks are always compared whole.
+    static func emptyCases(_ matches: [Match]) -> Set<String> {
+        Set(matches.filter { $0.part == .emptyCase }.map(\.cartridge.id))
     }
 
     /// E.g. "Alle passenden 1:1 vergleichen (5)", counting identical-looking calibres once.
