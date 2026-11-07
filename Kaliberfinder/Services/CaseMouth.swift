@@ -16,11 +16,13 @@ enum CaseMouth {
     /// The colours just in front of and just behind the mouth are compared over this much of the
     /// length each.
     static let window = 0.05
-    /// How much the colour (green and blue, each relative to red) changes at least at the mouth, and
-    /// between the whole bullet and the case behind the mouth. Copper meeting brass changes it by
-    /// 0.1 to 0.3 in Raven's photos; the colour along one case changes less.
+    /// How far the colour (`chroma`) moves at least at the mouth, and between the whole bullet and the
+    /// case behind the mouth. Copper meeting brass moves it by 0.2 to 0.5 in Raven's photos; the
+    /// colour along one case moves less.
     static let minStep = 0.08
     static let minChange = 0.1
+    /// Saturation where a colour lies halfway out from the middle of `chroma`'s disc.
+    static let grey: Float = 0.08
     /// Steps next to the sharpest that change at least this share as much belong to the same edge.
     static let plateau = 0.9
     /// How far behind the mouth the case is compared with the bullet: the head's rim and groove are
@@ -65,25 +67,17 @@ enum CaseMouth {
             return (mid(inside.map(\.0)), mid(inside.map(\.1)))
         }
         func distance(_ a: (Double, Double), _ b: (Double, Double)) -> Double { hypot(a.0 - b.0, a.1 - b.1) }
-        // The sharpest change of colour in the range that goes from the bullet's colour to the case's: just
-        // in front of it the colour is closer to the bullet's (the front half of the way from the tip) than to
-        // the case's (farther back), just behind it the other way round. A highlight where a nose meets the
-        // bullet's straight part, or a stain on the case, changes the colour with one material on both sides
-        // (Raven's training shots, 2026-11-07). The medians change as much anywhere within half a window of
-        // a sharp edge: the mouth is the middle of the steps that change nearly as much.
-        let steps = f.filter { area.range.contains($0) }.compactMap { (x: Double) -> (at: Double, step: Double, sides: Bool)? in
-            guard let front = median(x - window, x), let back = median(x, x + window),
-                  let bullet = median(area.tipEnd, (area.tipEnd + x) / 2), let brass = median(x + caseReach / 2, x + caseReach)
-            else { return nil }
-            let sides = distance(front, bullet) < distance(front, brass) && distance(back, brass) < distance(back, bullet)
-            return (x, distance(front, back), sides)
+        // The sharpest change of colour in the range. The medians change as much anywhere within half a
+        // window of a sharp edge: the mouth is the middle of the steps that change nearly as much.
+        let steps = f.filter { area.range.contains($0) }.compactMap { (x: Double) -> (at: Double, step: Double)? in
+            guard let front = median(x - window, x), let back = median(x, x + window) else { return nil }
+            return (x, distance(front, back))
         }
-        guard let top = steps.indices.filter({ steps[$0].sides }).max(by: { steps[$0].step < steps[$1].step }) else { return nil }
+        guard let top = steps.indices.max(by: { steps[$0].step < steps[$1].step }) else { return nil }
         let step = steps[top].step
-        func near(_ i: Int) -> Bool { steps[i].sides && steps[i].step >= plateau * step }
         var first = top, last = top
-        while first > 0 && near(first - 1) { first -= 1 }
-        while last + 1 < steps.count && near(last + 1) { last += 1 }
+        while first > 0 && steps[first - 1].step >= plateau * step { first -= 1 }
+        while last + 1 < steps.count && steps[last + 1].step >= plateau * step { last += 1 }
         let mouth = (steps[first].at + steps[last].at) / 2
         // Copper on one side, brass on the other, all along: not a change along one material.
         guard step >= minStep, let bullet = median(area.tipEnd, mouth),
@@ -91,10 +85,10 @@ enum CaseMouth {
         return mouth
     }
 
-    /// Green and blue relative to red at `f` of the length, the median over the middle of the width
-    /// (`half` body widths each side of the axis); nil when too few pixels there count.
+    /// The colour at `f` of the length (`chroma`), the median over the middle of the width (`half` body
+    /// widths each side of the axis); nil when too few pixels there count.
     private static func colour(in photo: RGBImage, at f: Double, half: Double, point: (Double, Double) -> CGPoint) -> (Double, Double)? {
-        var green: [Double] = [], blue: [Double] = []
+        var xs: [Double] = [], ys: [Double] = []
         for j in 0..<across {
             let p = point(f, (2 * Double(j) / Double(across - 1) - 1) * band * half)
             let x = Int(p.x.rounded(.down)), y = Int(p.y.rounded(.down))
@@ -102,10 +96,25 @@ enum CaseMouth {
             let i = (y * photo.width + x) * 3
             let r = photo.pixels[i], g = photo.pixels[i + 1], b = photo.pixels[i + 2]
             guard r + g + b > darkUpTo, max(r, g, b) < glareFrom else { continue }
-            green.append(Double(g / max(r, 1)))
-            blue.append(Double(b / max(r, 1)))
+            let c = chroma(r, g, b)
+            xs.append(c.0)
+            ys.append(c.1)
         }
-        guard green.count >= across / 2 else { return nil }
-        return (green.sorted()[green.count / 2], blue.sorted()[blue.count / 2])
+        guard xs.count >= across / 2 else { return nil }
+        return (xs.sorted()[xs.count / 2], ys.sorted()[ys.count / 2])
+    }
+
+    /// A colour as a point on a disc: its hue the direction, its saturation the distance from the middle,
+    /// levelling off from about `grey` on. Copper and brass differ in hue (about 30° against 55°); lead
+    /// and nickel lie near the middle. A highlight on a copper bullet adds white: its saturation drops a
+    /// lot but its hue hardly changes, so it stays nearer copper than brass. (Green and blue relative to
+    /// red put such a highlight next to brass, and the mouth on the bullet: Raven's training shots,
+    /// 2026-11-07.)
+    static func chroma(_ r: Float, _ g: Float, _ b: Float) -> (Double, Double) {
+        let top = max(r, g, b), c = top - min(r, g, b)
+        guard c > 0 else { return (0, 0) }
+        let sector = top == r ? (g - b) / c : top == g ? (b - r) / c + 2 : (r - g) / c + 4
+        let s = c / top, out = Double(s / (s + grey)), angle = Double(sector) * .pi / 3
+        return (out * cos(angle), out * sin(angle))
     }
 }

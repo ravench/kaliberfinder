@@ -16,10 +16,11 @@ final class CaseMouthTests: XCTestCase {
     }
 
     /// A 1000 × 1000 px photo of the cartridge (or only its case) lying at `angle` on a grey table, its
-    /// bullet (and the case's first `caseFront` mm) in `bullet`'s colour, the rest brass; the pixels it
-    /// covers; and where its case mouth is, as a fraction of its length from the tip.
-    private func photo(_ c: Cartridge, bullet: [Float], caseOnly: Bool = false, caseFront: Double = 0, angle: Double = 0.7)
-        -> (image: RGBImage, points: [Point], mouth: Double) {
+    /// bullet (and the case's first `caseFront` mm) in `bullet`'s colour, the rest brass; the bullet's last
+    /// `highlight` mm in front of the mouth lit by a highlight, its colour mixed with white. With the
+    /// pixels it covers, and where its case mouth is, as a fraction of its length from the tip.
+    private func photo(_ c: Cartridge, bullet: [Float], caseOnly: Bool = false, caseFront: Double = 0, highlight: Double = 0,
+                       angle: Double = 0.7) -> (image: RGBImage, points: [Point], mouth: Double) {
         let size = 1000
         let g = OutlineGeometry(c.outline, includeBullet: !caseOnly)
         let bulletEnd = c.outline.height - c.dimensions.caseLength
@@ -35,7 +36,8 @@ final class CaseMouthTests: XCTestCase {
                 guard u > -1, v > -1, u < c.outline.width + 1, v < c.outline.height + 1, g.contains(Point(x: u, y: v)) else { continue }
                 // Lit from one side: darker across the cartridge, the colour itself unchanged.
                 let light = Float(0.75 + 0.25 * u / c.outline.width)
-                let colour = v < bulletEnd + caseFront ? bullet : brass
+                let lit = bullet.map { 0.4 * $0 + 0.6 * 240 }
+                let colour = v < bulletEnd - highlight ? bullet : v < bulletEnd ? lit : v < bulletEnd + caseFront ? bullet : brass
                 for k in 0..<3 { pixels[(y * size + x) * 3 + k] = colour[k] * light }
                 points.append(Point(x: Double(x), y: Double(y)))
             }
@@ -114,6 +116,14 @@ final class CaseMouthTests: XCTestCase {
     func testLeadBulletMeetsTheCaseToo() throws {
         let shot = photo(try cartridge("9x19 mm"), bullet: lead)
         XCTAssertEqual(try outlines(shot, "lead").coloured.mouth ?? -1, shot.mouth, accuracy: 0.015)
+    }
+
+    /// A highlight on the bullet in front of the mouth mixes white into the copper: the colour changes as
+    /// much there as at the mouth by green and blue relative to red, but copper's hue stays, so the mouth
+    /// is where the copper meets the brass (Raven's training shots, 2026-11-07).
+    func testHighlightOnTheBulletIsNoMouth() throws {
+        let shot = photo(try cartridge("9x19 mm"), bullet: copper, highlight: 4)
+        XCTAssertEqual(try outlines(shot, "highlight").coloured.mouth ?? -1, shot.mouth, accuracy: 0.015)
     }
 
     func testNoMouthWhereTheColourDoesNotChange() throws {
