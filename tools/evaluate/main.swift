@@ -23,6 +23,8 @@ func fail(_ message: String) -> Never {
     exit(1)
 }
 
+var currentName = ""
+
 struct Options {
     var shots: URL
     var holdout = false
@@ -91,6 +93,10 @@ func secondLook(_ first: PhotoAnalysis, photo url: URL) -> (PhotoAnalysis, Secon
     let picked = first.hasSeveralObjects ? first.outline.flatMap(PhotoAnalyzer.focusRegion(around:)) : nil
     guard let region = picked ?? PhotoAnalyzer.secondLookRegion(of: first), let full = uprightPhoto(url, maxSide: 1_000_000),
           let image = part(full, region: region) else { return nil }
+    if let v = PhotoAnalyzer.visionResult(of: image) {
+        let pw = Double(image.width), ph = Double(image.height)
+        dumpEdges("vision2", currentName, v.points) { (region.minX + $0 / pw * region.width, region.minY + $1 / ph * region.height) }
+    }
     let second = PhotoAnalyzer.inPhoto(PhotoAnalyzer.analyzeNow(image), region: region,
                                        photoSize: CGSize(width: full.width, height: full.height))
     if picked != nil { return (second, .picked) }
@@ -158,25 +164,6 @@ func dumpEdges(_ tag: String, _ name: String, _ points: [Point], toPhoto: (Doubl
     FileHandle.standardError.write(Data("EDGES \(tag) \(name) n \(points.count) \(out.joined(separator: " "))\n".utf8))
 }
 
-func diagnose(_ name: String, _ entry: SavedShot) {
-    guard name.contains("20261103") || name.hasPrefix("9x19-mm-20261105-224844/0") else { return }
-    let url = entry.url.appendingPathComponent(entry.shot.photo)
-    guard let photo = uprightPhoto(url), let rgb = PhotoAnalyzer.rgbImage(photo) else { return }
-    let w = Double(photo.width), h = Double(photo.height)
-    if let colour = ColorSegmenter.best(rgb) {
-        dumpEdges("colour1600", name, colour.points) { ($0 / w, $1 / h) }
-    }
-    if let v = PhotoAnalyzer.visionResult(of: photo) { dumpEdges("vision1600", name, v.points) { ($0 / w, $1 / h) } }
-    let first = PhotoAnalyzer.analysis(of: photo, vision: PhotoAnalyzer.visionResult(of: photo))
-    guard let region = PhotoAnalyzer.secondLookRegion(of: first), let full = uprightPhoto(url, maxSide: 1_000_000),
-          let image = part(full, region: region) else { return }
-    let pw = Double(image.width), ph = Double(image.height)
-    let map = { (x: Double, y: Double) in (region.minX + x / pw * region.width, region.minY + y / ph * region.height) }
-    if let v = PhotoAnalyzer.visionResult(of: image) { dumpEdges("vision2", name, v.points, toPhoto: map) }
-    if let prgb = PhotoAnalyzer.rgbImage(image), let colour = ColorSegmenter.best(prgb) { dumpEdges("colour2", name, colour.points, toPhoto: map) }
-    FileHandle.standardError.write(Data("REGION \(name) \(region.minX) \(region.minY) \(region.width) \(region.height) part \(image.width)x\(image.height) full \(full.width)x\(full.height)\n".utf8))
-}
-
 let options = Options(Array(CommandLine.arguments.dropFirst()))
 guard !CartridgeCatalog.all.isEmpty else { fail("Cartridges.json is missing next to the tool: build it with tools/evaluate/build.sh") }
 let captures = options.shots.appendingPathComponent("captures")
@@ -196,7 +183,7 @@ for package in packages {
     for entry in package.shots {
         let name = "\(package.url.lastPathComponent)/\(entry.url.lastPathComponent)"
         let (analysis, source, looked) = analyse(entry, macVision: options.macVision, oneLook: options.oneLook)
-        diagnose(name, entry)
+        currentName = name
         if let a = analysis.shapeAtAxis(depth: entry.shot.scale?.depthScale) {
             let size = (try? analysis.size(depth: entry.shot.scale?.depthScale).get()).map { String(format: "%.3f %.3f %.3f %.3f", $0.length, $0.diameter, $0.lengthError, $0.diameterError) } ?? "nil"
             FileHandle.standardError.write(Data("SHAPE \(name) aspect \(a.aspect) share \(a.caseShare.map { String($0) } ?? "nil") brass \(analysis.isBrass) size \(size) widths \(a.widths.map { String(format: "%.4f", $0) }.joined(separator: ","))\n".utf8))
