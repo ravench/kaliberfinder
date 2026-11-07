@@ -142,9 +142,10 @@ struct WorldwideMark: View {
     }
 }
 
-/// Flags of a row's calibres (the lead and the look-alikes merged into it, each country once) and a
-/// globe when one of them is in use worldwide. A trailing slot at least `slot` wide keeps rows without
-/// marks aligned; wider content grows the slot instead of overlapping the text to its left.
+/// A globe when one of a row's calibres is in use worldwide, then the flags of the calibres (the lead
+/// and the look-alikes merged into it, each country once; Raven 2026-11-07: globe left of the flag).
+/// A trailing slot at least `slot` wide keeps rows without marks aligned; wider content grows the
+/// slot instead of overlapping the text to its left.
 struct OriginMarks: View {
     let cartridges: [Cartridge]
     @ScaledMetric(relativeTo: .body) private var slot: CGFloat = 42
@@ -158,8 +159,8 @@ struct OriginMarks: View {
 
     var body: some View {
         HStack(spacing: 4) {
-            ForEach(Self.countries(of: cartridges), id: \.code) { CountryFlag(country: $0) }
             if cartridges.contains(where: \.worldwide) { WorldwideMark() }
+            ForEach(Self.countries(of: cartridges), id: \.code) { CountryFlag(country: $0) }
         }
         .fixedSize()
         .frame(minWidth: slot, alignment: .trailing)

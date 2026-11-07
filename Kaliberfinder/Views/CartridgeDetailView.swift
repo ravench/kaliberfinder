@@ -50,7 +50,7 @@ struct CartridgeDetailView: View {
                     LabeledContent("Herkunft") {
                         HStack(spacing: 6) {
                             Text(country.name.loc)
-                            CountryFlag(country: country).accessibilityHidden(true)
+                            OriginMarks(cartridges: [cartridge]).accessibilityHidden(true)
                         }
                     }
                 }
