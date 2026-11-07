@@ -83,16 +83,6 @@ jobs:
           if [ -f "$RUNNER_TEMP/before.json" ]; then ARGS="$ARGS --compare $RUNNER_TEMP/before.json"; fi
           .build/evaluate/evaluate "$SHOTS" $HOLDOUT $ARGS > /dev/null
           cat "$REPORT/report.md" >> "$GITHUB_STEP_SUMMARY"
-      # TEMPORARY (case share tuning, removed before merging): the training shots for a few weights.
-      - name: Sweep the case share's weight
-        run: |
-          for combo in "0.0 0.03 0.02 0.15" "3.0 0.03 0.02 0.15" "5.0 0.03 0.02 0.25" "8.0 0.03 0.02 0.3" "3.0 0.02 0.02 0.15" "5.0 0.02 0.03 0.2"; do
-            set -- $combo
-            sed -i '' -E "s/(static let caseShareWeight = ).*/\\1$1/; s/(static let caseShareTolerance = ).*/\\1$2/; s/(static let caseShareSeating = ).*/\\1$3/; s/(static let maxCaseSharePenalty = ).*/\\1$4/" Kaliberfinder/Services/ShapeMatcher.swift
-            grep -E "static let (caseShare|maxCaseShare)" Kaliberfinder/Services/ShapeMatcher.swift
-            tools/evaluate/build.sh > /dev/null
-            echo "SWEEP $combo: $(.build/evaluate/evaluate "$SHOTS" 2>/dev/null | sed -n 3p)"
-          done
       - uses: actions/upload-artifact@v5
         if: "!cancelled()"
         with:

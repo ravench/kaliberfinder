@@ -159,16 +159,6 @@ for package in packages {
         // The case's share of the length where the colours show the mouth, and the calibre's.
         let calibre = CartridgeCatalog.cartridge(id: shot.calibre).map { $0.dimensions.caseLength / $0.outline.height } ?? .nan
         let share = analysis.contour?.mouth.map { String(format: ", case %.3f of %.3f", 1 - $0, calibre) } ?? ""
-        // TEMPORARY (case share tuning, removed before merging): what the mouth search saw.
-        if let s = analysis.shape, let contour = analysis.contour {
-            let found = s.neck.map { ($0, false) } ?? s.reversed().neck.map { ($0, true) }
-            let w = found?.1 == true ? Array(s.widths.reversed()) : s.widths
-            let area = CaseMouth.searched(widths: w, neck: found?.0)
-            let neck = found.map { "\($0.0.slices) \($0.0.isClear ? "clear" : "unclear")\($0.1 ? " reversed" : "")" } ?? "none"
-            func xy(_ p: [CGPoint]?) -> String { (p ?? []).map { String(format: "%.5f,%.5f", $0.x, $0.y) }.joined(separator: " ") }
-            let range = area.map { String(format: "%.3f-%.3f tip %.3f", $0.range.lowerBound, $0.range.upperBound, $0.tipEnd) } ?? "none"
-            FileHandle.standardError.write(Data("MOUTH \(name) neck \(neck) range \(range) mouth \(contour.mouth.map { String(format: "%.3f", $0) } ?? "none") box \(xy(analysis.outline)) line \(xy(contour.mouthLine)) tip \(xy(Array(contour.points.prefix(1)))) widths \(w.map { String(format: "%.2f", $0) }.joined(separator: ","))\n".utf8))
-        }
         FileHandle.standardError.write(Data("\(name) rows \(rows) rank \(r.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look)\(share))\n".utf8))
         shots.append(shot)
     }
