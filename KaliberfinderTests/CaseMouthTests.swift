@@ -91,6 +91,23 @@ final class CaseMouthTests: XCTestCase {
         }
     }
 
+    /// A round nose still narrowing at the mouth (Raven's 9 mm on the simulator, 2026-11-07) runs on under
+    /// the case: the outline follows it up to the mouth, not a slimmer pointed curve cut flat at the tip.
+    func testRoundNoseRunsOnUnderTheCase() throws {
+        let curve = NoseCurve(kind: .round, cut: 1, length: 0.475, base: 0.477), mouth = 0.36
+        let bins = ShapeMatcher.bins
+        let w = (0..<bins).map { (Double($0) + 0.5) / Double(bins) < mouth ? 2 * curve.half(at: Double($0 + 1) / Double(bins)) : 0.96 }
+        let (nose, corners) = ShapeContour.bullet(upTo: mouth, widths: w, caseHalf: 0.48)
+        XCTAssertEqual(nose?.kind, .round)
+        XCTAssertGreaterThan(try XCTUnwrap(nose).length, mouth)
+        // Each corner on the bullet's curve: the nose's, then the last at the mouth, where the step out starts.
+        XCTAssertEqual(corners.map { $0.part }, Array(repeating: ShapeContour.Part.bullet, count: NoseCurve.segments) + [.end])
+        XCTAssertEqual(corners.last?.f, mouth)
+        for corner in corners {
+            XCTAssertEqual(corner.half, curve.half(at: corner.f), accuracy: 0.01, "\(corner)")
+        }
+    }
+
     func testLeadBulletMeetsTheCaseToo() throws {
         let shot = photo(try cartridge("9x19 mm"), bullet: lead)
         XCTAssertEqual(try outlines(shot, "lead").coloured.mouth ?? -1, shot.mouth, accuracy: 0.015)
@@ -170,6 +187,13 @@ final class CaseMouthTests: XCTestCase {
         let b = contour.parts.prefix(while: { $0 == .bullet }).count
         XCTAssertEqual(contour.parts[b], .end)
         XCTAssertEqual(contour.parts[b + 1], .body)
+        // The bullet's curve follows the cut-out's slices in front of the mouth.
+        let nose = try XCTUnwrap(contour.nose), w = try XCTUnwrap(analysis.shape).widths
+        let bins = Double(w.count)
+        for i in w.indices where (Double(i) + 0.5) / bins < min(nose.length, mouth) {
+            let half = nose.half(at: min(Double(i + 1) / bins, nose.length))
+            XCTAssertEqual(half, w[i] / 2, accuracy: 0.035, "slice \(i) of \(w), \(nose)")
+        }
     }
 
     private func cgImage(_ rgb: RGBImage) throws -> CGImage {

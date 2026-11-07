@@ -156,18 +156,21 @@ struct ShapeContour: Equatable {
     }
 
     /// The bullet in front of the case mouth at `mouth` (a fraction of the length from the tip), as one
-    /// side's corners from the tip: its nose curve fitted to the widths `w`, its straight part as wide as
-    /// just in front of the mouth (no wider than the case there, `caseHalf`), and a step out to the case.
+    /// side's corners from the tip: its nose curve fitted to the widths `w` in front of the mouth, its
+    /// straight part as wide as just in front of the mouth (no wider than the case there, `caseHalf`),
+    /// and a step out to the case. A nose still narrowing at the mouth runs on under the case (as wide as
+    /// the case at most), drawn up to the mouth: a round 9 mm nose is not cut short into a slimmer curve.
     static func bullet(upTo mouth: Double, widths w: [Double], caseHalf: Double) -> (nose: NoseCurve?, corners: [Corner]) {
         let bins = w.count
         let last = max(2, min(bins - 1, Int(mouth * Double(bins))))
         let half = min(caseHalf, (w[(last - 2)..<last].max() ?? 0) / 2)
         var bases = (2...last).map { (f: Double($0) / Double(bins), half: half) }
         if mouth > Double(last) / Double(bins) { bases.append((f: mouth, half: half)) }
-        let nose = NoseCurve.fitted(halfWidths: w.map { $0 / 2 }, bases: bases, body: { _ in half })
-        var corners: [Corner] = (nose?.points() ?? []).map { (f: $0.f, half: $0.half, part: Part.bullet) }
+        bases += ((last + 1)..<min(bins, last + 1 + NoseCurve.maxReach)).map { (f: Double($0) / Double(bins), half: caseHalf) }
+        let nose = NoseCurve.fitted(halfWidths: w.map { $0 / 2 }, bases: bases, upTo: mouth, body: { _ in half })
+        var corners: [Corner] = (nose?.points(upTo: mouth) ?? []).map { (f: $0.f, half: $0.half, part: Part.bullet) }
         if let nose, nose.length < mouth { corners.append((f: nose.length, half: half, part: .bullet)) }
-        corners.append((f: mouth, half: half, part: .end))
+        corners.append((f: mouth, half: nose?.half(at: mouth) ?? half, part: .end))
         return (nose, corners)
     }
 
@@ -237,21 +240,24 @@ struct NoseCurve: Equatable {
         base * kind.width(length > 0 ? cut * (1 - min(f, length) / length) : cut)
     }
 
-    /// The corners along one side, from the tip toward the base (not the base itself, the next part's
-    /// first corner): closer together at the tip, where the curve bends most.
-    func points() -> [(f: Double, half: Double)] {
+    /// The corners along one side, from the tip toward the base, or toward `end` if that comes first
+    /// (not the last point itself, the next part's first corner): closer together at the tip, where the
+    /// curve bends most.
+    func points(upTo end: Double = .infinity) -> [(f: Double, half: Double)] {
         (0..<Self.segments).map { j in
-            let f = length * pow(Double(j) / Double(Self.segments), 2)
+            let f = min(length, end) * pow(Double(j) / Double(Self.segments), 2)
             return (f, half(at: f))
         }
     }
 
     /// The curve that fits the bullet's slices best (least squares). `halfWidths` are the slices' half
     /// widths, tip first, relative to the body; `bases` where the nose may end (fraction of the length,
-    /// half width), and `body` the half width behind the nose, so every base is judged on the same slices.
-    /// A slice's width is its widest point: its back edge, on a nose that narrows to the tip.
-    static func fitted(halfWidths h: [Double], bases: [(f: Double, half: Double)], body: (Double) -> Double) -> NoseCurve? {
-        let upTo = bases.map(\.f).max() ?? 0
+    /// half width), and `body` the half width behind the nose, so every base is judged on the same slices:
+    /// those in front of `upTo`, by default the farthest base. A slice's width is its widest point: its
+    /// back edge, on a nose that narrows to the tip.
+    static func fitted(halfWidths h: [Double], bases: [(f: Double, half: Double)], upTo: Double? = nil,
+                       body: (Double) -> Double) -> NoseCurve? {
+        let upTo = upTo ?? bases.map(\.f).max() ?? 0
         let curves: [NoseCurve] = bases.flatMap { b in
             Kind.allCases.flatMap { kind in cuts.map { NoseCurve(kind: kind, cut: $0, length: b.f, base: b.half) } }
         }
