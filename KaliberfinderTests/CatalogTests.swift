@@ -115,9 +115,32 @@ final class CatalogTests: XCTestCase {
         XCTAssertNil(gp11.outline.bulletMaterial)
     }
 
+    func testSearchTakesWordsInAnyOrderAcrossAllNames() {
+        func finds(_ query: String, _ id: String) -> Bool { CartridgeCatalog.search(query).contains { $0.id == id } }
+        // Words in another order, or with words of the name left out.
+        XCTAssertTrue(finds("Vetterli 10.4", "10.4x38 mm R Vetterli"))
+        XCTAssertTrue(finds("10.4 Vetterli", "10.4x38 mm R Vetterli"))
+        XCTAssertTrue(finds("Luger 9mm", "9x19 mm"))
+        XCTAssertTrue(finds("Swiss 7.5", "7.5x55 mm Swiss (GP 11)"))
+        XCTAssertTrue(finds("Revolver 1882", "7.5 mm Swiss Ordnance 1882"))
+        // Each word may be in a different name: «GP 11» in the name, «K31» a search alias.
+        XCTAssertTrue(finds("GP 11 K31", "7.5x55 mm Swiss (GP 11)"))
+        // Only other names hold the word (search aliases, «Auch bekannt als», headstamps).
+        XCTAssertTrue(finds("Parabellum", "9x19 mm"))
+        XCTAssertTrue(finds("Schmidt Rubin", "7.5x53.5 mm Swiss (GP 1890)"))
+        XCTAssertTrue(finds("9 mm Para", "9x19 mm"))
+        // Hyphens are like spaces, accents don't matter.
+        XCTAssertTrue(finds("Martini Henry", ".577/450 Martini-Henry"))
+        XCTAssertTrue(finds("Mannlicher Schonauer", "6.5x54 mm Mannlicher-Schönauer"))
+        // Every word must be found.
+        XCTAssertEqual(CartridgeCatalog.search("Vetterli 9").map(\.id), [])
+        XCTAssertEqual(CartridgeCatalog.search("Mauser 8").map(\.id), ["8x57 mm IS"])
+    }
+
     func testNormalized() {
         XCTAssertEqual(CartridgeCatalog.normalized(" 7,5 × 55 mm "), "75x55")
         XCTAssertEqual(CartridgeCatalog.normalized(".45 ACP"), "45acp")
+        XCTAssertEqual(CartridgeCatalog.normalized("Mannlicher-Schönauer"), "mannlicherschonauer")
     }
 
     func testGroupedKeepsCategoryOrder() {

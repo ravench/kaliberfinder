@@ -118,7 +118,7 @@ private struct NewTrainingSeriesView: View {
     }
 }
 
-/// Searchable list of all calibres; picking one goes back.
+/// Searchable list of all calibres, shown and searched like «Alle Kaliber»; picking one goes back.
 private struct TrainingCalibrePicker: View {
     @Binding var selection: Cartridge?
     @State private var query = ""
@@ -130,14 +130,15 @@ private struct TrainingCalibrePicker: View {
                 selection = c
                 dismiss()
             } label: {
+                // With its other names, so a calibre found by one of them shows why.
                 HStack {
-                    Text(verbatim: c.name).foregroundStyle(.primary)
-                    Spacer()
-                    if c == selection { Image(systemName: "checkmark") }
+                    CartridgeRow(cartridge: c)
+                    if c == selection { Image(systemName: "checkmark").foregroundStyle(Color.accentColor) }
                 }
             }
+            .foregroundStyle(.primary)
         }
-        .searchable(text: $query)
+        .searchable(text: $query, prompt: "Kaliber, z. B. 9 mm Luger")
         .navigationTitle("Kaliber")
     }
 }
