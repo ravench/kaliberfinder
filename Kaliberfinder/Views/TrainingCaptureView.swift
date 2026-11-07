@@ -59,7 +59,10 @@ private struct TrainingCaptureRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(verbatim: CartridgeCatalog.cartridge(id: capture.package.calibre)?.name ?? capture.package.calibre)
+            Text(verbatim: capture.package.calibreName)
+            if capture.package.isUnlisted {
+                Label("Nicht in der Liste", systemImage: "questionmark.circle").font(.footnote).foregroundStyle(.orange)
+            }
             let partName = (capture.package.scanMode == .emptyCase ? "Leere Hülse" : "Patrone").loc
             let dateText = capture.package.created.formatted(date: .abbreviated, time: .shortened)
             Text("\(partName) · \(capture.shotCount) Fotos · \(dateText)")
@@ -69,23 +72,40 @@ private struct TrainingCaptureRow: View {
     }
 }
 
-/// Calibre, part and a note for a new series.
+/// Calibre, part and a note for a new series. A round the catalogue lacks gets a name instead.
 private struct NewTrainingSeriesView: View {
     let onStart: (CapturePackage) -> Void
-    @State private var calibre: Cartridge?
+    @State private var calibre: TrainingCalibre?
+    @State private var name = ""
     @State private var mode: ScanMode = .cartridge
     @State private var note = ""
     @Environment(\.dismiss) private var dismiss
 
+    private var package: CapturePackage? {
+        switch calibre {
+        case .listed(let c): TrainingRecorder.package(calibre: c.id, mode: mode, note: note)
+        case .unlisted where !name.trimmingCharacters(in: .whitespaces).isEmpty:
+            TrainingRecorder.package(calibre: name, unlisted: true, mode: mode, note: note)
+        default: nil
+        }
+    }
+
     var body: some View {
         Form {
             Section {
-                NavigationLink { TrainingCalibrePicker(selection: $calibre) } label: {
+                NavigationLink { TrainingCalibrePicker(selection: $calibre, name: $name) } label: {
                     LabeledContent {
-                        Text(calibre?.name ?? "Wählen".loc)
+                        switch calibre {
+                        case .listed(let c): Text(verbatim: c.name)
+                        case .unlisted: Text("Nicht in der Liste")
+                        case nil: Text("Wählen")
+                        }
                     } label: {
                         Text("Fotografiertes Kaliber")
                     }
+                }
+                if calibre == .unlisted {
+                    TextField("Name", text: $name, prompt: Text("z. B. Bodenprägung oder eigener Name"))
                 }
                 Picker(selection: $mode) {
                     ForEach(TrainingCapture.parts) { part in
@@ -108,32 +128,57 @@ private struct NewTrainingSeriesView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button {
-                    if let calibre { onStart(TrainingRecorder.package(calibre: calibre.id, mode: mode, note: note)) }
+                    if let package { onStart(package) }
                 } label: {
                     Text("Starten")
                 }
-                .disabled(calibre == nil)
+                .disabled(package == nil)
             }
         }
     }
 }
 
-/// Searchable list of all calibres; picking one goes back.
+/// What a new series shows: a catalogue calibre, or a round the catalogue lacks.
+private enum TrainingCalibre: Equatable {
+    case listed(Cartridge)
+    case unlisted
+}
+
+/// Searchable list of all calibres, and «Nicht in der Liste» for a round the catalogue lacks
+/// (named after the search unless it has a name); picking goes back.
 private struct TrainingCalibrePicker: View {
-    @Binding var selection: Cartridge?
+    @Binding var selection: TrainingCalibre?
+    @Binding var name: String
     @State private var query = ""
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        List(CartridgeCatalog.search(query)) { c in
-            Button {
-                selection = c
-                dismiss()
-            } label: {
-                HStack {
-                    Text(verbatim: c.name).foregroundStyle(.primary)
-                    Spacer()
-                    if c == selection { Image(systemName: "checkmark") }
+        List {
+            Section {
+                Button {
+                    selection = .unlisted
+                    if name.trimmingCharacters(in: .whitespaces).isEmpty { name = query }
+                    dismiss()
+                } label: {
+                    HStack {
+                        Label("Nicht in der Liste", systemImage: "questionmark.circle")
+                        Spacer()
+                        if selection == .unlisted { Image(systemName: "checkmark") }
+                    }
+                }
+            } footer: {
+                Text("Für Patronen, die die App nicht kennt. Du gibst ihnen einen Namen, und die Auswertung der Erkennung lässt sie aus.")
+            }
+            ForEach(CartridgeCatalog.search(query)) { c in
+                Button {
+                    selection = .listed(c)
+                    dismiss()
+                } label: {
+                    HStack {
+                        Text(verbatim: c.name).foregroundStyle(.primary)
+                        Spacer()
+                        if selection == .listed(c) { Image(systemName: "checkmark") }
+                    }
                 }
             }
         }
@@ -168,7 +213,7 @@ struct TrainingPackageView: View {
                 .disabled(shots.isEmpty)
                 if let status { Text(verbatim: status).font(.footnote).foregroundStyle(.secondary) }
             } header: {
-                Text(verbatim: CartridgeCatalog.cartridge(id: capture.package.calibre)?.name ?? capture.package.calibre)
+                Text(verbatim: capture.package.calibreName)
             } footer: {
                 if !capture.package.note.isEmpty { Text(verbatim: capture.package.note) }
             }
@@ -231,14 +276,12 @@ private struct TrainingCameraView: View {
     @State private var saved = 0
     @State private var failure: String?
 
-    private var calibreName: String { CartridgeCatalog.cartridge(id: capture.package.calibre)?.name ?? capture.package.calibre }
-
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
             CameraPreview(session: camera.session).ignoresSafeArea()
             VStack(spacing: 12) {
-                Text("\(calibreName) · \(saved) neue Fotos")
+                Text("\(capture.package.calibreName) · \(saved) neue Fotos")
                     .font(.headline)
                     .padding(10)
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))

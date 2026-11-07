@@ -139,10 +139,12 @@ let root = FileManager.default.fileExists(atPath: captures.path) ? captures : op
 let splits = (try? Data(contentsOf: options.shots.appendingPathComponent("splits.json")))
     .flatMap { try? JSONSerialization.jsonObject(with: $0) as? [String: Any] }
 let holdout = Set(splits?["holdout"] as? [String] ?? [])
-let packages = CaptureStore(root: root).packages()
-    .filter { holdout.contains($0.url.lastPathComponent) == options.holdout }
-    .sorted { $0.url.lastPathComponent < $1.url.lastPathComponent }
+let found = CaptureStore(root: root).packages().filter { holdout.contains($0.url.lastPathComponent) == options.holdout }
+let packages = Evaluation.scored(found).sorted { $0.url.lastPathComponent < $1.url.lastPathComponent }
 guard !packages.isEmpty else { fail("no capture packages in \(root.path)\n\n\(usage)") }
+if packages.count < found.count {
+    FileHandle.standardError.write(Data("\(found.count - packages.count) series of calibres not in the catalogue left out\n".utf8))
+}
 
 let started = Date()
 var shots: [Evaluation.Shot] = []

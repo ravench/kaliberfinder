@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 /// Package layout (format 1):
 ///
 ///     9x19-mm-20261105-143000/
-///       package.json            CapturePackage: calibre, part, note, device
+///       package.json            CapturePackage: calibre (or a name, when unlisted), part, note, device
 ///       01/
 ///         shot.json             CaptureShot: calibration, depth size, gravity, focus, the app's analysis
 ///         photo.heic|jpg        the photo exactly as the camera or library delivered it (with EXIF)
@@ -57,7 +57,8 @@ enum TrainingCapture {
 /// A series of photos of one calibre: package.json.
 struct CapturePackage: Codable, Equatable {
     var format = TrainingCapture.format
-    /// Catalogue id of the calibre photographed, e.g. "9x19 mm".
+    /// Catalogue id of the calibre photographed, e.g. "9x19 mm"; for a round the catalogue lacks
+    /// (`unlisted`), the name it was given.
     let calibre: String
     /// What lies in the photos: "cartridge" or "emptyCase" (`ScanMode`).
     let part: String
@@ -68,8 +69,18 @@ struct CapturePackage: Codable, Equatable {
     var device = ""
     var system = ""
     var app = ""
+    /// True for a round the catalogue lacks (an old or unknown one): `calibre` is then a name, not a
+    /// catalogue id, and the series has no right answer to score matching by. Not written when nil,
+    /// so other packages stay as they were.
+    var unlisted: Bool?
 
     var scanMode: ScanMode { ScanMode(rawValue: part) ?? .auto }
+    var isUnlisted: Bool { unlisted == true }
+
+    /// The calibre's name as the catalogue writes it, or the name given to an unlisted round.
+    var calibreName: String {
+        isUnlisted ? calibre : CartridgeCatalog.cartridge(id: calibre)?.name ?? calibre
+    }
 }
 
 /// How the phone and its camera stood when a training photo was taken (see `CaptureShot`).
@@ -248,7 +259,7 @@ struct CaptureStore {
         try FileManager.default.removeItem(at: capture.url)
     }
 
-    /// E.g. "9x19-mm-20261105-143000".
+    /// E.g. "9x19-mm-20261105-143000"; "unlisted-…" for an unlisted round's name without letters or digits.
     static func folderName(_ package: CapturePackage) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -256,7 +267,7 @@ struct CaptureStore {
         formatter.dateFormat = "yyyyMMdd-HHmmss"
         let slug = package.calibre.lowercased().map { $0.isLetter || $0.isNumber ? String($0) : "-" }.joined()
             .split(separator: "-").joined(separator: "-")
-        return "\(slug)-\(formatter.string(from: package.created))"
+        return "\(slug.isEmpty ? "unlisted" : slug)-\(formatter.string(from: package.created))"
     }
 
     /// The shots of a package, in the order they were taken.

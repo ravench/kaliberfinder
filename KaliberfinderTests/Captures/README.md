@@ -9,7 +9,8 @@ their photos in `../Golden` (see its README).
 
 ```
 <calibre>-<yyyyMMdd-HHmmss>/
-  package.json            calibre (catalogue id), part (cartridge | emptyCase), note, device, iOS, app version
+  package.json            calibre (catalogue id), part (cartridge | emptyCase), note, device, iOS, app version;
+                          unlisted: true when calibre is the name of a round the catalogue lacks
   01/
     shot.json             source, EXIF orientation, depth map size and accuracy, camera calibration,
                           LiDAR table distance and focal length, gravity and tilt, closest focus
@@ -25,3 +26,7 @@ the Vision mask is in the upright frame. Only the LiDAR camera records depth; ph
 the library have no depth, but are still useful for the shape.
 
 Keep the photos reasonably small: a HEIC from the camera is about 2–4 MB.
+
+A round the catalogue lacks (an old or unknown one) is recorded under «Nicht in der Liste» with a
+name of its own: `calibre` is then that name and `unlisted` is true. The evaluation tool and the
+scores leave such series out until the calibre is in the catalogue and the package gets its id.
