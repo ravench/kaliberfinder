@@ -9,6 +9,9 @@ struct ShapeMeasurement: Equatable {
     /// Width of every slice relative to the body, tip (or case mouth) first. Empty when
     /// built by hand from a profile only.
     var widths: [Double] = []
+    /// The case's share of the length, from the case mouth the photo's colours show (`CaseMouth`) to
+    /// the head; nil without one. Set for the matching (`PhotoAnalysis.shapeAtAxis`).
+    var caseShare: Double?
 
     /// Seen from the base or the tip (a disc): the shape says nothing about the calibre.
     var isEndView: Bool { aspect < 1.4 }
@@ -287,18 +290,39 @@ enum ShapeMatcher {
     /// the edge of the base can look like a rim in the photo.
     static let rimPenalty = 0.1
 
+    /// How much the case's share of a loaded cartridge's length counts, per unit of share beyond
+    /// `caseShareTolerance`, and at most: calibres whose outlines look alike can differ in it, such as
+    /// 9x19 mm (0.65) and 9x21 mm (0.71), or .38 Special and .357 Magnum. The mouth is found within a
+    /// slice or so; a mouth read in the wrong place costs the right calibre no more than the cap.
+    static let caseShareWeight = 3.0
+    static let caseShareTolerance = 0.03
+    static let maxCaseSharePenalty = 0.15
+    /// Factory rounds are seated a little shorter than the catalogue's (longest) length, so their case
+    /// takes up to this much more of it.
+    static let caseShareSeating = 0.02
+
+    /// What the case's share of the length adds to a loaded cartridge's distance: the photo's
+    /// (`ShapeMeasurement.caseShare`) against the calibre's `caseRatio` (case length over the length of
+    /// its drawing). Nothing where the photo shows no mouth.
+    static func caseShareDistance(_ photo: ShapeMeasurement, caseRatio: Double?) -> Double {
+        guard let measured = photo.caseShare, let caseRatio else { return 0 }
+        let off = measured - caseRatio, allowed = caseShareTolerance + (off > 0 ? caseShareSeating : 0)
+        return min(maxCaseSharePenalty, caseShareWeight * max(0, abs(off) - allowed))
+    }
+
     /// Distance to an expected shape. For an empty case, nil when rim or neck rule the calibre out,
     /// and the case is tried both ways round; a misfitting rim that doesn't rule it out adds `rimPenalty`,
     /// as on a cartridge.
-    /// With the calibre's `neckRatio` (catalogue neck over base), the neck counts too (`NeckShape.distance`).
+    /// With the calibre's `neckRatio` (catalogue neck over base), the neck counts too (`NeckShape.distance`),
+    /// and on a cartridge with its `caseRatio` the case's share of the length (`caseShareDistance`).
     static func distance(_ photo: ShapeMeasurement, to expected: ShapeMeasurement, part: ShapePart,
-                         neckRatio: Double? = nil) -> Double? {
+                         neckRatio: Double? = nil, caseRatio: Double? = nil) -> Double? {
         func neck(_ p: ShapeMeasurement) -> Double {
             neckRatio.map { NeckShape.distance(photo: p, expected: expected, neckRatio: $0) } ?? 0
         }
         if part == .cartridge {
             let rimFits = featuresFit(photo, expected, part: .cartridge)
-            return distance(photo, expected) + (rimFits ? 0 : rimPenalty) + neck(photo)
+            return distance(photo, expected) + (rimFits ? 0 : rimPenalty) + neck(photo) + caseShareDistance(photo, caseRatio: caseRatio)
         }
         return [photo, photo.reversed()]
             .filter { featuresFit($0, expected, part: part) }
