@@ -143,6 +143,13 @@ enum PhotoAnalyzer {
     /// The analysis of an upright photo with Vision's object `vision` (`visionResult`), or with
     /// the colour cut-out when that is nil. The colour test for brass uses the photo either way.
     static func analysis(of cgImage: CGImage, vision: VisionResult?) -> PhotoAnalysis {
+        let rgb = rgbImage(cgImage)
+        var vision = vision
+        // Vision often leaves out the cartridge's dark side: give it back (see `DarkSide`).
+        if let found = vision, let rgb, let restored = DarkSide.restored(found.raw, step: found.step, photo: rgb),
+           let again = visionResult((restored, found.step, found.candidates), width: cgImage.width, height: cgImage.height) {
+            vision = again
+        }
         var measured: (shape: ShapeMeasurement, length: Double)? = vision.map { ($0.shape, $0.length) }
         var candidates = vision?.candidates ?? []
         var outline = vision?.outline
@@ -152,7 +159,6 @@ enum PhotoAnalyzer {
             box?.map { CGPoint(x: $0.x / Double(cgImage.width), y: $0.y / Double(cgImage.height)) }
         }
         let fraction = { (p: CGPoint) in CGPoint(x: p.x / Double(cgImage.width), y: p.y / Double(cgImage.height)) }
-        let rgb = rgbImage(cgImage)
         // Vision's outline again with the photo's colours, for the case mouth.
         if let vision, let rgb, let box = vision.box {
             contour = ShapeContour.polygon(vision.points, pixelSize: Double(vision.step), shape: vision.shape, box: box, photo: rgb)?.map(fraction)
@@ -182,7 +188,10 @@ enum PhotoAnalyzer {
     struct VisionResult {
         let shape: ShapeMeasurement
         let length: Double
+        /// The measured points: the silhouette made mirror-symmetric (`measureSilhouette`).
         let points: [Point]
+        /// The silhouette as Vision found it.
+        let raw: [Point]
         let candidates: [CGRect]
         let outline: [CGPoint]?
         /// Without the photo's colours (see `analysis(of:vision:)`).
@@ -198,7 +207,7 @@ enum PhotoAnalyzer {
         guard let vision = measureSilhouette(found.points, step: found.step) else { return nil }
         let fraction = { (p: CGPoint) in CGPoint(x: p.x / Double(width), y: p.y / Double(height)) }
         let contour = vision.box.flatMap { ShapeContour.polygon(vision.points, pixelSize: Double(found.step), shape: vision.shape, box: $0) }
-        return VisionResult(shape: vision.shape, length: vision.length, points: vision.points, candidates: found.boxes,
+        return VisionResult(shape: vision.shape, length: vision.length, points: vision.points, raw: found.points, candidates: found.boxes,
                             outline: vision.box?.map { fraction(CGPoint(x: $0.x, y: $0.y)) }, contour: contour?.map(fraction),
                             box: vision.box, step: found.step)
     }
