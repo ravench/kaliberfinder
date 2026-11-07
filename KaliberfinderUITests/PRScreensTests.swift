@@ -44,6 +44,26 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// Calibres picked long, short, middle stand by length: in the picked list and on the 1:1 screen.
+    func testPickAndCompare() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Auswählen und vergleichen"].firstMatch) else { return }
+        for (query, name) in [("GP 11", "7.5x55 mm Swiss (GP 11)"), ("9x19", "9x19 mm"), (".45 ACP", ".45 ACP")] {
+            let search = app.searchFields.firstMatch
+            if search.waitForExistence(timeout: 5) {
+                search.tap()
+                // Clears the previous query; return hides the keyboard, so the rows can be tapped.
+                search.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 10) + query + "\n")
+            }
+            _ = open(app.staticTexts[name].firstMatch)
+        }
+        snap("19-Auswahl")
+        if open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "1:1 vergleichen")).firstMatch),
+           app.navigationBars["1:1"].waitForExistence(timeout: 5) {
+            snap("20-Auswahl-1zu1")
+        }
+    }
+
     /// Loose balls in other materials: the steel BB and the plastic airsoft BBs.
     func testBBs() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")

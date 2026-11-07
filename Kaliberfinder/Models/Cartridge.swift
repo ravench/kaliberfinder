@@ -108,3 +108,16 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     /// All names the cartridge is known by, for search.
     var allNames: [String] { [name] + displayAliases + aliases + headstamps }
 }
+
+extension [Cartridge] {
+    /// Shortest first, then narrowest (the Ø under each 1:1 drawing); equal ones keep their order.
+    func byLength() -> [Cartridge] {
+        sorted { ($0.dimensions.overallLength, $0.headDiameter) < ($1.dimensions.overallLength, $1.headDiameter) }
+    }
+
+    /// Calibres picked for a 1:1 comparison, with `c` added (or removed when picked already). They
+    /// stay in length order, not the order they were picked in, and are compared in that order.
+    func toggling(_ c: Cartridge) -> [Cartridge] {
+        contains(c) ? filter { $0 != c } : (self + [c]).byLength()
+    }
+}
