@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// The case head seen from below at `pointsPerMM`: rim, and the primer in the centre.
-/// Rimfire cases show the folded rim instead of a primer. Nothing for balls and pellets.
+/// The case head seen from below at `pointsPerMM`: rim, and the primer in the centre, in the head's
+/// colour in the side view. Rimfire cases show the folded rim instead of a primer. Nothing for balls and pellets.
 struct CaseBaseView: View {
     let cartridge: Cartridge
     let pointsPerMM: Double
@@ -11,7 +11,7 @@ struct CaseBaseView: View {
             let d = cartridge.headDiameter * pointsPerMM
             let line = max(0.3, min(0.8, pointsPerMM * 0.08))
             ZStack {
-                Circle().fill(CartridgeView.brass)
+                Circle().fill(CartridgeView.headFill(for: cartridge))
                 Circle().stroke(Color.black.opacity(0.7), lineWidth: line)
                 // Edge of the head face (chamfer, or the step to the body on rimmed cases).
                 Circle()

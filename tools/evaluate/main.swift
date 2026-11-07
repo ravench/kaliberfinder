@@ -146,17 +146,17 @@ guard !packages.isEmpty else { fail("no capture packages in \(root.path)\n\n\(us
 
 let started = Date()
 var shots: [Evaluation.Shot] = []
-var secondLooks = 0, byColour = 0, picks = 0
+var secondLooks = 0, picks = 0
 for package in packages {
     for entry in package.shots {
         let name = "\(package.url.lastPathComponent)/\(entry.url.lastPathComponent)"
         let (analysis, source, looked) = analyse(entry, macVision: options.macVision, oneLook: options.oneLook)
         let shot = Evaluation.shot(name, analysis: analysis, depth: entry.shot.scale?.depthScale, package: package.package, source: source)
         if looked == .again { secondLooks += 1 }
-        if looked == .again && analysis.byColour { byColour += 1 }
         if looked == .picked { picks += 1 }
         let look = looked == .none ? "" : looked == .picked ? ", picked" : ", second look"
-        FileHandle.standardError.write(Data("\(name) rank \(shot.result.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look))\n".utf8))
+        let r = shot.result, rows = [r.row, r.rowObsolete, r.rowAll].map { $0.map(String.init) ?? "–" }.joined(separator: "/")
+        FileHandle.standardError.write(Data("\(name) rows \(rows) rank \(r.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look))\n".utf8))
         shots.append(shot)
     }
 }
@@ -169,7 +169,7 @@ let before = options.compare.map { url -> Evaluation.Baseline in
 }
 let kind = options.holdout ? "held-back" : "tuning"
 let looks = options.oneLook ? "one look only"
-    : "second look on \(secondLooks), \(byColour) of them by the colour cut-out; first of several cartridges picked on \(picks)"
+    : "second look on \(secondLooks); first of several cartridges picked on \(picks)"
 let report = Evaluation.report(shots, title: "Matching on \(shots.count) \(kind) shots (\(looks))", before: before)
 print(report)
 do {

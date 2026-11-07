@@ -72,7 +72,10 @@ final class SecondLookTests: XCTestCase {
         XCTAssertEqual(PhotoAnalyzer.secondLook(first, then: cutOut).outline, first.outline, "the colour cut-out never replaces Vision")
         var firstByColour = first
         firstByColour.byColour = true
-        XCTAssertEqual(PhotoAnalyzer.secondLook(firstByColour, then: cutOut).outline, cutOut.outline, "a cut-out improves a cut-out")
+        XCTAssertEqual(PhotoAnalyzer.secondLook(firstByColour, then: cutOut).outline, firstByColour.outline,
+                       "nor a cut-out: it can pick a piece of the cartridge")
+        let vision = try analysis(frame: CGRect(x: 0.42, y: 0.46, width: 0.16, height: 0.03))
+        XCTAssertEqual(PhotoAnalyzer.secondLook(firstByColour, then: vision).outline, vision.outline, "Vision improves a cut-out")
     }
 
     func testNoSecondLookWhileSeveralCartridgesCompete() throws {
@@ -88,10 +91,11 @@ final class SecondLookTests: XCTestCase {
         XCTAssertFalse(PhotoAnalyzer.contains(turned, CGPoint(x: 0.15, y: 0.15)))
     }
 
-    /// A 4000 × 3000 photo of a small brass-coloured rod: the second look analyses it at full size, so
-    /// sizes compare with the whole photo at full size (the first look saw it at 1600 px), and its frame
-    /// lies on the rod in the whole photo.
-    func testALargePhotoIsLookedAtAgainAtFullSize() async throws {
+    /// A 4000 × 3000 photo of a small brass-coloured rod, looked at in the part around it (the second
+    /// look's crop, also the pick of one of several cartridges): it is analysed at full size, so sizes
+    /// compare with the whole photo at full size (the whole photo is analysed at 1600 px), and its frame
+    /// lies on the rod in the whole photo. On the simulator the cut-out stands in for Vision.
+    func testALargePhotoIsLookedAtInThePartAtFullSize() async throws {
         let size = CGSize(width: 4000, height: 3000)
         let rod = CGRect(x: 1800, y: 1400, width: 300, height: 100)
         let format = UIGraphicsImageRendererFormat()
@@ -102,7 +106,12 @@ final class SecondLookTests: XCTestCase {
             UIColor(red: 0.85, green: 0.65, blue: 0.25, alpha: 1).setFill()
             context.fill(rod)
         }
-        let analysis = await PhotoAnalyzer.analyze(image)
+        let whole = await PhotoAnalyzer.analyze(image)
+        XCTAssertEqual(whole.imageLongSide, 1600, accuracy: 1, "a cut-out takes no second look")
+        let rodBox = CGRect(x: rod.minX / size.width, y: rod.minY / size.height, width: rod.width / size.width, height: rod.height / size.height)
+        let region = try XCTUnwrap(PhotoAnalyzer.focusRegion(around: whole.outline ?? []))
+        XCTAssertTrue(region.contains(rodBox), "the second look's part holds the rod")
+        let analysis = await PhotoAnalyzer.analyze(image, focusingOn: rodBox)
         XCTAssertEqual(analysis.imageLongSide, 4000, accuracy: 1, "measured in the full-size part")
         XCTAssertEqual(try XCTUnwrap(analysis.lengthPixels), 300, accuracy: 8)
         XCTAssertEqual(try XCTUnwrap(analysis.shape?.aspect), 3, accuracy: 0.2)

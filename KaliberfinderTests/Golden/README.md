@@ -11,7 +11,9 @@ writes this folder with `tools/export_golden.py`. Don't edit the packages here b
 
 Same layout as a capture package (see `../Captures/README.md`), without photo and depth map.
 
-`baseline.json` holds the scores the set reached: calibre first, calibre in the first five, part
+`baseline.json` holds the scores the set reached: calibre first and in the first five rows of the
+list as the phone shows it, with the switches off, obsolete on, and obsolete and rare on (see
+`tools/evaluate/README.md`), part
 (cartridge or empty case) right in automatic mode, and neck found on calibres with a clear neck,
 plus each shot's result. The test fails when a score falls more than 2 points below it, or when
 the shots changed. A change that improves matching updates `baseline.json` in the same pull request:

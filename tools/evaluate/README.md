@@ -39,12 +39,11 @@ The phone's path as far as the shot allows:
 
 Then, as on the phone, the **second look**: the cartridge the first look found is cut out of the
 full-size photo (with the margin of a picked cartridge) and analysed again, so Vision's 512 × 512 mask
-covers it several times finer. The phone doesn't store its mask of the second look, so the tool runs
-Vision on the Mac there, with the colour cut-out where it finds nothing (only where the first look was
-the colour cut-out too). Where several cartridges compete, the phone asks which one to identify and
+covers it several times finer. Only Vision's object counts there: the colour cut-out of the part can
+pick a piece of the cartridge. The phone doesn't store its mask of the second look, so the tool runs
+Vision on the Mac there. Where several cartridges compete, the phone asks which one to identify and
 looks at that one alone: the tool picks the one the first look measured. The report's title says on how many
-shots the second look was taken (and on how many of them by the colour cut-out) and on how many a
-cartridge was picked; `--one-look` leaves both out. «Outline from» in the report is where the
+shots the second look was taken and on how many a cartridge was picked; `--one-look` leaves both out. «Outline from» in the report is where the
 first look found the cartridge. A golden shot has no photo and gets the first look only.
 
 `--mac-vision` also runs Vision on the Mac for the second kind, to see what a working Vision would
@@ -53,11 +52,18 @@ change there. The Mac's Vision is close to the phone's but not always the same.
 ## The report
 
 Scores overall, by calibre and part, by kind of shot (cartridge or empty case, with or without a
-LiDAR size, where the outline came from), the calibres most often ranked first instead of the right
-one, and every shot whose calibre is not first. It holds shot names and numbers only, never a photo.
+LiDAR size, where the outline came from), the calibres most often in the phone's first row (switches off) instead of
+the right one, and every shot whose calibre is not in the first row. It holds shot names and numbers
+only, never a photo.
 
-The scores are the golden set's: calibre first, calibre in the first five, part (cartridge or empty
-case) right in automatic mode, and neck found on calibres with a clear neck.
+The scores are the golden set's: calibre first and in the first five rows of the list as the phone
+shows it, for each setting of the «Erkennung» switches (both off, obsolete calibres on, obsolete and
+rare on), part (cartridge or empty case) right in automatic mode, and neck found on calibres with a
+clear neck. The headline is with both switches off, as the app starts: the target is the right calibre
+in the first row there. A shot of a rare or obsolete calibre has its own kind switched on, as its user
+would. The phone's list shows calibres that look exactly the same from the side, such as GP 90 and
+.223 Remington, as one row. Each shot's rank among every calibre, each on its own, is kept in the
+`--json` results for comparisons with older runs.
 
 ## In CI
 

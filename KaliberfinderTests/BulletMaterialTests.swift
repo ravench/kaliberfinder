@@ -53,6 +53,21 @@ final class BulletMaterialTests: XCTestCase {
         XCTAssertEqual(CartridgeView.caseFill(for: try cartridge("9x19 mm")), CartridgeView.brass)
     }
 
+    /// The case seen from below has the colour of the head in the side view (Raven, 2026-11-06).
+    func testCaseBottomHasTheSideViewsHeadColour() throws {
+        XCTAssertEqual(CartridgeView.headFill(for: try cartridge("5.45x39 mm")), CartridgeView.lacqueredSteel)
+        XCTAssertEqual(CartridgeView.headFill(for: try cartridge(".44 Henry")), CartridgeView.copper)
+        XCTAssertEqual(CartridgeView.headFill(for: try cartridge("7 mm Backcountry")), CartridgeView.nickel)
+        XCTAssertEqual(CartridgeView.headFill(for: try cartridge(".577 Snider")), CartridgeView.brass, "brass cup, paper body")
+        XCTAssertEqual(CartridgeView.headFill(for: try cartridge("9x19 mm")), CartridgeView.brass)
+        XCTAssertEqual(CartridgeView.headFill(for: try cartridge(".277 SIG Fury")), CartridgeView.steel, "steel head, brass body")
+        XCTAssertEqual(CartridgeView.headFill(for: try cartridge("12/70")), CartridgeView.brass, "brass head, plastic hull")
+        // Without a head part, the side view shows the case's colour down to the rim.
+        for c in CartridgeCatalog.all where c.hasCase && c.outline.head == nil {
+            XCTAssertEqual(CartridgeView.headFill(for: c), CartridgeView.caseFill(for: c), c.name)
+        }
+    }
+
     func testSteelBBIsSteelAndAirsoftBBsArePlastic() throws {
         let steelBB = try cartridge("4.4 mm Stahl-BB (.177 BB)")
         XCTAssertEqual(steelBB.kind, "ball")

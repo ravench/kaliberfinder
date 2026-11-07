@@ -103,11 +103,13 @@ enum PhotoAnalyzer {
     }
 
     /// The first look's analysis, improved by the second look's (`inPhoto` of the part at
-    /// `secondLookRegion`) where that measured the same cartridge: its frame's centre lies in the first
-    /// look's frame. The colour cut-out never replaces Vision's object (see `analysis(of:vision:)`).
-    /// The cartridges competing for the measurement stay the first look's.
+    /// `secondLookRegion`) where Vision found the same cartridge there: its frame's centre lies in the
+    /// first look's frame. The colour cut-out of the part never replaces anything: it can pick a piece of
+    /// the cartridge, such as a case without its neck (simulator screenshot of #88, 2026-11-07), and never
+    /// replaces Vision's object (see `analysis(of:vision:)`). The cartridges competing for the
+    /// measurement stay the first look's.
     static func secondLook(_ first: PhotoAnalysis, then second: PhotoAnalysis) -> PhotoAnalysis {
-        guard second.shape != nil, !second.byColour || first.byColour, let outline = second.outline, !outline.isEmpty,
+        guard second.shape != nil, !second.byColour, let outline = second.outline, !outline.isEmpty,
               let frame = first.outline, frame.count == 4 else { return first }
         let centre = CGPoint(x: outline.map(\.x).reduce(0, +) / Double(outline.count),
                              y: outline.map(\.y).reduce(0, +) / Double(outline.count))
