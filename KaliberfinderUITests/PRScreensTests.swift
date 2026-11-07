@@ -83,13 +83,14 @@ final class PRScreensTests: XCTestCase {
         photoMatches("set-gp11-case-02", shot: "07-Foto-Treffer")
     }
 
-    /// A loaded 9 mm: the outline follows its round bullet nose.
+    /// A loaded 9 mm: the outline follows its round bullet nose. Then all its matches at 1:1, by length.
     func testLoadedCartridgePhoto() {
-        photoMatches("photo-9x19-wood", shot: "13-Foto-Patrone")
+        photoMatches("photo-9x19-wood", shot: "13-Foto-Patrone", compareShot: "14-Foto-1zu1")
     }
 
-    /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`.
-    private func photoMatches(_ fixture: String, shot: String) {
+    /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`;
+    /// with `compareShot`, also one of the 1:1 screen that compares all of them.
+    private func photoMatches(_ fixture: String, shot: String, compareShot: String? = nil) {
         let photo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("KaliberfinderTests/Fixtures/\(fixture).jpg")
         app.terminate()
@@ -99,6 +100,10 @@ final class PRScreensTests: XCTestCase {
             // The colour cut-out on the simulator can take a while on a busy runner.
             _ = app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90)
             snap(shot)
+            if let compareShot, open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden 1:1")).firstMatch),
+               app.navigationBars["1:1"].waitForExistence(timeout: 5) {
+                snap(compareShot)
+            }
         }
     }
 
