@@ -85,14 +85,15 @@ final class PRScreensTests: XCTestCase {
         photoMatches("set-gp11-case-02", shot: "07-Foto-Treffer")
     }
 
-    /// A loaded 9 mm: the outline follows its round bullet nose. Then all its matches at 1:1, by length.
+    /// A loaded 9 mm: the outline follows its round bullet nose. Then all its matches at 1:1, by overall length.
     func testLoadedCartridgePhoto() {
         photoMatches("photo-9x19-wood", shot: "13-Foto-Patrone", compareShot: "14-Foto-1zu1")
     }
 
     /// One of Raven's empty 6 mm BR cases: its outline ends flat at the mouth, without a bullet.
+    /// Then all its matches at 1:1, by case length.
     func testEmptyCasePhoto() {
-        photoMatches("photo-6mmbr-case", shot: "15-Foto-leere-Huelse")
+        photoMatches("photo-6mmbr-case", shot: "15-Foto-leere-Huelse", compareShot: "17-Foto-leere-Huelse-1zu1")
     }
 
     /// The loaded 9 mm with the hidden switch that colours the outline by detection: the bullet up to

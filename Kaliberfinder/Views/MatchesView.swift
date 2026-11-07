@@ -216,8 +216,14 @@ struct MatchesView: View {
     /// Calibres that look exactly the same from the side are shown once.
     static func toCompare(_ matches: [Match]) -> [Cartridge] {
         // `sorted` is stable, so ties keep their rank order.
-        Matcher.grouped(matches).map(\.lead.cartridge)
-            .sorted { ($0.dimensions.overallLength, $0.headDiameter) < ($1.dimensions.overallLength, $1.headDiameter) }
+        Matcher.grouped(matches).map(\.lead)
+            .sorted { (comparedLength($0), $0.cartridge.headDiameter) < (comparedLength($1), $1.cartridge.headDiameter) }
+            .map(\.cartridge)
+    }
+
+    /// The length the photo was compared with: the case for an empty case, else the whole cartridge.
+    static func comparedLength(_ m: Match) -> Double {
+        m.part == .emptyCase ? m.cartridge.dimensions.caseLength : m.cartridge.dimensions.overallLength
     }
 
     /// E.g. "Alle passenden 1:1 vergleichen (5)", counting identical-looking calibres once.

@@ -94,6 +94,19 @@ final class MatcherTests: XCTestCase {
                        ["9 mm Browning kurz (.380 ACP)", ".30 Super Carry", "9x19 mm", "9x21 mm IMI", ".45 ACP"])
     }
 
+    func testEmptyCasesCompareByCaseLength() throws {
+        func match(_ id: String, _ part: ShapePart) throws -> Match {
+            Match(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: id)), score: 1, shapeDistance: 0.1, part: part)
+        }
+        let ids = ["7.5x55 mm Swiss (GP 11)", ".308 Winchester", "6 mm Creedmoor", "6.5 mm Creedmoor"]
+        // Cases 55.6, 51.2, 48.8 (Ø 12.01) and 48.8 mm (Ø 12.0): the narrower 6.5 mm Creedmoor first.
+        XCTAssertEqual(MatchesView.toCompare(try ids.map { try match($0, .emptyCase) }).map(\.id),
+                       ["6.5 mm Creedmoor", "6 mm Creedmoor", ".308 Winchester", "7.5x55 mm Swiss (GP 11)"])
+        // Loaded, the same calibres are 77.5, 71.1 (Ø 11.9), 71.1 (Ø 12.01) and 71.8 mm long.
+        XCTAssertEqual(MatchesView.toCompare(try ids.map { try match($0, .cartridge) }).map(\.id),
+                       [".308 Winchester", "6 mm Creedmoor", "6.5 mm Creedmoor", "7.5x55 mm Swiss (GP 11)"])
+    }
+
     func testCompareButtonLooksLikeAButton() {
         XCTAssertNotNil(UIImage(systemName: CompareButton.symbol))
         // Taller than the 44 pt touch target, and clear of the screen edges.
