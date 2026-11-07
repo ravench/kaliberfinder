@@ -1312,6 +1312,29 @@
         }
       }
     },
+    "Finnland": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finland"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finlande"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finlandia"
+          }
+        }
+      }
+    },
     "Flaschenhals": {
       "extractionState": "manual",
       "localizations": {
@@ -3313,6 +3336,29 @@
         }
       }
     },
+    "Philippinen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Philippines"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Philippines"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filippine"
+          }
+        }
+      }
+    },
     "Pistole gross": {
       "extractionState": "manual",
       "localizations": {
@@ -4183,6 +4229,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Includi calibri obsoleti"
+          }
+        }
+      }
+    },
+    "Verbreitung": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distribution"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diffusion"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diffusione"
           }
         }
       }

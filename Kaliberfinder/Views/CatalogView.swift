@@ -86,7 +86,7 @@ struct CartridgeRow: View {
     var highlighted = false
     /// Calibres that look exactly like `cartridge` from the side, shown in the same row.
     var merged: [Cartridge] = []
-    @ScaledMetric(relativeTo: .body) private var flagSlot: CGFloat = 24
+    @ScaledMetric(relativeTo: .body) private var flagSlot: CGFloat = 42
 
     var body: some View {
         HStack(spacing: 12) {
@@ -115,11 +115,9 @@ struct CartridgeRow: View {
                 }
             }
             Spacer(minLength: 0)
-            // Fixed slot: rows without a country keep the same layout.
-            Group {
-                if let country = cartridge.country { CountryFlag(country: country) }
-            }
-            .frame(width: flagSlot)
+            // Fixed slot: rows without a flag or globe keep the same layout.
+            OriginMarks(cartridge: cartridge)
+                .frame(width: flagSlot, alignment: .trailing)
         }
     }
 }

@@ -128,6 +128,32 @@ struct CountryFlag: View {
     }
 }
 
+/// Globe for a calibre in common use worldwide, shown next to the flag of the state that introduced it.
+struct WorldwideMark: View {
+    @ScaledMetric(relativeTo: .body) private var size: CGFloat = 14
+
+    var body: some View {
+        Image(systemName: "globe")
+            .resizable()
+            .scaledToFit()
+            .frame(width: size, height: size)
+            .foregroundStyle(.secondary)
+            .accessibilityLabel(Text("Weltweit verbreitet"))
+    }
+}
+
+/// Flag and globe of a calibre, trailing-aligned, so rows without either keep their layout.
+struct OriginMarks: View {
+    let cartridge: Cartridge
+
+    var body: some View {
+        HStack(spacing: 4) {
+            if let country = cartridge.country { CountryFlag(country: country) }
+            if cartridge.worldwide { WorldwideMark() }
+        }
+    }
+}
+
 /// Simple flags for former states, which have no flag emoji (calibre-data COUNTRIES without one).
 struct DrawnFlag: View {
     let code: String
