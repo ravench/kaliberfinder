@@ -132,6 +132,51 @@ func analyse(_ entry: SavedShot, macVision: Bool, oneLook: Bool) -> (PhotoAnalys
     return (looked?.0 ?? first, vision == nil ? .colour : source, looked?.1 ?? .none)
 }
 
+// TEMPORARY diagnostic (not for merging): silhouettes of chosen shots as edge points in photo fractions.
+func dumpEdges(_ tag: String, _ name: String, _ points: [Point], toPhoto: (Double, Double) -> (Double, Double)) {
+    guard points.count >= 50 else { FileHandle.standardError.write(Data("EDGES \(tag) \(name) none\n".utf8)); return }
+    let n = Double(points.count)
+    let mx = points.reduce(0) { $0 + $1.x } / n, my = points.reduce(0) { $0 + $1.y } / n
+    var sxx = 0.0, syy = 0.0, sxy = 0.0
+    for p in points { let dx = p.x - mx, dy = p.y - my; sxx += dx * dx; syy += dy * dy; sxy += dx * dy }
+    let a = 0.5 * atan2(2 * sxy, sxx - syy), ux = cos(a), uy = sin(a)
+    let u = points.map { ($0.x - mx) * ux + ($0.y - my) * uy }, v = points.map { -($0.x - mx) * uy + ($0.y - my) * ux }
+    let lo = u.min() ?? 0, hi = u.max() ?? 1, bins = 120
+    var minV = [Double](repeating: .infinity, count: bins), maxV = [Double](repeating: -.infinity, count: bins)
+    for (pu, pv) in zip(u, v) {
+        let i = min(bins - 1, Int((pu - lo) / (hi - lo) * Double(bins)))
+        minV[i] = min(minV[i], pv); maxV[i] = max(maxV[i], pv)
+    }
+    var out: [String] = []
+    for i in 0..<bins where maxV[i] >= minV[i] {
+        let uc = lo + (Double(i) + 0.5) / Double(bins) * (hi - lo)
+        for vv in [minV[i], maxV[i]] {
+            let (fx, fy) = toPhoto(mx + uc * ux - vv * uy, my + uc * uy + vv * ux)
+            out.append(String(format: "%.5f,%.5f", fx, fy))
+        }
+    }
+    FileHandle.standardError.write(Data("EDGES \(tag) \(name) n \(points.count) \(out.joined(separator: " "))\n".utf8))
+}
+
+func diagnose(_ name: String, _ entry: SavedShot) {
+    guard name.contains("20261103") || name.hasPrefix("9x19-mm-20261105-224844/0") else { return }
+    let url = entry.url.appendingPathComponent(entry.shot.photo)
+    guard let photo = uprightPhoto(url), let rgb = PhotoAnalyzer.rgbImage(photo) else { return }
+    let w = Double(photo.width), h = Double(photo.height)
+    if let colour = ColorSegmenter.best(rgb) {
+        dumpEdges("colour1600", name, colour.points) { ($0 / w, $1 / h) }
+    }
+    if let v = PhotoAnalyzer.visionResult(of: photo) { dumpEdges("vision1600", name, v.points) { ($0 / w, $1 / h) } }
+    let first = PhotoAnalyzer.analysis(of: photo, vision: PhotoAnalyzer.visionResult(of: photo))
+    guard let region = PhotoAnalyzer.secondLookRegion(of: first), let full = uprightPhoto(url, maxSide: 1_000_000),
+          let image = part(full, region: region) else { return }
+    let pw = Double(image.width), ph = Double(image.height)
+    let map = { (x: Double, y: Double) in (region.minX + x / pw * region.width, region.minY + y / ph * region.height) }
+    if let v = PhotoAnalyzer.visionResult(of: image) { dumpEdges("vision2", name, v.points, toPhoto: map) }
+    if let prgb = PhotoAnalyzer.rgbImage(image), let colour = ColorSegmenter.best(prgb) { dumpEdges("colour2", name, colour.points, toPhoto: map) }
+    FileHandle.standardError.write(Data("REGION \(name) \(region.minX) \(region.minY) \(region.width) \(region.height) part \(image.width)x\(image.height) full \(full.width)x\(full.height)\n".utf8))
+}
+
 let options = Options(Array(CommandLine.arguments.dropFirst()))
 guard !CartridgeCatalog.all.isEmpty else { fail("Cartridges.json is missing next to the tool: build it with tools/evaluate/build.sh") }
 let captures = options.shots.appendingPathComponent("captures")
@@ -151,6 +196,11 @@ for package in packages {
     for entry in package.shots {
         let name = "\(package.url.lastPathComponent)/\(entry.url.lastPathComponent)"
         let (analysis, source, looked) = analyse(entry, macVision: options.macVision, oneLook: options.oneLook)
+        diagnose(name, entry)
+        if let a = analysis.shapeAtAxis(depth: entry.shot.scale?.depthScale) {
+            let size = (try? analysis.size(depth: entry.shot.scale?.depthScale).get()).map { String(format: "%.3f %.3f %.3f %.3f", $0.length, $0.diameter, $0.lengthError, $0.diameterError) } ?? "nil"
+            FileHandle.standardError.write(Data("SHAPE \(name) aspect \(a.aspect) share \(a.caseShare.map { String($0) } ?? "nil") brass \(analysis.isBrass) size \(size) widths \(a.widths.map { String(format: "%.4f", $0) }.joined(separator: ","))\n".utf8))
+        }
         let shot = Evaluation.shot(name, analysis: analysis, depth: entry.shot.scale?.depthScale, package: package.package, source: source)
         if looked == .again { secondLooks += 1 }
         if looked == .picked { picks += 1 }
