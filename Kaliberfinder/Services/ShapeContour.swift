@@ -28,8 +28,8 @@ struct ShapeContour: Equatable {
     var nose: NoseCurve?
     /// The outline to draw when the photo shows an empty case (`withoutBullet`); nil when it is this one.
     var empty: Outline?
-    /// The case mouth as a fraction of the length from the tip, where the photo's colours change from
-    /// the bullet's to the case's (`CaseMouth`); nil when they show no change, or without a photo.
+    /// The case mouth as a fraction of the measurement's length from its tip, where the photo's colours
+    /// change from the bullet's to the case's (`CaseMouth`); nil when they show no change, or without a photo.
     var mouth: Double?
     /// A line across the case at `mouth`, from one side to the other, drawn with the developer switch.
     var mouthLine: [CGPoint]?
@@ -101,7 +101,9 @@ struct ShapeContour: Equatable {
         var neck = found?.0
         let caseFrom = neck.map { $0.slices.lowerBound <= 2 ? 0 : $0.slices.lowerBound } ?? front
         let hasBullet = caseFrom > 0
-        let mouth = hasBullet ? photo.flatMap { CaseMouth.find(in: $0, widths: w, neck: neck, length: length, point: point) } : nil
+        // The bullet is at the measurement's tip: no mouth where the neck is read from the other end.
+        let mouth = hasBullet && found?.1 != true
+            ? photo.flatMap { CaseMouth.find(in: $0, widths: w, neck: neck, length: length, point: point) } : nil
         // A neck in front of the mouth is the bullet's straight part, on a straight case.
         if let mouth, let n = neck, mouth >= Double(n.slices.upperBound + 1) / Double(bins) { neck = nil }
         // One side, from the tip to the head.

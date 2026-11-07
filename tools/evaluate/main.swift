@@ -156,7 +156,10 @@ for package in packages {
         if looked == .picked { picks += 1 }
         let look = looked == .none ? "" : looked == .picked ? ", picked" : ", second look"
         let r = shot.result, rows = [r.row, r.rowObsolete, r.rowAll].map { $0.map(String.init) ?? "–" }.joined(separator: "/")
-        FileHandle.standardError.write(Data("\(name) rows \(rows) rank \(r.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look))\n".utf8))
+        // The case's share of the length where the colours show the mouth, and the calibre's.
+        let calibre = CartridgeCatalog.cartridge(id: shot.calibre).map { $0.dimensions.caseLength / $0.outline.height } ?? .nan
+        let share = analysis.contour?.mouth.map { String(format: ", case %.3f of %.3f", 1 - $0, calibre) } ?? ""
+        FileHandle.standardError.write(Data("\(name) rows \(rows) rank \(r.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look)\(share))\n".utf8))
         shots.append(shot)
     }
 }
