@@ -107,6 +107,15 @@ final class MatcherTests: XCTestCase {
                        [".308 Winchester", "6 mm Creedmoor", "6.5 mm Creedmoor", "7.5x55 mm Swiss (GP 11)"])
     }
 
+    func testOneToOneKnowsWhichMatchesAreEmptyCases() throws {
+        let gp11 = "7.5x55 mm Swiss (GP 11)"
+        let cases = Matcher.rank(shape: try XCTUnwrap(ShapeMatcher.caseCatalogue[gp11]), mode: .emptyCase)
+        XCTAssertTrue(MatchesView.emptyCases(cases).contains(gp11))
+        // Only what was compared as a case: blanks, balls and loaded rounds are drawn and labelled whole.
+        XCTAssertEqual(MatchesView.emptyCases(cases), Set(cases.filter { $0.part == .emptyCase }.map(\.cartridge.id)))
+        XCTAssertTrue(MatchesView.emptyCases(Matcher.rank(shape: try expected(gp11))).isEmpty)
+    }
+
     func testCompareButtonLooksLikeAButton() {
         XCTAssertNotNil(UIImage(systemName: CompareButton.symbol))
         // Taller than the 44 pt touch target, and clear of the screen edges.

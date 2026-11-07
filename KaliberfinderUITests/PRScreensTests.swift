@@ -80,9 +80,9 @@ final class PRScreensTests: XCTestCase {
     }
 
     /// The matches for one of Raven's photos (an empty GP 11 case), with the measured frame and the
-    /// detected neck and taper drawn over it.
+    /// detected neck and taper drawn over it. Then its matches at 1:1, by case length.
     func testPhotoMatches() {
-        photoMatches("set-gp11-case-02", shot: "07-Foto-Treffer")
+        photoMatches("set-gp11-case-02", shot: "07-Foto-Treffer", compareShot: "17-Foto-Huelse-1zu1")
     }
 
     /// A loaded 9 mm: the outline follows its round bullet nose. Then all its matches at 1:1, by overall length.
@@ -91,9 +91,10 @@ final class PRScreensTests: XCTestCase {
     }
 
     /// One of Raven's empty 6 mm BR cases: its outline ends flat at the mouth, without a bullet.
-    /// Then all its matches at 1:1, by case length.
+    /// Then its match at 1:1 with «Leere Hülsen ohne Geschoss vergleichen» on (the matches don't use it).
     func testEmptyCasePhoto() {
-        photoMatches("photo-6mmbr-case", shot: "15-Foto-leere-Huelse", compareShot: "17-Foto-leere-Huelse-1zu1")
+        app.launchArguments += ["-compareCasesWithoutBullet", "YES"]
+        photoMatches("photo-6mmbr-case", shot: "15-Foto-leere-Huelse", compareShot: "18-Foto-Huelse-ohne-Geschoss")
     }
 
     /// The loaded 9 mm with the hidden switch that colours the outline by detection: the bullet up to

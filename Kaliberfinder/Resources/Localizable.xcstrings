@@ -2071,6 +2071,29 @@
         }
       }
     },
+    "Hülse %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Case %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Douille %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bossolo %@"
+          }
+        }
+      }
+    },
     "Hülse mit Flaschenhals": {
       "extractionState": "manual",
       "localizations": {
@@ -2642,6 +2665,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bossolo vuoto"
+          }
+        }
+      }
+    },
+    "Leere Hülsen ohne Geschoss vergleichen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare empty cases without bullet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparer les douilles vides sans projectile"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confronta i bossoli vuoti senza palla"
           }
         }
       }

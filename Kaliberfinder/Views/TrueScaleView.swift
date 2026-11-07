@@ -33,9 +33,21 @@ struct TrueScaleLayout: Equatable {
 /// Lay the real cartridge on the screen, base on the line, to compare.
 struct TrueScaleView: View {
     let cartridges: [Cartridge]
+    /// Calibres a photo was compared with as empty cases: their labels add the case length, and
+    /// their drawings leave out the bullet when «Leere Hülsen ohne Geschoss vergleichen» is on.
+    var emptyCases: Set<String> = []
     @EnvironmentObject private var scale: ScaleModel
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
+    @AppStorage(Self.casesWithoutBulletKey) private var casesWithoutBullet = false
     @State private var showZoomHint = false
+
+    /// Settings switch, off by default: empty cases are compared with the bullet drawn.
+    static let casesWithoutBulletKey = "compareCasesWithoutBullet"
+
+    /// E.g. "Hülse 51.2 mm", under each calibre compared as an empty case.
+    static func caseLengthText(_ c: Cartridge, unit: LengthUnit) -> String {
+        String(format: "Hülse %@".loc, unit.format(c.dimensions.caseLength))
+    }
 
     var body: some View {
         let ppmm = scale.pointsPerMM
@@ -66,7 +78,7 @@ struct TrueScaleView: View {
                             HStack(alignment: .top, spacing: 8 * ppmm) {
                                 ForEach(cartridges) { c in
                                     VStack(spacing: 6) {
-                                        CartridgeView(cartridge: c, pointsPerMM: ppmm)
+                                        drawing(of: c, ppmm: ppmm)
                                             .frame(height: layout.bandHeight, alignment: .bottom)
                                         label(for: c)
                                         CaseBaseView(cartridge: c, pointsPerMM: ppmm)
@@ -118,7 +130,7 @@ struct TrueScaleView: View {
             HStack(alignment: .bottom, spacing: TrueScaleLayout.singleGapMM * ppmm) {
                 RulerView(lengthMM: layout.rulerMM, pointsPerMM: ppmm, unit: unit)
                     .padding(.trailing, 4)
-                CartridgeView(cartridge: c, pointsPerMM: ppmm)
+                drawing(of: c, ppmm: ppmm)
             }
             .frame(height: layout.bandHeight, alignment: .bottom)
             .overlay(alignment: .bottom) {
@@ -135,12 +147,19 @@ struct TrueScaleView: View {
         .padding(.bottom)
     }
 
+    private func drawing(of c: Cartridge, ppmm: Double) -> some View {
+        CartridgeView(cartridge: c, pointsPerMM: ppmm, caseOnly: casesWithoutBullet && emptyCases.contains(c.id))
+    }
+
     private func label(for c: Cartridge) -> some View {
         VStack(spacing: 2) {
             Text(verbatim: c.name).font(.caption.bold())
             // Calibres with the same measurements look exactly like this one.
             ForEach(CartridgeCatalog.twins(of: c)) { twin in
                 Text(verbatim: "= \(twin.name)").font(.caption2).foregroundStyle(.secondary)
+            }
+            if emptyCases.contains(c.id) {
+                Text(verbatim: Self.caseLengthText(c, unit: unit)).font(.caption2)
             }
             Text(verbatim: "L \(unit.format(c.dimensions.overallLength))").font(.caption2)
             Text(verbatim: "Ø \(unit.format(max(c.dimensions.rim, c.dimensions.base)))").font(.caption2)
