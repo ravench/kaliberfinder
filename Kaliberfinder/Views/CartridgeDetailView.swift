@@ -22,6 +22,12 @@ struct CartridgeDetailView: View {
                 NavigationLink { TrueScaleView(cartridges: [cartridge], linksToDetails: false) } label: {
                     Label("In Originalgrösse anzeigen", systemImage: "ruler")
                 }
+                if let group = CartridgeCatalog.lookalikeGroup(of: cartridge) {
+                    // The lookalikes of calibre-data: the group page lists them all and compares them at 1:1.
+                    NavigationLink { LookalikeGroupView(group: group) } label: {
+                        LabeledContent("Ähnliche Kaliber", value: group.calibres.filter { $0 != cartridge.id }.joined(separator: ", "))
+                    }
+                }
                 if trainingCapture {
                     NavigationLink { TrainingCaptureView(newSeriesFor: cartridge) } label: {
                         Label("Trainingsdaten aufnehmen", systemImage: "tray.and.arrow.down")

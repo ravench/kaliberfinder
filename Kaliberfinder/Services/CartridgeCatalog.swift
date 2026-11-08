@@ -15,18 +15,30 @@ enum CartridgeCatalog {
     private struct File: Decodable {
         let version: Int
         let cartridges: [Cartridge]
+        /// Since 2026-11-08; older files have none.
+        let lookalikes: [LookalikeGroup]?
     }
 
-    static let all: [Cartridge] = load(from: Bundle.main)
+    private static let file = loadFile(from: Bundle.main)
+    static let all: [Cartridge] = file?.cartridges ?? []
+    /// Calibres that look alike but are cartridges of their own (calibre-data), each group's parent first.
+    static let lookalikes: [LookalikeGroup] = file?.lookalikes ?? []
 
-    static func load(from bundle: Bundle) -> [Cartridge] {
+    static func load(from bundle: Bundle) -> [Cartridge] { loadFile(from: bundle)?.cartridges ?? [] }
+
+    private static func loadFile(from bundle: Bundle) -> File? {
         guard let url = bundle.url(forResource: "Cartridges", withExtension: "json"),
-              let data = try? Data(contentsOf: url) else { return [] }
-        return decode(data)
+              let data = try? Data(contentsOf: url) else { return nil }
+        return try? JSONDecoder().decode(File.self, from: data)
     }
 
     static func decode(_ data: Data) -> [Cartridge] {
         (try? JSONDecoder().decode(File.self, from: data))?.cartridges ?? []
+    }
+
+    /// The lookalike group `c` belongs to, if any.
+    static func lookalikeGroup(of c: Cartridge) -> LookalikeGroup? {
+        lookalikes.first { $0.calibres.contains(c.id) }
     }
 
     private static let byID = Dictionary(all.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
@@ -80,5 +92,29 @@ enum CartridgeCatalog {
         return groups.keys
             .sorted { (order.firstIndex(of: $0) ?? order.count, $0) < (order.firstIndex(of: $1) ?? order.count, $1) }
             .map { ($0, groups[$0] ?? []) }
+    }
+}
+
+/// Calibres that look alike but are cartridges of their own (calibre-data `LOOKALIKES`): a measurement
+/// or the load tells them apart. Every member's page links to the group, which lists them all.
+struct LookalikeGroup: Decodable, Identifiable, Hashable {
+    /// What tells them apart: "rim", "bore", "length", "seating" or "load".
+    let differs: [String]
+    /// Catalogue ids, the parent first.
+    let calibres: [String]
+
+    var id: String { calibres[0] }
+    var members: [Cartridge] { calibres.compactMap(CartridgeCatalog.cartridge(id:)) }
+
+    /// German name of a difference, used as localization key.
+    static func title(_ difference: String) -> String {
+        switch difference {
+        case "rim": "Rand"
+        case "bore": "Laufdurchmesser"
+        case "length": "Länge"
+        case "seating": "Setztiefe des Geschosses"
+        case "load": "Ladung"
+        default: difference
+        }
     }
 }

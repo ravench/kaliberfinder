@@ -195,3 +195,21 @@ class BulletMaterialTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LookalikeTests(unittest.TestCase):
+    """The lookalike groups go into the JSON so the app can show a calibre's group."""
+
+    def test_groups_name_known_calibres_once(self):
+        names = {c["name"] for c in generate_data.build()}
+        groups = generate_data.lookalikes(names)
+        self.assertGreaterEqual(len(groups), 20)
+        members = [n for g in groups for n in g["calibres"]]
+        self.assertEqual(len(members), len(set(members)), "a calibre in two groups")
+        self.assertTrue(all(len(g["calibres"]) >= 2 and g["differs"] for g in groups))
+        win = next(g for g in groups if ".308 Winchester" in g["calibres"])
+        self.assertEqual(win, {"differs": ["load"], "calibres": [".308 Winchester", "7.62x51 mm NATO"]})
+
+    def test_unknown_member_fails_loudly(self):
+        with self.assertRaises(AssertionError):
+            generate_data.lookalikes({"9x19 mm"})

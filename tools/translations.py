@@ -12,6 +12,13 @@ INFO_PLIST = {
 }
 
 T = {
+    "Ähnliche Kaliber": ("Similar calibres", "Calibres semblables", "Calibri simili"),
+    "Unterscheiden sich in: %@": ("Differ in: %@", "Diffèrent par : %@", "Differiscono per: %@"),
+    "Rand": ("rim", "bourrelet", "orlo"),
+    "Laufdurchmesser": ("bore", "calibre du canon", "diametro della canna"),
+    "Länge": ("length", "longueur", "lunghezza"),
+    "Setztiefe des Geschosses": ("bullet seating", "enfoncement du projectile", "inserimento della palla"),
+    "Ladung": ("load", "charge", "carica"),
     # Calibre tags and countries (CartridgeRow, CartridgeDetailView). Country names come from
     # generate_data.COUNTRY_NAMES.
     "Selten": ("Rare", "Rare", "Raro"),

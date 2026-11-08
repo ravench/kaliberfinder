@@ -87,8 +87,14 @@ struct TrueScaleView: View {
         "L " + unit.format(caseOnly ? c.dimensions.caseLength : c.dimensions.overallLength)
     }
 
+    /// Calibres that look exactly the same from the side, drawn once; the label names the others (Raven, 2026-11-08).
+    static func unique(_ cartridges: [Cartridge]) -> [Cartridge] {
+        CartridgeCatalog.groupedByProfile(cartridges, cartridge: { $0 }).map { $0[0] }
+    }
+
     var body: some View {
         let ppmm = scale.pointsPerMM
+        let cartridges = Self.unique(self.cartridges)
         let layout = TrueScaleLayout(cartridges: cartridges, unit: unit, pointsPerMM: ppmm)
         VStack(alignment: .leading, spacing: 12) {
             VStack(alignment: .leading, spacing: 12) {

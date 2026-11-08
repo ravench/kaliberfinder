@@ -2784,6 +2784,29 @@
         }
       }
     },
+    "Ladung": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "load"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "charge"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "carica"
+          }
+        }
+      }
+    },
     "Langwaffe": {
       "extractionState": "manual",
       "localizations": {
@@ -2803,6 +2826,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Arma lunga"
+          }
+        }
+      }
+    },
+    "Laufdurchmesser": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bore"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "calibre du canon"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "diametro della canna"
           }
         }
       }
@@ -2987,6 +3033,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aria compressa"
+          }
+        }
+      }
+    },
+    "Länge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "length"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "longueur"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lunghezza"
           }
         }
       }
@@ -3727,6 +3796,29 @@
         }
       }
     },
+    "Rand": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rim"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bourrelet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "orlo"
+          }
+        }
+      }
+    },
     "Randdurchmesser": {
       "extractionState": "manual",
       "localizations": {
@@ -4118,6 +4210,29 @@
         }
       }
     },
+    "Setztiefe des Geschosses": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bullet seating"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "enfoncement du projectile"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "inserimento della palla"
+          }
+        }
+      }
+    },
     "Sowjetunion": {
       "extractionState": "manual",
       "localizations": {
@@ -4505,6 +4620,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Contorno sulla foto: verde punta e fondello, viola palla, arancione colletto e spalla, azzurro conicità del corpo."
+          }
+        }
+      }
+    },
+    "Unterscheiden sich in: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Differ in: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diffèrent par : %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Differiscono per: %@"
           }
         }
       }
@@ -5057,6 +5195,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "© 2026 Simon Giotta · Licenza: PolyForm Noncommercial 1.0.0"
+          }
+        }
+      }
+    },
+    "Ähnliche Kaliber": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similar calibres"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibres semblables"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibri simili"
           }
         }
       }

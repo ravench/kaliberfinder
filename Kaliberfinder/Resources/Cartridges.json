@@ -16396,5 +16396,204 @@
     "bulletMaterial": "plastic"
    }
   }
+ ],
+ "lookalikes": [
+  {
+   "differs": [
+    "load"
+   ],
+   "calibres": [
+    ".223 Remington",
+    "5.56x45 mm NATO",
+    "5.6 mm GP 90"
+   ]
+  },
+  {
+   "differs": [
+    "load"
+   ],
+   "calibres": [
+    ".308 Winchester",
+    "7.62x51 mm NATO"
+   ]
+  },
+  {
+   "differs": [
+    "load"
+   ],
+   "calibres": [
+    ".38 ACP",
+    ".38 Super"
+   ]
+  },
+  {
+   "differs": [
+    "load"
+   ],
+   "calibres": [
+    "9x19 mm",
+    "9 mm Glisenti"
+   ]
+  },
+  {
+   "differs": [
+    "load"
+   ],
+   "calibres": [
+    "9x23 mm Largo",
+    "9x23 mm Winchester"
+   ]
+  },
+  {
+   "differs": [
+    "seating"
+   ],
+   "calibres": [
+    ".32 S&W Long",
+    ".32 S&W Long Wadcutter"
+   ]
+  },
+  {
+   "differs": [
+    "seating"
+   ],
+   "calibres": [
+    ".38 Special",
+    ".38 Special Wadcutter"
+   ]
+  },
+  {
+   "differs": [
+    "rim",
+    "load"
+   ],
+   "calibres": [
+    "7x57 mm Mauser",
+    "7x57 mm R",
+    ".275 Rigby"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
+    "6.5x57 mm Mauser",
+    "6.5x57 mm R"
+   ]
+  },
+  {
+   "differs": [
+    "rim",
+    "length"
+   ],
+   "calibres": [
+    "7x64 mm",
+    "7x65 mm R"
+   ]
+  },
+  {
+   "differs": [
+    "rim",
+    "bore"
+   ],
+   "calibres": [
+    "8x57 mm IS",
+    "8x57 mm IRS",
+    "8x57 mm I",
+    "8x57 mm IR"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
+    ".45 ACP",
+    ".45 Auto Rim"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
+    "5.6x50 mm Magnum",
+    "5.6x50 mm R Magnum"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
+    "5.6x57 mm",
+    "5.6x57 mm R"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
+    "6.5x65 mm RWS",
+    "6.5x65 mm R RWS"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
+    "6.5x68 mm",
+    "6.5x68 mm R"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
+    "8x60 mm S",
+    "8x60 mm RS"
+   ]
+  },
+  {
+   "differs": [
+    "rim",
+    "length"
+   ],
+   "calibres": [
+    "8x64 mm S",
+    "8x65 mm RS"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
+    "9x57 mm Mauser",
+    "9x57 mm R"
+   ]
+  },
+  {
+   "differs": [
+    "bore"
+   ],
+   "calibres": [
+    "7.62x54 mm R",
+    "7.62x53 mm R"
+   ]
+  },
+  {
+   "differs": [
+    "length"
+   ],
+   "calibres": [
+    ".450/400 Nitro Express 3 inch",
+    ".450/400 Nitro Express 3¼ inch"
+   ]
+  }
  ]
 }
