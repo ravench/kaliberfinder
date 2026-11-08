@@ -79,6 +79,25 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// The calibre picker of a new training series finds a calibre by its other names too, and shows them.
+    func testTrainingCalibreSearch() {
+        app.terminate()
+        app.launchArguments += ["-trainingCaptureEnabled", "YES"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]),
+              open(app.buttons["Trainingsdaten aufnehmen"].firstMatch),
+              open(app.buttons["Neue Aufnahmeserie"].firstMatch),
+              open(app.staticTexts["Fotografiertes Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("Schmidt Rubin\n") // return hides the keyboard
+        }
+        XCTAssertTrue(app.staticTexts["7.5x53.5 mm Swiss (GP 1890)"].waitForExistence(timeout: 5), "not found by another name")
+        snap("23-Trainingsdaten-Kalibersuche")
+    }
+
     /// Cases that are not brass, from the side and from below: lacquered steel, a brass body on a
     /// steel head, and a paper case in a brass cup.
     func testCaseMaterials() {
