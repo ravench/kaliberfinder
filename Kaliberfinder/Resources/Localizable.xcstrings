@@ -2600,25 +2600,25 @@
         }
       }
     },
-    "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.": {
+    "Kein sicherer Treffer": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "No sure match. Measure the cartridge with a calliper and enter the dimensions."
+            "value": "No sure match"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pas de correspondance sûre. Mesurez la cartouche au pied à coulisse et saisissez les dimensions."
+            "value": "Pas de correspondance sûre"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nessuna corrispondenza sicura. Misura la cartuccia con un calibro a corsoio e inserisci le dimensioni."
+            "value": "Nessuna corrispondenza sicura"
           }
         }
       }
@@ -2669,25 +2669,25 @@
         }
       }
     },
-    "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.": {
+    "Keine passenden Kaliber gefunden": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "No matching calibres found. Measure the cartridge with a calliper and enter the dimensions."
+            "value": "No matching calibres found"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aucun calibre correspondant trouvé. Mesurez la cartouche au pied à coulisse et saisissez les dimensions."
+            "value": "Aucun calibre correspondant trouvé"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nessun calibro corrispondente trovato. Misura la cartuccia con un calibro a corsoio e inserisci le dimensioni."
+            "value": "Nessun calibro corrispondente trovato"
           }
         }
       }

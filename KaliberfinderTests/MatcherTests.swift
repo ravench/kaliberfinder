@@ -206,9 +206,21 @@ final class MatcherTests: XCTestCase {
         // A good shape is compared on the 1:1 screen, with or without LiDAR.
         XCTAssertNil(MatchesView.manualEntryHint([roughSize]))
         XCTAssertNil(MatchesView.manualEntryHint([shapeOnly, roughShape]))
-        XCTAssertEqual(MatchesView.manualEntryHint([]),
-                       "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc)
-        XCTAssertEqual(MatchesView.manualEntryHint([roughShape]),
-                       "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc)
+        XCTAssertEqual(MatchesView.manualEntryHint([]), "Keine passenden Kaliber gefunden".loc)
+        XCTAssertEqual(MatchesView.manualEntryHint([roughShape]), "Kein sicherer Treffer".loc)
+    }
+
+    func testAGoodMatchHasAGoodShapeAndSize() throws {
+        let c = try XCTUnwrap(CartridgeCatalog.current.first)
+        let good = Match(cartridge: c, score: 1, shapeDistance: 0.05, sizeDeviation: 0.1)
+        let shapeOnly = Match(cartridge: c, score: 1, shapeDistance: 0.05)
+        let wrongSize = Match(cartridge: c, score: 1, shapeDistance: 0.05, sizeDeviation: 0.8)
+        XCTAssertTrue(MatchesView.hasGoodMatch([wrongSize, good]))
+        XCTAssertTrue(MatchesView.hasGoodMatch([shapeOnly]), "without a size the shape decides")
+        XCTAssertFalse(MatchesView.hasGoodMatch([wrongSize]))
+        XCTAssertFalse(MatchesView.hasGoodMatch([]))
+        // Only matches that fit well carry their reason to the 1:1 screen.
+        XCTAssertEqual(MatchesView.goodMatches([good, wrongSize]), [c.id: MatchesView.reason(for: good)])
+        XCTAssertTrue(MatchesView.goodMatches([shapeOnly]).isEmpty)
     }
 }
