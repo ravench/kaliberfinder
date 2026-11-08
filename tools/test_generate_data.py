@@ -65,6 +65,12 @@ class RareAndCountryTests(unittest.TestCase):
         self.assertEqual(self.by_name["7.62x39 mm"]["country"]["code"], "SU")
         flagless = {c["country"]["code"] for c in self.by_name.values() if "country" in c and "flag" not in c["country"]}
         self.assertLessEqual(flagless, generate_data.DRAWN_FLAGS)
+        # calibre-data #51 (2026-11-08): unions are origins too, and the flag tilts to the main adopter
+        self.assertEqual(self.by_name["5.56x45 mm NATO"]["country"], {"code": "NATO", "name": "NATO"})
+        self.assertEqual(self.by_name["7.65x53 mm Argentine"]["country"],
+                         {"code": "AR", "name": "Argentinien", "flag": "🇦🇷"})
+        self.assertEqual(self.by_name["9x21 mm IMI"]["country"]["name"], "Italien")
+        self.assertNotIn("IL", generate_data.COUNTRY_NAMES)
 
     def test_drawn_flags_match_the_swift_view(self):
         src = open(os.path.join(ROOT, "Kaliberfinder", "Views", "CalibreTags.swift")).read()
