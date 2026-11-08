@@ -47,6 +47,44 @@ final class TrueScaleLayoutTests: XCTestCase {
         XCTAssertEqual(RulerView.y(forMM: 29.69, height: layout.bandHeight, pointsPerMM: 6), tip, accuracy: 1e-9)
     }
 
+    /// A short cartridge on a tall screen: the band with its labels sits in the middle, with as much
+    /// space above the ruler as below the labels.
+    func testShortCartridgeIsCentredOnATallScreen() throws {
+        let layout = TrueScaleLayout(cartridges: try cartridges(["9x19 mm"]), unit: .metric, pointsPerMM: 6.3)
+        let labels = 100.0, available = 700.0
+        let top = TrueScaleLayout.contentTop(contentHeight: layout.bandHeight + labels, availableHeight: available)
+        XCTAssertEqual(layout.bandHeight, 252, accuracy: 1e-9)
+        XCTAssertGreaterThan(top, 0)
+        XCTAssertEqual(top, available - (top + layout.bandHeight + labels), accuracy: 1e-9)
+    }
+
+    /// Long rifle rounds on a 13 mini: the labels end on the bottom edge and the top is cut off,
+    /// instead of the screen scrolling. A GP 11 loses the ruler's headroom, a .338 Lapua Magnum its tip.
+    func testLongRoundIsFlushAtTheBottomWithItsTipClipped() throws {
+        let ppmm = 476.0 / 3 / 25.4 // the 13 mini's density
+        // Name, length and diameter lines and the case base seen from below.
+        let labels = 130.0
+        // Its 812 pt less the status and navigation bars, the badge and the home indicator.
+        let available = 620.0
+        for (id, tipClipped) in [("7.5x55 mm Swiss (GP 11)", false), (".338 Lapua Magnum", true)] {
+            let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: id))
+            let layout = TrueScaleLayout(cartridges: [c], unit: .metric, pointsPerMM: ppmm)
+            let top = TrueScaleLayout.contentTop(contentHeight: layout.bandHeight + labels, availableHeight: available)
+            XCTAssertLessThan(top, 0, id)
+            XCTAssertEqual(top + layout.bandHeight + labels, available, accuracy: 1e-9, id)
+            // The base line is on screen; the tip, `height` mm above it, only while it fits.
+            XCTAssertLessThan(top + layout.bandHeight, available, id)
+            XCTAssertEqual(top + layout.bandHeight - c.outline.height * ppmm < 0, tipClipped, id)
+        }
+    }
+
+    /// Content exactly as tall as the space is neither moved nor cut.
+    func testContentThatJustFitsStartsAtTheTop() {
+        XCTAssertEqual(TrueScaleLayout.contentTop(contentHeight: 500, availableHeight: 500), 0)
+        XCTAssertEqual(TrueScaleLayout.contentTop(contentHeight: 400, availableHeight: 500), 50)
+        XCTAssertEqual(TrueScaleLayout.contentTop(contentHeight: 600, availableHeight: 500), -100)
+    }
+
     func testRulerNumbersHaveRoomAtBothEnds() {
         // The 9 pt numbers are centred on the top and zero ticks: half their height sticks out.
         XCTAssertGreaterThanOrEqual(RulerView.labelOverhang, 6)

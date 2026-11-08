@@ -25,11 +25,39 @@ struct TrueScaleLayout: Equatable {
         rulerMM = unit.rulerLength(tallestMM: tallest)
         bandHeight = rulerMM * pointsPerMM
     }
+
+    /// Where the drawings (the band with the labels under it, `contentHeight` tall) start in the
+    /// `availableHeight` under the badge. When they fit, they are centred: as much space above the
+    /// bullet tips as below the labels. When they do not, their bottom is on the bottom edge and the
+    /// start is negative: the bullet tips are cut off at the top, not the bases and the labels; the
+    /// screen does not scroll vertically.
+    static func contentTop(contentHeight: Double, availableHeight: Double) -> Double {
+        contentHeight <= availableHeight ? (availableHeight - contentHeight) / 2 : availableHeight - contentHeight
+    }
+}
+
+/// Gives its content the whole space and puts it where `TrueScaleLayout.contentTop` says: centred
+/// when it fits, else flush with the bottom edge, sticking out at the top.
+private struct CentredOrFlushBottom: Layout {
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        proposal.replacingUnspecifiedDimensions()
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        for subview in subviews {
+            let height = subview.sizeThatFits(ProposedViewSize(width: bounds.width, height: nil)).height
+            let top = TrueScaleLayout.contentTop(contentHeight: height, availableHeight: bounds.height)
+            subview.place(at: CGPoint(x: bounds.minX, y: bounds.minY + top), anchor: .topLeading,
+                          proposal: ProposedViewSize(width: bounds.width, height: height))
+        }
+    }
 }
 
 /// Cartridges side by side at real size, standing on a common base line next to a ruler.
 /// The ruler stays put on the left while the cartridges scroll sideways; zooming is
-/// deliberately not possible, since the drawing is at real size (1:1).
+/// deliberately not possible, since the drawing is at real size (1:1). The band is centred
+/// vertically when it fits under the badge, else it stands on the bottom edge and the bullet
+/// tips are cut off at the top (`TrueScaleLayout.contentTop`); there is no vertical scrolling.
 /// Lay the real cartridge on the screen, base on the line, to compare.
 struct TrueScaleView: View {
     let cartridges: [Cartridge]
@@ -58,17 +86,17 @@ struct TrueScaleView: View {
     var body: some View {
         let ppmm = scale.pointsPerMM
         let layout = TrueScaleLayout(cartridges: cartridges, unit: unit, pointsPerMM: ppmm)
-        ScrollView(.vertical) {
+        VStack(alignment: .leading, spacing: 12) {
             VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: 12) {
-                    OneToOneBadge()
-                    if scale.resolution.source == .estimate {
-                        Label("Bildschirm nicht kalibriert: Grösse kann leicht abweichen.", systemImage: "exclamationmark.triangle")
-                            .font(.footnote)
-                            .foregroundStyle(.orange)
-                    }
+                OneToOneBadge()
+                if scale.resolution.source == .estimate {
+                    Label("Bildschirm nicht kalibriert: Grösse kann leicht abweichen.", systemImage: "exclamationmark.triangle")
+                        .font(.footnote)
+                        .foregroundStyle(.orange)
                 }
-                .padding([.horizontal, .top])
+            }
+            .padding([.horizontal, .top])
+            CentredOrFlushBottom {
                 if let single = cartridges.first, cartridges.count == 1 {
                     singleView(single, layout: layout, ppmm: ppmm)
                 } else {
@@ -103,12 +131,11 @@ struct TrueScaleView: View {
                         .scrollIndicators(.visible)
                     }
                     .padding(.leading, TrueScaleLayout.rulerLeadingInset)
-                    .padding(.bottom)
                 }
             }
+            // Cuts off what sticks out at the top when the band does not fit.
+            .clipped()
         }
-        // Scrolls only when a long cartridge does not fit on the screen.
-        .scrollBounceBehavior(.basedOnSize)
         .simultaneousGesture(MagnifyGesture().onChanged { _ in showZoomHint = true })
         .overlay(alignment: .bottom) {
             if showZoomHint {
@@ -150,7 +177,6 @@ struct TrueScaleView: View {
             CaseBaseView(cartridge: c, pointsPerMM: ppmm)
         }
         .frame(maxWidth: .infinity)
-        .padding(.bottom)
     }
 
     /// Drawn without its bullet: compared as an empty case, with the bullets switched off.
