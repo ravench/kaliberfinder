@@ -289,7 +289,7 @@ T = {
         "Choisissez le calibre que vous photographiez et prenez-en plusieurs photos. La photo, la profondeur LiDAR, les données de l'appareil photo et le masque Vision sont enregistrés. Partagez la série en ZIP, elle sera ajoutée aux tests.",
         "Scegli il calibro che stai fotografando e scatta più foto. Vengono salvati la foto, la profondità LiDAR, i dati della fotocamera e la maschera Vision. Condividi la serie come ZIP: finirà nei test."),
     "Gespeichert": ("Saved", "Enregistrées", "Salvate"),
-    "%@ · %lld Fotos · %@": ("%@ · %lld photos · %@", "%@ · %lld photos · %@", "%@ · %lld foto · %@"),
+    "%@ · %lld Fotos · %@ · %@": ("%@ · %lld photos · %@ · %@", "%@ · %lld photos · %@ · %@", "%@ · %lld foto · %@ · %@"),
     "Fotografiertes Kaliber": ("Photographed calibre", "Calibre photographié", "Calibro fotografato"),
     "Wählen": ("Choose", "Choisir", "Scegli"),
     "Im Bild": ("In the photo", "Sur la photo", "Nella foto"),

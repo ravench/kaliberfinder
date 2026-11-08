@@ -194,6 +194,8 @@ struct SavedCapture: Identifiable, Hashable {
     let package: CapturePackage
     /// Read with the list, so a list reloaded after new photos differs and SwiftUI redraws its row.
     var shotCount = 0
+    /// Bytes on disk of the whole package: how much a share has to carry.
+    var bytes: Int64 = 0
     var id: URL { url }
 
     static func == (a: SavedCapture, b: SavedCapture) -> Bool { a.url == b.url && a.shotCount == b.shotCount }
@@ -243,9 +245,15 @@ struct CaptureStore {
         return folders.compactMap { url in
             guard let data = try? Data(contentsOf: url.appendingPathComponent(TrainingCapture.packageFile)),
                   let package = try? TrainingCapture.decoder.decode(CapturePackage.self, from: data) else { return nil }
-            return SavedCapture(url: url, package: package, shotCount: Self.shots(in: url).count)
+            return SavedCapture(url: url, package: package, shotCount: Self.shots(in: url).count, bytes: Self.bytes(in: url))
         }
         .sorted { ($0.package.created, $0.url.lastPathComponent) > ($1.package.created, $1.url.lastPathComponent) }
+    }
+
+    /// Bytes of every file under `package`.
+    static func bytes(in package: URL) -> Int64 {
+        let files = FileManager.default.enumerator(at: package, includingPropertiesForKeys: [.fileSizeKey])?.compactMap { $0 as? URL } ?? []
+        return files.reduce(0) { $0 + Int64((try? $1.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0) }
     }
 
     func delete(_ capture: SavedCapture) throws {

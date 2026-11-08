@@ -1,25 +1,25 @@
 {
   "sourceLanguage": "de",
   "strings": {
-    "%@ · %lld Fotos · %@": {
+    "%@ · %lld Fotos · %@ · %@": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · %lld photos · %@"
+            "value": "%@ · %lld photos · %@ · %@"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · %lld photos · %@"
+            "value": "%@ · %lld photos · %@ · %@"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · %lld foto · %@"
+            "value": "%@ · %lld foto · %@ · %@"
           }
         }
       }
