@@ -70,7 +70,10 @@ final class EmptyCaseTests: XCTestCase {
         let d = c.dimensions
         let size = MeasuredSize(length: d.caseLength, diameter: d.base, lengthError: 1, diameterError: 0.25)
         let matches = Matcher.rank(shape: try photo(c, part: .emptyCase), size: size, limit: 5)
-        XCTAssertEqual(matches.first?.cartridge.id, c.id, "\(matches.map(\.cartridge.id))")
+        // The .32 S&W Long Wadcutter, seated flush, is the same tube 0.13 mm shorter: no photo or LiDAR
+        // size tells the two apart, so they share the top two places, in either order.
+        let ids = matches.map(\.cartridge.id)
+        XCTAssertEqual(Set(ids.prefix(2)), [c.id, ".32 S&W Long Wadcutter"], "\(ids)")
         XCTAssertFalse(matches.contains { $0.cartridge.id == ".44 Magnum" })
     }
 
