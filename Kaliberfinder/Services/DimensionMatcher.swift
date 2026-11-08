@@ -75,7 +75,8 @@ enum DimensionMatcher {
             ]
             let deviations = pairs.compactMap { pair in pair.0.map { max(0, outside($0, pair.1) - tolerance) } }
             // Within a shotshell's crimp range, nearer the catalogue's length goes first (12/70 before 12/76).
-            let fromCatalogue = measured.overallLength.map { abs($0 - d.overallLength) } ?? 0
+            let entered = measured.overallLength ?? measured.caseLength
+            let fromCatalogue = c.kind == "shot" ? entered.map { abs($0 - d.overallLength) } ?? 0 : 0
             return (DimensionMatch(cartridge: c,
                                    maxDeviation: deviations.max() ?? 0,
                                    meanDeviation: deviations.reduce(0, +) / Double(deviations.count)), fromCatalogue)

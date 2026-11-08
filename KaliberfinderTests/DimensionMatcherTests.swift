@@ -25,6 +25,8 @@ final class DimensionMatcherTests: XCTestCase {
         for length in [57.8, 65.5] {
             XCTAssertEqual(DimensionMatcher.rank(MeasuredDimensions(overallLength: length, rim: 22.3)).first?.cartridge.id, "12/70",
                            "\(length) mm: 12/70 before 12/76")
+            XCTAssertEqual(DimensionMatcher.rank(MeasuredDimensions(caseLength: length, rim: 22.3)).first?.cartridge.id, "12/70",
+                           "\(length) mm as the case length")
         }
         let magnum = DimensionMatcher.rank(MeasuredDimensions(overallLength: 57.8, rim: 22.3)).first { $0.cartridge.id == "12/89" }
         XCTAssertNotEqual(magnum?.fit, .good)
