@@ -261,7 +261,7 @@ T = {
         "Rond sur la photo : culot ou pointe d'une cartouche, ou une balle ronde. Les cartouches ne sont identifiées que de côté.",
         "Rotondo nella foto: fondello o punta di una cartuccia, oppure una palla sferica. Le cartucce si riconoscono solo di lato."),
     "Speichern": ("Save", "Enregistrer", "Salva"),
-    "Vom iPhone-Modell": ("From the iPhone model", "Selon le modèle d'iPhone", "Dal modello di iPhone"),
+    "Vom Gerätemodell": ("From the device model", "Selon le modèle d'appareil", "Dal modello di dispositivo"),
     "Wähle Kaliber aus, um sie in Originalgrösse nebeneinander zu vergleichen.": (
         "Select calibres to compare them side by side at real size.",
         "Sélectionnez des calibres pour les comparer côte à côte en taille réelle.",
