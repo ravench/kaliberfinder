@@ -13,7 +13,7 @@ struct SettingsView: View {
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(TrueScaleView.bulletsOnCasesKey) private var bulletsOnCases = true
     /// Only phones with a LiDAR scanner measure the photo, so only they get the switch (`MatchesView.compareByFitKey`).
-    @AppStorage(MatchesView.compareByFitKey) private var compareByFit = false
+    @AppStorage(MatchesView.compareByFitKey) private var compareByFit = true
     /// Hidden developer switch: five taps on the copyright line (`TrainingCapture`).
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
     /// The photo's outline coloured by detection (`ShapeContour.partColoursKey`); for everyone since 2026-11-08.

@@ -22,10 +22,10 @@ struct MatchesView: View {
     @State private var override: ScanMode?
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
-    @AppStorage(Self.compareByFitKey) private var compareByFit = false
+    @AppStorage(Self.compareByFitKey) private var compareByFit = true
 
-    /// Settings switch, off by default and shown on LiDAR phones only: the 1:1 comparison of all
-    /// matches keeps the list's order, best first, instead of standing the calibres by length (`toCompare`).
+    /// Settings switch, shown on LiDAR phones only and on by default (Raven, 2026-11-08): the 1:1 comparison
+    /// of all matches keeps the list's order, best first, instead of standing the calibres by length (`toCompare`).
     static let compareByFitKey = "compareAllByFit"
 
     var body: some View {
