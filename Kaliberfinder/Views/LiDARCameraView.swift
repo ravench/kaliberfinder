@@ -1,7 +1,7 @@
 import AVFoundation
 import SwiftUI
 
-/// The app's own camera screen on LiDAR iPhones (LIDAR-02): preview, guide and shutter.
+/// The app's own camera screen on LiDAR devices (LIDAR-02): preview, guide and shutter.
 struct LiDARCameraView: View {
     let onPick: (UIImage, DepthScale?) -> Void
     @StateObject private var camera = LiDARCamera()
@@ -11,9 +11,9 @@ struct LiDARCameraView: View {
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-            CameraPreview(session: camera.session).ignoresSafeArea()
+            CameraPreview(camera: camera).ignoresSafeArea()
             VStack(spacing: 12) {
-                Text("Lege die Patrone flach auf einen hellen Untergrund und halte das iPhone parallel, 20–30 cm darüber.")
+                Text("Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, 20–30 cm darüber.")
                     .font(.footnote)
                     .multilineTextAlignment(.center)
                     .padding(10)
@@ -54,14 +54,14 @@ struct LiDARCameraView: View {
     }
 }
 
-/// The live camera image (also the training capture camera).
+/// The live camera image (also the training capture camera), turned with the screen by `camera`.
 struct CameraPreview: UIViewRepresentable {
-    let session: AVCaptureSession
+    let camera: LiDARCamera
 
     func makeUIView(context: Context) -> PreviewView {
         let view = PreviewView()
-        view.previewLayer.session = session
         view.previewLayer.videoGravity = .resizeAspectFill
+        camera.attach(previewLayer: view.previewLayer)
         return view
     }
 

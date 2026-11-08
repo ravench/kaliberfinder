@@ -91,12 +91,12 @@ T = {
     "Grösse passt ungefähr": ("Size fits roughly", "La taille correspond à peu près", "La dimensione corrisponde più o meno"),
     "Grösse passt wenig": ("Size fits poorly", "La taille correspond peu", "La dimensione corrisponde poco"),
     "Keine Tiefe gemessen": ("No depth measured", "Aucune profondeur mesurée", "Nessuna profondità misurata"),
-    "Lege die Patrone flach auf einen hellen Untergrund und halte das iPhone parallel, 20–30 cm darüber.": (
-        "Lay the cartridge flat on a light surface and hold the iPhone parallel, 20–30 cm above it.",
-        "Posez la cartouche à plat sur un fond clair et tenez l'iPhone parallèle, à 20–30 cm au-dessus.",
-        "Appoggia la cartuccia piatta su un fondo chiaro e tieni l'iPhone parallelo, 20–30 cm sopra."),
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, 20–30 cm darüber.": (
+        "Lay the cartridge flat on a light surface and hold the device parallel, 20–30 cm above it.",
+        "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à 20–30 cm au-dessus.",
+        "Appoggia la cartuccia piatta su un fondo chiaro e tieni il dispositivo parallelo, 20–30 cm sopra."),
     "Näher heran": ("Move closer", "Rapprochez-vous", "Avvicinati"),
-    "iPhone parallel zum Tisch halten": ("Hold the iPhone parallel to the table", "Tenez l'iPhone parallèle à la table", "Tieni l'iPhone parallelo al tavolo"),
+    "Gerät parallel zum Tisch halten": ("Hold the device parallel to the table", "Tenez l'appareil parallèle à la table", "Tieni il dispositivo parallelo al tavolo"),
     "Einheiten": ("Units", "Unités", "Unità"),
     "Einstellungen": ("Settings", "Réglages", "Impostazioni"),
     "Erkennung": ("Recognition", "Reconnaissance", "Riconoscimento"),
