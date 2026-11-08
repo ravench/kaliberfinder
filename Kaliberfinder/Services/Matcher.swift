@@ -54,9 +54,14 @@ enum ScanMode: String, CaseIterable, Identifiable {
         }
     }
 
-    /// The choice that matches what the app detects in this outline.
-    static func detected(in shape: ShapeMeasurement) -> ScanMode {
-        auto.part(for: shape) == .emptyCase ? .emptyCase : .cartridge
+    /// The choice that matches what the app detects: the outline's part (`part(for:)`), or when the
+    /// calibre at the top of the list (`first`) is a shotshell with a LiDAR size, what its length says
+    /// (`Matcher.shotshellPart`): a crimped shell has no bullet tip, so its outline alone reads as a case.
+    static func detected(in shape: ShapeMeasurement, size: MeasuredSize? = nil, perspective: Double? = nil,
+                         first: Cartridge? = nil) -> ScanMode {
+        let photo = Matcher.Photo(shape: shape, size: size, perspective: perspective)
+        let part = first.flatMap { Matcher.shotshellPart(photo, $0) } ?? auto.part(for: shape)
+        return part == .emptyCase ? .emptyCase : .cartridge
     }
 
     /// What to compare the photo with when nothing else decides: a square-cut end is a case mouth, a
@@ -209,11 +214,7 @@ enum Matcher {
         let neck = shape.neck.flatMap { $0.isClear && c.dimensions.neck / c.dimensions.base > $0.width + neckTolerance ? neckPenalty : 0 } ?? 0
         var candidates: [(distance: Double, deviation: Double?, part: ShapePart)] = []
         if !caseOnly || emptyCase == nil, let whole, !whole.isEndView {
-            // A bullet's tip lies on the axis; a crimp or a ball's end stands half its width above it.
-            let front = hasBullet ? 0 : endWidth(whole) / 2
-            var (d, deviation) = distance(photo, Expected(shape: whole, length: c.dimensions.overallLength, lengths: c.overallLengths,
-                                                          diameter: c.dimensions.base, lengthScale: lengthScaleWhole, front: front,
-                                                          back: rim(whole) / 2))
+            var (d, deviation) = distance(photo, wholeExpected(c, whole, hasBullet: hasBullet))
             // Blanks, shotshells and balls have no bullet to narrow: their end is as it is.
             if mode == .auto, hasBullet { d += partWeight * max(0, end - partMiddle) }
             if hasBullet, let mouth = photo.mouth { d += mouthPenalty(mouth, c, size: photo.size) }
@@ -242,10 +243,8 @@ enum Matcher {
             if let a = way.features, let b = expected.shape.features, abs(a.rim - b.rim) > rimTolerance { rimPen = rimPenalty }
             d = min(d, aspect + profileWeight * profileDifference(way, expected.shape) + rimPen)
         }
-        guard let size = photo.size else { return (d, nil) }
-        var rise = 1.0
-        if let p = photo.perspective, p > 0, p < 0.5 { rise = (1 / (1 - expected.front * p) + 1 / (1 - expected.back * p)) / 2 }
-        let length = size.length * expected.lengthScale / rise, diameter = size.diameter * diameterScale
+        guard let size = photo.size, let length = measuredLength(photo, expected) else { return (d, nil) }
+        let diameter = size.diameter * diameterScale
         let lengths = expected.lengths ?? expected.length...expected.length
         let lengthOff = max(0, DimensionMatcher.outside(length, lengths) - lengthTolerance)
         // Within the range, the catalogue's length counts `crimpRangeWeight` as much (0 for a single length).
@@ -253,6 +252,33 @@ enum Matcher {
         let diameterOff = max(0, abs(diameter - expected.diameter) - diameterTolerance)
         d += lengthWeight * (lengthOff + crimpRangeWeight * fromCatalogue) / 10 + diameterWeight * diameterOff / 10
         return (d, (lengthOff + diameterOff) / 2)
+    }
+
+    /// The whole cartridge `c` to compare with, from its catalogue outline `whole`: a bullet's tip lies
+    /// on the axis; a crimp or a ball's end stands half its width above it.
+    static func wholeExpected(_ c: Cartridge, _ whole: ShapeMeasurement, hasBullet: Bool) -> Expected {
+        Expected(shape: whole, length: c.dimensions.overallLength, lengths: c.overallLengths, diameter: c.dimensions.base,
+                 lengthScale: lengthScaleWhole, front: hasBullet ? 0 : endWidth(whole) / 2, back: rim(whole) / 2)
+    }
+
+    /// The photo's LiDAR length as `expected` reads it, in mm: scaled, and without the rise of its ends
+    /// (`EndRise`) where the photo's perspective is known. Nil without a size.
+    static func measuredLength(_ photo: Photo, _ expected: Expected) -> Double? {
+        guard let size = photo.size else { return nil }
+        var rise = 1.0
+        if let p = photo.perspective, p > 0, p < 0.5 { rise = (1 / (1 - expected.front * p) + 1 / (1 - expected.back * p)) / 2 }
+        return size.length * expected.lengthScale / rise
+    }
+
+    /// What a shotshell's LiDAR length says lies in the photo. A loaded shell is as long as its crimp
+    /// range allows (`Cartridge.overallLengths`, with `lengthTolerance`); a fired hull's crimp has opened
+    /// back, so it is longer: a 12/70 hull is about 70 mm open against 58 to 66 mm loaded, and the border
+    /// lies halfway, at 67.9 mm. Nil for other kinds, without a size or for an end view, when the outline
+    /// decides (`ScanMode.part(for:)`). The matching is not affected: both parts compare a shotshell whole.
+    static func shotshellPart(_ photo: Photo, _ c: Cartridge) -> ShapePart? {
+        guard c.kind == "shot", !photo.shape.isEndView, let whole = ShapeMatcher.catalogue[c.id], !whole.isEndView,
+              let length = measuredLength(photo, wholeExpected(c, whole, hasBullet: false)) else { return nil }
+        return length > c.overallLengths.upperBound + lengthTolerance ? .emptyCase : .cartridge
     }
 
     /// Mean difference of the slice widths (relative to the body), or of the coarse profile where a shape
