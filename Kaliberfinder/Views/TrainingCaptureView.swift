@@ -245,8 +245,6 @@ struct TrainingPackageView: View {
                 measured("Geschossdurchmesser", value: $measurements.bullet)
             } header: {
                 Text("Mit der Schieblehre gemessen")
-            } footer: {
-                Text("Was die Patrone wirklich misst: eine gefaltete Schrotpatrone ist kürzer als im Katalog.")
             }
             Section {
                 ForEach(shots) { entry in

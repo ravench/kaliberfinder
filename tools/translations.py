@@ -239,10 +239,6 @@ T = {
     "Lineal in Zentimetern": ("Ruler in centimetres", "Règle en centimètres", "Righello in centimetri"),
     "Luftdruck": ("Air gun", "Air comprimé", "Aria compressa"),
     "Mit der Schieblehre gemessen": ("Measured with a calliper", "Mesuré au pied à coulisse", "Misurato con il calibro"),
-    "Was die Patrone wirklich misst: eine gefaltete Schrotpatrone ist kürzer als im Katalog.": (
-        "What the round really measures: a folded shotshell is shorter than the catalogue says.",
-        "Ce que la cartouche mesure vraiment : une cartouche de chasse sertie est plus courte que le catalogue.",
-        "Quanto misura davvero la cartuccia: una cartuccia da caccia con chiusura a stella è più corta del catalogo."),
     "Masse eingeben": ("Enter dimensions", "Saisir les dimensions", "Inserisci le dimensioni"),
     "Masse": ("Dimensions", "Dimensions", "Dimensioni"),
     "Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten. Zündhütchen: Boxer-Grösse handelsüblicher Hülsen; Militärmunition kann Berdan-Zündhütchen anderer Grösse haben.": (
