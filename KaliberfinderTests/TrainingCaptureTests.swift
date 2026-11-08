@@ -107,6 +107,8 @@ final class TrainingCaptureTests: XCTestCase {
         try CaptureStore.save(CaptureShot(photo: "photo.jpg", source: "library", captured: Date()), photo: try jpeg(), in: url)
         let after = try XCTUnwrap(store.packages().first)
         XCTAssertEqual(after.shotCount, 1)
+        XCTAssertGreaterThan(after.bytes, before.bytes, "the photo and its shot.json count")
+        XCTAssertEqual(after.bytes, CaptureStore.bytes(in: url))
         XCTAssertNotEqual(before, after, "an equal value would keep SwiftUI showing «0 Fotos»")
     }
 
