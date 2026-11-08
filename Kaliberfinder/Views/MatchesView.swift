@@ -114,7 +114,8 @@ struct MatchesView: View {
             Section {
                 // Calibres that look exactly the same from the side share one row.
                 ForEach(Matcher.grouped(matches)) { g in
-                    NavigationLink { TrueScaleView(cartridges: [g.lead.cartridge], emptyCases: Self.emptyCases(g.items)) } label: {
+                    // The calibre's page, as «Alle Kaliber» shows it; its 1:1 link draws this calibre alone (Raven, 2026-11-08).
+                    NavigationLink { CartridgeDetailView(cartridge: g.lead.cartridge) } label: {
                         CartridgeRow(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead),
                                      highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
                     }

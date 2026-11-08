@@ -210,6 +210,27 @@ final class PRScreensTests: XCTestCase {
         photoMatches("photo-9x19-wood", shot: "16-Foto-Erkennung-farbig")
     }
 
+    /// Raven's flows (2026-11-08): a match opens its calibre's page, whose 1:1 draws that calibre alone;
+    /// on the 1:1 comparison of all matches a tap on a drawing opens that calibre's page.
+    func testMatchToCalibrePage() {
+        let photo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("KaliberfinderTests/Fixtures/set-gp11-case-02.jpg")
+        app.terminate()
+        app.launchArguments += ["-screenTourPhoto", photo.path]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Treffer"].waitForExistence(timeout: 10))
+        _ = app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90)
+        guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "6.5-284 Norma")).firstMatch) else { return }
+        XCTAssertTrue(app.navigationBars["6.5-284 Norma"].waitForExistence(timeout: 5), "The calibre's page did not open from the match")
+        snap("32-Treffer-Kaliber")
+        back()
+        guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden 1:1")).firstMatch),
+              app.navigationBars["1:1"].waitForExistence(timeout: 5),
+              open(app.scrollViews.firstMatch.buttons.firstMatch) else { return } // the first drawing on screen
+        XCTAssertTrue(app.staticTexts["Masse"].waitForExistence(timeout: 5), "The calibre's page did not open from the 1:1 screen")
+        snap("33-1zu1-Kaliber")
+    }
+
     /// The hidden «Trainingsdaten» screen, on the example package of KaliberfinderTests/Captures so
     /// it shows the same series on every run: the saved series, and one of them opened from the list.
     func testTrainingCapture() {
