@@ -212,6 +212,7 @@ struct TrainingPackageView: View {
     @State private var libraryItems: [PhotosPickerItem] = []
     @State private var shared: SharedFile?
     @State private var status: String?
+    @State private var measurements = Measurements()
 
     var body: some View {
         List {
@@ -238,6 +239,16 @@ struct TrainingPackageView: View {
                 }
             }
             Section {
+                measured("Gesamtlänge", value: $measurements.overallLength)
+                measured("Hülsenlänge", value: $measurements.caseLength)
+                measured("Randdurchmesser", value: $measurements.rim)
+                measured("Geschossdurchmesser", value: $measurements.bullet)
+            } header: {
+                Text("Mit der Schieblehre gemessen")
+            } footer: {
+                Text("In mm, was die Patrone wirklich misst: eine gefaltete Schrotpatrone ist kürzer als im Katalog.")
+            }
+            Section {
                 ForEach(shots) { entry in
                     Text(verbatim: Self.summary(entry.url.lastPathComponent, entry.shot, pixels: CaptureStore.photoPixels(of: entry.shot, at: entry.url)))
                         .font(.footnote.monospaced())
@@ -248,7 +259,15 @@ struct TrainingPackageView: View {
         }
         .navigationTitle(Text(verbatim: capture.url.lastPathComponent))
         .navigationBarTitleDisplayMode(.inline)
+        .scrollDismissesKeyboard(.interactively)
         .onAppear(perform: reload)
+        .onChange(of: measurements) { _, new in
+            // Written as typed; nothing measured leaves the key out of package.json.
+            var package = capture.package
+            package.measurements = new.isEmpty ? nil : new
+            guard package.measurements != capture.package.measurements else { return }
+            do { try CaptureStore.update(package, at: capture.url) } catch { status = error.localizedDescription }
+        }
         .fullScreenCover(isPresented: $showCamera, onDismiss: reload) {
             TrainingCameraView(capture: capture)
         }
@@ -280,7 +299,20 @@ struct TrainingPackageView: View {
         return "\(name)  \(camera)\(depth)  \(size)  \(aspect)  \(shot.analysis?.matches.first ?? "kein Treffer".loc)"
     }
 
-    private func reload() { shots = capture.shots }
+    private func reload() {
+        shots = capture.shots
+        measurements = capture.package.measurements ?? Measurements()
+    }
+
+    /// A calliper value in mm, empty until measured.
+    private func measured(_ title: LocalizedStringKey, value: Binding<Double?>) -> some View {
+        LabeledContent(title) {
+            TextField("mm", value: value, format: .number.precision(.fractionLength(0...2)))
+                .keyboardType(.decimalPad)
+                .multilineTextAlignment(.trailing)
+                .frame(maxWidth: 100)
+        }
+    }
 
     private func share() {
         do {

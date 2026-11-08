@@ -238,6 +238,11 @@ T = {
         "Appoggia una carta bancaria (o carta d'identità, licenza di condurre) in verticale sul rettangolo, allineata in alto, e sposta il cursore finché il rettangolo è lungo esattamente come la carta."),
     "Lineal in Zentimetern": ("Ruler in centimetres", "Règle en centimètres", "Righello in centimetri"),
     "Luftdruck": ("Air gun", "Air comprimé", "Aria compressa"),
+    "Mit der Schieblehre gemessen": ("Measured with a calliper", "Mesuré au pied à coulisse", "Misurato con il calibro"),
+    "In mm, was die Patrone wirklich misst: eine gefaltete Schrotpatrone ist kürzer als im Katalog.": (
+        "In mm, what the round really measures: a folded shotshell is shorter than the catalogue says.",
+        "En mm, ce que la cartouche mesure vraiment : une cartouche de chasse sertie est plus courte que le catalogue.",
+        "In mm, quanto misura davvero la cartuccia: una cartuccia da caccia con chiusura a stella è più corta del catalogo."),
     "Masse eingeben": ("Enter dimensions", "Saisir les dimensions", "Inserisci le dimensioni"),
     "Masse": ("Dimensions", "Dimensions", "Dimensioni"),
     "Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten. Zündhütchen: Boxer-Grösse handelsüblicher Hülsen; Militärmunition kann Berdan-Zündhütchen anderer Grösse haben.": (
