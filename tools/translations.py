@@ -61,6 +61,12 @@ T = {
     "Leere Hülse": ("Empty case", "Douille vide", "Bossolo vuoto"),
     "Geschosse beim Vergleich mit leeren Hülsen zeigen": ("Show bullets when comparing empty cases", "Afficher les projectiles en comparant des douilles vides",
                                                           "Mostra le palle nel confronto con bossoli vuoti"),
+    "1:1-Vergleich nach Trefferqualität sortieren": ("Sort the 1:1 comparison by match quality", "Trier la comparaison 1:1 par qualité de correspondance",
+                                                     "Ordina il confronto 1:1 per qualità della corrispondenza"),
+    "Gilt für den Vergleich aller Treffer nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone zuerst.": (
+        "Applies to comparing all matches after a photo with a LiDAR size: best match first instead of shortest cartridge first.",
+        "S'applique à la comparaison de toutes les correspondances après une photo avec taille LiDAR : meilleure correspondance d'abord au lieu de la cartouche la plus courte.",
+        "Vale per il confronto di tutte le corrispondenze dopo una foto con dimensione LiDAR: prima la corrispondenza migliore invece della cartuccia più corta."),
     "leere Hülse": ("empty case", "douille vide", "bossolo vuoto"),
     "Patrone": ("Cartridge", "Cartouche", "Cartuccia"),
     "mit Rand": ("rimmed", "à bourrelet", "con orlo"),

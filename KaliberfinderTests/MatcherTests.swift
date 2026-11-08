@@ -94,6 +94,24 @@ final class MatcherTests: XCTestCase {
                        ["9 mm Browning kurz (.380 ACP)", ".30 Super Carry", "9x19 mm", "9x21 mm IMI", ".45 ACP"])
     }
 
+    func testCompareByFitKeepsTheRankOrderOnlyWithALiDARSize() throws {
+        func match(_ id: String, deviation: Double?) throws -> Match {
+            Match(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: id)), score: 1, shapeDistance: 0.1, sizeDeviation: deviation)
+        }
+        let ids = [".45 ACP", "9x19 mm", "9 mm Browning kurz (.380 ACP)"]
+        let byLength = ["9 mm Browning kurz (.380 ACP)", "9x19 mm", ".45 ACP"]
+        // Measured with LiDAR, the switch keeps the list's order; off, the calibres stand by length as before.
+        let measured = try ids.map { try match($0, deviation: 0.2) }
+        XCTAssertEqual(MatchesView.toCompare(measured, byFit: true).map(\.id), ids)
+        XCTAssertEqual(MatchesView.toCompare(measured, byFit: false).map(\.id), byLength)
+        XCTAssertEqual(MatchesView.toCompare(measured).map(\.id), byLength)
+        // Without a size the rank is by shape only, so the switch changes nothing.
+        let unmeasured = try ids.map { try match($0, deviation: nil) }
+        XCTAssertEqual(MatchesView.toCompare(unmeasured, byFit: true).map(\.id), byLength)
+        // The switch is off until the user turns it on.
+        XCTAssertFalse(UserDefaults.standard.bool(forKey: MatchesView.compareByFitKey))
+    }
+
     func testEmptyCasesCompareByCaseLength() throws {
         func match(_ id: String, _ part: ShapePart) throws -> Match {
             Match(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: id)), score: 1, shapeDistance: 0.1, part: part)
