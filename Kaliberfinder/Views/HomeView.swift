@@ -74,6 +74,7 @@ struct HomeView: View {
         }
         // Scrolls only when the screen is too small for it: otherwise a drag just stretches and shrinks the large title.
         .scrollBounceBehavior(.basedOnSize)
+        .readableWidth()
         .navigationTitle("Kaliberfinder")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -85,6 +86,7 @@ struct HomeView: View {
         .sheet(isPresented: $showSettings) {
             NavigationStack { SettingsView() }
                 .environmentObject(scale)
+                .pageSized()
         }
         .navigationDestination(item: $photo) {
             // New identity per photo, so a photo shared while the matches are open is analysed afresh.
