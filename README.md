@@ -1,6 +1,6 @@
 # Kaliberfinder
 
-Small iOS app (SwiftUI, iOS 17+, iPhone) that shows cartridges at **real size**
+Small iOS app (SwiftUI, iOS 17+, iPhone and iPad) that shows cartridges at **real size**
 on the screen, so you can lay a cartridge on the display and see which calibre
 it is, after taking a photo of it. In German, English, French and Italian.
 
