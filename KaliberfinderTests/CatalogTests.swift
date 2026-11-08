@@ -139,6 +139,31 @@ final class CatalogTests: XCTestCase {
         XCTAssertEqual(CartridgeCatalog.search("Mauser 8").map(\.id), ["8x57 mm IS"])
     }
 
+    func testSwissArmyNamesFindTheParabellumRounds() {
+        func finds(_ query: String, _ id: String) -> Bool { CartridgeCatalog.search(query).contains { $0.id == id } }
+        XCTAssertTrue(finds("Pist Pat 41", "9x19 mm"))
+        XCTAssertTrue(finds("Pistolenpatrone 41", "9x19 mm"))
+        XCTAssertTrue(finds("9 mm Pist Pat 41", "9x19 mm"))
+        XCTAssertTrue(finds("Pistolenpatrone 7,65", "7.65 mm Parabellum"))
+        XCTAssertFalse(finds("Pist Pat 41", "7.65 mm Parabellum"))
+    }
+
+    func testWadcutterIsItsOwnCalibreSeatedFlush() throws {
+        let wc = try XCTUnwrap(CartridgeCatalog.cartridge(id: ".32 S&W Long Wadcutter"))
+        // Seated flush with the case mouth: the case is the whole round and no bullet shows from the side.
+        XCTAssertEqual(wc.dimensions.overallLength, wc.dimensions.caseLength, accuracy: 0.001)
+        XCTAssertNil(wc.outline.bullet)
+        XCTAssertTrue(wc.hasCase)
+        XCTAssertFalse(wc.rare)
+        XCTAssertFalse(wc.obsolete)
+        // Its own C.I.P. cartridge with a shorter case, so a row of its own next to the .32 S&W Long.
+        let long = try XCTUnwrap(CartridgeCatalog.cartridge(id: ".32 S&W Long"))
+        XCTAssertLessThan(wc.dimensions.caseLength, long.dimensions.caseLength)
+        for text in [".32 S&W Long WC", "32 wadcutter", "32WC"] {
+            XCTAssertTrue(CartridgeCatalog.search(text).contains { $0.id == wc.id }, text)
+        }
+    }
+
     func testNormalized() {
         XCTAssertEqual(CartridgeCatalog.normalized(" 7,5 × 55 mm "), "75x55")
         XCTAssertEqual(CartridgeCatalog.normalized(".45 ACP"), "45acp")

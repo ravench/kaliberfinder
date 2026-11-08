@@ -79,6 +79,21 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// The .32 S&W family side by side, with the flush-seated wadcutter that shows only its case.
+    func testWadcutter() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("32 S&W\n") // return hides the keyboard, so all three rows show
+        }
+        snap("24-32-SW")
+        if open(app.staticTexts[".32 S&W Long Wadcutter"].firstMatch) {
+            snap("25-32-SW-Long-Wadcutter")
+        }
+    }
+
     /// The calibre picker of a new training series finds a calibre by its other names too, and shows them.
     func testTrainingCalibreSearch() {
         app.terminate()
