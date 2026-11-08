@@ -177,7 +177,8 @@ struct TrainingPackageView: View {
             }
             Section {
                 ForEach(shots) { entry in
-                    Text(verbatim: Self.summary(entry.url.lastPathComponent, entry.shot)).font(.footnote.monospaced())
+                    Text(verbatim: Self.summary(entry.url.lastPathComponent, entry.shot, pixels: CaptureStore.photoPixels(of: entry.shot, at: entry.url)))
+                        .font(.footnote.monospaced())
                 }
             } header: {
                 Text("\(shots.count) Fotos")
@@ -207,11 +208,13 @@ struct TrainingPackageView: View {
         }
     }
 
-    /// E.g. "03  LiDAR 251 mm  3.02  9x19 mm".
-    static func summary(_ name: String, _ shot: CaptureShot) -> String {
+    /// E.g. "03  LiDAR 251 mm  48 MP  3.02  9x19 mm"; the megapixels say whether the phone took the
+    /// sensor's full resolution.
+    static func summary(_ name: String, _ shot: CaptureShot, pixels: (width: Int, height: Int)? = nil) -> String {
         let depth = shot.scale.map { String(format: "LiDAR %.0f mm".loc, $0.tableDistance) } ?? (shot.depth == nil ? "ohne Tiefe".loc : "Tiefe relativ".loc)
+        let size = pixels.map { String(format: "%.0f MP", Double($0.width * $0.height) / 1e6) } ?? "–"
         let aspect = shot.analysis?.aspect.map { String(format: "%.2f", $0) } ?? "–"
-        return "\(name)  \(depth)  \(aspect)  \(shot.analysis?.matches.first ?? "kein Treffer".loc)"
+        return "\(name)  \(depth)  \(size)  \(aspect)  \(shot.analysis?.matches.first ?? "kein Treffer".loc)"
     }
 
     private func reload() { shots = capture.shots }
