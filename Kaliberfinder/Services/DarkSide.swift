@@ -93,7 +93,8 @@ enum DarkSide {
     }
 
     /// Where the table begins beyond the silhouette's edge on `side` (`v`, median over the body slices),
-    /// or nil when that edge lies on an edge in the photo rather than inside a dark area.
+    /// or nil when that edge lies on an edge in the photo, or in grey rather than in the black strip
+    /// (see `blackBelow`).
     static func tableStart(_ frame: Frame, side: Double, photo: RGBImage) -> Double? {
         var steps: [Double] = [], darks: [Double] = [], starts: [Double] = []
         let farFrom = Int(tableFrom * frame.bodyWidth), farTo = max(farFrom, Int(tableTo * frame.bodyWidth))

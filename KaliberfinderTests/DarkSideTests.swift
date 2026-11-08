@@ -17,9 +17,9 @@ final class DarkSideTests: XCTestCase {
 
     /// A 600 × 600 px photo of `c` (or only its case, `ppm` pixels per millimetre) lying in the middle
     /// at `angle` on a light table. The metal more than `darkFrom` of the case's half width off the
-    /// axis on one side is nearly black (or `strip`), and from `farRim.from` of it on `farRim.colour`;
-    /// next to that side the table lies in a shadow `shadow` mm wide,
-    /// at `shadowLevel` of its brightness. With the pixels the cartridge covers (`whole`) and the ones
+    /// axis on one side is nearly black (`strip` if given), and `farRim.colour` instead from `farRim.from`
+    /// of the half width on. Next to that side the table lies in a shadow `shadow` mm wide, at
+    /// `shadowLevel` of its brightness. With the pixels the cartridge covers (`whole`) and the ones
     /// Vision keeps when it stops in the black strip, `cutFrom` of the half width off the axis, along
     /// the case (`cut`; along the bullet too with `cutBullet`).
     private func photo(_ c: Cartridge, darkFrom: Double = 0.3, cutFrom: Double = 0.5, shadow: Double = 0, shadowLevel: Float = 0.3,
