@@ -141,6 +141,52 @@ final class MatcherTests: XCTestCase {
         }
     }
 
+    /// Raven's 8x50 mm R Lebel (TestFlight, 2026-11-08) was listed with the .300 and 7 mm Winchester Short
+    /// Magnum: the same bottleneck shape, but rimless (rebated, which the slices cannot tell from rimless).
+    /// A rim the photo shows clearly leaves every calibre without one off the list.
+    func testAClearRimLeavesRimlessCalibresOffTheList() throws {
+        let lebel = "8x50 mm R Lebel"
+        let shape = try expected(lebel)
+        XCTAssertTrue(try XCTUnwrap(shape.features).isRimmed)
+        let shown = Matcher.rankHiding([.obsolete, .rare], shape: shape, size: lebelSize).shown
+        XCTAssertEqual(shown.first?.cartridge.id, lebel)
+        XCTAssertGreaterThan(shown.count, 1)
+        for m in shown {
+            XCTAssertTrue(ShapeMatcher.catalogue[m.cartridge.id]?.features?.isRimmed == true, m.cartridge.id)
+        }
+        // The rim is found whichever end the base is at: lying the other way round, the same rim costs the same.
+        let wsm = try expected(".300 Winchester Short Magnum")
+        XCTAssertEqual(Matcher.missingRim(shape, wsm), Matcher.missingRimWeight * (1.243 - 1.009 - Matcher.rimTolerance), accuracy: 0.01)
+        XCTAssertEqual(Matcher.missingRim(shape.reversed(), wsm), Matcher.missingRim(shape, wsm))
+        // A rim at least as wide as the photo's costs nothing, nor one within the tolerance.
+        XCTAssertEqual(Matcher.missingRim(shape, shape), 0)
+        XCTAssertEqual(Matcher.missingRim(shape, try expected("8x56 mm R Mannlicher")), 0)
+    }
+
+    /// A rim can hide in the shadow under the head: a silhouette with none, or a shallow one, punishes no
+    /// rimmed calibre (only the small flat `rimPenalty`, as before), and rimless lookalikes stay listed.
+    func testAHiddenRimDoesNotPunishRimmedCalibres() throws {
+        let lebel = "8x50 mm R Lebel"
+        let full = try expected(lebel)
+        for rim in [1.0, 1.1] {
+            var w = full.widths
+            w[w.count - 1] = rim; w[w.count - 2] = rim
+            let shape = ShapeMatcher.measurement(aspect: full.aspect, relativeWidths: w)
+            XCTAssertEqual(Matcher.shownRim(shape), rim)
+            XCTAssertEqual(Matcher.missingRim(shape, full), 0, "\(rim)")
+            XCTAssertEqual(Matcher.missingRim(shape, try expected(".300 Winchester Short Magnum")), 0, "\(rim)")
+            let shown = Matcher.rankHiding([.obsolete, .rare], shape: shape, size: lebelSize).shown
+            XCTAssertEqual(shown.first?.cartridge.id, lebel, "\(rim)")
+            XCTAssertEqual(shown.first?.shapeFit, .good, "\(rim)")
+            XCTAssertTrue(shown.contains { $0.cartridge.id == "8.5x55 mm Blaser" }, "\(rim): a rimless lookalike stays listed")
+        }
+    }
+
+    /// The Lebel as Raven's phone measured it: L ≈ 74 mm, Ø ≈ 13.5 mm.
+    private var lebelSize: MeasuredSize {
+        MeasuredSize(length: 74 / Matcher.lengthScaleWhole, diameter: 13.5 / Matcher.diameterScale, lengthError: 1, diameterError: 0.3)
+    }
+
     func testFitsWellNeedsGoodShapeAndSize() throws {
         let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
         XCTAssertTrue(Match(cartridge: c, score: 2, shapeDistance: 0.05, sizeDeviation: 0.1).fitsWell)

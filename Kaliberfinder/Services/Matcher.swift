@@ -83,9 +83,16 @@ enum Matcher {
     /// Mean difference of the slice widths (relative to the body), the narrow end first and the other
     /// way round; the better way counts.
     static let profileWeight = 6.0
-    /// A rim (relative to the body) off by more than `rimTolerance` costs `rimPenalty`.
+    /// A rim (relative to the body) off by more than `rimTolerance` costs `rimPenalty`: no more, since a
+    /// rim can hide in the shadow under the head, so a photo without one says little.
     static let rimPenalty = 0.05
     static let rimTolerance = 0.1
+    /// A rim the photo does show, wider than the calibre's by more than `rimTolerance`, costs this much per
+    /// unit beyond it: a rimless or rebated case cannot grow a rim. Raven's 8x50 mm R Lebel (2026-11-08) was
+    /// listed with the rimless Short Magnums of the same bottleneck shape; its rim (1.16 to 1.24 over the
+    /// body) now puts them 0.4 to 1.0 behind, from a missing neck's cost to twice the span a list covers.
+    /// On the training shots no rimless calibre's photo shows a rim beyond the tolerance (at most 0.07 over).
+    static let missingRimWeight = 8.0
     /// LiDAR size: per 10 mm beyond the tolerance.
     static let lengthWeight = 2.0
     static let lengthTolerance = 2.0
@@ -236,10 +243,12 @@ enum Matcher {
         let shape = photo.shape
         let aspect = aspectWeight * abs(log(shape.aspect / expected.shape.aspect))
         let ways = shape.widths.count == ShapeMatcher.bins ? [shape, shape.reversed()] : [shape]
+        // A rim the photo shows but the calibre lacks costs the same whichever way round the silhouette is compared.
+        let missing = missingRim(shape, expected.shape)
         var d = Double.infinity
         for way in ways {
-            var rimPen = 0.0
-            if let a = way.features, let b = expected.shape.features, abs(a.rim - b.rim) > rimTolerance { rimPen = rimPenalty }
+            var rimPen = missing
+            if let a = way.features, let b = expected.shape.features, abs(a.rim - b.rim) > rimTolerance { rimPen += rimPenalty }
             d = min(d, aspect + profileWeight * profileDifference(way, expected.shape) + rimPen)
         }
         guard let size = photo.size else { return (d, nil) }
@@ -267,6 +276,20 @@ enum Matcher {
 
     /// The expected rim relative to the body (1 where the shape has no slices).
     static func rim(_ expected: ShapeMeasurement) -> Double { expected.features?.rim ?? 1 }
+
+    /// The rim the photo shows, whichever end the base is at: the wider of its two ends, since a case
+    /// mouth is never wider than the body (`ShapeMeasurement.mouthFirst`). Nil without slices.
+    static func shownRim(_ shape: ShapeMeasurement) -> Double? {
+        guard let f = shape.features else { return nil }
+        return max(f.rim, shape.widths[0], shape.widths[1])
+    }
+
+    /// What the rim the photo shows costs a calibre whose rim is smaller by more than `rimTolerance`
+    /// (`missingRimWeight` per unit beyond it); 0 for a wider or hidden rim, or without slices.
+    static func missingRim(_ shape: ShapeMeasurement, _ expected: ShapeMeasurement) -> Double {
+        guard let shown = shownRim(shape), let b = expected.features else { return 0 }
+        return missingRimWeight * max(0, shown - b.rim - rimTolerance)
+    }
 
     /// What the case mouth the colours show adds to a loaded round's distance to calibre `c`: its share of
     /// the length against the calibre's, and with LiDAR the case's length in mm, each capped at `mouthCap`.
