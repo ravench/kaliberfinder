@@ -13,9 +13,11 @@ import Foundation
 /// shadow without an edge. Two things together tell a cut side from a true one:
 ///
 /// - **The photo:** the silhouette's edge on that side doesn't lie on an edge in the photo. Just
-///   outside it the photo is as dark as just inside (no step from metal to table), and darker than
-///   the table further out. Where Vision found the real edge, the metal is brighter than the shadow
-///   beside it, or the table is as bright right next to the edge as further out.
+///   outside it the photo is no darker than just inside (no step from metal to table), and darker
+///   than the table further out: nearly black where the strip goes on, or brighter than inside where
+///   the case's far rim mirrors the table. Where Vision found the real edge, the metal is brighter
+///   than the shadow beside it, or the table is as bright right next to the edge as further out. A
+///   dull case beside its shadow is grey on both sides of the edge, and is left alone too.
 /// - **The shape:** a bullet's tip lies on the cartridge's axis. Measured from the tip, the cut side
 ///   reaches clearly less far from the axis than the other side.
 ///
@@ -48,6 +50,11 @@ enum DarkSide {
     /// Beyond the edge, the photo counts as table from this share of the table's brightness further out
     /// on: the black strip and the cartridge's shadow stay below it.
     static let tableShare = 0.5
+    /// Just outside a cut edge the photo is nearly black (below this share of the table's brightness),
+    /// or brighter than just inside by at least `rimBrighter` (log of the ratio). Grey on both sides is
+    /// a dull case beside its shadow or a dark gap in the background, where the silhouette may well
+    /// be whole (6-mm-br-norma-20261107-223523/06, a dull case on wood wool, came out 15 % too wide).
+    static let blackBelow = 0.2, rimBrighter = 0.05
     /// Where the table "further out" is, in body widths beyond the edge.
     static let tableFrom = 0.3, tableTo = 0.45
 
@@ -103,7 +110,9 @@ enum DarkSide {
             while Double(offset) < 0.4 * frame.bodyWidth, let b = at(offset), b < tableShare * table { offset += 1 }
             starts.append(edge + side * Double(offset))
         }
-        guard !steps.isEmpty, median(steps) < stepBelow, median(darks) < tableShare else { return nil }
+        guard !steps.isEmpty else { return nil }
+        let step = median(steps), dark = median(darks)
+        guard step < stepBelow, dark < tableShare, dark < blackBelow || step < -rimBrighter else { return nil }
         return median(starts)
     }
 
