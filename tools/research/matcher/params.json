@@ -1,0 +1,21 @@
+{
+ "w_aspect": 0.5,
+ "w_profile": 6,
+ "w_len": 2,
+ "w_dia": 1,
+ "tol_len": 2.0,
+ "tol_dia": 0.3,
+ "w_rim": 0.05,
+ "rim_tol": 0.1,
+ "dia_scale": 1.02,
+ "len_scale_whole": 0.98,
+ "len_scale_case": 0.96,
+ "w_caselen": 0.5,
+ "tol_caselen": 0.3,
+ "w_share": 0.5,
+ "tol_share": 0.03,
+ "w_part": 0.5,
+ "part_mid": 0.7,
+ "cap_mouth": 0.05,
+ "end_rise": 1
+}
