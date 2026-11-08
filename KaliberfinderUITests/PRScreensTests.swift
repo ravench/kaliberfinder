@@ -141,6 +141,26 @@ final class PRScreensTests: XCTestCase {
         snap("22-Trainingsdaten-Serie")
     }
 
+    /// With the hidden training capture on, a calibre's detail page starts a series of that calibre.
+    func testTrainingSeriesFromACalibre() {
+        app.terminate()
+        app.launchArguments += ["-trainingCaptureEnabled", "YES"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("9x19\n")
+        }
+        guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
+        snap("28-Kaliber-Trainingsdaten")
+        guard open(app.buttons["Trainingsdaten aufnehmen"].firstMatch) else { return }
+        XCTAssertTrue(app.navigationBars["Neue Serie"].waitForExistence(timeout: 5), "The new series sheet did not open")
+        XCTAssertTrue(app.staticTexts["9x19 mm"].firstMatch.exists, "The calibre is not preselected")
+        snap("29-Trainingsdaten-neue-Serie-Kaliber")
+    }
+
     /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`;
     /// with `compareShot`, also one of the 1:1 screen that compares all of them.
     private func photoMatches(_ fixture: String, shot: String, compareShot: String? = nil) {

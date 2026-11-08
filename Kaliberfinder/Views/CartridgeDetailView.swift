@@ -4,6 +4,8 @@ import SwiftUI
 struct CartridgeDetailView: View {
     let cartridge: Cartridge
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
+    /// The hidden developer switch (`TrainingCapture`): with it on, a series of this calibre starts from here.
+    @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
 
     var body: some View {
         let d = cartridge.dimensions
@@ -19,6 +21,11 @@ struct CartridgeDetailView: View {
                 .padding(.vertical, 8)
                 NavigationLink { TrueScaleView(cartridges: [cartridge]) } label: {
                     Label("In Originalgrösse anzeigen", systemImage: "ruler")
+                }
+                if trainingCapture {
+                    NavigationLink { TrainingCaptureView(newSeriesFor: cartridge) } label: {
+                        Label("Trainingsdaten aufnehmen", systemImage: "tray.and.arrow.down")
+                    }
                 }
             }
             Section("Masse") {

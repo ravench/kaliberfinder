@@ -7,9 +7,16 @@ import SwiftUI
 /// The saved series and a button for a new one.
 struct TrainingCaptureView: View {
     @State private var captures: [SavedCapture] = []
-    @State private var showNew = false
+    @State private var showNew: Bool
     @State private var opened: SavedCapture?
     private let store = CaptureStore.standard
+    /// The calibre a new series starts with, from its detail page: the sheet opens at once.
+    private let preselected: Cartridge?
+
+    init(newSeriesFor calibre: Cartridge? = nil) {
+        preselected = calibre
+        _showNew = State(initialValue: calibre != nil)
+    }
 
     var body: some View {
         List {
@@ -40,7 +47,7 @@ struct TrainingCaptureView: View {
         .navigationDestination(item: $opened) { TrainingPackageView(capture: $0) }
         .sheet(isPresented: $showNew) {
             NavigationStack {
-                NewTrainingSeriesView { package in
+                NewTrainingSeriesView(calibre: preselected) { package in
                     showNew = false
                     if let url = try? store.create(package) {
                         reload()
@@ -78,6 +85,11 @@ private struct NewTrainingSeriesView: View {
     @State private var mode: ScanMode = .cartridge
     @State private var note = ""
     @Environment(\.dismiss) private var dismiss
+
+    init(calibre: Cartridge? = nil, onStart: @escaping (CapturePackage) -> Void) {
+        self.onStart = onStart
+        _calibre = State(initialValue: calibre)
+    }
 
     var body: some View {
         Form {
