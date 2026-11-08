@@ -210,6 +210,24 @@ final class PRScreensTests: XCTestCase {
         photoMatches("photo-9x19-wood", shot: "16-Foto-Erkennung-farbig")
     }
 
+    /// A photo none of whose matches is sure (the loaded 9 mm looked at as an empty case): the hint to
+    /// measure by hand follows the list of calibres.
+    func testUnsureMatches() {
+        let photo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("KaliberfinderTests/Fixtures/photo-9x19-wood.jpg")
+        app.terminate()
+        app.launchArguments += ["-screenTourPhoto", photo.path]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Treffer"].waitForExistence(timeout: 10))
+        _ = app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90)
+        app.buttons["Leere Hülse"].tap()
+        let hint = app.staticTexts["Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein."]
+        // Rows out of view are not in the hierarchy: scroll until the hint at the end of the list shows.
+        for _ in 0..<20 where !hint.exists { app.swipeUp(velocity: .fast) }
+        XCTAssertTrue(hint.waitForExistence(timeout: 5), "The hint to measure by hand is not shown")
+        snap("31-Foto-unsicher")
+    }
+
     /// The hidden «Trainingsdaten» screen, on the example package of KaliberfinderTests/Captures so
     /// it shows the same series on every run: the saved series, and one of them opened from the list.
     func testTrainingCapture() {
