@@ -189,9 +189,9 @@ struct MatchesView: View {
     private func rank() {
         revealed = false
         guard let analysis else { ranked = .none; return }
-        let size = try? analysis.size(depth: depth, mode: mode).get()
-        ranked = Matcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), shape: analysis.shapeAtAxis(depth: depth, mode: mode),
-                                    size: size, mode: mode, brass: analysis.isBrass)
+        ranked = Matcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), shape: analysis.shape,
+                                    size: analysis.rawSize(depth: depth), perspective: analysis.perspective(depth: depth),
+                                    mouth: analysis.contour?.mouth, mode: mode, brass: analysis.isBrass)
     }
 
     /// Points the user to measuring by hand when the photo found nothing or only weak shapes. A
