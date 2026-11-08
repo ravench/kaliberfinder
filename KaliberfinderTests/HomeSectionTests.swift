@@ -10,4 +10,18 @@ final class HomeSectionTests: XCTestCase {
     func testSettingsPageHoldsUnitsRealSizeAndCopyright() {
         XCTAssertEqual(SettingsSection.allCases, [.units, .realSize, .copyright])
     }
+
+    func testOnlyOneLibraryPhotoLoadsAtATime() {
+        var loading = PhotoLoading()
+        XCTAssertFalse(loading.isLoading)
+        XCTAssertTrue(loading.start())
+        XCTAssertTrue(loading.isLoading)
+        // A second pick while the first photo loads must not start another load.
+        XCTAssertFalse(loading.start())
+        XCTAssertTrue(loading.isLoading)
+        // Matches opened or load failed: the screen is free again.
+        loading.finish()
+        XCTAssertFalse(loading.isLoading)
+        XCTAssertTrue(loading.start())
+    }
 }
