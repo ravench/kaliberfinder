@@ -99,10 +99,10 @@ T = {
     "Erkennung": ("Recognition", "Reconnaissance", "Riconoscimento"),
     "Veraltete Kaliber berücksichtigen": ("Include obsolete calibres", "Inclure les calibres obsolètes", "Includi calibri obsoleti"),
     "Seltene Kaliber berücksichtigen": ("Include rare calibres", "Inclure les calibres rares", "Includi calibri rari"),
-    "Gilt für Fotos und «Masse eingeben». Veraltet: nicht mehr regulär hergestellt, z. B. GP 1890 oder Vetterli. Selten: kaum je zu finden, ein Treffer ist meist eine ähnliche Patrone. «Alle Kaliber» zeigt immer alle.": (
-        "Applies to photos and “Enter dimensions”. Obsolete: no longer in regular production, e.g. GP 1890 or Vetterli. Rare: hardly ever found, a match is usually a similar cartridge. “All calibres” always shows all.",
-        "S'applique aux photos et à « Saisir les dimensions ». Obsolète : n'est plus fabriqué en série, p. ex. GP 1890 ou Vetterli. Rare : presque jamais trouvé, une correspondance est le plus souvent une cartouche semblable. « Tous les calibres » les affiche toujours tous.",
-        "Vale per le foto e per «Inserisci le dimensioni». Obsoleto: non più prodotto regolarmente, p. es. GP 1890 o Vetterli. Raro: non si trova quasi mai, una corrispondenza è di solito una cartuccia simile. «Tutti i calibri» li mostra sempre tutti."),
+    "Veraltet: nicht mehr hergestellt. Selten: ein Treffer ist meist eine ähnliche Patrone. «Alle Kaliber» zeigt immer alle.": (
+        "Obsolete: no longer made. Rare: a match is usually a similar cartridge. “All calibres” always shows all.",
+        "Obsolète : n'est plus fabriqué. Rare : une correspondance est le plus souvent une cartouche semblable. « Tous les calibres » les affiche toujours tous.",
+        "Obsoleto: non più prodotto. Raro: una corrispondenza è di solito una cartuccia simile. «Tutti i calibri» li mostra sempre tutti."),
     "1 seltener": ("1 rare", "1 rare", "1 raro"),
     "%lld seltene": ("%lld rare", "%lld rares", "%lld rari"),
     "1 weiterer Treffer": ("1 more match", "1 autre correspondance", "1 altra corrispondenza"),

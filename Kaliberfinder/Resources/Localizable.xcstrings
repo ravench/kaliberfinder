@@ -1956,29 +1956,6 @@
         }
       }
     },
-    "Gilt für Fotos und «Masse eingeben». Veraltet: nicht mehr regulär hergestellt, z. B. GP 1890 oder Vetterli. Selten: kaum je zu finden, ein Treffer ist meist eine ähnliche Patrone. «Alle Kaliber» zeigt immer alle.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Applies to photos and “Enter dimensions”. Obsolete: no longer in regular production, e.g. GP 1890 or Vetterli. Rare: hardly ever found, a match is usually a similar cartridge. “All calibres” always shows all."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "S'applique aux photos et à « Saisir les dimensions ». Obsolète : n'est plus fabriqué en série, p. ex. GP 1890 ou Vetterli. Rare : presque jamais trouvé, une correspondance est le plus souvent une cartouche semblable. « Tous les calibres » les affiche toujours tous."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vale per le foto e per «Inserisci le dimensioni». Obsoleto: non più prodotto regolarmente, p. es. GP 1890 o Vetterli. Raro: non si trova quasi mai, una corrispondenza è di solito una cartuccia simile. «Tutti i calibri» li mostra sempre tutti."
-          }
-        }
-      }
-    },
     "Grossbritannien": {
       "extractionState": "manual",
       "localizations": {
@@ -4482,6 +4459,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Obsoleto"
+          }
+        }
+      }
+    },
+    "Veraltet: nicht mehr hergestellt. Selten: ein Treffer ist meist eine ähnliche Patrone. «Alle Kaliber» zeigt immer alle.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsolete: no longer made. Rare: a match is usually a similar cartridge. “All calibres” always shows all."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsolète : n'est plus fabriqué. Rare : une correspondance est le plus souvent une cartouche semblable. « Tous les calibres » les affiche toujours tous."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsoleto: non più prodotto. Raro: una corrispondenza è di solito una cartuccia simile. «Tutti i calibri» li mostra sempre tutti."
           }
         }
       }
