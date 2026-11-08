@@ -22,6 +22,11 @@ struct MatchesView: View {
     @State private var override: ScanMode?
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
+    @AppStorage(Self.compareByFitKey) private var compareByFit = false
+
+    /// Settings switch, off by default and shown on LiDAR phones only: the 1:1 comparison of all
+    /// matches keeps the list's order, best first, instead of standing the calibres by length (`toCompare`).
+    static let compareByFitKey = "compareAllByFit"
 
     var body: some View {
         List {
@@ -71,7 +76,7 @@ struct MatchesView: View {
         .safeAreaInset(edge: .bottom) {
             // A prominent button pinned to the bottom, like on the measure screen, so it is not missed.
             if analysis != nil, !matches.isEmpty {
-                CompareButton(title: Self.compareTitle(matches), cartridges: Self.toCompare(matches), emptyCases: Self.emptyCases(matches))
+                CompareButton(title: Self.compareTitle(matches), cartridges: Self.toCompare(matches, byFit: compareByFit), emptyCases: Self.emptyCases(matches))
             }
         }
         .navigationTitle("Treffer")
@@ -225,10 +230,15 @@ struct MatchesView: View {
     /// Every listed row goes to the 1:1 screen; it scrolls sideways. The user holds the cartridge
     /// against all of them anyway, so they stand by length, shortest first, then by the Ø shown
     /// under each (rank order where both are equal); the list above keeps its rank order.
+    /// With `byFit` (the «nach Trefferqualität» switch) and a photo measured with LiDAR, they keep
+    /// the list's order instead: there the rank weighs size as well as shape. Without a size the
+    /// rank says little about the length, so the switch changes nothing.
     /// Calibres that look exactly the same from the side are shown once.
-    static func toCompare(_ matches: [Match]) -> [Cartridge] {
+    static func toCompare(_ matches: [Match], byFit: Bool = false) -> [Cartridge] {
+        let leads = Matcher.grouped(matches).map(\.lead)
+        if byFit, leads.contains(where: { $0.sizeDeviation != nil }) { return leads.map(\.cartridge) }
         // `sorted` is stable, so ties keep their rank order.
-        Matcher.grouped(matches).map(\.lead)
+        return leads
             .sorted { (comparedLength($0), $0.cartridge.headDiameter) < (comparedLength($1), $1.cartridge.headDiameter) }
             .map(\.cartridge)
     }
