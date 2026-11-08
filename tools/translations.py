@@ -70,10 +70,6 @@ T = {
         "1:1 – zoom is off so the size stays true.",
         "1:1 – le zoom est désactivé pour garder la taille réelle.",
         "1:1 – lo zoom è disattivato per mantenere la dimensione reale."),
-    "Originalgrösse: nicht zoombar, damit die Masse stimmen.": (
-        "Real size: no zoom, so the measurements stay true.",
-        "Taille réelle : pas de zoom, pour que les mesures restent justes.",
-        "Grandezza reale: niente zoom, così le misure restano corrette."),
     "Abbrechen": ("Cancel", "Annuler", "Annulla"),
     "Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form.": (
         "Distance outside 12–45 cm: size not measured, matches by shape only.",

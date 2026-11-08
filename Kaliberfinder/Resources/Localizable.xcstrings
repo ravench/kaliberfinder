@@ -3244,29 +3244,6 @@
         }
       }
     },
-    "Originalgrösse: nicht zoombar, damit die Masse stimmen.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Real size: no zoom, so the measurements stay true."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Taille réelle : pas de zoom, pour que les mesures restent justes."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grandezza reale: niente zoom, così le misure restano corrette."
-          }
-        }
-      }
-    },
     "Passt genau": {
       "extractionState": "manual",
       "localizations": {

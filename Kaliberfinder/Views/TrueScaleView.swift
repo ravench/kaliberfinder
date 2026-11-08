@@ -187,7 +187,7 @@ struct TrueScaleView: View {
     }
 }
 
-/// Says that the drawing is at real size, which is why it can't be zoomed.
+/// Says that the drawing is at real size (Raven, 2026-11-08: the word alone; no need to say why it can't be zoomed).
 struct OneToOneBadge: View {
     var body: some View {
         HStack(spacing: 8) {
@@ -197,7 +197,7 @@ struct OneToOneBadge: View {
                 .padding(.vertical, 2)
                 .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 4))
                 .foregroundStyle(.white)
-            Text("Originalgrösse: nicht zoombar, damit die Masse stimmen.")
+            Text("Originalgrösse")
                 .font(.footnote)
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundStyle(.secondary)
