@@ -4302,25 +4302,25 @@
         }
       }
     },
-    "Vom iPhone-Modell": {
+    "Vom Gerätemodell": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "From the iPhone model"
+            "value": "From the device model"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Selon le modèle d'iPhone"
+            "value": "Selon le modèle d'appareil"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dal modello di iPhone"
+            "value": "Dal modello di dispositivo"
           }
         }
       }
