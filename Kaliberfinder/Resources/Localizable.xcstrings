@@ -2393,29 +2393,6 @@
         }
       }
     },
-    "In mm, was die Patrone wirklich misst: eine gefaltete Schrotpatrone ist kürzer als im Katalog.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In mm, what the round really measures: a folded shotshell is shorter than the catalogue says."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En mm, ce que la cartouche mesure vraiment : une cartouche de chasse sertie est plus courte que le catalogue."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In mm, quanto misura davvero la cartuccia: una cartuccia da caccia con chiusura a stella è più corta del catalogo."
-          }
-        }
-      }
-    },
     "Italien": {
       "extractionState": "manual",
       "localizations": {
@@ -4574,6 +4551,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dal modello di dispositivo"
+          }
+        }
+      }
+    },
+    "Was die Patrone wirklich misst: eine gefaltete Schrotpatrone ist kürzer als im Katalog.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What the round really measures: a folded shotshell is shorter than the catalogue says."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce que la cartouche mesure vraiment : une cartouche de chasse sertie est plus courte que le catalogue."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quanto misura davvero la cartuccia: una cartuccia da caccia con chiusura a stella è più corta del catalogo."
           }
         }
       }

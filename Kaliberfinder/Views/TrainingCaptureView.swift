@@ -246,7 +246,7 @@ struct TrainingPackageView: View {
             } header: {
                 Text("Mit der Schieblehre gemessen")
             } footer: {
-                Text("In mm, was die Patrone wirklich misst: eine gefaltete Schrotpatrone ist kürzer als im Katalog.")
+                Text("Was die Patrone wirklich misst: eine gefaltete Schrotpatrone ist kürzer als im Katalog.")
             }
             Section {
                 ForEach(shots) { entry in
@@ -304,13 +304,16 @@ struct TrainingPackageView: View {
         measurements = capture.package.measurements ?? Measurements()
     }
 
-    /// A calliper value in mm, empty until measured.
+    /// A calliper value with its unit, «9.95 mm»; a dash until measured.
     private func measured(_ title: LocalizedStringKey, value: Binding<Double?>) -> some View {
         LabeledContent(title) {
-            TextField("mm", value: value, format: .number.precision(.fractionLength(0...2)))
-                .keyboardType(.decimalPad)
-                .multilineTextAlignment(.trailing)
-                .frame(maxWidth: 100)
+            HStack(spacing: 4) {
+                TextField("–", value: value, format: .number.precision(.fractionLength(0...2)))
+                    .keyboardType(.decimalPad)
+                    .multilineTextAlignment(.trailing)
+                    .frame(maxWidth: 80)
+                Text(verbatim: LengthUnit.metric.symbol).foregroundStyle(.secondary)
+            }
         }
     }
 
