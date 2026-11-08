@@ -89,6 +89,9 @@ enum Matcher {
     /// LiDAR size: per 10 mm beyond the tolerance.
     static let lengthWeight = 2.0
     static let lengthTolerance = 2.0
+    /// Inside a shotshell's crimp range (`Cartridge.overallLengths`) the catalogue's length still counts,
+    /// this much: a folded 12/70 is no outsider, but a 64 mm shell is still a 12/70 before a 12/76.
+    static let crimpRangeWeight = 0.25
     static let diameterWeight = 1.0
     static let diameterTolerance = 0.3
     /// The measured length is a little long, the diameter a little short (2026-11-08: +3.4 % and −0.3 % on
@@ -155,7 +158,9 @@ enum Matcher {
     /// widths (a bullet tip lies on the axis, a case mouth or a crimp half its width up, the head half the rim).
     struct Expected {
         let shape: ShapeMeasurement
+        /// The catalogue's length, and the lengths a loaded round can have (a shotshell's depend on its crimp).
         let length: Double
+        var lengths: ClosedRange<Double>?
         let diameter: Double
         let lengthScale: Double
         let front: Double
@@ -206,8 +211,9 @@ enum Matcher {
         if !caseOnly || emptyCase == nil, let whole, !whole.isEndView {
             // A bullet's tip lies on the axis; a crimp or a ball's end stands half its width above it.
             let front = hasBullet ? 0 : endWidth(whole) / 2
-            var (d, deviation) = distance(photo, Expected(shape: whole, length: c.dimensions.overallLength, diameter: c.dimensions.base,
-                                                          lengthScale: lengthScaleWhole, front: front, back: rim(whole) / 2))
+            var (d, deviation) = distance(photo, Expected(shape: whole, length: c.dimensions.overallLength, lengths: c.overallLengths,
+                                                          diameter: c.dimensions.base, lengthScale: lengthScaleWhole, front: front,
+                                                          back: rim(whole) / 2))
             // Blanks, shotshells and balls have no bullet to narrow: their end is as it is.
             if mode == .auto, hasBullet { d += partWeight * max(0, end - partMiddle) }
             if hasBullet, let mouth = photo.mouth { d += mouthPenalty(mouth, c, size: photo.size) }
@@ -240,9 +246,12 @@ enum Matcher {
         var rise = 1.0
         if let p = photo.perspective, p > 0, p < 0.5 { rise = (1 / (1 - expected.front * p) + 1 / (1 - expected.back * p)) / 2 }
         let length = size.length * expected.lengthScale / rise, diameter = size.diameter * diameterScale
-        let lengthOff = max(0, abs(length - expected.length) - lengthTolerance)
+        let lengths = expected.lengths ?? expected.length...expected.length
+        let lengthOff = max(0, DimensionMatcher.outside(length, lengths) - lengthTolerance)
+        // Within the range, the catalogue's length counts `crimpRangeWeight` as much (0 for a single length).
+        let fromCatalogue = max(0, abs(length - expected.length) - lengthTolerance) - lengthOff
         let diameterOff = max(0, abs(diameter - expected.diameter) - diameterTolerance)
-        d += lengthWeight * lengthOff / 10 + diameterWeight * diameterOff / 10
+        d += lengthWeight * (lengthOff + crimpRangeWeight * fromCatalogue) / 10 + diameterWeight * diameterOff / 10
         return (d, (lengthOff + diameterOff) / 2)
     }
 

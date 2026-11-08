@@ -63,22 +63,31 @@ enum DimensionMatcher {
                      cartridges: [Cartridge] = CartridgeCatalog.current,
                      limit: Int = 15) -> [DimensionMatch] {
         guard !measured.isEmpty else { return [] }
-        let matches = cartridges.filter(measured.shape.fits).map { c -> DimensionMatch in
+        let matches = cartridges.filter(measured.shape.fits).map { c -> (DimensionMatch, Double) in
             let d = c.dimensions
-            let pairs: [(Double?, Double)] = [
-                (measured.overallLength, d.overallLength),
-                (measured.caseLength, d.caseLength),
-                (measured.rim, max(d.rim, d.base)),
-                (measured.bullet, d.bullet),
+            // A shotshell's case is the whole shell, as long as its crimp makes it.
+            let caseLengths = c.kind == "shot" ? c.overallLengths : d.caseLength...d.caseLength
+            let pairs: [(Double?, ClosedRange<Double>)] = [
+                (measured.overallLength, c.overallLengths),
+                (measured.caseLength, caseLengths),
+                (measured.rim, max(d.rim, d.base)...max(d.rim, d.base)),
+                (measured.bullet, d.bullet...d.bullet),
             ]
-            let deviations = pairs.compactMap { pair in pair.0.map { max(0, abs($0 - pair.1) - tolerance) } }
-            return DimensionMatch(cartridge: c,
-                                  maxDeviation: deviations.max() ?? 0,
-                                  meanDeviation: deviations.reduce(0, +) / Double(deviations.count))
+            let deviations = pairs.compactMap { pair in pair.0.map { max(0, outside($0, pair.1) - tolerance) } }
+            // Within a shotshell's crimp range, nearer the catalogue's length goes first (12/70 before 12/76).
+            let fromCatalogue = measured.overallLength.map { abs($0 - d.overallLength) } ?? 0
+            return (DimensionMatch(cartridge: c,
+                                   maxDeviation: deviations.max() ?? 0,
+                                   meanDeviation: deviations.reduce(0, +) / Double(deviations.count)), fromCatalogue)
         }
         return Array(matches.sorted {
-            ($0.meanDeviation, $0.maxDeviation) < ($1.meanDeviation, $1.maxDeviation)
-        }.prefix(limit))
+            ($0.0.meanDeviation, $0.0.maxDeviation, $0.1) < ($1.0.meanDeviation, $1.0.maxDeviation, $1.1)
+        }.map(\.0).prefix(limit))
+    }
+
+    /// How far `value` lies outside `range` (0 inside it).
+    static func outside(_ value: Double, _ range: ClosedRange<Double>) -> Double {
+        max(0, range.lowerBound - value, value - range.upperBound)
     }
 
     /// What the compare button shows when nothing is selected (MEAS-04): every calibre that fits
