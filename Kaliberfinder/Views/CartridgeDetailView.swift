@@ -19,7 +19,7 @@ struct CartridgeDetailView: View {
                     Spacer()
                 }
                 .padding(.vertical, 8)
-                NavigationLink { TrueScaleView(cartridges: [cartridge]) } label: {
+                NavigationLink { TrueScaleView(cartridges: [cartridge], linksToDetails: false) } label: {
                     Label("In Originalgrösse anzeigen", systemImage: "ruler")
                 }
                 if trainingCapture {

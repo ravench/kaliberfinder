@@ -67,6 +67,8 @@ struct TrueScaleView: View {
     var emptyCases: Set<String> = []
     /// Why a photo's matches that fit well are listed, by calibre id (`MatchesView.goodMatches`): shown in green under the name.
     var goodMatches: [String: String] = [:]
+    /// Tapping a drawing opens the calibre's page; off when this screen was opened from that page.
+    var linksToDetails = true
     @EnvironmentObject private var scale: ScaleModel
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(Self.bulletsOnCasesKey) private var bulletsOnCases = true
@@ -113,7 +115,7 @@ struct TrueScaleView: View {
                         ScrollView(.horizontal) {
                             HStack(alignment: .top, spacing: 8 * ppmm) {
                                 ForEach(cartridges) { c in
-                                    VStack(spacing: 6) {
+                                    column(of: c) {
                                         drawing(of: c, ppmm: ppmm)
                                             .frame(height: layout.bandHeight, alignment: .bottom)
                                         label(for: c)
@@ -161,7 +163,7 @@ struct TrueScaleView: View {
 
     /// One cartridge, centred, with the ruler a fixed distance to its left and no sideways scrolling.
     private func singleView(_ c: Cartridge, layout: TrueScaleLayout, ppmm: Double) -> some View {
-        VStack(spacing: 6) {
+        column(of: c) {
             HStack(alignment: .bottom, spacing: TrueScaleLayout.singleGapMM * ppmm) {
                 RulerView(lengthMM: layout.rulerMM, pointsPerMM: ppmm, unit: unit)
                     .padding(.trailing, 4)
@@ -179,6 +181,17 @@ struct TrueScaleView: View {
             CaseBaseView(cartridge: c, pointsPerMM: ppmm)
         }
         .frame(maxWidth: .infinity)
+    }
+
+    /// A cartridge's drawing with its labels; a tap opens the calibre's page (`linksToDetails`).
+    @ViewBuilder
+    private func column<Content: View>(of c: Cartridge, @ViewBuilder content: () -> Content) -> some View {
+        if linksToDetails {
+            NavigationLink { CartridgeDetailView(cartridge: c) } label: { VStack(spacing: 6, content: content) }
+                .buttonStyle(.plain)
+        } else {
+            VStack(spacing: 6, content: content)
+        }
     }
 
     /// Drawn without its bullet: compared as an empty case, with the bullets switched off.
