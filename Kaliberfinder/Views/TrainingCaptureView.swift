@@ -212,7 +212,21 @@ struct TrainingPackageView: View {
     @State private var libraryItems: [PhotosPickerItem] = []
     @State private var shared: SharedFile?
     @State private var status: String?
-    @State private var measurements = Measurements()
+    /// The package as edited here (note, atypical bullet, measurements); written on every change.
+    @State private var package: CapturePackage
+
+    init(capture: SavedCapture) {
+        self.capture = capture
+        _package = State(initialValue: capture.package)
+    }
+
+    private var measurements: Binding<Measurements> {
+        Binding { package.measurements ?? Measurements() } set: { package.measurements = $0.isEmpty ? nil : $0 }
+    }
+
+    private var atypicalBullet: Binding<Bool> {
+        Binding { package.atypicalBullet == true } set: { package.atypicalBullet = $0 ? true : nil }
+    }
 
     var body: some View {
         List {
@@ -234,15 +248,21 @@ struct TrainingPackageView: View {
                 Text(verbatim: capture.package.calibreName)
             } footer: {
                 VStack(alignment: .leading) {
-                    if !capture.package.note.isEmpty { Text(verbatim: capture.package.note) }
                     ForEach(capture.package.cameras ?? [], id: \.type) { Text(verbatim: $0.summary) }
                 }
             }
             Section {
-                measured("Gesamtlänge", value: $measurements.overallLength)
-                measured("Hülsenlänge", value: $measurements.caseLength)
-                measured("Randdurchmesser", value: $measurements.rim)
-                measured("Geschossdurchmesser", value: $measurements.bullet)
+                TextField("Notiz", text: $package.note, prompt: Text("z. B. Holztisch, Tageslicht"), axis: .vertical)
+                // A bullet the calibre does not usually carry, so tuning the matcher knows to be careful with this series.
+                Toggle("Atypisches Geschoss", isOn: atypicalBullet)
+            } header: {
+                Text("Serie")
+            }
+            Section {
+                measured("Gesamtlänge", value: measurements.overallLength)
+                measured("Hülsenlänge", value: measurements.caseLength)
+                measured("Randdurchmesser", value: measurements.rim)
+                measured("Geschossdurchmesser", value: measurements.bullet)
             } header: {
                 Text("Mit der Schieblehre gemessen")
             }
@@ -259,12 +279,10 @@ struct TrainingPackageView: View {
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
         .onAppear(perform: reload)
-        .onChange(of: measurements) { _, new in
-            // Written as typed; nothing measured leaves the key out of package.json.
-            var package = capture.package
-            package.measurements = new.isEmpty ? nil : new
-            guard package.measurements != capture.package.measurements else { return }
-            do { try CaptureStore.update(package, at: capture.url) } catch { status = error.localizedDescription }
+        .onChange(of: package) { _, new in
+            // Written as typed; nothing measured and no atypical bullet leave their keys out of package.json.
+            guard new != capture.package else { return }
+            do { try CaptureStore.update(new, at: capture.url) } catch { status = error.localizedDescription }
         }
         .fullScreenCover(isPresented: $showCamera, onDismiss: reload) {
             TrainingCameraView(capture: capture)
@@ -297,10 +315,7 @@ struct TrainingPackageView: View {
         return "\(name)  \(camera)\(depth)  \(size)  \(aspect)  \(shot.analysis?.matches.first ?? "kein Treffer".loc)"
     }
 
-    private func reload() {
-        shots = capture.shots
-        measurements = capture.package.measurements ?? Measurements()
-    }
+    private func reload() { shots = capture.shots }
 
     /// A calliper value with its unit, «9.95 mm»; a dash until measured.
     private func measured(_ title: LocalizedStringKey, value: Binding<Double?>) -> some View {

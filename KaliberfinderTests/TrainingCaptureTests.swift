@@ -186,6 +186,23 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertFalse(Measurements(bullet: 9).isEmpty)
     }
 
+    /// The note and the atypical-bullet flag are edited on the series screen; the flag is only in the file when set.
+    func testNoteAndAtypicalBulletAreEditable() throws {
+        let url = try store.create(package())
+        var package = try XCTUnwrap(store.packages().first).package
+        XCTAssertNil(package.atypicalBullet)
+        package.note = "Holztisch, Teilmantel statt Vollmantel"
+        package.atypicalBullet = true
+        try CaptureStore.update(package, at: url)
+        let json = try XCTUnwrap(String(data: try Data(contentsOf: url.appendingPathComponent(TrainingCapture.packageFile)), encoding: .utf8))
+        XCTAssertTrue(json.contains("\"atypicalBullet\" : true"))
+        XCTAssertEqual(try XCTUnwrap(store.packages().first).package.note, "Holztisch, Teilmantel statt Vollmantel")
+        package.atypicalBullet = nil
+        try CaptureStore.update(package, at: url)
+        XCTAssertFalse(try XCTUnwrap(String(data: try Data(contentsOf: url.appendingPathComponent(TrainingCapture.packageFile)), encoding: .utf8))
+            .contains("atypicalBullet"))
+    }
+
     /// A shot remembers the camera that took it; the summary names it unless it was the LiDAR camera.
     func testShotNamesItsCamera() throws {
         var shot = CaptureShot(photo: "photo.heic", source: "lidarCamera", captured: Date())

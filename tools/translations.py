@@ -238,6 +238,8 @@ T = {
         "Appoggia una carta bancaria (o carta d'identità, licenza di condurre) in verticale sul rettangolo, allineata in alto, e sposta il cursore finché il rettangolo è lungo esattamente come la carta."),
     "Lineal in Zentimetern": ("Ruler in centimetres", "Règle en centimètres", "Righello in centimetri"),
     "Luftdruck": ("Air gun", "Air comprimé", "Aria compressa"),
+    "Atypisches Geschoss": ("Atypical bullet", "Projectile atypique", "Proiettile atipico"),
+    "Serie": ("Series", "Série", "Serie"),
     "Mit der Schieblehre gemessen": ("Measured with a calliper", "Mesuré au pied à coulisse", "Misurato con il calibro"),
     "Masse eingeben": ("Enter dimensions", "Saisir les dimensions", "Inserisci le dimensioni"),
     "Masse": ("Dimensions", "Dimensions", "Dimensioni"),

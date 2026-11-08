@@ -576,6 +576,29 @@
         }
       }
     },
+    "Atypisches Geschoss": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atypical bullet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projectile atypique"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proiettile atipico"
+          }
+        }
+      }
+    },
     "Auch bekannt als": {
       "extractionState": "manual",
       "localizations": {
@@ -4022,6 +4045,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Includi calibri rari"
+          }
+        }
+      }
+    },
+    "Serie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Series"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Série"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serie"
           }
         }
       }

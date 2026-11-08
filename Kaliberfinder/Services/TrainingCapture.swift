@@ -77,6 +77,9 @@ struct CapturePackage: Codable, Equatable {
     var cameras: [CameraInfo]?
     /// What the calliper says about the round photographed; nil until Raven enters it (2026-11-08).
     var measurements: Measurements?
+    /// True when the round carries a bullet its calibre does not usually have (another weight or shape), so
+    /// tuning the matcher against this series takes care; not written when nil.
+    var atypicalBullet: Bool?
 
     var scanMode: ScanMode { ScanMode(rawValue: part) ?? .auto }
     var isUnlisted: Bool { unlisted == true }
