@@ -78,6 +78,7 @@ struct HomeView: View {
         // on a phone a little smaller than the 17 Pro the list then fits and stops scrolling, title stuck small.
         .scrollBounceBehavior(fit.fits ? .basedOnSize : .always)
         .measuring($fit)
+        .readableWidth()
         .navigationTitle("Kaliberfinder")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -89,6 +90,7 @@ struct HomeView: View {
         .sheet(isPresented: $showSettings) {
             NavigationStack { SettingsView() }
                 .environmentObject(scale)
+                .pageSized()
         }
         .navigationDestination(item: $photo) {
             // New identity per photo, so a photo shared while the matches are open is analysed afresh.

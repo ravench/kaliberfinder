@@ -23,7 +23,9 @@ struct TrainingCaptureView: View {
             if !captures.isEmpty {
                 Section {
                     ForEach(captures) { capture in
-                        NavigationLink(value: capture) { TrainingCaptureRow(capture: capture) }
+                        // A link with its view, as elsewhere in the app: a value link with navigationDestination(for:)
+                        // did nothing when tapped here (the screen is itself pushed by such a link on the settings sheet).
+                        NavigationLink { TrainingPackageView(capture: capture) } label: { TrainingCaptureRow(capture: capture) }
                     }
                     .onDelete { offsets in
                         for i in offsets { try? store.delete(captures[i]) }
@@ -35,7 +37,6 @@ struct TrainingCaptureView: View {
             }
         }
         .navigationTitle("Trainingsdaten")
-        .navigationDestination(for: SavedCapture.self) { TrainingPackageView(capture: $0) }
         .navigationDestination(item: $opened) { TrainingPackageView(capture: $0) }
         .sheet(isPresented: $showNew) {
             NavigationStack {
@@ -62,7 +63,8 @@ private struct TrainingCaptureRow: View {
             Text(verbatim: CartridgeCatalog.cartridge(id: capture.package.calibre)?.name ?? capture.package.calibre)
             let partName = (capture.package.scanMode == .emptyCase ? "Leere Hülse" : "Patrone").loc
             let dateText = capture.package.created.formatted(date: .abbreviated, time: .shortened)
-            Text("\(partName) · \(capture.shotCount) Fotos · \(dateText)")
+            let sizeText = capture.bytes.formatted(.byteCount(style: .file))
+            Text("\(partName) · \(capture.shotCount) Fotos · \(sizeText) · \(dateText)")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
@@ -236,7 +238,7 @@ private struct TrainingCameraView: View {
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-            CameraPreview(session: camera.session).ignoresSafeArea()
+            CameraPreview(camera: camera).ignoresSafeArea()
             VStack(spacing: 12) {
                 Text("\(calibreName) · \(saved) neue Fotos")
                     .font(.headline)

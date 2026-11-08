@@ -73,6 +73,7 @@ struct CartridgeDetailView: View {
                 Text("Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten. Zündhütchen: Boxer-Grösse handelsüblicher Hülsen; Militärmunition kann Berdan-Zündhütchen anderer Grösse haben.")
             }
         }
+        .readableWidth()
         .navigationTitle(Text(verbatim: cartridge.name))
         .navigationBarTitleDisplayMode(.inline)
     }
