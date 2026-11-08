@@ -16,6 +16,7 @@ struct HomeView: View {
     @State private var photo: PickedPhoto?
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
+    @State private var fit = LargeTitleFit()
     private let canTakePhoto: Bool
 
     /// `canTakePhoto`: tests lay out a phone's home screen on the simulator, which has no camera.
@@ -72,8 +73,11 @@ struct HomeView: View {
                 }
             }
         }
-        // Scrolls only when the screen is too small for it: otherwise a drag just stretches and shrinks the large title.
-        .scrollBounceBehavior(.basedOnSize)
+        // Scrolls only when the screen is too small for it under the large title: otherwise a drag just
+        // stretches and shrinks the title. `.basedOnSize` alone looks again once the title has collapsed:
+        // on a phone a little smaller than the 17 Pro the list then fits and stops scrolling, title stuck small.
+        .scrollBounceBehavior(fit.fits ? .basedOnSize : .always)
+        .measuring($fit)
         .navigationTitle("Kaliberfinder")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -127,5 +131,37 @@ struct HomeView: View {
         guard !tourPhotoTaken, let path = UserDefaults.standard.string(forKey: "screenTourPhoto") else { return nil }
         tourPhotoTaken = true
         return UIImage(contentsOfFile: path)
+    }
+}
+
+/// Whether a list fits under its large title, read only while the title is large (the largest top inset
+/// seen so far): collapsed, the title frees room, and the list may fit where it did not before.
+struct LargeTitleFit: Equatable {
+    private(set) var fits = false
+    private var largestInset = 0.0
+
+    /// One scroll geometry: the top inset, and whether the content fits between the insets.
+    struct Reading: Equatable {
+        var insetTop: Double
+        var fits: Bool
+    }
+
+    mutating func read(_ now: Reading) {
+        largestInset = max(largestInset, now.insetTop)
+        if now.insetTop >= largestInset - 1 { fits = now.fits }
+    }
+}
+
+extension View {
+    /// Feeds the scroll geometry to `fit`. iOS 17 has no scroll geometry: `fit` stays as it is.
+    @ViewBuilder func measuring(_ fit: Binding<LargeTitleFit>) -> some View {
+        if #available(iOS 18, *) {
+            onScrollGeometryChange(for: LargeTitleFit.Reading.self) { g in
+                LargeTitleFit.Reading(insetTop: g.contentInsets.top,
+                                      fits: g.contentSize.height <= g.containerSize.height - g.contentInsets.top - g.contentInsets.bottom)
+            } action: { _, now in fit.wrappedValue.read(now) }
+        } else {
+            self
+        }
     }
 }
