@@ -63,7 +63,7 @@ extension ScreenScale.Source {
     var title: String {
         switch self {
         case .calibrated: "Kalibriert"
-        case .model: "Vom iPhone-Modell"
+        case .model: "Vom Gerätemodell"
         case .estimate: "Geschätzt, bitte kalibrieren"
         }
     }

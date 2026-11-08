@@ -79,6 +79,25 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// The calibre picker of a new training series finds a calibre by its other names too, and shows them.
+    func testTrainingCalibreSearch() {
+        app.terminate()
+        app.launchArguments += ["-trainingCaptureEnabled", "YES"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]),
+              open(app.buttons["Trainingsdaten aufnehmen"].firstMatch),
+              open(app.buttons["Neue Aufnahmeserie"].firstMatch),
+              open(app.staticTexts["Fotografiertes Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("Schmidt Rubin\n") // return hides the keyboard
+        }
+        XCTAssertTrue(app.staticTexts["7.5x53.5 mm Swiss (GP 1890)"].waitForExistence(timeout: 5), "not found by another name")
+        snap("23-Trainingsdaten-Kalibersuche")
+    }
+
     /// A new training series of a round the catalogue lacks: searched in vain, then «Nicht in der Liste»,
     /// named after the search.
     func testTrainingUnlistedRound() {
@@ -144,6 +163,23 @@ final class PRScreensTests: XCTestCase {
     func testLoadedCartridgePartColours() {
         app.launchArguments += ["-outlinePartColours", "YES"]
         photoMatches("photo-9x19-wood", shot: "16-Foto-Erkennung-farbig")
+    }
+
+    /// The hidden «Trainingsdaten» screen, on the example package of KaliberfinderTests/Captures so
+    /// it shows the same series on every run: the saved series, and one of them opened from the list.
+    func testTrainingCapture() {
+        let captures = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("KaliberfinderTests/Captures")
+        app.terminate()
+        app.launchArguments += ["-trainingCaptureEnabled", "YES", "-screenTourCaptures", captures.path]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]),
+              open(app.buttons["Trainingsdaten aufnehmen"].firstMatch) else { return }
+        snap("21-Trainingsdaten")
+        guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
+        XCTAssertTrue(app.buttons["Als ZIP teilen"].waitForExistence(timeout: 5), "The saved series did not open")
+        snap("22-Trainingsdaten-Serie")
     }
 
     /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`;

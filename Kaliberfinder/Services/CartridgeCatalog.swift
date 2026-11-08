@@ -47,21 +47,30 @@ enum CartridgeCatalog {
     /// Calibres still in regular production: what matching uses with the switch off (the default).
     static let current: [Cartridge] = matchable(includeObsolete: false)
 
-    /// Normalises a name for comparison: case, spaces, dots and "mm" don't matter, "×" is "x", "," is ".".
+    /// Normalises a name for comparison: case, accents, spaces, hyphens, dots and "mm" don't matter,
+    /// "×" is "x", "," is ".".
     static func normalized(_ s: String) -> String {
-        s.lowercased()
+        s.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil)
+            .lowercased()
             .replacingOccurrences(of: "×", with: "x")
             .replacingOccurrences(of: ",", with: ".")
-            .filter { !$0.isWhitespace }
+            .filter { !$0.isWhitespace && $0 != "-" }
             .replacingOccurrences(of: "mm", with: "")
             .replacingOccurrences(of: ".", with: "")
     }
 
-    /// Catalogue entries whose name or any alias contains `query`, in catalogue order.
+    /// Catalogue entries known by `query`, in catalogue order: one of their names (`Cartridge.allNames`:
+    /// the name, the other names, search aliases and headstamps) contains it, or their names hold
+    /// each of its words in any order, so «Vetterli 10.4» finds «10.4x38 mm R Vetterli».
     static func search(_ query: String, in cartridges: [Cartridge] = all) -> [Cartridge] {
-        let key = normalized(query)
-        guard !key.isEmpty else { return cartridges }
-        return cartridges.filter { c in c.allNames.contains { normalized($0).contains(key) } }
+        let whole = normalized(query)
+        guard !whole.isEmpty else { return cartridges }
+        let words = query.split { $0.isWhitespace || $0 == "-" || $0 == "/" }.map { normalized(String($0)) }.filter { !$0.isEmpty }
+        return cartridges.filter { c in
+            let names = c.allNames.map(normalized)
+            // The whole query too: dropping "mm" can join its words («357 REM MAG» → "357reag").
+            return names.contains { $0.contains(whole) } || words.allSatisfy { word in names.contains { $0.contains(word) } }
+        }
     }
 
     /// Cartridges grouped by category, in the order of `Category.allCases`.

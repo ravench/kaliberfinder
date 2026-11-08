@@ -69,7 +69,7 @@ final class TrueScaleLayoutTests: XCTestCase {
     func testOneToOneHintsAreTranslated() throws {
         let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "en"))
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
-        XCTAssertEqual(en["Originalgrösse: nicht zoombar, damit die Masse stimmen."], "Real size: no zoom, so the measurements stay true.")
+        XCTAssertEqual(en["Originalgrösse"], "Real size")
         XCTAssertNotNil(en["1:1 – Zoomen ist abgeschaltet, damit die Grösse stimmt."])
         XCTAssertEqual(en["Hülse %@"], "Case %@")
         XCTAssertEqual(en["Geschosse beim Vergleich mit leeren Hülsen zeigen"], "Show bullets when comparing empty cases")

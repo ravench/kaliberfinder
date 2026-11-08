@@ -70,10 +70,6 @@ T = {
         "1:1 – zoom is off so the size stays true.",
         "1:1 – le zoom est désactivé pour garder la taille réelle.",
         "1:1 – lo zoom è disattivato per mantenere la dimensione reale."),
-    "Originalgrösse: nicht zoombar, damit die Masse stimmen.": (
-        "Real size: no zoom, so the measurements stay true.",
-        "Taille réelle : pas de zoom, pour que les mesures restent justes.",
-        "Grandezza reale: niente zoom, così le misure restano corrette."),
     "Abbrechen": ("Cancel", "Annuler", "Annulla"),
     "Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form.": (
         "Distance outside 12–45 cm: size not measured, matches by shape only.",
@@ -91,12 +87,12 @@ T = {
     "Grösse passt ungefähr": ("Size fits roughly", "La taille correspond à peu près", "La dimensione corrisponde più o meno"),
     "Grösse passt wenig": ("Size fits poorly", "La taille correspond peu", "La dimensione corrisponde poco"),
     "Keine Tiefe gemessen": ("No depth measured", "Aucune profondeur mesurée", "Nessuna profondità misurata"),
-    "Lege die Patrone flach auf einen hellen Untergrund und halte das iPhone parallel, 20–30 cm darüber.": (
-        "Lay the cartridge flat on a light surface and hold the iPhone parallel, 20–30 cm above it.",
-        "Posez la cartouche à plat sur un fond clair et tenez l'iPhone parallèle, à 20–30 cm au-dessus.",
-        "Appoggia la cartuccia piatta su un fondo chiaro e tieni l'iPhone parallelo, 20–30 cm sopra."),
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, 20–30 cm darüber.": (
+        "Lay the cartridge flat on a light surface and hold the device parallel, 20–30 cm above it.",
+        "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à 20–30 cm au-dessus.",
+        "Appoggia la cartuccia piatta su un fondo chiaro e tieni il dispositivo parallelo, 20–30 cm sopra."),
     "Näher heran": ("Move closer", "Rapprochez-vous", "Avvicinati"),
-    "iPhone parallel zum Tisch halten": ("Hold the iPhone parallel to the table", "Tenez l'iPhone parallèle à la table", "Tieni l'iPhone parallelo al tavolo"),
+    "Gerät parallel zum Tisch halten": ("Hold the device parallel to the table", "Tenez l'appareil parallèle à la table", "Tieni il dispositivo parallelo al tavolo"),
     "Einheiten": ("Units", "Unités", "Unità"),
     "Einstellungen": ("Settings", "Réglages", "Impostazioni"),
     "Erkennung": ("Recognition", "Reconnaissance", "Riconoscimento"),
@@ -261,7 +257,7 @@ T = {
         "Rond sur la photo : culot ou pointe d'une cartouche, ou une balle ronde. Les cartouches ne sont identifiées que de côté.",
         "Rotondo nella foto: fondello o punta di una cartuccia, oppure una palla sferica. Le cartucce si riconoscono solo di lato."),
     "Speichern": ("Save", "Enregistrer", "Salva"),
-    "Vom iPhone-Modell": ("From the iPhone model", "Selon le modèle d'iPhone", "Dal modello di iPhone"),
+    "Vom Gerätemodell": ("From the device model", "Selon le modèle d'appareil", "Dal modello di dispositivo"),
     "Wähle Kaliber aus, um sie in Originalgrösse nebeneinander zu vergleichen.": (
         "Select calibres to compare them side by side at real size.",
         "Sélectionnez des calibres pour les comparer côte à côte en taille réelle.",
@@ -289,7 +285,7 @@ T = {
         "Choisissez le calibre que vous photographiez et prenez-en plusieurs photos. La photo, la profondeur LiDAR, les données de l'appareil photo et le masque Vision sont enregistrés. Partagez la série en ZIP, elle sera ajoutée aux tests.",
         "Scegli il calibro che stai fotografando e scatta più foto. Vengono salvati la foto, la profondità LiDAR, i dati della fotocamera e la maschera Vision. Condividi la serie come ZIP: finirà nei test."),
     "Gespeichert": ("Saved", "Enregistrées", "Salvate"),
-    "%@ · %lld Fotos · %@": ("%@ · %lld photos · %@", "%@ · %lld photos · %@", "%@ · %lld foto · %@"),
+    "%@ · %lld Fotos · %@ · %@": ("%@ · %lld photos · %@ · %@", "%@ · %lld photos · %@ · %@", "%@ · %lld foto · %@ · %@"),
     "Fotografiertes Kaliber": ("Photographed calibre", "Calibre photographié", "Calibro fotografato"),
     "Wählen": ("Choose", "Choisir", "Scegli"),
     "Im Bild": ("In the photo", "Sur la photo", "Nella foto"),

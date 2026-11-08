@@ -1,25 +1,25 @@
 {
   "sourceLanguage": "de",
   "strings": {
-    "%@ · %lld Fotos · %@": {
+    "%@ · %lld Fotos · %@ · %@": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · %lld photos · %@"
+            "value": "%@ · %lld photos · %@ · %@"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · %lld photos · %@"
+            "value": "%@ · %lld photos · %@ · %@"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · %lld foto · %@"
+            "value": "%@ · %lld foto · %@ · %@"
           }
         }
       }
@@ -1772,6 +1772,29 @@
         }
       }
     },
+    "Gerät parallel zum Tisch halten": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold the device parallel to the table"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tenez l'appareil parallèle à la table"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tieni il dispositivo parallelo al tavolo"
+          }
+        }
+      }
+    },
     "Gesamtlänge": {
       "extractionState": "manual",
       "localizations": {
@@ -2738,25 +2761,25 @@
         }
       }
     },
-    "Lege die Patrone flach auf einen hellen Untergrund und halte das iPhone parallel, 20–30 cm darüber.": {
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, 20–30 cm darüber.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lay the cartridge flat on a light surface and hold the iPhone parallel, 20–30 cm above it."
+            "value": "Lay the cartridge flat on a light surface and hold the device parallel, 20–30 cm above it."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Posez la cartouche à plat sur un fond clair et tenez l'iPhone parallèle, à 20–30 cm au-dessus."
+            "value": "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à 20–30 cm au-dessus."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appoggia la cartuccia piatta su un fondo chiaro e tieni l'iPhone parallelo, 20–30 cm sopra."
+            "value": "Appoggia la cartuccia piatta su un fondo chiaro e tieni il dispositivo parallelo, 20–30 cm sopra."
           }
         }
       }
@@ -3286,29 +3309,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Grandezza reale"
-          }
-        }
-      }
-    },
-    "Originalgrösse: nicht zoombar, damit die Masse stimmen.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Real size: no zoom, so the measurements stay true."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Taille réelle : pas de zoom, pour que les mesures restent justes."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grandezza reale: niente zoom, così le misure restano corrette."
           }
         }
       }
@@ -4371,25 +4371,25 @@
         }
       }
     },
-    "Vom iPhone-Modell": {
+    "Vom Gerätemodell": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "From the iPhone model"
+            "value": "From the device model"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Selon le modèle d'iPhone"
+            "value": "Selon le modèle d'appareil"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dal modello di iPhone"
+            "value": "Dal modello di dispositivo"
           }
         }
       }
@@ -4597,29 +4597,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "bossolo dritto"
-          }
-        }
-      }
-    },
-    "iPhone parallel zum Tisch halten": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hold the iPhone parallel to the table"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tenez l'iPhone parallèle à la table"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tieni l'iPhone parallelo al tavolo"
           }
         }
       }

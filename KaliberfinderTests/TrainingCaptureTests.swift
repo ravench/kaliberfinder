@@ -107,7 +107,17 @@ final class TrainingCaptureTests: XCTestCase {
         try CaptureStore.save(CaptureShot(photo: "photo.jpg", source: "library", captured: Date()), photo: try jpeg(), in: url)
         let after = try XCTUnwrap(store.packages().first)
         XCTAssertEqual(after.shotCount, 1)
+        XCTAssertGreaterThan(after.bytes, before.bytes, "the photo and its shot.json count")
+        XCTAssertEqual(after.bytes, CaptureStore.bytes(in: url))
         XCTAssertNotEqual(before, after, "an equal value would keep SwiftUI showing «0 Fotos»")
+    }
+
+    /// The PR screens tour opens the example package (`-screenTourCaptures`) instead of the phone's series.
+    func testTourPointsTheStoreAtItsFolder() {
+        XCTAssertEqual(CaptureStore.standard.root.lastPathComponent, "TrainingCaptures")
+        UserDefaults.standard.set(root.path, forKey: CaptureStore.tourKey)
+        defer { UserDefaults.standard.removeObject(forKey: CaptureStore.tourKey) }
+        XCTAssertEqual(CaptureStore.standard.root.path, root.path)
     }
 
     func testFolderNameIsASlugOfTheCalibre() {

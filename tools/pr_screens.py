@@ -73,17 +73,19 @@ def _pngs(folder):
     return set(n for n in os.listdir(folder) if n.endswith(".png")) if os.path.isdir(folder) else set()
 
 
-def same(a, b, tolerance=24, max_pixels=20):
+def same(a, b, tolerance=48, max_pixels=20, blur=2):
     """True if two screenshots look the same.
 
-    Identical files are the same. Otherwise, with Pillow, a few pixels off by a few levels
-    (blur and anti-aliasing differ from run to run) still count as the same; without Pillow
-    any difference counts.
+    Identical files are the same. Otherwise, with Pillow, both are blurred a little and a few
+    pixels off by a few levels still count as the same: text and toggles rasterised at a
+    fractional scroll offset, and the glass bars' blur of what lies under them, differ from run
+    to run by up to ~120 levels along every edge, but by under 30 once blurred, while a changed
+    word or control stays well over the tolerance. Without Pillow any difference counts.
     """
     if filecmp.cmp(a, b, shallow=False):
         return True
     try:
-        from PIL import Image, ImageChops
+        from PIL import Image, ImageChops, ImageFilter
     except ImportError:
         return False
     try:
@@ -92,6 +94,8 @@ def same(a, b, tolerance=24, max_pixels=20):
         return False
     if ia.size != ib.size:
         return False
+    if blur:
+        ia, ib = ia.filter(ImageFilter.GaussianBlur(blur)), ib.filter(ImageFilter.GaussianBlur(blur))
     r, g, bl = ImageChops.difference(ia, ib).split()
     worst = ImageChops.lighter(ImageChops.lighter(r, g), bl)
     return sum(worst.histogram()[tolerance + 1:]) <= max_pixels

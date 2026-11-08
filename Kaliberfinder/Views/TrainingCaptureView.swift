@@ -23,7 +23,9 @@ struct TrainingCaptureView: View {
             if !captures.isEmpty {
                 Section {
                     ForEach(captures) { capture in
-                        NavigationLink(value: capture) { TrainingCaptureRow(capture: capture) }
+                        // A link with its view, as elsewhere in the app: a value link with navigationDestination(for:)
+                        // did nothing when tapped here (the screen is itself pushed by such a link on the settings sheet).
+                        NavigationLink { TrainingPackageView(capture: capture) } label: { TrainingCaptureRow(capture: capture) }
                     }
                     .onDelete { offsets in
                         for i in offsets { try? store.delete(captures[i]) }
@@ -35,7 +37,6 @@ struct TrainingCaptureView: View {
             }
         }
         .navigationTitle("Trainingsdaten")
-        .navigationDestination(for: SavedCapture.self) { TrainingPackageView(capture: $0) }
         .navigationDestination(item: $opened) { TrainingPackageView(capture: $0) }
         .sheet(isPresented: $showNew) {
             NavigationStack {
@@ -65,7 +66,8 @@ private struct TrainingCaptureRow: View {
             }
             let partName = (capture.package.scanMode == .emptyCase ? "Leere Hülse" : "Patrone").loc
             let dateText = capture.package.created.formatted(date: .abbreviated, time: .shortened)
-            Text("\(partName) · \(capture.shotCount) Fotos · \(dateText)")
+            let sizeText = capture.bytes.formatted(.byteCount(style: .file))
+            Text("\(partName) · \(capture.shotCount) Fotos · \(sizeText) · \(dateText)")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
@@ -144,8 +146,8 @@ private enum TrainingCalibre: Equatable {
     case unlisted
 }
 
-/// Searchable list of all calibres, and «Nicht in der Liste» for a round the catalogue lacks
-/// (named after the search unless it has a name); picking goes back.
+/// Searchable list of all calibres, shown and searched like «Alle Kaliber», and «Nicht in der Liste»
+/// for a round the catalogue lacks (named after the search unless it has a name); picking goes back.
 private struct TrainingCalibrePicker: View {
     @Binding var selection: TrainingCalibre?
     @Binding var name: String
@@ -174,15 +176,16 @@ private struct TrainingCalibrePicker: View {
                     selection = .listed(c)
                     dismiss()
                 } label: {
+                    // With its other names, so a calibre found by one of them shows why.
                     HStack {
-                        Text(verbatim: c.name).foregroundStyle(.primary)
-                        Spacer()
-                        if selection == .listed(c) { Image(systemName: "checkmark") }
+                        CartridgeRow(cartridge: c)
+                        if selection == .listed(c) { Image(systemName: "checkmark").foregroundStyle(Color.accentColor) }
                     }
                 }
+                .foregroundStyle(.primary)
             }
         }
-        .searchable(text: $query)
+        .searchable(text: $query, prompt: "Kaliber, z. B. 9 mm Luger")
         .navigationTitle("Kaliber")
     }
 }
@@ -279,7 +282,7 @@ private struct TrainingCameraView: View {
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-            CameraPreview(session: camera.session).ignoresSafeArea()
+            CameraPreview(camera: camera).ignoresSafeArea()
             VStack(spacing: 12) {
                 Text("\(capture.package.calibreName) · \(saved) neue Fotos")
                     .font(.headline)

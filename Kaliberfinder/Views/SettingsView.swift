@@ -70,6 +70,7 @@ struct SettingsView: View {
                 }
             }
         }
+        .readableWidth()
         .navigationTitle("Einstellungen")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
