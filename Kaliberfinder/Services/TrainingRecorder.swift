@@ -15,6 +15,7 @@ enum TrainingRecorder {
         shot.gravity = moment.gravity
         shot.tilt = moment.tilt
         shot.focus = moment.focus
+        shot.camera = moment.camera
         var depthValues: [Float]?
         if let depthData = photo.depthData {
             if let map = LiDARCamera.depthValues(depthData) {
@@ -58,8 +59,9 @@ enum TrainingRecorder {
     /// What the app finds in the photo now, kept to compare later versions with.
     static func analyse(_ image: UIImage, scale: DepthScale?, mode: ScanMode) -> CaptureShot.Analysis {
         let analysis = PhotoAnalyzer.analyzeNow(image)
-        let size = try? analysis.size(depth: scale).get()
-        let matches = Matcher.rank(shape: analysis.shape, size: size, mode: mode, brass: analysis.isBrass, limit: 5)
+        let size = try? analysis.size(depth: scale, mode: mode).get()
+        let matches = Matcher.rank(shape: analysis.shape, size: analysis.rawSize(depth: scale), perspective: analysis.perspective(depth: scale),
+                                   mouth: analysis.contour?.mouth, mode: mode, brass: analysis.isBrass, limit: 5)
         return .init(aspect: analysis.shape?.aspect, lengthPixels: analysis.lengthPixels, imageLongSide: analysis.imageLongSide,
                      outline: analysis.outline?.map { [Double($0.x), Double($0.y)] }, isBrass: analysis.isBrass,
                      candidates: analysis.candidates.count, size: size.map { [$0.length, $0.diameter] },
@@ -135,12 +137,27 @@ enum TrainingRecorder {
         }
     }
 
-    /// A new package with this phone's details.
-    static func package(calibre: String, mode: ScanMode, note: String) -> CapturePackage {
+    /// A new package with this phone's details. `unlisted`: `calibre` is the name of a round the catalogue lacks.
+    static func package(calibre: String, unlisted: Bool = false, mode: ScanMode, note: String) -> CapturePackage {
         let bundle = Bundle.main.infoDictionary ?? [:]
         let os = ProcessInfo.processInfo.operatingSystemVersion
         let version = "\(bundle["CFBundleShortVersionString"] ?? "?") (\(bundle["CFBundleVersion"] ?? "?"))"
-        return CapturePackage(calibre: calibre, part: mode.rawValue, note: note, created: Date(), device: deviceModel,
-                              system: "iOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)", app: version)
+        return CapturePackage(calibre: unlisted ? calibre.trimmingCharacters(in: .whitespacesAndNewlines) : calibre, part: mode.rawValue,
+                              note: note, created: Date(), device: deviceModel,
+                              system: "iOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)", app: version,
+                              unlisted: unlisted ? true : nil, cameras: backCameras)
+    }
+
+    /// The phone's back cameras, one entry each (the simulator has none): whether a telephoto could take
+    /// the photos is decided by its closest focus and whether it delivers depth (Raven, 2026-11-08).
+    static var backCameras: [CameraInfo] {
+        let types: [AVCaptureDevice.DeviceType] = [.builtInWideAngleCamera, .builtInUltraWideCamera, .builtInTelephotoCamera, .builtInLiDARDepthCamera]
+        return AVCaptureDevice.DiscoverySession(deviceTypes: types, mediaType: .video, position: .back).devices.map { device in
+            let photo = LiDARCamera.largest(device.formats.flatMap(\.supportedMaxPhotoDimensions))
+            return CameraInfo(type: device.deviceType.rawValue.replacingOccurrences(of: "AVCaptureDeviceType", with: ""),
+                              minimumFocusDistance: device.minimumFocusDistance >= 0 ? device.minimumFocusDistance : nil,
+                              depth: device.formats.contains { !$0.supportedDepthDataFormats.isEmpty },
+                              photoWidth: Int(photo.width), photoHeight: Int(photo.height))
+        }
     }
 }

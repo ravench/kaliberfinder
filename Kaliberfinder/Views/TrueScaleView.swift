@@ -25,32 +25,78 @@ struct TrueScaleLayout: Equatable {
         rulerMM = unit.rulerLength(tallestMM: tallest)
         bandHeight = rulerMM * pointsPerMM
     }
+
+    /// Where the drawings (the band with the labels under it, `contentHeight` tall) start in the
+    /// `availableHeight` under the badge. When they fit, they are centred: as much space above the
+    /// bullet tips as below the labels. When they do not, their bottom is on the bottom edge and the
+    /// start is negative: the bullet tips are cut off at the top, not the bases and the labels; the
+    /// screen does not scroll vertically.
+    static func contentTop(contentHeight: Double, availableHeight: Double) -> Double {
+        contentHeight <= availableHeight ? (availableHeight - contentHeight) / 2 : availableHeight - contentHeight
+    }
+}
+
+/// Gives its content the whole space and puts it where `TrueScaleLayout.contentTop` says: centred
+/// when it fits, else flush with the bottom edge, sticking out at the top.
+private struct CentredOrFlushBottom: Layout {
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        proposal.replacingUnspecifiedDimensions()
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        for subview in subviews {
+            let height = subview.sizeThatFits(ProposedViewSize(width: bounds.width, height: nil)).height
+            let top = TrueScaleLayout.contentTop(contentHeight: height, availableHeight: bounds.height)
+            subview.place(at: CGPoint(x: bounds.minX, y: bounds.minY + top), anchor: .topLeading,
+                          proposal: ProposedViewSize(width: bounds.width, height: height))
+        }
+    }
 }
 
 /// Cartridges side by side at real size, standing on a common base line next to a ruler.
 /// The ruler stays put on the left while the cartridges scroll sideways; zooming is
-/// deliberately not possible, since the drawing is at real size (1:1).
+/// deliberately not possible, since the drawing is at real size (1:1). The band is centred
+/// vertically when it fits under the badge, else it stands on the bottom edge and the bullet
+/// tips are cut off at the top (`TrueScaleLayout.contentTop`); there is no vertical scrolling.
 /// Lay the real cartridge on the screen, base on the line, to compare.
 struct TrueScaleView: View {
     let cartridges: [Cartridge]
+    /// Calibres a photo was compared with as empty cases: their labels add the case length, and
+    /// their drawings leave out the bullet when «Geschosse beim Vergleich mit leeren Hülsen zeigen» is off;
+    /// then «L» is the case length.
+    var emptyCases: Set<String> = []
     @EnvironmentObject private var scale: ScaleModel
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
+    @AppStorage(Self.bulletsOnCasesKey) private var bulletsOnCases = true
     @State private var showZoomHint = false
+
+    /// Settings switch, on by default: empty cases are compared with the bullet drawn.
+    static let bulletsOnCasesKey = "showBulletsOnEmptyCases"
+
+    /// E.g. "Hülse 51.2 mm", under each calibre compared as an empty case with its bullet drawn.
+    static func caseLengthText(_ c: Cartridge, unit: LengthUnit) -> String {
+        String(format: "Hülse %@".loc, unit.format(c.dimensions.caseLength))
+    }
+
+    /// "L …": the length of what is drawn, the case alone when `caseOnly`, else the whole cartridge.
+    static func lengthText(_ c: Cartridge, caseOnly: Bool, unit: LengthUnit) -> String {
+        "L " + unit.format(caseOnly ? c.dimensions.caseLength : c.dimensions.overallLength)
+    }
 
     var body: some View {
         let ppmm = scale.pointsPerMM
         let layout = TrueScaleLayout(cartridges: cartridges, unit: unit, pointsPerMM: ppmm)
-        ScrollView(.vertical) {
+        VStack(alignment: .leading, spacing: 12) {
             VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: 12) {
-                    OneToOneBadge()
-                    if scale.resolution.source == .estimate {
-                        Label("Bildschirm nicht kalibriert: Grösse kann leicht abweichen.", systemImage: "exclamationmark.triangle")
-                            .font(.footnote)
-                            .foregroundStyle(.orange)
-                    }
+                OneToOneBadge()
+                if scale.resolution.source == .estimate {
+                    Label("Bildschirm nicht kalibriert: Grösse kann leicht abweichen.", systemImage: "exclamationmark.triangle")
+                        .font(.footnote)
+                        .foregroundStyle(.orange)
                 }
-                .padding([.horizontal, .top])
+            }
+            .padding([.horizontal, .top])
+            CentredOrFlushBottom {
                 if let single = cartridges.first, cartridges.count == 1 {
                     singleView(single, layout: layout, ppmm: ppmm)
                 } else {
@@ -66,7 +112,7 @@ struct TrueScaleView: View {
                             HStack(alignment: .top, spacing: 8 * ppmm) {
                                 ForEach(cartridges) { c in
                                     VStack(spacing: 6) {
-                                        CartridgeView(cartridge: c, pointsPerMM: ppmm)
+                                        drawing(of: c, ppmm: ppmm)
                                             .frame(height: layout.bandHeight, alignment: .bottom)
                                         label(for: c)
                                         CaseBaseView(cartridge: c, pointsPerMM: ppmm)
@@ -85,12 +131,11 @@ struct TrueScaleView: View {
                         .scrollIndicators(.visible)
                     }
                     .padding(.leading, TrueScaleLayout.rulerLeadingInset)
-                    .padding(.bottom)
                 }
             }
+            // Cuts off what sticks out at the top when the band does not fit.
+            .clipped()
         }
-        // Scrolls only when a long cartridge does not fit on the screen.
-        .scrollBounceBehavior(.basedOnSize)
         .simultaneousGesture(MagnifyGesture().onChanged { _ in showZoomHint = true })
         .overlay(alignment: .bottom) {
             if showZoomHint {
@@ -118,7 +163,7 @@ struct TrueScaleView: View {
             HStack(alignment: .bottom, spacing: TrueScaleLayout.singleGapMM * ppmm) {
                 RulerView(lengthMM: layout.rulerMM, pointsPerMM: ppmm, unit: unit)
                     .padding(.trailing, 4)
-                CartridgeView(cartridge: c, pointsPerMM: ppmm)
+                drawing(of: c, ppmm: ppmm)
             }
             .frame(height: layout.bandHeight, alignment: .bottom)
             .overlay(alignment: .bottom) {
@@ -132,7 +177,15 @@ struct TrueScaleView: View {
             CaseBaseView(cartridge: c, pointsPerMM: ppmm)
         }
         .frame(maxWidth: .infinity)
-        .padding(.bottom)
+    }
+
+    /// Drawn without its bullet: compared as an empty case, with the bullets switched off.
+    private func caseOnly(_ c: Cartridge) -> Bool {
+        !bulletsOnCases && emptyCases.contains(c.id)
+    }
+
+    private func drawing(of c: Cartridge, ppmm: Double) -> some View {
+        CartridgeView(cartridge: c, pointsPerMM: ppmm, caseOnly: caseOnly(c))
     }
 
     private func label(for c: Cartridge) -> some View {
@@ -142,16 +195,25 @@ struct TrueScaleView: View {
             ForEach(CartridgeCatalog.twins(of: c)) { twin in
                 Text(verbatim: "= \(twin.name)").font(.caption2).foregroundStyle(.secondary)
             }
-            Text(verbatim: "L \(unit.format(c.dimensions.overallLength))").font(.caption2)
+            // Without the bullet, «L» below already is the case length.
+            if emptyCases.contains(c.id) && !caseOnly(c) {
+                // One line like «L» and «Ø», shrunk to fit the column rather than wrapped.
+                Text(verbatim: Self.caseLengthText(c, unit: unit)).font(.caption2)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+            }
+            Text(verbatim: Self.lengthText(c, caseOnly: caseOnly(c), unit: unit)).font(.caption2)
             Text(verbatim: "Ø \(unit.format(max(c.dimensions.rim, c.dimensions.base)))").font(.caption2)
         }
         .multilineTextAlignment(.center)
+        // Takes the height it needs, so a long name wraps instead of being cut short.
+        .fixedSize(horizontal: false, vertical: true)
         .frame(width: max(70, c.outline.width * scale.pointsPerMM))
         .foregroundStyle(.secondary)
     }
 }
 
-/// Says that the drawing is at real size, which is why it can't be zoomed.
+/// Says that the drawing is at real size (Raven, 2026-11-08: the word alone; no need to say why it can't be zoomed).
 struct OneToOneBadge: View {
     var body: some View {
         HStack(spacing: 8) {
@@ -161,7 +223,7 @@ struct OneToOneBadge: View {
                 .padding(.vertical, 2)
                 .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 4))
                 .foregroundStyle(.white)
-            Text("Originalgrösse: nicht zoombar, damit die Masse stimmen.")
+            Text("Originalgrösse")
                 .font(.footnote)
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundStyle(.secondary)

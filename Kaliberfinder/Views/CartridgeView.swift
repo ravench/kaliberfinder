@@ -4,6 +4,8 @@ import SwiftUI
 struct CartridgeView: View {
     let cartridge: Cartridge
     let pointsPerMM: Double
+    /// Draws the case alone, without the bullet, to compare an empty case.
+    var caseOnly = false
 
     static let brass = Color(red: 0.89, green: 0.76, blue: 0.44)
     static let copper = Color(red: 0.72, green: 0.45, blue: 0.20)
@@ -54,9 +56,11 @@ struct CartridgeView: View {
         ZStack(alignment: .topLeading) {
             part(o.case, fill: Self.caseFill(for: cartridge), lineWidth: lineWidth)
             part(o.head, fill: Self.headFill(for: cartridge), lineWidth: lineWidth)
-            part(o.bullet, fill: Self.bulletFill(for: cartridge), lineWidth: lineWidth)
-            part(o.patch, fill: Self.paper, lineWidth: lineWidth)
-            part(o.tip, fill: o.tipMaterial == "polymer" ? Self.polymer : Self.lead, lineWidth: lineWidth)
+            if !caseOnly {
+                part(o.bullet, fill: Self.bulletFill(for: cartridge), lineWidth: lineWidth)
+                part(o.patch, fill: Self.paper, lineWidth: lineWidth)
+                part(o.tip, fill: o.tipMaterial == "polymer" ? Self.polymer : Self.lead, lineWidth: lineWidth)
+            }
         }
         .frame(width: o.width * pointsPerMM, height: o.height * pointsPerMM, alignment: .topLeading)
         .accessibilityElement()

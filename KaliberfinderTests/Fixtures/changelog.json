@@ -1,0 +1,22 @@
+{"notes": {
+  "de": ["Die Erkennung findet die Patrone auch, wenn sie klein im Bild liegt",
+         "Fotos in der vollen Auflösung des Sensors",
+         "Trainingsaufnahmen auch mit der Tele- und der Ultraweitwinkelkamera",
+         "Kaliber lassen sich in den Listen nach ihren anderen Namen suchen",
+         "Der Startbildschirm scrollt auf kleinen iPhones nur, wenn er nicht ganz Platz hat"],
+  "en": ["Recognition finds the cartridge even when it is small in the picture",
+         "Photos at the sensor's full resolution",
+         "Training captures with the telephoto and ultra-wide cameras too",
+         "Calibres can be searched by their other names in the lists",
+         "The start screen scrolls on small iPhones only when it does not fit"],
+  "fr": ["La reconnaissance trouve la cartouche même si elle est petite dans l'image",
+         "Photos à la pleine résolution du capteur",
+         "Prises d'entraînement aussi avec le téléobjectif et l'ultra grand-angle",
+         "Les calibres se cherchent aussi par leurs autres noms dans les listes",
+         "L'écran d'accueil ne défile sur les petits iPhone que s'il manque de place"],
+  "it": ["Il riconoscimento trova la cartuccia anche quando è piccola nell'immagine",
+         "Foto alla piena risoluzione del sensore",
+         "Riprese di addestramento anche con il teleobiettivo e l'ultra grandangolo",
+         "I calibri si cercano anche con gli altri nomi nelle liste",
+         "La schermata iniziale scorre sugli iPhone piccoli solo se non ci sta tutta"]
+}}

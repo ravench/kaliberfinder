@@ -3,7 +3,7 @@ import SwiftUI
 /// The photo with the frames of what was found: a numbered yellow box around each cartridge the
 /// user can pick (tapping one picks it), and a green line along the measured silhouette: around the
 /// case, its neck and shoulder, and the bullet if there is one. With the hidden developer switch
-/// each edge has the colour of the detection it comes from.
+/// each edge has the colour of the detection it comes from, and a line crosses the case at its mouth.
 struct CandidatePhotoView: View {
     let photo: UIImage
     /// Cartridges to pick from, as boxes in fractions of the whole photo; empty when there's no choice.
@@ -12,6 +12,8 @@ struct CandidatePhotoView: View {
     var measured: [CGPoint]?
     /// What found each edge of `measured` (see `ShapeContour.parts`); empty for a box.
     var parts: [ShapeContour.Part] = []
+    /// A line across the case at its mouth (`ShapeContour.mouthLine`), drawn with the developer switch.
+    var mouthLine: [CGPoint]?
     /// The part of the photo `photo` shows, as fractions of the whole photo (all of it by default).
     var region = CGRect(x: 0, y: 0, width: 1, height: 1)
     var maxHeight: CGFloat = 220
@@ -37,6 +39,12 @@ struct CandidatePhotoView: View {
                                 .stroke(Color.green, style: StrokeStyle(lineWidth: 3, lineJoin: .round))
                                 .accessibilityHidden(true)
                         }
+                    }
+                    if partColours, let line = mouthLine?.map({ Self.point($0, in: region, size: geo.size) }), line.count == 2 {
+                        // Green as the other ends: where the case ends and the bullet starts.
+                        Path { $0.addLines(line) }
+                            .stroke(Color.green, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                            .accessibilityHidden(true)
                     }
                     ForEach(candidates.indices, id: \.self) { i in
                         candidate(i, in: geo.size)

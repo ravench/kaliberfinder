@@ -40,6 +40,7 @@ struct CatalogView: View {
         .overlay {
             if results.isEmpty { ContentUnavailableView.search(text: query) }
         }
+        .readableWidth()
         .searchable(text: $query, prompt: "Kaliber, z. B. 9 mm Luger")
         .navigationTitle("Kaliber")
         .toolbar {
@@ -75,7 +76,7 @@ struct CatalogView: View {
     }
 
     private func toggle(_ c: Cartridge) {
-        if let i = selection.firstIndex(of: c) { selection.remove(at: i) } else { selection.append(c) }
+        selection = selection.toggling(c)
     }
 }
 

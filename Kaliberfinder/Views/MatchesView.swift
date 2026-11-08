@@ -26,8 +26,9 @@ struct MatchesView: View {
     var body: some View {
         List {
             Section {
-                let frames = Self.frames(overview: overview, measured: analysis, picking: needsPick)
+                let frames = Self.frames(overview: overview, measured: analysis, picking: needsPick, mode: mode)
                 CandidatePhotoView(photo: preview?.image ?? photo, candidates: frames.candidates, measured: frames.measured, parts: frames.parts,
+                                   mouthLine: Self.mouthLine(measured: analysis, picking: needsPick, mode: mode),
                                    region: preview?.region ?? CGRect(x: 0, y: 0, width: 1, height: 1),
                                    maxHeight: needsPick ? 420 : 220) { choose($0) }
                 if needsPick {
@@ -67,10 +68,11 @@ struct MatchesView: View {
             }
             if analysis != nil { results }
         }
+        .readableWidth()
         .safeAreaInset(edge: .bottom) {
             // A prominent button pinned to the bottom, like on the measure screen, so it is not missed.
             if analysis != nil, !matches.isEmpty {
-                CompareButton(title: Self.compareTitle(matches), cartridges: Self.toCompare(matches))
+                CompareButton(title: Self.compareTitle(matches), cartridges: Self.toCompare(matches), emptyCases: Self.emptyCases(matches))
             }
         }
         .navigationTitle("Treffer")
@@ -112,7 +114,7 @@ struct MatchesView: View {
             Section {
                 // Calibres that look exactly the same from the side share one row.
                 ForEach(Matcher.grouped(matches)) { g in
-                    NavigationLink { TrueScaleView(cartridges: [g.lead.cartridge]) } label: {
+                    NavigationLink { TrueScaleView(cartridges: [g.lead.cartridge], emptyCases: Self.emptyCases(g.items)) } label: {
                         CartridgeRow(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead),
                                      highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
                     }
@@ -129,12 +131,23 @@ struct MatchesView: View {
     /// Frames on the photo: the competing cartridges while the user picks one; afterwards, or when
     /// there is only one, the outline of the silhouette that was measured (its box if there's none),
     /// with what found each of its edges.
-    static func frames(overview: PhotoAnalysis?, measured: PhotoAnalysis?,
-                       picking: Bool) -> (candidates: [CGRect], measured: [CGPoint]?, parts: [ShapeContour.Part]) {
+    /// An empty case (as `mode` reads the photo) has no bullet: its outline ends at the mouth.
+    static func frames(overview: PhotoAnalysis?, measured: PhotoAnalysis?, picking: Bool,
+                       mode: ScanMode = .auto) -> (candidates: [CGRect], measured: [CGPoint]?, parts: [ShapeContour.Part]) {
         if picking { return (overview?.candidates ?? [], nil, []) }
-        guard let measured, measured.shape != nil else { return ([], nil, []) }
-        if let contour = measured.contour { return ([], contour.points, contour.parts) }
+        guard let measured, let shape = measured.shape else { return ([], nil, []) }
+        if let contour = measured.contour {
+            let shown = mode.part(for: shape) == .emptyCase ? contour.withoutBullet() : contour
+            return ([], shown.points, shown.parts)
+        }
         return ([], measured.outline, [])
+    }
+
+    /// The line across the case at its mouth, drawn with the developer switch: on a cartridge whose
+    /// colours show where its bullet meets the case, not on an empty case or while the user picks.
+    static func mouthLine(measured: PhotoAnalysis?, picking: Bool, mode: ScanMode = .auto) -> [CGPoint]? {
+        guard !picking, let measured, let shape = measured.shape, mode.part(for: shape) != .emptyCase else { return nil }
+        return measured.contour?.mouthLine
     }
 
     /// Boxes around everything detected in the whole photo, for cropping the preview.
@@ -177,9 +190,9 @@ struct MatchesView: View {
     private func rank() {
         revealed = false
         guard let analysis else { ranked = .none; return }
-        let size = try? analysis.size(depth: depth).get()
         ranked = Matcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), shape: analysis.shape,
-                                    size: size, mode: mode, brass: analysis.isBrass)
+                                    size: analysis.rawSize(depth: depth), perspective: analysis.perspective(depth: depth),
+                                    mouth: analysis.contour?.mouth, mode: mode, brass: analysis.isBrass)
     }
 
     /// Points the user to measuring by hand when the photo found nothing or only weak shapes. A
@@ -198,10 +211,25 @@ struct MatchesView: View {
         "Tippe auf die Patrone, die bestimmt werden soll.".loc
     }
 
-    /// Every listed row goes to the 1:1 screen, in rank order; it scrolls sideways. Calibres that
-    /// look exactly the same from the side are shown once.
+    /// Every listed row goes to the 1:1 screen; it scrolls sideways. The user holds the cartridge
+    /// against all of them anyway, so they stand by length, shortest first, then by the Ø shown
+    /// under each (rank order where both are equal); the list above keeps its rank order.
+    /// Calibres that look exactly the same from the side are shown once.
     static func toCompare(_ matches: [Match]) -> [Cartridge] {
-        Matcher.grouped(matches).map(\.lead.cartridge)
+        // `sorted` is stable, so ties keep their rank order.
+        Matcher.grouped(matches).map(\.lead)
+            .sorted { (comparedLength($0), $0.cartridge.headDiameter) < (comparedLength($1), $1.cartridge.headDiameter) }
+            .map(\.cartridge)
+    }
+
+    /// The length the photo was compared with: the case for an empty case, else the whole cartridge.
+    static func comparedLength(_ m: Match) -> Double {
+        m.part == .emptyCase ? m.cartridge.dimensions.caseLength : m.cartridge.dimensions.overallLength
+    }
+
+    /// The calibres the photo was compared with as empty cases; balls and blanks are always compared whole.
+    static func emptyCases(_ matches: [Match]) -> Set<String> {
+        Set(matches.filter { $0.part == .emptyCase }.map(\.cartridge.id))
     }
 
     /// E.g. "Alle passenden 1:1 vergleichen (5)", counting identical-looking calibres once.
@@ -255,7 +283,7 @@ struct MatchesView: View {
         var notes: [String] = []
         if let shape = a.shape, !shape.isEndView, let text = featuresText(shape, mode: mode) { notes.append(text) }
         if depth != nil {
-            switch a.size(depth: depth) {
+            switch a.size(depth: depth, mode: mode) {
             case .success(let size): notes.append(measuredText(size, unit: unit))
             case .failure(.outOfRange): notes.append("Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form.".loc)
             case .failure: notes.append("Grösse nicht messbar: Treffer nur nach Form.".loc)

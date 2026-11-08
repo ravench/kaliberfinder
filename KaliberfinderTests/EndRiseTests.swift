@@ -1,0 +1,69 @@
+import XCTest
+@testable import Kaliberfinder
+
+/// The ends of a lying cartridge stand higher than its axis and look further out from above (`EndRise`).
+final class EndRiseTests: XCTestCase {
+    /// iPhone 17 Pro main camera, as the training captures record it, at the 1600 px the analysis uses.
+    private let focal = 2961.0 * 1600 / 4032
+    private let depth = { (distance: Double) in DepthScale(tableDistance: distance, focalLength: 2961, referenceLongSide: 4032) }
+
+    private func cartridge(_ id: String) throws -> Cartridge { try XCTUnwrap(CartridgeCatalog.cartridge(id: id)) }
+
+    /// The analysis of `id` lying 20 cm under the camera.
+    private func photo(_ id: String, part: ShapePart, distance: Double = 200) throws -> PhotoAnalysis {
+        let seen = SeenFromAbove.silhouette(of: try cartridge(id), part: part, distance: distance, focal: focal)
+        let measured = try XCTUnwrap(ShapeMatcher.measureWithLength(seen.points, pixelSize: seen.pixelSize))
+        return PhotoAnalysis(shape: measured.shape, lengthPixels: measured.length, imageLongSide: 1600)
+    }
+
+    func testNothingRisesWithoutPerspectiveOrSlices() throws {
+        let shape = try XCTUnwrap(ShapeMatcher.caseCatalogue[".45 ACP"])
+        XCTAssertEqual(EndRise.factor(shape, perspective: 0), 1)
+        XCTAssertEqual(EndRise.factor(ShapeMeasurement(aspect: 3, profile: shape.profile), perspective: 0.06), 1, "no slice widths")
+        XCTAssertEqual(EndRise.factor(ShapeMeasurement(aspect: 1, profile: shape.profile, widths: shape.widths), perspective: 0.06), 1, "end view")
+        XCTAssertEqual(PhotoAnalysis(shape: nil).endRise(depth: depth(200)), 1)
+    }
+
+    /// A photo without depth showing the body wider than the 1× camera can (cropped or zoomed) has no
+    /// known focal length: no correction.
+    func testACroppedPhotoWithoutDepthIsLeftAsIs() throws {
+        var close = try photo(".45 ACP", part: .emptyCase)
+        XCTAssertGreaterThan(close.endRise(depth: nil), 1.02)
+        close.imageLongSide /= 3
+        XCTAssertNil(close.perspective(depth: nil))
+        XCTAssertEqual(close.endRise(depth: nil), 1)
+        XCTAssertNotNil(close.perspective(depth: depth(200)), "with depth the calibration says")
+    }
+
+    /// The user's choice of part decides the front: a case mouth rises, a tip doesn't.
+    func testTheChosenPartDecidesTheFront() throws {
+        let analysis = try photo(".45 ACP", part: .emptyCase)
+        let asCase = analysis.endRise(depth: depth(200), mode: .emptyCase)
+        let asRound = analysis.endRise(depth: depth(200), mode: .cartridge)
+        XCTAssertEqual(asCase, analysis.endRise(depth: depth(200)), "automatic mode sees the mouth")
+        XCTAssertEqual(asCase - 1, 2 * (asRound - 1), accuracy: 0.002)
+        XCTAssertLessThan(try analysis.size(depth: depth(200), mode: .cartridge).get().length - 22.8, 0.6)
+    }
+
+    /// At 20 cm both ends of an empty .45 ACP case rise half a diameter above its axis (about 3 %);
+    /// a loaded round's tip lies on the axis, so only its head rises (half as much).
+    func testAnEmptyCaseRisesAtBothEndsALoadedRoundAtOne() throws {
+        let p = 12.0 / (200 - 6)
+        let empty = EndRise.factor(try XCTUnwrap(ShapeMatcher.caseCatalogue[".45 ACP"]), perspective: p)
+        let loaded = EndRise.factor(try XCTUnwrap(ShapeMatcher.catalogue[".45 ACP"]), perspective: p)
+        XCTAssertEqual(empty, 1.032, accuracy: 0.003)
+        XCTAssertEqual(loaded, 1.016, accuracy: 0.003)
+    }
+
+    /// The LiDAR size of an empty .45 ACP case seen from 20 cm: 22.8 mm long, not the 23.5 mm its
+    /// outline spans at the axis's height.
+    func testTheSizeLeavesOutTheRise() throws {
+        let analysis = try photo(".45 ACP", part: .emptyCase)
+        let size = try analysis.size(depth: depth(200)).get()
+        XCTAssertEqual(size.length, 22.8, accuracy: 0.25)
+        XCTAssertEqual(size.diameter, 12, accuracy: 0.25)
+        let shape = try XCTUnwrap(analysis.shape), lengthPixels = try XCTUnwrap(analysis.lengthPixels)
+        let raw = try SizeEstimator.estimate(lengthPixels: lengthPixels, aspect: shape.aspect, imageLongSide: 1600, depth: depth(200)).get()
+        XCTAssertGreaterThan(raw.length, 23.3, "without the end rise")
+    }
+}

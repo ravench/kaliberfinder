@@ -3,7 +3,7 @@ import Foundation
 /// Converts millimetres to screen points so cartridges can be drawn at real size.
 ///
 /// iOS doesn't report the display's pixel density, so the app knows the density
-/// (pixels per inch) of each iPhone model, and lets the user calibrate against a
+/// (pixels per inch) of each iPhone and iPad model, and lets the user calibrate against a
 /// bank card when the model is unknown or the result is off by a little.
 enum ScreenScale {
     enum Source: Equatable {
@@ -41,6 +41,27 @@ enum ScreenScale {
         "iPhone17,3": 460, "iPhone17,4": 460, "iPhone17,1": 460, "iPhone17,2": 460, "iPhone17,5": 460,
         // 17 Pro, 17 Pro Max, 17, Air
         "iPhone18,1": 460, "iPhone18,2": 460, "iPhone18,3": 460, "iPhone18,4": 460,
+        // iPads that run iPadOS 17 (Apple's published densities: 264 ppi, iPad mini 326 ppi).
+        // iPad Pro 12.9" (2nd gen), 10.5", iPad 6, iPad 7
+        "iPad7,1": 264, "iPad7,2": 264, "iPad7,3": 264, "iPad7,4": 264, "iPad7,5": 264, "iPad7,6": 264, "iPad7,11": 264, "iPad7,12": 264,
+        // iPad Pro 11" (1st/2nd gen), 12.9" (3rd/4th gen)
+        "iPad8,1": 264, "iPad8,2": 264, "iPad8,3": 264, "iPad8,4": 264, "iPad8,5": 264, "iPad8,6": 264, "iPad8,7": 264, "iPad8,8": 264,
+        "iPad8,9": 264, "iPad8,10": 264, "iPad8,11": 264, "iPad8,12": 264,
+        // iPad mini 5, iPad Air 3, iPad 8, iPad 9
+        "iPad11,1": 326, "iPad11,2": 326, "iPad11,3": 264, "iPad11,4": 264, "iPad11,6": 264, "iPad11,7": 264, "iPad12,1": 264, "iPad12,2": 264,
+        // iPad Air 4, iPad Pro 11" (3rd gen), 12.9" (5th gen), iPad Air 5, iPad 10
+        "iPad13,1": 264, "iPad13,2": 264, "iPad13,4": 264, "iPad13,5": 264, "iPad13,6": 264, "iPad13,7": 264,
+        "iPad13,8": 264, "iPad13,9": 264, "iPad13,10": 264, "iPad13,11": 264, "iPad13,16": 264, "iPad13,17": 264, "iPad13,18": 264, "iPad13,19": 264,
+        // iPad mini 6, iPad Pro 11" (4th gen), 12.9" (6th gen), iPad Air 11" and 13" (M2)
+        "iPad14,1": 326, "iPad14,2": 326, "iPad14,3": 264, "iPad14,4": 264, "iPad14,5": 264, "iPad14,6": 264,
+        "iPad14,8": 264, "iPad14,9": 264, "iPad14,10": 264, "iPad14,11": 264,
+        // iPad Air 11" and 13" (M3), iPad (A16)
+        "iPad15,3": 264, "iPad15,4": 264, "iPad15,5": 264, "iPad15,6": 264, "iPad15,7": 264, "iPad15,8": 264,
+        // iPad mini (A17 Pro), iPad Pro 11" and 13" (M4), iPad Air 11" and 13" (M4)
+        "iPad16,1": 326, "iPad16,2": 326, "iPad16,3": 264, "iPad16,4": 264, "iPad16,5": 264, "iPad16,6": 264,
+        "iPad16,8": 264, "iPad16,9": 264, "iPad16,10": 264, "iPad16,11": 264,
+        // iPad Pro 11" and 13" (M5), iPad mini (A20 Pro)
+        "iPad17,1": 264, "iPad17,2": 264, "iPad17,3": 264, "iPad17,4": 264, "iPad19,1": 326, "iPad19,2": 326,
     ]
 
     /// Points per millimetre for a display of `ppi` pixels per inch at `nativeScale`
@@ -56,9 +77,15 @@ enum ScreenScale {
         if let ppi = ppiByModel[model] {
             return Resolution(pointsPerMM: pointsPerMM(ppi: ppi, nativeScale: scale), source: .model)
         }
-        // Recent iPhones are 460 ppi at 3x, older 2x models 326 ppi: both about 153–163 ppi per point.
-        let ppi = scale >= 2.5 ? 460.0 : 326.0
+        let ppi = estimatedPPI(model: model, nativeScale: scale)
         return Resolution(pointsPerMM: pointsPerMM(ppi: ppi, nativeScale: scale), source: .estimate)
+    }
+
+    /// A guess for a model not in the table. Every iPad but the mini is 264 ppi, and the minis are
+    /// 326; recent iPhones are 460 ppi at 3x, older 2x models 326: both about 153–163 ppi per point.
+    static func estimatedPPI(model: String, nativeScale: Double) -> Double {
+        if model.hasPrefix("iPad") { return 264 }
+        return nativeScale >= 2.5 ? 460 : 326
     }
 
     /// Calibration result: the user stretched a card outline of `points` to match a real card of `millimetres`.

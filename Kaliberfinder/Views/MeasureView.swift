@@ -66,6 +66,7 @@ struct MeasureView: View {
             }
         }
         .scrollDismissesKeyboard(.interactively)
+        .readableWidth()
         .navigationTitle("Masse eingeben")
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
@@ -96,7 +97,7 @@ struct MeasureView: View {
     }
 
     private func toggle(_ c: Cartridge) {
-        if let i = selection.firstIndex(of: c) { selection.remove(at: i) } else { selection.append(c) }
+        selection = selection.toggling(c)
     }
 
     /// The compare button: the picked calibres, else all that fit, else the best three.

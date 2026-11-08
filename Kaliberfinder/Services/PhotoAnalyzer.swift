@@ -18,13 +18,15 @@ struct PhotoAnalysis {
     /// photo (x of the width, y of the height); nil if nothing was measured. Drawn as the frame,
     /// so it shows exactly what was matched.
     var outline: [CGPoint]?
-    /// The measured silhouette's outline (detected bullet as a nose curve, neck and taper), in the
-    /// same fractions as `outline`; drawn instead of the box when there is one.
+    /// The measured silhouette's outline (detected bullet as a nose curve up to the case mouth, neck
+    /// and taper), in the same fractions as `outline`; drawn instead of the box when there is one.
     var contour: ShapeContour?
     /// The silhouette is brass-coloured: a case, not a lead ball or pellet.
     var isBrass = false
     /// The silhouette is the colour cut-out's: Vision found no cartridge.
     var byColour = false
+    /// Vision found the cartridge on a crop of the photo, not in the whole photo (`firstLook`).
+    var byCrop = false
 
     /// How many cartridges compete for the measurement.
     var objectCount: Int { max(1, candidates.count) }
@@ -32,10 +34,19 @@ struct PhotoAnalysis {
     /// More than one cartridge in the photo: the user picks the one to identify.
     var hasSeveralObjects: Bool { candidates.count > 1 }
 
-    /// Size from the silhouette and the LiDAR distance, if the photo was taken with depth.
-    func size(depth: DepthScale?) -> Result<MeasuredSize, SizeFailure> {
+    /// Size from the silhouette and the LiDAR distance, if the photo was taken with depth: the length
+    /// at the axis's height, without the ends' rise (`EndRise`) for the part `mode` sees.
+    /// Size from the silhouette and the LiDAR distance as measured, without the ends' rise: what the
+    /// matching takes, with the rise of each calibre's own ends (`Matcher.distance`).
+    func rawSize(depth: DepthScale?) -> MeasuredSize? {
+        guard let shape, let lengthPixels else { return nil }
+        return try? SizeEstimator.estimate(lengthPixels: lengthPixels, aspect: shape.aspect, imageLongSide: imageLongSide, depth: depth).get()
+    }
+
+    func size(depth: DepthScale?, mode: ScanMode = .auto) -> Result<MeasuredSize, SizeFailure> {
         guard let shape, let lengthPixels else { return .failure(depth == nil ? .noDepth : .endView) }
-        return SizeEstimator.estimate(lengthPixels: lengthPixels, aspect: shape.aspect, imageLongSide: imageLongSide, depth: depth)
+        let rise = endRise(depth: depth, mode: mode)
+        return SizeEstimator.estimate(lengthPixels: lengthPixels / rise, aspect: shape.aspect / rise, imageLongSide: imageLongSide, depth: depth)
     }
 }
 
@@ -56,6 +67,54 @@ enum PhotoAnalyzer {
     /// Vision's object, or the colour cut-out where Vision finds none.
     static func analyzeNow(_ cgImage: CGImage) -> PhotoAnalysis {
         analysis(of: cgImage, vision: visionResult(of: cgImage))
+    }
+
+    // MARK: - First look
+
+    /// Where to look when Vision finds nothing in the whole photo (2026-11-08: that is 126 of 222 training
+    /// shots, on the Mac as on the phone): the middle of the photo at these shares of its sides, where the
+    /// capture guide puts the cartridge, cut from the full-size photo. On the crop Vision finds the
+    /// cartridge in nearly every one of them (123 of 126).
+    static let centreCrops: [Double] = [0.6, 0.4, 0.25]
+
+    /// The regions of the cascade, as fractions of the upright photo: the centre crops, then a crop around
+    /// the most salient object of the whole photo, if Vision names one.
+    static func cascadeRegions(of whole: CGImage) -> [CGRect] {
+        var regions = centreCrops.map { share -> CGRect in
+            let margin = (1 - share) / 2
+            return CGRect(x: margin, y: margin, width: share, height: share)
+        }
+        if let salient = salientRegion(of: whole) { regions.append(salient) }
+        return regions
+    }
+
+    /// The most confident objectness-based salient region of the photo, with the margin a picked
+    /// cartridge gets (`focusRegion`); nil when Vision names none.
+    static func salientRegion(of cgImage: CGImage) -> CGRect? {
+        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+        let request = VNGenerateObjectnessBasedSaliencyImageRequest()
+        guard (try? handler.perform([request])) != nil,
+              let objects = request.results?.first?.salientObjects, !objects.isEmpty else { return nil }
+        let box = objects.max { $0.confidence < $1.confidence }!.boundingBox
+        // Vision's boxes have their origin at the bottom left.
+        return focusRegion(CGRect(x: box.minX, y: 1 - box.maxY, width: box.width, height: box.height))
+    }
+
+    /// The first look at a photo: Vision on the whole photo (scaled to `maxDimension`), else on the
+    /// cascade regions, cut from the full-size photo by `cut` (and scaled to `maxDimension`), else the
+    /// colour cut-out of the whole photo. `photoSize` is the full upright photo's size in pixels.
+    /// `wholeVision` is Vision's object in the whole photo where that is already known (nil: look).
+    static func firstLook(whole: CGImage, wholeVision: VisionResult?? = nil, photoSize: CGSize,
+                          cut: (CGRect) -> CGImage?) -> PhotoAnalysis {
+        let vision = wholeVision ?? visionResult(of: whole)
+        if let vision { return analysis(of: whole, vision: vision) }
+        for region in cascadeRegions(of: whole) {
+            guard let part = cut(region), let found = visionResult(of: part) else { continue }
+            var analysis = inPhoto(analysis(of: part, vision: found), region: region, photoSize: photoSize)
+            analysis.byCrop = true
+            return analysis
+        }
+        return analysis(of: whole, vision: nil)
     }
 
     // MARK: - Second look
@@ -134,13 +193,31 @@ enum PhotoAnalyzer {
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
         let maskRequest = VNGenerateForegroundInstanceMaskRequest()
         guard (try? handler.perform([maskRequest])) != nil, let observation = maskRequest.results?.first else { return nil }
-        return visionResult(silhouette(of: observation, handler: handler, imagePixels: cgImage.width * cgImage.height),
-                            width: cgImage.width, height: cgImage.height)
+        var result = visionResult(silhouette(of: observation, handler: handler, imagePixels: cgImage.width * cgImage.height),
+                                  width: cgImage.width, height: cgImage.height)
+        let labels = observation.instanceMask
+        result?.maskPixel = maskPixel(image: (cgImage.width, cgImage.height),
+                                      mask: (CVPixelBufferGetWidth(labels), CVPixelBufferGetHeight(labels)))
+        return result
+    }
+
+    /// The size of a pixel of Vision's instance mask (`mask` pixels) in the photo (`image` pixels): its
+    /// longer side, as the mask is square whatever the photo's shape.
+    static func maskPixel(image: (width: Int, height: Int), mask: (width: Int, height: Int)) -> Double {
+        max(Double(image.width) / Double(max(1, mask.width)), Double(image.height) / Double(max(1, mask.height)))
     }
 
     /// The analysis of an upright photo with Vision's object `vision` (`visionResult`), or with
     /// the colour cut-out when that is nil. The colour test for brass uses the photo either way.
     static func analysis(of cgImage: CGImage, vision: VisionResult?) -> PhotoAnalysis {
+        let rgb = rgbImage(cgImage)
+        var vision = vision
+        // Vision often leaves out the cartridge's dark side: give it back (see `DarkSide`).
+        if let found = vision, let rgb, let restored = DarkSide.restored(found.raw, step: found.step, maskPixel: found.maskPixel, photo: rgb),
+           var again = visionResult((restored, found.step, found.candidates), width: cgImage.width, height: cgImage.height) {
+            again.maskPixel = found.maskPixel
+            vision = again
+        }
         var measured: (shape: ShapeMeasurement, length: Double)? = vision.map { ($0.shape, $0.length) }
         var candidates = vision?.candidates ?? []
         var outline = vision?.outline
@@ -150,7 +227,10 @@ enum PhotoAnalyzer {
             box?.map { CGPoint(x: $0.x / Double(cgImage.width), y: $0.y / Double(cgImage.height)) }
         }
         let fraction = { (p: CGPoint) in CGPoint(x: p.x / Double(cgImage.width), y: p.y / Double(cgImage.height)) }
-        let rgb = rgbImage(cgImage)
+        // Vision's outline again with the photo's colours, for the case mouth.
+        if let vision, let rgb, let box = vision.box {
+            contour = ShapeContour.polygon(vision.points, pixelSize: Double(vision.step), shape: vision.shape, box: box, photo: rgb)?.map(fraction)
+        }
         // Vision found only the table, box or paper (or isn't available, on the simulator): take
         // the colour cut-out. Never instead of Vision's object: the cut-out also takes in shadows
         // and can pick a stone or a tool next to the cartridge (build 1042).
@@ -160,7 +240,7 @@ enum PhotoAnalyzer {
                 measured = fromColour
                 let box = ShapeMatcher.orientedBox(sampled, pixelSize: Double(step))
                 outline = normalize(box)
-                contour = box.flatMap { ShapeContour.polygon(sampled, pixelSize: Double(step), shape: fromColour.shape, box: $0) }?.map(fraction)
+                contour = box.flatMap { ShapeContour.polygon(sampled, pixelSize: Double(step), shape: fromColour.shape, box: $0, photo: rgb) }?.map(fraction)
                 candidates = ColorSegmenter.competitors(rgb).map { normalized($0, width: rgb.width, height: rgb.height) }
                 measuredPoints = sampled
             }
@@ -176,10 +256,19 @@ enum PhotoAnalyzer {
     struct VisionResult {
         let shape: ShapeMeasurement
         let length: Double
+        /// The measured points: the silhouette made mirror-symmetric (`measureSilhouette`).
         let points: [Point]
+        /// The silhouette as Vision found it.
+        let raw: [Point]
+        /// A pixel of Vision's instance mask in photo pixels: the mask is coarser than the photo.
+        var maskPixel = 1.0
         let candidates: [CGRect]
         let outline: [CGPoint]?
+        /// Without the photo's colours (see `analysis(of:vision:)`).
         let contour: ShapeContour?
+        /// The silhouette's rotated box in pixels and the pixels between its `points`.
+        let box: [Point]?
+        let step: Int
     }
 
     /// Measurement, frame and outline of a silhouette in a `width` × `height` photo (see
@@ -188,14 +277,16 @@ enum PhotoAnalyzer {
         guard let vision = measureSilhouette(found.points, step: found.step) else { return nil }
         let fraction = { (p: CGPoint) in CGPoint(x: p.x / Double(width), y: p.y / Double(height)) }
         let contour = vision.box.flatMap { ShapeContour.polygon(vision.points, pixelSize: Double(found.step), shape: vision.shape, box: $0) }
-        return VisionResult(shape: vision.shape, length: vision.length, points: vision.points, candidates: found.boxes,
-                            outline: vision.box?.map { fraction(CGPoint(x: $0.x, y: $0.y)) }, contour: contour?.map(fraction))
+        return VisionResult(shape: vision.shape, length: vision.length, points: vision.points, raw: found.points, candidates: found.boxes,
+                            outline: vision.box?.map { fraction(CGPoint(x: $0.x, y: $0.y)) }, contour: contour?.map(fraction),
+                            box: vision.box, step: found.step)
     }
 
     /// The phone's path on a stored Vision instance mask (a training capture or golden shot): the
     /// same subject picking, measurement, frame and neck as `analyzeNow`, without Vision and without
-    /// the photo, so it runs on the simulator. `labels` is Vision's instance mask (`mask` pixels,
-    /// 0 = background) over the upright photo as analysed (`image` pixels, see `maxDimension`).
+    /// the photo (so also without `DarkSide`, which needs it), so it runs on the simulator. `labels`
+    /// is Vision's instance mask (`mask` pixels, 0 = background) over the upright photo as analysed
+    /// (`image` pixels, see `maxDimension`).
     /// `isBrass` comes from the phone: it needs the photo's colours.
     static func analyze(instanceLabels labels: [UInt8], mask: (width: Int, height: Int), image: (width: Int, height: Int),
                         isBrass: Bool) -> PhotoAnalysis {
@@ -225,7 +316,9 @@ enum PhotoAnalyzer {
             }
             return points
         }
-        return visionResult(found, width: imageWidth, height: imageHeight)
+        var result = visionResult(found, width: imageWidth, height: imageHeight)
+        result?.maskPixel = maskPixel(image: image, mask: mask)
+        return result
     }
 
     /// The measurement of Vision's silhouette (`step`: pixels between the points): made

@@ -58,6 +58,8 @@ T = {
     "Erkannt: %@": ("Detected: %@", "Détecté : %@", "Riconosciuto: %@"),
     "Flaschenhals": ("bottleneck", "à épaulement", "a collo di bottiglia"),
     "Leere Hülse": ("Empty case", "Douille vide", "Bossolo vuoto"),
+    "Geschosse beim Vergleich mit leeren Hülsen zeigen": ("Show bullets when comparing empty cases", "Afficher les projectiles en comparant des douilles vides",
+                                                          "Mostra le palle nel confronto con bossoli vuoti"),
     "leere Hülse": ("empty case", "douille vide", "bossolo vuoto"),
     "Patrone": ("Cartridge", "Cartouche", "Cartuccia"),
     "mit Rand": ("rimmed", "à bourrelet", "con orlo"),
@@ -68,10 +70,6 @@ T = {
         "1:1 – zoom is off so the size stays true.",
         "1:1 – le zoom est désactivé pour garder la taille réelle.",
         "1:1 – lo zoom è disattivato per mantenere la dimensione reale."),
-    "Originalgrösse: nicht zoombar, damit die Masse stimmen.": (
-        "Real size: no zoom, so the measurements stay true.",
-        "Taille réelle : pas de zoom, pour que les mesures restent justes.",
-        "Grandezza reale: niente zoom, così le misure restano corrette."),
     "Abbrechen": ("Cancel", "Annuler", "Annulla"),
     "Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form.": (
         "Distance outside 12–45 cm: size not measured, matches by shape only.",
@@ -89,12 +87,12 @@ T = {
     "Grösse passt ungefähr": ("Size fits roughly", "La taille correspond à peu près", "La dimensione corrisponde più o meno"),
     "Grösse passt wenig": ("Size fits poorly", "La taille correspond peu", "La dimensione corrisponde poco"),
     "Keine Tiefe gemessen": ("No depth measured", "Aucune profondeur mesurée", "Nessuna profondità misurata"),
-    "Lege die Patrone flach auf einen hellen Untergrund und halte das iPhone parallel, 20–30 cm darüber.": (
-        "Lay the cartridge flat on a light surface and hold the iPhone parallel, 20–30 cm above it.",
-        "Posez la cartouche à plat sur un fond clair et tenez l'iPhone parallèle, à 20–30 cm au-dessus.",
-        "Appoggia la cartuccia piatta su un fondo chiaro e tieni l'iPhone parallelo, 20–30 cm sopra."),
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, 20–30 cm darüber.": (
+        "Lay the cartridge flat on a light surface and hold the device parallel, 20–30 cm above it.",
+        "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à 20–30 cm au-dessus.",
+        "Appoggia la cartuccia piatta su un fondo chiaro e tieni il dispositivo parallelo, 20–30 cm sopra."),
     "Näher heran": ("Move closer", "Rapprochez-vous", "Avvicinati"),
-    "iPhone parallel zum Tisch halten": ("Hold the iPhone parallel to the table", "Tenez l'iPhone parallèle à la table", "Tieni l'iPhone parallelo al tavolo"),
+    "Gerät parallel zum Tisch halten": ("Hold the device parallel to the table", "Tenez l'appareil parallèle à la table", "Tieni il dispositivo parallelo al tavolo"),
     "Einheiten": ("Units", "Unités", "Unità"),
     "Einstellungen": ("Settings", "Réglages", "Impostazioni"),
     "Erkennung": ("Recognition", "Reconnaissance", "Riconoscimento"),
@@ -197,6 +195,9 @@ T = {
     "Bodendurchmesser": ("Base diameter", "Diamètre au culot", "Diametro alla base"),
     "Diabolo": ("Diabolo pellet", "Plomb diabolo", "Piombino diabolo"),
     "Fertig": ("Done", "Terminé", "Fine"),
+    # Release notes of a TestFlight build (WhatsNewView).
+    "Neu in dieser Version": ("New in this version", "Nouveautés de cette version", "Novità in questa versione"),
+    "Version %@": ("Version %@", "Version %@", "Versione %@"),
     "Foto übernommen. Öffne Kaliberfinder, um die Treffer zu sehen.": (
         "Photo received. Open Kaliberfinder to see the matches.",
         "Photo reçue. Ouvrez Kaliberfinder pour voir les correspondances.",
@@ -217,6 +218,7 @@ T = {
     "Grösser": ("Larger", "Plus grand", "Più grande"),
     "Gürtelhülse": ("Belted", "À ceinture", "Con cintura"),
     "Halsdurchmesser": ("Neck diameter", "Diamètre du collet", "Diametro del colletto"),
+    "Hülse %@": ("Case %@", "Douille %@", "Bossolo %@"),
     "Hülsenlänge": ("Case length", "Longueur de douille", "Lunghezza del bossolo"),
     "Hülsenlänge (offen)": ("Shell length (open)", "Longueur de douille (ouverte)", "Lunghezza del bossolo (aperto)"),
     "In Originalgrösse anzeigen": ("Show at real size", "Afficher en taille réelle", "Mostra a grandezza reale"),
@@ -258,7 +260,7 @@ T = {
         "Rond sur la photo : culot ou pointe d'une cartouche, ou une balle ronde. Les cartouches ne sont identifiées que de côté.",
         "Rotondo nella foto: fondello o punta di una cartuccia, oppure una palla sferica. Le cartucce si riconoscono solo di lato."),
     "Speichern": ("Save", "Enregistrer", "Salva"),
-    "Vom iPhone-Modell": ("From the iPhone model", "Selon le modèle d'iPhone", "Dal modello di iPhone"),
+    "Vom Gerätemodell": ("From the device model", "Selon le modèle d'appareil", "Dal modello di dispositivo"),
     "Wähle Kaliber aus, um sie in Originalgrösse nebeneinander zu vergleichen.": (
         "Select calibres to compare them side by side at real size.",
         "Sélectionnez des calibres pour les comparer côte à côte en taille réelle.",
@@ -280,13 +282,16 @@ T = {
         "Contour sur la photo : vert pointe et culot, violet projectile, orange collet et épaulement, bleu clair conicité du corps.",
         "Contorno sulla foto: verde punta e fondello, viola palla, arancione colletto e spalla, azzurro conicità del corpo."),
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
+    "Kamera": ("Camera", "Caméra", "Fotocamera"),
+    "Tele": ("Telephoto", "Téléobjectif", "Teleobiettivo"),
+    "Ultraweit": ("Ultra wide", "Ultra grand-angle", "Ultra-grandangolo"),
     "Neue Aufnahmeserie": ("New capture series", "Nouvelle série de prises", "Nuova serie di scatti"),
     "Wähle das Kaliber, das du fotografierst, und mache mehrere Fotos davon. Gespeichert werden das Foto, die LiDAR-Tiefe, die Kameradaten und die Vision-Maske. Teile die Serie als ZIP, sie kommt in die Tests.": (
         "Choose the calibre you are photographing and take several photos of it. The photo, the LiDAR depth, the camera data and the Vision mask are saved. Share the series as a ZIP; it goes into the tests.",
         "Choisissez le calibre que vous photographiez et prenez-en plusieurs photos. La photo, la profondeur LiDAR, les données de l'appareil photo et le masque Vision sont enregistrés. Partagez la série en ZIP, elle sera ajoutée aux tests.",
         "Scegli il calibro che stai fotografando e scatta più foto. Vengono salvati la foto, la profondità LiDAR, i dati della fotocamera e la maschera Vision. Condividi la serie come ZIP: finirà nei test."),
     "Gespeichert": ("Saved", "Enregistrées", "Salvate"),
-    "%@ · %lld Fotos · %@": ("%@ · %lld photos · %@", "%@ · %lld photos · %@", "%@ · %lld foto · %@"),
+    "%@ · %lld Fotos · %@ · %@": ("%@ · %lld photos · %@ · %@", "%@ · %lld photos · %@ · %@", "%@ · %lld foto · %@ · %@"),
     "Fotografiertes Kaliber": ("Photographed calibre", "Calibre photographié", "Calibro fotografato"),
     "Wählen": ("Choose", "Choisir", "Scegli"),
     "Im Bild": ("In the photo", "Sur la photo", "Nella foto"),
@@ -310,4 +315,13 @@ T = {
     "ZIP fehlgeschlagen: %@": ("ZIP failed: %@", "Échec du ZIP : %@", "ZIP non riuscito: %@"),
     "%@ · %lld neue Fotos": ("%@ · %lld new photos", "%@ · %lld nouvelles photos", "%@ · %lld nuove foto"),
     "Nicht gespeichert: %@": ("Not saved: %@", "Non enregistré : %@", "Non salvato: %@"),
+    "Nicht in der Liste": ("Not in the list", "Pas dans la liste", "Non nell'elenco"),
+    "Name": ("Name", "Nom", "Nome"),
+    "z. B. Bodenprägung oder eigener Name": (
+        "e.g. headstamp or a name of your own", "p. ex. marquage du culot ou un nom de votre choix",
+        "p. es. punzonatura del fondello o un nome a scelta"),
+    "Für Patronen, die die App nicht kennt. Du gibst ihnen einen Namen, und die Auswertung der Erkennung lässt sie aus.": (
+        "For cartridges the app does not know. You give them a name, and the evaluation of the recognition leaves them out.",
+        "Pour les cartouches que l'app ne connaît pas. Vous leur donnez un nom, et l'évaluation de la reconnaissance les laisse de côté.",
+        "Per le cartucce che l'app non conosce. Dai loro un nome e la valutazione del riconoscimento le tralascia."),
 }

@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 /// Package layout (format 1):
 ///
 ///     9x19-mm-20261105-143000/
-///       package.json            CapturePackage: calibre, part, note, device
+///       package.json            CapturePackage: calibre (or a name, when unlisted), part, note, device
 ///       01/
 ///         shot.json             CaptureShot: calibration, depth size, gravity, focus, the app's analysis
 ///         photo.heic|jpg        the photo exactly as the camera or library delivered it (with EXIF)
@@ -57,7 +57,8 @@ enum TrainingCapture {
 /// A series of photos of one calibre: package.json.
 struct CapturePackage: Codable, Equatable {
     var format = TrainingCapture.format
-    /// Catalogue id of the calibre photographed, e.g. "9x19 mm".
+    /// Catalogue id of the calibre photographed, e.g. "9x19 mm"; for a round the catalogue lacks
+    /// (`unlisted`), the name it was given.
     let calibre: String
     /// What lies in the photos: "cartridge" or "emptyCase" (`ScanMode`).
     let part: String
@@ -68,8 +69,44 @@ struct CapturePackage: Codable, Equatable {
     var device = ""
     var system = ""
     var app = ""
+    /// True for a round the catalogue lacks (an old or unknown one): `calibre` is then a name, not a
+    /// catalogue id, and the series has no right answer to score matching by. Not written when nil,
+    /// so other packages stay as they were.
+    var unlisted: Bool?
+    /// The phone's back cameras (`TrainingRecorder.backCameras`); nil in packages from before 2026-11-08.
+    var cameras: [CameraInfo]?
 
     var scanMode: ScanMode { ScanMode(rawValue: part) ?? .auto }
+    var isUnlisted: Bool { unlisted == true }
+
+    /// The calibre's name as the catalogue writes it, or the name given to an unlisted round.
+    var calibreName: String {
+        isUnlisted ? calibre : CartridgeCatalog.cartridge(id: calibre)?.name ?? calibre
+    }
+}
+
+/// One of the phone's back cameras, to tell what a telephoto could do for the photos: how close it
+/// focuses, whether any of its formats delivers depth, and the largest photo it takes.
+struct CameraInfo: Codable, Equatable {
+    /// E.g. "builtInTelephotoCamera", "builtInLiDARDepthCamera".
+    let type: String
+    /// `AVCaptureDevice.minimumFocusDistance` in mm; nil where the camera does not say.
+    let minimumFocusDistance: Int?
+    let depth: Bool
+    let photoWidth: Int
+    let photoHeight: Int
+
+    /// "builtInTelephotoCamera" as "Telephoto".
+    static func shortName(_ type: String) -> String {
+        ["AVCaptureDeviceType", "BuiltIn", "builtIn", "Camera"].reduce(type) { $0.replacingOccurrences(of: $1, with: "") }
+    }
+
+    /// E.g. "Telephoto: focus from 1250 mm, no depth, 48 MP".
+    var summary: String {
+        let name = Self.shortName(type)
+        let focus = minimumFocusDistance.map { "focus from \($0) mm" } ?? "focus unknown"
+        return String(format: "%@: %@, %@, %.0f MP", name, focus, depth ? "depth" : "no depth", Double(photoWidth * photoHeight) / 1e6)
+    }
 }
 
 /// How the phone and its camera stood when a training photo was taken (see `CaptureShot`).
@@ -77,6 +114,8 @@ struct CaptureMoment: Equatable {
     var gravity: [Double]?
     var tilt: Double?
     var focus: CaptureShot.Focus?
+    /// The back camera that took it (`CameraInfo.shortName`); nil for the LiDAR camera before 2026-11-08.
+    var camera: String?
 }
 
 /// One photo of a series: shot.json.
@@ -97,6 +136,9 @@ struct CaptureShot: Codable, Equatable {
     var tilt: Double?
     /// The camera's focus when the photo was taken; nil for library photos and older shots.
     var focus: Focus?
+    /// The back camera that took it, e.g. "Telephoto" (`CameraInfo.shortName`); nil for library photos and
+    /// for shots from before the camera could be chosen (the LiDAR camera).
+    var camera: String?
     var mask: Mask?
     /// What the app made of the photo when it was taken.
     var analysis: Analysis?
@@ -194,6 +236,8 @@ struct SavedCapture: Identifiable, Hashable {
     let package: CapturePackage
     /// Read with the list, so a list reloaded after new photos differs and SwiftUI redraws its row.
     var shotCount = 0
+    /// Bytes on disk of the whole package: how much a share has to carry.
+    var bytes: Int64 = 0
     var id: URL { url }
 
     static func == (a: SavedCapture, b: SavedCapture) -> Bool { a.url == b.url && a.shotCount == b.shotCount }
@@ -219,11 +263,15 @@ enum CaptureError: Error, Equatable {
 struct CaptureStore {
     let root: URL
 
-    /// Documents/TrainingCaptures on the phone.
+    /// Documents/TrainingCaptures on the phone. The PR screens tour gives the folder of the example
+    /// package as `-screenTourCaptures <path>`, so its screens show the same series on every run.
     static var standard: CaptureStore {
+        if let tour = UserDefaults.standard.string(forKey: tourKey) { return CaptureStore(root: URL(fileURLWithPath: tour, isDirectory: true)) }
         let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         return CaptureStore(root: documents.appendingPathComponent("TrainingCaptures", isDirectory: true))
     }
+
+    static let tourKey = "screenTourCaptures"
 
     /// Creates the folder of a new series and writes its package.json.
     func create(_ package: CapturePackage) throws -> URL {
@@ -239,16 +287,22 @@ struct CaptureStore {
         return folders.compactMap { url in
             guard let data = try? Data(contentsOf: url.appendingPathComponent(TrainingCapture.packageFile)),
                   let package = try? TrainingCapture.decoder.decode(CapturePackage.self, from: data) else { return nil }
-            return SavedCapture(url: url, package: package, shotCount: Self.shots(in: url).count)
+            return SavedCapture(url: url, package: package, shotCount: Self.shots(in: url).count, bytes: Self.bytes(in: url))
         }
         .sorted { ($0.package.created, $0.url.lastPathComponent) > ($1.package.created, $1.url.lastPathComponent) }
+    }
+
+    /// Bytes of every file under `package`.
+    static func bytes(in package: URL) -> Int64 {
+        let files = FileManager.default.enumerator(at: package, includingPropertiesForKeys: [.fileSizeKey])?.compactMap { $0 as? URL } ?? []
+        return files.reduce(0) { $0 + Int64((try? $1.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0) }
     }
 
     func delete(_ capture: SavedCapture) throws {
         try FileManager.default.removeItem(at: capture.url)
     }
 
-    /// E.g. "9x19-mm-20261105-143000".
+    /// E.g. "9x19-mm-20261105-143000"; "unlisted-…" for an unlisted round's name without letters or digits.
     static func folderName(_ package: CapturePackage) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -256,7 +310,7 @@ struct CaptureStore {
         formatter.dateFormat = "yyyyMMdd-HHmmss"
         let slug = package.calibre.lowercased().map { $0.isLetter || $0.isNumber ? String($0) : "-" }.joined()
             .split(separator: "-").joined(separator: "-")
-        return "\(slug)-\(formatter.string(from: package.created))"
+        return "\(slug.isEmpty ? "unlisted" : slug)-\(formatter.string(from: package.created))"
     }
 
     /// The shots of a package, in the order they were taken.
@@ -296,6 +350,15 @@ struct CaptureStore {
         guard let info = shot.depth, let data = try? Data(contentsOf: folder.appendingPathComponent(info.file)),
               data.count == info.width * info.height * MemoryLayout<Float>.size else { return nil }
         return data.withUnsafeBytes { Array($0.bindMemory(to: Float.self)) }
+    }
+
+    /// The photo's pixel size, from its header; nil when it cannot be read.
+    static func photoPixels(of shot: CaptureShot, at folder: URL) -> (width: Int, height: Int)? {
+        guard let source = CGImageSourceCreateWithURL(folder.appendingPathComponent(shot.photo) as CFURL, nil),
+              let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+              let width = properties[kCGImagePropertyPixelWidth] as? Int, let height = properties[kCGImagePropertyPixelHeight] as? Int
+        else { return nil }
+        return (width, height)
     }
 
     /// The instance labels of a shot's Vision mask, nil without one.

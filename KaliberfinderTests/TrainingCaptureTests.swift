@@ -107,7 +107,17 @@ final class TrainingCaptureTests: XCTestCase {
         try CaptureStore.save(CaptureShot(photo: "photo.jpg", source: "library", captured: Date()), photo: try jpeg(), in: url)
         let after = try XCTUnwrap(store.packages().first)
         XCTAssertEqual(after.shotCount, 1)
+        XCTAssertGreaterThan(after.bytes, before.bytes, "the photo and its shot.json count")
+        XCTAssertEqual(after.bytes, CaptureStore.bytes(in: url))
         XCTAssertNotEqual(before, after, "an equal value would keep SwiftUI showing «0 Fotos»")
+    }
+
+    /// The PR screens tour opens the example package (`-screenTourCaptures`) instead of the phone's series.
+    func testTourPointsTheStoreAtItsFolder() {
+        XCTAssertEqual(CaptureStore.standard.root.lastPathComponent, "TrainingCaptures")
+        UserDefaults.standard.set(root.path, forKey: CaptureStore.tourKey)
+        defer { UserDefaults.standard.removeObject(forKey: CaptureStore.tourKey) }
+        XCTAssertEqual(CaptureStore.standard.root.path, root.path)
     }
 
     func testFolderNameIsASlugOfTheCalibre() {
@@ -147,12 +157,72 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(TrainingRecorder.rows(extrinsics), [1, 0, 0, 5, 0, 1, 0, 6, 0, 0, 1, 7])
     }
 
-    func testNewPackageCarriesThePhoneDetails() {
+    func testNewPackageCarriesThePhoneDetails() throws {
         let p = TrainingRecorder.package(calibre: "9x19 mm", mode: .emptyCase, note: "Tuch")
         XCTAssertEqual(p.scanMode, .emptyCase)
         XCTAssertEqual(p.format, TrainingCapture.format)
         XCTAssertFalse(p.device.isEmpty)
         XCTAssertTrue(p.system.hasPrefix("iOS "))
+        // The back cameras: none on the simulator, but the list is there, and it survives the file.
+        XCTAssertNotNil(p.cameras)
+        let back = try TrainingCapture.decoder.decode(CapturePackage.self, from: TrainingCapture.encoder.encode(p))
+        XCTAssertEqual(back.cameras, p.cameras)
+    }
+
+    /// A shot remembers the camera that took it; the summary names it unless it was the LiDAR camera.
+    func testShotNamesItsCamera() throws {
+        var shot = CaptureShot(photo: "photo.heic", source: "lidarCamera", captured: Date())
+        XCTAssertFalse(TrainingPackageView.summary("01", shot).contains("Telephoto"))
+        shot.camera = CameraInfo.shortName("AVCaptureDeviceTypeBuiltInTelephotoCamera")
+        XCTAssertEqual(shot.camera, "Telephoto")
+        XCTAssertTrue(TrainingPackageView.summary("01", shot).hasPrefix("01  Telephoto  "))
+        shot.camera = "LiDARDepth"
+        XCTAssertFalse(TrainingPackageView.summary("01", shot).contains("LiDARDepth"))
+        let back = try TrainingCapture.decoder.decode(CaptureShot.self, from: TrainingCapture.encoder.encode(shot))
+        XCTAssertEqual(back.camera, "LiDARDepth")
+    }
+
+    /// Packages from before the cameras were recorded read as before; a telephoto's line says what it can do.
+    func testCamerasAreOptionalAndSummarised() throws {
+        let old = Data("""
+        {"format": 1, "calibre": "9x19 mm", "part": "cartridge", "note": "", "created": "2026-11-05T22:48:50Z",
+         "device": "iPhone18,1", "system": "iOS 26.1.0", "app": "0.1.0 (1062)"}
+        """.utf8)
+        XCTAssertNil(try TrainingCapture.decoder.decode(CapturePackage.self, from: old).cameras)
+        let tele = CameraInfo(type: "builtInTelephotoCamera", minimumFocusDistance: 1250, depth: false, photoWidth: 8064, photoHeight: 6048)
+        XCTAssertEqual(tele.summary, "Telephoto: focus from 1250 mm, no depth, 49 MP")
+        let lidar = CameraInfo(type: "builtInLiDARDepthCamera", minimumFocusDistance: nil, depth: true, photoWidth: 4032, photoHeight: 3024)
+        XCTAssertEqual(lidar.summary, "LiDARDepth: focus unknown, depth, 12 MP")
+    }
+
+    /// A round the catalogue lacks: its name instead of a catalogue id, marked as unlisted.
+    func testUnlistedRoundKeepsItsName() throws {
+        let p = TrainingRecorder.package(calibre: "  11 mm Gras court ", unlisted: true, mode: .cartridge, note: "")
+        XCTAssertEqual(p.calibre, "11 mm Gras court")
+        XCTAssertTrue(p.isUnlisted)
+        XCTAssertEqual(p.calibreName, "11 mm Gras court")
+        let url = try store.create(p)
+        XCTAssertTrue(url.lastPathComponent.hasPrefix("11-mm-gras-court-"))
+        let saved = try XCTUnwrap(store.packages().first)
+        XCTAssertEqual(saved.package.calibre, "11 mm Gras court")
+        XCTAssertTrue(saved.package.isUnlisted)
+        // A name that happens to be a catalogue id still stays unlisted.
+        XCTAssertTrue(TrainingRecorder.package(calibre: "9x19 mm", unlisted: true, mode: .cartridge, note: "").isUnlisted)
+        XCTAssertEqual(CaptureStore.folderName(package("???")), "unlisted-20270115-080000")
+    }
+
+    /// Catalogue calibres are written as before: package.json without «unlisted», and older packages read fine.
+    func testListedPackagesHaveNoUnlistedKey() throws {
+        let p = TrainingRecorder.package(calibre: "7.5x55 mm Swiss (GP 11)", mode: .cartridge, note: "")
+        XCTAssertFalse(p.isUnlisted)
+        XCTAssertEqual(p.calibreName, "7.5x55 mm Swiss (GP 11)")
+        let json = try XCTUnwrap(String(data: TrainingCapture.encoder.encode(p), encoding: .utf8))
+        XCTAssertFalse(json.contains("unlisted"))
+        let old = Data(#"""
+            {"format": 1, "calibre": "9x19 mm", "part": "cartridge", "note": "", "created": "2026-11-04T23:30:00Z",
+             "device": "", "system": "", "app": ""}
+            """#.utf8)
+        XCTAssertFalse(try TrainingCapture.decoder.decode(CapturePackage.self, from: old).isUnlisted)
     }
 
     func testFocusAsTheCameraReportsIt() {

@@ -123,6 +123,8 @@ enum Evaluation {
         case phone
         /// Vision on the Mac, for a photo the phone never analysed (or with --mac-vision).
         case mac
+        /// Vision on a crop of the photo, after it found nothing in the whole photo (`PhotoAnalyzer.firstLook`).
+        case crop
         /// The colour cut-out: Vision found no cartridge.
         case colour
         /// Nothing measurable.
@@ -143,14 +145,20 @@ enum Evaluation {
         let result: ShotResult
     }
 
+    /// The packages that can be scored: a series of a round the catalogue lacks
+    /// (`CapturePackage.unlisted`) has no right calibre to find.
+    static func scored(_ packages: [SavedCapture]) -> [SavedCapture] {
+        packages.filter { !$0.package.isUnlisted }
+    }
+
     /// Scores the analysis of a photo of `package`'s calibre and part, with the LiDAR scale it was
     /// taken with, in automatic mode as the phone starts: its row in the list the phone shows for each
     /// setting of the switches (see `Evaluation`) and its rank among every calibre.
     static func shot(_ name: String, analysis: PhotoAnalysis, depth: DepthScale?, package: CapturePackage,
                      source: Source = .phone) -> Shot {
         let size = try? analysis.size(depth: depth).get()
-        let ranked = Matcher.rank(shape: analysis.shape, size: size, mode: .auto, cartridges: CartridgeCatalog.all,
-                                  brass: analysis.isBrass, limit: .max)
+        let ranked = Matcher.rank(shape: analysis.shape, size: analysis.rawSize(depth: depth), perspective: analysis.perspective(depth: depth),
+                                  mouth: analysis.contour?.mouth, mode: .auto, cartridges: CartridgeCatalog.all, brass: analysis.isBrass, limit: .max)
         let rank = ranked.firstIndex { $0.cartridge.id == package.calibre }.map { $0 + 1 }
         let calibre = CartridgeCatalog.cartridge(id: package.calibre)
         let rows = Dictionary(uniqueKeysWithValues: Switches.allCases.map { ($0, Matcher.grouped(listed(ranked, showing: calibre, switches: $0))) })
@@ -218,6 +226,7 @@ enum Evaluation {
          ("With LiDAR size", shots.filter { $0.size != nil }), ("Without size", shots.filter { $0.size == nil }),
          ("Outline from the phone's Vision mask", shots.filter { $0.source == .phone }),
          ("Outline from Vision on the Mac", shots.filter { $0.source == .mac }),
+         ("Outline from Vision on a crop", shots.filter { $0.source == .crop }),
          ("Outline from the colour cut-out", shots.filter { $0.source == .colour }),
          ("No outline", shots.filter { $0.source == .none })]
     }
