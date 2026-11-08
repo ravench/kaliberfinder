@@ -155,18 +155,16 @@ final class LiDARCamera: NSObject, ObservableObject {
         if hasDepth { session.addOutput(depthOutput) }
         DispatchQueue.main.async { self.coordinateRotation() }
         // A 4:3 format that delivers depth, with a float depth format (without depth, any 4:3 format); of
-        // those, the one whose photos can be largest. A camera without depth first by its widest field of
-        // view: the 17 Pro's telephoto also lists its 8x sensor crop as formats, and the picker means the 4x.
+        // those, the one whose photos can be largest.
         let candidates = device.formats.filter { f in
             let d = f.formatDescription.dimensions
             return (!hasDepth || !f.supportedDepthDataFormats.isEmpty) && d.width * 3 == d.height * 4
         }
-        func rank(_ f: AVCaptureDevice.Format) -> (Float, Int32) {
-            (hasDepth ? 0 : f.videoFieldOfView, Self.largest(f.supportedMaxPhotoDimensions).width)
-        }
-        if let format = candidates.max(by: { rank($0) < rank($1) }) {
+        if let format = candidates.max(by: { Self.largest($0.supportedMaxPhotoDimensions).width < Self.largest($1.supportedMaxPhotoDimensions).width }) {
             try? device.lockForConfiguration()
             device.activeFormat = format
+            // The whole sensor: the 17 Pro's telephoto comes up zoomed to its 8x sensor crop (Raven, 2026-11-08).
+            device.videoZoomFactor = device.minAvailableVideoZoomFactor
             // Only where there is one: setting nil on a camera without depth throws (TestFlight 1113 crashed so).
             if let depthFormat = format.supportedDepthDataFormats.last(where: {
                 let type = $0.formatDescription.mediaSubType.rawValue
