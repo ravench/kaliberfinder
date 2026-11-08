@@ -33,8 +33,8 @@ final class CalibreTagTests: XCTestCase {
         let luger = try cartridge("9x19 mm"), germany = try XCTUnwrap(luger.country)
         XCTAssertEqual(OriginMarks.marks(of: [luger]), [.worldwide, .country(germany)])
         let remington = try cartridge(".223 Remington"), usa = try XCTUnwrap(remington.country)
-        let nato = try cartridge("5.56x45 mm NATO")  // no agreed origin yet, worldwide
-        XCTAssertEqual(OriginMarks.marks(of: [remington, nato]), [.worldwide, .country(usa)])
+        let nato = try cartridge("5.56x45 mm NATO"), alliance = try XCTUnwrap(nato.country)  // worldwide, NATO
+        XCTAssertEqual(OriginMarks.marks(of: [remington, nato]), [.worldwide, .country(usa), .country(alliance)])
         XCTAssertEqual(OriginMarks.marks(of: [remington, remington]), [.worldwide, .country(usa)])
         XCTAssertEqual(OriginMarks.marks(of: [try cartridge("12/70")]), [.worldwide])
         let ak = try cartridge("7.62x39 mm"), su = try XCTUnwrap(ak.country)
@@ -50,10 +50,14 @@ final class CalibreTagTests: XCTestCase {
         }
     }
 
-    func testFormerStatesAreDrawn() throws {
+    func testFlaglessOriginsAreDrawn() throws {
         let mosin = try XCTUnwrap(try cartridge("7.62x54 mm R").country)
         XCTAssertEqual(mosin.code, "RUE")
         XCTAssertNil(mosin.flag)
         XCTAssertTrue(DrawnFlag.codes.contains(mosin.code))
+        let nato = try XCTUnwrap(try cartridge("5.56x45 mm NATO").country)  // a union of states (calibre-data #51)
+        XCTAssertEqual(nato.code, "NATO")
+        XCTAssertNil(nato.flag)
+        XCTAssertTrue(DrawnFlag.codes.contains(nato.code))
     }
 }

@@ -107,7 +107,7 @@ struct TagIcon: View {
     }
 }
 
-/// The calibre's country flag: the emoji, or a drawn flag for former states.
+/// The calibre's country flag: the emoji, or a drawn flag for former states and unions.
 struct CountryFlag: View {
     let country: Cartridge.Country
     @ScaledMetric(relativeTo: .body) private var height: CGFloat = 12
@@ -183,12 +183,12 @@ struct OriginMarks: View {
     }
 }
 
-/// Simple flags for former states, which have no flag emoji (calibre-data COUNTRIES without one).
+/// Simple flags for former states and unions, which have no flag emoji (calibre-data COUNTRIES without one).
 struct DrawnFlag: View {
     let code: String
 
     /// Codes this view can draw; generate_data.py DRAWN_FLAGS must match.
-    static let codes: Set<String> = ["RUE", "AH", "SU", "CS"]
+    static let codes: Set<String> = ["RUE", "AH", "SU", "CS", "NATO"]
 
     var body: some View {
         switch code {
@@ -211,6 +211,21 @@ struct DrawnFlag: View {
                         p.addLines([.zero, CGPoint(x: geo.size.width / 2, y: geo.size.height / 2), CGPoint(x: 0, y: geo.size.height)])
                     }
                     .fill(Color(red: 0.07, green: 0.27, blue: 0.49))
+                }
+            }
+        case "NATO":
+            Color(red: 0, green: 0.29, blue: 0.56).overlay {
+                GeometryReader { geo in
+                    let c = CGPoint(x: geo.size.width / 2, y: geo.size.height / 2), r = geo.size.height * 0.3
+                    Path { p in  // the compass rose: a four-pointed star in a ring
+                        p.addLines((0..<8).map { i -> CGPoint in
+                            let d = i.isMultiple(of: 2) ? r : r * 0.25, a = CGFloat(i) * .pi / 4
+                            return CGPoint(x: c.x + d * sin(a), y: c.y - d * cos(a))
+                        })
+                        p.closeSubpath()
+                    }
+                    .fill(.white)
+                    Circle().stroke(.white, lineWidth: r * 0.15).frame(width: r * 2.6, height: r * 2.6).position(c)
                 }
             }
         default: Color.gray

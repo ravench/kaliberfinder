@@ -579,11 +579,6 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "DE",
-    "name": "Deutschland",
-    "flag": "🇩🇪"
-   },
    "worldwide": false,
    "blank": false,
    "dimensions": {
@@ -624,11 +619,6 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "DE",
-    "name": "Deutschland",
-    "flag": "🇩🇪"
-   },
    "worldwide": false,
    "blank": false,
    "dimensions": {
@@ -663,11 +653,6 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "DE",
-    "name": "Deutschland",
-    "flag": "🇩🇪"
-   },
    "worldwide": false,
    "blank": false,
    "dimensions": {
@@ -709,11 +694,6 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "DE",
-    "name": "Deutschland",
-    "flag": "🇩🇪"
-   },
    "worldwide": false,
    "blank": true,
    "dimensions": {
@@ -748,11 +728,6 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "DE",
-    "name": "Deutschland",
-    "flag": "🇩🇪"
-   },
    "worldwide": false,
    "blank": true,
    "dimensions": {
@@ -788,11 +763,6 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "DE",
-    "name": "Deutschland",
-    "flag": "🇩🇪"
-   },
    "worldwide": false,
    "blank": true,
    "dimensions": {
@@ -832,11 +802,6 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "IT",
-    "name": "Italien",
-    "flag": "🇮🇹"
-   },
    "worldwide": false,
    "blank": true,
    "dimensions": {
@@ -868,11 +833,6 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
-   "country": {
-    "code": "FR",
-    "name": "Frankreich",
-    "flag": "🇫🇷"
-   },
    "worldwide": false,
    "blank": true,
    "dimensions": {
@@ -1085,6 +1045,11 @@
    ],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "BE",
+    "name": "Belgien",
+    "flag": "🇧🇪"
+   },
    "worldwide": true,
    "blank": false,
    "dimensions": {
@@ -1126,6 +1091,11 @@
    ],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "BE",
+    "name": "Belgien",
+    "flag": "🇧🇪"
+   },
    "worldwide": true,
    "blank": false,
    "dimensions": {
@@ -1510,9 +1480,9 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "IL",
-    "name": "Israel",
-    "flag": "🇮🇱"
+    "code": "IT",
+    "name": "Italien",
+    "flag": "🇮🇹"
    },
    "worldwide": false,
    "blank": false,
@@ -1549,6 +1519,11 @@
    ],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
    "worldwide": false,
    "blank": false,
    "dimensions": {
@@ -1719,6 +1694,11 @@
    ],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
    "worldwide": false,
    "blank": false,
    "dimensions": {
@@ -2291,6 +2271,11 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
    "worldwide": false,
    "blank": false,
    "dimensions": {
@@ -2920,6 +2905,11 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "PH",
+    "name": "Philippinen",
+    "flag": "🇵🇭"
+   },
    "worldwide": false,
    "blank": false,
    "dimensions": {
@@ -4616,6 +4606,10 @@
    ],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "NATO",
+    "name": "NATO"
+   },
    "worldwide": true,
    "blank": false,
    "dimensions": {
@@ -4790,6 +4784,11 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "SE",
+    "name": "Schweden",
+    "flag": "🇸🇪"
+   },
    "worldwide": false,
    "blank": false,
    "dimensions": {
@@ -6224,9 +6223,8 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "US",
-    "name": "USA",
-    "flag": "🇺🇸"
+    "code": "NATO",
+    "name": "NATO"
    },
    "worldwide": true,
    "blank": false,
@@ -9464,6 +9462,11 @@
    "headstamps": [],
    "obsolete": false,
    "rare": true,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
    "worldwide": false,
    "blank": false,
    "dimensions": {
@@ -13553,6 +13556,11 @@
    "headstamps": [],
    "obsolete": false,
    "rare": false,
+   "country": {
+    "code": "SE",
+    "name": "Schweden",
+    "flag": "🇸🇪"
+   },
    "worldwide": false,
    "blank": false,
    "dimensions": {
@@ -13949,9 +13957,9 @@
    "obsolete": false,
    "rare": false,
    "country": {
-    "code": "BE",
-    "name": "Belgien",
-    "flag": "🇧🇪"
+    "code": "AR",
+    "name": "Argentinien",
+    "flag": "🇦🇷"
    },
    "worldwide": false,
    "blank": false,
@@ -14150,9 +14158,9 @@
    "obsolete": false,
    "rare": true,
    "country": {
-    "code": "DE",
-    "name": "Deutschland",
-    "flag": "🇩🇪"
+    "code": "SE",
+    "name": "Schweden",
+    "flag": "🇸🇪"
    },
    "worldwide": false,
    "blank": false,
@@ -14593,9 +14601,9 @@
    "obsolete": false,
    "rare": true,
    "country": {
-    "code": "DE",
-    "name": "Deutschland",
-    "flag": "🇩🇪"
+    "code": "GB",
+    "name": "Grossbritannien",
+    "flag": "🇬🇧"
    },
    "worldwide": false,
    "blank": false,

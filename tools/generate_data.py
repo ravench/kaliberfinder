@@ -29,16 +29,18 @@ COUNTRY_NAMES = {
     "CH": "Schweiz", "DE": "Deutschland", "AH": "Österreich-Ungarn", "AT": "Österreich",
     "FR": "Frankreich", "IT": "Italien", "GB": "Grossbritannien", "US": "USA", "SE": "Schweden",
     "DK": "Dänemark", "BE": "Belgien", "ES": "Spanien", "PT": "Portugal", "CZ": "Tschechien",
-    "JP": "Japan", "PL": "Polen", "IL": "Israel", "FI": "Finnland", "PH": "Philippinen",
+    "JP": "Japan", "PL": "Polen", "FI": "Finnland", "PH": "Philippinen", "AR": "Argentinien",
     "RUE": "Russisches Kaiserreich", "SU": "Sowjetunion", "CS": "Tschechoslowakei", "CN": "China",
+    "NATO": "NATO",
 }
-# Former states without a flag emoji; the app draws these flags itself (DrawnFlag).
-DRAWN_FLAGS = {"RUE", "AH", "SU", "CS"}
+# Former states and unions without a flag emoji; the app draws these flags itself (DrawnFlag).
+DRAWN_FLAGS = {"RUE", "AH", "SU", "CS", "NATO"}
 
 
 def country(name):
-    """{"code", "name" (German), "flag" (emoji, absent for drawn flags)} of the state that introduced
-    the calibre, or {} for gauges, balls, pellets, blanks and calibres whose origin is still open."""
+    """{"code", "name" (German), "flag" (emoji, absent for drawn flags)} of the state or union that
+    introduced the calibre (calibre-data ORIGIN), or {} for gauges, balls, pellets, blanks and calibres
+    whose origin is still open."""
     o = origin(name)
     if not o:
         return {}

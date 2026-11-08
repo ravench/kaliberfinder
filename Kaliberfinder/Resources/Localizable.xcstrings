@@ -553,6 +553,29 @@
         }
       }
     },
+    "Argentinien": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Argentina"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Argentine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Argentina"
+          }
+        }
+      }
+    },
     "Auch bekannt als": {
       "extractionState": "manual",
       "localizations": {
@@ -2370,29 +2393,6 @@
         }
       }
     },
-    "Israel": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Israel"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Israël"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Israele"
-          }
-        }
-      }
-    },
     "Italien": {
       "extractionState": "manual",
       "localizations": {
@@ -3125,6 +3125,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Calibri possibili"
+          }
+        }
+      }
+    },
+    "NATO": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NATO"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OTAN"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NATO"
           }
         }
       }
