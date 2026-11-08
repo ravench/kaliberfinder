@@ -321,6 +321,15 @@ struct CaptureStore {
         return data.withUnsafeBytes { Array($0.bindMemory(to: Float.self)) }
     }
 
+    /// The photo's pixel size, from its header; nil when it cannot be read.
+    static func photoPixels(of shot: CaptureShot, at folder: URL) -> (width: Int, height: Int)? {
+        guard let source = CGImageSourceCreateWithURL(folder.appendingPathComponent(shot.photo) as CFURL, nil),
+              let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+              let width = properties[kCGImagePropertyPixelWidth] as? Int, let height = properties[kCGImagePropertyPixelHeight] as? Int
+        else { return nil }
+        return (width, height)
+    }
+
     /// The instance labels of a shot's Vision mask, nil without one.
     static func mask(of shot: CaptureShot, at folder: URL) -> [UInt8]? {
         guard let info = shot.mask, let data = try? Data(contentsOf: folder.appendingPathComponent(info.file)) else { return nil }
