@@ -576,6 +576,29 @@
         }
       }
     },
+    "Atypisches Geschoss": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atypical bullet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projectile atypique"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proiettile atipico"
+          }
+        }
+      }
+    },
     "Auch bekannt als": {
       "extractionState": "manual",
       "localizations": {
@@ -3106,6 +3129,29 @@
         }
       }
     },
+    "Mit der Schieblehre gemessen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measured with a calliper"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mesuré au pied à coulisse"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Misurato con il calibro"
+          }
+        }
+      }
+    },
     "Mögliche Kaliber": {
       "extractionState": "manual",
       "localizations": {
@@ -3999,6 +4045,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Includi calibri rari"
+          }
+        }
+      }
+    },
+    "Serie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Series"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Série"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serie"
           }
         }
       }

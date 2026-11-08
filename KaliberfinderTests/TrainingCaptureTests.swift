@@ -169,6 +169,40 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(back.cameras, p.cameras)
     }
 
+    /// Calliper measurements go into package.json only once there are some, and `update` rewrites the file.
+    func testMeasurementsAreWrittenWhenEntered() throws {
+        let url = try store.create(package())
+        var saved = try XCTUnwrap(store.packages().first)
+        XCTAssertNil(saved.package.measurements)
+        let json = try XCTUnwrap(String(data: try Data(contentsOf: url.appendingPathComponent(TrainingCapture.packageFile)), encoding: .utf8))
+        XCTAssertFalse(json.contains("measurements"))
+        var package = saved.package
+        package.measurements = Measurements(overallLength: 57.8, rim: 22.4)
+        try CaptureStore.update(package, at: url)
+        saved = try XCTUnwrap(store.packages().first)
+        XCTAssertEqual(saved.package.measurements, Measurements(overallLength: 57.8, rim: 22.4))
+        XCTAssertNil(saved.package.measurements?.caseLength)
+        XCTAssertTrue(Measurements().isEmpty)
+        XCTAssertFalse(Measurements(bullet: 9).isEmpty)
+    }
+
+    /// The note and the atypical-bullet flag are edited on the series screen; the flag is only in the file when set.
+    func testNoteAndAtypicalBulletAreEditable() throws {
+        let url = try store.create(package())
+        var package = try XCTUnwrap(store.packages().first).package
+        XCTAssertNil(package.atypicalBullet)
+        package.note = "Holztisch, Teilmantel statt Vollmantel"
+        package.atypicalBullet = true
+        try CaptureStore.update(package, at: url)
+        let json = try XCTUnwrap(String(data: try Data(contentsOf: url.appendingPathComponent(TrainingCapture.packageFile)), encoding: .utf8))
+        XCTAssertTrue(json.contains("\"atypicalBullet\" : true"))
+        XCTAssertEqual(try XCTUnwrap(store.packages().first).package.note, "Holztisch, Teilmantel statt Vollmantel")
+        package.atypicalBullet = nil
+        try CaptureStore.update(package, at: url)
+        XCTAssertFalse(try XCTUnwrap(String(data: try Data(contentsOf: url.appendingPathComponent(TrainingCapture.packageFile)), encoding: .utf8))
+            .contains("atypicalBullet"))
+    }
+
     /// A shot remembers the camera that took it; the summary names it unless it was the LiDAR camera.
     func testShotNamesItsCamera() throws {
         var shot = CaptureShot(photo: "photo.heic", source: "lidarCamera", captured: Date())

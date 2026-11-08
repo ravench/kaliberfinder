@@ -212,6 +212,21 @@ struct TrainingPackageView: View {
     @State private var libraryItems: [PhotosPickerItem] = []
     @State private var shared: SharedFile?
     @State private var status: String?
+    /// The package as edited here (note, atypical bullet, measurements); written on every change.
+    @State private var package: CapturePackage
+
+    init(capture: SavedCapture) {
+        self.capture = capture
+        _package = State(initialValue: capture.package)
+    }
+
+    private var measurements: Binding<Measurements> {
+        Binding { package.measurements ?? Measurements() } set: { package.measurements = $0.isEmpty ? nil : $0 }
+    }
+
+    private var atypicalBullet: Binding<Bool> {
+        Binding { package.atypicalBullet == true } set: { package.atypicalBullet = $0 ? true : nil }
+    }
 
     var body: some View {
         List {
@@ -233,9 +248,23 @@ struct TrainingPackageView: View {
                 Text(verbatim: capture.package.calibreName)
             } footer: {
                 VStack(alignment: .leading) {
-                    if !capture.package.note.isEmpty { Text(verbatim: capture.package.note) }
                     ForEach(capture.package.cameras ?? [], id: \.type) { Text(verbatim: $0.summary) }
                 }
+            }
+            Section {
+                TextField("Notiz", text: $package.note, prompt: Text("z. B. Holztisch, Tageslicht"), axis: .vertical)
+                // A bullet the calibre does not usually carry, so tuning the matcher knows to be careful with this series.
+                Toggle("Atypisches Geschoss", isOn: atypicalBullet)
+            } header: {
+                Text("Serie")
+            }
+            Section {
+                measured("Gesamtlänge", value: measurements.overallLength)
+                measured("Hülsenlänge", value: measurements.caseLength)
+                measured("Randdurchmesser", value: measurements.rim)
+                measured("Geschossdurchmesser", value: measurements.bullet)
+            } header: {
+                Text("Mit der Schieblehre gemessen")
             }
             Section {
                 ForEach(shots) { entry in
@@ -248,7 +277,13 @@ struct TrainingPackageView: View {
         }
         .navigationTitle(Text(verbatim: capture.url.lastPathComponent))
         .navigationBarTitleDisplayMode(.inline)
+        .scrollDismissesKeyboard(.interactively)
         .onAppear(perform: reload)
+        .onChange(of: package) { _, new in
+            // Written as typed; nothing measured and no atypical bullet leave their keys out of package.json.
+            guard new != capture.package else { return }
+            do { try CaptureStore.update(new, at: capture.url) } catch { status = error.localizedDescription }
+        }
         .fullScreenCover(isPresented: $showCamera, onDismiss: reload) {
             TrainingCameraView(capture: capture)
         }
@@ -281,6 +316,19 @@ struct TrainingPackageView: View {
     }
 
     private func reload() { shots = capture.shots }
+
+    /// A calliper value with its unit, «9.95 mm»; a dash until measured.
+    private func measured(_ title: LocalizedStringKey, value: Binding<Double?>) -> some View {
+        LabeledContent(title) {
+            HStack(spacing: 4) {
+                TextField("–", value: value, format: .number.precision(.fractionLength(0...2)))
+                    .keyboardType(.decimalPad)
+                    .multilineTextAlignment(.trailing)
+                    .frame(maxWidth: 80)
+                Text(verbatim: LengthUnit.metric.symbol).foregroundStyle(.secondary)
+            }
+        }
+    }
 
     private func share() {
         do {

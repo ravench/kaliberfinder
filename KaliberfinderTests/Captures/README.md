@@ -10,7 +10,11 @@ their photos in `../Golden` (see its README).
 ```
 <calibre>-<yyyyMMdd-HHmmss>/
   package.json            calibre (catalogue id), part (cartridge | emptyCase), note, device, iOS, app version;
-                          unlisted: true when calibre is the name of a round the catalogue lacks
+                          unlisted: true when calibre is the name of a round the catalogue lacks;
+                          measurements: what the calliper says about the round, in mm (overallLength,
+                          caseLength, rim, bullet; each only when measured);
+                          atypicalBullet: true when the round carries a bullet its calibre does not
+                          usually have, so tuning against the series takes care
   01/
     shot.json             source, EXIF orientation, depth map size and accuracy, camera calibration,
                           LiDAR table distance and focal length, gravity and tilt, closest focus

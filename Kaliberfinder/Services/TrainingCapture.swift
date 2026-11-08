@@ -75,6 +75,11 @@ struct CapturePackage: Codable, Equatable {
     var unlisted: Bool?
     /// The phone's back cameras (`TrainingRecorder.backCameras`); nil in packages from before 2026-11-08.
     var cameras: [CameraInfo]?
+    /// What the calliper says about the round photographed; nil until Raven enters it (2026-11-08).
+    var measurements: Measurements?
+    /// True when the round carries a bullet its calibre does not usually have (another weight or shape), so
+    /// tuning the matcher against this series takes care; not written when nil.
+    var atypicalBullet: Bool?
 
     var scanMode: ScanMode { ScanMode(rawValue: part) ?? .auto }
     var isUnlisted: Bool { unlisted == true }
@@ -83,6 +88,17 @@ struct CapturePackage: Codable, Equatable {
     var calibreName: String {
         isUnlisted ? calibre : CartridgeCatalog.cartridge(id: calibre)?.name ?? calibre
     }
+}
+
+/// Calliper measurements of the round a series shows, in mm; each nil until measured. A folded 12/70
+/// is 57.8 mm where the catalogue says 64.0, so the training data carries what the round really is.
+struct Measurements: Codable, Equatable {
+    var overallLength: Double?
+    var caseLength: Double?
+    var rim: Double?
+    var bullet: Double?
+
+    var isEmpty: Bool { overallLength == nil && caseLength == nil && rim == nil && bullet == nil }
 }
 
 /// One of the phone's back cameras, to tell what a telephoto could do for the photos: how close it
@@ -279,6 +295,11 @@ struct CaptureStore {
         try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         try TrainingCapture.encoder.encode(package).write(to: url.appendingPathComponent(TrainingCapture.packageFile))
         return url
+    }
+
+    /// Rewrites the package.json of the series at `url`, e.g. with its measurements.
+    static func update(_ package: CapturePackage, at url: URL) throws {
+        try TrainingCapture.encoder.encode(package).write(to: url.appendingPathComponent(TrainingCapture.packageFile))
     }
 
     /// The packages under `root`, newest first.
