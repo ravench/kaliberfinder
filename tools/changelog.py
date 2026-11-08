@@ -167,14 +167,18 @@ def what_to_test(notes, build_number, key_path, key_id, issuer, bundle_id, wait=
         print(f"{method} {body['data']['attributes'].get('locale', path)}")
 
 
+def bundle_id():
+    """The app's bundle identifier, from project.yml."""
+    with open(os.path.join(ROOT, "project.yml")) as f:
+        return re.search(r"PRODUCT_BUNDLE_IDENTIFIER:\s*(\S+)", f.read()).group(1)
+
+
 def main(argv):
     if len(argv) == 3 and argv[1] == "notes":
         write_notes(argv[2])
     elif len(argv) == 4 and argv[1] == "what-to-test":
         notes = json.load(sys.stdin)["notes"]
-        with open(os.path.join(ROOT, "project.yml")) as f:
-            bundle_id = re.search(r"PRODUCT_BUNDLE_IDENTIFIER:\s*(\S+)", f.read()).group(1)
-        what_to_test(notes, argv[3], argv[2], os.environ["ASC_KEY_ID"], os.environ["ASC_ISSUER_ID"], bundle_id)
+        what_to_test(notes, argv[3], argv[2], os.environ["ASC_KEY_ID"], os.environ["ASC_ISSUER_ID"], bundle_id())
     else:
         sys.exit(__doc__)
 

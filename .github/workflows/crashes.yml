@@ -1,0 +1,30 @@
+name: Crashes
+# Downloads the crash reports testers sent from TestFlight into the run's «crashes» artifact
+# (kept a day) and lists them in the summary (tools/crashes.py). Start it by hand:
+#   gh workflow run crashes.yml && gh run download -n crashes
+# Needs the App Store Connect secrets of testflight.yml.
+on:
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash -eo pipefail {0}
+jobs:
+  crashes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Download the crash reports
+        run: |
+          echo "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
+          python3 tools/crashes.py "$RUNNER_TEMP/AuthKey.p8" "$RUNNER_TEMP/crashes" | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v5
+        with:
+          name: crashes
+          path: ${{ runner.temp }}/crashes
+          retention-days: 1
+          if-no-files-found: ignore
