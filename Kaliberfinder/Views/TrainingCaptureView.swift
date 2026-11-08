@@ -1,3 +1,4 @@
+import AVFoundation
 import PhotosUI
 import SwiftUI
 
@@ -231,7 +232,10 @@ struct TrainingPackageView: View {
             } header: {
                 Text(verbatim: capture.package.calibreName)
             } footer: {
-                if !capture.package.note.isEmpty { Text(verbatim: capture.package.note) }
+                VStack(alignment: .leading) {
+                    if !capture.package.note.isEmpty { Text(verbatim: capture.package.note) }
+                    ForEach(capture.package.cameras ?? [], id: \.type) { Text(verbatim: $0.summary) }
+                }
             }
             Section {
                 ForEach(shots) { entry in
@@ -266,13 +270,14 @@ struct TrainingPackageView: View {
         }
     }
 
-    /// E.g. "03  LiDAR 251 mm  48 MP  3.02  9x19 mm"; the megapixels say whether the phone took the
-    /// sensor's full resolution.
+    /// E.g. "03  LiDAR 251 mm  48 MP  3.02  9x19 mm", or "04  Telephoto  ohne Tiefe  48 MP  3.02  9x19 mm" from
+    /// another camera; the megapixels say whether the phone took the sensor's full resolution.
     static func summary(_ name: String, _ shot: CaptureShot, pixels: (width: Int, height: Int)? = nil) -> String {
         let depth = shot.scale.map { String(format: "LiDAR %.0f mm".loc, $0.tableDistance) } ?? (shot.depth == nil ? "ohne Tiefe".loc : "Tiefe relativ".loc)
+        let camera = shot.camera.map { $0 == "LiDARDepth" ? "" : "\($0)  " } ?? ""
         let size = pixels.map { String(format: "%.0f MP", Double($0.width * $0.height) / 1e6) } ?? "–"
         let aspect = shot.analysis?.aspect.map { String(format: "%.2f", $0) } ?? "–"
-        return "\(name)  \(depth)  \(size)  \(aspect)  \(shot.analysis?.matches.first ?? "kein Treffer".loc)"
+        return "\(name)  \(camera)\(depth)  \(size)  \(aspect)  \(shot.analysis?.matches.first ?? "kein Treffer".loc)"
     }
 
     private func reload() { shots = capture.shots }
@@ -286,14 +291,54 @@ struct TrainingPackageView: View {
     }
 }
 
-/// The LiDAR camera for a series: every photo is saved straight away, the screen stays open.
+/// The camera for a series: every photo is saved straight away, the screen stays open. Where the
+/// device has a telephoto or ultra wide camera, a picker switches to it; those take no depth.
 private struct TrainingCameraView: View {
     let capture: SavedCapture
-    @StateObject private var camera = LiDARCamera()
+    @State private var deviceType: AVCaptureDevice.DeviceType = .builtInLiDARDepthCamera
+    @State private var saved = 0
+
+    var body: some View {
+        // A new camera object per choice: the session is configured once, for one device.
+        TrainingCameraSession(capture: capture, deviceType: deviceType, saved: $saved)
+            .id(deviceType)
+            .overlay(alignment: .top) {
+                if LiDARCamera.choices.count > 1 {
+                    Picker(selection: $deviceType) {
+                        ForEach(LiDARCamera.choices, id: \.self) { Text(Self.title($0).loc).tag($0) }
+                    } label: {
+                        Text("Kamera")
+                    }
+                    .pickerStyle(.segmented)
+                    .padding(.horizontal, 60)
+                    .padding(.top, 72)
+                }
+            }
+    }
+
+    /// German title of a camera choice, used as localization key.
+    static func title(_ type: AVCaptureDevice.DeviceType) -> String {
+        switch type {
+        case .builtInTelephotoCamera: "Tele"
+        case .builtInUltraWideCamera: "Ultraweit"
+        default: "LiDAR"
+        }
+    }
+}
+
+private struct TrainingCameraSession: View {
+    let capture: SavedCapture
+    @StateObject private var camera: LiDARCamera
+    @Binding private var saved: Int
     @Environment(\.dismiss) private var dismiss
     @State private var saving = false
-    @State private var saved = 0
     @State private var failure: String?
+
+    init(capture: SavedCapture, deviceType: AVCaptureDevice.DeviceType, saved: Binding<Int>) {
+        self.capture = capture
+        _camera = StateObject(wrappedValue: LiDARCamera(deviceType: deviceType))
+        _saved = saved
+    }
 
     var body: some View {
         ZStack {

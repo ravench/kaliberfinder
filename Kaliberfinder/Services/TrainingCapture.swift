@@ -73,6 +73,8 @@ struct CapturePackage: Codable, Equatable {
     /// catalogue id, and the series has no right answer to score matching by. Not written when nil,
     /// so other packages stay as they were.
     var unlisted: Bool?
+    /// The phone's back cameras (`TrainingRecorder.backCameras`); nil in packages from before 2026-11-08.
+    var cameras: [CameraInfo]?
 
     var scanMode: ScanMode { ScanMode(rawValue: part) ?? .auto }
     var isUnlisted: Bool { unlisted == true }
@@ -83,11 +85,37 @@ struct CapturePackage: Codable, Equatable {
     }
 }
 
+/// One of the phone's back cameras, to tell what a telephoto could do for the photos: how close it
+/// focuses, whether any of its formats delivers depth, and the largest photo it takes.
+struct CameraInfo: Codable, Equatable {
+    /// E.g. "builtInTelephotoCamera", "builtInLiDARDepthCamera".
+    let type: String
+    /// `AVCaptureDevice.minimumFocusDistance` in mm; nil where the camera does not say.
+    let minimumFocusDistance: Int?
+    let depth: Bool
+    let photoWidth: Int
+    let photoHeight: Int
+
+    /// "builtInTelephotoCamera" as "Telephoto".
+    static func shortName(_ type: String) -> String {
+        ["AVCaptureDeviceType", "BuiltIn", "builtIn", "Camera"].reduce(type) { $0.replacingOccurrences(of: $1, with: "") }
+    }
+
+    /// E.g. "Telephoto: focus from 1250 mm, no depth, 48 MP".
+    var summary: String {
+        let name = Self.shortName(type)
+        let focus = minimumFocusDistance.map { "focus from \($0) mm" } ?? "focus unknown"
+        return String(format: "%@: %@, %@, %.0f MP", name, focus, depth ? "depth" : "no depth", Double(photoWidth * photoHeight) / 1e6)
+    }
+}
+
 /// How the phone and its camera stood when a training photo was taken (see `CaptureShot`).
 struct CaptureMoment: Equatable {
     var gravity: [Double]?
     var tilt: Double?
     var focus: CaptureShot.Focus?
+    /// The back camera that took it (`CameraInfo.shortName`); nil for the LiDAR camera before 2026-11-08.
+    var camera: String?
 }
 
 /// One photo of a series: shot.json.
@@ -108,6 +136,9 @@ struct CaptureShot: Codable, Equatable {
     var tilt: Double?
     /// The camera's focus when the photo was taken; nil for library photos and older shots.
     var focus: Focus?
+    /// The back camera that took it, e.g. "Telephoto" (`CameraInfo.shortName`); nil for library photos and
+    /// for shots from before the camera could be chosen (the LiDAR camera).
+    var camera: String?
     var mask: Mask?
     /// What the app made of the photo when it was taken.
     var analysis: Analysis?

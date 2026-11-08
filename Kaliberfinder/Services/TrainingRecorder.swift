@@ -15,6 +15,7 @@ enum TrainingRecorder {
         shot.gravity = moment.gravity
         shot.tilt = moment.tilt
         shot.focus = moment.focus
+        shot.camera = moment.camera
         var depthValues: [Float]?
         if let depthData = photo.depthData {
             if let map = LiDARCamera.depthValues(depthData) {
@@ -143,6 +144,19 @@ enum TrainingRecorder {
         return CapturePackage(calibre: unlisted ? calibre.trimmingCharacters(in: .whitespacesAndNewlines) : calibre, part: mode.rawValue,
                               note: note, created: Date(), device: deviceModel,
                               system: "iOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)", app: version,
-                              unlisted: unlisted ? true : nil)
+                              unlisted: unlisted ? true : nil, cameras: backCameras)
+    }
+
+    /// The phone's back cameras, one entry each (the simulator has none): whether a telephoto could take
+    /// the photos is decided by its closest focus and whether it delivers depth (Raven, 2026-11-08).
+    static var backCameras: [CameraInfo] {
+        let types: [AVCaptureDevice.DeviceType] = [.builtInWideAngleCamera, .builtInUltraWideCamera, .builtInTelephotoCamera, .builtInLiDARDepthCamera]
+        return AVCaptureDevice.DiscoverySession(deviceTypes: types, mediaType: .video, position: .back).devices.map { device in
+            let photo = LiDARCamera.largest(device.formats.flatMap(\.supportedMaxPhotoDimensions))
+            return CameraInfo(type: device.deviceType.rawValue.replacingOccurrences(of: "AVCaptureDeviceType", with: ""),
+                              minimumFocusDistance: device.minimumFocusDistance >= 0 ? device.minimumFocusDistance : nil,
+                              depth: device.formats.contains { !$0.supportedDepthDataFormats.isEmpty },
+                              photoWidth: Int(photo.width), photoHeight: Int(photo.height))
+        }
     }
 }
