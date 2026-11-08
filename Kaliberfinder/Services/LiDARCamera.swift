@@ -163,9 +163,12 @@ final class LiDARCamera: NSObject, ObservableObject {
         if let format = candidates.max(by: { Self.largest($0.supportedMaxPhotoDimensions).width < Self.largest($1.supportedMaxPhotoDimensions).width }) {
             try? device.lockForConfiguration()
             device.activeFormat = format
-            device.activeDepthDataFormat = format.supportedDepthDataFormats.last {
+            // Only where there is one: setting nil on a camera without depth throws (TestFlight 1113 crashed so).
+            if let depthFormat = format.supportedDepthDataFormats.last(where: {
                 let type = $0.formatDescription.mediaSubType.rawValue
                 return type == kCVPixelFormatType_DepthFloat32 || type == kCVPixelFormatType_DepthFloat16
+            }) {
+                device.activeDepthDataFormat = depthFormat
             }
             device.unlockForConfiguration()
             photoOutput.maxPhotoDimensions = Self.largest(format.supportedMaxPhotoDimensions)
