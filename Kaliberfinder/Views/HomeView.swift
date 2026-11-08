@@ -45,7 +45,7 @@ struct HomeView: View {
                     } header: {
                         Text("Patrone erkennen")
                     } footer: {
-                        Text("Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren.")
+                        Text("Seitlich auf hellem Grund, von oben fotografieren.")
                 }
                 case .withoutPhoto:
                 Section {
@@ -71,8 +71,6 @@ struct HomeView: View {
                     }
                 } header: {
                     Text("Erkennung")
-                } footer: {
-                    Text("Veraltet: nicht mehr hergestellt. Selten: ein Treffer ist meist eine ähnliche Patrone. «Alle Kaliber» zeigt immer alle.")
                 }
                 }
             }

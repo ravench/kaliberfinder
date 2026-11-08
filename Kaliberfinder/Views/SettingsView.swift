@@ -40,7 +40,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Originalgrösse")
                 } footer: {
-                    Text("Bildschirmzoom und Kalibrierung werden berücksichtigt. Prüfe die Grösse einmal mit einer Bankkarte.")
+                    Text("Prüfe die Grösse einmal mit einer Bankkarte.")
                 }
                 Section {
                     Toggle("Geschosse beim Vergleich mit leeren Hülsen zeigen", isOn: $bulletsOnCases)
@@ -48,13 +48,13 @@ struct SettingsView: View {
                 Section {
                     Toggle("Erkennung farbig zeigen", isOn: $partColours)
                 } footer: {
-                    Text("Umriss auf dem Foto: grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Verjüngung des Körpers.")
+                    Text("Grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Körper.")
                 }
                 if LiDARCamera.isAvailable {
                     Section {
                         Toggle("1:1-Vergleich nach Trefferqualität sortieren", isOn: $compareByFit)
                     } footer: {
-                        Text("Gilt für den Vergleich aller Treffer nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone zuerst.")
+                        Text("Nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone.")
                     }
                 }
                 case .copyright:

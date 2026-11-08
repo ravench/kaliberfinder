@@ -714,6 +714,29 @@
         }
       }
     },
+    "Ausgewählte Kaliber werden 1:1 nebeneinander gezeigt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected calibres are shown 1:1 side by side."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les calibres sélectionnés sont affichés côte à côte à l'échelle 1:1."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I calibri selezionati sono mostrati 1:1 uno accanto all'altro."
+          }
+        }
+      }
+    },
     "Auswählen": {
       "extractionState": "manual",
       "localizations": {
@@ -917,29 +940,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schermo non calibrato: la dimensione può differire leggermente."
-          }
-        }
-      }
-    },
-    "Bildschirmzoom und Kalibrierung werden berücksichtigt. Prüfe die Grösse einmal mit einer Bankkarte.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Display Zoom and calibration are taken into account. Check the size once with a bank card."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Le zoom d'affichage et la calibration sont pris en compte. Vérifiez la taille une fois avec une carte bancaire."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lo zoom dello schermo e la calibrazione vengono considerati. Controlla la dimensione una volta con una carta bancaria."
           }
         }
       }
@@ -1726,48 +1726,25 @@
         }
       }
     },
-    "Fülle aus, was du messen kannst. Schon eine Länge und ein Durchmesser grenzen die Auswahl stark ein.": {
+    "Für Patronen, die die App nicht kennt: eigener Name, von der Auswertung ausgenommen.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fill in what you can measure. One length and one diameter already narrow it down a lot."
+            "value": "For rounds the app does not know: your own name, left out of the evaluation."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Remplissez ce que vous pouvez mesurer. Une longueur et un diamètre suffisent déjà à bien réduire le choix."
+            "value": "Pour des cartouches inconnues de l'app : votre propre nom, exclues de l'évaluation."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Compila ciò che puoi misurare. Già una lunghezza e un diametro restringono molto la scelta."
-          }
-        }
-      }
-    },
-    "Für Patronen, die die App nicht kennt. Du gibst ihnen einen Namen, und die Auswertung der Erkennung lässt sie aus.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "For cartridges the app does not know. You give them a name, and the evaluation of the recognition leaves them out."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pour les cartouches que l'app ne connaît pas. Vous leur donnez un nom, et l'évaluation de la reconnaissance les laisse de côté."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Per le cartucce che l'app non conosce. Dai loro un nome e la valutazione del riconoscimento le tralascia."
+            "value": "Per cartucce che l'app non conosce: nome proprio, escluse dalla valutazione."
           }
         }
       }
@@ -1860,6 +1837,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bossolo dritto"
+          }
+        }
+      }
+    },
+    "Gerundete Richtwerte nach CIP/SAAMI, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rounded reference values after CIP/SAAMI, not reloading data. Primer: Boxer; military cases may have Berdan."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valeurs indicatives arrondies selon CIP/SAAMI, pas de données de rechargement. Amorce : Boxer ; les douilles militaires peuvent être Berdan."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valori indicativi arrotondati secondo CIP/SAAMI, non dati di ricarica. Innesco: Boxer; i bossoli militari possono avere Berdan."
           }
         }
       }
@@ -2002,29 +2002,6 @@
         }
       }
     },
-    "Gilt für den Vergleich aller Treffer nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone zuerst.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Applies to comparing all matches after a photo with a LiDAR size: best match first instead of shortest cartridge first."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "S'applique à la comparaison de toutes les correspondances après une photo avec taille LiDAR : meilleure correspondance d'abord au lieu de la cartouche la plus courte."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vale per il confronto di tutte le corrispondenze dopo una foto con dimensione LiDAR: prima la corrispondenza migliore invece della cartuccia più corta."
-          }
-        }
-      }
-    },
     "Grossbritannien": {
       "extractionState": "manual",
       "localizations": {
@@ -2159,6 +2136,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Più grande"
+          }
+        }
+      }
+    },
+    "Grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Körper.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Green tip and base, purple bullet, orange neck and shoulder, light blue body."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vert pointe et culot, violet projectile, orange collet et épaulement, bleu clair corps."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verde punta e fondello, viola palla, arancione colletto e spalla, azzurro corpo."
           }
         }
       }
@@ -2830,29 +2830,6 @@
         }
       }
     },
-    "Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lay the cartridge on the screen, base on the zero line, and compare."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Posez la cartouche sur l'écran, le culot sur la ligne zéro, et comparez."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Appoggia la cartuccia sullo schermo, il fondello sulla linea dello zero, e confronta."
-          }
-        }
-      }
-    },
     "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, 20–30 cm darüber.": {
       "extractionState": "manual",
       "localizations": {
@@ -3033,29 +3010,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Inserisci le dimensioni"
-          }
-        }
-      }
-    },
-    "Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten. Zündhütchen: Boxer-Grösse handelsüblicher Hülsen; Militärmunition kann Berdan-Zündhütchen anderer Grösse haben.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dimensions are rounded reference values (CIP/SAAMI), not reloading data. Primer: Boxer size of commercial cases; military ammunition can have Berdan primers of other sizes."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les dimensions sont des valeurs indicatives arrondies (CIP/SAAMI), pas des données de rechargement. Amorce : taille Boxer des douilles du commerce ; les munitions militaires peuvent avoir des amorces Berdan d'autres tailles."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Le dimensioni sono valori indicativi arrotondati (CIP/SAAMI), non dati di ricarica. Innesco: misura Boxer dei bossoli commerciali; le munizioni militari possono avere inneschi Berdan di altre misure."
           }
         }
       }
@@ -3244,6 +3198,29 @@
         }
       }
     },
+    "Nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "After a photo with a LiDAR size: best match first instead of shortest cartridge."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Après une photo avec taille LiDAR : meilleure correspondance d'abord au lieu de la cartouche la plus courte."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dopo una foto con dimensione LiDAR: prima la corrispondenza migliore invece della cartuccia più corta."
+          }
+        }
+      }
+    },
     "Name": {
       "extractionState": "manual",
       "localizations": {
@@ -3405,6 +3382,29 @@
         }
       }
     },
+    "Nur ein Kreis erkannt: Bitte Patrone von der Seite fotografieren.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only a circle detected: please photograph the cartridge from the side."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seulement un cercle détecté : veuillez photographier la cartouche de côté."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rilevato solo un cerchio: fotografa la cartuccia di lato."
+          }
+        }
+      }
+    },
     "Näher heran": {
       "extractionState": "manual",
       "localizations": {
@@ -3543,6 +3543,29 @@
         }
       }
     },
+    "Patrone auf dem Bildschirm vergleichen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare the cartridge on the screen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparez la cartouche sur l'écran."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confronta la cartuccia sullo schermo."
+          }
+        }
+      }
+    },
     "Patrone erkennen": {
       "extractionState": "manual",
       "localizations": {
@@ -3585,29 +3608,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fotografa la cartuccia"
-          }
-        }
-      }
-    },
-    "Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lay the cartridge on its side on a light background and photograph it from above."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto."
           }
         }
       }
@@ -3727,6 +3727,29 @@
         }
       }
     },
+    "Prüfe die Grösse einmal mit einer Bankkarte.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check the size once with a bank card."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifiez la taille une fois avec une carte bancaire."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controlla la dimensione una volta con una carta bancaria."
+          }
+        }
+      }
+    },
     "Randdurchmesser": {
       "extractionState": "manual",
       "localizations": {
@@ -3815,29 +3838,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Senza orlo"
-          }
-        }
-      }
-    },
-    "Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Patronen werden nur von der Seite erkannt.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Round in the photo: the base or tip of a cartridge, or a round ball. Cartridges are only identified from the side."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rond sur la photo : culot ou pointe d'une cartouche, ou une balle ronde. Les cartouches ne sont identifiées que de côté."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rotondo nella foto: fondello o punta di una cartuccia, oppure una palla sferica. Le cartucce si riconoscono solo di lato."
           }
         }
       }
@@ -4026,6 +4026,29 @@
         }
       }
     },
+    "Seitlich auf hellem Grund, von oben fotografieren.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On its side on a light background, photographed from above."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De côté sur fond clair, photographiée d'en haut."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Di lato su sfondo chiaro, fotografata dall'alto."
+          }
+        }
+      }
+    },
     "Selten": {
       "extractionState": "manual",
       "localizations": {
@@ -4210,29 +4233,6 @@
         }
       }
     },
-    "Suche nach Namen und tippe die Kaliber an, die du nebeneinander sehen willst.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Search by name and tap the calibres you want to see side by side."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cherchez par nom et touchez les calibres que vous voulez voir côte à côte."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cerca per nome e tocca i calibri che vuoi vedere uno accanto all'altro."
-          }
-        }
-      }
-    },
     "Tele": {
       "extractionState": "manual",
       "localizations": {
@@ -4279,25 +4279,25 @@
         }
       }
     },
-    "Tipp: Patrone seitlich auf einen hellen, einfarbigen Untergrund legen und senkrecht von oben fotografieren.": {
+    "Tipp: seitlich auf einfarbigen hellen Grund legen, senkrecht von oben fotografieren.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tip: lay the cartridge on its side on a light, plain background and photograph it straight from above."
+            "value": "Tip: lay it on its side on a plain light background and photograph it straight from above."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Astuce : posez la cartouche sur le côté sur un fond clair et uni et photographiez-la bien d'en haut."
+            "value": "Conseil : posez-la de côté sur un fond clair uni et photographiez-la à la verticale."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Suggerimento: appoggia la cartuccia di lato su uno sfondo chiaro e uniforme e fotografala dritta dall'alto."
+            "value": "Suggerimento: appoggiala di lato su uno sfondo chiaro uniforme e fotografala dall'alto in verticale."
           }
         }
       }
@@ -4486,29 +4486,6 @@
         }
       }
     },
-    "Umriss auf dem Foto: grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Verjüngung des Körpers.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Outline on the photo: green tip and base, purple bullet, orange neck and shoulder, light blue body taper."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contour sur la photo : vert pointe et culot, violet projectile, orange collet et épaulement, bleu clair conicité du corps."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Contorno sulla foto: verde punta e fondello, viola palla, arancione colletto e spalla, azzurro conicità del corpo."
-          }
-        }
-      }
-    },
     "Veraltet": {
       "extractionState": "manual",
       "localizations": {
@@ -4528,29 +4505,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Obsoleto"
-          }
-        }
-      }
-    },
-    "Veraltet: nicht mehr hergestellt. Selten: ein Treffer ist meist eine ähnliche Patrone. «Alle Kaliber» zeigt immer alle.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Obsolete: no longer made. Rare: a match is usually a similar cartridge. “All calibres” always shows all."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Obsolète : n'est plus fabriqué. Rare : une correspondance est le plus souvent une cartouche semblable. « Tous les calibres » les affiche toujours tous."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Obsoleto: non più prodotto. Raro: una corrispondenza è di solito una cartuccia simile. «Tutti i calibri» li mostra sempre tutti."
           }
         }
       }
@@ -4670,6 +4624,29 @@
         }
       }
     },
+    "Was du messen kannst; eine Länge und ein Durchmesser reichen oft.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What you can measure; a length and a diameter are often enough."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce que vous pouvez mesurer ; une longueur et un diamètre suffisent souvent."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quello che riesci a misurare; una lunghezza e un diametro spesso bastano."
+          }
+        }
+      }
+    },
     "Was liegt im Bild?": {
       "extractionState": "manual",
       "localizations": {
@@ -4716,29 +4693,6 @@
         }
       }
     },
-    "Wähle Kaliber aus, um sie in Originalgrösse nebeneinander zu vergleichen.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Select calibres to compare them side by side at real size."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sélectionnez des calibres pour les comparer côte à côte en taille réelle."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seleziona i calibri per confrontarli uno accanto all'altro a grandezza reale."
-          }
-        }
-      }
-    },
     "Wähle das Kaliber, das du fotografierst, und mache mehrere Fotos davon. Gespeichert werden das Foto, die LiDAR-Tiefe, die Kameradaten und die Vision-Maske. Teile die Serie als ZIP, sie kommt in die Tests.": {
       "extractionState": "manual",
       "localizations": {
@@ -4758,6 +4712,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Scegli il calibro che stai fotografando e scatta più foto. Vengono salvati la foto, la profondità LiDAR, i dati della fotocamera e la maschera Vision. Condividi la serie come ZIP: finirà nei test."
+          }
+        }
+      }
+    },
+    "Wähle die Kaliber aus, die du nebeneinander sehen willst.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick the calibres you want to see side by side."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez les calibres que vous voulez voir côte à côte."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli i calibri che vuoi vedere uno accanto all'altro."
           }
         }
       }
