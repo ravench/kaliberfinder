@@ -94,6 +94,20 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// The Swiss cadet round, found by the name on its box, with its own drawing.
+    func testKadettenpatrone() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("Kadetten\n")
+        }
+        if open(app.staticTexts["7.5 mm Kadettenpatrone"].firstMatch) {
+            snap("26-Kadettenpatrone")
+        }
+    }
+
     /// The calibre picker of a new training series finds a calibre by its other names too, and shows them.
     func testTrainingCalibreSearch() {
         app.terminate()

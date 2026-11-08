@@ -5986,6 +5986,56 @@
    }
   },
   {
+   "id": "7.5 mm Kadettenpatrone",
+   "name": "7.5 mm Kadettenpatrone",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "kadettenpatrone",
+    "kadetten-pat",
+    "kadettenpat",
+    "7.5 mm kadettenpatrone",
+    "7.5 mm kadetten-pat",
+    "cadets",
+    "cadetti",
+    "kg97",
+    "kadettengewehr"
+   ],
+   "displayAliases": [
+    "Cart. 7,5 mm cadets",
+    "Cart. 7,5 mm cadetti"
+   ],
+   "headstamps": [],
+   "obsolete": true,
+   "rare": true,
+   "country": {
+    "code": "CH",
+    "name": "Schweiz",
+    "flag": "🇨🇭"
+   },
+   "worldwide": false,
+   "blank": false,
+   "dimensions": {
+    "rim": 12.7,
+    "base": 12.6,
+    "neck": 8.6,
+    "caseLength": 54.8,
+    "overallLength": 77.5,
+    "bullet": 7.8,
+    "shoulder": 11.5
+   },
+   "outline": {
+    "width": 12.7,
+    "height": 77.5,
+    "case": "M12.70 77.50 L12.70 76.20 L11.52 76.20 L11.52 74.90 L12.65 74.20 L12.10 32.50 L10.65 29.75 L10.65 22.70 L2.05 22.70 L2.05 29.75 L0.60 32.50 L0.05 74.20 L1.18 74.90 L1.18 76.20 L0.00 76.20 L0.00 77.50 Z",
+    "bullet": "M10.25 22.70 L10.25 17.71 L10.24 16.44 L10.21 15.18 L10.16 13.91 L10.09 12.65 L9.99 11.38 L9.87 10.12 L9.73 8.85 L9.55 7.59 L9.34 6.32 L9.08 5.06 L8.76 3.79 L8.36 2.53 L7.80 1.26 L6.97 0.00 L6.35 0.00 L5.73 0.00 L4.90 1.26 L4.34 2.53 L3.94 3.79 L3.62 5.06 L3.36 6.32 L3.15 7.59 L2.97 8.85 L2.83 10.12 L2.71 11.38 L2.61 12.65 L2.54 13.91 L2.49 15.18 L2.46 16.44 L2.45 17.71 L2.45 22.70 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
    "id": "7.5x54 mm French",
    "name": "7.5x54 mm French",
    "category": "Langwaffe",

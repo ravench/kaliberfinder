@@ -164,6 +164,27 @@ final class CatalogTests: XCTestCase {
         }
     }
 
+    func testKadettenpatroneIsItsOwnRareRound() throws {
+        let kp = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5 mm Kadettenpatrone"))
+        XCTAssertEqual(kp.category, CartridgeCatalog.Category.rifle.rawValue)
+        // Measured on Raven's round: a longer case than the GP 1890's, with a jacketed round nose.
+        let gp1890 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x53.5 mm Swiss (GP 1890)"))
+        XCTAssertEqual(kp.dimensions.caseLength, 54.8, accuracy: 0.001)
+        XCTAssertEqual(kp.dimensions.overallLength, 77.5, accuracy: 0.001)
+        XCTAssertGreaterThan(kp.dimensions.caseLength, gp1890.dimensions.caseLength)
+        XCTAssertNil(kp.outline.bulletMaterial, "a jacket, not the GP 1890's steel cap")
+        XCTAssertNil(kp.outline.patch)
+        // Made for the cadet rifle only: matched only with both switches on, always found by search.
+        XCTAssertTrue(kp.obsolete)
+        XCTAssertTrue(kp.rare)
+        XCTAssertFalse(CartridgeCatalog.matchable(includeObsolete: true).contains { $0.id == kp.id })
+        XCTAssertTrue(CartridgeCatalog.matchable(includeObsolete: true, includeRare: true).contains { $0.id == kp.id })
+        for text in ["Kadettenpatrone", "Kadetten-Pat", "Cart. 7,5 mm cadetti", "KG97"] {
+            XCTAssertTrue(CartridgeCatalog.search(text).contains { $0.id == kp.id }, text)
+        }
+        XCTAssertFalse(CartridgeCatalog.search("GP 1890").contains { $0.id == kp.id })
+    }
+
     func testNormalized() {
         XCTAssertEqual(CartridgeCatalog.normalized(" 7,5 × 55 mm "), "75x55")
         XCTAssertEqual(CartridgeCatalog.normalized(".45 ACP"), "45acp")
