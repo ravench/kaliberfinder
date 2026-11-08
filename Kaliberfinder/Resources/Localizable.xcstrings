@@ -2531,6 +2531,29 @@
         }
       }
     },
+    "Kamera": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camera"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caméra"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotocamera"
+          }
+        }
+      }
+    },
     "Kategorie": {
       "extractionState": "manual",
       "localizations": {
@@ -3125,6 +3148,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nome"
+          }
+        }
+      }
+    },
+    "Neu in dieser Version": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New in this version"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveautés de cette version"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Novità in questa versione"
           }
         }
       }
@@ -4049,6 +4095,29 @@
         }
       }
     },
+    "Tele": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telephoto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Téléobjectif"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teleobiettivo"
+          }
+        }
+      }
+    },
     "Tiefe relativ": {
       "extractionState": "manual",
       "localizations": {
@@ -4256,6 +4325,29 @@
         }
       }
     },
+    "Ultraweit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ultra wide"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ultra grand-angle"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ultra-grandangolo"
+          }
+        }
+      }
+    },
     "Umriss auf dem Foto: grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Verjüngung des Körpers.": {
       "extractionState": "manual",
       "localizations": {
@@ -4367,6 +4459,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diffusione"
+          }
+        }
+      }
+    },
+    "Version %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versione %@"
           }
         }
       }

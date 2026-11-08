@@ -79,6 +79,35 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// The .32 S&W family side by side, with the flush-seated wadcutter that shows only its case.
+    func testWadcutter() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("32 S&W\n") // return hides the keyboard, so all three rows show
+        }
+        snap("24-32-SW")
+        if open(app.staticTexts[".32 S&W Long Wadcutter"].firstMatch) {
+            snap("25-32-SW-Long-Wadcutter")
+        }
+    }
+
+    /// The Swiss cadet round, found by the name on its box, with its own drawing.
+    func testKadettenpatrone() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("Kadetten\n")
+        }
+        if open(app.staticTexts["7.5 mm Kadettenpatrone"].firstMatch) {
+            snap("26-Kadettenpatrone")
+        }
+    }
+
     /// The calibre picker of a new training series finds a calibre by its other names too, and shows them.
     func testTrainingCalibreSearch() {
         app.terminate()
@@ -180,6 +209,38 @@ final class PRScreensTests: XCTestCase {
         guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
         XCTAssertTrue(app.buttons["Als ZIP teilen"].waitForExistence(timeout: 5), "The saved series did not open")
         snap("22-Trainingsdaten-Serie")
+    }
+
+    /// With the hidden training capture on, a calibre's detail page starts a series of that calibre.
+    func testTrainingSeriesFromACalibre() {
+        app.terminate()
+        app.launchArguments += ["-trainingCaptureEnabled", "YES"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("9x19\n")
+        }
+        guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
+        snap("28-Kaliber-Trainingsdaten")
+        guard open(app.buttons["Trainingsdaten aufnehmen"].firstMatch) else { return }
+        XCTAssertTrue(app.navigationBars["Neue Serie"].waitForExistence(timeout: 5), "The new series sheet did not open")
+        XCTAssertTrue(app.staticTexts["9x19 mm"].firstMatch.exists, "The calibre is not preselected")
+        snap("29-Trainingsdaten-neue-Serie-Kaliber")
+    }
+
+    /// The release notes a TestFlight build shows the first time it is opened (CI writes them into the
+    /// bundle; here from a fixture, as if they were not shown yet).
+    func testWhatsNew() {
+        let notes = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("KaliberfinderTests/Fixtures/changelog.json")
+        app.terminate()
+        app.launchArguments += ["-screenTourChangelog", notes.path, "-changelogShownBuild", "none"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Neu in dieser Version"].waitForExistence(timeout: 10), "The release notes did not open")
+        snap("30-Neu-in-dieser-Version")
     }
 
     /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`;
