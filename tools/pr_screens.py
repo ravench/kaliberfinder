@@ -73,14 +73,15 @@ def _pngs(folder):
     return set(n for n in os.listdir(folder) if n.endswith(".png")) if os.path.isdir(folder) else set()
 
 
-def same(a, b, tolerance=48, max_pixels=20, blur=2):
+def same(a, b, tolerance=48, max_pixels=20, blur=4):
     """True if two screenshots look the same.
 
     Identical files are the same. Otherwise, with Pillow, both are blurred a little and a few
     pixels off by a few levels still count as the same: text and toggles rasterised at a
     fractional scroll offset, and the glass bars' blur of what lies under them, differ from run
-    to run by up to ~120 levels along every edge, but by under 30 once blurred, while a changed
-    word or control stays well over the tolerance. Without Pillow any difference counts.
+    to run by up to ~120 levels along every edge, but by under 25 once blurred (full-size 3x
+    screens), while a changed word or control stays well over the tolerance. Without Pillow any
+    difference counts.
     """
     if filecmp.cmp(a, b, shallow=False):
         return True
