@@ -99,17 +99,8 @@ struct MatchesView: View {
     /// The calibres listed: the ones the switches let through, plus the hidden ones once revealed.
     private var matches: [Match] { ranked.list(revealing: revealed) }
 
-    /// The hint to measure by hand when the photo gives no sure answer, and the calibres found.
+    /// The calibres found, and the hint to measure by hand when the photo gives no sure answer.
     @ViewBuilder private var results: some View {
-        if let hint = Self.manualEntryHint(matches) {
-            Section {
-                Text(hint)
-                NavigationLink { MeasureView() } label: {
-                    Label("Masse von Hand eingeben", systemImage: "ruler")
-                }
-                if matches.isEmpty { NavigationLink("Alle Kaliber durchsuchen") { CatalogView() } }
-            }
-        }
         if !matches.isEmpty || ranked.summary != nil {
             Section {
                 // Calibres that look exactly the same from the side share one row.
@@ -124,6 +115,16 @@ struct MatchesView: View {
                 Text("Mögliche Kaliber")
             } footer: {
                 Text("Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.")
+            }
+        }
+        // Below the calibres found: the list is the answer, the hint what to do when it is not sure enough (Raven, 2026-11-08).
+        if let hint = Self.manualEntryHint(matches) {
+            Section {
+                Text(hint)
+                NavigationLink { MeasureView() } label: {
+                    Label("Masse von Hand eingeben", systemImage: "ruler")
+                }
+                if matches.isEmpty { NavigationLink("Alle Kaliber durchsuchen") { CatalogView() } }
             }
         }
     }
