@@ -39,7 +39,7 @@ final class EmptyCaseTests: XCTestCase {
         let shape = try photo(cartridge(".308 Winchester"), part: .emptyCase, step: 0.15)
         XCTAssertEqual(ScanMode.auto.part(for: shape), .emptyCase)
         let matches = Matcher.rank(shape: shape, limit: .max)
-        // Without a scale the GP 1890 case (same shape, only 2 mm longer) can tie with the .308 twins.
+        // Without a scale the GP 1890 case (same shape, about 3 mm longer) can tie with the .308 twins.
         let top = Set(matches.prefix(3).map(\.cartridge.id))
         XCTAssertTrue(top.isSuperset(of: [".308 Winchester", "7.62x51 mm NATO"]), top.sorted().joined(separator: ", "))
         XCTAssertTrue(matches.allSatisfy { $0.part == .emptyCase })
