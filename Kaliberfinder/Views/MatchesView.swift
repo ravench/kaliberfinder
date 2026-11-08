@@ -68,6 +68,7 @@ struct MatchesView: View {
             }
             if analysis != nil { results }
         }
+        .readableWidth()
         .safeAreaInset(edge: .bottom) {
             // A prominent button pinned to the bottom, like on the measure screen, so it is not missed.
             if analysis != nil, !matches.isEmpty {

@@ -66,6 +66,7 @@ struct MeasureView: View {
             }
         }
         .scrollDismissesKeyboard(.interactively)
+        .readableWidth()
         .navigationTitle("Masse eingeben")
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {

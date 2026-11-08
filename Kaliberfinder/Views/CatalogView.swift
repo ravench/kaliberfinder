@@ -40,6 +40,7 @@ struct CatalogView: View {
         .overlay {
             if results.isEmpty { ContentUnavailableView.search(text: query) }
         }
+        .readableWidth()
         .searchable(text: $query, prompt: "Kaliber, z. B. 9 mm Luger")
         .navigationTitle("Kaliber")
         .toolbar {
