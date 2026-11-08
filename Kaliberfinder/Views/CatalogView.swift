@@ -64,8 +64,9 @@ struct CatalogView: View {
                 HStack {
                     CartridgeRow(cartridge: c)
                     Spacer()
-                    Image(systemName: selection.contains(c) ? "checkmark.circle.fill" : "circle")
-                        .foregroundStyle(selection.contains(c) ? Color.accentColor : .secondary)
+                    // Picked rows get a checkmark; the others no circle (Raven, 2026-11-08): the «Ausgewählt»
+                    // list above says the rows are there to be tapped.
+                    if selection.contains(c) { Image(systemName: "checkmark").foregroundStyle(Color.accentColor) }
                 }
             }
             .foregroundStyle(.primary)
