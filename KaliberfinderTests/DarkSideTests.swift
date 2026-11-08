@@ -17,12 +17,14 @@ final class DarkSideTests: XCTestCase {
 
     /// A 600 × 600 px photo of `c` (or only its case, `ppm` pixels per millimetre) lying in the middle
     /// at `angle` on a light table. The metal more than `darkFrom` of the case's half width off the
-    /// axis on one side is nearly black; next to that side the table lies in a shadow `shadow` mm wide,
-    /// at `shadowLevel` of its brightness. With the pixels the cartridge covers (`whole`) and the ones
+    /// axis on one side is nearly black (`strip` if given), and `farRim.colour` instead from `farRim.from`
+    /// of the half width on. Next to that side the table lies in a shadow `shadow` mm wide, at
+    /// `shadowLevel` of its brightness. With the pixels the cartridge covers (`whole`) and the ones
     /// Vision keeps when it stops in the black strip, `cutFrom` of the half width off the axis, along
     /// the case (`cut`; along the bullet too with `cutBullet`).
     private func photo(_ c: Cartridge, darkFrom: Double = 0.3, cutFrom: Double = 0.5, shadow: Double = 0, shadowLevel: Float = 0.3,
                        caseOnly: Bool = false, cutBullet: Bool = false, darkMetal: Bool = true,
+                       strip: [Float]? = nil, farRim: (from: Double, colour: [Float])? = nil,
                        angle: Double = 0.7, ppm: Double = 6) -> (image: RGBImage, whole: [Point], cut: [Point]) {
         let size = 600
         let g = OutlineGeometry(c.outline, includeBullet: !caseOnly)
@@ -50,7 +52,11 @@ final class DarkSideTests: XCTestCase {
                 if inside {
                     // Along the bullet, the strip goes on as at the case mouth (in photos it doesn't reach the tip).
                     let isBullet = !caseOnly && v < bulletEnd, radius = half[max(Int(bulletEnd * 10), min(half.count - 1, Int(v * 10)))]
-                    colour = darkMetal && u - axis > darkFrom * radius ? black : isBullet ? copper : brass
+                    if darkMetal && u - axis > darkFrom * radius {
+                        colour = farRim.flatMap { u - axis > $0.from * radius ? $0.colour : nil } ?? strip ?? black
+                    } else {
+                        colour = isBullet ? copper : brass
+                    }
                     whole.append(Point(x: Double(x), y: Double(y)))
                     if u - axis <= cutFrom * radius || (isBullet && !cutBullet) { cut.append(Point(x: Double(x), y: Double(y))) }
                 } else if shadow > 0, u > axis, v > 0, v < c.outline.height, u - axis < half[min(half.count - 1, Int(v * 10))] + shadow {
@@ -154,6 +160,20 @@ final class DarkSideTests: XCTestCase {
         let strip = photo(try cartridge("9x19 mm"), shadow: 2)
         let cut = try XCTUnwrap(DarkSide.Frame(strip.cut, step: 1))
         XCTAssertNotNil(DarkSide.tableStart(cut, side: cut.shorterSide, photo: strip.image))
+    }
+
+    /// Just outside a cut edge the photo is nearly black (the strip goes on) or brighter than inside
+    /// (the case's far rim mirrors the table). Grey on both sides is a dull case beside its shadow,
+    /// where the silhouette may be whole (6-mm-br-norma-20261107-223523/06, on wood wool).
+    func testGreyOnBothSidesOfTheEdgeIsNoCut() throws {
+        let c = try cartridge("9x19 mm")
+        let dull = photo(c, cutFrom: 0.8, shadow: 1, strip: table.map { $0 * 0.3 })
+        XCTAssertNil(DarkSide.restored(dull.cut, step: 1, photo: dull.image))
+        let black = photo(c, cutFrom: 0.8, shadow: 1)
+        XCTAssertNotNil(DarkSide.restored(black.cut, step: 1, photo: black.image))
+        let rim = photo(c, cutFrom: 0.7, farRim: (0.7, table.map { $0 * 0.4 }))
+        let restored = try XCTUnwrap(DarkSide.restored(rim.cut, step: 1, photo: rim.image))
+        XCTAssertEqual(try aspect(restored) / aspect(rim.whole), 1, accuracy: 0.03)
     }
 
     /// Points every few pixels, as Vision's mask is sampled for a large cartridge.

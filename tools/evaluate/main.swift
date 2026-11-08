@@ -116,20 +116,29 @@ func analyse(_ entry: SavedShot, macVision: Bool, oneLook: Bool) -> (PhotoAnalys
         return (analysis, .phone, .none)
     }
     guard let photo = uprightPhoto(photoURL) else { fail("\(path): photo unreadable (is Git LFS installed?)") }
-    let vision: PhotoAnalyzer.VisionResult?, source: Evaluation.Source
+    // Vision's object in the whole photo: the phone's mask where it stored one; where the phone's Vision
+    // found nothing (and --mac-vision is off) that is known, and the cascade of crops starts at once;
+    // for a photo the phone never analysed, Vision on the Mac.
+    let wholeVision: PhotoAnalyzer.VisionResult??
+    var source: Evaluation.Source
     if let labels, let info = shot.mask {
-        vision = PhotoAnalyzer.visionResult(instanceLabels: labels, mask: (info.width, info.height), image: (photo.width, photo.height))
+        wholeVision = PhotoAnalyzer.visionResult(instanceLabels: labels, mask: (info.width, info.height), image: (photo.width, photo.height))
         source = .phone
     } else if shot.analysis != nil && !macVision {
-        vision = nil
-        source = .colour
+        wholeVision = .some(nil)
+        source = .crop
     } else {
-        vision = PhotoAnalyzer.visionResult(of: photo)
+        wholeVision = nil
         source = .mac
     }
-    let first = PhotoAnalyzer.analysis(of: photo, vision: vision)
+    let full = uprightPhoto(photoURL, maxSide: 1_000_000)
+    let first = PhotoAnalyzer.firstLook(whole: photo, wholeVision: wholeVision,
+                                        photoSize: CGSize(width: full?.width ?? photo.width, height: full?.height ?? photo.height)) { region in
+        full.flatMap { part($0, region: region) }
+    }
+    if first.byColour { source = .colour } else if first.byCrop { source = .crop }
     let looked = oneLook ? nil : secondLook(first, photo: photoURL)
-    return (looked?.0 ?? first, vision == nil ? .colour : source, looked?.1 ?? .none)
+    return (looked?.0 ?? first, first.shape == nil ? .none : source, looked?.1 ?? .none)
 }
 
 let options = Options(Array(CommandLine.arguments.dropFirst()))
@@ -139,10 +148,12 @@ let root = FileManager.default.fileExists(atPath: captures.path) ? captures : op
 let splits = (try? Data(contentsOf: options.shots.appendingPathComponent("splits.json")))
     .flatMap { try? JSONSerialization.jsonObject(with: $0) as? [String: Any] }
 let holdout = Set(splits?["holdout"] as? [String] ?? [])
-let packages = CaptureStore(root: root).packages()
-    .filter { holdout.contains($0.url.lastPathComponent) == options.holdout }
-    .sorted { $0.url.lastPathComponent < $1.url.lastPathComponent }
+let found = CaptureStore(root: root).packages().filter { holdout.contains($0.url.lastPathComponent) == options.holdout }
+let packages = Evaluation.scored(found).sorted { $0.url.lastPathComponent < $1.url.lastPathComponent }
 guard !packages.isEmpty else { fail("no capture packages in \(root.path)\n\n\(usage)") }
+if packages.count < found.count {
+    FileHandle.standardError.write(Data("\(found.count - packages.count) series of calibres not in the catalogue left out\n".utf8))
+}
 
 let started = Date()
 var shots: [Evaluation.Shot] = []

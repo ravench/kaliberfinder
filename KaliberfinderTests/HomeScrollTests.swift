@@ -29,10 +29,31 @@ final class HomeScrollTests: XCTestCase {
         XCTAssertTrue(canDrag(list))
     }
 
-    /// Lays out the home screen in German, as on a phone with a camera, and returns its list.
-    private func homeList(textSize: DynamicTypeSize = .large) throws -> UIScrollView {
+    /// The smallest phone we test against (Raven, 2026-11-08). Whether the list fits there depends on
+    /// the text size; either way the scrolling matches the fit under the large title.
+    func testHomeOnAnIPhone13MiniScrollsOnlyWhenItDoesNotFit() throws {
+        let list = try homeList(size: CGSize(width: 375, height: 812))
+        XCTAssertEqual(canDrag(list), list.contentSize.height > room(in: list))
+    }
+
+    /// On a phone a little smaller than the 17 Pro the list fits only once the title has collapsed:
+    /// the fit is read while the title is large and kept while it is collapsed, so the list goes on scrolling.
+    func testFitIsReadUnderTheLargeTitleOnly() {
+        var fit = LargeTitleFit()
+        fit.read(.init(insetTop: 153, fits: false))
+        XCTAssertFalse(fit.fits)
+        fit.read(.init(insetTop: 101, fits: true))
+        XCTAssertFalse(fit.fits, "read with the title collapsed")
+        fit.read(.init(insetTop: 153.3, fits: true))
+        XCTAssertTrue(fit.fits, "larger text turned off, the list fits under the large title again")
+    }
+
+    /// Lays out the home screen in German, as on a phone with a camera (of the simulator's size, or
+    /// `size`), and returns its list.
+    private func homeList(textSize: DynamicTypeSize = .large, size: CGSize? = nil) throws -> UIScrollView {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         let window = UIWindow(windowScene: scene)
+        if let size { window.frame = CGRect(origin: .zero, size: size) }
         let home = NavigationStack { HomeView(canTakePhoto: true) }
             .environmentObject(ScaleModel())
             .environment(\.dynamicTypeSize, textSize)

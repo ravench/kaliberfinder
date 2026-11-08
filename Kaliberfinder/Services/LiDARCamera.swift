@@ -116,6 +116,9 @@ final class LiDARCamera: NSObject, ObservableObject {
         let settings = AVCapturePhotoSettings()
         settings.isDepthDataDeliveryEnabled = photoOutput.isDepthDataDeliveryEnabled
         settings.isDepthDataFiltered = true
+        // The sensor's full resolution (48 MP on the Pro phones since the 14 Pro): the second look cuts the
+        // cartridge out of the full-size photo, so every pixel counts there.
+        settings.maxPhotoDimensions = photoOutput.maxPhotoDimensions
         if let connection = photoOutput.connection(with: .video), connection.isVideoRotationAngleSupported(angle) {
             connection.videoRotationAngle = angle
         }
@@ -134,11 +137,13 @@ final class LiDARCamera: NSObject, ObservableObject {
         session.addOutput(photoOutput)
         session.addOutput(depthOutput)
         DispatchQueue.main.async { self.coordinateRotation() }
-        // A 4:3 format that delivers depth, with a float depth format.
-        if let format = device.formats.last(where: { f in
+        // A 4:3 format that delivers depth, with a float depth format; of those, the one whose photos
+        // can be largest.
+        let candidates = device.formats.filter { f in
             let d = f.formatDescription.dimensions
             return !f.supportedDepthDataFormats.isEmpty && d.width * 3 == d.height * 4
-        }) {
+        }
+        if let format = candidates.max(by: { Self.largest($0.supportedMaxPhotoDimensions).width < Self.largest($1.supportedMaxPhotoDimensions).width }) {
             try? device.lockForConfiguration()
             device.activeFormat = format
             device.activeDepthDataFormat = format.supportedDepthDataFormats.last {
@@ -146,10 +151,16 @@ final class LiDARCamera: NSObject, ObservableObject {
                 return type == kCVPixelFormatType_DepthFloat32 || type == kCVPixelFormatType_DepthFloat16
             }
             device.unlockForConfiguration()
+            photoOutput.maxPhotoDimensions = Self.largest(format.supportedMaxPhotoDimensions)
         }
         photoOutput.isDepthDataDeliveryEnabled = photoOutput.isDepthDataDeliverySupported
         depthOutput.isFilteringEnabled = true
         depthOutput.setDelegate(self, callbackQueue: queue)
+    }
+
+    /// The largest of a format's photo sizes (by width); zero when it names none.
+    static func largest(_ dimensions: [CMVideoDimensions]) -> CMVideoDimensions {
+        dimensions.max { $0.width < $1.width } ?? CMVideoDimensions(width: 0, height: 0)
     }
 
     /// Table distance in mm from a depth map: the valid samples in the central half of the frame.
@@ -200,6 +211,13 @@ extension LiDARCamera: AVCaptureDepthDataOutputDelegate {
 
 extension LiDARCamera: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        if error != nil, let format = device?.activeFormat,
+           photoOutput.maxPhotoDimensions.width > format.formatDescription.dimensions.width {
+            // The full resolution did not go with depth delivery on this phone: once more at the format's own size.
+            photoOutput.maxPhotoDimensions = format.formatDescription.dimensions
+            queue.async { [self] in takePhoto(angle: photoOutput.connection(with: .video)?.videoRotationAngle ?? 90) }
+            return
+        }
         if let raw = onRawPhoto {
             onRawPhoto = nil
             let moment = rawMoment

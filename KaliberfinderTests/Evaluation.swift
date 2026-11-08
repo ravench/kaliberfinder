@@ -123,6 +123,8 @@ enum Evaluation {
         case phone
         /// Vision on the Mac, for a photo the phone never analysed (or with --mac-vision).
         case mac
+        /// Vision on a crop of the photo, after it found nothing in the whole photo (`PhotoAnalyzer.firstLook`).
+        case crop
         /// The colour cut-out: Vision found no cartridge.
         case colour
         /// Nothing measurable.
@@ -141,6 +143,12 @@ enum Evaluation {
         /// The calibre in the first row of the phone's list with the switches off; nil when nothing is listed.
         let first: String?
         let result: ShotResult
+    }
+
+    /// The packages that can be scored: a series of a round the catalogue lacks
+    /// (`CapturePackage.unlisted`) has no right calibre to find.
+    static func scored(_ packages: [SavedCapture]) -> [SavedCapture] {
+        packages.filter { !$0.package.isUnlisted }
     }
 
     /// Scores the analysis of a photo of `package`'s calibre and part, with the LiDAR scale it was
@@ -218,6 +226,7 @@ enum Evaluation {
          ("With LiDAR size", shots.filter { $0.size != nil }), ("Without size", shots.filter { $0.size == nil }),
          ("Outline from the phone's Vision mask", shots.filter { $0.source == .phone }),
          ("Outline from Vision on the Mac", shots.filter { $0.source == .mac }),
+         ("Outline from Vision on a crop", shots.filter { $0.source == .crop }),
          ("Outline from the colour cut-out", shots.filter { $0.source == .colour }),
          ("No outline", shots.filter { $0.source == .none })]
     }
