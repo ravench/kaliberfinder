@@ -16,6 +16,7 @@ struct HomeView: View {
     @State private var whatsNew: [String] = []
     @State private var showWhatsNew = false
     @State private var libraryItem: PhotosPickerItem?
+    @State private var loading = PhotoLoading()
     @State private var photo: PickedPhoto?
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
@@ -76,6 +77,16 @@ struct HomeView: View {
                 }
             }
         }
+        // Nothing to tap while a library photo loads: a second pick would start a second load, and a push
+        // from another screen would land the matches on top of it.
+        .disabled(loading.isLoading)
+        .overlay {
+            if loading.isLoading {
+                ProgressView { Text("Foto wird geladen …") }
+                    .padding(24)
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+            }
+        }
         // Scrolls only when the screen is too small for it under the large title: otherwise a drag just
         // stretches and shrinks the title. `.basedOnSize` alone looks again once the title has collapsed:
         // on a phone a little smaller than the 17 Pro the list then fits and stops scrolling, title stuck small.
@@ -117,12 +128,15 @@ struct HomeView: View {
             }
         }
         .onChange(of: libraryItem) { _, item in
-            guard let item else { return }
+            guard let item, loading.start() else { return }
             Task {
+                // The data loads off the main thread (from iCloud, perhaps: seconds for a 48 MP photo); `UIImage(data:)`
+                // only reads the header, the pixels decode later in `PhotoAnalyzer`, behind the matches' own progress view.
                 if let data = try? await item.loadTransferable(type: Data.self), let image = UIImage(data: data) {
                     photo = PickedPhoto(image: image)
                 }
                 libraryItem = nil
+                loading.finish()
             }
         }
     }
@@ -149,6 +163,22 @@ struct HomeView: View {
         tourPhotoTaken = true
         return UIImage(contentsOfFile: path)
     }
+}
+
+/// The wait between the library picker closing and the matches opening, with the home screen on view: the
+/// picked photo's data loads meanwhile. The screen shows it is busy and takes no second pick.
+struct PhotoLoading: Equatable {
+    private(set) var isLoading = false
+
+    /// Starts a load; false while one is running, so a second pick does not start another.
+    mutating func start() -> Bool {
+        if isLoading { return false }
+        isLoading = true
+        return true
+    }
+
+    /// The load is over: the matches are opening, or it failed.
+    mutating func finish() { isLoading = false }
 }
 
 /// Whether a list fits under its large title, read only while the title is large (the largest top inset

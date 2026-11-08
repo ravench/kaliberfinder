@@ -1611,6 +1611,29 @@
         }
       }
     },
+    "Foto wird geladen …": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading photo …"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chargement de la photo …"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caricamento della foto …"
+          }
+        }
+      }
+    },
     "Foto übernommen. Öffne Kaliberfinder, um die Treffer zu sehen.": {
       "extractionState": "manual",
       "localizations": {

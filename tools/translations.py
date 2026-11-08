@@ -145,6 +145,7 @@ T = {
     "Form passt wenig": ("Shape fits poorly", "La forme correspond peu", "La forma corrisponde poco"),
     "Foto auswählen": ("Choose photo", "Choisir une photo", "Scegli foto"),
     "Foto wird ausgewertet …": ("Analysing photo …", "Analyse de la photo …", "Analisi della foto …"),
+    "Foto wird geladen …": ("Loading photo …", "Chargement de la photo …", "Caricamento della foto …"),
     "Mehrere Patronen im Bild erkannt.": (
         "Several cartridges found in the photo.",
         "Plusieurs cartouches détectées sur la photo.",
