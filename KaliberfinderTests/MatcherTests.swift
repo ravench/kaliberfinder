@@ -123,6 +123,24 @@ final class MatcherTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(CompareButton.margin, 20)
     }
 
+    /// A folded-crimp 12/70 shell is 6 mm shorter than the catalogue's 64 mm (Raven 2026-11-08): with
+    /// LiDAR it still fits its gauge's length, as a 65.5 mm Remington does.
+    func testAShortShotshellStillFitsByLength() throws {
+        let shell = try XCTUnwrap(CartridgeCatalog.cartridge(id: "12/70"))
+        let shape = try XCTUnwrap(ShapeMatcher.catalogue[shell.id])
+        for length in [57.8, 65.5] {
+            let short = ShapeMeasurement(aspect: length / 20.6, profile: shape.profile, widths: shape.widths)
+            let size = MeasuredSize(length: length / Matcher.lengthScaleWhole, diameter: 20.6 / Matcher.diameterScale,
+                                    lengthError: 1, diameterError: 0.3)
+            let matches = Matcher.rank(shape: short, size: size, limit: .max)
+            let twelve = try XCTUnwrap(matches.first { $0.cartridge.id == shell.id }, "\(length)")
+            XCTAssertEqual(try XCTUnwrap(twelve.sizeDeviation), 0, accuracy: 1e-9, "\(length)")
+            XCTAssertEqual(matches.first { $0.cartridge.dimensions.rim == shell.dimensions.rim }?.cartridge.id, shell.id, "\(length): 12/70 before 12/76")
+            let magnum = matches.first { $0.cartridge.id == "12/89" }
+            XCTAssertGreaterThan(magnum?.sizeDeviation ?? .infinity, 0, "\(length)")
+        }
+    }
+
     func testFitsWellNeedsGoodShapeAndSize() throws {
         let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
         XCTAssertTrue(Match(cartridge: c, score: 2, shapeDistance: 0.05, sizeDeviation: 0.1).fitsWell)

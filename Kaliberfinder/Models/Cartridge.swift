@@ -102,6 +102,19 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     var hasCase: Bool { dimensions.caseLength > 0 }
 
+    /// A loaded shotshell's length depends on its crimp: a folded (star) crimp ends shorter than the
+    /// catalogue's length, a roll crimp a little longer. Raven's 12/70 (catalogue 64.0 mm) measured
+    /// 57.8 mm (B&P EasyShot Steel), 58.2 mm (Clever Mirage Caccia) and 65.5 mm (Remington), 2026-11-08.
+    static let shellShortest = 0.9
+    static let shellLongest = 1.03
+
+    /// The lengths a loaded round of this calibre can have, in mm: the catalogue's overall length, or for
+    /// a shotshell the range its crimps give (`shellShortest`, `shellLongest`).
+    var overallLengths: ClosedRange<Double> {
+        let length = dimensions.overallLength
+        return kind == "shot" ? length * Self.shellShortest...length * Self.shellLongest : length...length
+    }
+
     /// Diameter of the case head seen from below: the rim, or the base where it is wider.
     var headDiameter: Double { max(dimensions.rim, dimensions.base) }
 
