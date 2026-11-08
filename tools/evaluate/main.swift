@@ -91,8 +91,6 @@ func secondLook(_ first: PhotoAnalysis, photo url: URL) -> (PhotoAnalysis, Secon
     let picked = first.hasSeveralObjects ? first.outline.flatMap(PhotoAnalyzer.focusRegion(around:)) : nil
     guard let region = picked ?? PhotoAnalyzer.secondLookRegion(of: first), let full = uprightPhoto(url, maxSide: 1_000_000),
           let image = part(full, region: region) else { return nil }
-    FileHandle.standardError.write(Data(String(format: "  DS region %.5f %.5f %.5f %.5f full %dx%d\n", region.minX, region.minY, region.width, region.height,
-                                               full.width, full.height).utf8))
     let second = PhotoAnalyzer.inPhoto(PhotoAnalyzer.analyzeNow(image), region: region,
                                        photoSize: CGSize(width: full.width, height: full.height))
     if picked != nil { return (second, .picked) }
@@ -158,9 +156,10 @@ for package in packages {
         if looked == .picked { picks += 1 }
         let look = looked == .none ? "" : looked == .picked ? ", picked" : ", second look"
         let r = shot.result, rows = [r.row, r.rowObsolete, r.rowAll].map { $0.map(String.init) ?? "–" }.joined(separator: "/")
-        let truth = CartridgeCatalog.cartridge(id: shot.calibre).map { $0.outline.height / $0.outline.width } ?? .nan
-        let measuredAspect = String(format: ", aspect %.3f of %.3f", analysis.shape?.aspect ?? .nan, truth)
-        FileHandle.standardError.write(Data("\(name) rows \(rows) rank \(r.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look)\(measuredAspect))\n".utf8))
+        // The case's share of the length where the colours show the mouth, and the calibre's.
+        let calibre = CartridgeCatalog.cartridge(id: shot.calibre).map { $0.dimensions.caseLength / $0.outline.height } ?? .nan
+        let share = analysis.contour?.mouth.map { String(format: ", case %.3f of %.3f", 1 - $0, calibre) } ?? ""
+        FileHandle.standardError.write(Data("\(name) rows \(rows) rank \(r.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look)\(share))\n".utf8))
         shots.append(shot)
     }
 }
