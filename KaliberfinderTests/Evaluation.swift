@@ -165,13 +165,17 @@ enum Evaluation {
         func row(_ s: Switches) -> Int? {
             rows[s]?.firstIndex { $0.items.contains { $0.cartridge.id == package.calibre } }.map { $0 + 1 }
         }
-        let part = analysis.shape.map { ScanMode.auto.part(for: $0) == package.scanMode.part(for: $0) } ?? false
+        // As the phone's picker highlights it: from the outline, or a shotshell in the first row by its length.
+        let first = rows[.off]?.first?.lead.cartridge
+        let part = analysis.shape.map {
+            ScanMode.detected(in: $0, size: analysis.rawSize(depth: depth), perspective: analysis.perspective(depth: depth), first: first) == package.scanMode
+        } ?? false
         let expected = calibre.flatMap {
             ShapeMatcher.expected(for: $0, part: package.scanMode == .emptyCase ? .emptyCase : .cartridge)
         }
         let neck = expected?.neck?.isClear == true ? analysis.shape?.neck != nil : nil
         return Shot(name: name, calibre: package.calibre, part: package.scanMode, size: size,
-                    source: analysis.shape == nil ? .none : source, first: rows[.off]?.first?.lead.cartridge.id,
+                    source: analysis.shape == nil ? .none : source, first: first?.id,
                     result: ShotResult(row: row(.off), rowObsolete: row(.obsolete), rowAll: row(.obsoleteAndRare),
                                        rank: rank, part: part, neck: neck))
     }
