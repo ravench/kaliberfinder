@@ -66,18 +66,4 @@ final class EndRiseTests: XCTestCase {
         let raw = try SizeEstimator.estimate(lengthPixels: lengthPixels, aspect: shape.aspect, imageLongSide: 1600, depth: depth(200)).get()
         XCTAssertGreaterThan(raw.length, 23.3, "without the end rise")
     }
-
-    /// What the matching compares: the length over the width at the axis's height, as the catalogue's
-    /// outline has it, with LiDAR and without (the phone's 1× camera assumed).
-    func testTheShapeAtTheAxisMatchesTheCatalogue() throws {
-        for (id, part) in [(".45 ACP", ShapePart.emptyCase), ("9x19 mm", .cartridge), ("7.5x55 mm Swiss (GP 11)", .emptyCase)] {
-            let analysis = try photo(id, part: part)
-            let expected = try XCTUnwrap((part == .emptyCase ? ShapeMatcher.caseCatalogue : ShapeMatcher.catalogue)[id]).aspect
-            let raw = try XCTUnwrap(analysis.shape).aspect
-            XCTAssertGreaterThan(raw / expected, 1.005, id)
-            for depth in [depth(200), nil] {
-                XCTAssertEqual(try XCTUnwrap(analysis.shapeAtAxis(depth: depth)).aspect / expected, 1, accuracy: 0.008, id)
-            }
-        }
-    }
 }

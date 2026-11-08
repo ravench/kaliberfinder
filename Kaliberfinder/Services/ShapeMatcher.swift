@@ -9,9 +9,6 @@ struct ShapeMeasurement: Equatable {
     /// Width of every slice relative to the body, tip (or case mouth) first. Empty when
     /// built by hand from a profile only.
     var widths: [Double] = []
-    /// The case's share of the length, from the case mouth the photo's colours show (`CaseMouth`) to
-    /// the head; nil without one. Set for the matching (`PhotoAnalysis.shapeAtAxis`).
-    var caseShare: Double?
 
     /// Seen from the base or the tip (a disc): the shape says nothing about the calibre.
     var isEndView: Bool { aspect < 1.4 }
@@ -245,101 +242,6 @@ enum ShapeMatcher {
     static func measurement(aspect: Double, relativeWidths w: [Double]) -> ShapeMeasurement {
         let profile = fractions.map { f in w[min(bins - 1, Int(f * Double(bins)))] }
         return ShapeMeasurement(aspect: aspect, profile: profile, widths: w)
-    }
-
-    /// How different two shapes are: 0 is identical. Length/width ratio counts most.
-    static func distance(_ a: ShapeMeasurement, _ b: ShapeMeasurement) -> Double {
-        guard a.aspect > 0, b.aspect > 0, a.profile.count == b.profile.count, !a.profile.isEmpty else { return .infinity }
-        let aspect = abs(log(a.aspect / b.aspect))
-        let profile = zip(a.profile, b.profile).map { abs($0 - $1) }.reduce(0, +) / Double(a.profile.count)
-        return 3 * aspect + 2 * profile
-    }
-
-    /// How far the rim (relative to the body) may differ: rimmed and rimless cases differ by 0.1 to 0.25.
-    static let rimTolerance = 0.1
-    /// How far an empty case's neck (relative to the body) may differ.
-    static let neckTolerance = 0.15
-
-    /// Whether the photo's rim, and for an empty case its neck, can belong to the expected shape.
-    /// Shapes without slice widths (built by hand) always fit. On an empty case a head clearly wider
-    /// than the calibre's rules it out (only a rim makes it wider). One narrower by up to
-    /// `narrowHeadUpTo` doesn't: the head's edge can be rounded off or in shadow, so that only costs
-    /// `rimPenalty` (`rimFits`). Narrower still, or as narrow as a clear neck (`NeckShape.clearUpTo`),
-    /// the end is no head at all: a neck, the case lying the other way round.
-    static func featuresFit(_ photo: ShapeMeasurement, _ expected: ShapeMeasurement, part: ShapePart) -> Bool {
-        guard let a = photo.features, let b = expected.features else { return true }
-        if part == .emptyCase {
-            if a.rim > b.rim + rimTolerance || abs(a.mouth - b.mouth) > neckTolerance { return false }
-            if a.rim < b.rim - rimTolerance && (a.rim < b.rim - narrowHeadUpTo || a.rim <= NeckShape.clearUpTo) { return false }
-        } else if abs(a.rim - b.rim) > rimTolerance { return false }
-        return true
-    }
-
-    /// How much narrower than the calibre's an empty case's head may look (relative to the body): as
-    /// much as the widest rims stand out (1.25).
-    static let narrowHeadUpTo = 0.25
-
-    /// Whether the photo's rim is as wide as the expected shape's, within `rimTolerance`.
-    static func rimFits(_ photo: ShapeMeasurement, _ expected: ShapeMeasurement) -> Bool {
-        guard let a = photo.features, let b = expected.features else { return true }
-        return abs(a.rim - b.rim) <= rimTolerance
-    }
-
-    /// Added to a loaded cartridge's distance when its rim doesn't fit, and to an empty case's when its
-    /// head is narrower than the calibre's. On a loaded cartridge the rim is only a hint: a shadow or
-    /// the edge of the base can look like a rim in the photo.
-    static let rimPenalty = 0.1
-
-    /// How much the case's share of a loaded cartridge's length counts, per unit of share beyond
-    /// `caseShareTolerance`, and at most: calibres whose outlines look alike can differ in it, such as
-    /// 9x19 mm (0.65) and 9x21 mm (0.71), or .38 Special and .357 Magnum. The mouth is found within a
-    /// slice or so; a mouth read in the wrong place costs the right calibre no more than the cap.
-    static let caseShareWeight = 3.0
-    static let caseShareTolerance = 0.03
-    static let maxCaseSharePenalty = 0.15
-    /// Factory rounds are seated a little shorter than the catalogue's (longest) length, so their case
-    /// takes up to this much more of it.
-    static let caseShareSeating = 0.02
-
-    /// What the case's share of the length adds to a loaded cartridge's distance: the photo's
-    /// (`ShapeMeasurement.caseShare`) against the calibre's `caseRatio` (case length over the length of
-    /// its drawing). Nothing where the photo shows no mouth.
-    static func caseShareDistance(_ photo: ShapeMeasurement, caseRatio: Double?) -> Double {
-        guard let measured = photo.caseShare, let caseRatio else { return 0 }
-        let off = measured - caseRatio, allowed = caseShareTolerance + (off > 0 ? caseShareSeating : 0)
-        return min(maxCaseSharePenalty, caseShareWeight * max(0, abs(off) - allowed))
-    }
-
-    /// Distance to an expected shape. For an empty case, nil when rim or neck rule the calibre out,
-    /// and the case is tried both ways round; a misfitting rim that doesn't rule it out adds `rimPenalty`,
-    /// as on a cartridge.
-    /// With the calibre's `neckRatio` (catalogue neck over base), the neck counts too (`NeckShape.distance`),
-    /// and on a cartridge with its `caseRatio` the case's share of the length (`caseShareDistance`).
-    static func distance(_ photo: ShapeMeasurement, to expected: ShapeMeasurement, part: ShapePart,
-                         neckRatio: Double? = nil, caseRatio: Double? = nil) -> Double? {
-        func neck(_ p: ShapeMeasurement) -> Double {
-            neckRatio.map { NeckShape.distance(photo: p, expected: expected, neckRatio: $0) } ?? 0
-        }
-        if part == .cartridge {
-            let rimFits = featuresFit(photo, expected, part: .cartridge)
-            return distance(photo, expected) + (rimFits ? 0 : rimPenalty) + neck(photo) + caseShareDistance(photo, caseRatio: caseRatio)
-        }
-        return [photo, photo.reversed()]
-            .filter { featuresFit($0, expected, part: part) }
-            .map { distance($0, expected) + neck($0) + (rimFits($0, expected) ? 0 : rimPenalty) }
-            .min()
-    }
-
-    /// A blank doesn't lie flat: its rim is wider than the crimped mouth, so it rests tilted and,
-    /// photographed parallel to the table (as the LiDAR guide asks), looks shorter than it is.
-    /// Seen this way it may look up to this share shorter (Raven, 2026-11-04).
-    static let maxTiltShortening = 0.2
-
-    /// The expected shape with its length/width ratio brought towards the photo's, as far as a
-    /// tilt can shorten it (never longer).
-    static func tilted(_ expected: ShapeMeasurement, toward photo: ShapeMeasurement) -> ShapeMeasurement {
-        let aspect = min(expected.aspect, max(photo.aspect, expected.aspect * (1 - maxTiltShortening)))
-        return ShapeMeasurement(aspect: aspect, profile: expected.profile, widths: expected.widths)
     }
 
     /// Expected shapes of all catalogue cartridges, computed once.

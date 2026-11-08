@@ -36,6 +36,13 @@ struct PhotoAnalysis {
 
     /// Size from the silhouette and the LiDAR distance, if the photo was taken with depth: the length
     /// at the axis's height, without the ends' rise (`EndRise`) for the part `mode` sees.
+    /// Size from the silhouette and the LiDAR distance as measured, without the ends' rise: what the
+    /// matching takes, with the rise of each calibre's own ends (`Matcher.distance`).
+    func rawSize(depth: DepthScale?) -> MeasuredSize? {
+        guard let shape, let lengthPixels else { return nil }
+        return try? SizeEstimator.estimate(lengthPixels: lengthPixels, aspect: shape.aspect, imageLongSide: imageLongSide, depth: depth).get()
+    }
+
     func size(depth: DepthScale?, mode: ScanMode = .auto) -> Result<MeasuredSize, SizeFailure> {
         guard let shape, let lengthPixels else { return .failure(depth == nil ? .noDepth : .endView) }
         let rise = endRise(depth: depth, mode: mode)
