@@ -312,4 +312,13 @@ T = {
     "ZIP fehlgeschlagen: %@": ("ZIP failed: %@", "Échec du ZIP : %@", "ZIP non riuscito: %@"),
     "%@ · %lld neue Fotos": ("%@ · %lld new photos", "%@ · %lld nouvelles photos", "%@ · %lld nuove foto"),
     "Nicht gespeichert: %@": ("Not saved: %@", "Non enregistré : %@", "Non salvato: %@"),
+    "Nicht in der Liste": ("Not in the list", "Pas dans la liste", "Non nell'elenco"),
+    "Name": ("Name", "Nom", "Nome"),
+    "z. B. Bodenprägung oder eigener Name": (
+        "e.g. headstamp or a name of your own", "p. ex. marquage du culot ou un nom de votre choix",
+        "p. es. punzonatura del fondello o un nome a scelta"),
+    "Für Patronen, die die App nicht kennt. Du gibst ihnen einen Namen, und die Auswertung der Erkennung lässt sie aus.": (
+        "For cartridges the app does not know. You give them a name, and the evaluation of the recognition leaves them out.",
+        "Pour les cartouches que l'app ne connaît pas. Vous leur donnez un nom, et l'évaluation de la reconnaissance les laisse de côté.",
+        "Per le cartucce che l'app non conosce. Dai loro un nome e la valutazione del riconoscimento le tralascia."),
 }

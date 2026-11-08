@@ -145,6 +145,12 @@ enum Evaluation {
         let result: ShotResult
     }
 
+    /// The packages that can be scored: a series of a round the catalogue lacks
+    /// (`CapturePackage.unlisted`) has no right calibre to find.
+    static func scored(_ packages: [SavedCapture]) -> [SavedCapture] {
+        packages.filter { !$0.package.isUnlisted }
+    }
+
     /// Scores the analysis of a photo of `package`'s calibre and part, with the LiDAR scale it was
     /// taken with, in automatic mode as the phone starts: its row in the list the phone shows for each
     /// setting of the switches (see `Evaluation`) and its rank among every calibre.

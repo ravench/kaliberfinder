@@ -137,6 +137,17 @@ final class EvaluationTests: XCTestCase {
         XCTAssertFalse(first.obsolete || first.rare, first.id)
     }
 
+    /// Series of a round the catalogue lacks have no right calibre, so the scores leave them out.
+    func testUnlistedSeriesAreNotScored() {
+        let url = URL(fileURLWithPath: "/captures")
+        func capture(_ name: String, unlisted: Bool?) -> SavedCapture {
+            SavedCapture(url: url.appendingPathComponent(name),
+                         package: CapturePackage(calibre: name, part: "cartridge", created: Date(), unlisted: unlisted))
+        }
+        let packages = [capture("9x19 mm", unlisted: nil), capture("11 mm Gras court", unlisted: true), capture(".45 ACP", unlisted: false)]
+        XCTAssertEqual(Evaluation.scored(packages).map(\.package.calibre), ["9x19 mm", ".45 ACP"])
+    }
+
     /// Drawn from the calibre's own outline, so it ranks near the top (twins with the same outline
     /// may come first).
     func testAShotIsScoredInAutomaticMode() throws {

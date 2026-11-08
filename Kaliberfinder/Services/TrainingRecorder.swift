@@ -136,13 +136,15 @@ enum TrainingRecorder {
         }
     }
 
-    /// A new package with this phone's details.
-    static func package(calibre: String, mode: ScanMode, note: String) -> CapturePackage {
+    /// A new package with this phone's details. `unlisted`: `calibre` is the name of a round the catalogue lacks.
+    static func package(calibre: String, unlisted: Bool = false, mode: ScanMode, note: String) -> CapturePackage {
         let bundle = Bundle.main.infoDictionary ?? [:]
         let os = ProcessInfo.processInfo.operatingSystemVersion
         let version = "\(bundle["CFBundleShortVersionString"] ?? "?") (\(bundle["CFBundleVersion"] ?? "?"))"
-        return CapturePackage(calibre: calibre, part: mode.rawValue, note: note, created: Date(), device: deviceModel,
-                              system: "iOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)", app: version, cameras: backCameras)
+        return CapturePackage(calibre: unlisted ? calibre.trimmingCharacters(in: .whitespacesAndNewlines) : calibre, part: mode.rawValue,
+                              note: note, created: Date(), device: deviceModel,
+                              system: "iOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)", app: version,
+                              unlisted: unlisted ? true : nil, cameras: backCameras)
     }
 
     /// The phone's back cameras, one entry each (the simulator has none): whether a telephoto could take
@@ -150,7 +152,7 @@ enum TrainingRecorder {
     static var backCameras: [CameraInfo] {
         let types: [AVCaptureDevice.DeviceType] = [.builtInWideAngleCamera, .builtInUltraWideCamera, .builtInTelephotoCamera, .builtInLiDARDepthCamera]
         return AVCaptureDevice.DiscoverySession(deviceTypes: types, mediaType: .video, position: .back).devices.map { device in
-            let photo = device.formats.flatMap(\.supportedMaxPhotoDimensions).max { $0.width < $1.width } ?? CMVideoDimensions(width: 0, height: 0)
+            let photo = LiDARCamera.largest(device.formats.flatMap(\.supportedMaxPhotoDimensions))
             return CameraInfo(type: device.deviceType.rawValue.replacingOccurrences(of: "AVCaptureDeviceType", with: ""),
                               minimumFocusDistance: device.minimumFocusDistance >= 0 ? device.minimumFocusDistance : nil,
                               depth: device.formats.contains { !$0.supportedDepthDataFormats.isEmpty },
