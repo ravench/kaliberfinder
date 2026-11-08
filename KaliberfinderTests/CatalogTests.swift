@@ -90,7 +90,8 @@ final class CatalogTests: XCTestCase {
 
     func testGP1890IsSeparateFromGP11AndGP90() throws {
         let gp1890 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x53.5 mm Swiss (GP 1890)"))
-        XCTAssertEqual(gp1890.dimensions.caseLength, 53.5, accuracy: 0.001)
+        // The 54.6 mm case it shares with the Kadettenpatrone (calibre-data #57); the name keeps the old figure.
+        XCTAssertEqual(gp1890.dimensions.caseLength, 54.6, accuracy: 0.001)
         XCTAssertEqual(gp1890.dimensions.overallLength, 77.0, accuracy: 0.001)
         XCTAssertEqual(gp1890.category, CartridgeCatalog.Category.rifle.rawValue)
         XCTAssertTrue(gp1890.hasCase)
@@ -167,11 +168,12 @@ final class CatalogTests: XCTestCase {
     func testKadettenpatroneIsItsOwnRareRound() throws {
         let kp = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5 mm Kadettenpatrone"))
         XCTAssertEqual(kp.category, CartridgeCatalog.Category.rifle.rawValue)
-        // Measured on Raven's round: a longer case than the GP 1890's, with a jacketed round nose.
+        // The GP 1890's case (calibre-data #57), loaded longer with a jacketed round nose.
         let gp1890 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x53.5 mm Swiss (GP 1890)"))
-        XCTAssertEqual(kp.dimensions.caseLength, 54.8, accuracy: 0.001)
+        XCTAssertEqual(kp.dimensions.caseLength, 54.6, accuracy: 0.001)
         XCTAssertEqual(kp.dimensions.overallLength, 77.5, accuracy: 0.001)
-        XCTAssertGreaterThan(kp.dimensions.caseLength, gp1890.dimensions.caseLength)
+        XCTAssertEqual(kp.dimensions.caseLength, gp1890.dimensions.caseLength, accuracy: 0.001)
+        XCTAssertGreaterThan(kp.dimensions.overallLength, gp1890.dimensions.overallLength)
         XCTAssertNil(kp.outline.bulletMaterial, "a jacket, not the GP 1890's steel cap")
         XCTAssertNil(kp.outline.patch)
         // Made for the cadet rifle only: matched only with both switches on, always found by search.
