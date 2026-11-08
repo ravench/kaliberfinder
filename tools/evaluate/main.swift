@@ -91,6 +91,8 @@ func secondLook(_ first: PhotoAnalysis, photo url: URL) -> (PhotoAnalysis, Secon
     let picked = first.hasSeveralObjects ? first.outline.flatMap(PhotoAnalyzer.focusRegion(around:)) : nil
     guard let region = picked ?? PhotoAnalyzer.secondLookRegion(of: first), let full = uprightPhoto(url, maxSide: 1_000_000),
           let image = part(full, region: region) else { return nil }
+    FileHandle.standardError.write(Data(String(format: "  DS region %.5f %.5f %.5f %.5f full %dx%d\n", region.minX, region.minY, region.width, region.height,
+                                               full.width, full.height).utf8))
     let second = PhotoAnalyzer.inPhoto(PhotoAnalyzer.analyzeNow(image), region: region,
                                        photoSize: CGSize(width: full.width, height: full.height))
     if picked != nil { return (second, .picked) }

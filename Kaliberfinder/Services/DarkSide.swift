@@ -85,6 +85,9 @@ enum DarkSide {
             let p = frame.point(u: u, v: mirrored)
             all.insert(Point(x: (p.x / pixel).rounded() * pixel, y: (p.y / pixel).rounded() * pixel))
         }
+        let ints = { (a: [Double]) in a.map { String(Int($0.rounded())) }.joined(separator: ",") }
+        debugLog(String(format: "  DS frame mx %.1f my %.1f ux %.4f uy %.4f lo %.1f len %.1f axis %.1f table %.1f cut %.0f", frame.mx, frame.my,
+                        frame.ux, frame.uy, frame.lo, frame.length, frame.axis, tableStart, cut) + " low " + ints(frame.low) + " high " + ints(frame.high))
         return all.count > points.count ? Array(all) : nil
     }
 
