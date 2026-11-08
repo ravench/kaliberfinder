@@ -32,7 +32,7 @@ final class MatcherTests: XCTestCase {
         for id in ["9x19 mm", ".308 Winchester", "7.5x55 mm Swiss (GP 11)"] {
             let matches = Matcher.rank(shape: try expected(id), limit: .max)
             let best = try XCTUnwrap(matches.compactMap(\.shapeDistance).min(), id)
-            XCTAssertTrue(matches.allSatisfy { ($0.shapeDistance ?? .infinity) <= min(Matcher.maxShapeDistance, best + Matcher.maxBehindBest) }, id)
+            XCTAssertTrue(matches.allSatisfy { ($0.shapeDistance ?? .infinity) <= min(Matcher.maxDistance, best + Matcher.maxBehindBest) }, id)
         }
     }
 
@@ -129,7 +129,7 @@ final class MatcherTests: XCTestCase {
         // Shape only, size only rough, or shape only rough: no highlight.
         XCTAssertFalse(Match(cartridge: c, score: 1, shapeDistance: 0.05).fitsWell)
         XCTAssertFalse(Match(cartridge: c, score: 1, shapeDistance: 0.05, sizeDeviation: 0.8).fitsWell)
-        XCTAssertFalse(Match(cartridge: c, score: 1, shapeDistance: 0.25, sizeDeviation: 0.1).fitsWell)
+        XCTAssertFalse(Match(cartridge: c, score: 1, shapeDistance: 0.45, sizeDeviation: 0.1).fitsWell)
         XCTAssertFalse(Match(cartridge: c, score: 0, shapeDistance: nil).fitsWell)
     }
 
@@ -138,7 +138,7 @@ final class MatcherTests: XCTestCase {
         let c = try XCTUnwrap(CartridgeCatalog.current.first)
         let roughSize = Match(cartridge: c, score: 1, shapeDistance: 0.05, sizeDeviation: 0.8)
         let shapeOnly = Match(cartridge: c, score: 1, shapeDistance: 0.05)
-        let roughShape = Match(cartridge: c, score: 1, shapeDistance: 0.25, sizeDeviation: 0.1)
+        let roughShape = Match(cartridge: c, score: 1, shapeDistance: 0.45, sizeDeviation: 0.1)
         // A good shape is compared on the 1:1 screen, with or without LiDAR.
         XCTAssertNil(MatchesView.manualEntryHint([roughSize]))
         XCTAssertNil(MatchesView.manualEntryHint([shapeOnly, roughShape]))

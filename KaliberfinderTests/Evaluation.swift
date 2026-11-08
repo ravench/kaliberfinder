@@ -151,8 +151,8 @@ enum Evaluation {
     static func shot(_ name: String, analysis: PhotoAnalysis, depth: DepthScale?, package: CapturePackage,
                      source: Source = .phone) -> Shot {
         let size = try? analysis.size(depth: depth).get()
-        let ranked = Matcher.rank(shape: analysis.shapeAtAxis(depth: depth), size: size, mode: .auto, cartridges: CartridgeCatalog.all,
-                                  brass: analysis.isBrass, limit: .max)
+        let ranked = Matcher.rank(shape: analysis.shape, size: analysis.rawSize(depth: depth), perspective: analysis.perspective(depth: depth),
+                                  mouth: analysis.contour?.mouth, mode: .auto, cartridges: CartridgeCatalog.all, brass: analysis.isBrass, limit: .max)
         let rank = ranked.firstIndex { $0.cartridge.id == package.calibre }.map { $0 + 1 }
         let calibre = CartridgeCatalog.cartridge(id: package.calibre)
         let rows = Dictionary(uniqueKeysWithValues: Switches.allCases.map { ($0, Matcher.grouped(listed(ranked, showing: calibre, switches: $0))) })

@@ -84,10 +84,10 @@ extension Matcher {
 
     /// Ranks against every calibre, then hides the tags whose switch is off.
     static func rankHiding(_ tags: Set<HiddenTag>, shape: ShapeMeasurement?, size: MeasuredSize? = nil,
-                           mode: ScanMode = .auto, brass: Bool = false,
+                           perspective: Double? = nil, mouth: Double? = nil, mode: ScanMode = .auto, brass: Bool = false,
                            cartridges: [Cartridge] = CartridgeCatalog.all) -> HiddenMatches<Match> {
-        HiddenMatches(rank(shape: shape, size: size, mode: mode, cartridges: cartridges, brass: brass, limit: .max),
-                      hiding: tags, limit: shownLimit)
+        HiddenMatches(rank(shape: shape, size: size, perspective: perspective, mouth: mouth, mode: mode, cartridges: cartridges,
+                           brass: brass, limit: .max), hiding: tags, limit: shownLimit)
     }
 }
 

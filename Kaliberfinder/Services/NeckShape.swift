@@ -59,27 +59,6 @@ struct NeckShape: Equatable {
     }
 
     var isClear: Bool { width <= Self.clearUpTo }
-
-    /// Added to the distance when the photo shows a clear neck and the calibre's (catalogue neck
-    /// over base) is much wider: a straight case, or a slight bottleneck like the .32-20.
-    static let widerPenalty = 0.3
-    /// Added when the calibre has a clear neck and the photo shows none.
-    static let missingPenalty = 0.15
-    /// How much the neck counts when both have one: per unit of width and per body diameter of length.
-    static let widthWeight = 1.0
-    static let lengthWeight = 0.15
-    /// The calibre's neck is much wider than the photo's beyond this.
-    static let widthTolerance = 0.15
-
-    /// What the neck adds to the distance between a photo and a calibre's expected shape.
-    /// `neckRatio` is the calibre's catalogue neck diameter over its base diameter.
-    static func distance(photo: ShapeMeasurement, expected: ShapeMeasurement, neckRatio: Double) -> Double {
-        let a = photo.neck, b = expected.neck
-        if let a, a.isClear, neckRatio > a.width + widthTolerance { return widerPenalty }
-        if let b, b.isClear, a == nil { return missingPenalty }
-        guard let a, let b else { return 0 }
-        return widthWeight * abs(a.width - b.width) + lengthWeight * abs(a.length - b.length)
-    }
 }
 
 extension ShapeMeasurement {

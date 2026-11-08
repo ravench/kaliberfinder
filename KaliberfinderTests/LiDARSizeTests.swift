@@ -117,13 +117,22 @@ final class LiDARSizeTests: XCTestCase {
         XCTAssertNotEqual(matches.first { $0.cartridge.id == "9x19 mm" }?.sizeFit, .good)
     }
 
-    func testDeviationUsesTheMeasurementsUncertainty() throws {
+    /// The size deviation shown is what lies beyond the length and diameter tolerances, averaged.
+    func testDeviationIsWhatLiesBeyondTheTolerances() throws {
         let gp11 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x55 mm Swiss (GP 11)"))
         let d = gp11.dimensions
-        let close = MeasuredSize(length: d.overallLength + 1.5, diameter: d.base, lengthError: 2, diameterError: 0.5)
-        XCTAssertEqual(Matcher.deviation(of: gp11, from: close), 0)
-        let off = MeasuredSize(length: d.overallLength + 4, diameter: d.base + 1.5, lengthError: 2, diameterError: 0.5)
-        XCTAssertEqual(Matcher.deviation(of: gp11, from: off), 1.5, accuracy: 1e-9)
+        let shape = try XCTUnwrap(ShapeMatcher.catalogue[gp11.id])
+        func deviation(_ size: MeasuredSize) -> Double? {
+            Matcher.rank(shape: shape, size: size, mode: .cartridge, cartridges: [gp11], limit: 1).first?.sizeDeviation
+        }
+        let close = MeasuredSize(length: d.overallLength / Matcher.lengthScaleWhole + 1.5, diameter: d.base / Matcher.diameterScale,
+                                 lengthError: 2, diameterError: 0.5)
+        XCTAssertEqual(try XCTUnwrap(deviation(close)), 0, accuracy: 1e-9)
+        let off = MeasuredSize(length: d.overallLength / Matcher.lengthScaleWhole + 4, diameter: d.base / Matcher.diameterScale + 1.5,
+                               lengthError: 2, diameterError: 0.5)
+        XCTAssertEqual(try XCTUnwrap(deviation(off)),
+                       ((4 * Matcher.lengthScaleWhole - Matcher.lengthTolerance) + (1.5 * Matcher.diameterScale - Matcher.diameterTolerance)) / 2,
+                       accuracy: 1e-9)
     }
 
     func testSizeIsIgnoredForRoundSilhouettes() throws {
@@ -144,7 +153,8 @@ final class LiDARSizeTests: XCTestCase {
         let size = try analysis.size(depth: depth(distance)).get()
         XCTAssertEqual(size.length, gp11.dimensions.overallLength, accuracy: 0.5)
         XCTAssertEqual(size.diameter, gp11.dimensions.base, accuracy: 0.6)
-        let matches = Matcher.rank(shape: analysis.shapeAtAxis(depth: depth(distance)), size: size)
+        let matches = Matcher.rank(shape: analysis.shape, size: analysis.rawSize(depth: depth(distance)),
+                                   perspective: analysis.perspective(depth: depth(distance)))
         XCTAssertEqual(matches.first?.cartridge.id, gp11.id)
         XCTAssertEqual(matches.first?.sizeFit, .good)
         XCTAssertTrue(MatchesView.reason(for: try XCTUnwrap(matches.first)).contains(" · "))

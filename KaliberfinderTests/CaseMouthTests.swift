@@ -215,15 +215,12 @@ final class CaseMouthTests: XCTestCase {
         let contour = try XCTUnwrap(analysis.contour)
         let mouth = try XCTUnwrap(contour.mouth, "\(contour.parts)")
         XCTAssertEqual(mouth, 1 - 19.15 / 29.7, accuracy: 0.08)
-        // Matching counts the case's share of the length (`shapeAtAxis`): it puts the 9 mm no lower than the
-        // outline alone (as testRealPhotosShowOneHandgunCartridge ranks it).
+        // Matching counts the case's share of the length (`Matcher.mouthPenalty`): it puts the 9 mm no lower
+        // than the outline alone (as testRealPhotosShowOneHandgunCartridge ranks it).
         let outlineOnly = try XCTUnwrap(analysis.shape)
-        var withCase = outlineOnly
-        withCase.caseShare = try XCTUnwrap(analysis.shapeAtAxis(depth: nil)?.caseShare)
-        XCTAssertEqual(try XCTUnwrap(withCase.caseShare), 1 - mouth, accuracy: 1e-12)
-        func row(_ s: ShapeMeasurement) -> Int? { Matcher.rank(shape: s, limit: .max).firstIndex { $0.cartridge.id == "9x19 mm" } }
-        let plain = try XCTUnwrap(row(outlineOnly), "outline alone")
-        XCTAssertLessThanOrEqual(try XCTUnwrap(row(withCase), "case \(1 - mouth)"), plain, "case \(1 - mouth)")
+        func row(_ mouth: Double?) -> Int? { Matcher.rank(shape: outlineOnly, mouth: mouth, limit: .max).firstIndex { $0.cartridge.id == "9x19 mm" } }
+        let plain = try XCTUnwrap(row(nil), "outline alone")
+        XCTAssertLessThanOrEqual(try XCTUnwrap(row(mouth), "case \(1 - mouth)"), plain, "case \(1 - mouth)")
         let b = contour.parts.prefix(while: { $0 == .bullet }).count
         XCTAssertEqual(contour.parts[b], .end)
         XCTAssertEqual(contour.parts[b + 1], .body)
