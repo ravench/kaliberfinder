@@ -143,8 +143,8 @@ final class MatcherTests: XCTestCase {
         XCTAssertNil(MatchesView.manualEntryHint([roughSize]))
         XCTAssertNil(MatchesView.manualEntryHint([shapeOnly, roughShape]))
         XCTAssertEqual(MatchesView.manualEntryHint([]),
-                       "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc)
+                       "Keine passenden Kaliber gefunden.".loc)
         XCTAssertEqual(MatchesView.manualEntryHint([roughShape]),
-                       "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc)
+                       "Kein sicherer Treffer.".loc)
     }
 }

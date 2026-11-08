@@ -100,7 +100,13 @@ struct MatchesView: View {
 
     /// The hint to measure by hand when the photo gives no sure answer, and the calibres found.
     @ViewBuilder private var results: some View {
-        if let hint = Self.manualEntryHint(matches) {
+        let hint = Self.manualEntryHint(matches)
+        // Matching calibres a switch hides come before the hint to measure by hand (Raven, 2026-11-08):
+        // the switch, not the photo, may be why nothing sure was found.
+        if hint != nil, let summary = ranked.summary {
+            Section { HiddenMatchesRow(summary: summary, revealed: $revealed) }
+        }
+        if let hint {
             Section {
                 Text(hint)
                 NavigationLink { MeasureView() } label: {
@@ -109,7 +115,7 @@ struct MatchesView: View {
                 if matches.isEmpty { NavigationLink("Alle Kaliber durchsuchen") { CatalogView() } }
             }
         }
-        if !matches.isEmpty || ranked.summary != nil {
+        if !matches.isEmpty {
             Section {
                 // Calibres that look exactly the same from the side share one row.
                 ForEach(Matcher.grouped(matches)) { g in
@@ -118,7 +124,7 @@ struct MatchesView: View {
                                      highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
                     }
                 }
-                if let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
+                if hint == nil, let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
             } header: {
                 Text("Mögliche Kaliber")
             } footer: {
@@ -194,14 +200,15 @@ struct MatchesView: View {
                                     size: size, mode: mode, brass: analysis.isBrass)
     }
 
-    /// Points the user to measuring by hand when the photo found nothing or only weak shapes. A
-    /// good shape match is checked on the 1:1 screen instead, with or without LiDAR.
+    /// Says that the photo found nothing or only weak shapes; the link below it leads to measuring by
+    /// hand (Raven, 2026-11-08: the text needs no more). A good shape match is checked on the 1:1 screen
+    /// instead, with or without LiDAR.
     static func manualEntryHint(_ matches: [Match]) -> String? {
         if matches.isEmpty {
-            return "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc
+            return "Keine passenden Kaliber gefunden.".loc
         }
         if matches.contains(where: { $0.shapeFit == .good }) { return nil }
-        return "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc
+        return "Kein sicherer Treffer.".loc
     }
 
     /// Shown instead of matches when several cartridges compete, until the user picks one.

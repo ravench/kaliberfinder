@@ -124,6 +124,16 @@ final class PRScreensTests: XCTestCase {
         photoMatches("photo-9x19-wood", shot: "16-Foto-Erkennung-farbig")
     }
 
+    /// Matching calibres a switch hides, above the notice that nothing sure was found: the loaded .45 ACP
+    /// read as an empty case fits no case, and its rare look-alike .45 Super stays hidden.
+    func testHiddenMatchesAboveTheNotice() {
+        photoMatches("photo-45acp-wood", shot: "26-Foto-Patrone-als-Huelse")
+        guard open(app.buttons["Leere Hülse"].firstMatch) else { return }
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Einblenden")).firstMatch.waitForExistence(timeout: 5),
+                      "No hidden match")
+        snap("27-Foto-versteckte-Treffer")
+    }
+
     /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`;
     /// with `compareShot`, also one of the 1:1 screen that compares all of them.
     private func photoMatches(_ fixture: String, shot: String, compareShot: String? = nil) {
