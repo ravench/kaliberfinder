@@ -237,7 +237,7 @@ private struct TrainingCameraView: View {
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-            CameraPreview(session: camera.session).ignoresSafeArea()
+            CameraPreview(camera: camera).ignoresSafeArea()
             VStack(spacing: 12) {
                 Text("\(calibreName) · \(saved) neue Fotos")
                     .font(.headline)

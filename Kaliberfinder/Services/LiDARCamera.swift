@@ -2,11 +2,11 @@ import AVFoundation
 import CoreMotion
 import UIKit
 
-/// The back camera paired with the LiDAR scanner (Pro iPhones from the 12 Pro). Shows live guidance
-/// (distance and tilt) and takes a photo together with the table distance and focal length.
+/// The back camera paired with the LiDAR scanner (Pro iPhones from the 12 Pro, iPad Pro). Shows live
+/// guidance (distance and tilt) and takes a photo together with the table distance and focal length.
 /// Depth stays in memory and is dropped after the size is computed (LIDAR-07).
 final class LiDARCamera: NSObject, ObservableObject {
-    /// LIDAR-01: only phones with the scanner get the depth camera.
+    /// LIDAR-01: only devices with the scanner get the depth camera.
     static var isAvailable: Bool {
         AVCaptureDevice.default(.builtInLiDARDepthCamera, for: .video, position: .back) != nil
     }
@@ -28,6 +28,38 @@ final class LiDARCamera: NSObject, ObservableObject {
     private var onRawPhoto: ((AVCapturePhoto, CaptureMoment) -> Void)?
     /// How the phone and the camera stood when the raw photo was taken, read just before it.
     private var rawMoment = CaptureMoment()
+    /// The preview on screen, so the preview and the photo turn with the screen (an iPad turns).
+    private weak var previewLayer: AVCaptureVideoPreviewLayer?
+    private var rotation: AVCaptureDevice.RotationCoordinator?
+    private var rotationObservation: NSKeyValueObservation?
+    /// Degrees the camera image is turned for the screen: 90 is portrait, as phones always are.
+    @Published private(set) var rotationAngle: CGFloat = 90
+
+    /// Shows the preview on `layer` and turns it, and the photos, with the screen.
+    func attach(previewLayer layer: AVCaptureVideoPreviewLayer) {
+        // A new layer (the screen was shown again) gets a coordinator of its own.
+        if previewLayer !== layer { rotation = nil; rotationObservation = nil }
+        previewLayer = layer
+        layer.session = session
+        coordinateRotation()
+    }
+
+    /// Follows the screen's orientation once the device and the preview are both known.
+    private func coordinateRotation() {
+        guard rotation == nil, let device, let previewLayer else { return }
+        let coordinator = AVCaptureDevice.RotationCoordinator(device: device, previewLayer: previewLayer)
+        rotation = coordinator
+        // Delivered on the main queue. The photo gets the preview's angle rather than the one for
+        // horizon-level capture: held flat over the table, gravity says nothing about the horizon,
+        // and the photo should show what the screen showed.
+        rotationObservation = coordinator.observe(\.videoRotationAngleForHorizonLevelPreview, options: [.initial, .new]) { [weak self] c, _ in
+            let angle = c.videoRotationAngleForHorizonLevelPreview
+            self?.rotationAngle = angle
+            if let connection = self?.previewLayer?.connection, connection.isVideoRotationAngleSupported(angle) {
+                connection.videoRotationAngle = angle
+            }
+        }
+    }
 
     func start() {
         AVCaptureDevice.requestAccess(for: .video) { [self] granted in
@@ -56,9 +88,10 @@ final class LiDARCamera: NSObject, ObservableObject {
 
     /// Takes a photo; `completion` gets the image and, when the depth was usable, its scale.
     func capture(_ completion: @escaping (UIImage, DepthScale?) -> Void) {
+        let angle = rotationAngle
         queue.async { [self] in
             onPhoto = completion
-            takePhoto()
+            takePhoto(angle: angle)
         }
     }
 
@@ -69,21 +102,22 @@ final class LiDARCamera: NSObject, ObservableObject {
         // camera's queue: the lens keeps focusing, so its position as the photo is taken, not once it
         // is delivered.
         let pose = CaptureMoment(gravity: gravity, tilt: tilt)
+        let angle = rotationAngle
         queue.async { [self] in
             onRawPhoto = completion
             rawMoment = pose
             rawMoment.focus = device.map { CaptureShot.Focus(minimumFocusDistance: $0.minimumFocusDistance, lensPosition: $0.lensPosition) }
-            takePhoto()
+            takePhoto(angle: angle)
         }
     }
 
-    private func takePhoto() {
+    /// `angle`: the preview's rotation, so the photo is turned like the screen.
+    private func takePhoto(angle: CGFloat) {
         let settings = AVCapturePhotoSettings()
         settings.isDepthDataDeliveryEnabled = photoOutput.isDepthDataDeliveryEnabled
         settings.isDepthDataFiltered = true
-        // Portrait, like the preview (the app runs in portrait only).
-        if let connection = photoOutput.connection(with: .video), connection.isVideoRotationAngleSupported(90) {
-            connection.videoRotationAngle = 90
+        if let connection = photoOutput.connection(with: .video), connection.isVideoRotationAngleSupported(angle) {
+            connection.videoRotationAngle = angle
         }
         photoOutput.capturePhoto(with: settings, delegate: self)
     }
@@ -99,6 +133,7 @@ final class LiDARCamera: NSObject, ObservableObject {
         session.addInput(input)
         session.addOutput(photoOutput)
         session.addOutput(depthOutput)
+        DispatchQueue.main.async { self.coordinateRotation() }
         // A 4:3 format that delivers depth, with a float depth format.
         if let format = device.formats.last(where: { f in
             let d = f.formatDescription.dimensions

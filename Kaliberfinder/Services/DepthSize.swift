@@ -117,7 +117,7 @@ enum LiDARGuidance: Equatable {
         case .noDepth: "Keine Tiefe gemessen"
         case .tooClose: "Etwas weiter weg"
         case .tooFar: "Näher heran"
-        case .tilted: "iPhone parallel zum Tisch halten"
+        case .tilted: "Gerät parallel zum Tisch halten"
         case .ready: "Abstand passt"
         }
     }
