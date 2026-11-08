@@ -25,6 +25,8 @@ struct PhotoAnalysis {
     var isBrass = false
     /// The silhouette is the colour cut-out's: Vision found no cartridge.
     var byColour = false
+    /// Vision found the cartridge on a crop of the photo, not in the whole photo (`firstLook`).
+    var byCrop = false
 
     /// How many cartridges compete for the measurement.
     var objectCount: Int { max(1, candidates.count) }
@@ -58,6 +60,54 @@ enum PhotoAnalyzer {
     /// Vision's object, or the colour cut-out where Vision finds none.
     static func analyzeNow(_ cgImage: CGImage) -> PhotoAnalysis {
         analysis(of: cgImage, vision: visionResult(of: cgImage))
+    }
+
+    // MARK: - First look
+
+    /// Where to look when Vision finds nothing in the whole photo (2026-11-08: that is 126 of 222 training
+    /// shots, on the Mac as on the phone): the middle of the photo at these shares of its sides, where the
+    /// capture guide puts the cartridge, cut from the full-size photo. On the crop Vision finds the
+    /// cartridge in nearly every one of them (123 of 126).
+    static let centreCrops: [Double] = [0.6, 0.4, 0.25]
+
+    /// The regions of the cascade, as fractions of the upright photo: the centre crops, then a crop around
+    /// the most salient object of the whole photo, if Vision names one.
+    static func cascadeRegions(of whole: CGImage) -> [CGRect] {
+        var regions = centreCrops.map { share -> CGRect in
+            let margin = (1 - share) / 2
+            return CGRect(x: margin, y: margin, width: share, height: share)
+        }
+        if let salient = salientRegion(of: whole) { regions.append(salient) }
+        return regions
+    }
+
+    /// The most confident objectness-based salient region of the photo, with the margin a picked
+    /// cartridge gets (`focusRegion`); nil when Vision names none.
+    static func salientRegion(of cgImage: CGImage) -> CGRect? {
+        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+        let request = VNGenerateObjectnessBasedSaliencyImageRequest()
+        guard (try? handler.perform([request])) != nil,
+              let objects = request.results?.first?.salientObjects, !objects.isEmpty else { return nil }
+        let box = objects.max { $0.confidence < $1.confidence }!.boundingBox
+        // Vision's boxes have their origin at the bottom left.
+        return focusRegion(CGRect(x: box.minX, y: 1 - box.maxY, width: box.width, height: box.height))
+    }
+
+    /// The first look at a photo: Vision on the whole photo (scaled to `maxDimension`), else on the
+    /// cascade regions, cut from the full-size photo by `cut` (and scaled to `maxDimension`), else the
+    /// colour cut-out of the whole photo. `photoSize` is the full upright photo's size in pixels.
+    /// `wholeVision` is Vision's object in the whole photo where that is already known (nil: look).
+    static func firstLook(whole: CGImage, wholeVision: VisionResult?? = nil, photoSize: CGSize,
+                          cut: (CGRect) -> CGImage?) -> PhotoAnalysis {
+        let vision = wholeVision ?? visionResult(of: whole)
+        if let vision { return analysis(of: whole, vision: vision) }
+        for region in cascadeRegions(of: whole) {
+            guard let part = cut(region), let found = visionResult(of: part) else { continue }
+            var analysis = inPhoto(analysis(of: part, vision: found), region: region, photoSize: photoSize)
+            analysis.byCrop = true
+            return analysis
+        }
+        return analysis(of: whole, vision: nil)
     }
 
     // MARK: - Second look
