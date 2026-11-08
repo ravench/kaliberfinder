@@ -23,7 +23,9 @@ struct TrainingCaptureView: View {
             if !captures.isEmpty {
                 Section {
                     ForEach(captures) { capture in
-                        NavigationLink(value: capture) { TrainingCaptureRow(capture: capture) }
+                        // A link with its view, as elsewhere in the app: a value link with navigationDestination(for:)
+                        // did nothing when tapped here (the screen is itself pushed by such a link on the settings sheet).
+                        NavigationLink { TrainingPackageView(capture: capture) } label: { TrainingCaptureRow(capture: capture) }
                     }
                     .onDelete { offsets in
                         for i in offsets { try? store.delete(captures[i]) }
@@ -35,7 +37,6 @@ struct TrainingCaptureView: View {
             }
         }
         .navigationTitle("Trainingsdaten")
-        .navigationDestination(for: SavedCapture.self) { TrainingPackageView(capture: $0) }
         .navigationDestination(item: $opened) { TrainingPackageView(capture: $0) }
         .sheet(isPresented: $showNew) {
             NavigationStack {

@@ -110,6 +110,14 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertNotEqual(before, after, "an equal value would keep SwiftUI showing «0 Fotos»")
     }
 
+    /// The PR screens tour opens the example package (`-screenTourCaptures`) instead of the phone's series.
+    func testTourPointsTheStoreAtItsFolder() {
+        XCTAssertEqual(CaptureStore.standard.root.lastPathComponent, "TrainingCaptures")
+        UserDefaults.standard.set(root.path, forKey: CaptureStore.tourKey)
+        defer { UserDefaults.standard.removeObject(forKey: CaptureStore.tourKey) }
+        XCTAssertEqual(CaptureStore.standard.root.path, root.path)
+    }
+
     func testFolderNameIsASlugOfTheCalibre() {
         XCTAssertEqual(CaptureStore.folderName(package("7.5x55 mm Swiss (GP 11)")), "7-5x55-mm-swiss-gp-11-20270115-080000")
     }
