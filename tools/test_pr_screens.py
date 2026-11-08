@@ -129,6 +129,12 @@ class SameTests(unittest.TestCase):
         text = [((x, y), (0, 0, 0)) for x in range(10) for y in range(5)]
         self.assertFalse(pr_screens.same(self.png("a.png"), self.png("b.png", text)))
 
+    def test_line_moved_by_a_pixel_is_the_same(self):
+        # Text edges and toggle outlines land a fraction of a point off between runs.
+        line = lambda top: [((x, y), (0, 0, 0)) for x in range(40) for y in (top, top + 1)]
+        self.assertTrue(pr_screens.same(self.png("a.png", line(3)), self.png("b.png", line(4))))
+        self.assertFalse(pr_screens.same(self.png("a.png", line(3)), self.png("b.png")), "a line appearing is a change")
+
     def test_other_size_differs(self):
         self.assertFalse(pr_screens.same(self.png("a.png"), self.png("b.png", size=(40, 41))))
 
