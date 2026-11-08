@@ -1,5 +1,5 @@
 """Tests for the cartridge data generator: python3 -m unittest discover -s tools -p 'test_*.py'"""
-import os, sys, unittest
+import os, re, sys, unittest
 
 sys.path.insert(0, os.path.dirname(__file__))
 import generate_data  # noqa: E402
@@ -74,8 +74,10 @@ class RareAndCountryTests(unittest.TestCase):
 
     def test_drawn_flags_match_the_swift_view(self):
         src = open(os.path.join(ROOT, "Kaliberfinder", "Views", "CalibreTags.swift")).read()
+        codes = re.search(r"static let codes: Set<String> = \[(.*)\]", src).group(1)
         for code in generate_data.DRAWN_FLAGS:
             self.assertIn(f'case "{code}":', src, code)
+            self.assertIn(f'"{code}"', codes, code)  # DrawnFlag.codes must list it too
 
     def test_every_catalogue_country_has_a_translated_name(self):
         from cartridges import COUNTRIES

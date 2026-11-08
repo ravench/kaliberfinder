@@ -50,7 +50,7 @@ final class CalibreTagTests: XCTestCase {
         }
     }
 
-    func testFormerStatesAreDrawn() throws {
+    func testFlaglessOriginsAreDrawn() throws {
         let mosin = try XCTUnwrap(try cartridge("7.62x54 mm R").country)
         XCTAssertEqual(mosin.code, "RUE")
         XCTAssertNil(mosin.flag)

@@ -108,6 +108,22 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// A NATO round: the alliance's flag is drawn, as no emoji exists (calibre-data #51).
+    func testNatoFlag() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("5.56\n") // return hides the keyboard, so the rows show their flags
+        }
+        snap("27-NATO")
+        if open(app.staticTexts["5.56x45 mm NATO"].firstMatch) {
+            scroll()
+            snap("27-NATO-Kaliber-unten") // the Herkunft row with the drawn flag
+        }
+    }
+
     /// The calibre picker of a new training series finds a calibre by its other names too, and shows them.
     func testTrainingCalibreSearch() {
         app.terminate()

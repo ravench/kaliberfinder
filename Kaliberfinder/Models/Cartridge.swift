@@ -35,11 +35,11 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     /// A country from calibre-data ORIGIN.
     struct Country: Decodable, Hashable {
-        /// ISO code; RUE, AH, SU and CS for former states.
+        /// ISO code; RUE, AH, SU and CS for former states, NATO for the alliance.
         let code: String
         /// German name, used as localization key.
         let name: String
-        /// Flag emoji; nil for former states, whose flag `DrawnFlag` draws.
+        /// Flag emoji; nil for former states and unions, whose flag `DrawnFlag` draws.
         let flag: String?
     }
 

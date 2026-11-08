@@ -38,8 +38,9 @@ DRAWN_FLAGS = {"RUE", "AH", "SU", "CS", "NATO"}
 
 
 def country(name):
-    """{"code", "name" (German), "flag" (emoji, absent for drawn flags)} of the state that introduced
-    the calibre, or {} for gauges, balls, pellets, blanks and calibres whose origin is still open."""
+    """{"code", "name" (German), "flag" (emoji, absent for drawn flags)} of the state or union that
+    introduced the calibre (calibre-data ORIGIN), or {} for gauges, balls, pellets, blanks and calibres
+    whose origin is still open."""
     o = origin(name)
     if not o:
         return {}

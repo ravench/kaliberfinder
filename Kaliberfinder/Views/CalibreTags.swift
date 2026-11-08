@@ -107,7 +107,7 @@ struct TagIcon: View {
     }
 }
 
-/// The calibre's country flag: the emoji, or a drawn flag for former states.
+/// The calibre's country flag: the emoji, or a drawn flag for former states and unions.
 struct CountryFlag: View {
     let country: Cartridge.Country
     @ScaledMetric(relativeTo: .body) private var height: CGFloat = 12
