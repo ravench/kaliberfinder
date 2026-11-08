@@ -65,6 +65,8 @@ struct TrueScaleView: View {
     /// their drawings leave out the bullet when «Geschosse beim Vergleich mit leeren Hülsen zeigen» is off;
     /// then «L» is the case length.
     var emptyCases: Set<String> = []
+    /// Why a photo's matches that fit well are listed, by calibre id (`MatchesView.goodMatches`): shown in green under the name.
+    var goodMatches: [String: String] = [:]
     /// Tapping a drawing opens the calibre's page; off when this screen was opened from that page.
     var linksToDetails = true
     @EnvironmentObject private var scale: ScaleModel
@@ -207,6 +209,9 @@ struct TrueScaleView: View {
             // Calibres with the same measurements look exactly like this one.
             ForEach(CartridgeCatalog.twins(of: c)) { twin in
                 Text(verbatim: "= \(twin.name)").font(.caption2).foregroundStyle(.secondary)
+            }
+            if let why = goodMatches[c.id] {
+                Text(verbatim: why).font(.caption2.weight(.semibold)).foregroundStyle(.green)
             }
             // Without the bullet, «L» below already is the case length.
             if emptyCases.contains(c.id) && !caseOnly(c) {

@@ -231,8 +231,8 @@ final class PRScreensTests: XCTestCase {
         snap("33-1zu1-Kaliber")
     }
 
-    /// A photo none of whose matches is sure (the loaded 9 mm looked at as an empty case): the hint to
-    /// measure by hand follows the list of calibres.
+    /// A photo none of whose matches is sure (the loaded 9 mm looked at as an empty case): the hint and the
+    /// link to measure by hand sit with the measurements, above the list of calibres.
     func testUnsureMatches() {
         let photo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("KaliberfinderTests/Fixtures/photo-9x19-wood.jpg")
@@ -242,10 +242,8 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Treffer"].waitForExistence(timeout: 10))
         _ = app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90)
         app.buttons["Leere Hülse"].tap()
-        let hint = app.staticTexts["Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein."]
-        // Rows out of view are not in the hierarchy: scroll until the hint at the end of the list shows.
-        for _ in 0..<20 where !hint.exists { app.swipeUp(velocity: .fast) }
-        XCTAssertTrue(hint.waitForExistence(timeout: 5), "The hint to measure by hand is not shown")
+        // With the measurements in the top block (Raven, 2026-11-08), so no scrolling.
+        XCTAssertTrue(app.buttons["Masse von Hand eingeben"].waitForExistence(timeout: 5), "The link to measure by hand is not shown")
         snap("31-Foto-unsicher")
     }
 

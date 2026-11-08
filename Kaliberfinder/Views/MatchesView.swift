@@ -59,8 +59,16 @@ struct MatchesView: View {
                             }
                             .pickerStyle(.segmented)
                         }
-                        ForEach(Self.notes(for: analysis, depth: depth, unit: unit, mode: shown), id: \.self) { note in
+                        let hint = Self.manualEntryHint(matches)
+                        ForEach(Self.notes(for: analysis, depth: depth, unit: unit, mode: shown, hint: hint), id: \.self) { note in
                             Text(note).font(.footnote).foregroundStyle(.secondary)
+                        }
+                        // With the measurements, where it belongs (Raven, 2026-11-08): what to do when no match is sure.
+                        if hint != nil {
+                            NavigationLink { MeasureView() } label: {
+                                Label("Masse von Hand eingeben", systemImage: "ruler")
+                            }
+                            if matches.isEmpty { NavigationLink("Alle Kaliber durchsuchen") { CatalogView() } }
                         }
                     } else {
                         HStack {
@@ -76,7 +84,8 @@ struct MatchesView: View {
         .safeAreaInset(edge: .bottom) {
             // A prominent button pinned to the bottom, like on the measure screen, so it is not missed.
             if analysis != nil, !matches.isEmpty {
-                CompareButton(title: Self.compareTitle(matches), cartridges: Self.toCompare(matches, byFit: compareByFit), emptyCases: Self.emptyCases(matches))
+                CompareButton(title: Self.compareTitle(matches), cartridges: Self.toCompare(matches, byFit: compareByFit), emptyCases: Self.emptyCases(matches),
+                              goodMatches: Self.goodMatches(matches))
             }
         }
         .navigationTitle("Treffer")
@@ -114,10 +123,13 @@ struct MatchesView: View {
     /// The calibres listed: the ones the switches let through, plus the hidden ones once revealed.
     private var matches: [Match] { ranked.list(revealing: revealed) }
 
-    /// The calibres found, and the hint to measure by hand when the photo gives no sure answer.
+    /// The calibres found. A hidden calibre (obsolete or rare) that fits is announced before the list,
+    /// otherwise the hidden ones are summed up after it (Raven, 2026-11-08).
     @ViewBuilder private var results: some View {
         if !matches.isEmpty || ranked.summary != nil {
+            let hiddenFirst = Self.hasGoodMatch(ranked.hidden)
             Section {
+                if hiddenFirst, let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
                 // Calibres that look exactly the same from the side share one row.
                 ForEach(Matcher.grouped(matches)) { g in
                     // The calibre's page, as «Alle Kaliber» shows it; its 1:1 link draws this calibre alone (Raven, 2026-11-08).
@@ -126,21 +138,11 @@ struct MatchesView: View {
                                      highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
                     }
                 }
-                if let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
+                if !hiddenFirst, let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
             } header: {
                 Text("Mögliche Kaliber")
             } footer: {
                 Text("Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.")
-            }
-        }
-        // Below the calibres found: the list is the answer, the hint what to do when it is not sure enough (Raven, 2026-11-08).
-        if let hint = Self.manualEntryHint(matches) {
-            Section {
-                Text(hint)
-                NavigationLink { MeasureView() } label: {
-                    Label("Masse von Hand eingeben", systemImage: "ruler")
-                }
-                if matches.isEmpty { NavigationLink("Alle Kaliber durchsuchen") { CatalogView() } }
             }
         }
     }
@@ -215,11 +217,19 @@ struct MatchesView: View {
     /// Points the user to measuring by hand when the photo found nothing or only weak shapes. A
     /// good shape match is checked on the 1:1 screen instead, with or without LiDAR.
     static func manualEntryHint(_ matches: [Match]) -> String? {
-        if matches.isEmpty {
-            return "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc
-        }
+        if matches.isEmpty { return "Keine passenden Kaliber gefunden".loc }
         if matches.contains(where: { $0.shapeFit == .good }) { return nil }
-        return "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.".loc
+        return "Kein sicherer Treffer".loc
+    }
+
+    /// A match whose shape fits, and whose size fits too where it was measured.
+    static func hasGoodMatch(_ matches: [Match]) -> Bool {
+        matches.contains { $0.shapeFit == .good && ($0.sizeFit ?? .good) == .good }
+    }
+
+    /// Why each calibre that fits well is listed, by id, for the 1:1 screen (`TrueScaleView.goodMatches`).
+    static func goodMatches(_ matches: [Match]) -> [String: String] {
+        Dictionary(matches.filter(\.fitsWell).map { ($0.cartridge.id, reason(for: $0)) }, uniquingKeysWith: { a, _ in a })
     }
 
     /// Shown instead of matches when several cartridges compete, until the user picks one.
@@ -300,17 +310,22 @@ struct MatchesView: View {
         return String(format: "Gemessen: L ≈ %1$@, Ø ≈ %2$@".loc, rounded(size.length), rounded(size.diameter))
     }
 
-    /// Hints about what the analysis could use, and the size measured with LiDAR.
-    static func notes(for a: PhotoAnalysis, depth: DepthScale? = nil, unit: LengthUnit = .metric, mode: ScanMode = .auto) -> [String] {
+    /// Hints about what the analysis could use, and the size measured with LiDAR; `hint` (`manualEntryHint`)
+    /// follows the measurements on their line, or stands alone where there are none.
+    static func notes(for a: PhotoAnalysis, depth: DepthScale? = nil, unit: LengthUnit = .metric, mode: ScanMode = .auto,
+                      hint: String? = nil) -> [String] {
         var notes: [String] = []
         if let shape = a.shape, !shape.isEndView, let text = featuresText(shape, mode: mode) { notes.append(text) }
+        var measured: String?
         if depth != nil {
             switch a.size(depth: depth, mode: mode) {
-            case .success(let size): notes.append(measuredText(size, unit: unit))
+            case .success(let size): measured = measuredText(size, unit: unit)
             case .failure(.outOfRange): notes.append("Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form.".loc)
             case .failure: notes.append("Grösse nicht messbar: Treffer nur nach Form.".loc)
             }
         }
+        let line = [measured, hint].compactMap { $0 }.joined(separator: " · ")
+        if !line.isEmpty { notes.append(line) }
         if let shape = a.shape {
             if shape.isEndView { notes.append("Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Patronen werden nur von der Seite erkannt.".loc) }
         } else {

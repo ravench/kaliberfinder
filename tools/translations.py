@@ -156,14 +156,8 @@ T = {
     "Andere Patrone wählen": ("Choose another cartridge", "Choisir une autre cartouche", "Scegli un'altra cartuccia"),
     "Patrone %lld": ("Cartridge %lld", "Cartouche %lld", "Cartuccia %lld"),
     "Keine Patrone im Bild erkannt.": ("No cartridge found in the photo.", "Aucune cartouche détectée sur la photo.", "Nessuna cartuccia trovata nella foto."),
-    "Keine passenden Kaliber gefunden. Miss die Patrone mit einer Schieblehre und gib die Masse ein.": (
-        "No matching calibres found. Measure the cartridge with a calliper and enter the dimensions.",
-        "Aucun calibre correspondant trouvé. Mesurez la cartouche au pied à coulisse et saisissez les dimensions.",
-        "Nessun calibro corrispondente trovato. Misura la cartuccia con un calibro a corsoio e inserisci le dimensioni."),
-    "Kein sicherer Treffer. Miss die Patrone mit einer Schieblehre und gib die Masse ein.": (
-        "No sure match. Measure the cartridge with a calliper and enter the dimensions.",
-        "Pas de correspondance sûre. Mesurez la cartouche au pied à coulisse et saisissez les dimensions.",
-        "Nessuna corrispondenza sicura. Misura la cartuccia con un calibro a corsoio e inserisci le dimensioni."),
+            "Keine passenden Kaliber gefunden": ("No matching calibres found", "Aucun calibre correspondant trouvé", "Nessun calibro corrispondente trovato"),
+    "Kein sicherer Treffer": ("No sure match", "Pas de correspondance sûre", "Nessuna corrispondenza sicura"),
     "Masse von Hand eingeben": ("Enter dimensions by hand", "Saisir les dimensions à la main", "Inserisci le dimensioni a mano"),
     "Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.": (
         "Lay the cartridge on the screen, base on the zero line, and compare.",

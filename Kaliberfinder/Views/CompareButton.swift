@@ -7,6 +7,8 @@ struct CompareButton: View {
     let cartridges: [Cartridge]
     /// Calibres compared as empty cases (`TrueScaleView.emptyCases`).
     var emptyCases: Set<String> = []
+    /// Matches that fit well, with the reason (`TrueScaleView.goodMatches`).
+    var goodMatches: [String: String] = [:]
 
     /// Two items side by side.
     static let symbol = "square.and.line.vertical.and.square"
@@ -16,7 +18,7 @@ struct CompareButton: View {
     static let margin: CGFloat = 24
 
     var body: some View {
-        NavigationLink { TrueScaleView(cartridges: cartridges, emptyCases: emptyCases) } label: {
+        NavigationLink { TrueScaleView(cartridges: cartridges, emptyCases: emptyCases, goodMatches: goodMatches) } label: {
             Label(title, systemImage: Self.symbol)
                 .font(.headline)
                 .lineLimit(1)
