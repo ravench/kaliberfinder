@@ -12,6 +12,8 @@ struct SettingsView: View {
     @EnvironmentObject private var scale: ScaleModel
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(TrueScaleView.bulletsOnCasesKey) private var bulletsOnCases = true
+    /// Only phones with a LiDAR scanner measure the photo, so only they get the switch (`MatchesView.compareByFitKey`).
+    @AppStorage(MatchesView.compareByFitKey) private var compareByFit = false
     /// Hidden developer switch: five taps on the copyright line (`TrainingCapture`).
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
     /// The photo's outline coloured by detection (`ShapeContour.partColoursKey`); for everyone since 2026-11-08.
@@ -47,6 +49,13 @@ struct SettingsView: View {
                     Toggle("Erkennung farbig zeigen", isOn: $partColours)
                 } footer: {
                     Text("Umriss auf dem Foto: grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Verjüngung des Körpers.")
+                }
+                if LiDARCamera.isAvailable {
+                    Section {
+                        Toggle("1:1-Vergleich nach Trefferqualität sortieren", isOn: $compareByFit)
+                    } footer: {
+                        Text("Gilt für den Vergleich aller Treffer nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone zuerst.")
+                    }
                 }
                 case .copyright:
                 if trainingCapture {
