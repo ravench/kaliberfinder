@@ -163,6 +163,8 @@ final class LiDARCamera: NSObject, ObservableObject {
         if let format = candidates.max(by: { Self.largest($0.supportedMaxPhotoDimensions).width < Self.largest($1.supportedMaxPhotoDimensions).width }) {
             try? device.lockForConfiguration()
             device.activeFormat = format
+            // The whole sensor: the 17 Pro's telephoto comes up zoomed to its 8x sensor crop (Raven, 2026-11-08).
+            device.videoZoomFactor = device.minAvailableVideoZoomFactor
             // Only where there is one: setting nil on a camera without depth throws (TestFlight 1113 crashed so).
             if let depthFormat = format.supportedDepthDataFormats.last(where: {
                 let type = $0.formatDescription.mediaSubType.rawValue
