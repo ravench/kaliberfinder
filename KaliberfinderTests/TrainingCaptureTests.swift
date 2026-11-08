@@ -157,12 +157,42 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(TrainingRecorder.rows(extrinsics), [1, 0, 0, 5, 0, 1, 0, 6, 0, 0, 1, 7])
     }
 
-    func testNewPackageCarriesThePhoneDetails() {
+    func testNewPackageCarriesThePhoneDetails() throws {
         let p = TrainingRecorder.package(calibre: "9x19 mm", mode: .emptyCase, note: "Tuch")
         XCTAssertEqual(p.scanMode, .emptyCase)
         XCTAssertEqual(p.format, TrainingCapture.format)
         XCTAssertFalse(p.device.isEmpty)
         XCTAssertTrue(p.system.hasPrefix("iOS "))
+        // The back cameras: none on the simulator, but the list is there, and it survives the file.
+        XCTAssertNotNil(p.cameras)
+        let back = try TrainingCapture.decoder.decode(CapturePackage.self, from: TrainingCapture.encoder.encode(p))
+        XCTAssertEqual(back.cameras, p.cameras)
+    }
+
+    /// A shot remembers the camera that took it; the summary names it unless it was the LiDAR camera.
+    func testShotNamesItsCamera() throws {
+        var shot = CaptureShot(photo: "photo.heic", source: "lidarCamera", captured: Date())
+        XCTAssertFalse(TrainingPackageView.summary("01", shot).contains("Telephoto"))
+        shot.camera = CameraInfo.shortName("AVCaptureDeviceTypeBuiltInTelephotoCamera")
+        XCTAssertEqual(shot.camera, "Telephoto")
+        XCTAssertTrue(TrainingPackageView.summary("01", shot).hasPrefix("01  Telephoto  "))
+        shot.camera = "LiDARDepth"
+        XCTAssertFalse(TrainingPackageView.summary("01", shot).contains("LiDARDepth"))
+        let back = try TrainingCapture.decoder.decode(CaptureShot.self, from: TrainingCapture.encoder.encode(shot))
+        XCTAssertEqual(back.camera, "LiDARDepth")
+    }
+
+    /// Packages from before the cameras were recorded read as before; a telephoto's line says what it can do.
+    func testCamerasAreOptionalAndSummarised() throws {
+        let old = Data("""
+        {"format": 1, "calibre": "9x19 mm", "part": "cartridge", "note": "", "created": "2026-11-05T22:48:50Z",
+         "device": "iPhone18,1", "system": "iOS 26.1.0", "app": "0.1.0 (1062)"}
+        """.utf8)
+        XCTAssertNil(try TrainingCapture.decoder.decode(CapturePackage.self, from: old).cameras)
+        let tele = CameraInfo(type: "builtInTelephotoCamera", minimumFocusDistance: 1250, depth: false, photoWidth: 8064, photoHeight: 6048)
+        XCTAssertEqual(tele.summary, "Telephoto: focus from 1250 mm, no depth, 49 MP")
+        let lidar = CameraInfo(type: "builtInLiDARDepthCamera", minimumFocusDistance: nil, depth: true, photoWidth: 4032, photoHeight: 3024)
+        XCTAssertEqual(lidar.summary, "LiDARDepth: focus unknown, depth, 12 MP")
     }
 
     func testFocusAsTheCameraReportsIt() {

@@ -5,10 +5,25 @@ import UIKit
 /// The back camera paired with the LiDAR scanner (Pro iPhones from the 12 Pro, iPad Pro). Shows live
 /// guidance (distance and tilt) and takes a photo together with the table distance and focal length.
 /// Depth stays in memory and is dropped after the size is computed (LIDAR-07).
+/// The training capture may pick another back camera (`deviceType`): a telephoto or the ultra wide
+/// one, which deliver no depth (Raven, 2026-11-08: to see what a telephoto does for the photos).
 final class LiDARCamera: NSObject, ObservableObject {
     /// LIDAR-01: only devices with the scanner get the depth camera.
-    static var isAvailable: Bool {
-        AVCaptureDevice.default(.builtInLiDARDepthCamera, for: .video, position: .back) != nil
+    static var isAvailable: Bool { isAvailable(.builtInLiDARDepthCamera) }
+
+    static func isAvailable(_ type: AVCaptureDevice.DeviceType) -> Bool {
+        AVCaptureDevice.default(type, for: .video, position: .back) != nil
+    }
+
+    /// The back cameras the training capture may choose from, the LiDAR camera first; only the ones this device has.
+    static var choices: [AVCaptureDevice.DeviceType] {
+        [.builtInLiDARDepthCamera, .builtInTelephotoCamera, .builtInUltraWideCamera].filter(isAvailable)
+    }
+
+    let deviceType: AVCaptureDevice.DeviceType
+
+    init(deviceType: AVCaptureDevice.DeviceType = .builtInLiDARDepthCamera) {
+        self.deviceType = deviceType
     }
 
     @Published private(set) var guidance: LiDARGuidance = .noDepth
@@ -107,6 +122,7 @@ final class LiDARCamera: NSObject, ObservableObject {
             onRawPhoto = completion
             rawMoment = pose
             rawMoment.focus = device.map { CaptureShot.Focus(minimumFocusDistance: $0.minimumFocusDistance, lensPosition: $0.lensPosition) }
+            rawMoment.camera = CameraInfo.shortName(deviceType.rawValue)
             takePhoto(angle: angle)
         }
     }
@@ -123,21 +139,22 @@ final class LiDARCamera: NSObject, ObservableObject {
     }
 
     private func configure() {
-        guard let device = AVCaptureDevice.default(.builtInLiDARDepthCamera, for: .video, position: .back),
+        guard let device = AVCaptureDevice.default(deviceType, for: .video, position: .back),
               let input = try? AVCaptureDeviceInput(device: device) else { return }
+        let hasDepth = device.formats.contains { !$0.supportedDepthDataFormats.isEmpty }
         session.beginConfiguration()
         defer { session.commitConfiguration() }
         session.sessionPreset = .photo
-        guard session.canAddInput(input), session.canAddOutput(photoOutput), session.canAddOutput(depthOutput) else { return }
+        guard session.canAddInput(input), session.canAddOutput(photoOutput), !hasDepth || session.canAddOutput(depthOutput) else { return }
         self.device = device
         session.addInput(input)
         session.addOutput(photoOutput)
-        session.addOutput(depthOutput)
+        if hasDepth { session.addOutput(depthOutput) }
         DispatchQueue.main.async { self.coordinateRotation() }
-        // A 4:3 format that delivers depth, with a float depth format.
+        // A 4:3 format that delivers depth, with a float depth format; without depth, the last 4:3 format.
         if let format = device.formats.last(where: { f in
             let d = f.formatDescription.dimensions
-            return !f.supportedDepthDataFormats.isEmpty && d.width * 3 == d.height * 4
+            return (!hasDepth || !f.supportedDepthDataFormats.isEmpty) && d.width * 3 == d.height * 4
         }) {
             try? device.lockForConfiguration()
             device.activeFormat = format
@@ -148,6 +165,7 @@ final class LiDARCamera: NSObject, ObservableObject {
             device.unlockForConfiguration()
         }
         photoOutput.isDepthDataDeliveryEnabled = photoOutput.isDepthDataDeliverySupported
+        guard hasDepth else { return }
         depthOutput.isFilteringEnabled = true
         depthOutput.setDelegate(self, callbackQueue: queue)
     }

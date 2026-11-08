@@ -15,6 +15,7 @@ enum TrainingRecorder {
         shot.gravity = moment.gravity
         shot.tilt = moment.tilt
         shot.focus = moment.focus
+        shot.camera = moment.camera
         var depthValues: [Float]?
         if let depthData = photo.depthData {
             if let map = LiDARCamera.depthValues(depthData) {
@@ -141,6 +142,19 @@ enum TrainingRecorder {
         let os = ProcessInfo.processInfo.operatingSystemVersion
         let version = "\(bundle["CFBundleShortVersionString"] ?? "?") (\(bundle["CFBundleVersion"] ?? "?"))"
         return CapturePackage(calibre: calibre, part: mode.rawValue, note: note, created: Date(), device: deviceModel,
-                              system: "iOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)", app: version)
+                              system: "iOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)", app: version, cameras: backCameras)
+    }
+
+    /// The phone's back cameras, one entry each (the simulator has none): whether a telephoto could take
+    /// the photos is decided by its closest focus and whether it delivers depth (Raven, 2026-11-08).
+    static var backCameras: [CameraInfo] {
+        let types: [AVCaptureDevice.DeviceType] = [.builtInWideAngleCamera, .builtInUltraWideCamera, .builtInTelephotoCamera, .builtInLiDARDepthCamera]
+        return AVCaptureDevice.DiscoverySession(deviceTypes: types, mediaType: .video, position: .back).devices.map { device in
+            let photo = device.formats.flatMap(\.supportedMaxPhotoDimensions).max { $0.width < $1.width } ?? CMVideoDimensions(width: 0, height: 0)
+            return CameraInfo(type: device.deviceType.rawValue.replacingOccurrences(of: "AVCaptureDeviceType", with: ""),
+                              minimumFocusDistance: device.minimumFocusDistance >= 0 ? device.minimumFocusDistance : nil,
+                              depth: device.formats.contains { !$0.supportedDepthDataFormats.isEmpty },
+                              photoWidth: Int(photo.width), photoHeight: Int(photo.height))
+        }
     }
 }
