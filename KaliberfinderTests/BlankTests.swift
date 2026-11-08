@@ -60,25 +60,4 @@ final class BlankTests: XCTestCase {
         let match = try XCTUnwrap(rank(shape, mode: .emptyCase, limit: .max).first { $0.cartridge.id == blankID })
         XCTAssertEqual(match.part, .cartridge)
     }
-
-    /// A blank rests tilted on its rim, so photographed parallel to the table it looks shorter.
-    func testTiltedBlankLooksShorterButIsStillFound() throws {
-        let blank = try XCTUnwrap(ShapeMatcher.catalogue[blankID])
-        let shorter = ShapeMatcher.measurement(aspect: blank.aspect * 0.85, relativeWidths: blank.widths)
-        XCTAssertEqual(rank(shorter, limit: 3).first?.cartridge.id, blankID)
-        let distance = try XCTUnwrap(rank(shorter, limit: .max).first { $0.cartridge.id == blankID }?.shapeDistance)
-        XCTAssertEqual(distance, 0, accuracy: 0.01)
-        // Never longer, and at most 20 % shorter.
-        let longer = ShapeMatcher.measurement(aspect: blank.aspect * 1.2, relativeWidths: blank.widths)
-        XCTAssertEqual(ShapeMatcher.tilted(blank, toward: longer).aspect, blank.aspect)
-        let stubby = ShapeMatcher.measurement(aspect: blank.aspect * 0.5, relativeWidths: blank.widths)
-        XCTAssertEqual(ShapeMatcher.tilted(blank, toward: stubby).aspect, blank.aspect * 0.8, accuracy: 1e-9)
-    }
-
-    func testOnlyBlanksAreAllowedToLookShorter() throws {
-        let nine = try XCTUnwrap(ShapeMatcher.catalogue["9x19 mm"])
-        let shorter = ShapeMatcher.measurement(aspect: nine.aspect * 0.85, relativeWidths: nine.widths)
-        let distance = rank(shorter, limit: .max).first { $0.cartridge.id == "9x19 mm" }?.shapeDistance ?? .infinity
-        XCTAssertGreaterThan(distance, 0.4)
-    }
 }

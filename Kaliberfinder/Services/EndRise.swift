@@ -51,14 +51,4 @@ extension PhotoAnalysis {
         guard let shape, let p = perspective(depth: depth) else { return 1 }
         return EndRise.factor(shape, perspective: p, mode: mode)
     }
-
-    /// The silhouette with the length over width the cartridge has at its axis's height, and the case's
-    /// share of its length where the photo's colours show the case mouth (`ShapeContour.mouth`): what
-    /// the matching compares with the catalogue's outlines.
-    func shapeAtAxis(depth: DepthScale?, mode: ScanMode = .auto) -> ShapeMeasurement? {
-        guard let shape else { return nil }
-        let rise = endRise(depth: depth, mode: mode)
-        return ShapeMeasurement(aspect: shape.aspect / rise, profile: shape.profile, widths: shape.widths,
-                                caseShare: contour?.mouth.map { 1 - $0 })
-    }
 }
