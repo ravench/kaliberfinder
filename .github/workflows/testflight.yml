@@ -1,7 +1,10 @@
 name: TestFlight
 # Uploads a build to TestFlight after the Build workflow passes on main.
 # Needs the repository secrets ASC_KEY_ID, ASC_ISSUER_ID and ASC_KEY_P8 (an App Store
-# Connect API key with the Admin role); without them the upload is skipped.
+# Connect API key with the Admin role); without them the upload is skipped. With the
+# ANTHROPIC_API_KEY secret, the Claude API writes the build's release notes from the commits
+# since the last build (tools/changelog.py): into the app, which shows them once, and into
+# the build's «What to Test».
 on:
   workflow_run:
     workflows: [Build]
@@ -94,6 +97,12 @@ jobs:
       group: testflight
       cancel-in-progress: false
     runs-on: macos-26
+    permissions:
+      # Tags the uploaded commit (testflight/<build>): the next build's notes start after it.
+      contents: write
+    outputs:
+      notes: ${{ steps.notes.outputs.notes }}
+      build: ${{ steps.prepare.outputs.build }}
     env:
       ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
@@ -114,10 +123,14 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           # Images (app icon) are in Git LFS.
           lfs: true
+          # The whole history: the tag of the last build, and the commits since it, for the notes.
+          fetch-depth: 0
       - name: Prepare
+        id: prepare
         if: steps.secrets.outputs.ready == 'true'
         run: |
           python3 -m unittest discover -s tools -p 'test_testflight.py'
+          python3 -m unittest discover -s tools -p 'test_changelog.py'
           brew install xcodegen
           xcodegen generate
           # The runner is thrown away after the job, key included.
@@ -126,7 +139,27 @@ jobs:
           python3 tools/testflight.py export-options "$RUNNER_TEMP/ExportLocal.plist" export
           BUILD=$(python3 tools/testflight.py build-number "${{ github.run_number }}")
           echo "BUILD_NUMBER=$BUILD" >> "$GITHUB_ENV"
+          echo "build=$BUILD" >> "$GITHUB_OUTPUT"
           echo "Build number $BUILD"
+      - name: Release notes
+        # The commits since the last build, summarised by the Claude API into Changelog.json in the
+        # bundle (the app shows it the first time the build is opened) and, below, into «What to
+        # Test». Without the key, or when the API fails, the build goes out without notes.
+        id: notes
+        if: steps.secrets.outputs.ready == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::notice::Release notes skipped: set the ANTHROPIC_API_KEY secret."
+            exit 0
+          fi
+          if python3 -m venv "$RUNNER_TEMP/venv" && "$RUNNER_TEMP/venv/bin/pip" install -q anthropic \
+             && "$RUNNER_TEMP/venv/bin/python" tools/changelog.py notes Kaliberfinder/Resources/Changelog.json; then
+            echo "notes=$(cat Kaliberfinder/Resources/Changelog.json)" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Release notes skipped: tools/changelog.py failed."
+          fi
       - name: Archive
         # Unsigned: automatic signing here made every fresh runner create a new Apple Development
         # certificate until the team hit Apple's limit (2026-11-03), and ad hoc signing is not
@@ -206,3 +239,24 @@ jobs:
             -authenticationKeyID "$ASC_KEY_ID" \
             -authenticationKeyIssuerID "$ASC_ISSUER_ID"
           echo "### Build $BUILD_NUMBER uploaded to TestFlight" >> "$GITHUB_STEP_SUMMARY"
+          git tag "testflight/$BUILD_NUMBER"
+          git push origin "refs/tags/testflight/$BUILD_NUMBER"
+  what-to-test:
+    # Puts the release notes into the build's «What to Test» once App Store Connect has processed
+    # it, which takes minutes to an hour: on Linux, so no Mac waits.
+    needs: upload
+    if: needs.upload.outputs.notes != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+      NOTES: ${{ needs.upload.outputs.notes }}
+      BUILD_NUMBER: ${{ needs.upload.outputs.build }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set «What to Test»
+        run: |
+          echo "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
+          python3 tools/changelog.py what-to-test "$RUNNER_TEMP/AuthKey.p8" "$BUILD_NUMBER" <<< "$NOTES"

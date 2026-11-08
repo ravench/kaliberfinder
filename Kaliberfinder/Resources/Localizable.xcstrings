@@ -3129,6 +3129,29 @@
         }
       }
     },
+    "Neu in dieser Version": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New in this version"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveautés de cette version"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Novità in questa versione"
+          }
+        }
+      }
+    },
     "Neue Aufnahmeserie": {
       "extractionState": "manual",
       "localizations": {
@@ -4367,6 +4390,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diffusione"
+          }
+        }
+      }
+    },
+    "Version %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versione %@"
           }
         }
       }

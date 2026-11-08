@@ -12,6 +12,9 @@ struct HomeView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var showCamera = false
     @State private var showSettings = false
+    /// The release notes of this build, the first time it is opened (`Changelog`).
+    @State private var whatsNew: [String] = []
+    @State private var showWhatsNew = false
     @State private var libraryItem: PhotosPickerItem?
     @State private var photo: PickedPhoto?
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
@@ -92,6 +95,10 @@ struct HomeView: View {
                 .environmentObject(scale)
                 .pageSized()
         }
+        .sheet(isPresented: $showWhatsNew) {
+            WhatsNewView(bullets: whatsNew)
+                .pageSized()
+        }
         .navigationDestination(item: $photo) {
             // New identity per photo, so a photo shared while the matches are open is analysed afresh.
             MatchesView(photo: $0.image, depth: $0.depth).id($0.id)
@@ -100,7 +107,7 @@ struct HomeView: View {
         // let it, they wait in the inbox until the app comes to the front.
         .onOpenURL { if SharedInbox.isOpenURL($0) { takeSharedPhoto() } }
         .onChange(of: scenePhase) { _, phase in if phase == .active { takeSharedPhoto() } }
-        .onAppear { takeSharedPhoto() }
+        .onAppear { takeSharedPhoto(); showNotes() }
         .fullScreenCover(isPresented: $showCamera) {
             if LiDARCamera.isAvailable {
                 LiDARCameraView { photo = PickedPhoto(image: $0, depth: $1) }
@@ -125,6 +132,14 @@ struct HomeView: View {
         guard let image = (SharedInbox.shared?.take() ?? []).lazy.compactMap(UIImage.init(data:)).first ?? Self.takeTourPhoto() else { return }
         showCamera = false
         photo = PickedPhoto(image: image)
+    }
+
+    /// Shows the build's release notes, if it has any and they were not shown yet.
+    private func showNotes() {
+        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+        guard let notes = Changelog.toShow(build: build, language: Bundle.main.preferredLocalizations.first ?? "de") else { return }
+        whatsNew = notes
+        showWhatsNew = true
     }
 
     /// For the PR screens tour only: the photo file given as `-screenTourPhoto <path>` at launch, once.

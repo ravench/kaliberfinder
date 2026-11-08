@@ -195,6 +195,9 @@ T = {
     "Bodendurchmesser": ("Base diameter", "Diamètre au culot", "Diametro alla base"),
     "Diabolo": ("Diabolo pellet", "Plomb diabolo", "Piombino diabolo"),
     "Fertig": ("Done", "Terminé", "Fine"),
+    # Release notes of a TestFlight build (WhatsNewView).
+    "Neu in dieser Version": ("New in this version", "Nouveautés de cette version", "Novità in questa versione"),
+    "Version %@": ("Version %@", "Version %@", "Versione %@"),
     "Foto übernommen. Öffne Kaliberfinder, um die Treffer zu sehen.": (
         "Photo received. Open Kaliberfinder to see the matches.",
         "Photo reçue. Ouvrez Kaliberfinder pour voir les correspondances.",

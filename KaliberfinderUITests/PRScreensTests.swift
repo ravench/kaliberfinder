@@ -202,6 +202,18 @@ final class PRScreensTests: XCTestCase {
         snap("29-Trainingsdaten-neue-Serie-Kaliber")
     }
 
+    /// The release notes a TestFlight build shows the first time it is opened (CI writes them into the
+    /// bundle; here from a fixture, as if they were not shown yet).
+    func testWhatsNew() {
+        let notes = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("KaliberfinderTests/Fixtures/changelog.json")
+        app.terminate()
+        app.launchArguments += ["-screenTourChangelog", notes.path, "-changelogShownBuild", "none"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Neu in dieser Version"].waitForExistence(timeout: 10), "The release notes did not open")
+        snap("30-Neu-in-dieser-Version")
+    }
+
     /// Opens the matches for a photo from KaliberfinderTests/Fixtures and takes the screenshot `shot`;
     /// with `compareShot`, also one of the 1:1 screen that compares all of them.
     private func photoMatches(_ fixture: String, shot: String, compareShot: String? = nil) {
