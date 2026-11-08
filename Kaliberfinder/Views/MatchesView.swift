@@ -26,9 +26,9 @@ struct MatchesView: View {
     var body: some View {
         List {
             Section {
-                let frames = Self.frames(overview: overview, measured: analysis, picking: needsPick, mode: mode)
+                let frames = Self.frames(overview: overview, measured: analysis, picking: needsPick, mode: shown)
                 CandidatePhotoView(photo: preview?.image ?? photo, candidates: frames.candidates, measured: frames.measured, parts: frames.parts,
-                                   mouthLine: Self.mouthLine(measured: analysis, picking: needsPick, mode: mode),
+                                   mouthLine: Self.mouthLine(measured: analysis, picking: needsPick, mode: shown),
                                    region: preview?.region ?? CGRect(x: 0, y: 0, width: 1, height: 1),
                                    maxHeight: needsPick ? 420 : 220) { choose($0) }
                 if needsPick {
@@ -48,14 +48,13 @@ struct MatchesView: View {
                     }
                     if let analysis {
                         // Highlights what the app detected; tapping the other segment overrides it.
-                        if let shape = analysis.shape, !shape.isEndView {
-                            let detected = ScanMode.detected(in: shape)
+                        if let detected {
                             Picker("Was liegt im Bild?", selection: Binding { override ?? detected } set: { override = $0 }) {
                                 ForEach(ScanMode.choices) { Text($0.title.loc).tag($0) }
                             }
                             .pickerStyle(.segmented)
                         }
-                        ForEach(Self.notes(for: analysis, depth: depth, unit: unit, mode: mode), id: \.self) { note in
+                        ForEach(Self.notes(for: analysis, depth: depth, unit: unit, mode: shown), id: \.self) { note in
                             Text(note).font(.footnote).foregroundStyle(.secondary)
                         }
                     } else {
@@ -96,20 +95,22 @@ struct MatchesView: View {
     /// What the photo is compared with: the detection, unless the user overrode it.
     private var mode: ScanMode { override ?? .auto }
 
+    /// What the app detected in the photo: from the outline, or for a shotshell in the first row from its
+    /// LiDAR length (`ScanMode.detected`). Nil before the analysis, and for an end view.
+    private var detected: ScanMode? {
+        guard let analysis, let shape = analysis.shape, !shape.isEndView else { return nil }
+        return ScanMode.detected(in: shape, size: analysis.rawSize(depth: depth), perspective: analysis.perspective(depth: depth),
+                                 first: matches.first?.cartridge)
+    }
+
+    /// The part the screen shows the photo as, on the outline and in the notes: the user's choice, else the detection.
+    private var shown: ScanMode { override ?? detected ?? .auto }
+
     /// The calibres listed: the ones the switches let through, plus the hidden ones once revealed.
     private var matches: [Match] { ranked.list(revealing: revealed) }
 
-    /// The hint to measure by hand when the photo gives no sure answer, and the calibres found.
+    /// The calibres found, and the hint to measure by hand when the photo gives no sure answer.
     @ViewBuilder private var results: some View {
-        if let hint = Self.manualEntryHint(matches) {
-            Section {
-                Text(hint)
-                NavigationLink { MeasureView() } label: {
-                    Label("Masse von Hand eingeben", systemImage: "ruler")
-                }
-                if matches.isEmpty { NavigationLink("Alle Kaliber durchsuchen") { CatalogView() } }
-            }
-        }
         if !matches.isEmpty || ranked.summary != nil {
             Section {
                 // Calibres that look exactly the same from the side share one row.
@@ -125,6 +126,16 @@ struct MatchesView: View {
                 Text("Mögliche Kaliber")
             } footer: {
                 Text("Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.")
+            }
+        }
+        // Below the calibres found: the list is the answer, the hint what to do when it is not sure enough (Raven, 2026-11-08).
+        if let hint = Self.manualEntryHint(matches) {
+            Section {
+                Text(hint)
+                NavigationLink { MeasureView() } label: {
+                    Label("Masse von Hand eingeben", systemImage: "ruler")
+                }
+                if matches.isEmpty { NavigationLink("Alle Kaliber durchsuchen") { CatalogView() } }
             }
         }
     }
