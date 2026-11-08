@@ -30,6 +30,16 @@ class LinesTests(unittest.TestCase):
         self.assertNotIn("email", crashes.FIELDS)
 
 
+class CrashLogTests(unittest.TestCase):
+    def test_the_log_text_comes_inline(self):
+        asc = crashes.changelog.asc
+        crashes.changelog.asc = lambda method, path, token: {"data": {"attributes": {"logText": "Incident Identifier: X"}}}
+        try:
+            self.assertEqual(crashes.crash_log("abc", "t"), "Incident Identifier: X")
+        finally:
+            crashes.changelog.asc = asc
+
+
 class WorkflowTests(unittest.TestCase):
     def test_the_workflow_keeps_the_logs_in_an_artifact(self):
         with open(os.path.join(crashes.changelog.ROOT, ".github", "workflows", "crashes.yml")) as f:

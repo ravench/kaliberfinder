@@ -34,12 +34,13 @@ def lines(response):
 
 
 def crash_log(submission_id, token):
-    """The crash log's text; the API hands out a short-lived download link."""
-    data = changelog.asc("GET", f"/betaFeedbackCrashSubmissions/{submission_id}/crashLog", token)["data"]
-    url = data.get("attributes", {}).get("url")
-    if not url:
-        return json.dumps(data, indent=1)  # not the expected shape: keep what came
-    with urllib.request.urlopen(url) as response:
+    """The crash log's text: inline (`logText`, as App Store Connect sends it), or behind a download link."""
+    attributes = changelog.asc("GET", f"/betaFeedbackCrashSubmissions/{submission_id}/crashLog", token)["data"].get("attributes", {})
+    if "logText" in attributes:
+        return attributes["logText"]
+    if "url" not in attributes:
+        return json.dumps(attributes, indent=1)  # not an expected shape: keep what came
+    with urllib.request.urlopen(attributes["url"]) as response:
         return response.read().decode(errors="replace")
 
 
