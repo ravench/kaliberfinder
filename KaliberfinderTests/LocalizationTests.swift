@@ -38,6 +38,7 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(en["Trainingsdaten aufnehmen"], "Record training data")
         XCTAssertEqual(en["Neue Aufnahmeserie"], "New capture series")
         XCTAssertEqual(en["%lld von %lld Fotos hinzugefügt"], "%lld of %lld photos added")
+        XCTAssertEqual(en["Nicht in der Liste"], "Not in the list")
         XCTAssertEqual(en["© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0"], "© 2026 Simon Giotta · Licence: PolyForm Noncommercial 1.0.0")
     }
 

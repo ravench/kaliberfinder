@@ -56,6 +56,9 @@ LiDAR size, where the outline came from), the calibres most often in the phone's
 the right one, and every shot whose calibre is not in the first row. It holds shot names and numbers
 only, never a photo.
 
+Series of a round the catalogue lacks («Nicht in der Liste», `unlisted` in package.json) have no right
+calibre and are left out; the tool says how many.
+
 The scores are the golden set's: calibre first and in the first five rows of the list as the phone
 shows it, for each setting of the «Erkennung» switches (both off, obsolete calibres on, obsolete and
 rare on), part (cartridge or empty case) right in automatic mode, and neck found on calibres with a

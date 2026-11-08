@@ -98,6 +98,28 @@ final class PRScreensTests: XCTestCase {
         snap("23-Trainingsdaten-Kalibersuche")
     }
 
+    /// A new training series of a round the catalogue lacks: searched in vain, then «Nicht in der Liste»,
+    /// named after the search.
+    func testTrainingUnlistedRound() {
+        app.terminate()
+        app.launchArguments += ["-trainingCaptureEnabled", "YES"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]),
+              open(app.buttons["Trainingsdaten aufnehmen"].firstMatch),
+              open(app.buttons["Neue Aufnahmeserie"].firstMatch),
+              open(app.staticTexts["Fotografiertes Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("Gras court\n") // return hides the keyboard
+        }
+        snap("24-Trainingsdaten-nicht-in-Liste")
+        guard open(app.buttons["Nicht in der Liste"].firstMatch) else { return }
+        XCTAssertEqual(app.textFields.firstMatch.value as? String, "Gras court", "named after the search")
+        snap("25-Trainingsdaten-unbekannte-Patrone")
+    }
+
     /// Cases that are not brass, from the side and from below: lacquered steel, a brass body on a
     /// steel head, and a paper case in a brass cup.
     func testCaseMaterials() {

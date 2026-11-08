@@ -165,6 +165,36 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertTrue(p.system.hasPrefix("iOS "))
     }
 
+    /// A round the catalogue lacks: its name instead of a catalogue id, marked as unlisted.
+    func testUnlistedRoundKeepsItsName() throws {
+        let p = TrainingRecorder.package(calibre: "  11 mm Gras court ", unlisted: true, mode: .cartridge, note: "")
+        XCTAssertEqual(p.calibre, "11 mm Gras court")
+        XCTAssertTrue(p.isUnlisted)
+        XCTAssertEqual(p.calibreName, "11 mm Gras court")
+        let url = try store.create(p)
+        XCTAssertTrue(url.lastPathComponent.hasPrefix("11-mm-gras-court-"))
+        let saved = try XCTUnwrap(store.packages().first)
+        XCTAssertEqual(saved.package.calibre, "11 mm Gras court")
+        XCTAssertTrue(saved.package.isUnlisted)
+        // A name that happens to be a catalogue id still stays unlisted.
+        XCTAssertTrue(TrainingRecorder.package(calibre: "9x19 mm", unlisted: true, mode: .cartridge, note: "").isUnlisted)
+        XCTAssertEqual(CaptureStore.folderName(package("???")), "unlisted-20270115-080000")
+    }
+
+    /// Catalogue calibres are written as before: package.json without «unlisted», and older packages read fine.
+    func testListedPackagesHaveNoUnlistedKey() throws {
+        let p = TrainingRecorder.package(calibre: "7.5x55 mm Swiss (GP 11)", mode: .cartridge, note: "")
+        XCTAssertFalse(p.isUnlisted)
+        XCTAssertEqual(p.calibreName, "7.5x55 mm Swiss (GP 11)")
+        let json = try XCTUnwrap(String(data: TrainingCapture.encoder.encode(p), encoding: .utf8))
+        XCTAssertFalse(json.contains("unlisted"))
+        let old = Data(#"""
+            {"format": 1, "calibre": "9x19 mm", "part": "cartridge", "note": "", "created": "2026-11-04T23:30:00Z",
+             "device": "", "system": "", "app": ""}
+            """#.utf8)
+        XCTAssertFalse(try TrainingCapture.decoder.decode(CapturePackage.self, from: old).isUnlisted)
+    }
+
     func testFocusAsTheCameraReportsIt() {
         XCTAssertEqual(CaptureShot.Focus(minimumFocusDistance: 150, lensPosition: 0.62), .init(minimumDistance: 150, lensPosition: 0.62))
         XCTAssertNil(CaptureShot.Focus(minimumFocusDistance: -1, lensPosition: 0.5).minimumDistance, "-1: the camera doesn't say")

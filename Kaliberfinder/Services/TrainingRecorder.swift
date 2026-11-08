@@ -135,12 +135,14 @@ enum TrainingRecorder {
         }
     }
 
-    /// A new package with this phone's details.
-    static func package(calibre: String, mode: ScanMode, note: String) -> CapturePackage {
+    /// A new package with this phone's details. `unlisted`: `calibre` is the name of a round the catalogue lacks.
+    static func package(calibre: String, unlisted: Bool = false, mode: ScanMode, note: String) -> CapturePackage {
         let bundle = Bundle.main.infoDictionary ?? [:]
         let os = ProcessInfo.processInfo.operatingSystemVersion
         let version = "\(bundle["CFBundleShortVersionString"] ?? "?") (\(bundle["CFBundleVersion"] ?? "?"))"
-        return CapturePackage(calibre: calibre, part: mode.rawValue, note: note, created: Date(), device: deviceModel,
-                              system: "iOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)", app: version)
+        return CapturePackage(calibre: unlisted ? calibre.trimmingCharacters(in: .whitespacesAndNewlines) : calibre, part: mode.rawValue,
+                              note: note, created: Date(), device: deviceModel,
+                              system: "iOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)", app: version,
+                              unlisted: unlisted ? true : nil)
     }
 }
