@@ -45,10 +45,11 @@ extension PhotoAnalyzer {
         return secondLook(first, then: analyzeNow(image, in: region))
     }
 
-    /// One look at the photo, scaled to `maxDimension`.
+    /// One look at the photo, scaled to `maxDimension`, and where Vision finds nothing there, at the
+    /// cascade of crops (`firstLook(whole:…)`).
     private static func firstLook(_ image: UIImage) -> PhotoAnalysis {
         guard let cgImage = upright(image, maxSide: maxDimension) else { return PhotoAnalysis(shape: nil) }
-        return analyzeNow(cgImage)
+        return firstLook(whole: cgImage, photoSize: image.size) { upright(image, region: $0, maxSide: maxDimension) }
     }
 
     /// The part `region` of the image (fractions, by default all of it) with its orientation applied,
