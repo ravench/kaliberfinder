@@ -22,6 +22,10 @@ struct MatchesView: View {
     @State private var override: ScanMode?
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
+    /// A match whose calibre page («Alle Kaliber») the user opened from the row's info button.
+    @State private var detail: Cartridge?
+    /// A match the user opened at 1:1 from its row's button.
+    @State private var compared: Cartridge?
 
     var body: some View {
         List {
@@ -69,6 +73,11 @@ struct MatchesView: View {
             if analysis != nil { results }
         }
         .readableWidth()
+        .navigationDestination(item: $detail) { CartridgeDetailView(cartridge: $0) }
+        .navigationDestination(item: $compared) { c in
+            let group = Matcher.grouped(matches).first { $0.lead.cartridge == c }
+            TrueScaleView(cartridges: [c], emptyCases: Self.emptyCases(group?.items ?? []))
+        }
         .safeAreaInset(edge: .bottom) {
             // A prominent button pinned to the bottom, like on the measure screen, so it is not missed.
             if analysis != nil, !matches.isEmpty {
@@ -114,10 +123,17 @@ struct MatchesView: View {
             Section {
                 // Calibres that look exactly the same from the side share one row.
                 ForEach(Matcher.grouped(matches)) { g in
-                    NavigationLink { TrueScaleView(cartridges: [g.lead.cartridge], emptyCases: Self.emptyCases(g.items)) } label: {
+                    HStack(spacing: 12) {
                         CartridgeRow(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead),
                                      highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
+                        // Two ways on from a match (Raven, 2026-11-08): the calibre's page with its
+                        // dimensions, and its drawing at 1:1.
+                        Button { detail = g.lead.cartridge } label: { Image(systemName: "info.circle") }
+                            .accessibilityLabel(Text("Details"))
+                        Button { compared = g.lead.cartridge } label: { Image(systemName: CompareButton.symbol) }
+                            .accessibilityLabel(Text("1:1"))
                     }
+                    .buttonStyle(.borderless)
                 }
                 if let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
             } header: {

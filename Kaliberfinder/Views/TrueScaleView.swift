@@ -65,6 +65,8 @@ struct TrueScaleView: View {
     /// their drawings leave out the bullet when «Geschosse beim Vergleich mit leeren Hülsen zeigen» is off;
     /// then «L» is the case length.
     var emptyCases: Set<String> = []
+    /// The name under a drawing opens the calibre's page; off when this screen was opened from that page.
+    var linksToDetails = true
     @EnvironmentObject private var scale: ScaleModel
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(Self.bulletsOnCasesKey) private var bulletsOnCases = true
@@ -190,7 +192,14 @@ struct TrueScaleView: View {
 
     private func label(for c: Cartridge) -> some View {
         VStack(spacing: 2) {
-            Text(verbatim: c.name).font(.caption.bold())
+            if linksToDetails {
+                NavigationLink { CartridgeDetailView(cartridge: c) } label: {
+                    Text(verbatim: c.name).font(.caption.bold()).foregroundStyle(.tint)
+                }
+                .buttonStyle(.plain)
+            } else {
+                Text(verbatim: c.name).font(.caption.bold())
+            }
             // Calibres with the same measurements look exactly like this one.
             ForEach(CartridgeCatalog.twins(of: c)) { twin in
                 Text(verbatim: "= \(twin.name)").font(.caption2).foregroundStyle(.secondary)

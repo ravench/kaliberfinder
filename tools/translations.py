@@ -214,6 +214,7 @@ T = {
         "Remplissez ce que vous pouvez mesurer. Une longueur et un diamètre suffisent déjà à bien réduire le choix.",
         "Compila ciò che puoi misurare. Già una lunghezza e un diametro restringono molto la scelta."),
     "Gemessen in mm": ("Measured in mm", "Mesuré en mm", "Misurato in mm"),
+    "Details": ("Details", "Détails", "Dettagli"),
     "Gesamtlänge": ("Overall length", "Longueur totale", "Lunghezza totale"),
     "Geschossdurchmesser": ("Bullet diameter", "Diamètre du projectile", "Diametro della palla"),
     "Grösser": ("Larger", "Plus grand", "Più grande"),
