@@ -5521,29 +5521,6 @@
         }
       }
     },
-    "z. B. CH": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "e.g. CH"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "p. ex. CH"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "p. es. CH"
-          }
-        }
-      }
-    },
     "z. B. Holztisch, Tageslicht": {
       "extractionState": "manual",
       "localizations": {

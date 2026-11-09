@@ -208,6 +208,11 @@ final class TrainingCaptureTests: XCTestCase {
             XCTAssertNotEqual(Materials.title(token), token, token)
         }
         XCTAssertEqual(Materials.title("jacket"), "Vollmantel")
+        // The country picker offers the catalogue's present-day countries with their flags, Switzerland among them.
+        let countries = CartridgeCatalog.countries
+        XCTAssertTrue(countries.contains { $0.code == "CH" && $0.flag == "🇨🇭" })
+        XCTAssertTrue(countries.allSatisfy { $0.flag != nil }, "former states and NATO have no flag emoji and are left out")
+        XCTAssertEqual(Set(countries.map(\.code)).count, countries.count)
     }
 
     /// The note and the atypical-bullet flag are edited on the series screen; the flag is only in the file when set.

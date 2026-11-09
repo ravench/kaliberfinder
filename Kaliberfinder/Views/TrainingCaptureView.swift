@@ -253,9 +253,12 @@ struct TrainingPackageView: View {
             }
             Section {
                 TextField("Notiz", text: $package.note, prompt: Text("z. B. Holztisch, Tageslicht"), axis: .vertical)
-                LabeledContent("Land") {
-                    TextField("Land", text: optionalText($package.country), prompt: Text("z. B. CH"))
-                        .multilineTextAlignment(.trailing)
+                // Where the photos were taken: the catalogue's countries with their flags (Raven, 2026-11-09).
+                Picker("Land", selection: $package.country) {
+                    Text(verbatim: "–").tag(String?.none)
+                    ForEach(CartridgeCatalog.countries, id: \.code) { country in
+                        Text(verbatim: "\(country.flag ?? "") \(country.name.loc)").tag(String?.some(country.code))
+                    }
                 }
                 // A bullet the calibre does not usually carry, so tuning the matcher knows to be careful with this series.
                 Toggle("Atypisches Geschoss", isOn: atypicalBullet)
@@ -327,11 +330,6 @@ struct TrainingPackageView: View {
     private func reload() { shots = capture.shots }
 
     /// A calliper value with its unit, «9.95 mm»; a dash until measured.
-    /// A text field for an optional string: empty text means nil, so nothing is written for it.
-    private func optionalText(_ value: Binding<String?>) -> Binding<String> {
-        Binding { value.wrappedValue ?? "" } set: { value.wrappedValue = $0.isEmpty ? nil : $0 }
-    }
-
     /// A picker over `options` (`Materials`), «–» for none; stores the token.
     private func choice(_ title: LocalizedStringKey, selection: Binding<String?>, options: [String]) -> some View {
         Picker(title, selection: selection) {

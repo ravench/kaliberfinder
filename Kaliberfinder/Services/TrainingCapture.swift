@@ -80,7 +80,7 @@ struct CapturePackage: Codable, Equatable {
     /// True when the round carries a bullet its calibre does not usually have (another weight or shape), so
     /// tuning the matcher against this series takes care; not written when nil.
     var atypicalBullet: Bool?
-    /// Where the photos were taken, as Raven writes it (e.g. "CH"); nil until entered (2026-11-09).
+    /// Where the photos were taken: the ISO code of one of `CartridgeCatalog.countries`; nil until chosen (2026-11-09).
     var country: String?
     /// What the round is made of, one of `Materials` (`bulletMaterials` etc.); nil until chosen (2026-11-09).
     var bulletMaterial: String?
