@@ -118,8 +118,9 @@ struct HomeView: View {
         .onChange(of: scenePhase) { _, phase in if phase == .active { takeSharedPhoto() } }
         .onAppear { takeSharedPhoto(); showNotes() }
         .fullScreenCover(isPresented: $showCamera) {
-            if LiDARCamera.isAvailable {
-                LiDARCameraView { photo = PickedPhoto(image: $0, depth: $1) }
+            // The LiDAR camera, else the telephoto at 4x (Raven, 2026-11-09); the system camera only without both.
+            if let choice = LiDARCamera.appChoice {
+                LiDARCameraView(choice: choice) { photo = PickedPhoto(image: $0, depth: $1) }
             } else {
                 CameraPicker { photo = PickedPhoto(image: $0) }
                     .ignoresSafeArea()

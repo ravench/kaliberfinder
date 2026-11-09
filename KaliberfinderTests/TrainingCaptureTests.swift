@@ -261,6 +261,11 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(LiDARCamera.title(megapixels: 48.7, zoom: 1, fieldOfView: 23.6), "Tele 49 MP ×1 · 24°")
         XCTAssertEqual(CameraChoice.lidar.title, "LiDAR")
         XCTAssertNil(CameraChoice.lidar.format)
+        // A phone without a scanner captures with its wide camera, without depth; the simulator has no camera at all.
+        XCTAssertEqual(CameraChoice.wide.deviceType, .builtInWideAngleCamera)
+        XCTAssertEqual(CameraChoice.wide.title, "Weitwinkel")
+        XCTAssertEqual(LiDARCamera.canCapture, !LiDARCamera.choices.isEmpty)
+        XCTAssertNil(LiDARCamera.appChoice, "the simulator has neither scanner nor telephoto, so the system camera takes the photo")
     }
 
     /// Packages from before the cameras were recorded read as before; a telephoto's line says what it can do.

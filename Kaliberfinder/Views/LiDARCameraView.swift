@@ -1,30 +1,47 @@
 import AVFoundation
 import SwiftUI
 
-/// The app's own camera screen on LiDAR devices (LIDAR-02): preview, guide and shutter.
+/// The app's own camera screen (LIDAR-02): preview, guide and shutter. With the LiDAR camera the guide
+/// shows distance and tilt; on a phone without a scanner the telephoto takes the photo at 4x, from over a
+/// metre, without depth (Raven, 2026-11-09).
 struct LiDARCameraView: View {
     let onPick: (UIImage, DepthScale?) -> Void
-    @StateObject private var camera = LiDARCamera()
+    @StateObject private var camera: LiDARCamera
     @Environment(\.dismiss) private var dismiss
     @State private var isCapturing = false
+
+    init(choice: CameraChoice = .lidar, onPick: @escaping (UIImage, DepthScale?) -> Void) {
+        self.onPick = onPick
+        _camera = StateObject(wrappedValue: LiDARCamera(choice: choice))
+    }
+
+    private var hasDepth: Bool { camera.choice.deviceType == .builtInLiDARDepthCamera }
 
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
             CameraPreview(camera: camera).ignoresSafeArea()
             VStack(spacing: 12) {
-                Text("Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, 20–30 cm darüber.")
-                    .font(.footnote)
-                    .multilineTextAlignment(.center)
-                    .padding(10)
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
+                Group {
+                    if hasDepth {
+                        Text("Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, 20–30 cm darüber.")
+                    } else {
+                        Text("Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, gut 1,2 m darüber.")
+                    }
+                }
+                .font(.footnote)
+                .multilineTextAlignment(.center)
+                .padding(10)
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
                 Spacer()
-                Label(camera.guidance.title.loc, systemImage: camera.guidance == .ready ? "checkmark.circle.fill" : "ruler")
-                    .font(.headline)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
-                    .background(camera.guidance == .ready ? Color.green.opacity(0.85) : Color.black.opacity(0.6), in: Capsule())
-                    .foregroundStyle(.white)
+                if hasDepth {
+                    Label(camera.guidance.title.loc, systemImage: camera.guidance == .ready ? "checkmark.circle.fill" : "ruler")
+                        .font(.headline)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(camera.guidance == .ready ? Color.green.opacity(0.85) : Color.black.opacity(0.6), in: Capsule())
+                        .foregroundStyle(.white)
+                }
                 HStack {
                     Button("Abbrechen") { dismiss() }
                         .foregroundStyle(.white)

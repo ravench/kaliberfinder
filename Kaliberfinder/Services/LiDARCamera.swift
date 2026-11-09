@@ -19,8 +19,18 @@ final class LiDARCamera: NSObject, ObservableObject {
     /// What the training capture may choose from: the LiDAR camera as the app uses it, and the telephoto at 4x;
     /// only what this device has.
     static var choices: [CameraChoice] {
-        (isAvailable ? [CameraChoice.lidar] : []) + telephotoChoices()
+        // Without a scanner (Raven, 2026-11-09: training data from other phones too) the telephoto comes first,
+        // for its view almost free of perspective, then the wide camera; neither has depth.
+        if isAvailable { return [.lidar] + telephotoChoices() }
+        return telephotoChoices() + (isAvailable(.builtInWideAngleCamera) ? [.wide] : [])
     }
+
+    /// Whether this device can take training photos at all: any back camera, scanner or not.
+    static var canCapture: Bool { !choices.isEmpty }
+
+    /// The camera the app's own photo screen uses: the LiDAR camera, else the telephoto at 4x; nil where neither
+    /// exists, and the system camera takes the photo.
+    static var appChoice: CameraChoice? { isAvailable ? .lidar : telephotoChoices().first }
 
     /// The telephoto at 4x: its 4:3 format with the largest photo (the widest view among equals), at the least
     /// zoom. Raven, 2026-11-09: the 31 telephoto shots of the training data were 4x all along, so one entry
@@ -312,4 +322,6 @@ struct CameraChoice: Hashable, Identifiable {
 
     var id: String { title }
     static let lidar = CameraChoice(deviceType: .builtInLiDARDepthCamera, title: "LiDAR")
+    /// The wide camera of a phone without a scanner: photos without depth, like the telephoto's.
+    static let wide = CameraChoice(deviceType: .builtInWideAngleCamera, title: "Weitwinkel")
 }

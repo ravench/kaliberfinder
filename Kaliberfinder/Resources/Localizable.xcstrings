@@ -1818,6 +1818,29 @@
         }
       }
     },
+    "Fotografieren (ohne Tiefe)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take photos (no depth)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photographier (sans profondeur)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografa (senza profondità)"
+          }
+        }
+      }
+    },
     "Fotografiertes Kaliber": {
       "extractionState": "manual",
       "localizations": {
@@ -3194,6 +3217,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Appoggia la cartuccia piatta su un fondo chiaro e tieni il dispositivo parallelo, 20–30 cm sopra."
+          }
+        }
+      }
+    },
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, gut 1,2 m darüber.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lay the cartridge flat on a light background and hold the device parallel, a good 1.2 m above it."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à un bon 1,2 m au-dessus."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, a un buon 1,2 m sopra."
           }
         }
       }
@@ -5218,6 +5264,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cosa c'è nella foto?"
+          }
+        }
+      }
+    },
+    "Weitwinkel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wide"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grand-angle"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grandangolo"
           }
         }
       }
