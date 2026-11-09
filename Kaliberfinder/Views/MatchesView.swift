@@ -142,7 +142,7 @@ struct MatchesView: View {
             } header: {
                 Text("Mögliche Kaliber")
             } footer: {
-                Text("Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.")
+                Text("Patrone auf dem Bildschirm vergleichen.")
             }
         }
     }
@@ -328,12 +328,12 @@ struct MatchesView: View {
         let line = [measured, hint].compactMap { $0 }.joined(separator: " · ")
         if !line.isEmpty { notes.append(line) }
         if let shape = a.shape {
-            if shape.isEndView { notes.append("Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Patronen werden nur von der Seite erkannt.".loc) }
+            if shape.isEndView { notes.append("Nur ein Kreis erkannt: Bitte Patrone von der Seite fotografieren.".loc) }
         } else {
             notes.append("Keine Patrone im Bild erkannt.".loc)
         }
         if a.shape == nil || a.shape?.isEndView == true {
-            notes.append("Tipp: Patrone seitlich auf einen hellen, einfarbigen Untergrund legen und senkrecht von oben fotografieren.".loc)
+            notes.append("Tipp: seitlich auf einfarbigen hellen Grund legen, senkrecht von oben fotografieren.".loc)
         }
         return notes
     }
