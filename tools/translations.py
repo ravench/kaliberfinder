@@ -18,6 +18,18 @@ T = {
     "Länge": ("length", "longueur", "lunghezza"),
     "Setztiefe des Geschosses": ("bullet seating", "enfoncement du projectile", "inserimento della palla"),
     "Ladung": ("load", "charge", "carica"),
+    "Grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Körper.": ("Green tip and base, purple bullet, orange neck and shoulder, light blue body.", "Vert pointe et culot, violet projectile, orange collet et épaulement, bleu clair corps.", "Verde punta e fondello, viola palla, arancione colletto e spalla, azzurro corpo."),
+    "Nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone.": ("After a photo with a LiDAR size: best match first instead of shortest cartridge.", "Après une photo avec taille LiDAR : meilleure correspondance d'abord au lieu de la cartouche la plus courte.", "Dopo una foto con dimensione LiDAR: prima la corrispondenza migliore invece della cartuccia più corta."),
+    "Prüfe die Grösse einmal mit einer Bankkarte.": ("Check the size once with a bank card.", "Vérifiez la taille une fois avec une carte bancaire.", "Controlla la dimensione una volta con una carta bancaria."),
+    "Seitlich auf hellem Grund, von oben fotografieren.": ("On its side on a light background, photographed from above.", "De côté sur fond clair, photographiée d'en haut.", "Di lato su sfondo chiaro, fotografata dall'alto."),
+    "Nur ein Kreis erkannt: Bitte Patrone von der Seite fotografieren.": ("Only a circle detected: please photograph the cartridge from the side.", "Seulement un cercle détecté : veuillez photographier la cartouche de côté.", "Rilevato solo un cerchio: fotografa la cartuccia di lato."),
+    "Tipp: seitlich auf einfarbigen hellen Grund legen, senkrecht von oben fotografieren.": ("Tip: lay it on its side on a plain light background and photograph it straight from above.", "Conseil : posez-la de côté sur un fond clair uni et photographiez-la à la verticale.", "Suggerimento: appoggiala di lato su uno sfondo chiaro uniforme e fotografala dall'alto in verticale."),
+    "Patrone auf dem Bildschirm vergleichen.": ("Compare the cartridge on the screen.", "Comparez la cartouche sur l'écran.", "Confronta la cartuccia sullo schermo."),
+    "Was du messen kannst; eine Länge und ein Durchmesser reichen oft.": ("What you can measure; a length and a diameter are often enough.", "Ce que vous pouvez mesurer ; une longueur et un diamètre suffisent souvent.", "Quello che riesci a misurare; una lunghezza e un diametro spesso bastano."),
+    "Ausgewählte Kaliber werden 1:1 nebeneinander gezeigt.": ("Selected calibres are shown 1:1 side by side.", "Les calibres sélectionnés sont affichés côte à côte à l'échelle 1:1.", "I calibri selezionati sono mostrati 1:1 uno accanto all'altro."),
+    "Gerundete Richtwerte nach CIP/SAAMI, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.": ("Rounded reference values after CIP/SAAMI, not reloading data. Primer: Boxer; military cases may have Berdan.", "Valeurs indicatives arrondies selon CIP/SAAMI, pas de données de rechargement. Amorce : Boxer ; les douilles militaires peuvent être Berdan.", "Valori indicativi arrotondati secondo CIP/SAAMI, non dati di ricarica. Innesco: Boxer; i bossoli militari possono avere Berdan."),
+    "Wähle die Kaliber aus, die du nebeneinander sehen willst.": ("Pick the calibres you want to see side by side.", "Choisissez les calibres que vous voulez voir côte à côte.", "Scegli i calibri che vuoi vedere uno accanto all'altro."),
+    "Für Patronen, die die App nicht kennt: eigener Name, von der Auswertung ausgenommen.": ("For rounds the app does not know: your own name, left out of the evaluation.", "Pour des cartouches inconnues de l'app : votre propre nom, exclues de l'évaluation.", "Per cartucce che l'app non conosce: nome proprio, escluse dalla valutazione."),
     "1:1 sortieren nach": ("Sort 1:1 by", "Trier le 1:1 par", "Ordina 1:1 per"),
     "Reihenfolge der Patronen im 1:1-Vergleich.": ("Order of the cartridges in the 1:1 comparison.", "Ordre des cartouches dans la comparaison 1:1.", "Ordine delle cartucce nel confronto 1:1."),
     # Calibre tags and countries (CartridgeRow, CartridgeDetailView). Country names come from
@@ -71,10 +83,6 @@ T = {
                                                           "Mostra le palle nel confronto con bossoli vuoti"),
     "1:1-Vergleich nach Trefferqualität sortieren": ("Sort the 1:1 comparison by match quality", "Trier la comparaison 1:1 par qualité de correspondance",
                                                      "Ordina il confronto 1:1 per qualità della corrispondenza"),
-    "Gilt für den Vergleich aller Treffer nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone zuerst.": (
-        "Applies to comparing all matches after a photo with a LiDAR size: best match first instead of shortest cartridge first.",
-        "S'applique à la comparaison de toutes les correspondances après une photo avec taille LiDAR : meilleure correspondance d'abord au lieu de la cartouche la plus courte.",
-        "Vale per il confronto di tutte le corrispondenze dopo una foto con dimensione LiDAR: prima la corrispondenza migliore invece della cartuccia più corta."),
     "leere Hülse": ("empty case", "douille vide", "bossolo vuoto"),
     "Patrone": ("Cartridge", "Cartouche", "Cartuccia"),
     "mit Rand": ("rimmed", "à bourrelet", "con orlo"),
@@ -113,10 +121,6 @@ T = {
     "Erkennung": ("Recognition", "Reconnaissance", "Riconoscimento"),
     "Veraltete Kaliber berücksichtigen": ("Include obsolete calibres", "Inclure les calibres obsolètes", "Includi calibri obsoleti"),
     "Seltene Kaliber berücksichtigen": ("Include rare calibres", "Inclure les calibres rares", "Includi calibri rari"),
-    "Veraltet: nicht mehr hergestellt. Selten: ein Treffer ist meist eine ähnliche Patrone. «Alle Kaliber» zeigt immer alle.": (
-        "Obsolete: no longer made. Rare: a match is usually a similar cartridge. “All calibres” always shows all.",
-        "Obsolète : n'est plus fabriqué. Rare : une correspondance est le plus souvent une cartouche semblable. « Tous les calibres » les affiche toujours tous.",
-        "Obsoleto: non più prodotto. Raro: una corrispondenza è di solito una cartuccia simile. «Tutti i calibri» li mostra sempre tutti."),
     "1 seltener": ("1 rare", "1 rare", "1 raro"),
     "%lld seltene": ("%lld rare", "%lld rares", "%lld rari"),
     "1 weiterer Treffer": ("1 more match", "1 autre correspondance", "1 altra corrispondenza"),
@@ -168,25 +172,9 @@ T = {
             "Keine passenden Kaliber gefunden": ("No matching calibres found", "Aucun calibre correspondant trouvé", "Nessun calibro corrispondente trovato"),
     "Kein sicherer Treffer": ("No sure match", "Pas de correspondance sûre", "Nessuna corrispondenza sicura"),
     "Masse von Hand eingeben": ("Enter dimensions by hand", "Saisir les dimensions à la main", "Inserisci le dimensioni a mano"),
-    "Lege die Patrone auf den Bildschirm, Boden auf die Nulllinie, und vergleiche.": (
-        "Lay the cartridge on the screen, base on the zero line, and compare.",
-        "Posez la cartouche sur l'écran, le culot sur la ligne zéro, et comparez.",
-        "Appoggia la cartuccia sullo schermo, il fondello sulla linea dello zero, e confronta."),
     "Mögliche Kaliber": ("Possible calibres", "Calibres possibles", "Calibri possibili"),
     "Patrone erkennen": ("Identify a cartridge", "Identifier une cartouche", "Riconoscere una cartuccia"),
     "Patrone fotografieren": ("Photograph cartridge", "Photographier la cartouche", "Fotografa la cartuccia"),
-    "Patrone seitlich auf einen hellen Untergrund legen und von oben fotografieren.": (
-        "Lay the cartridge on its side on a light background and photograph it from above.",
-        "Posez la cartouche sur le côté sur un fond clair et photographiez-la d'en haut.",
-        "Appoggia la cartuccia di lato su uno sfondo chiaro e fotografala dall'alto."),
-    "Suche nach Namen und tippe die Kaliber an, die du nebeneinander sehen willst.": (
-        "Search by name and tap the calibres you want to see side by side.",
-        "Cherchez par nom et touchez les calibres que vous voulez voir côte à côte.",
-        "Cerca per nome e tocca i calibri che vuoi vedere uno accanto all'altro."),
-    "Tipp: Patrone seitlich auf einen hellen, einfarbigen Untergrund legen und senkrecht von oben fotografieren.": (
-        "Tip: lay the cartridge on its side on a light, plain background and photograph it straight from above.",
-        "Astuce : posez la cartouche sur le côté sur un fond clair et uni et photographiez-la bien d'en haut.",
-        "Suggerimento: appoggia la cartuccia di lato su uno sfondo chiaro e uniforme e fotografala dritta dall'alto."),
     "Treffer": ("Matches", "Résultats", "Risultati"),
     "Auch bekannt als": ("Also known as", "Aussi appelé", "Noto anche come"),
     "Ausgewählt": ("Selected", "Sélectionnés", "Selezionati"),
@@ -198,10 +186,6 @@ T = {
         "Screen not calibrated: the size may be slightly off.",
         "Écran non calibré : la taille peut légèrement différer.",
         "Schermo non calibrato: la dimensione può differire leggermente."),
-    "Bildschirmzoom und Kalibrierung werden berücksichtigt. Prüfe die Grösse einmal mit einer Bankkarte.": (
-        "Display Zoom and calibration are taken into account. Check the size once with a bank card.",
-        "Le zoom d'affichage et la calibration sont pris en compte. Vérifiez la taille une fois avec une carte bancaire.",
-        "Lo zoom dello schermo e la calibrazione vengono considerati. Controlla la dimensione una volta con una carta bancaria."),
     "Bodendurchmesser": ("Base diameter", "Diamètre au culot", "Diametro alla base"),
     "Diabolo": ("Diabolo pellet", "Plomb diabolo", "Piombino diabolo"),
     "Fertig": ("Done", "Terminé", "Fine"),
@@ -221,10 +205,6 @@ T = {
         "Impossibile ricevere la foto."),
     "Flinte": ("Shotgun", "Fusil de chasse", "Fucile a canna liscia"),
     "Geschätzt, bitte kalibrieren": ("Estimated, please calibrate", "Estimé, veuillez calibrer", "Stimato, calibra per favore"),
-    "Fülle aus, was du messen kannst. Schon eine Länge und ein Durchmesser grenzen die Auswahl stark ein.": (
-        "Fill in what you can measure. One length and one diameter already narrow it down a lot.",
-        "Remplissez ce que vous pouvez mesurer. Une longueur et un diamètre suffisent déjà à bien réduire le choix.",
-        "Compila ciò che puoi misurare. Già una lunghezza e un diametro restringono molto la scelta."),
     "Gemessen in mm": ("Measured in mm", "Mesuré en mm", "Misurato in mm"),
     "Gesamtlänge": ("Overall length", "Longueur totale", "Lunghezza totale"),
     "Geschossdurchmesser": ("Bullet diameter", "Diamètre du projectile", "Diametro della palla"),
@@ -264,10 +244,6 @@ T = {
     "Mit der Schieblehre gemessen": ("Measured with a calliper", "Mesuré au pied à coulisse", "Misurato con il calibro"),
     "Masse eingeben": ("Enter dimensions", "Saisir les dimensions", "Inserisci le dimensioni"),
     "Masse": ("Dimensions", "Dimensions", "Dimensioni"),
-    "Masse sind gerundete Richtwerte (CIP/SAAMI), keine Wiederladedaten. Zündhütchen: Boxer-Grösse handelsüblicher Hülsen; Militärmunition kann Berdan-Zündhütchen anderer Grösse haben.": (
-        "Dimensions are rounded reference values (CIP/SAAMI), not reloading data. Primer: Boxer size of commercial cases; military ammunition can have Berdan primers of other sizes.",
-        "Les dimensions sont des valeurs indicatives arrondies (CIP/SAAMI), pas des données de rechargement. Amorce : taille Boxer des douilles du commerce ; les munitions militaires peuvent avoir des amorces Berdan d'autres tailles.",
-        "Le dimensioni sono valori indicativi arrotondati (CIP/SAAMI), non dati di ricarica. Innesco: misura Boxer dei bossoli commerciali; le munizioni militari possono avere inneschi Berdan di altre misure."),
     "Minié-Geschoss": ("Minié ball", "Balle Minié", "Palla Minié"),
     "Mit Rand": ("Rimmed", "À bourrelet", "Con orlo"),
     "Ohne Foto": ("Without a photo", "Sans photo", "Senza foto"),
@@ -280,16 +256,8 @@ T = {
     "Schrotpatrone": ("Shotshell", "Cartouche à plombs", "Cartuccia a pallini"),
     "Schulterdurchmesser": ("Shoulder diameter", "Diamètre de l'épaulement", "Diametro della spalla"),
     "Schwarzpulver": ("Black powder", "Poudre noire", "Polvere nera"),
-    "Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Patronen werden nur von der Seite erkannt.": (
-        "Round in the photo: the base or tip of a cartridge, or a round ball. Cartridges are only identified from the side.",
-        "Rond sur la photo : culot ou pointe d'une cartouche, ou une balle ronde. Les cartouches ne sont identifiées que de côté.",
-        "Rotondo nella foto: fondello o punta di una cartuccia, oppure una palla sferica. Le cartucce si riconoscono solo di lato."),
     "Speichern": ("Save", "Enregistrer", "Salva"),
     "Vom Gerätemodell": ("From the device model", "Selon le modèle d'appareil", "Dal modello di dispositivo"),
-    "Wähle Kaliber aus, um sie in Originalgrösse nebeneinander zu vergleichen.": (
-        "Select calibres to compare them side by side at real size.",
-        "Sélectionnez des calibres pour les comparer côte à côte en taille réelle.",
-        "Seleziona i calibri per confrontarli uno accanto all'altro a grandezza reale."),
     "Zurücksetzen": ("Reset", "Réinitialiser", "Ripristina"),
     # Hidden developer screen (TrainingCaptureView, SettingsView): five taps on the copyright line.
     "© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0": (
@@ -302,10 +270,6 @@ T = {
         "Fonction pour développeurs. Touchez cinq fois la ligne de copyright pour la masquer à nouveau.",
         "Funzione per sviluppatori. Tocca cinque volte la riga del copyright per nasconderla di nuovo."),
     "Erkennung farbig zeigen": ("Show detection in colour", "Afficher la détection en couleur", "Mostra il rilevamento a colori"),
-    "Umriss auf dem Foto: grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Verjüngung des Körpers.": (
-        "Outline on the photo: green tip and base, purple bullet, orange neck and shoulder, light blue body taper.",
-        "Contour sur la photo : vert pointe et culot, violet projectile, orange collet et épaulement, bleu clair conicité du corps.",
-        "Contorno sulla foto: verde punta e fondello, viola palla, arancione colletto e spalla, azzurro conicità del corpo."),
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
     "Kamera": ("Camera", "Caméra", "Fotocamera"),
     "Neue Aufnahmeserie": ("New capture series", "Nouvelle série de prises", "Nuova serie di scatti"),
@@ -343,8 +307,4 @@ T = {
     "z. B. Bodenprägung oder eigener Name": (
         "e.g. headstamp or a name of your own", "p. ex. marquage du culot ou un nom de votre choix",
         "p. es. punzonatura del fondello o un nome a scelta"),
-    "Für Patronen, die die App nicht kennt. Du gibst ihnen einen Namen, und die Auswertung der Erkennung lässt sie aus.": (
-        "For cartridges the app does not know. You give them a name, and the evaluation of the recognition leaves them out.",
-        "Pour les cartouches que l'app ne connaît pas. Vous leur donnez un nom, et l'évaluation de la reconnaissance les laisse de côté.",
-        "Per le cartucce che l'app non conosce. Dai loro un nome e la valutazione del riconoscimento le tralascia."),
 }

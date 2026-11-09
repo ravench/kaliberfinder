@@ -39,7 +39,7 @@ struct MeasureView: View {
             } header: {
                 if unit == .metric { Text("Gemessen in mm") } else { Text("Gemessen in Zoll") }
             } footer: {
-                Text("Fülle aus, was du messen kannst. Schon eine Länge und ein Durchmesser grenzen die Auswahl stark ein.")
+                Text("Was du messen kannst; eine Länge und ein Durchmesser reichen oft.")
             }
             if !matches.isEmpty || ranked.summary != nil {
                 Section {
@@ -61,7 +61,7 @@ struct MeasureView: View {
                 } header: {
                     Text("Mögliche Kaliber")
                 } footer: {
-                    Text("Wähle Kaliber aus, um sie in Originalgrösse nebeneinander zu vergleichen.")
+                    Text("Ausgewählte Kaliber werden 1:1 nebeneinander gezeigt.")
                 }
             }
         }
