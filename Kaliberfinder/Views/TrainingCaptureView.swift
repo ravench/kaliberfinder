@@ -257,7 +257,7 @@ struct TrainingPackageView: View {
                 Picker("Land", selection: $package.country) {
                     Text(verbatim: "–").tag(String?.none)
                     ForEach(CartridgeCatalog.countries, id: \.code) { country in
-                        Text(verbatim: "\(country.flag ?? "") \(country.name.loc)").tag(String?.some(country.code))
+                        Text(verbatim: [country.flag, country.name.loc].compactMap { $0 }.joined(separator: " ")).tag(String?.some(country.code))
                     }
                 }
                 // A bullet the calibre does not usually carry, so tuning the matcher knows to be careful with this series.
