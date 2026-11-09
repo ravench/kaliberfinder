@@ -231,9 +231,13 @@ struct TrainingPackageView: View {
     var body: some View {
         List {
             Section {
-                if LiDARCamera.isAvailable {
+                if LiDARCamera.canCapture {
                     Button { showCamera = true } label: {
-                        Label { Text("Fotografieren") } icon: { Image(systemName: "camera") }
+                        Label {
+                            if LiDARCamera.isAvailable { Text("Fotografieren") } else { Text("Fotografieren (ohne Tiefe)") }
+                        } icon: {
+                            Image(systemName: "camera")
+                        }
                     }
                 }
                 PhotosPicker(selection: $libraryItems, matching: .images, preferredItemEncoding: .current) {
@@ -404,7 +408,7 @@ private struct TrainingCameraSession: View {
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-            CameraPreview(camera: camera).ignoresSafeArea()
+            CameraPreview(camera: camera, gravity: .resizeAspect).ignoresSafeArea()
             VStack(spacing: 12) {
                 Text("\(capture.package.calibreName) · \(saved) neue Fotos")
                     .font(.headline)

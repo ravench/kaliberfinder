@@ -11,7 +11,7 @@ LIT = r'"((?:[^"\\]|\\.|\\\((?:[^()]|\([^()]*\))*\))*)"'
 CONTEXTS = [
     r'\b(?:Text|Button|Label|Section|TextField|Picker|Toggle|LabeledContent|Stepper|Menu|ContentUnavailableView|NavigationLink)\(\s*' + LIT,
     r'\.(?:navigationTitle|alert|confirmationDialog|accessibilityLabel)\(\s*' + LIT,
-    r'\bprompt:\s*' + LIT,
+    r'\b(?:prompt|title):\s*' + LIT,  # title: the camera choices (CameraChoice)
     r'\bString\(localized:\s*' + LIT,
     LIT + r'\.loc\b',
     r'\b(?:pickerRow|tile|metric|row|field|measured|choice)\(\s*' + LIT,

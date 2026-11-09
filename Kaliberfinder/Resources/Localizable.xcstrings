@@ -1818,6 +1818,29 @@
         }
       }
     },
+    "Fotografieren (ohne Tiefe)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take photos (no depth)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photographier (sans profondeur)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografa (senza profondità)"
+          }
+        }
+      }
+    },
     "Fotografiertes Kaliber": {
       "extractionState": "manual",
       "localizations": {
@@ -3244,6 +3267,52 @@
         }
       }
     },
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, gut %lld cm darüber.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lay the cartridge flat on a light background and hold the device parallel, a good %lld cm above it."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à un bon %lld cm au-dessus."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, a un buon %lld cm sopra."
+          }
+        }
+      }
+    },
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah wie es scharf stellt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lay the cartridge flat on a light background and hold the device parallel, as close as it focuses."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, aussi près qu'il fait la mise au point."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, vicino quanto mette a fuoco."
+          }
+        }
+      }
+    },
     "Lege eine Bankkarte (oder ID, Führerausweis) hochkant auf das Rechteck, oben bündig, und verschiebe den Regler, bis das Rechteck genau so lang ist wie die Karte.": {
       "extractionState": "manual",
       "localizations": {
@@ -3263,6 +3332,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Appoggia una carta bancaria (o carta d'identità, licenza di condurre) in verticale sul rettangolo, allineata in alto, e sposta il cursore finché il rettangolo è lungo esattamente come la carta."
+          }
+        }
+      }
+    },
+    "LiDAR": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LiDAR"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LiDAR"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LiDAR"
           }
         }
       }
@@ -5333,6 +5425,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cosa c'è nella foto?"
+          }
+        }
+      }
+    },
+    "Weitwinkel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wide"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grand-angle"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grandangolo"
           }
         }
       }

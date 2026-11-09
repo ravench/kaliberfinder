@@ -5,10 +5,10 @@ import UIKit
 /// The back camera paired with the LiDAR scanner (Pro iPhones from the 12 Pro, iPad Pro). Shows live
 /// guidance (distance and tilt) and takes a photo together with the table distance and focal length.
 /// Depth stays in memory and is dropped after the size is computed (LIDAR-07).
-/// The training capture may pick the telephoto instead (`CameraChoice`): every 4:3 format at every native
-/// zoom factor, which delivers no depth. Raven, 2026-11-09: the 17 Pro's telephoto came up at its 8x
-/// sensor crop whatever the app set, so the choices are offered one by one and recorded in the shot, to
-/// find the one that gives 4x at the highest resolution.
+/// The training capture may pick the telephoto instead (`CameraChoice`): at its full view and largest photo,
+/// which delivers no depth but, from its long closest focus, a view with little perspective (Raven, 2026-11-09;
+/// 2x on the XS and 11 Pro, 3x on the 13 to 15 Pro, 4x on the 17 Pro).
+/// Each shot records the zoom, the field of view and the format it was taken with.
 final class LiDARCamera: NSObject, ObservableObject {
     /// LIDAR-01: only devices with the scanner get the depth camera.
     static var isAvailable: Bool { isAvailable(.builtInLiDARDepthCamera) }
@@ -17,42 +17,40 @@ final class LiDARCamera: NSObject, ObservableObject {
         AVCaptureDevice.default(type, for: .video, position: .back) != nil
     }
 
-    /// What the training capture may choose from: the LiDAR camera as the app uses it, then the telephoto's
-    /// formats and zoom factors; only what this device has.
+    /// What the training capture may choose from: the LiDAR camera as the app uses it, and the telephoto at 4x;
+    /// only what this device has.
     static var choices: [CameraChoice] {
-        (isAvailable ? [CameraChoice.lidar] : []) + telephotoChoices()
+        // Without a scanner (Raven, 2026-11-09: training data from other phones too) the telephoto comes first,
+        // for its view with little perspective, then the wide camera; neither has depth.
+        if isAvailable { return [.lidar] + telephotoChoices() }
+        return telephotoChoices() + (isAvailable(.builtInWideAngleCamera) ? [.wide] : [])
     }
 
-    /// One entry per distinct 4:3 telephoto format (photo size and field of view) and native zoom factor.
+    /// Whether this device can take training photos at all: any back camera, scanner or not.
+    static var canCapture: Bool { !choices.isEmpty }
+
+    /// The camera the app's own photo screen uses: the LiDAR camera, else the telephoto; nil where neither
+    /// exists, and the system camera takes the photo.
+    static var appChoice: CameraChoice? { isAvailable ? .lidar : telephotoChoices().first }
+
+    /// The telephoto at its full view: its 4:3 format with the largest photo (the widest view among equals), at
+    /// the least zoom. Raven, 2026-11-09: the 31 telephoto shots of the training data were at the full view all
+    /// along, so one entry stays, to keep taking such shots.
     static func telephotoChoices() -> [CameraChoice] {
         guard let device = AVCaptureDevice.default(.builtInTelephotoCamera, for: .video, position: .back) else { return [] }
-        // One format per photo size and field of view, the one with the largest video frame (several formats
-        // differ only in frame size or rate; TestFlight 1140 listed them as the same choice several times).
-        var best: [String: (index: Int, format: AVCaptureDevice.Format)] = [:]
-        for (index, format) in device.formats.enumerated() {
+        let candidates = device.formats.enumerated().filter { _, format in
             let d = format.formatDescription.dimensions
-            let photo = largest(format.supportedMaxPhotoDimensions)
-            // Only formats that take photos: a video-only format has no photo sizes, and setting none on the
-            // photo output throws (TestFlight 1137 crashed so; Raven: some screens stayed black).
-            guard d.width * 3 == d.height * 4, photo.width > 0 else { continue }
-            let key = "\(photo.width)x\(photo.height) \(Int(format.videoFieldOfView))"
-            if let have = best[key], have.format.formatDescription.dimensions.width >= d.width { continue }
-            best[key] = (index, format)
+            // Only formats that take photos: a video-only format has no photo sizes (TestFlight 1137 crashed on one).
+            return d.width * 3 == d.height * 4 && largest(format.supportedMaxPhotoDimensions).width > 0
         }
-        var choices: [CameraChoice] = []
-        for (index, format) in best.values.sorted(by: { $0.index < $1.index }) {
-            let photo = largest(format.supportedMaxPhotoDimensions)
-            for zoom in zoomFactors(min: device.minAvailableVideoZoomFactor, secondary: format.secondaryNativeResolutionZoomFactors.map { Double($0) }) {
-                choices.append(CameraChoice(deviceType: .builtInTelephotoCamera, format: index, zoom: zoom,
-                                            title: title(megapixels: Double(photo.width * photo.height) / 1e6, zoom: zoom, fieldOfView: Double(format.videoFieldOfView))))
-            }
-        }
-        return choices
-    }
-
-    /// The zoom factors worth trying on a format: the least, 1 and the sensor's native crops, each once, ascending.
-    static func zoomFactors(min: Double, secondary: [Double]) -> [Double] {
-        Array(Set([min, 1] + secondary)).sorted()
+        guard let (index, format) = candidates.max(by: {
+            (largest($0.element.supportedMaxPhotoDimensions).width, $0.element.videoFieldOfView)
+                < (largest($1.element.supportedMaxPhotoDimensions).width, $1.element.videoFieldOfView)
+        }) else { return [] }
+        let photo = largest(format.supportedMaxPhotoDimensions)
+        let zoom = Double(device.minAvailableVideoZoomFactor)
+        return [CameraChoice(deviceType: .builtInTelephotoCamera, format: index, zoom: zoom,
+                             title: title(megapixels: Double(photo.width * photo.height) / 1e6, zoom: zoom, fieldOfView: Double(format.videoFieldOfView)))]
     }
 
     /// E.g. "Tele 48 MP ×1 · 24°": the photo size, the zoom factor and the field of view of a choice.
@@ -69,6 +67,9 @@ final class LiDARCamera: NSObject, ObservableObject {
 
     @Published private(set) var guidance: LiDARGuidance = .noDepth
     @Published private(set) var isRunning = false
+    /// The closest distance the camera focuses at, in mm, once it runs; the hint on screen uses it for cameras
+    /// without depth (a 2x telephoto focuses much closer than the 17 Pro's 4x). Nil until known or unknown.
+    @Published private(set) var minimumFocusDistance: Int?
 
     let session = AVCaptureSession()
     private let photoOutput = AVCapturePhotoOutput()
@@ -199,6 +200,8 @@ final class LiDARCamera: NSObject, ObservableObject {
             return
         }
         self.device = device
+        let focus = device.minimumFocusDistance
+        DispatchQueue.main.async { self.minimumFocusDistance = focus > 0 ? focus : nil }
         session.addInput(input)
         session.addOutput(photoOutput)
         if hasDepth { session.addOutput(depthOutput) }
@@ -325,4 +328,6 @@ struct CameraChoice: Hashable, Identifiable {
 
     var id: String { title }
     static let lidar = CameraChoice(deviceType: .builtInLiDARDepthCamera, title: "LiDAR")
+    /// The wide camera of a phone without a scanner: photos without depth, like the telephoto's.
+    static let wide = CameraChoice(deviceType: .builtInWideAngleCamera, title: "Weitwinkel")
 }
