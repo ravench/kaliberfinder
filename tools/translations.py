@@ -14,7 +14,6 @@ INFO_PLIST = {
 T = {
     "Ähnliche Kaliber": ("Similar calibres", "Calibres semblables", "Calibri simili"),
     "Unterscheiden sich in: %@": ("Differ in: %@", "Diffèrent par : %@", "Differiscono per: %@"),
-    "Rand": ("rim", "bourrelet", "orlo"),
     "Laufdurchmesser": ("bore", "calibre du canon", "diametro della canna"),
     "Länge": ("length", "longueur", "lunghezza"),
     "Setztiefe des Geschosses": ("bullet seating", "enfoncement du projectile", "inserimento della palla"),
@@ -231,6 +230,15 @@ T = {
     "Hülsenlänge": ("Case length", "Longueur de douille", "Lunghezza del bossolo"),
     "Hülsenlänge (offen)": ("Shell length (open)", "Longueur de douille (ouverte)", "Lunghezza del bossolo (aperto)"),
     "In Originalgrösse anzeigen": ("Show at real size", "Afficher en taille réelle", "Mostra a grandezza reale"),
+    # Dimensioned drawing (MeasurementsView): the link, then the short names over the values.
+    "Masszeichnung anzeigen": ("Show dimensioned drawing", "Afficher le dessin coté", "Mostra il disegno quotato"),
+    "Geschoss": ("Bullet", "Projectile", "Palla"),
+    "Hals": ("Neck", "Collet", "Colletto"),
+    "Schulter": ("Shoulder", "Épaulement", "Spalla"),
+    "Boden": ("Base", "Culot", "Base"),
+    "Rand": ("Rim", "Bourrelet", "Orlo"),
+    "Gesamt": ("Overall", "Totale", "Totale"),
+    "Hülse": ("Case", "Douille", "Bossolo"),
     "Kaliber": ("Calibres", "Calibres", "Calibri"),
     "Kaliber, z. B. 9 mm Luger": ("Calibre, e.g. 9 mm Luger", "Calibre, p. ex. 9 mm Luger", "Calibro, p. es. 9 mm Luger"),
     "Kaliberfinder": ("Kaliberfinder", "Kaliberfinder", "Kaliberfinder"),

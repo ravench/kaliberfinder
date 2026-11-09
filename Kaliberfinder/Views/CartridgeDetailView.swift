@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Dimensions of one calibre and a link to its real-size view.
+/// Dimensions of one calibre and links to its real-size view and its dimensioned drawing.
 struct CartridgeDetailView: View {
     let cartridge: Cartridge
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
@@ -22,6 +22,8 @@ struct CartridgeDetailView: View {
                 NavigationLink { TrueScaleView(cartridges: [cartridge], linksToDetails: false) } label: {
                     Label("In Originalgrösse anzeigen", systemImage: "ruler")
                 }
+                NavigationLink { MeasurementsView(cartridge: cartridge) } label: {
+                    Label("Masszeichnung anzeigen", systemImage: "pencil.and.ruler")
                 if let group = CartridgeCatalog.lookalikeGroup(of: cartridge) {
                     // The lookalikes of calibre-data: the group page lists them all and compares them at 1:1.
                     NavigationLink { LookalikeGroupView(group: group) } label: {
