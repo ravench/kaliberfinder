@@ -57,10 +57,13 @@ struct LiDARCameraView: View {
 /// The live camera image (also the training capture camera), turned with the screen by `camera`.
 struct CameraPreview: UIViewRepresentable {
     let camera: LiDARCamera
+    /// The app fills the screen with the middle of the frame; the training capture shows the whole 4:3 frame,
+    /// letterboxed, so the preview is what the photo will be (Raven, 2026-11-09).
+    var gravity: AVLayerVideoGravity = .resizeAspectFill
 
     func makeUIView(context: Context) -> PreviewView {
         let view = PreviewView()
-        view.previewLayer.videoGravity = .resizeAspectFill
+        view.previewLayer.videoGravity = gravity
         camera.attach(previewLayer: view.previewLayer)
         return view
     }
