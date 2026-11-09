@@ -209,9 +209,9 @@ struct DimensionLayout {
         self.arrowheads = arrowheads
     }
 
-    /// "Ø 8.5 mm" for a diameter, "55.6 mm" for a length.
+    /// "Ø 8.5 mm" for a diameter, "55.6 mm" for a length; always with a decimal, so 9 mm reads 9.0 mm.
     static func valueText(_ dimension: Dimension, unit: LengthUnit, locale: Locale = .current) -> String {
-        (dimension.part.isDiameter ? "Ø " : "") + unit.format(dimension.mm, locale: locale)
+        (dimension.part.isDiameter ? "Ø " : "") + unit.format(dimension.mm, locale: locale, decimals: 1)
     }
 
     /// The diameters the detail screen lists, top to bottom, each where the drawing is that wide.
