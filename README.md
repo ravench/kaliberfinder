@@ -98,8 +98,10 @@ Every change should come with tests.
 Every push to `main` whose **Build** workflow passes is archived and uploaded to TestFlight
 by `.github/workflows/testflight.yml` (it can also be started by hand under Actions).
 Merges less than a minute apart give one upload, from the newest commit on `main`.
-The build number is the workflow run number plus 1000 (`tools/testflight.py`); bump
-`MARKETING_VERSION` in `project.yml` for a new version.
+The build number is the workflow run number plus 1000 (`tools/testflight.py`). The version is the
+newest release tag the commit descends from: to release, write the notes into `RELEASE_NOTES.md`,
+tag the commit on `main` (`git tag v0.2.0 && git push origin v0.2.0`), and the tag's push uploads
+that build under that version with those notes instead of the Claude-written summary.
 
 The upload needs three repository secrets from an App Store Connect API key with the
 Admin role (Users and Access, Integrations, Team Keys): `ASC_KEY_ID` (Key ID),
