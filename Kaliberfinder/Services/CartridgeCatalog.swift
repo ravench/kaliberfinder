@@ -15,10 +15,13 @@ enum CartridgeCatalog {
     /// The calibre-data commit the catalogue was generated from (tools/generate_data.py), shown in Settings.
     struct Source: Decodable {
         let commit: String
-        let date: Date
+        /// The commit's ISO 8601 date. Text, so a date that doesn't parse can't cost the catalogue.
+        let date: String
 
         /// Short commit and its day, e.g. "04653a8 · 8.11.2026".
-        var text: String { "\(commit.prefix(7)) · \(date.formatted(date: .numeric, time: .omitted))" }
+        var text: String {
+            "\(commit.prefix(7)) · \(ISO8601DateFormatter().date(from: date)?.formatted(date: .numeric, time: .omitted) ?? date)"
+        }
     }
 
     struct File: Decodable {
@@ -34,11 +37,7 @@ enum CartridgeCatalog {
 
     static func decode(_ data: Data) -> [Cartridge] { decodeFile(data)?.cartridges ?? [] }
 
-    static func decodeFile(_ data: Data) -> File? {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        return try? decoder.decode(File.self, from: data)
-    }
+    static func decodeFile(_ data: Data) -> File? { try? JSONDecoder().decode(File.self, from: data) }
 
     private static let byID = Dictionary(all.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
 
