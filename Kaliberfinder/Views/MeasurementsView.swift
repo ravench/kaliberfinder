@@ -9,9 +9,9 @@ struct MeasurementsView: View {
     /// Size of a label (name over value); grows with the text size up to xxxLarge, where the label
     /// text stops growing (`dynamicTypeSize` below): the drawing needs the room. The values in any
     /// size are on the calibre's page.
-    @ScaledMetric(relativeTo: .caption) private var labelWidth = 74.0
-    @ScaledMetric(relativeTo: .caption) private var labelHeight = 30.0
-    private static let largestLabel = (width: 111.0, height: 45.0)
+    @ScaledMetric(relativeTo: .caption) private var labelWidth = 86.0
+    @ScaledMetric(relativeTo: .caption) private var labelHeight = 36.0
+    private static let largestLabel = (width: 114.0, height: 54.0)
 
     var body: some View {
         GeometryReader { geo in
@@ -27,11 +27,11 @@ struct MeasurementsView: View {
                     .fill(.primary)
                 ForEach(layout.dimensions, id: \.part) { label in
                     VStack(alignment: label.trailing ? .trailing : .leading, spacing: 1) {
+                        // Readable at a glance (Raven 2026-11-09): the name in full colour, the value a size larger.
                         Text(label.part.title.loc)
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
+                            .font(.caption)
                         Text(DimensionLayout.valueText(label, unit: unit))
-                            .font(.caption.monospacedDigit())
+                            .font(.subheadline.monospacedDigit().weight(.medium))
                     }
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
