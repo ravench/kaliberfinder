@@ -944,6 +944,29 @@
         }
       }
     },
+    "Boden": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Base"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Culot"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Base"
+          }
+        }
+      }
+    },
     "Boden mit Zündhütchen %@": {
       "extractionState": "manual",
       "localizations": {
@@ -1887,6 +1910,29 @@
         }
       }
     },
+    "Gesamt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overall"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Totale"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Totale"
+          }
+        }
+      }
+    },
     "Gesamtlänge": {
       "extractionState": "manual",
       "localizations": {
@@ -1906,6 +1952,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lunghezza totale"
+          }
+        }
+      }
+    },
+    "Geschoss": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bullet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projectile"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palla"
           }
         }
       }
@@ -2186,6 +2255,29 @@
         }
       }
     },
+    "Hals": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neck"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Collet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colletto"
+          }
+        }
+      }
+    },
     "Halsdurchmesser": {
       "extractionState": "manual",
       "localizations": {
@@ -2228,6 +2320,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Origine"
+          }
+        }
+      }
+    },
+    "Hülse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Case"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Douille"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bossolo"
           }
         }
       }
@@ -3083,6 +3198,29 @@
         }
       }
     },
+    "Masszeichnung anzeigen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show dimensioned drawing"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher le dessin coté"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra il disegno quotato"
+          }
+        }
+      }
+    },
     "Mehrere Patronen im Bild erkannt.": {
       "extractionState": "manual",
       "localizations": {
@@ -3727,6 +3865,29 @@
         }
       }
     },
+    "Rand": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rim"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bourrelet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orlo"
+          }
+        }
+      }
+    },
     "Randdurchmesser": {
       "extractionState": "manual",
       "localizations": {
@@ -3930,6 +4091,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cartuccia a pallini"
+          }
+        }
+      }
+    },
+    "Schulter": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulder"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Épaulement"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spalla"
           }
         }
       }

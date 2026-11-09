@@ -38,6 +38,10 @@ final class PRScreensTests: XCTestCase {
             }
             if open(app.staticTexts["9x19 mm"].firstMatch) {
                 snap("05-Kaliber")
+                if open(app.buttons["Masszeichnung anzeigen"].firstMatch) {
+                    snap("05c-Masszeichnung")
+                    back()
+                }
                 scroll()
                 snap("05-Kaliber-unten")  // origin, prevalence and tags sit below the measurements
             }
@@ -61,6 +65,26 @@ final class PRScreensTests: XCTestCase {
         if open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "1:1 vergleichen")).firstMatch),
            app.navigationBars["1:1"].waitForExistence(timeout: 5) {
             snap("20-Auswahl-1zu1")
+        }
+    }
+
+    /// The dimensioned drawing of a bottleneck rifle round (with its shoulder), then of a belted magnum
+    /// in inches.
+    func testMeasurementDrawings() {
+        for (query, name, unit, shot) in [("GP 11", "7.5x55 mm Swiss (GP 11)", "metric", "34-Masszeichnung-GP11"),
+                                          ("300 Win Mag", ".300 Winchester Magnum", "imperial", "35-Masszeichnung-Zoll")] {
+            app.terminate()
+            app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_CH", "-lengthUnit", unit]
+            app.launch()
+            XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+            guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+            let search = app.searchFields.firstMatch
+            if search.waitForExistence(timeout: 5) {
+                search.tap()
+                search.typeText(query + "\n") // return hides the keyboard
+            }
+            guard open(app.staticTexts[name].firstMatch), open(app.buttons["Masszeichnung anzeigen"].firstMatch) else { return }
+            snap(shot)
         }
     }
 
