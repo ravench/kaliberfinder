@@ -253,7 +253,10 @@ struct TrainingPackageView: View {
             }
             Section {
                 TextField("Notiz", text: $package.note, prompt: Text("z. B. Holztisch, Tageslicht"), axis: .vertical)
-                TextField("Land", text: optionalText($package.country), prompt: Text("z. B. CH"))
+                LabeledContent("Land") {
+                    TextField("Land", text: optionalText($package.country), prompt: Text("z. B. CH"))
+                        .multilineTextAlignment(.trailing)
+                }
                 // A bullet the calibre does not usually carry, so tuning the matcher knows to be careful with this series.
                 Toggle("Atypisches Geschoss", isOn: atypicalBullet)
                 choice("Geschossmaterial", selection: $package.bulletMaterial, options: Materials.bullet)
