@@ -6,7 +6,7 @@ enum SettingsSection: CaseIterable {
 }
 
 /// Settings opened as a sheet by the home screen's gear button: units, screen size, empty cases at 1:1, the coloured
-/// outline and the licence line.
+/// outline, and the app version, calibre-data commit and licence line.
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var scale: ScaleModel
@@ -68,6 +68,10 @@ struct SettingsView: View {
                     }
                 }
                 Section {
+                    LabeledContent("Version", value: Bundle.main.versionText)
+                    if let source = CartridgeCatalog.source {
+                        LabeledContent("Kaliberdaten", value: source.text)
+                    }
                     Text("© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0")
                         .font(.footnote)
                         .foregroundStyle(.secondary)

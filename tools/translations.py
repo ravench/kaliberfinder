@@ -200,6 +200,9 @@ T = {
     # Release notes of a TestFlight build (WhatsNewView).
     "Neu in dieser Version": ("New in this version", "Nouveautés de cette version", "Novità in questa versione"),
     "Version %@": ("Version %@", "Version %@", "Versione %@"),
+    # Settings: the app version and the calibre-data commit of the catalogue.
+    "Version": ("Version", "Version", "Versione"),
+    "Kaliberdaten": ("Calibre data", "Données des calibres", "Dati dei calibri"),
     "Foto übernommen. Öffne Kaliberfinder, um die Treffer zu sehen.": (
         "Photo received. Open Kaliberfinder to see the matches.",
         "Photo reçue. Ouvrez Kaliberfinder pour voir les correspondances.",
