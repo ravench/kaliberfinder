@@ -6,13 +6,17 @@ import SwiftUI
 struct MeasurementsView: View {
     let cartridge: Cartridge
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
-    /// Size of a label (name over value); grows with the text size.
+    /// Size of a label (name over value); grows with the text size up to xxxLarge, where the label
+    /// text stops growing (`dynamicTypeSize` below): the drawing needs the room. The values in any
+    /// size are on the calibre's page.
     @ScaledMetric(relativeTo: .caption) private var labelWidth = 74.0
     @ScaledMetric(relativeTo: .caption) private var labelHeight = 30.0
+    private static let largestLabel = (width: 111.0, height: 45.0)
 
     var body: some View {
         GeometryReader { geo in
-            let layout = DimensionLayout(cartridge: cartridge, size: geo.size, label: CGSize(width: labelWidth, height: labelHeight))
+            let asked = CGSize(width: min(labelWidth, Self.largestLabel.width), height: min(labelHeight, Self.largestLabel.height))
+            let layout = DimensionLayout(cartridge: cartridge, size: geo.size, label: asked)
             ZStack(alignment: .topLeading) {
                 CartridgeView(cartridge: cartridge, pointsPerMM: layout.scale)
                     .offset(x: layout.origin.x, y: layout.origin.y)
@@ -31,13 +35,14 @@ struct MeasurementsView: View {
                     }
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
-                    .frame(width: labelWidth, height: labelHeight, alignment: label.trailing ? .trailing : .leading)
-                    .position(x: label.anchor.x + CGFloat(label.trailing ? -labelWidth : labelWidth) / 2, y: label.anchor.y)
+                    .frame(width: layout.labelSize.width, height: layout.labelSize.height, alignment: label.trailing ? .trailing : .leading)
+                    .position(x: label.anchor.x + (label.trailing ? -layout.labelSize.width : layout.labelSize.width) / 2, y: label.anchor.y)
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel(Text(verbatim: label.part.spokenTitle.loc + " " + unit.format(label.mm)))
                 }
             }
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .padding()
         .navigationTitle(Text(verbatim: cartridge.name))
         .navigationBarTitleDisplayMode(.inline)
@@ -121,6 +126,8 @@ struct DimensionLayout {
     let origin: CGPoint
     /// Diameters top to bottom, then the lengths, inner first.
     let dimensions: [Dimension]
+    /// The labels' size: as asked, or narrower where the screen is too narrow for it and the drawing.
+    let labelSize: CGSize
     /// Extension lines and the leaders from the diameter labels to their lines.
     let lines: [[CGPoint]]
     /// Filled arrowheads at both ends of each dimension line.
@@ -135,6 +142,8 @@ struct DimensionLayout {
     static let lengthSpacing = 10.0
     /// Base to the rim's dimension line.
     static let rimGap = 20.0
+    /// Smallest scale the labels give way to, in points per mm.
+    static let minScale = 3.0
     static let arrowLength = 6.0
     static let arrowWidth = 4.4
     /// Sampling step along the outline, in mm.
@@ -143,9 +152,12 @@ struct DimensionLayout {
     init(cartridge c: Cartridge, size: CGSize, label: CGSize) {
         let o = c.outline
         let lengths = Self.lengths(of: c), diameters = Self.diameters(of: c)
-        let lw = Double(label.width), lh = Double(label.height)
+        let n = Double(lengths.count), lh = Double(label.height)
+        let gaps = Self.labelGap + Self.lengthGap + n * Self.labelInset + (n - 1) * Self.lengthSpacing
+        // Large text: narrower labels (their text shrinks) keep the drawing at least `minScale`.
+        let lw = max(0, min(Double(label.width), (Double(size.width) - gaps - Self.minScale * o.width) / (n + 1)))
         let left = lw + Self.labelGap
-        let right = Self.lengthGap + Double(lengths.count) * (Self.labelInset + lw) + Double(lengths.count - 1) * Self.lengthSpacing
+        let right = Self.lengthGap + n * (Self.labelInset + lw) + (n - 1) * Self.lengthSpacing
         // Half a label above the tip (a flush wadcutter's bullet is labelled there) and the rim's line below the base.
         let above = lh / 2, below = c.hasCase ? Self.rimGap + lh / 2 : 0
         let s = max(0, min((Double(size.width) - left - right) / o.width, (Double(size.height) - above - below) / o.height))
@@ -155,7 +167,7 @@ struct DimensionLayout {
         var dimensions: [Dimension] = [], lines: [[CGPoint]] = [], arrowheads: [[CGPoint]] = []
 
         let ys = diameters.map { $0.part == .rim ? base + Self.rimGap : oy + $0.y * s }
-        let labelYs = Self.spread(ys, spacing: lh, within: lh / 2...(Double(size.height) - lh / 2))
+        let labelYs = Self.spread(ys, spacing: lh, within: lh / 2...max(lh / 2, Double(size.height) - lh / 2))
         for (i, mark) in diameters.enumerated() {
             let y = ys[i], xs = [cx - mark.mm / 2 * s, cx + mark.mm / 2 * s]
             let a = CGPoint(x: xs[0], y: y), b = CGPoint(x: xs[1], y: y)
@@ -186,6 +198,7 @@ struct DimensionLayout {
 
         scale = s
         origin = CGPoint(x: ox, y: oy)
+        labelSize = CGSize(width: lw, height: lh)
         self.dimensions = dimensions
         self.lines = lines
         self.arrowheads = arrowheads

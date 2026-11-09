@@ -7,6 +7,8 @@ final class MeasurementsTests: XCTestCase {
     private let phone = CGSize(width: 370, height: 700)
     private let small = CGSize(width: 343, height: 520)
     private let label = CGSize(width: 74, height: 30)
+    /// The labels at text size xxxLarge (MeasurementsView.largestLabel).
+    private let largest = CGSize(width: 111, height: 45)
 
     private func layout(_ id: String, size: CGSize? = nil) throws -> DimensionLayout {
         DimensionLayout(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: id)), size: size ?? phone, label: label)
@@ -73,14 +75,16 @@ final class MeasurementsTests: XCTestCase {
         XCTAssertEqual(gp11.arrowheads.count, 2 * gp11.dimensions.count)
     }
 
-    /// On a phone every calibre fits: lines and labels stay on screen, the diameter labels keep the
-    /// order of their lines and do not overlap.
+    /// On a phone every calibre fits, also with the largest labels (text size xxxLarge): lines and labels
+    /// stay on screen, the diameter labels keep the order of their lines and do not overlap.
     func testEveryCalibreFitsAPhone() {
         let slack: CGFloat = 1e-6
-        for size in [phone, small] {
+        for (size, asked) in [(phone, label), (small, label), (phone, largest), (small, largest)] {
             for c in CartridgeCatalog.all {
-                let layout = DimensionLayout(cartridge: c, size: size, label: label)
-                XCTAssertGreaterThan(layout.scale, 2, c.id)
+                let layout = DimensionLayout(cartridge: c, size: size, label: asked)
+                let label = layout.labelSize
+                XCTAssertGreaterThanOrEqual(layout.scale, DimensionLayout.minScale - 1e-9, c.id)
+                XCTAssertLessThanOrEqual(label.width, asked.width)
                 let points = layout.dimensions.flatMap { [$0.from, $0.to] } + layout.lines.joined() + layout.arrowheads.joined()
                 for p in points {
                     XCTAssertTrue(p.x >= -slack && p.x <= size.width + slack && p.y >= -slack && p.y <= size.height + slack, "\(c.id) \(p)")
@@ -99,6 +103,16 @@ final class MeasurementsTests: XCTestCase {
                 }
             }
         }
+    }
+
+    /// Labels keep their asked width where they fit, and nothing breaks on a view that has no size yet.
+    func testLabelsGiveWayOnlyWhenNeeded() throws {
+        XCTAssertEqual(try layout("9x19 mm").labelSize, label)
+        let large = DimensionLayout(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm")), size: small, label: largest)
+        XCTAssertLessThan(large.labelSize.width, largest.width)
+        XCTAssertEqual(large.labelSize.height, largest.height)
+        let empty = DimensionLayout(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm")), size: .zero, label: label)
+        XCTAssertEqual(empty.scale, 0)
     }
 
     /// Labels that would overlap move apart; when the last one reaches the bottom, the others move up.
