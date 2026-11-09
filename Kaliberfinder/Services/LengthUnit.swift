@@ -33,10 +33,11 @@ enum LengthUnit: String, CaseIterable, Identifiable {
     /// Converts a value in this unit to millimetres.
     func millimetres(_ value: Double) -> Double { self == .metric ? value : value * Self.mmPerInch }
 
-    /// "29.7 mm" or "1.169 in". Inches get 3 decimals, like US load data (2.800 in, 0.308 in).
-    func format(_ mm: Double, locale: Locale = .current) -> String {
+    /// "29.7 mm" or "1.169 in". Inches get 3 decimals, like US load data (2.800 in, 0.308 in); millimetres up
+    /// to 2, at least `decimals` (the dimensioned drawing writes 9.0 mm, Raven 2026-11-09).
+    func format(_ mm: Double, locale: Locale = .current, decimals: Int = 0) -> String {
         let style: FloatingPointFormatStyle<Double> = self == .metric
-            ? .number.precision(.fractionLength(0...2))
+            ? .number.precision(.fractionLength(decimals...2))
             : .number.precision(.fractionLength(3))
         return value(fromMM: mm).formatted(style.locale(locale)) + " " + symbol
     }
