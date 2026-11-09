@@ -52,7 +52,8 @@ final class MeasureShapeTests: XCTestCase {
         // 200 mm fits nothing: the best three are still offered.
         let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 200))
         XCTAssertTrue(matches.allSatisfy { $0.fit == .poor })
-        XCTAssertEqual(DimensionMatcher.toCompare(matches).map(\.id), Array(ids(matches).prefix(3)))
+        XCTAssertEqual(Set(DimensionMatcher.toCompare(matches).map(\.id)), Set(ids(matches).prefix(3)))
+        XCTAssertEqual(DimensionMatcher.toCompare(matches).map(\.id), DimensionMatcher.toCompare(matches).byLength().map(\.id), "by length")
         XCTAssertEqual(MeasureView.compareTitle(matches: matches, selected: 0), "Die besten drei 1:1 vergleichen".loc)
         XCTAssertTrue(DimensionMatcher.toCompare([]).isEmpty)
     }

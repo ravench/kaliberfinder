@@ -1,5 +1,9 @@
 {
  "version": 1,
+ "calibreData": {
+  "commit": "04653a888e18b4cf5cd8d619d42f8d8501ebc369",
+  "date": "2026-11-08T17:40:47+01:00"
+ },
  "cartridges": [
   {
    "id": ".22 Short",

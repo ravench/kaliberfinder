@@ -321,7 +321,8 @@ struct TrainingPackageView: View {
     /// another camera; the megapixels say whether the phone took the sensor's full resolution.
     static func summary(_ name: String, _ shot: CaptureShot, pixels: (width: Int, height: Int)? = nil) -> String {
         let depth = shot.scale.map { String(format: "LiDAR %.0f mm".loc, $0.tableDistance) } ?? (shot.depth == nil ? "ohne Tiefe".loc : "Tiefe relativ".loc)
-        let camera = shot.camera.map { $0 == "LiDARDepth" ? "" : "\($0)  " } ?? ""
+        // The camera and how it ran, for shots not from the LiDAR camera as the app uses it: "Telephoto ×2 23°".
+        let camera = shot.camera.map { $0 == "LiDARDepth" ? "" : "\($0)\(shot.zoom.map { String(format: " ×%g", $0) } ?? "")\(shot.fieldOfView.map { String(format: " %.0f°", $0) } ?? "")  " } ?? ""
         let size = pixels.map { String(format: "%.0f MP", Double($0.width * $0.height) / 1e6) } ?? "–"
         let aspect = shot.analysis?.aspect.map { String(format: "%.2f", $0) } ?? "–"
         return "\(name)  \(camera)\(depth)  \(size)  \(aspect)  \(shot.analysis?.matches.first ?? "kein Treffer".loc)"
@@ -363,34 +364,26 @@ struct TrainingPackageView: View {
 /// device has a telephoto or ultra wide camera, a picker switches to it; those take no depth.
 private struct TrainingCameraView: View {
     let capture: SavedCapture
-    @State private var deviceType: AVCaptureDevice.DeviceType = .builtInLiDARDepthCamera
+    @State private var choice: CameraChoice = LiDARCamera.choices.first ?? .lidar
     @State private var saved = 0
 
     var body: some View {
-        // A new camera object per choice: the session is configured once, for one device.
-        TrainingCameraSession(capture: capture, deviceType: deviceType, saved: $saved)
-            .id(deviceType)
+        // A new camera object per choice: the session is configured once, for one device, format and zoom.
+        TrainingCameraSession(capture: capture, choice: choice, saved: $saved)
+            .id(choice)
             .overlay(alignment: .top) {
                 if LiDARCamera.choices.count > 1 {
-                    Picker(selection: $deviceType) {
-                        ForEach(LiDARCamera.choices, id: \.self) { Text(Self.title($0).loc).tag($0) }
+                    Picker(selection: $choice) {
+                        ForEach(LiDARCamera.choices) { Text($0.title.loc).tag($0) }
                     } label: {
                         Text("Kamera")
                     }
-                    .pickerStyle(.segmented)
-                    .padding(.horizontal, 60)
+                    .pickerStyle(.menu)
+                    .padding(8)
+                    .background(.ultraThinMaterial, in: Capsule())
                     .padding(.top, 72)
                 }
             }
-    }
-
-    /// German title of a camera choice, used as localization key.
-    static func title(_ type: AVCaptureDevice.DeviceType) -> String {
-        switch type {
-        case .builtInTelephotoCamera: "Tele"
-        case .builtInUltraWideCamera: "Ultraweit"
-        default: "LiDAR"
-        }
     }
 }
 
@@ -402,9 +395,9 @@ private struct TrainingCameraSession: View {
     @State private var saving = false
     @State private var failure: String?
 
-    init(capture: SavedCapture, deviceType: AVCaptureDevice.DeviceType, saved: Binding<Int>) {
+    init(capture: SavedCapture, choice: CameraChoice, saved: Binding<Int>) {
         self.capture = capture
-        _camera = StateObject(wrappedValue: LiDARCamera(deviceType: deviceType))
+        _camera = StateObject(wrappedValue: LiDARCamera(choice: choice))
         _saved = saved
     }
 

@@ -239,24 +239,25 @@ struct MatchesView: View {
     }
 
     /// Every listed row goes to the 1:1 screen; it scrolls sideways. The user holds the cartridge
-    /// against all of them anyway, so they stand by length, shortest first, then by the Ø shown
+    /// against all of them anyway, so they stand by length (the setting's, see `comparedLength`), shortest first, then by the Ø shown
     /// under each (rank order where both are equal); the list above keeps its rank order.
     /// With `byFit` (the «nach Trefferqualität» switch) and a photo measured with LiDAR, they keep
     /// the list's order instead: there the rank weighs size as well as shape. Without a size the
     /// rank says little about the length, so the switch changes nothing.
     /// Calibres that look exactly the same from the side are shown once.
-    static func toCompare(_ matches: [Match], byFit: Bool = false) -> [Cartridge] {
+    static func toCompare(_ matches: [Match], byFit: Bool = false, by: CompareLength = .current) -> [Cartridge] {
         let leads = Matcher.grouped(matches).map(\.lead)
         if byFit, leads.contains(where: { $0.sizeDeviation != nil }) { return leads.map(\.cartridge) }
         // `sorted` is stable, so ties keep their rank order.
         return leads
-            .sorted { (comparedLength($0), $0.cartridge.headDiameter) < (comparedLength($1), $1.cartridge.headDiameter) }
+            .sorted { (comparedLength($0, by: by), $0.cartridge.headDiameter) < (comparedLength($1, by: by), $1.cartridge.headDiameter) }
             .map(\.cartridge)
     }
 
-    /// The length the photo was compared with: the case for an empty case, else the whole cartridge.
-    static func comparedLength(_ m: Match) -> Double {
-        m.part == .emptyCase ? m.cartridge.dimensions.caseLength : m.cartridge.dimensions.overallLength
+    /// The length the 1:1 comparison sorts by: the case for an empty case, else the length of the
+    /// «1:1 sortieren nach» setting (`CompareLength`).
+    static func comparedLength(_ m: Match, by: CompareLength = .current) -> Double {
+        m.part == .emptyCase ? m.cartridge.dimensions.caseLength : m.cartridge.compareLength(by)
     }
 
     /// The calibres the photo was compared with as empty cases; balls and blanks are always compared whole.

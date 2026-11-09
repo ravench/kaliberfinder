@@ -245,6 +245,26 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(back.camera, "LiDARDepth")
     }
 
+    /// A telephoto shot says how the camera ran (Raven, 2026-11-09: to find the choice that gives 4x sharpest).
+    func testTelephotoShotRecordsZoomFieldOfViewAndFormat() throws {
+        var shot = CaptureShot(photo: "photo.heic", source: "lidarCamera", captured: Date())
+        XCTAssertFalse(String(data: try TrainingCapture.encoder.encode(shot), encoding: .utf8)!.contains("zoom"))
+        shot.camera = "Telephoto"
+        shot.zoom = 2
+        shot.fieldOfView = 12.4
+        shot.format = "4032x3024"
+        let back = try TrainingCapture.decoder.decode(CaptureShot.self, from: TrainingCapture.encoder.encode(shot))
+        XCTAssertEqual([back.zoom, back.fieldOfView], [2, 12.4])
+        XCTAssertEqual(back.format, "4032x3024")
+        XCTAssertTrue(TrainingPackageView.summary("05", shot).hasPrefix("05  Telephoto ×2 12°  "))
+        // The choices: the least zoom, 1 and the native crops once each, ascending; titles name size, zoom and view.
+        XCTAssertEqual(LiDARCamera.zoomFactors(min: 1, secondary: [2, 1]), [1, 2])
+        XCTAssertEqual(LiDARCamera.zoomFactors(min: 0.5, secondary: []), [0.5, 1])
+        XCTAssertEqual(LiDARCamera.title(megapixels: 48.7, zoom: 1, fieldOfView: 23.6), "Tele 49 MP ×1 · 24°")
+        XCTAssertEqual(CameraChoice.lidar.title, "LiDAR")
+        XCTAssertNil(CameraChoice.lidar.format)
+    }
+
     /// Packages from before the cameras were recorded read as before; a telephoto's line says what it can do.
     func testCamerasAreOptionalAndSummarised() throws {
         let old = Data("""

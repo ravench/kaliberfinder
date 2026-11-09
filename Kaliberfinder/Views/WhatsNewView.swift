@@ -13,9 +13,7 @@ struct WhatsNewView: View {
                         Text(verbatim: bullet)
                     }
                 } footer: {
-                    let info = Bundle.main.infoDictionary ?? [:]
-                    let versionText = "\(info["CFBundleShortVersionString"] ?? "?") (\(info["CFBundleVersion"] ?? "?"))"
-                    Text("Version \(versionText)")
+                    Text("Version \(Bundle.main.versionText)")
                 }
             }
             .readableWidth()

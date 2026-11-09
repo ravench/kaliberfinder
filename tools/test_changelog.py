@@ -45,6 +45,63 @@ def repo(tmp, tag_head=False):
         run("tag", "testflight/1002")
 
 
+RELEASE_NOTES = """# Release notes
+
+## 0.3.0
+
+### de
+- Neu: C
+
+## 0.2.0
+
+### de
+- Neu: A
+- Neu: B
+
+### en
+- New: A
+- New: B
+
+### fr
+-
+"""
+
+
+class ReleaseNotesTests(unittest.TestCase):
+    def test_the_version_section_by_language(self):
+        self.assertEqual(changelog.hand_written("0.2.0", RELEASE_NOTES), {"de": ["Neu: A", "Neu: B"], "en": ["New: A", "New: B"]})
+        self.assertEqual(changelog.hand_written("0.3.0", RELEASE_NOTES), {"de": ["Neu: C"]})
+        self.assertIsNone(changelog.hand_written("0.1.0", RELEASE_NOTES))
+        self.assertIsNone(changelog.hand_written("0.2.0", "## 0.2.0\n\n### de\n- \n"), "an empty template is no notes")
+
+    def test_a_tagged_release_takes_the_hand_written_notes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo(tmp)
+            self.assertIsNone(changelog.release_version(tmp))
+            subprocess.run(["git", "tag", "v0.2.0"], cwd=tmp, check=True)
+            self.assertEqual(changelog.release_version(tmp), "0.2.0")
+            notes_path = os.path.join(tmp, "RELEASE_NOTES.md")
+            with open(notes_path, "w") as f:
+                f.write(RELEASE_NOTES)
+            out = os.path.join(tmp, "Changelog.json")
+            client = FakeClient(json.dumps(NOTES))
+            changelog.write_notes(out, tmp, client, release_notes=notes_path)
+            self.assertIsNone(client.request, "no call to the Claude API for a release")
+            with open(out) as f:
+                self.assertEqual(json.load(f), {"notes": {"de": ["Neu: A", "Neu: B"], "en": ["New: A", "New: B"]}})
+            # A release without a section still gets the summary.
+            subprocess.run(["git", "tag", "-d", "v0.2.0"], cwd=tmp, check=True, capture_output=True)
+            subprocess.run(["git", "tag", "v0.9.0"], cwd=tmp, check=True)
+            changelog.write_notes(out, tmp, client, release_notes=notes_path)
+            self.assertIsNotNone(client.request)
+
+    def test_the_repo_has_the_notes_file_with_the_format(self):
+        with open(os.path.join(ROOT, "RELEASE_NOTES.md")) as f:
+            text = f.read()
+        self.assertIn("## 0.2.0", text)
+        self.assertIn("### de", text)
+
+
 class CommitsTests(unittest.TestCase):
     def test_since_the_last_build(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -162,6 +219,12 @@ class WorkflowTests(unittest.TestCase):
         with open(os.path.join(ROOT, ".github", "workflows", "testflight.yml")) as f:
             cls.workflow = f.read()
         cls.upload = cls.workflow.split("\n  upload:")[1].split("\n  what-to-test:")[0]
+
+    def test_a_release_tag_uploads_under_its_version(self):
+        self.assertIn("tags: ['v[0-9]*']", self.workflow)
+        self.assertIn("github.event_name == 'push'", self.workflow)
+        self.assertIn("tools/testflight.py version", self.upload)
+        self.assertIn('MARKETING_VERSION="$MARKETING_VERSION"', self.upload)
 
     def test_notes_go_into_the_archive(self):
         # The whole history, for the tag of the last build and the commits since.
