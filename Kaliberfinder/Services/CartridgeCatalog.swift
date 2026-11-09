@@ -12,22 +12,32 @@ enum CartridgeCatalog {
         case air = "Luftdruck"
     }
 
-    private struct File: Decodable {
+    /// The calibre-data commit the catalogue was generated from (tools/generate_data.py), shown in Settings.
+    struct Source: Decodable {
+        let commit: String
+        /// The commit's ISO 8601 date. Text, so a date that doesn't parse can't cost the catalogue.
+        let date: String
+
+        /// Short commit and its day, e.g. "04653a8 · 8.11.2026".
+        var text: String {
+            "\(commit.prefix(7)) · \(ISO8601DateFormatter().date(from: date)?.formatted(date: .numeric, time: .omitted) ?? date)"
+        }
+    }
+
+    struct File: Decodable {
         let version: Int
+        let calibreData: Source?
         let cartridges: [Cartridge]
     }
 
-    static let all: [Cartridge] = load(from: Bundle.main)
+    private static let file = Bundle.main.url(forResource: "Cartridges", withExtension: "json")
+        .flatMap { try? Data(contentsOf: $0) }.flatMap(decodeFile)
+    static let all: [Cartridge] = file?.cartridges ?? []
+    static let source: Source? = file?.calibreData
 
-    static func load(from bundle: Bundle) -> [Cartridge] {
-        guard let url = bundle.url(forResource: "Cartridges", withExtension: "json"),
-              let data = try? Data(contentsOf: url) else { return [] }
-        return decode(data)
-    }
+    static func decode(_ data: Data) -> [Cartridge] { decodeFile(data)?.cartridges ?? [] }
 
-    static func decode(_ data: Data) -> [Cartridge] {
-        (try? JSONDecoder().decode(File.self, from: data))?.cartridges ?? []
-    }
+    static func decodeFile(_ data: Data) -> File? { try? JSONDecoder().decode(File.self, from: data) }
 
     private static let byID = Dictionary(all.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
 

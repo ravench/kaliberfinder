@@ -201,4 +201,26 @@ final class CatalogTests: XCTestCase {
     func testDecodeRejectsGarbage() {
         XCTAssertTrue(CartridgeCatalog.decode(Data("nope".utf8)).isEmpty)
     }
+
+    /// Settings show the calibre-data commit the catalogue was generated from (tools/generate_data.py).
+    func testCatalogueNamesItsCalibreDataCommit() throws {
+        let source = try XCTUnwrap(CartridgeCatalog.source)
+        XCTAssertNotNil(source.commit.range(of: "^[0-9a-f]{40}$", options: .regularExpression), source.commit)
+        XCTAssertTrue(source.text.hasPrefix("\(source.commit.prefix(7)) · "), source.text)
+    }
+
+    func testCalibreDataDayKeepsItsOffset() throws {
+        let json = #"{"version":1,"calibreData":{"commit":"04653a888e18b4cf5cd8d619d42f8d8501ebc369","date":"2026-11-08T17:40:47+01:00"},"cartridges":[]}"#
+        let day = Date(timeIntervalSince1970: 1_794_156_047).formatted(date: .numeric, time: .omitted)
+        XCTAssertEqual(CartridgeCatalog.decodeFile(Data(json.utf8))?.calibreData?.text, "04653a8 · \(day)")
+        // git writes UTC as Z.
+        let utc = json.replacingOccurrences(of: "17:40:47+01:00", with: "16:40:47Z")
+        XCTAssertEqual(CartridgeCatalog.decodeFile(Data(utc.utf8))?.calibreData?.text, "04653a8 · \(day)")
+    }
+
+    func testUnreadableDateKeepsTheCatalogue() throws {
+        let json = #"{"version":1,"calibreData":{"commit":"04653a888e18b4cf5cd8d619d42f8d8501ebc369","date":"soon"},"cartridges":[]}"#
+        let file = try XCTUnwrap(CartridgeCatalog.decodeFile(Data(json.utf8)))
+        XCTAssertEqual(file.calibreData?.text, "04653a8 · soon")
+    }
 }

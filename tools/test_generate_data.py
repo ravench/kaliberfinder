@@ -125,6 +125,16 @@ class CalibreDataSubmoduleTests(unittest.TestCase):
             build_job = f.read().split("  build:", 1)[1]
         self.assertIn("submodules: true", build_job.split("- run:", 1)[0])
 
+    def test_catalogue_names_the_commit_it_was_read_from(self):
+        """Settings show the calibre-data commit of the app's catalogue (CartridgeCatalog.source)."""
+        import json, subprocess
+        head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=generate_data.DATA, text=True).strip()
+        with open(generate_data.OUT) as f:
+            stored = json.load(f)["calibreData"]
+        self.assertEqual(stored["commit"], head, "run: python3 tools/generate_data.py")
+        # The committer date with its offset, which the app decodes as ISO 8601.
+        self.assertRegex(stored["date"], r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(Z|[+-]\d\d:\d\d)$")
+
 class PatchedBulletTests(unittest.TestCase):
     """GP 1890: paper-patched lead body with a steel-capped round nose."""
 
