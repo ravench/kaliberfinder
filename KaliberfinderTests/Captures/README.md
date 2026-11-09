@@ -30,8 +30,9 @@ their photos in `../Golden` (see its README).
 ```
 
 Depth and calibration are in the frame of the photo's stored pixels (before the EXIF rotation);
-the Vision mask is in the upright frame. Only the LiDAR camera records depth; photos added from
-the library have no depth, but are still useful for the shape.
+the Vision mask is in the upright frame. Only the LiDAR camera records depth; photos from the wide
+camera of a phone without a scanner, from the telephoto or from the library have none, but are
+still useful for the shape.
 
 Keep the photos reasonably small: a HEIC from the camera is about 2–4 MB.
 

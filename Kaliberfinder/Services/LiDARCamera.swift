@@ -5,8 +5,9 @@ import UIKit
 /// The back camera paired with the LiDAR scanner (Pro iPhones from the 12 Pro, iPad Pro). Shows live
 /// guidance (distance and tilt) and takes a photo together with the table distance and focal length.
 /// Depth stays in memory and is dropped after the size is computed (LIDAR-07).
-/// The training capture may pick the telephoto instead (`CameraChoice`): its 4x at the largest photo, which
-/// delivers no depth but, from its 1.16 m focus, a view almost free of perspective (Raven, 2026-11-09).
+/// The training capture may pick the telephoto instead (`CameraChoice`): at its full view and largest photo,
+/// which delivers no depth but, from its long closest focus, a view with little perspective (Raven, 2026-11-09;
+/// 2x on the XS and 11 Pro, 3x on the 13 to 15 Pro, 4x on the 17 Pro).
 /// Each shot records the zoom, the field of view and the format it was taken with.
 final class LiDARCamera: NSObject, ObservableObject {
     /// LIDAR-01: only devices with the scanner get the depth camera.
@@ -19,12 +20,22 @@ final class LiDARCamera: NSObject, ObservableObject {
     /// What the training capture may choose from: the LiDAR camera as the app uses it, and the telephoto at 4x;
     /// only what this device has.
     static var choices: [CameraChoice] {
-        (isAvailable ? [CameraChoice.lidar] : []) + telephotoChoices()
+        // Without a scanner (Raven, 2026-11-09: training data from other phones too) the telephoto comes first,
+        // for its view with little perspective, then the wide camera; neither has depth.
+        if isAvailable { return [.lidar] + telephotoChoices() }
+        return telephotoChoices() + (isAvailable(.builtInWideAngleCamera) ? [.wide] : [])
     }
 
-    /// The telephoto at 4x: its 4:3 format with the largest photo (the widest view among equals), at the least
-    /// zoom. Raven, 2026-11-09: the 31 telephoto shots of the training data were 4x all along, so one entry
-    /// stays, to keep taking such shots.
+    /// Whether this device can take training photos at all: any back camera, scanner or not.
+    static var canCapture: Bool { !choices.isEmpty }
+
+    /// The camera the app's own photo screen uses: the LiDAR camera, else the telephoto; nil where neither
+    /// exists, and the system camera takes the photo.
+    static var appChoice: CameraChoice? { isAvailable ? .lidar : telephotoChoices().first }
+
+    /// The telephoto at its full view: its 4:3 format with the largest photo (the widest view among equals), at
+    /// the least zoom. Raven, 2026-11-09: the 31 telephoto shots of the training data were at the full view all
+    /// along, so one entry stays, to keep taking such shots.
     static func telephotoChoices() -> [CameraChoice] {
         guard let device = AVCaptureDevice.default(.builtInTelephotoCamera, for: .video, position: .back) else { return [] }
         let candidates = device.formats.enumerated().filter { _, format in
@@ -56,6 +67,9 @@ final class LiDARCamera: NSObject, ObservableObject {
 
     @Published private(set) var guidance: LiDARGuidance = .noDepth
     @Published private(set) var isRunning = false
+    /// The closest distance the camera focuses at, in mm, once it runs; the hint on screen uses it for cameras
+    /// without depth (a 2x telephoto focuses much closer than the 17 Pro's 4x). Nil until known or unknown.
+    @Published private(set) var minimumFocusDistance: Int?
 
     let session = AVCaptureSession()
     private let photoOutput = AVCapturePhotoOutput()
@@ -186,6 +200,8 @@ final class LiDARCamera: NSObject, ObservableObject {
             return
         }
         self.device = device
+        let focus = device.minimumFocusDistance
+        DispatchQueue.main.async { self.minimumFocusDistance = focus > 0 ? focus : nil }
         session.addInput(input)
         session.addOutput(photoOutput)
         if hasDepth { session.addOutput(depthOutput) }
@@ -312,4 +328,6 @@ struct CameraChoice: Hashable, Identifiable {
 
     var id: String { title }
     static let lidar = CameraChoice(deviceType: .builtInLiDARDepthCamera, title: "LiDAR")
+    /// The wide camera of a phone without a scanner: photos without depth, like the telephoto's.
+    static let wide = CameraChoice(deviceType: .builtInWideAngleCamera, title: "Weitwinkel")
 }

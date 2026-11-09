@@ -261,6 +261,16 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(LiDARCamera.title(megapixels: 48.7, zoom: 1, fieldOfView: 23.6), "Tele 49 MP ×1 · 24°")
         XCTAssertEqual(CameraChoice.lidar.title, "LiDAR")
         XCTAssertNil(CameraChoice.lidar.format)
+        // A phone without a scanner captures with its wide camera, without depth; the simulator has no camera at all.
+        XCTAssertEqual(CameraChoice.wide.deviceType, .builtInWideAngleCamera)
+        XCTAssertEqual(CameraChoice.wide.title, "Weitwinkel")
+        XCTAssertEqual(LiDARCamera.canCapture, !LiDARCamera.choices.isEmpty)
+        XCTAssertNil(LiDARCamera.appChoice, "the simulator has neither scanner nor telephoto, so the system camera takes the photo")
+        // The hint names the camera's own closest focus, rounded up to 10 cm: 1160 mm on the 17 Pro, about 500 on a 2x.
+        XCTAssertTrue(LiDARCameraView.distanceHint(minimumFocusDistance: 1160).contains("120 cm"))
+        XCTAssertTrue(LiDARCameraView.distanceHint(minimumFocusDistance: 480).contains("50 cm"))
+        XCTAssertEqual(LiDARCameraView.distanceHint(minimumFocusDistance: nil),
+                       "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah wie es scharf stellt.".loc)
     }
 
     /// Packages from before the cameras were recorded read as before; a telephoto's line says what it can do.
