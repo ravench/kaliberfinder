@@ -28,7 +28,11 @@ struct CartridgeDetailView: View {
                 if let group = CartridgeCatalog.lookalikeGroup(of: cartridge) {
                     // The lookalikes of calibre-data: the group page lists them all and compares them at 1:1.
                     NavigationLink { LookalikeGroupView(group: group) } label: {
-                        LabeledContent("Ähnliche Kaliber", value: group.calibres.filter { $0 != cartridge.id }.joined(separator: ", "))
+                        Label {
+                            LabeledContent("Ähnliche Kaliber", value: group.calibres.filter { $0 != cartridge.id }.joined(separator: ", "))
+                        } icon: {
+                            Image(systemName: "square.on.square")
+                        }
                     }
                 }
                 if trainingCapture {

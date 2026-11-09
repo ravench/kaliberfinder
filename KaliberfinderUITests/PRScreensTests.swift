@@ -23,6 +23,8 @@ final class PRScreensTests: XCTestCase {
 
         if open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]) {
             snap("06-Einstellungen")
+            scroll()
+            snap("06b-Einstellungen-unten")  // version and calibre-data commit
             app.buttons["Fertig"].firstMatch.tap()
         }
         if open(app.buttons["Masse eingeben"].firstMatch) {

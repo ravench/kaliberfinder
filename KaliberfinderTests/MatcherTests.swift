@@ -70,7 +70,7 @@ final class MatcherTests: XCTestCase {
         XCTAssertGreaterThan(matches.count, 3)
         // Every listed row, not just the best three; identical-looking calibres once.
         let rows = Matcher.grouped(matches)
-        let compare = MatchesView.toCompare(matches)
+        let compare = MatchesView.toCompare(matches, by: .overallLength)
         XCTAssertEqual(compare.map(\.id).sorted(), rows.map(\.lead.cartridge.id).sorted())
         XCTAssertEqual(MatchesView.compareTitle(matches), String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, rows.count))
         XCTAssertTrue(MatchesView.compareTitle(matches).contains("\(rows.count)"))
@@ -88,10 +88,13 @@ final class MatcherTests: XCTestCase {
         // 9x21 IMI and 9x19 (both Ø 9.96) keep their rank order.
         let ranked = [try match("9x21 mm IMI"), try match("9x19 mm"), try match(".30 Super Carry"), try match(".45 ACP"),
                       try match("9 mm Browning kurz (.380 ACP)")]
-        XCTAssertEqual(MatchesView.toCompare(ranked).map(\.id),
+        XCTAssertEqual(MatchesView.toCompare(ranked, by: .overallLength).map(\.id),
                        ["9 mm Browning kurz (.380 ACP)", ".30 Super Carry", "9x21 mm IMI", "9x19 mm", ".45 ACP"])
-        XCTAssertEqual(MatchesView.toCompare(Array(ranked.reversed())).map(\.id),
+        XCTAssertEqual(MatchesView.toCompare(Array(ranked.reversed()), by: .overallLength).map(\.id),
                        ["9 mm Browning kurz (.380 ACP)", ".30 Super Carry", "9x19 mm", "9x21 mm IMI", ".45 ACP"])
+        // By the case, the standard: 17.3, 19.15, 20.3, 21.15 and 22.8 mm.
+        XCTAssertEqual(MatchesView.toCompare(ranked, by: .caseLength).map(\.id),
+                       ["9 mm Browning kurz (.380 ACP)", "9x19 mm", ".30 Super Carry", "9x21 mm IMI", ".45 ACP"])
     }
 
     func testCompareByFitKeepsTheRankOrderOnlyWithALiDARSize() throws {
@@ -120,9 +123,12 @@ final class MatcherTests: XCTestCase {
         // Cases 55.6, 51.2, 48.8 (Ø 12.01) and 48.8 mm (Ø 12.0): the narrower 6.5 mm Creedmoor first.
         XCTAssertEqual(MatchesView.toCompare(try ids.map { try match($0, .emptyCase) }).map(\.id),
                        ["6.5 mm Creedmoor", "6 mm Creedmoor", ".308 Winchester", "7.5x55 mm Swiss (GP 11)"])
-        // Loaded, the same calibres are 77.5, 71.1 (Ø 11.9), 71.1 (Ø 12.01) and 71.8 mm long.
-        XCTAssertEqual(MatchesView.toCompare(try ids.map { try match($0, .cartridge) }).map(\.id),
+        // Loaded, by the whole round the same calibres are 77.5, 71.1 (Ø 11.9), 71.1 (Ø 12.01) and 71.8 mm long …
+        XCTAssertEqual(MatchesView.toCompare(try ids.map { try match($0, .cartridge) }, by: .overallLength).map(\.id),
                        [".308 Winchester", "6 mm Creedmoor", "6.5 mm Creedmoor", "7.5x55 mm Swiss (GP 11)"])
+        // … and by the case, the standard, they stand like the empty cases.
+        XCTAssertEqual(MatchesView.toCompare(try ids.map { try match($0, .cartridge) }, by: .caseLength).map(\.id),
+                       ["6.5 mm Creedmoor", "6 mm Creedmoor", ".308 Winchester", "7.5x55 mm Swiss (GP 11)"])
     }
 
     func testOneToOneKnowsWhichMatchesAreEmptyCases() throws {

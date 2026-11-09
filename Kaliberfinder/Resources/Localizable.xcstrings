@@ -254,6 +254,29 @@
         }
       }
     },
+    "1:1 sortieren nach": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sort 1:1 by"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trier le 1:1 par"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordina 1:1 per"
+          }
+        }
+      }
+    },
     "1:1 vergleichen (%lld)": {
       "extractionState": "manual",
       "localizations": {
@@ -2669,6 +2692,29 @@
         }
       }
     },
+    "Kaliberdaten": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibre data"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Données des calibres"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dati dei calibri"
+          }
+        }
+      }
+    },
     "Kaliberfinder": {
       "extractionState": "manual",
       "localizations": {
@@ -4049,6 +4095,29 @@
         }
       }
     },
+    "Reihenfolge der Patronen im 1:1-Vergleich.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Order of the cartridges in the 1:1 comparison."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordre des cartouches dans la comparaison 1:1."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordine delle cartucce nel confronto 1:1."
+          }
+        }
+      }
+    },
     "Rund im Bild: Boden oder Spitze einer Patrone, oder eine Rundkugel. Patronen werden nur von der Seite erkannt.": {
       "extractionState": "manual",
       "localizations": {
@@ -4509,29 +4578,6 @@
         }
       }
     },
-    "Tele": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Telephoto"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Téléobjectif"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Teleobiettivo"
-          }
-        }
-      }
-    },
     "Tiefe relativ": {
       "extractionState": "manual",
       "localizations": {
@@ -4739,29 +4785,6 @@
         }
       }
     },
-    "Ultraweit": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ultra wide"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ultra grand-angle"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ultra-grandangolo"
-          }
-        }
-      }
-    },
     "Umriss auf dem Foto: grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Verjüngung des Körpers.": {
       "extractionState": "manual",
       "localizations": {
@@ -4919,6 +4942,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diffusione"
+          }
+        }
+      }
+    },
+    "Version": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versione"
           }
         }
       }

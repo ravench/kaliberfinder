@@ -11,6 +11,11 @@ final class HomeSectionTests: XCTestCase {
         XCTAssertEqual(SettingsSection.allCases, [.units, .realSize, .copyright])
     }
 
+    func testSettingsShowVersionAndBuild() {
+        let text = Bundle.main.versionText
+        XCTAssertNotNil(text.range(of: #"^\d+(\.\d+)+ \(\d+\)$"#, options: .regularExpression), text)
+    }
+
     func testOnlyOneLibraryPhotoLoadsAtATime() {
         var loading = PhotoLoading()
         XCTAssertFalse(loading.isLoading)

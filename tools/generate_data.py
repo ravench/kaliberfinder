@@ -12,7 +12,7 @@ Each entry carries its dimensions in millimetres (for the 1:1 drawing and the
 dimension table) and a side-view outline as SVG path data (M/L/Z only), tip at
 the top (y = 0), base at the bottom (y = overall length).
 """
-import json, os, sys
+import json, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
@@ -22,6 +22,7 @@ from headstamps import HEADSTAMPS  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json")
+DATA = os.path.join(ROOT, "calibre-data")
 
 # German names of the calibre-data COUNTRIES, the app's localization keys (en/fr/it in
 # translations.py). Worldwide use is the separate "worldwide" flag, not a country (Raven 2026-11-07).
@@ -96,6 +97,12 @@ def lookalikes(names):
     return groups
 
 
+def calibre_data():
+    """The calibre-data commit the catalogue is read from and its date, shown in the app's settings."""
+    commit, date = subprocess.check_output(["git", "log", "-1", "--format=%H %cI"], cwd=DATA, text=True).split()
+    return {"commit": commit, "date": date}
+
+
 # Preview fills of cases that are not brass (CartridgeView uses the same colours).
 CASE_COLOURS = {"copper": "#b87333", "steel": "#6b6a55", "nickel": "#c8cbce", "paper": "#f2ede0", "hybrid": "#e3c16f"}
 
@@ -123,8 +130,8 @@ if __name__ == "__main__":
     cartridges = build()
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w") as f:
-        json.dump({"version": 1, "cartridges": cartridges, "lookalikes": lookalikes({c["name"] for c in cartridges})}, f,
-                  ensure_ascii=False, indent=1)
+        json.dump({"version": 1, "calibreData": calibre_data(), "cartridges": cartridges,
+                   "lookalikes": lookalikes({c["name"] for c in cartridges})}, f, ensure_ascii=False, indent=1)
         f.write("\n")
     if "--preview" in sys.argv:
         preview(cartridges, sys.argv[sys.argv.index("--preview") + 1])

@@ -18,6 +18,8 @@ T = {
     "Länge": ("length", "longueur", "lunghezza"),
     "Setztiefe des Geschosses": ("bullet seating", "enfoncement du projectile", "inserimento della palla"),
     "Ladung": ("load", "charge", "carica"),
+    "1:1 sortieren nach": ("Sort 1:1 by", "Trier le 1:1 par", "Ordina 1:1 per"),
+    "Reihenfolge der Patronen im 1:1-Vergleich.": ("Order of the cartridges in the 1:1 comparison.", "Ordre des cartouches dans la comparaison 1:1.", "Ordine delle cartucce nel confronto 1:1."),
     # Calibre tags and countries (CartridgeRow, CartridgeDetailView). Country names come from
     # generate_data.COUNTRY_NAMES.
     "Selten": ("Rare", "Rare", "Raro"),
@@ -206,6 +208,9 @@ T = {
     # Release notes of a TestFlight build (WhatsNewView).
     "Neu in dieser Version": ("New in this version", "Nouveautés de cette version", "Novità in questa versione"),
     "Version %@": ("Version %@", "Version %@", "Versione %@"),
+    # Settings: the app version and the calibre-data commit of the catalogue.
+    "Version": ("Version", "Version", "Versione"),
+    "Kaliberdaten": ("Calibre data", "Données des calibres", "Dati dei calibri"),
     "Foto übernommen. Öffne Kaliberfinder, um die Treffer zu sehen.": (
         "Photo received. Open Kaliberfinder to see the matches.",
         "Photo reçue. Ouvrez Kaliberfinder pour voir les correspondances.",
@@ -303,8 +308,6 @@ T = {
         "Contorno sulla foto: verde punta e fondello, viola palla, arancione colletto e spalla, azzurro conicità del corpo."),
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
     "Kamera": ("Camera", "Caméra", "Fotocamera"),
-    "Tele": ("Telephoto", "Téléobjectif", "Teleobiettivo"),
-    "Ultraweit": ("Ultra wide", "Ultra grand-angle", "Ultra-grandangolo"),
     "Neue Aufnahmeserie": ("New capture series", "Nouvelle série de prises", "Nuova serie di scatti"),
     "Wähle das Kaliber, das du fotografierst, und mache mehrere Fotos davon. Gespeichert werden das Foto, die LiDAR-Tiefe, die Kameradaten und die Vision-Maske. Teile die Serie als ZIP, sie kommt in die Tests.": (
         "Choose the calibre you are photographing and take several photos of it. The photo, the LiDAR depth, the camera data and the Vision mask are saved. Share the series as a ZIP; it goes into the tests.",

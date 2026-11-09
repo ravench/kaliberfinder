@@ -6,12 +6,13 @@ enum SettingsSection: CaseIterable {
 }
 
 /// Settings opened as a sheet by the home screen's gear button: units, screen size, empty cases at 1:1, the coloured
-/// outline and the licence line.
+/// outline, and the app version, calibre-data commit and licence line.
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var scale: ScaleModel
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(TrueScaleView.bulletsOnCasesKey) private var bulletsOnCases = true
+    @AppStorage(CompareLength.key) private var compareLength: CompareLength = .caseLength
     /// Only phones with a LiDAR scanner measure the photo, so only they get the switch (`MatchesView.compareByFitKey`).
     @AppStorage(MatchesView.compareByFitKey) private var compareByFit = true
     /// Hidden developer switch: five taps on the copyright line (`TrainingCapture`).
@@ -46,6 +47,13 @@ struct SettingsView: View {
                     Toggle("Geschosse beim Vergleich mit leeren Hülsen zeigen", isOn: $bulletsOnCases)
                 }
                 Section {
+                    Picker("1:1 sortieren nach", selection: $compareLength) {
+                        ForEach(CompareLength.allCases) { Text($0.title.loc).tag($0) }
+                    }
+                } footer: {
+                    Text("Reihenfolge der Patronen im 1:1-Vergleich.")
+                }
+                Section {
                     Toggle("Erkennung farbig zeigen", isOn: $partColours)
                 } footer: {
                     Text("Umriss auf dem Foto: grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Verjüngung des Körpers.")
@@ -68,6 +76,10 @@ struct SettingsView: View {
                     }
                 }
                 Section {
+                    LabeledContent("Version", value: Bundle.main.versionText)
+                    if let source = CartridgeCatalog.source {
+                        LabeledContent("Kaliberdaten", value: source.text)
+                    }
                     Text("© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0")
                         .font(.footnote)
                         .foregroundStyle(.secondary)

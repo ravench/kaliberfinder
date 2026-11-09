@@ -25,8 +25,8 @@ struct LookalikeGroupView: View {
         }
     }
 
-    /// Identical-looking calibres once; the 1:1 screen names the others under the drawing.
-    static func compared(_ members: [Cartridge]) -> [Cartridge] {
-        CartridgeCatalog.groupedByProfile(members, cartridge: { $0 }).map { $0[0] }
+    /// Identical-looking calibres once, standing by the length setting; the 1:1 screen names the others under the drawing.
+    static func compared(_ members: [Cartridge], by: CompareLength = .current) -> [Cartridge] {
+        CartridgeCatalog.groupedByProfile(members, cartridge: { $0 }).map { $0[0] }.byLength(by)
     }
 }
