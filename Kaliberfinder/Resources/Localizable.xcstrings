@@ -4417,29 +4417,6 @@
         }
       }
     },
-    "Tele": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Telephoto"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Téléobjectif"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Teleobiettivo"
-          }
-        }
-      }
-    },
     "Tiefe relativ": {
       "extractionState": "manual",
       "localizations": {
@@ -4643,29 +4620,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stati Uniti"
-          }
-        }
-      }
-    },
-    "Ultraweit": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ultra wide"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ultra grand-angle"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ultra-grandangolo"
           }
         }
       }
