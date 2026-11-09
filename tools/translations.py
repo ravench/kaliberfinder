@@ -12,6 +12,20 @@ INFO_PLIST = {
 }
 
 T = {
+    "Land": ("Country", "Pays", "Paese"),
+    "Geschossmaterial": ("Bullet material", "Matière du projectile", "Materiale della palla"),
+    "Hülsenmaterial": ("Case material", "Matière de la douille", "Materiale del bossolo"),
+    "Schulterlänge": ("Shoulder length", "Longueur jusqu'à l'épaulement", "Lunghezza fino alla spalla"),
+    "Vollmantel": ("Full metal jacket", "Blindé", "Blindata"),
+    "Blei": ("Lead", "Plomb", "Piombo"),
+    "Stahl": ("Steel", "Acier", "Acciaio"),
+    "Kunststoff": ("Plastic", "Plastique", "Plastica"),
+    "Messing": ("Brass", "Laiton", "Ottone"),
+    "Aluminium": ("Aluminium", "Aluminium", "Alluminio"),
+    "Nickel": ("Nickel", "Nickel", "Nichel"),
+    "Papier": ("Paper", "Papier", "Carta"),
+    "Boxer": ("Boxer", "Boxer", "Boxer"),
+    "Berdan": ("Berdan", "Berdan", "Berdan"),
     "Grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Körper.": ("Green tip and base, purple bullet, orange neck and shoulder, light blue body.", "Vert pointe et culot, violet projectile, orange collet et épaulement, bleu clair corps.", "Verde punta e fondello, viola palla, arancione colletto e spalla, azzurro corpo."),
     "Nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone.": ("After a photo with a LiDAR size: best match first instead of shortest cartridge.", "Après une photo avec taille LiDAR : meilleure correspondance d'abord au lieu de la cartouche la plus courte.", "Dopo una foto con dimensione LiDAR: prima la corrispondenza migliore invece della cartuccia più corta."),
     "Prüfe die Grösse einmal mit einer Bankkarte.": ("Check the size once with a bank card.", "Vérifiez la taille une fois avec une carte bancaire.", "Controlla la dimensione una volta con una carta bancaria."),

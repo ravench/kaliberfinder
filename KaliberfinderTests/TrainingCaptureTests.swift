@@ -186,6 +186,35 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertFalse(Measurements(bullet: 9).isEmpty)
     }
 
+    /// Country, materials, primer and the shoulder measurements are in package.json only once entered (2026-11-09).
+    func testCountryMaterialsAndShoulderAreWrittenWhenEntered() throws {
+        let url = try store.create(package())
+        var package = try XCTUnwrap(store.packages().first).package
+        let json = { try String(data: Data(contentsOf: url.appendingPathComponent(TrainingCapture.packageFile)), encoding: .utf8) ?? "" }
+        for key in ["country", "bulletMaterial", "caseMaterial", "primer", "shoulder"] { XCTAssertFalse(try json().contains(key), key) }
+        package.country = "CH"
+        package.bulletMaterial = "jacket"
+        package.caseMaterial = "brass"
+        package.primer = "boxer"
+        package.measurements = Measurements(shoulderLength: 45.0, shoulder: 11.5)
+        try CaptureStore.update(package, at: url)
+        let saved = try XCTUnwrap(store.packages().first).package
+        XCTAssertEqual(saved.country, "CH")
+        XCTAssertEqual([saved.bulletMaterial, saved.caseMaterial, saved.primer], ["jacket", "brass", "boxer"])
+        XCTAssertEqual(saved.measurements, Measurements(shoulderLength: 45.0, shoulder: 11.5))
+        XCTAssertFalse(Measurements(shoulder: 11.5).isEmpty)
+        // Every token offered has a German title of its own.
+        for token in Materials.bullet + Materials.cases + Materials.primer {
+            XCTAssertNotEqual(Materials.title(token), token, token)
+        }
+        XCTAssertEqual(Materials.title("jacket"), "Vollmantel")
+        // The country picker offers the catalogue's present-day countries with their flags, Switzerland among them.
+        let countries = CartridgeCatalog.countries
+        XCTAssertTrue(countries.contains { $0.code == "CH" && $0.flag == "🇨🇭" })
+        XCTAssertTrue(countries.allSatisfy { $0.flag != nil }, "former states and NATO have no flag emoji and are left out")
+        XCTAssertEqual(Set(countries.map(\.code)).count, countries.count)
+    }
+
     /// The note and the atypical-bullet flag are edited on the series screen; the flag is only in the file when set.
     func testNoteAndAtypicalBulletAreEditable() throws {
         let url = try store.create(package())

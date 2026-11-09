@@ -43,6 +43,10 @@ enum CartridgeCatalog {
 
     static func cartridge(id: String) -> Cartridge? { byID[id] }
 
+    /// The present-day countries the catalogue knows (those with a flag), by name: where training photos are taken.
+    static let countries: [Cartridge.Country] = Dictionary(all.compactMap(\.country).filter { $0.flag != nil }.map { ($0.code, $0) },
+                                                           uniquingKeysWith: { a, _ in a }).values.sorted { $0.name.loc < $1.name.loc }
+
     /// UserDefaults key of the «Veraltete Kaliber berücksichtigen» switch. Off by default.
     static let includeObsoleteKey = "includeObsoleteCalibres"
     /// UserDefaults key of the «Seltene Kaliber berücksichtigen» switch. Off by default.

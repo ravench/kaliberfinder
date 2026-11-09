@@ -80,6 +80,12 @@ struct CapturePackage: Codable, Equatable {
     /// True when the round carries a bullet its calibre does not usually have (another weight or shape), so
     /// tuning the matcher against this series takes care; not written when nil.
     var atypicalBullet: Bool?
+    /// Where the photos were taken: the ISO code of one of `CartridgeCatalog.countries`; nil until chosen (2026-11-09).
+    var country: String?
+    /// What the round is made of, one of `Materials` (`bulletMaterials` etc.); nil until chosen (2026-11-09).
+    var bulletMaterial: String?
+    var caseMaterial: String?
+    var primer: String?
 
     var scanMode: ScanMode { ScanMode(rawValue: part) ?? .auto }
     var isUnlisted: Bool { unlisted == true }
@@ -97,8 +103,39 @@ struct Measurements: Codable, Equatable {
     var caseLength: Double?
     var rim: Double?
     var bullet: Double?
+    /// Base to shoulder, and the shoulder's diameter (2026-11-09).
+    var shoulderLength: Double?
+    var shoulder: Double?
 
-    var isEmpty: Bool { overallLength == nil && caseLength == nil && rim == nil && bullet == nil }
+    var isEmpty: Bool {
+        [overallLength, caseLength, rim, bullet, shoulderLength, shoulder].allSatisfy { $0 == nil }
+    }
+}
+
+/// The choices for what a photographed round is made of (`CapturePackage`): stored as the token, shown by
+/// the German title.
+enum Materials {
+    static let bullet = ["jacket", "lead", "steel", "plastic"]
+    static let cases = ["brass", "steel", "aluminium", "nickel", "plastic", "paper"]
+    static let primer = ["boxer", "berdan", "rimfire"]
+
+    /// German title of a token, used as localization key.
+    static func title(_ token: String) -> String {
+        switch token {
+        case "jacket": "Vollmantel"
+        case "lead": "Blei"
+        case "steel": "Stahl"
+        case "plastic": "Kunststoff"
+        case "brass": "Messing"
+        case "aluminium": "Aluminium"
+        case "nickel": "Nickel"
+        case "paper": "Papier"
+        case "boxer": "Boxer"
+        case "berdan": "Berdan"
+        case "rimfire": "Randfeuer"
+        default: token
+        }
+    }
 }
 
 /// One of the phone's back cameras, to tell what a telephoto could do for the photos: how close it
