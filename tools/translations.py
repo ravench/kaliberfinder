@@ -24,6 +24,8 @@ T = {
     "Weitwinkel": ("Wide", "Grand-angle", "Grandangolo"),
     "Fotografieren (ohne Tiefe)": ("Take photos (no depth)", "Photographier (sans profondeur)", "Fotografa (senza profondità)"),
     "Land": ("Country", "Pays", "Paese"),
+    "Land suchen": ("Search countries", "Rechercher un pays", "Cerca paese"),
+    "Zündhütchen-Durchmesser": ("Primer diameter", "Diamètre de l'amorce", "Diametro dell'innesco"),
     "Geschossmaterial": ("Bullet material", "Matière du projectile", "Materiale della palla"),
     "Hülsenmaterial": ("Case material", "Matière de la douille", "Materiale del bossolo"),
     "Schulterlänge": ("Shoulder length", "Longueur jusqu'à l'épaulement", "Lunghezza fino alla spalla"),

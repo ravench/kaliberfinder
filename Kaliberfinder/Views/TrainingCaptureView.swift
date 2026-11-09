@@ -257,12 +257,11 @@ struct TrainingPackageView: View {
             }
             Section {
                 TextField("Notiz", text: $package.note, prompt: Text("z. B. Holztisch, Tageslicht"), axis: .vertical)
-                // Where the photos were taken: the catalogue's countries with their flags (Raven, 2026-11-09).
-                Picker("Land", selection: $package.country) {
-                    Text(verbatim: "–").tag(String?.none)
-                    ForEach(CartridgeCatalog.countries, id: \.code) { country in
-                        Text(verbatim: [country.flag, country.name.loc].compactMap { $0 }.joined(separator: " ")).tag(String?.some(country.code))
-                    }
+                // Where the photos were taken: every present-day country, searchable (Raven, 2026-11-09).
+                NavigationLink {
+                    CountryPickerView(selection: $package.country)
+                } label: {
+                    LabeledContent("Land", value: package.country.map { Countries.title(of: $0) } ?? "–")
                 }
                 // A bullet the calibre does not usually carry, so tuning the matcher knows to be careful with this series.
                 Toggle("Atypisches Geschoss", isOn: atypicalBullet)
@@ -276,9 +275,11 @@ struct TrainingPackageView: View {
                 measured("Gesamtlänge", value: measurements.overallLength)
                 measured("Hülsenlänge", value: measurements.caseLength)
                 measured("Randdurchmesser", value: measurements.rim)
+                measured("Bodendurchmesser", value: measurements.base)
                 measured("Schulterdurchmesser", value: measurements.shoulder)
                 measured("Schulterlänge", value: measurements.shoulderLength)
                 measured("Geschossdurchmesser", value: measurements.bullet)
+                measured("Zündhütchen-Durchmesser", value: measurements.primerDiameter)
             } header: {
                 Text("Mit der Schieblehre gemessen")
             }
@@ -473,4 +474,39 @@ private struct ShareSheet: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
+}
+
+/// The country a series was photographed in: every present-day country with its flag, searchable; the
+/// first row clears the choice.
+struct CountryPickerView: View {
+    @Binding var selection: String?
+    @Environment(\.dismiss) private var dismiss
+    @State private var query = ""
+
+    var body: some View {
+        List {
+            if query.isEmpty {
+                row(title: "–", chosen: selection == nil) { selection = nil }
+            }
+            ForEach(Countries.matching(query)) { country in
+                row(title: "\(country.flag) \(country.name)", chosen: country.code == selection) { selection = country.code }
+            }
+        }
+        .searchable(text: $query, prompt: Text("Land suchen"))
+        .navigationTitle("Land")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func row(title: String, chosen: Bool, pick: @escaping () -> Void) -> some View {
+        Button {
+            pick()
+            dismiss()
+        } label: {
+            HStack {
+                Text(verbatim: title).foregroundStyle(.primary)
+                Spacer()
+                if chosen { Image(systemName: "checkmark").foregroundStyle(.tint) }
+            }
+        }
+    }
 }
