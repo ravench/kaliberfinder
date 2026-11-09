@@ -3221,25 +3221,48 @@
         }
       }
     },
-    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, gut 1,2 m darüber.": {
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, gut %lld cm darüber.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lay the cartridge flat on a light background and hold the device parallel, a good 1.2 m above it."
+            "value": "Lay the cartridge flat on a light background and hold the device parallel, a good %lld cm above it."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à un bon 1,2 m au-dessus."
+            "value": "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à un bon %lld cm au-dessus."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, a un buon 1,2 m sopra."
+            "value": "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, a un buon %lld cm sopra."
+          }
+        }
+      }
+    },
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah wie es scharf stellt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lay the cartridge flat on a light background and hold the device parallel, as close as it focuses."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, aussi près qu'il fait la mise au point."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, vicino quanto mette a fuoco."
           }
         }
       }

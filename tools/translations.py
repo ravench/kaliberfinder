@@ -12,8 +12,9 @@ INFO_PLIST = {
 }
 
 T = {
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, gut %lld cm darüber.": ("Lay the cartridge flat on a light background and hold the device parallel, a good %lld cm above it.", "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à un bon %lld cm au-dessus.", "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, a un buon %lld cm sopra."),
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah wie es scharf stellt.": ("Lay the cartridge flat on a light background and hold the device parallel, as close as it focuses.", "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, aussi près qu'il fait la mise au point.", "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, vicino quanto mette a fuoco."),
     "LiDAR": ("LiDAR", "LiDAR", "LiDAR"),
-    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, gut 1,2 m darüber.": ("Lay the cartridge flat on a light background and hold the device parallel, a good 1.2 m above it.", "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à un bon 1,2 m au-dessus.", "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, a un buon 1,2 m sopra."),
     "Weitwinkel": ("Wide", "Grand-angle", "Grandangolo"),
     "Fotografieren (ohne Tiefe)": ("Take photos (no depth)", "Photographier (sans profondeur)", "Fotografa (senza profondità)"),
     "Land": ("Country", "Pays", "Paese"),

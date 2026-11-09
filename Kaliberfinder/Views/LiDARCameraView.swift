@@ -2,8 +2,8 @@ import AVFoundation
 import SwiftUI
 
 /// The app's own camera screen (LIDAR-02): preview, guide and shutter. With the LiDAR camera the guide
-/// shows distance and tilt; on a phone without a scanner the telephoto takes the photo at 4x, from over a
-/// metre, without depth (Raven, 2026-11-09).
+/// shows distance and tilt; on a phone without a scanner the telephoto takes the photo, from its closest
+/// focus on, without depth (Raven, 2026-11-09).
 struct LiDARCameraView: View {
     let onPick: (UIImage, DepthScale?) -> Void
     @StateObject private var camera: LiDARCamera
@@ -17,16 +17,28 @@ struct LiDARCameraView: View {
 
     private var hasDepth: Bool { camera.choice.deviceType == .builtInLiDARDepthCamera }
 
+    /// For a camera without depth: hold it just beyond its closest focus, rounded up to 10 cm; «so nah wie
+    /// möglich» until the camera has said.
+    static func distanceHint(minimumFocusDistance: Int?) -> String {
+        guard let mm = minimumFocusDistance else {
+            return "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah wie es scharf stellt.".loc
+        }
+        let cm = Int((Double(mm) / 100).rounded(.up)) * 10
+        return String(format: "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, gut %lld cm darüber.".loc, cm)
+    }
+
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-            CameraPreview(camera: camera).ignoresSafeArea()
+            // Without depth the whole 4:3 frame, letterboxed: what is seen is what the photo holds (Raven, 2026-11-09).
+            CameraPreview(camera: camera, gravity: hasDepth ? .resizeAspectFill : .resizeAspect).ignoresSafeArea()
             VStack(spacing: 12) {
                 Group {
                     if hasDepth {
                         Text("Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, 20–30 cm darüber.")
                     } else {
-                        Text("Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, gut 1,2 m darüber.")
+                        // The camera's own closest focus: a 2x telephoto focuses at half a metre, the 17 Pro's 4x at 1.16 m.
+                        Text(Self.distanceHint(minimumFocusDistance: camera.minimumFocusDistance))
                     }
                 }
                 .font(.footnote)
