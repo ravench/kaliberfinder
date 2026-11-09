@@ -3267,6 +3267,29 @@
         }
       }
     },
+    "LiDAR": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LiDAR"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LiDAR"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LiDAR"
+          }
+        }
+      }
+    },
     "LiDAR %.0f mm": {
       "extractionState": "manual",
       "localizations": {
