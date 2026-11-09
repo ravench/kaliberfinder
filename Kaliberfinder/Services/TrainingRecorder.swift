@@ -16,6 +16,9 @@ enum TrainingRecorder {
         shot.tilt = moment.tilt
         shot.focus = moment.focus
         shot.camera = moment.camera
+        shot.zoom = moment.zoom
+        shot.fieldOfView = moment.fieldOfView
+        shot.format = moment.format
         var depthValues: [Float]?
         if let depthData = photo.depthData {
             if let map = LiDARCamera.depthValues(depthData) {

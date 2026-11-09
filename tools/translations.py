@@ -302,8 +302,6 @@ T = {
         "Contorno sulla foto: verde punta e fondello, viola palla, arancione colletto e spalla, azzurro conicità del corpo."),
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
     "Kamera": ("Camera", "Caméra", "Fotocamera"),
-    "Tele": ("Telephoto", "Téléobjectif", "Teleobiettivo"),
-    "Ultraweit": ("Ultra wide", "Ultra grand-angle", "Ultra-grandangolo"),
     "Neue Aufnahmeserie": ("New capture series", "Nouvelle série de prises", "Nuova serie di scatti"),
     "Wähle das Kaliber, das du fotografierst, und mache mehrere Fotos davon. Gespeichert werden das Foto, die LiDAR-Tiefe, die Kameradaten und die Vision-Maske. Teile die Serie als ZIP, sie kommt in die Tests.": (
         "Choose the calibre you are photographing and take several photos of it. The photo, the LiDAR depth, the camera data and the Vision mask are saved. Share the series as a ZIP; it goes into the tests.",

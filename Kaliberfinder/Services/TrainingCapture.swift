@@ -132,6 +132,11 @@ struct CaptureMoment: Equatable {
     var focus: CaptureShot.Focus?
     /// The back camera that took it (`CameraInfo.shortName`); nil for the LiDAR camera before 2026-11-08.
     var camera: String?
+    /// How the camera ran (2026-11-09): its zoom factor, the active format's field of view in degrees and its
+    /// video size, e.g. "4032x3024"; the photo's own size is in the file.
+    var zoom: Double?
+    var fieldOfView: Double?
+    var format: String?
 }
 
 /// One photo of a series: shot.json.
@@ -155,6 +160,11 @@ struct CaptureShot: Codable, Equatable {
     /// The back camera that took it, e.g. "Telephoto" (`CameraInfo.shortName`); nil for library photos and
     /// for shots from before the camera could be chosen (the LiDAR camera).
     var camera: String?
+    /// The camera's zoom factor, the format's field of view in degrees and its video size (`CaptureMoment`);
+    /// nil before 2026-11-09 and for library photos.
+    var zoom: Double?
+    var fieldOfView: Double?
+    var format: String?
     var mask: Mask?
     /// What the app made of the photo when it was taken.
     var analysis: Analysis?
