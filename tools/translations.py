@@ -12,6 +12,21 @@ INFO_PLIST = {
 }
 
 T = {
+    "Land": ("Country", "Pays", "Paese"),
+    "z. B. CH": ("e.g. CH", "p. ex. CH", "p. es. CH"),
+    "Geschossmaterial": ("Bullet material", "Matière du projectile", "Materiale della palla"),
+    "Hülsenmaterial": ("Case material", "Matière de la douille", "Materiale del bossolo"),
+    "Schulterlänge": ("Shoulder length", "Longueur jusqu'à l'épaulement", "Lunghezza fino alla spalla"),
+    "Vollmantel": ("Full metal jacket", "Blindé", "Blindata"),
+    "Blei": ("Lead", "Plomb", "Piombo"),
+    "Stahl": ("Steel", "Acier", "Acciaio"),
+    "Kunststoff": ("Plastic", "Plastique", "Plastica"),
+    "Messing": ("Brass", "Laiton", "Ottone"),
+    "Aluminium": ("Aluminium", "Aluminium", "Alluminio"),
+    "Nickel": ("Nickel", "Nickel", "Nichel"),
+    "Papier": ("Paper", "Papier", "Carta"),
+    "Boxer": ("Boxer", "Boxer", "Boxer"),
+    "Berdan": ("Berdan", "Berdan", "Berdan"),
     # Calibre tags and countries (CartridgeRow, CartridgeDetailView). Country names come from
     # generate_data.COUNTRY_NAMES.
     "Selten": ("Rare", "Rare", "Raro"),

@@ -253,8 +253,12 @@ struct TrainingPackageView: View {
             }
             Section {
                 TextField("Notiz", text: $package.note, prompt: Text("z. B. Holztisch, Tageslicht"), axis: .vertical)
+                TextField("Land", text: optionalText($package.country), prompt: Text("z. B. CH"))
                 // A bullet the calibre does not usually carry, so tuning the matcher knows to be careful with this series.
                 Toggle("Atypisches Geschoss", isOn: atypicalBullet)
+                choice("Geschossmaterial", selection: $package.bulletMaterial, options: Materials.bullet)
+                choice("Hülsenmaterial", selection: $package.caseMaterial, options: Materials.cases)
+                choice("Zündhütchen", selection: $package.primer, options: Materials.primer)
             } header: {
                 Text("Serie")
             }
@@ -262,6 +266,8 @@ struct TrainingPackageView: View {
                 measured("Gesamtlänge", value: measurements.overallLength)
                 measured("Hülsenlänge", value: measurements.caseLength)
                 measured("Randdurchmesser", value: measurements.rim)
+                measured("Schulterdurchmesser", value: measurements.shoulder)
+                measured("Schulterlänge", value: measurements.shoulderLength)
                 measured("Geschossdurchmesser", value: measurements.bullet)
             } header: {
                 Text("Mit der Schieblehre gemessen")
@@ -318,6 +324,19 @@ struct TrainingPackageView: View {
     private func reload() { shots = capture.shots }
 
     /// A calliper value with its unit, «9.95 mm»; a dash until measured.
+    /// A text field for an optional string: empty text means nil, so nothing is written for it.
+    private func optionalText(_ value: Binding<String?>) -> Binding<String> {
+        Binding { value.wrappedValue ?? "" } set: { value.wrappedValue = $0.isEmpty ? nil : $0 }
+    }
+
+    /// A picker over `options` (`Materials`), «–» for none; stores the token.
+    private func choice(_ title: LocalizedStringKey, selection: Binding<String?>, options: [String]) -> some View {
+        Picker(title, selection: selection) {
+            Text(verbatim: "–").tag(String?.none)
+            ForEach(options, id: \.self) { Text(Materials.title($0).loc).tag(String?.some($0)) }
+        }
+    }
+
     private func measured(_ title: LocalizedStringKey, value: Binding<Double?>) -> some View {
         LabeledContent(title) {
             HStack(spacing: 4) {
