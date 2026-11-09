@@ -183,7 +183,7 @@ private struct TrainingCalibrePicker: View {
                     }
                 }
             } footer: {
-                Text("Für Patronen, die die App nicht kennt. Du gibst ihnen einen Namen, und die Auswertung der Erkennung lässt sie aus.")
+                Text("Für Patronen, die die App nicht kennt: eigener Name, von der Auswertung ausgenommen.")
             }
             ForEach(CartridgeCatalog.search(query)) { c in
                 Button {

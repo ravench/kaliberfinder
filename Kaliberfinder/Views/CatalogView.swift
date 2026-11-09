@@ -17,7 +17,7 @@ struct CatalogView: View {
             if selecting {
                 Section {
                     if selection.isEmpty {
-                        Text("Suche nach Namen und tippe die Kaliber an, die du nebeneinander sehen willst.")
+                        Text("Wähle die Kaliber aus, die du nebeneinander sehen willst.")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }
