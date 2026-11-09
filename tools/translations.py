@@ -24,6 +24,8 @@ T = {
     "Gerundete Richtwerte nach CIP/SAAMI, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.": ("Rounded reference values after CIP/SAAMI, not reloading data. Primer: Boxer; military cases may have Berdan.", "Valeurs indicatives arrondies selon CIP/SAAMI, pas de données de rechargement. Amorce : Boxer ; les douilles militaires peuvent être Berdan.", "Valori indicativi arrotondati secondo CIP/SAAMI, non dati di ricarica. Innesco: Boxer; i bossoli militari possono avere Berdan."),
     "Wähle die Kaliber aus, die du nebeneinander sehen willst.": ("Pick the calibres you want to see side by side.", "Choisissez les calibres que vous voulez voir côte à côte.", "Scegli i calibri che vuoi vedere uno accanto all'altro."),
     "Für Patronen, die die App nicht kennt: eigener Name, von der Auswertung ausgenommen.": ("For rounds the app does not know: your own name, left out of the evaluation.", "Pour des cartouches inconnues de l'app : votre propre nom, exclues de l'évaluation.", "Per cartucce che l'app non conosce: nome proprio, escluse dalla valutazione."),
+    "1:1 sortieren nach": ("Sort 1:1 by", "Trier le 1:1 par", "Ordina 1:1 per"),
+    "Reihenfolge der Patronen im 1:1-Vergleich.": ("Order of the cartridges in the 1:1 comparison.", "Ordre des cartouches dans la comparaison 1:1.", "Ordine delle cartucce nel confronto 1:1."),
     # Calibre tags and countries (CartridgeRow, CartridgeDetailView). Country names come from
     # generate_data.COUNTRY_NAMES.
     "Selten": ("Rare", "Rare", "Raro"),
@@ -184,6 +186,9 @@ T = {
     # Release notes of a TestFlight build (WhatsNewView).
     "Neu in dieser Version": ("New in this version", "Nouveautés de cette version", "Novità in questa versione"),
     "Version %@": ("Version %@", "Version %@", "Versione %@"),
+    # Settings: the app version and the calibre-data commit of the catalogue.
+    "Version": ("Version", "Version", "Versione"),
+    "Kaliberdaten": ("Calibre data", "Données des calibres", "Dati dei calibri"),
     "Foto übernommen. Öffne Kaliberfinder, um die Treffer zu sehen.": (
         "Photo received. Open Kaliberfinder to see the matches.",
         "Photo reçue. Ouvrez Kaliberfinder pour voir les correspondances.",
@@ -261,8 +266,6 @@ T = {
     "Erkennung farbig zeigen": ("Show detection in colour", "Afficher la détection en couleur", "Mostra il rilevamento a colori"),
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
     "Kamera": ("Camera", "Caméra", "Fotocamera"),
-    "Tele": ("Telephoto", "Téléobjectif", "Teleobiettivo"),
-    "Ultraweit": ("Ultra wide", "Ultra grand-angle", "Ultra-grandangolo"),
     "Neue Aufnahmeserie": ("New capture series", "Nouvelle série de prises", "Nuova serie di scatti"),
     "Wähle das Kaliber, das du fotografierst, und mache mehrere Fotos davon. Gespeichert werden das Foto, die LiDAR-Tiefe, die Kameradaten und die Vision-Maske. Teile die Serie als ZIP, sie kommt in die Tests.": (
         "Choose the calibre you are photographing and take several photos of it. The photo, the LiDAR depth, the camera data and the Vision mask are saved. Share the series as a ZIP; it goes into the tests.",

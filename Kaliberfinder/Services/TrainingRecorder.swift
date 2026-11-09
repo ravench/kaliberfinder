@@ -16,6 +16,9 @@ enum TrainingRecorder {
         shot.tilt = moment.tilt
         shot.focus = moment.focus
         shot.camera = moment.camera
+        shot.zoom = moment.zoom
+        shot.fieldOfView = moment.fieldOfView
+        shot.format = moment.format
         var depthValues: [Float]?
         if let depthData = photo.depthData {
             if let map = LiDARCamera.depthValues(depthData) {
@@ -139,12 +142,10 @@ enum TrainingRecorder {
 
     /// A new package with this phone's details. `unlisted`: `calibre` is the name of a round the catalogue lacks.
     static func package(calibre: String, unlisted: Bool = false, mode: ScanMode, note: String) -> CapturePackage {
-        let bundle = Bundle.main.infoDictionary ?? [:]
         let os = ProcessInfo.processInfo.operatingSystemVersion
-        let version = "\(bundle["CFBundleShortVersionString"] ?? "?") (\(bundle["CFBundleVersion"] ?? "?"))"
         return CapturePackage(calibre: unlisted ? calibre.trimmingCharacters(in: .whitespacesAndNewlines) : calibre, part: mode.rawValue,
                               note: note, created: Date(), device: deviceModel,
-                              system: "iOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)", app: version,
+                              system: "iOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)", app: Bundle.main.versionText,
                               unlisted: unlisted ? true : nil, cameras: backCameras)
     }
 

@@ -4,13 +4,19 @@
     python3 tools/testflight.py export-options out.plist # ExportOptions.plist for the upload
     python3 tools/testflight.py export-options out.plist export  # ... that only writes the .ipa
     python3 tools/testflight.py check-entitlements signed.plist App/App.entitlements
+    python3 tools/testflight.py version                  # -> 0.2.0, from the newest release tag v0.2.0
 
 Build numbers come from the workflow's run number plus an offset, so every upload
 is higher than the last one and higher than builds uploaded by hand from Xcode.
+The version (CFBundleShortVersionString, what App Store Connect lists the build under)
+is the newest release tag `v<version>` the commit descends from (Raven, 2026-11-09:
+release tags in the repo decide the version); project.yml's MARKETING_VERSION before
+the first tag.
 """
 import os
 import plistlib
 import re
+import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,6 +32,26 @@ def build_number(run_number, offset=OFFSET):
     if run < 1:
         raise ValueError(f"run number must be positive, got {run_number!r}")
     return run + offset
+
+
+def version(describe, project_yml):
+    """The marketing version: `describe` is git's newest `v*` tag (or empty), `project_yml` the fallback."""
+    tag = describe.strip()
+    if tag:
+        m = re.fullmatch(r"v(\d+(?:\.\d+){1,2})", tag)
+        if not m:
+            raise ValueError(f"release tag {tag!r} is not v<major>.<minor>[.<patch>]")
+        return m.group(1)
+    m = re.search(r"^\s*MARKETING_VERSION:\s*[\"']?([0-9.]+)[\"']?\s*$", project_yml, re.MULTILINE)
+    if not m:
+        raise ValueError("no MARKETING_VERSION in project.yml")
+    return m.group(1)
+
+
+def release_tag(cwd=ROOT):
+    """The newest `v*` tag this commit descends from, "" before the first."""
+    result = subprocess.run(["git", "describe", "--tags", "--match", "v[0-9]*", "--abbrev=0"], cwd=cwd, capture_output=True, text=True)
+    return result.stdout if result.returncode == 0 else ""
 
 
 def team_id(project_yml):
@@ -68,6 +94,9 @@ def missing_entitlements(signed, expected):
 def main(argv):
     if len(argv) == 3 and argv[1] == "build-number":
         print(build_number(argv[2]))
+    elif len(argv) == 2 and argv[1] == "version":
+        with open(PROJECT_YML) as f:
+            print(version(release_tag(), f.read()))
     elif len(argv) in (3, 4) and argv[1] == "export-options":
         with open(PROJECT_YML) as f:
             options = export_options(team_id(f.read()), *argv[3:])

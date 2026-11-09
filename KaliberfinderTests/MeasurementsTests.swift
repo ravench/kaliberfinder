@@ -10,8 +10,8 @@ final class MeasurementsTests: XCTestCase {
     /// The labels at text size xxxLarge (MeasurementsView.largestLabel).
     private let largest = CGSize(width: 111, height: 45)
 
-    private func layout(_ id: String, size: CGSize? = nil) throws -> DimensionLayout {
-        DimensionLayout(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: id)), size: size ?? phone, label: label)
+    private func layout(_ id: String, size: CGSize? = nil, label: CGSize? = nil) throws -> DimensionLayout {
+        DimensionLayout(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: id)), size: size ?? phone, label: label ?? self.label)
     }
 
     /// The drawing shows what the detail screen lists: no bullet on blanks and shot shells, no neck on
@@ -76,7 +76,7 @@ final class MeasurementsTests: XCTestCase {
     }
 
     /// On a phone every calibre fits, also with the largest labels (text size xxxLarge): lines and labels
-    /// stay on screen, the diameter labels keep the order of their lines and do not overlap.
+    /// stay on screen, the diameter labels keep the order of their lines, and labels do not overlap.
     func testEveryCalibreFitsAPhone() {
         let slack: CGFloat = 1e-6
         for (size, asked) in [(phone, label), (small, label), (phone, largest), (small, largest)] {
@@ -94,6 +94,10 @@ final class MeasurementsTests: XCTestCase {
                     XCTAssertLessThan(a.from.y, b.from.y, "\(c.id) \(a.part) \(b.part)")
                     XCTAssertGreaterThanOrEqual(b.anchor.y - a.anchor.y, label.height - slack, "\(c.id) \(a.part) \(b.part)")
                 }
+                let lengths = layout.dimensions.filter { !$0.trailing }
+                for (a, b) in zip(lengths, lengths.dropFirst()) {
+                    XCTAssertGreaterThanOrEqual(abs(b.anchor.y - a.anchor.y), label.height - slack, "\(c.id) lengths")
+                }
                 for d in layout.dimensions {
                     let left = d.trailing ? d.anchor.x - label.width : d.anchor.x
                     XCTAssertGreaterThanOrEqual(left, -slack, "\(c.id) \(d.part)")
@@ -105,14 +109,33 @@ final class MeasurementsTests: XCTestCase {
         }
     }
 
-    /// Labels keep their asked width where they fit, and nothing breaks on a view that has no size yet.
+    /// Labels keep their asked width where they fit, even the largest on an iPhone SE, and give way on
+    /// a narrower view (split screen); nothing breaks on a view that has no size yet.
     func testLabelsGiveWayOnlyWhenNeeded() throws {
         XCTAssertEqual(try layout("9x19 mm").labelSize, label)
-        let large = DimensionLayout(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm")), size: small, label: largest)
+        XCTAssertEqual(try layout(".700 Nitro Express", size: small, label: largest).labelSize, largest)
+        let large = try layout("9x19 mm", size: CGSize(width: 260, height: 520), label: largest)
         XCTAssertLessThan(large.labelSize.width, largest.width)
         XCTAssertEqual(large.labelSize.height, largest.height)
         let empty = DimensionLayout(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm")), size: .zero, label: label)
         XCTAssertEqual(empty.scale, 0)
+    }
+
+    /// The overall length's line stands right next to the case length's, not beyond its label (Raven,
+    /// 2026-11-09: it stuck out); both labels are right of it, the overall length's higher.
+    func testLengthsStandSideBySide() throws {
+        for id in ["9 mm Flobert Bosquette", "9x19 mm", "7.5x55 mm Swiss (GP 11)", ".38 Special Wadcutter"] {
+            let drawing = try layout(id), width = try XCTUnwrap(CartridgeCatalog.cartridge(id: id)).outline.width
+            let right = Double(drawing.origin.x) + width * drawing.scale
+            let caseLength = try XCTUnwrap(drawing.dimensions.first { $0.part == .caseLength })
+            let overall = try XCTUnwrap(drawing.dimensions.first { $0.part == .overall })
+            XCTAssertEqual(Double(caseLength.from.x), right + DimensionLayout.lengthGap, accuracy: 1e-6, id)
+            XCTAssertEqual(Double(overall.from.x - caseLength.from.x), DimensionLayout.lengthSpacing, accuracy: 1e-6, id)
+            for d in [caseLength, overall] {
+                XCTAssertEqual(Double(d.anchor.x), Double(overall.from.x) + DimensionLayout.labelInset, accuracy: 1e-6, id)
+            }
+            XCTAssertLessThan(overall.anchor.y, caseLength.anchor.y, id)
+        }
     }
 
     /// Labels that would overlap move apart; when the last one reaches the bottom, the others move up.

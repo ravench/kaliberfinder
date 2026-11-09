@@ -7,6 +7,10 @@
     python3 tools/changelog.py what-to-test AuthKey.p8 1042 < Changelog.json
         Puts them into that build's «What to Test» on TestFlight once App Store Connect has
         processed it (ASC_KEY_ID, ASC_ISSUER_ID; waits up to an hour).
+
+A release (a commit tagged v<version>) takes its notes from RELEASE_NOTES.md instead, written by
+hand (Raven, 2026-11-09): the section «## <version>» with «### de», «### en», «### fr», «### it»
+and their bullets; languages left out fall back to German in the app and are not sent to TestFlight.
 """
 import base64
 import json
@@ -71,10 +75,40 @@ def summarise(text, client=None):
     return {lang: [b.strip() for b in notes[lang]] for lang in LOCALES}
 
 
-def write_notes(path, cwd=ROOT, client=None):
-    """Changelog.json for the bundle: no commits (the same commit again), no notes."""
-    text, rng = commits(cwd)
-    notes = summarise(text, client) if text else {}
+def release_version(cwd=ROOT):
+    """The version of the release tag (v<version>) on this very commit, None for an ordinary build."""
+    tags = git("tag", "--points-at", "HEAD", "--list", "v[0-9]*", cwd=cwd).split()
+    return tags[-1][1:] if tags else None
+
+
+def hand_written(version, text):
+    """The bullets by language of the «## version» section of RELEASE_NOTES.md, None when there is none."""
+    sections = re.split(r"^## +", text, flags=re.M)
+    body = next((s for s in sections if s.split("\n", 1)[0].strip() == version), None)
+    if body is None:
+        return None
+    notes = {}
+    for part in re.split(r"^### +", body, flags=re.M)[1:]:
+        lang, _, bullets = part.partition("\n")
+        lang = lang.strip()
+        if lang in LOCALES:
+            notes[lang] = [line[2:].strip() for line in bullets.splitlines() if line.startswith("- ") and line[2:].strip()]
+    return {lang: b for lang, b in notes.items() if b} or None
+
+
+def write_notes(path, cwd=ROOT, client=None, release_notes=os.path.join(ROOT, "RELEASE_NOTES.md")):
+    """Changelog.json for the bundle: a release's hand-written notes, else the commits summarised;
+    no commits (the same commit again), no notes."""
+    version = release_version(cwd)
+    notes = None
+    if version and os.path.exists(release_notes):
+        with open(release_notes) as f:
+            notes = hand_written(version, f.read())
+    if notes:
+        rng = f"release {version}"
+    else:
+        text, rng = commits(cwd)
+        notes = summarise(text, client) if text else {}
     with open(path, "w") as f:
         json.dump({"notes": notes}, f, ensure_ascii=False)  # one line, for $GITHUB_OUTPUT
     print(f"{sum(map(len, notes.values()))} bullets for {rng}")
