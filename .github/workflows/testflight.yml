@@ -1,5 +1,6 @@
 name: TestFlight
-# Uploads a build to TestFlight after the Build workflow passes on main.
+# Uploads a build to TestFlight after the Build workflow passes on main, and a release when a
+# tag v<version> is pushed (that version, with the notes of RELEASE_NOTES.md).
 # Needs the repository secrets ASC_KEY_ID, ASC_ISSUER_ID and ASC_KEY_P8 (an App Store
 # Connect API key with the Admin role); without them the upload is skipped. With the
 # ANTHROPIC_API_KEY secret, the Claude API writes the build's release notes from the commits
@@ -10,6 +11,10 @@ on:
     workflows: [Build]
     types: [completed]
     branches: [main]
+  # A release: pushing the tag v<version> uploads that commit under that version, with the notes
+  # of RELEASE_NOTES.md (tools/testflight.py version, tools/changelog.py).
+  push:
+    tags: ['v[0-9]*']
   workflow_dispatch:
 defaults:
   run:
@@ -60,7 +65,7 @@ jobs:
   wait:
     # Only builds whose tests passed, and only pushes to main (not PRs from a branch named main).
     if: >-
-      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'workflow_dispatch' || github.event_name == 'push' ||
       (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
     runs-on: ubuntu-latest
     # Several merges within a minute make one upload: a newer run cancels the older run's wait,
@@ -140,7 +145,9 @@ jobs:
           BUILD=$(python3 tools/testflight.py build-number "${{ github.run_number }}")
           echo "BUILD_NUMBER=$BUILD" >> "$GITHUB_ENV"
           echo "build=$BUILD" >> "$GITHUB_OUTPUT"
-          echo "Build number $BUILD"
+          VERSION=$(python3 tools/testflight.py version)
+          echo "MARKETING_VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "Version $VERSION, build number $BUILD"
       - name: Release notes
         # The commits since the last build, summarised by the Claude API into Changelog.json in the
         # bundle (the app shows it the first time the build is opened) and, below, into «What to
@@ -173,6 +180,7 @@ jobs:
             -destination 'generic/platform=iOS' \
             -archivePath "$RUNNER_TEMP/Kaliberfinder.xcarchive" \
             CODE_SIGNING_ALLOWED=NO \
+            MARKETING_VERSION="$MARKETING_VERSION" \
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER" | tee "$RUNNER_TEMP/archive.log" | xcpretty
           # The export keeps the entitlements the archived app is signed with, and an unsigned app has
           # none: sign it ad hoc with the project's entitlements (App Group) first. Extensions

@@ -236,3 +236,36 @@ class WorkflowTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class VersionTests(unittest.TestCase):
+    """The version comes from the newest release tag, else from project.yml."""
+
+    def test_release_tag_wins(self):
+        self.assertEqual(testflight.version("v0.2.0\n", "MARKETING_VERSION: \"0.1.0\""), "0.2.0")
+        self.assertEqual(testflight.version("v1.0", ""), "1.0")
+
+    def test_project_yml_before_the_first_tag(self):
+        self.assertEqual(testflight.version("", "settings:\n  base:\n    MARKETING_VERSION: \"0.1.0\"\n"), "0.1.0")
+
+    def test_odd_tags_and_missing_versions_fail(self):
+        with self.assertRaises(ValueError):
+            testflight.version("v0.2-beta", "")
+        with self.assertRaises(ValueError):
+            testflight.version("", "nothing here")
+
+    def test_real_repo_gives_a_version(self):
+        out = subprocess.run([sys.executable, SCRIPT, "version"], capture_output=True, text=True, check=True).stdout.strip()
+        self.assertRegex(out, r"^\d+\.\d+(\.\d+)?$")
+
+    def test_tag_in_a_repo(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            env = {**os.environ, "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t"}
+            def git(*args):
+                subprocess.run(["git", *args], cwd=tmp, check=True, capture_output=True, env=env)
+            git("init", "-q")
+            git("commit", "-q", "--allow-empty", "-m", "one")
+            self.assertEqual(testflight.release_tag(tmp), "")
+            git("tag", "v0.2.0")
+            git("commit", "-q", "--allow-empty", "-m", "two")
+            self.assertEqual(testflight.release_tag(tmp).strip(), "v0.2.0")
