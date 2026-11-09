@@ -30,8 +30,10 @@ final class LiDARCamera: NSObject, ObservableObject {
         var choices: [CameraChoice] = []
         for (index, format) in device.formats.enumerated() {
             let d = format.formatDescription.dimensions
-            guard d.width * 3 == d.height * 4 else { continue }
             let photo = largest(format.supportedMaxPhotoDimensions)
+            // Only formats that take photos: a video-only format has no photo sizes, and setting none on the
+            // photo output throws (TestFlight 1137 crashed so; Raven: some screens stayed black).
+            guard d.width * 3 == d.height * 4, photo.width > 0 else { continue }
             let key = "\(d.width)x\(d.height) \(photo.width) \(Int(format.videoFieldOfView))"
             guard seen.insert(key).inserted else { continue }
             for zoom in zoomFactors(min: device.minAvailableVideoZoomFactor, secondary: format.secondaryNativeResolutionZoomFactors.map { Double($0) }) {
@@ -214,7 +216,8 @@ final class LiDARCamera: NSObject, ObservableObject {
                 device.activeDepthDataFormat = depthFormat
             }
             device.unlockForConfiguration()
-            photoOutput.maxPhotoDimensions = Self.largest(format.supportedMaxPhotoDimensions)
+            let photo = Self.largest(format.supportedMaxPhotoDimensions)
+            if photo.width > 0 { photoOutput.maxPhotoDimensions = photo }
         }
         photoOutput.isDepthDataDeliveryEnabled = photoOutput.isDepthDataDeliverySupported
         guard hasDepth else { return }
