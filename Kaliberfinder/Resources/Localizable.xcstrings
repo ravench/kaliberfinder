@@ -553,6 +553,29 @@
         }
       }
     },
+    "Aluminium": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aluminium"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aluminium"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alluminio"
+          }
+        }
+      }
+    },
     "Andere": {
       "extractionState": "manual",
       "localizations": {
@@ -875,6 +898,29 @@
         }
       }
     },
+    "Berdan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berdan"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berdan"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berdan"
+          }
+        }
+      }
+    },
     "Berdan Nitro (.254)": {
       "extractionState": "manual",
       "localizations": {
@@ -967,6 +1013,29 @@
         }
       }
     },
+    "Blei": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lead"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plomb"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Piombo"
+          }
+        }
+      }
+    },
     "Boden": {
       "extractionState": "manual",
       "localizations": {
@@ -1032,6 +1101,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diametro alla base"
+          }
+        }
+      }
+    },
+    "Boxer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boxer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boxer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boxer"
           }
         }
       }
@@ -2048,6 +2140,29 @@
         }
       }
     },
+    "Geschossmaterial": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bullet material"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Matière du projectile"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Materiale della palla"
+          }
+        }
+      }
+    },
     "Geschätzt, bitte kalibrieren": {
       "extractionState": "manual",
       "localizations": {
@@ -2458,6 +2573,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lunghezza del bossolo (aperto)"
+          }
+        }
+      }
+    },
+    "Hülsenmaterial": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Case material"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Matière de la douille"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Materiale del bossolo"
           }
         }
       }
@@ -2922,6 +3060,29 @@
         }
       }
     },
+    "Kunststoff": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plastic"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plastique"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plastica"
+          }
+        }
+      }
+    },
     "Kurzwaffe": {
       "extractionState": "manual",
       "localizations": {
@@ -2964,6 +3125,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "carica"
+          }
+        }
+      }
+    },
+    "Land": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Country"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pays"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paese"
           }
         }
       }
@@ -3313,6 +3497,29 @@
         }
       }
     },
+    "Messing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laiton"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ottone"
+          }
+        }
+      }
+    },
     "Metrisch (mm)": {
       "extractionState": "manual",
       "localizations": {
@@ -3612,6 +3819,29 @@
         }
       }
     },
+    "Nickel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nickel"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nickel"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichel"
+          }
+        }
+      }
+    },
     "Notiz": {
       "extractionState": "manual",
       "localizations": {
@@ -3723,6 +3953,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Grandezza reale"
+          }
+        }
+      }
+    },
+    "Papier": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paper"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Papier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carta"
           }
         }
       }
@@ -4279,6 +4532,29 @@
         }
       }
     },
+    "Schulterlänge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulder length"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longueur jusqu'à l'épaulement"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lunghezza fino alla spalla"
+          }
+        }
+      }
+    },
     "Schwarzpulver": {
       "extractionState": "manual",
       "localizations": {
@@ -4551,6 +4827,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Salva"
+          }
+        }
+      }
+    },
+    "Stahl": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Steel"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acciaio"
           }
         }
       }
@@ -4942,6 +5241,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Versione %@"
+          }
+        }
+      }
+    },
+    "Vollmantel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full metal jacket"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blindé"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blindata"
           }
         }
       }

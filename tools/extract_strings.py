@@ -14,7 +14,7 @@ CONTEXTS = [
     r'\bprompt:\s*' + LIT,
     r'\bString\(localized:\s*' + LIT,
     LIT + r'\.loc\b',
-    r'\b(?:pickerRow|tile|metric|row|field)\(\s*' + LIT,
+    r'\b(?:pickerRow|tile|metric|row|field|measured|choice)\(\s*' + LIT,
     r'\bBreakdownChart\(title:\s*' + LIT,
     r'\bcase \.\w+:\s*' + LIT,          # enum titles (titleKey) and error texts
     r'\bcase \w+ = ' + LIT,             # CartridgeCatalog.Category raw values

@@ -155,6 +155,11 @@ final class MeasurementsTests: XCTestCase {
         XCTAssertEqual(DimensionLayout.valueText(bullet, unit: .imperial, locale: en), "Ø 0.355 in")
         XCTAssertEqual(DimensionLayout.valueText(overall, unit: .metric, locale: en), "29.7 mm")
         XCTAssertEqual(DimensionLayout.valueText(overall, unit: .imperial, locale: en), "1.169 in")
+        // A whole number keeps a decimal in the drawing (Raven, 2026-11-09: «Show 9mm as 9.0mm»).
+        let two23 = try layout(".223 Remington")
+        let shoulder = try XCTUnwrap(two23.dimensions.first { $0.part == .shoulder })
+        XCTAssertEqual(DimensionLayout.valueText(shoulder, unit: .metric, locale: en), "Ø 9.0 mm")
+        XCTAssertEqual(LengthUnit.metric.format(9, locale: en), "9 mm", "elsewhere the number stays as it was")
     }
 
     /// A ball's diameter is at its equator.

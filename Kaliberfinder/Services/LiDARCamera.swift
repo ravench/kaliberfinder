@@ -26,14 +26,22 @@ final class LiDARCamera: NSObject, ObservableObject {
     /// One entry per distinct 4:3 telephoto format (photo size and field of view) and native zoom factor.
     static func telephotoChoices() -> [CameraChoice] {
         guard let device = AVCaptureDevice.default(.builtInTelephotoCamera, for: .video, position: .back) else { return [] }
-        var seen: Set<String> = []
-        var choices: [CameraChoice] = []
+        // One format per photo size and field of view, the one with the largest video frame (several formats
+        // differ only in frame size or rate; TestFlight 1140 listed them as the same choice several times).
+        var best: [String: (index: Int, format: AVCaptureDevice.Format)] = [:]
         for (index, format) in device.formats.enumerated() {
             let d = format.formatDescription.dimensions
-            guard d.width * 3 == d.height * 4 else { continue }
             let photo = largest(format.supportedMaxPhotoDimensions)
-            let key = "\(d.width)x\(d.height) \(photo.width) \(Int(format.videoFieldOfView))"
-            guard seen.insert(key).inserted else { continue }
+            // Only formats that take photos: a video-only format has no photo sizes, and setting none on the
+            // photo output throws (TestFlight 1137 crashed so; Raven: some screens stayed black).
+            guard d.width * 3 == d.height * 4, photo.width > 0 else { continue }
+            let key = "\(photo.width)x\(photo.height) \(Int(format.videoFieldOfView))"
+            if let have = best[key], have.format.formatDescription.dimensions.width >= d.width { continue }
+            best[key] = (index, format)
+        }
+        var choices: [CameraChoice] = []
+        for (index, format) in best.values.sorted(by: { $0.index < $1.index }) {
+            let photo = largest(format.supportedMaxPhotoDimensions)
             for zoom in zoomFactors(min: device.minAvailableVideoZoomFactor, secondary: format.secondaryNativeResolutionZoomFactors.map { Double($0) }) {
                 choices.append(CameraChoice(deviceType: .builtInTelephotoCamera, format: index, zoom: zoom,
                                             title: title(megapixels: Double(photo.width * photo.height) / 1e6, zoom: zoom, fieldOfView: Double(format.videoFieldOfView))))
@@ -185,9 +193,11 @@ final class LiDARCamera: NSObject, ObservableObject {
               let input = try? AVCaptureDeviceInput(device: device) else { return }
         let hasDepth = device.formats.contains { !$0.supportedDepthDataFormats.isEmpty }
         session.beginConfiguration()
-        defer { session.commitConfiguration() }
         session.sessionPreset = .photo
-        guard session.canAddInput(input), session.canAddOutput(photoOutput), !hasDepth || session.canAddOutput(depthOutput) else { return }
+        guard session.canAddInput(input), session.canAddOutput(photoOutput), !hasDepth || session.canAddOutput(depthOutput) else {
+            session.commitConfiguration()
+            return
+        }
         self.device = device
         session.addInput(input)
         session.addOutput(photoOutput)
@@ -214,12 +224,19 @@ final class LiDARCamera: NSObject, ObservableObject {
                 device.activeDepthDataFormat = depthFormat
             }
             device.unlockForConfiguration()
-            photoOutput.maxPhotoDimensions = Self.largest(format.supportedMaxPhotoDimensions)
         }
         photoOutput.isDepthDataDeliveryEnabled = photoOutput.isDepthDataDeliverySupported
-        guard hasDepth else { return }
-        depthOutput.isFilteringEnabled = true
-        depthOutput.setDelegate(self, callbackQueue: queue)
+        if hasDepth {
+            depthOutput.isFilteringEnabled = true
+            depthOutput.setDelegate(self, callbackQueue: queue)
+        }
+        session.commitConfiguration()
+        // Only now does the photo output know the active format; a size set before the commit is refused
+        // (TestFlight 1140 crashed so on a telephoto format other than the camera's default).
+        let photo = Self.largest(device.activeFormat.supportedMaxPhotoDimensions)
+        if photo.width > 0, photoOutput.maxPhotoDimensions.width != photo.width {
+            photoOutput.maxPhotoDimensions = photo
+        }
     }
 
     /// The largest of a format's photo sizes (by width); zero when it names none.
