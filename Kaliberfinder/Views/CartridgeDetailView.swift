@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Dimensions of one calibre and a link to its real-size view.
+/// Dimensions of one calibre and links to its real-size view and its dimensioned drawing.
 struct CartridgeDetailView: View {
     let cartridge: Cartridge
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
@@ -21,6 +21,9 @@ struct CartridgeDetailView: View {
                 .padding(.vertical, 8)
                 NavigationLink { TrueScaleView(cartridges: [cartridge], linksToDetails: false) } label: {
                     Label("In Originalgrösse anzeigen", systemImage: "ruler")
+                }
+                NavigationLink { MeasurementsView(cartridge: cartridge) } label: {
+                    Label("Masszeichnung anzeigen", systemImage: "pencil.and.ruler")
                 }
                 if trainingCapture {
                     NavigationLink { TrainingCaptureView(newSeriesFor: cartridge) } label: {
