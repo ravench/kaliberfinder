@@ -137,9 +137,10 @@ struct DimensionLayout {
     static let labelGap = 18.0
     /// Drawing to the first length line.
     static let lengthGap = 12.0
-    /// A length line to its label, and a length label to the next line.
+    /// The outer length line to the length labels.
     static let labelInset = 4.0
-    static let lengthSpacing = 10.0
+    /// The case length's line to the overall length's, right next to it.
+    static let lengthSpacing = 12.0
     /// Base to the rim's dimension line.
     static let rimGap = 20.0
     /// Smallest scale the labels give way to, in points per mm.
@@ -153,11 +154,11 @@ struct DimensionLayout {
         let o = c.outline
         let lengths = Self.lengths(of: c), diameters = Self.diameters(of: c)
         let n = Double(lengths.count), lh = Double(label.height)
-        let gaps = Self.labelGap + Self.lengthGap + n * Self.labelInset + (n - 1) * Self.lengthSpacing
+        let gaps = Self.labelGap + Self.lengthGap + (n - 1) * Self.lengthSpacing + Self.labelInset
         // Large text: narrower labels (their text shrinks) keep the drawing at least `minScale`.
-        let lw = max(0, min(Double(label.width), (Double(size.width) - gaps - Self.minScale * o.width) / (n + 1)))
+        let lw = max(0, min(Double(label.width), (Double(size.width) - gaps - Self.minScale * o.width) / 2))
         let left = lw + Self.labelGap
-        let right = Self.lengthGap + n * (Self.labelInset + lw) + (n - 1) * Self.lengthSpacing
+        let right = Self.lengthGap + (n - 1) * Self.lengthSpacing + Self.labelInset + lw
         // Half a label above the tip (a flush wadcutter's bullet is labelled there) and the rim's line below the base.
         let above = lh / 2, below = c.hasCase ? Self.rimGap + lh / 2 : 0
         let s = max(0, min((Double(size.width) - left - right) / o.width, (Double(size.height) - above - below) / o.height))
@@ -166,8 +167,9 @@ struct DimensionLayout {
         let cx = ox + o.width / 2 * s, base = oy + o.height * s
         var dimensions: [Dimension] = [], lines: [[CGPoint]] = [], arrowheads: [[CGPoint]] = []
 
+        let bounds = lh / 2...max(lh / 2, Double(size.height) - lh / 2)
         let ys = diameters.map { $0.part == .rim ? base + Self.rimGap : oy + $0.y * s }
-        let labelYs = Self.spread(ys, spacing: lh, within: lh / 2...max(lh / 2, Double(size.height) - lh / 2))
+        let labelYs = Self.spread(ys, spacing: lh, within: bounds)
         for (i, mark) in diameters.enumerated() {
             let y = ys[i], xs = [cx - mark.mm / 2 * s, cx + mark.mm / 2 * s]
             let a = CGPoint(x: xs[0], y: y), b = CGPoint(x: xs[1], y: y)
@@ -181,19 +183,22 @@ struct DimensionLayout {
         }
 
         let whole = OutlineGeometry(o), empty = OutlineGeometry(o, includeBullet: false)
-        let firstX = ox + o.width * s + Self.lengthGap, column = Self.labelInset + lw + Self.lengthSpacing
+        let firstX = ox + o.width * s + Self.lengthGap, outerX = firstX + (n - 1) * Self.lengthSpacing
+        // Both labels stand right of the outer line, each level with the middle of its own line. The
+        // overall length's middle is the higher one, so reversed they run top to bottom for `spread`.
+        let middles = lengths.map { (oy + $0.y * s + base) / 2 }
+        let lengthYs = Array(Self.spread(middles.reversed(), spacing: lh, within: bounds).reversed())
         for (i, mark) in lengths.enumerated() {
-            let x = firstX + Double(i) * column
+            let x = firstX + Double(i) * Self.lengthSpacing
             let topY = oy + mark.y * s
             let top = CGPoint(x: x, y: topY), bottom = CGPoint(x: x, y: base)
             arrowheads += [Self.arrowhead(at: top, dx: 0, dy: -1), Self.arrowhead(at: bottom, dx: 0, dy: 1)]
             let edge = (mark.part == .overall ? whole : empty).width(at: mark.y + 0.01) / 2
             lines.append([CGPoint(x: cx + edge * s + 2, y: topY), CGPoint(x: x + 3, y: topY)])
             dimensions.append(Dimension(part: mark.part, mm: mark.mm, from: top, to: bottom,
-                                        anchor: CGPoint(x: x + Self.labelInset, y: (topY + base) / 2)))
+                                        anchor: CGPoint(x: outerX + Self.labelInset, y: lengthYs[i])))
         }
         // The lengths share the base's extension line, out to the outer one.
-        let outerX = firstX + Double(lengths.count - 1) * column
         lines.append([CGPoint(x: cx + whole.width(at: o.height - 0.01) / 2 * s + 2, y: base), CGPoint(x: outerX + 3, y: base)])
 
         scale = s
