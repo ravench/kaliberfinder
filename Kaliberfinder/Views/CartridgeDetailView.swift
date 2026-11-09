@@ -25,6 +25,16 @@ struct CartridgeDetailView: View {
                 NavigationLink { MeasurementsView(cartridge: cartridge) } label: {
                     Label("Masszeichnung anzeigen", systemImage: "pencil.and.ruler")
                 }
+                if let group = CartridgeCatalog.lookalikeGroup(of: cartridge) {
+                    // The lookalikes of calibre-data: the group page lists them all and compares them at 1:1.
+                    NavigationLink { LookalikeGroupView(group: group) } label: {
+                        Label {
+                            LabeledContent("Ähnliche Kaliber", value: group.calibres.filter { $0 != cartridge.id }.joined(separator: ", "))
+                        } icon: {
+                            Image(systemName: "square.on.square")
+                        }
+                    }
+                }
                 if trainingCapture {
                     NavigationLink { TrainingCaptureView(newSeriesFor: cartridge) } label: {
                         Label("Trainingsdaten aufnehmen", systemImage: "tray.and.arrow.down")

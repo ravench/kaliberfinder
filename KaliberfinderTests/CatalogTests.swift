@@ -202,6 +202,30 @@ final class CatalogTests: XCTestCase {
         XCTAssertFalse(CartridgeCatalog.search("GP 1890").contains { $0.id == kp.id })
     }
 
+    func testLookalikeGroupsNameCatalogueCalibresOnce() throws {
+        let groups = CartridgeCatalog.lookalikes
+        XCTAssertGreaterThanOrEqual(groups.count, 20)
+        for g in groups {
+            XCTAssertGreaterThanOrEqual(g.calibres.count, 2)
+            XCTAssertEqual(g.members.count, g.calibres.count, "\(g.calibres) names a calibre the catalogue lacks")
+            XCTAssertFalse(g.differs.isEmpty)
+        }
+        let members = groups.flatMap(\.calibres)
+        XCTAssertEqual(Set(members).count, members.count, "a calibre in two groups")
+        let win = try XCTUnwrap(CartridgeCatalog.cartridge(id: ".308 Winchester"))
+        let group = try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: win))
+        XCTAssertEqual(group.calibres, [".308 Winchester", "7.62x51 mm NATO"])
+        XCTAssertEqual(group.differs, ["load"])
+        XCTAssertEqual(LookalikeGroup.title("load"), "Ladung")
+        XCTAssertNil(CartridgeCatalog.lookalikeGroup(of: try XCTUnwrap(CartridgeCatalog.cartridge(id: ".22 LR"))))
+        // Identical-looking members compare once, at 1:1 generally too.
+        XCTAssertEqual(LookalikeGroupView.compared(group.members).map(\.id), [".308 Winchester"])
+        XCTAssertEqual(TrueScaleView.unique(group.members + [win]).map(\.id), [".308 Winchester"])
+        let mauser = try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: XCTUnwrap(CartridgeCatalog.cartridge(id: "7x57 mm Mauser"))))
+        XCTAssertEqual(mauser.differs, ["rim", "load"])
+        XCTAssertGreaterThanOrEqual(LookalikeGroupView.compared(mauser.members).count, 2, "the rimmed 7x57 R stands apart")
+    }
+
     func testNormalized() {
         XCTAssertEqual(CartridgeCatalog.normalized(" 7,5 × 55 mm "), "75x55")
         XCTAssertEqual(CartridgeCatalog.normalized(".45 ACP"), "45acp")

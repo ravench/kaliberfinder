@@ -12,6 +12,12 @@ INFO_PLIST = {
 }
 
 T = {
+    "Ähnliche Kaliber": ("Similar calibres", "Calibres semblables", "Calibri simili"),
+    "Unterscheiden sich in: %@": ("Differ in: %@", "Diffèrent par : %@", "Differiscono per: %@"),
+    "Laufdurchmesser": ("bore", "calibre du canon", "diametro della canna"),
+    "Länge": ("length", "longueur", "lunghezza"),
+    "Setztiefe des Geschosses": ("bullet seating", "enfoncement du projectile", "inserimento della palla"),
+    "Ladung": ("load", "charge", "carica"),
     "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, gut %lld cm darüber.": ("Lay the cartridge flat on a light background and hold the device parallel, a good %lld cm above it.", "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à un bon %lld cm au-dessus.", "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, a un buon %lld cm sopra."),
     "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah wie es scharf stellt.": ("Lay the cartridge flat on a light background and hold the device parallel, as close as it focuses.", "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, aussi près qu'il fait la mise au point.", "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, vicino quanto mette a fuoco."),
     "LiDAR": ("LiDAR", "LiDAR", "LiDAR"),

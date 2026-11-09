@@ -16,7 +16,7 @@ import json, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
-from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_DIAMETERS, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
+from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_DIAMETERS, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
 from outline import outline, bullet_profile  # noqa: E402,F401  (bullet_profile re-exported for tests)
 from headstamps import HEADSTAMPS  # noqa: E402
 
@@ -87,6 +87,16 @@ def build():
     return cartridges
 
 
+def lookalikes(names):
+    """The lookalike groups (calibre-data LOOKALIKES): calibres of their own that look alike, the parent
+    first, with what tells them apart ("rim", "bore", "length", "seating", "load"). Raven, 2026-11-08: the
+    app shows every member's group and compares it at 1:1."""
+    groups = [{"differs": list(differs), "calibres": list(members)} for differs, members in LOOKALIKES]
+    unknown = {n for g in groups for n in g["calibres"]} - set(names)
+    assert not unknown, f"lookalikes of unknown calibres: {unknown}"
+    return groups
+
+
 def calibre_data():
     """The calibre-data commit the catalogue is read from and its date, shown in the app's settings."""
     commit, date = subprocess.check_output(["git", "log", "-1", "--format=%H %cI"], cwd=DATA, text=True).split()
@@ -120,7 +130,8 @@ if __name__ == "__main__":
     cartridges = build()
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w") as f:
-        json.dump({"version": 1, "calibreData": calibre_data(), "cartridges": cartridges}, f, ensure_ascii=False, indent=1)
+        json.dump({"version": 1, "calibreData": calibre_data(), "cartridges": cartridges,
+                   "lookalikes": lookalikes({c["name"] for c in cartridges})}, f, ensure_ascii=False, indent=1)
         f.write("\n")
     if "--preview" in sys.argv:
         preview(cartridges, sys.argv[sys.argv.index("--preview") + 1])

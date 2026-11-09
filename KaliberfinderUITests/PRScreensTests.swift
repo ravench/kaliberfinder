@@ -273,6 +273,23 @@ final class PRScreensTests: XCTestCase {
         snap("31-Foto-unsicher")
     }
 
+    /// A calibre's lookalike group (Raven, 2026-11-08): from the .308 Winchester's page to the group, and the group at 1:1.
+    func testLookalikeGroup() {
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText(".308 Win")
+        }
+        guard open(app.staticTexts[".308 Winchester"].firstMatch),
+              open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Ähnliche Kaliber")).firstMatch) else { return }
+        XCTAssertTrue(app.navigationBars["Ähnliche Kaliber"].waitForExistence(timeout: 5), "The group page did not open")
+        snap("34-Aehnliche-Kaliber")
+        guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "1:1 vergleichen")).firstMatch),
+              app.navigationBars["1:1"].waitForExistence(timeout: 5) else { return }
+        snap("35-Aehnliche-Kaliber-1zu1")
+    }
+
     /// The hidden «Trainingsdaten» screen, on the example package of KaliberfinderTests/Captures so
     /// it shows the same series on every run: the saved series, and one of them opened from the list.
     func testTrainingCapture() {
