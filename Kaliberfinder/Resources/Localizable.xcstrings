@@ -254,6 +254,29 @@
         }
       }
     },
+    "1:1 sortieren nach": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sort 1:1 by"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trier le 1:1 par"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordina 1:1 per"
+          }
+        }
+      }
+    },
     "1:1 vergleichen (%lld)": {
       "extractionState": "manual",
       "localizations": {
@@ -3815,6 +3838,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Senza orlo"
+          }
+        }
+      }
+    },
+    "Reihenfolge der Patronen im 1:1-Vergleich.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Order of the cartridges in the 1:1 comparison."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordre des cartouches dans la comparaison 1:1."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordine delle cartucce nel confronto 1:1."
           }
         }
       }

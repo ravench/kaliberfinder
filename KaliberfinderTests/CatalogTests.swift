@@ -25,11 +25,26 @@ final class CatalogTests: XCTestCase {
     func testPicksStandByLengthNotInTheOrderPicked() throws {
         func c(_ id: String) throws -> Cartridge { try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id) }
         var picks: [Cartridge] = []
-        for id in ["7.5x55 mm Swiss (GP 11)", "9x19 mm", ".22 LR", ".30 Super Carry"] { picks = picks.toggling(try c(id)) }
+        for id in ["7.5x55 mm Swiss (GP 11)", "9x19 mm", ".22 LR", ".30 Super Carry"] { picks = picks.toggling(try c(id), by: .overallLength) }
         // 9x19 and .30 Super Carry are both 29.7 mm long: the narrower one (Ø 8.74 against 9.96) first.
         XCTAssertEqual(picks.map(\.id), [".22 LR", ".30 Super Carry", "9x19 mm", "7.5x55 mm Swiss (GP 11)"])
         // Tapping a pick again takes it out and leaves the others in order.
-        XCTAssertEqual(picks.toggling(try c("9x19 mm")).map(\.id), [".22 LR", ".30 Super Carry", "7.5x55 mm Swiss (GP 11)"])
+        XCTAssertEqual(picks.toggling(try c("9x19 mm"), by: .overallLength).map(\.id), [".22 LR", ".30 Super Carry", "7.5x55 mm Swiss (GP 11)"])
+    }
+
+    func testTheStandardOrderIsByCaseLength() throws {
+        func c(_ id: String) throws -> Cartridge { try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id) }
+        // Cases 15.6, 19.15 and 20.3 mm, though the 9x19 and the .30 Super Carry are equally long loaded.
+        let picks = try [c("9x19 mm"), c(".30 Super Carry"), c(".22 LR")]
+        XCTAssertEqual(picks.byLength(.caseLength).map(\.id), [".22 LR", "9x19 mm", ".30 Super Carry"])
+        XCTAssertEqual(picks.byLength(.overallLength).map(\.id), [".22 LR", ".30 Super Carry", "9x19 mm"])
+        // A ball has no case: its whole length counts either way.
+        let ball = try c(".36 Rundkugel (.375)")
+        XCTAssertEqual(ball.compareLength(.caseLength), ball.dimensions.overallLength)
+        // Until the user chooses, the case length.
+        UserDefaults.standard.removeObject(forKey: CompareLength.key)
+        XCTAssertEqual(CompareLength.current, .caseLength)
+        XCTAssertEqual(CompareLength.caseLength.title, "Hülsenlänge")
     }
 
     func testKnownDimensions() throws {

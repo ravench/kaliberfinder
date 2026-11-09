@@ -12,6 +12,8 @@ INFO_PLIST = {
 }
 
 T = {
+    "1:1 sortieren nach": ("Sort 1:1 by", "Trier le 1:1 par", "Ordina 1:1 per"),
+    "Reihenfolge der Patronen im 1:1-Vergleich.": ("Order of the cartridges in the 1:1 comparison.", "Ordre des cartouches dans la comparaison 1:1.", "Ordine delle cartucce nel confronto 1:1."),
     # Calibre tags and countries (CartridgeRow, CartridgeDetailView). Country names come from
     # generate_data.COUNTRY_NAMES.
     "Selten": ("Rare", "Rare", "Raro"),

@@ -122,15 +122,35 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     var allNames: [String] { [name] + displayAliases + aliases + headstamps }
 }
 
+/// What the 1:1 comparison sorts its cartridges by (Einstellungen, Raven 2026-11-08): the case, as the
+/// standard, or the whole round. A photo with a LiDAR size may keep the matcher's order instead.
+enum CompareLength: String, CaseIterable, Identifiable {
+    case caseLength, overallLength
+
+    var id: String { rawValue }
+    static let key = "compareLength"
+    /// The setting as stored: the case length until the user chooses otherwise.
+    static var current: CompareLength { UserDefaults.standard.string(forKey: key).flatMap(CompareLength.init) ?? .caseLength }
+    /// German title, used as localization key.
+    var title: String { self == .caseLength ? "Hülsenlänge" : "Gesamtlänge" }
+}
+
+extension Cartridge {
+    /// The length the 1:1 comparison sorts by; rounds without a case (balls, pellets) by their whole length.
+    func compareLength(_ by: CompareLength) -> Double {
+        by == .caseLength && hasCase ? dimensions.caseLength : dimensions.overallLength
+    }
+}
+
 extension [Cartridge] {
-    /// Shortest first, then narrowest (the Ø under each 1:1 drawing); equal ones keep their order.
-    func byLength() -> [Cartridge] {
-        sorted { ($0.dimensions.overallLength, $0.headDiameter) < ($1.dimensions.overallLength, $1.headDiameter) }
+    /// Shortest first by `by`, then narrowest (the Ø under each 1:1 drawing); equal ones keep their order.
+    func byLength(_ by: CompareLength = .current) -> [Cartridge] {
+        sorted { ($0.compareLength(by), $0.headDiameter) < ($1.compareLength(by), $1.headDiameter) }
     }
 
     /// Calibres picked for a 1:1 comparison, with `c` added (or removed when picked already). They
     /// stay in length order, not the order they were picked in, and are compared in that order.
-    func toggling(_ c: Cartridge) -> [Cartridge] {
-        contains(c) ? filter { $0 != c } : (self + [c]).byLength()
+    func toggling(_ c: Cartridge, by: CompareLength = .current) -> [Cartridge] {
+        contains(c) ? filter { $0 != c } : (self + [c]).byLength(by)
     }
 }

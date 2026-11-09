@@ -12,6 +12,7 @@ struct SettingsView: View {
     @EnvironmentObject private var scale: ScaleModel
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(TrueScaleView.bulletsOnCasesKey) private var bulletsOnCases = true
+    @AppStorage(CompareLength.key) private var compareLength: CompareLength = .caseLength
     /// Only phones with a LiDAR scanner measure the photo, so only they get the switch (`MatchesView.compareByFitKey`).
     @AppStorage(MatchesView.compareByFitKey) private var compareByFit = true
     /// Hidden developer switch: five taps on the copyright line (`TrainingCapture`).
@@ -44,6 +45,13 @@ struct SettingsView: View {
                 }
                 Section {
                     Toggle("Geschosse beim Vergleich mit leeren Hülsen zeigen", isOn: $bulletsOnCases)
+                }
+                Section {
+                    Picker("1:1 sortieren nach", selection: $compareLength) {
+                        ForEach(CompareLength.allCases) { Text($0.title.loc).tag($0) }
+                    }
+                } footer: {
+                    Text("Reihenfolge der Patronen im 1:1-Vergleich.")
                 }
                 Section {
                     Toggle("Erkennung farbig zeigen", isOn: $partColours)
