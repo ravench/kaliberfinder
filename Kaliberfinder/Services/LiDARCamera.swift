@@ -18,13 +18,13 @@ final class LiDARCamera: NSObject, ObservableObject {
     }
 
     /// What the training capture may choose from: the LiDAR camera as the app uses it, and the telephoto at 4x;
-    /// only what this device has.
-    static var choices: [CameraChoice] {
+    /// only what this device has. Found once: the overlay asked three times per render (review 2026-11-10).
+    static let choices: [CameraChoice] = {
         // Without a scanner (Raven, 2026-11-09: training data from other phones too) the telephoto comes first,
         // for its view with little perspective, then the wide camera; neither has depth.
         if isAvailable { return [.lidar] + telephotoChoices() }
         return telephotoChoices() + (isAvailable(.builtInWideAngleCamera) ? [.wide] : [])
-    }
+    }()
 
     /// Whether this device can take training photos at all: any back camera, scanner or not.
     static var canCapture: Bool { !choices.isEmpty }

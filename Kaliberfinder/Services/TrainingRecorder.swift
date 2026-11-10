@@ -129,22 +129,11 @@ enum TrainingRecorder {
         return data.withUnsafeBytes { $0.bindMemory(to: Float.self).map(Double.init) }
     }
 
-    /// Model identifier such as "iPhone16,1" (the simulator reports its own).
-    static var deviceModel: String {
-        if let simulated = ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] { return simulated }
-        var info = utsname()
-        uname(&info)
-        return Mirror(reflecting: info.machine).children.reduce(into: "") { text, child in
-            guard let byte = child.value as? CChar, byte != 0 else { return }
-            text.append(Character(UnicodeScalar(UInt8(bitPattern: byte))))
-        }
-    }
-
     /// A new package with this phone's details. `unlisted`: `calibre` is the name of a round the catalogue lacks.
     static func package(calibre: String, unlisted: Bool = false, mode: ScanMode, note: String) -> CapturePackage {
         let os = ProcessInfo.processInfo.operatingSystemVersion
         return CapturePackage(calibre: unlisted ? calibre.trimmingCharacters(in: .whitespacesAndNewlines) : calibre, part: mode.rawValue,
-                              note: note, created: Date(), device: deviceModel,
+                              note: note, created: Date(), device: ScreenScale.modelIdentifier(),
                               system: "iOS \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)", app: Bundle.main.versionText,
                               unlisted: unlisted ? true : nil, cameras: backCameras)
     }

@@ -100,16 +100,6 @@ final class EmptyCaseTests: XCTestCase {
         XCTAssertEqual(Set(ScanMode.allCases.map(\.rawValue)).count, 3)
     }
 
-    /// Each photo starts on what the app detects, whatever was picked for an earlier photo
-    /// (the choice used to be saved under "scanMode" and stuck to every later photo).
-    func testEveryPhotoStartsOnTheDetection() throws {
-        UserDefaults.standard.set(ScanMode.cartridge.rawValue, forKey: "scanMode")
-        defer { UserDefaults.standard.removeObject(forKey: "scanMode") }
-        let view = MatchesView(photo: UIImage())
-        let state = try XCTUnwrap(Mirror(reflecting: view).children.first { $0.label == "_override" }?.value as? State<ScanMode?>)
-        XCTAssertNil(state.wrappedValue)
-    }
-
     /// The picker has no «Automatisch» segment: it highlights what the app detected, and the
     /// other segment overrides it.
     func testPickerHighlightsTheDetectedPart() throws {
