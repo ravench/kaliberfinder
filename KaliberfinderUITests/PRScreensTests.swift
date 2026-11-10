@@ -306,6 +306,18 @@ final class PRScreensTests: XCTestCase {
         snap("37-Vetterli-Zuendung")
     }
 
+    /// A calibre drawn to its C.I.P. sheet (calibre-data #68): the 6.5 PRC is 75.06 mm long, not 84.8.
+    func testCIPCorrection() {
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("6.5 PRC")
+        }
+        guard open(app.staticTexts["6.5 PRC"].firstMatch) else { return }
+        snap("38-6-5-PRC")
+    }
+
     /// The hidden «Trainingsdaten» screen, on the example package of KaliberfinderTests/Captures so
     /// it shows the same series on every run: the saved series, and one of them opened from the list.
     func testTrainingCapture() {
