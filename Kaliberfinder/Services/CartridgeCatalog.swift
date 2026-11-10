@@ -102,10 +102,10 @@ enum CartridgeCatalog {
     }
 }
 
-/// Calibres that look alike but are cartridges of their own (calibre-data `LOOKALIKES`): a measurement
-/// or the load tells them apart. Every member's page links to the group, which lists them all.
+/// Calibres that look alike but are cartridges of their own (calibre-data `LOOKALIKES`): a measurement,
+/// the load or the ignition tells them apart. Every member's page links to the group, which lists them all.
 struct LookalikeGroup: Decodable, Identifiable, Hashable {
-    /// What tells them apart: "rim", "bore", "length", "seating" or "load".
+    /// What tells them apart: "rim", "bore", "length", "seating", "load" or "ignition".
     let differs: [String]
     /// Catalogue ids, the parent first.
     let calibres: [String]
@@ -121,6 +121,7 @@ struct LookalikeGroup: Decodable, Identifiable, Hashable {
         case "length": "Länge"
         case "seating": "Setztiefe des Geschosses"
         case "load": "Ladung"
+        case "ignition": "Zündung"
         default: difference
         }
     }

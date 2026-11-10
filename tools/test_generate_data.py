@@ -220,6 +220,17 @@ class LookalikeTests(unittest.TestCase):
         win = next(g for g in groups if ".308 Winchester" in g["calibres"])
         self.assertEqual(win, {"differs": ["load"], "calibres": [".308 Winchester", "7.62x51 mm NATO"]})
 
+    def test_rimfire_and_centrefire_versions_are_grouped_by_ignition(self):
+        by_name = {c["name"]: c for c in generate_data.build()}
+        groups = generate_data.lookalikes(set(by_name))
+        for rimfire, centrefire in [("10.4x38 mm R Vetterli", "10.4x38 mm R Vetterli Centrefire"),
+                                    (".44 Henry", ".44 Henry Centrefire"), (".32 Long Rimfire", ".32 Long Centrefire")]:
+            self.assertEqual(by_name[rimfire]["kind"], "rimfire")
+            self.assertNotIn("primer", by_name[rimfire])
+            self.assertEqual(by_name[centrefire]["kind"], "rimmed")
+            self.assertIn("primer", by_name[centrefire])
+            self.assertIn({"differs": ["ignition"], "calibres": [rimfire, centrefire]}, groups)
+
     def test_unknown_member_fails_loudly(self):
         with self.assertRaises(AssertionError):
             generate_data.lookalikes({"9x19 mm"})
