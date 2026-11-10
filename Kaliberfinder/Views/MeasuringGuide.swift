@@ -17,7 +17,7 @@ struct MeasuringGuide: View {
     /// Height of the letters.
     static let letterSize = 22.0
 
-    static let marks = [
+    static let marks: [Mark] = [
         // Diameters across the side view, the primer's across the head; their letters above.
         Mark(letter: "R", from: pt(44.8, 52.8), to: pt(44.8, 139.2), label: pt(44.8, 26)),
         Mark(letter: "B", from: pt(84, 59.2), to: pt(84, 132.8), label: pt(84, 26)),
@@ -30,8 +30,15 @@ struct MeasuringGuide: View {
         Mark(letter: "OAL", from: pt(40, 204), to: pt(503.2, 204), label: pt(272, 199)),
     ]
 
+    /// The dimension lines and a slash at each of their ends.
+    static let dimensionLines: [[CGPoint]] = {
+        let ends: [CGPoint] = marks.flatMap { [$0.from, $0.to] }
+        let ticks: [[CGPoint]] = ends.map { end in [pt(end.x - 3, end.y + 3), pt(end.x + 3, end.y - 3)] }
+        return marks.map { [$0.from, $0.to] } + ticks
+    }()
+
     /// From the drawing to the letters above and to the length lines below.
-    static let extensions = [
+    static let extensions: [[CGPoint]] = [
         [pt(44.8, 52), pt(44.8, 30)], [pt(84, 58), pt(84, 30)], [pt(276, 60), pt(276, 30)],
         [pt(380, 71), pt(380, 30)], [pt(594, 80), pt(594, 30)],
         [pt(40, 142), pt(40, 208)], [pt(286, 134), pt(286, 160)],
@@ -64,21 +71,21 @@ struct MeasuringGuide: View {
             func circle(_ r: Double) -> Path {
                 Path(ellipseIn: CGRect(x: head.x - r, y: head.y - r, width: 2 * r, height: 2 * r))
             }
-            for (shape, fill) in [(Self.bullet, CartridgeView.copper), (Self.caseOutline, CartridgeView.brass),
-                                  (circle(43.2), CartridgeView.brass), (circle(16), CartridgeView.copper)] {
+            let fills: [(Path, Color)] = [(Self.bullet, CartridgeView.copper), (Self.caseOutline, CartridgeView.brass),
+                                          (circle(43.2), CartridgeView.brass), (circle(16), CartridgeView.copper)]
+            for (shape, fill) in fills {
                 context.fill(shape, with: .color(fill))
                 context.stroke(shape, with: ink, lineWidth: 1.4)
             }
             // The body's edge, behind the rim.
             context.stroke(circle(37.1), with: ink, style: StrokeStyle(lineWidth: 1, dash: [3, 3]))
             context.stroke(Self.lines(Self.extensions), with: .style(.secondary), lineWidth: 1)
-            // Dimension lines with a slash at each end.
-            let ticks = Self.marks.flatMap { [$0.from, $0.to] }.map { [CGPoint(x: $0.x - 3, y: $0.y + 3), CGPoint(x: $0.x + 3, y: $0.y - 3)] }
-            context.stroke(Self.lines(Self.marks.map { [$0.from, $0.to] } + ticks), with: ink, lineWidth: 1.3)
+            context.stroke(Self.lines(Self.dimensionLines), with: ink, lineWidth: 1.3)
             for mark in Self.marks {
                 // `label` is the letter's baseline, as in the page's SVG.
-                let letter = context.resolve(Text(verbatim: mark.letter).font(.system(size: Self.letterSize, weight: .bold)).foregroundStyle(Color.accentColor))
-                let baseline = letter.firstBaseline(in: letter.measure(in: CGSize(width: 1000, height: 1000)))
+                let text: Text = Text(verbatim: mark.letter).font(.system(size: Self.letterSize, weight: .bold)).foregroundStyle(Color.accentColor)
+                let letter: GraphicsContext.ResolvedText = context.resolve(text)
+                let baseline: CGFloat = letter.firstBaseline(in: letter.measure(in: CGSize(width: 1000, height: 1000)))
                 context.draw(letter, at: CGPoint(x: mark.label.x, y: mark.label.y - baseline), anchor: .top)
             }
         }
