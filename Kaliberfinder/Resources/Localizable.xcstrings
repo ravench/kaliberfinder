@@ -254,29 +254,6 @@
         }
       }
     },
-    "1:1 sortieren nach": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sort 1:1 by"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trier le 1:1 par"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ordina 1:1 per"
-          }
-        }
-      }
-    },
     "1:1 vergleichen (%lld)": {
       "extractionState": "manual",
       "localizations": {
@@ -323,25 +300,25 @@
         }
       }
     },
-    "1:1-Vergleich nach Trefferqualität sortieren": {
+    "1:1-Vergleich": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sort the 1:1 comparison by match quality"
+            "value": "1:1 comparison"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Trier la comparaison 1:1 par qualité de correspondance"
+            "value": "Comparaison 1:1"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ordina il confronto 1:1 per qualità della corrispondenza"
+            "value": "Confronto 1:1"
           }
         }
       }
@@ -1381,6 +1358,29 @@
         }
       }
     },
+    "Entwickler": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Developer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Développeur"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sviluppatore"
+          }
+        }
+      }
+    },
     "Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.": {
       "extractionState": "manual",
       "localizations": {
@@ -1795,6 +1795,29 @@
         }
       }
     },
+    "Fotoerkennung": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo recognition"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconnaissance photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riconoscimento foto"
+          }
+        }
+      }
+    },
     "Fotografieren": {
       "extractionState": "manual",
       "localizations": {
@@ -2140,25 +2163,25 @@
         }
       }
     },
-    "Geschosse beim Vergleich mit leeren Hülsen zeigen": {
+    "Geschosse bei leeren Hülsen zeigen": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Show bullets when comparing empty cases"
+            "value": "Show bullets on empty cases"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Afficher les projectiles en comparant des douilles vides"
+            "value": "Afficher les projectiles sur les douilles vides"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mostra le palle nel confronto con bossoli vuoti"
+            "value": "Mostra le palle sui bossoli vuoti"
           }
         }
       }
@@ -2757,6 +2780,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mostra a grandezza reale"
+          }
+        }
+      }
+    },
+    "Info": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À propos"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Info"
           }
         }
       }
@@ -3750,6 +3796,29 @@
         }
       }
     },
+    "Nach Trefferqualität sortieren": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sort by match quality"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trier par qualité de correspondance"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordina per qualità della corrispondenza"
+          }
+        }
+      }
+    },
     "Nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone.": {
       "extractionState": "manual",
       "localizations": {
@@ -4463,29 +4532,6 @@
         }
       }
     },
-    "Reihenfolge der Patronen im 1:1-Vergleich.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Order of the cartridges in the 1:1 comparison."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ordre des cartouches dans la comparaison 1:1."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ordine delle cartucce nel confronto 1:1."
-          }
-        }
-      }
-    },
     "Rundkugel": {
       "extractionState": "manual",
       "localizations": {
@@ -4528,6 +4574,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Impero russo"
+          }
+        }
+      }
+    },
+    "Scharf ab %lld cm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In focus from %lld cm"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Net à partir de %lld cm"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A fuoco da %lld cm"
           }
         }
       }
@@ -4850,6 +4919,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "inserimento della palla"
+          }
+        }
+      }
+    },
+    "Sortieren nach": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sort by"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trier par"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordina per"
           }
         }
       }

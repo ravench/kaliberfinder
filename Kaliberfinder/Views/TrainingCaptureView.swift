@@ -377,17 +377,28 @@ private struct TrainingCameraView: View {
             .id(choice)
             .overlay(alignment: .top) {
                 if LiDARCamera.choices.count > 1 {
-                    Picker(selection: $choice) {
-                        ForEach(LiDARCamera.choices) { Text($0.title.loc).tag($0) }
-                    } label: {
-                        Text("Kamera")
+                    // Side by side, as before the menu (Raven 2026-11-09); a menu only when they would not fit.
+                    Group {
+                        if LiDARCamera.choices.count <= 3 {
+                            cameraPicker.pickerStyle(.segmented)
+                        } else {
+                            cameraPicker.pickerStyle(.menu)
+                        }
                     }
-                    .pickerStyle(.menu)
                     .padding(8)
                     .background(.ultraThinMaterial, in: Capsule())
                     .padding(.top, 72)
+                    .padding(.horizontal, 24)
                 }
             }
+    }
+
+    private var cameraPicker: some View {
+        Picker(selection: $choice) {
+            ForEach(LiDARCamera.choices) { Text($0.title.loc).tag($0) }
+        } label: {
+            Text("Kamera")
+        }
     }
 }
 
@@ -416,6 +427,14 @@ private struct TrainingCameraSession: View {
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
                 if let failure { Text(verbatim: failure).font(.footnote).foregroundStyle(.red) }
                 Spacer()
+                // Without depth the camera cannot say how far it is: its closest focus tells how close to go (Raven 2026-11-09).
+                if camera.choice.deviceType != .builtInLiDARDepthCamera, let mm = camera.minimumFocusDistance {
+                    Text(String(format: "Scharf ab %lld cm".loc, Int((Double(mm) / 10).rounded(.up))))
+                        .font(.subheadline)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(.ultraThinMaterial, in: Capsule())
+                }
                 Label(camera.guidance.title.loc, systemImage: camera.guidance == .ready ? "checkmark.circle.fill" : "ruler")
                     .font(.headline)
                     .padding(.horizontal, 14)

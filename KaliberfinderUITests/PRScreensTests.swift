@@ -223,7 +223,7 @@ final class PRScreensTests: XCTestCase {
     }
 
     /// One of Raven's empty 6 mm BR cases: its outline ends flat at the mouth, without a bullet.
-    /// Then its match at 1:1 with «Geschosse beim Vergleich mit leeren Hülsen zeigen» off (the matches don't use it).
+    /// Then its match at 1:1 with «Geschosse bei leeren Hülsen zeigen» off (the matches don't use it).
     func testEmptyCasePhoto() {
         app.launchArguments += ["-showBulletsOnEmptyCases", "NO"]
         photoMatches("photo-6mmbr-case", shot: "15-Foto-leere-Huelse", compareShot: "18-Foto-Huelse-ohne-Geschoss")
