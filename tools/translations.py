@@ -12,6 +12,13 @@ INFO_PLIST = {
 }
 
 T = {
+    "1:1-Vergleich": ("1:1 comparison", "Comparaison 1:1", "Confronto 1:1"),
+    "Sortieren nach": ("Sort by", "Trier par", "Ordina per"),
+    "Nach Trefferqualität sortieren": ("Sort by match quality", "Trier par qualité de correspondance", "Ordina per qualità della corrispondenza"),
+    "Geschosse bei leeren Hülsen zeigen": ("Show bullets on empty cases", "Afficher les projectiles sur les douilles vides", "Mostra le palle sui bossoli vuoti"),
+    "Fotoerkennung": ("Photo recognition", "Reconnaissance photo", "Riconoscimento foto"),
+    "Entwickler": ("Developer", "Développeur", "Sviluppatore"),
+    "Info": ("About", "À propos", "Info"),
     "Ähnliche Kaliber": ("Similar calibres", "Calibres semblables", "Calibri simili"),
     "Unterscheiden sich in: %@": ("Differ in: %@", "Diffèrent par : %@", "Differiscono per: %@"),
     "Laufdurchmesser": ("bore", "calibre du canon", "diametro della canna"),
@@ -49,8 +56,6 @@ T = {
     "Gerundete Richtwerte nach CIP/SAAMI, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.": ("Rounded reference values after CIP/SAAMI, not reloading data. Primer: Boxer; military cases may have Berdan.", "Valeurs indicatives arrondies selon CIP/SAAMI, pas de données de rechargement. Amorce : Boxer ; les douilles militaires peuvent être Berdan.", "Valori indicativi arrotondati secondo CIP/SAAMI, non dati di ricarica. Innesco: Boxer; i bossoli militari possono avere Berdan."),
     "Wähle die Kaliber aus, die du nebeneinander sehen willst.": ("Pick the calibres you want to see side by side.", "Choisissez les calibres que vous voulez voir côte à côte.", "Scegli i calibri che vuoi vedere uno accanto all'altro."),
     "Für Patronen, die die App nicht kennt: eigener Name, von der Auswertung ausgenommen.": ("For rounds the app does not know: your own name, left out of the evaluation.", "Pour des cartouches inconnues de l'app : votre propre nom, exclues de l'évaluation.", "Per cartucce che l'app non conosce: nome proprio, escluse dalla valutazione."),
-    "1:1 sortieren nach": ("Sort 1:1 by", "Trier le 1:1 par", "Ordina 1:1 per"),
-    "Reihenfolge der Patronen im 1:1-Vergleich.": ("Order of the cartridges in the 1:1 comparison.", "Ordre des cartouches dans la comparaison 1:1.", "Ordine delle cartucce nel confronto 1:1."),
     # Calibre tags and countries (CartridgeRow, CartridgeDetailView). Country names come from
     # generate_data.COUNTRY_NAMES.
     "Selten": ("Rare", "Rare", "Raro"),
@@ -98,10 +103,6 @@ T = {
     "Erkannt: %@": ("Detected: %@", "Détecté : %@", "Riconosciuto: %@"),
     "Flaschenhals": ("bottleneck", "à épaulement", "a collo di bottiglia"),
     "Leere Hülse": ("Empty case", "Douille vide", "Bossolo vuoto"),
-    "Geschosse beim Vergleich mit leeren Hülsen zeigen": ("Show bullets when comparing empty cases", "Afficher les projectiles en comparant des douilles vides",
-                                                          "Mostra le palle nel confronto con bossoli vuoti"),
-    "1:1-Vergleich nach Trefferqualität sortieren": ("Sort the 1:1 comparison by match quality", "Trier la comparaison 1:1 par qualité de correspondance",
-                                                     "Ordina il confronto 1:1 per qualità della corrispondenza"),
     "leere Hülse": ("empty case", "douille vide", "bossolo vuoto"),
     "Patrone": ("Cartridge", "Cartouche", "Cartuccia"),
     "mit Rand": ("rimmed", "à bourrelet", "con orlo"),
