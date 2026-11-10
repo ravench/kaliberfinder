@@ -12,7 +12,11 @@ final class CatalogTests: XCTestCase {
         for c in CartridgeCatalog.all {
             let d = c.dimensions
             XCTAssertGreaterThan(d.overallLength, 0, c.name)
-            XCTAssertGreaterThanOrEqual(d.overallLength + 0.01, d.caseLength, "\(c.name): case longer than cartridge")
+            if c.kind == "shot" {  // the hull opened by firing is longer than the loaded shell
+                XCTAssertGreaterThanOrEqual(d.caseLength, d.overallLength, "\(c.name): opened hull shorter than the shell")
+            } else {
+                XCTAssertGreaterThanOrEqual(d.overallLength + 0.01, d.caseLength, "\(c.name): case longer than cartridge")
+            }
             XCTAssertGreaterThan(d.rim, 0, c.name)
             XCTAssertLessThanOrEqual(c.outline.width, max(d.rim, d.base, d.bullet) + 0.01, c.name)
             XCTAssertEqual(c.outline.height, d.overallLength, accuracy: 0.01, c.name)
@@ -217,6 +221,13 @@ final class CatalogTests: XCTestCase {
         XCTAssertEqual(group.calibres, [".308 Winchester", "7.62x51 mm NATO"])
         XCTAssertEqual(group.differs, ["load"])
         XCTAssertEqual(LookalikeGroup.title("load"), "Ladung")
+        // Every difference the catalogue names has a German title (and so a translation).
+        for difference in Set(groups.flatMap(\.differs)) {
+            XCTAssertNotEqual(LookalikeGroup.title(difference), difference, "\(difference) has no title")
+        }
+        let vetterli = try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: XCTUnwrap(CartridgeCatalog.cartridge(id: "10.4x38 mm R Vetterli"))))
+        XCTAssertEqual(vetterli.calibres, ["10.4x38 mm R Vetterli", "10.4x38 mm R Vetterli Centrefire"])
+        XCTAssertEqual(vetterli.differs.map { LookalikeGroup.title($0) }, ["Zündung"])
         XCTAssertNil(CartridgeCatalog.lookalikeGroup(of: try XCTUnwrap(CartridgeCatalog.cartridge(id: ".22 LR"))))
         // Identical-looking members compare once, at 1:1 generally too.
         XCTAssertEqual(LookalikeGroupView.compared(group.members).map(\.id), [".308 Winchester"])

@@ -223,7 +223,7 @@ final class PRScreensTests: XCTestCase {
     }
 
     /// One of Raven's empty 6 mm BR cases: its outline ends flat at the mouth, without a bullet.
-    /// Then its match at 1:1 with «Geschosse beim Vergleich mit leeren Hülsen zeigen» off (the matches don't use it).
+    /// Then its match at 1:1 with «Geschosse bei leeren Hülsen zeigen» off (the matches don't use it).
     func testEmptyCasePhoto() {
         app.launchArguments += ["-showBulletsOnEmptyCases", "NO"]
         photoMatches("photo-6mmbr-case", shot: "15-Foto-leere-Huelse", compareShot: "18-Foto-Huelse-ohne-Geschoss")
@@ -290,7 +290,35 @@ final class PRScreensTests: XCTestCase {
         snap("35-Aehnliche-Kaliber-1zu1")
     }
 
-    /// The hidden «Trainingsdaten» screen, on the example packages of KaliberfinderTests/Captures so
+    /// A cartridge made both as rimfire and centrefire (calibre-data, Raven 2026-11-09): the rimfire
+    /// Vetterli's page and its group with the centrefire version, which differ in ignition.
+    func testIgnitionGroup() {
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("Vetterli")
+        }
+        guard open(app.staticTexts["10.4x38 mm R Vetterli"].firstMatch) else { return }
+        snap("36-Vetterli")
+        guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Ähnliche Kaliber")).firstMatch) else { return }
+        XCTAssertTrue(app.navigationBars["Ähnliche Kaliber"].waitForExistence(timeout: 5), "The group page did not open")
+        snap("37-Vetterli-Zuendung")
+    }
+
+    /// A calibre drawn to its C.I.P. sheet (calibre-data #68): the 6.5 PRC is 75.06 mm long, not 84.8.
+    func testCIPCorrection() {
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("6.5 PRC")
+        }
+        guard open(app.staticTexts["6.5 PRC"].firstMatch) else { return }
+        snap("38-6-5-PRC")
+    }
+
+    /// The hidden «Trainingsdaten» screen, on the example package of KaliberfinderTests/Captures so
     /// it shows the same series on every run: the saved series, and one of them opened from the list.
     func testTrainingCapture() {
         let captures = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
@@ -305,23 +333,6 @@ final class PRScreensTests: XCTestCase {
         guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
         XCTAssertTrue(app.buttons["Als ZIP teilen"].waitForExistence(timeout: 5), "The saved series did not open")
         snap("22-Trainingsdaten-Serie")
-    }
-
-    /// The calliper fields of a series with the calibre's drawing over them, on the GP 11 example
-    /// package (a bottleneck case, no photos).
-    func testTrainingMeasuringDrawing() {
-        let captures = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
-            .appendingPathComponent("KaliberfinderTests/Captures")
-        app.terminate()
-        app.launchArguments += ["-trainingCaptureEnabled", "YES", "-screenTourCaptures", captures.path]
-        app.launch()
-        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
-        guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]),
-              open(app.buttons["Trainingsdaten aufnehmen"].firstMatch),
-              open(app.staticTexts["7.5x55 mm Swiss (GP 11)"].firstMatch) else { return }
-        XCTAssertTrue(app.buttons["Als ZIP teilen"].waitForExistence(timeout: 5), "The GP 11 series did not open")
-        scroll()
-        snap("22b-Trainingsdaten-Masszeichnung")
     }
 
     /// With the hidden training capture on, a calibre's detail page starts a series of that calibre.

@@ -1,26 +1,23 @@
 import SwiftUI
 
-/// A calibre's measurements on a drawing of it: the diameters as horizontal dimension lines with
-/// their labels in a column on the left, the lengths as vertical ones on the right. The drawing is
-/// as large as fits, not at real size (that is `TrueScaleView`). The calibre's page shows the
-/// catalogue's values; a training series shows where its calliper values go, with those values.
+/// A calibre's catalogue measurements on a drawing of it: the diameters as horizontal dimension
+/// lines with their labels in a column on the left, the lengths as vertical ones on the right.
+/// The drawing is as large as fits, not at real size (that is `TrueScaleView`).
 struct MeasurementsView: View {
     let cartridge: Cartridge
-    var parts = DimensionLayout.Part.catalogue
-    /// The calliper's values in mm, shown instead of the catalogue's; «–» for one not measured yet.
-    var measured: [DimensionLayout.Part: Double]?
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
-    /// Size of a label (name over value); grows with the text size up to xxxLarge, where the label
-    /// text stops growing (`dynamicTypeSize` below): the drawing needs the room. The values in any
-    /// size are on the calibre's page.
-    @ScaledMetric(relativeTo: .caption) private var labelWidth = 74.0
-    @ScaledMetric(relativeTo: .caption) private var labelHeight = 30.0
-    private static let largestLabel = (width: 111.0, height: 45.0)
+    /// Size of a label (name over value): `DimensionLayout.label`, grown with the text size up to
+    /// `DimensionLayout.largestLabel`. The width gets there at about xxLarge, the height at xxxLarge,
+    /// where the text stops growing (`dynamicTypeSize` below): the drawing needs the room. Long values
+    /// then shrink a little to fit; the values in any size are on the calibre's page.
+    @ScaledMetric(relativeTo: .caption) private var labelWidth = DimensionLayout.label.width
+    @ScaledMetric(relativeTo: .caption) private var labelHeight = DimensionLayout.label.height
 
     var body: some View {
         GeometryReader { geo in
-            let asked = CGSize(width: min(labelWidth, Self.largestLabel.width), height: min(labelHeight, Self.largestLabel.height))
-            let layout = DimensionLayout(cartridge: cartridge, size: geo.size, label: asked, parts: parts)
+            let largest = DimensionLayout.largestLabel
+            let asked = CGSize(width: min(labelWidth, largest.width), height: min(labelHeight, largest.height))
+            let layout = DimensionLayout(cartridge: cartridge, size: geo.size, label: asked)
             ZStack(alignment: .topLeading) {
                 CartridgeView(cartridge: cartridge, pointsPerMM: layout.scale)
                     .offset(x: layout.origin.x, y: layout.origin.y)
@@ -30,28 +27,27 @@ struct MeasurementsView: View {
                 Polylines(lines: layout.arrowheads, closed: true)
                     .fill(.primary)
                 ForEach(layout.dimensions, id: \.part) { label in
-                    let mm = measured == nil ? label.mm : measured?[label.part]
                     VStack(alignment: label.trailing ? .trailing : .leading, spacing: 1) {
+                        // Readable at a glance (Raven 2026-11-09): the name in full colour, the value a size larger.
                         Text(label.part.title.loc)
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
-                        Text(DimensionLayout.valueText(label.part, mm: mm, unit: shownUnit))
-                            .font(.caption.monospacedDigit())
+                            .font(.caption)
+                        Text(DimensionLayout.valueText(label, unit: unit))
+                            .font(.subheadline.monospacedDigit().weight(.medium))
                     }
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
                     .frame(width: layout.labelSize.width, height: layout.labelSize.height, alignment: label.trailing ? .trailing : .leading)
                     .position(x: label.anchor.x + (label.trailing ? -layout.labelSize.width : layout.labelSize.width) / 2, y: label.anchor.y)
                     .accessibilityElement(children: .ignore)
-                    .accessibilityLabel(Text(verbatim: label.part.spokenTitle.loc + (mm.map { " " + shownUnit.format($0) } ?? "")))
+                    .accessibilityLabel(Text(verbatim: label.part.spokenTitle.loc + " " + unit.format(label.mm)))
                 }
             }
         }
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+        .padding()
+        .navigationTitle(Text(verbatim: cartridge.name))
+        .navigationBarTitleDisplayMode(.inline)
     }
-
-    /// The calliper's values are in mm, like their fields.
-    private var shownUnit: LengthUnit { measured == nil ? unit : .metric }
 }
 
 /// Open lines, or closed ones to fill (`closed`), in points.
@@ -72,12 +68,9 @@ private struct Polylines: Shape {
 /// Where the parts of `MeasurementsView` go, in points inside `size`: the label column, the
 /// cartridge as large as fits, then the length lines and their labels; centred.
 struct DimensionLayout {
-    /// The measurements the detail screen lists (`catalogue`), and the base to the shoulder that a
-    /// training series measures.
+    /// The measurements the detail screen lists.
     enum Part {
-        case bullet, neck, shoulder, base, rim, overall, caseLength, shoulderLength
-
-        static let catalogue: Set<Part> = [.bullet, .neck, .shoulder, .base, .rim, .overall, .caseLength]
+        case bullet, neck, shoulder, base, rim, overall, caseLength
 
         /// Short German name over the value, used as localization key.
         var title: String {
@@ -89,7 +82,6 @@ struct DimensionLayout {
             case .rim: "Rand"
             case .overall: "Gesamt"
             case .caseLength: "Hülse"
-            case .shoulderLength: "Schulter"  // a length, so without the diameter's «Ø»
             }
         }
 
@@ -103,11 +95,10 @@ struct DimensionLayout {
             case .rim: "Randdurchmesser"
             case .overall: "Gesamtlänge"
             case .caseLength: "Hülsenlänge"
-            case .shoulderLength: "Schulterlänge"
             }
         }
 
-        var isDiameter: Bool { ![.overall, .caseLength, .shoulderLength].contains(self) }
+        var isDiameter: Bool { self != .overall && self != .caseLength }
     }
 
     /// A measurement in mm at a height of the outline (mm from the tip, as in `Cartridge.Outline`).
@@ -134,7 +125,7 @@ struct DimensionLayout {
     let scale: Double
     /// Top left corner of the outline in the view.
     let origin: CGPoint
-    /// Diameters top to bottom, then the lengths, inner first; those of `parts` the calibre has.
+    /// Diameters top to bottom, then the lengths, inner first.
     let dimensions: [Dimension]
     /// The labels' size: as asked, or narrower where the screen is too narrow for it and the drawing.
     let labelSize: CGSize
@@ -143,6 +134,11 @@ struct DimensionLayout {
     /// Filled arrowheads at both ends of each dimension line.
     let arrowheads: [[CGPoint]]
 
+    /// A label's size (name over value) at the default text size; `MeasurementsView` grows it with the text.
+    static let label = CGSize(width: 86, height: 36)
+    /// The largest label: as wide as the .700 Nitro Express, the widest calibre, leaves room for on an
+    /// iPhone SE at `minScale`; as high as `label` at xxxLarge.
+    static let largestLabel = CGSize(width: 114, height: 54)
     /// Label column to drawing: room for a leader to bend to a label moved off its line.
     static let labelGap = 18.0
     /// Drawing to the first length line.
@@ -160,9 +156,9 @@ struct DimensionLayout {
     /// Sampling step along the outline, in mm.
     static let step = 0.1
 
-    init(cartridge c: Cartridge, size: CGSize, label: CGSize, parts: Set<Part> = Part.catalogue) {
+    init(cartridge c: Cartridge, size: CGSize, label: CGSize) {
         let o = c.outline
-        let lengths = Self.lengths(of: c).filter { parts.contains($0.part) }, diameters = Self.diameters(of: c).filter { parts.contains($0.part) }
+        let lengths = Self.lengths(of: c), diameters = Self.diameters(of: c)
         let n = Double(lengths.count), lh = Double(label.height)
         let gaps = Self.labelGap + Self.lengthGap + (n - 1) * Self.lengthSpacing + Self.labelInset
         // Large text: narrower labels (their text shrinks) keep the drawing at least `minScale`.
@@ -220,9 +216,8 @@ struct DimensionLayout {
     }
 
     /// "Ø 8.5 mm" for a diameter, "55.6 mm" for a length; always with a decimal, so 9 mm reads 9.0 mm.
-    /// «Ø –» or «–» without a value (a calliper value not measured yet).
-    static func valueText(_ part: Part, mm: Double?, unit: LengthUnit, locale: Locale = .current) -> String {
-        (part.isDiameter ? "Ø " : "") + (mm.map { unit.format($0, locale: locale, decimals: 1) } ?? "–")
+    static func valueText(_ dimension: Dimension, unit: LengthUnit, locale: Locale = .current) -> String {
+        (dimension.part.isDiameter ? "Ø " : "") + unit.format(dimension.mm, locale: locale, decimals: 1)
     }
 
     /// The diameters the detail screen lists, top to bottom, each where the drawing is that wide.
@@ -241,8 +236,10 @@ struct DimensionLayout {
             while mouth + neck + step < height, abs(empty.width(at: mouth + neck + step) - d.neck) <= 0.15 { neck += step }
             marks.append(Mark(part: .neck, mm: d.neck, y: mouth + min(1.5, neck / 2)))
         }
-        if let shoulder = d.shoulder, let y = shoulderStart(of: c, in: empty) {
+        if let shoulder = d.shoulder {
             // Just below where the shoulder meets the body.
+            var y = mouth
+            while y < height, empty.width(at: y) < shoulder - 0.15 { y += step }
             marks.append(Mark(part: .shoulder, mm: shoulder, y: y + 0.5))
         }
         let body = bodyStart(of: c, in: empty) ?? min(3.3, d.caseLength / 3)
@@ -251,29 +248,13 @@ struct DimensionLayout {
         return marks
     }
 
-    /// The lengths, inner first: on a bottleneck case the base to where the shoulder starts (from the
-    /// drawing, the catalogue has no value for it), the case length where it differs from the overall
-    /// length (not for blanks, shot shells and flush-seated wadcutters), then the overall length.
+    /// The lengths, inner first: the case length where it differs from the overall length (not for
+    /// blanks, shot shells and flush-seated wadcutters), then the overall length.
     static func lengths(of c: Cartridge) -> [Mark] {
-        let d = c.dimensions, height = c.outline.height
-        var marks: [Mark] = []
-        if let y = shoulderStart(of: c, in: OutlineGeometry(c.outline, includeBullet: false)) {
-            marks.append(Mark(part: .shoulderLength, mm: height - y, y: y))
-        }
-        if c.hasCase, d.caseLength < d.overallLength - 0.05 {
-            marks.append(Mark(part: .caseLength, mm: d.caseLength, y: height - d.caseLength))
-        }
-        return marks + [Mark(part: .overall, mm: d.overallLength, y: 0)]
-    }
-
-    /// Height (mm from the tip) where the shoulder meets the body: going down from the case mouth, the
-    /// first place the case is as wide as the shoulder diameter. Nil without a shoulder.
-    static func shoulderStart(of c: Cartridge, in empty: OutlineGeometry) -> Double? {
-        guard c.hasCase, let shoulder = c.dimensions.shoulder else { return nil }
-        let height = c.outline.height
-        var y = height - c.dimensions.caseLength
-        while y < height, empty.width(at: y) < shoulder - 0.15 { y += step }
-        return y
+        let d = c.dimensions
+        let overall = Mark(part: .overall, mm: d.overallLength, y: 0)
+        guard c.hasCase, d.caseLength < d.overallLength - 0.05 else { return [overall] }
+        return [Mark(part: .caseLength, mm: d.caseLength, y: c.outline.height - d.caseLength), overall]
     }
 
     /// Height above the base (mm) where the body starts in front of the rim, extractor groove or belt:

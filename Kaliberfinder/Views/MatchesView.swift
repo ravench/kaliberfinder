@@ -18,7 +18,8 @@ struct MatchesView: View {
     /// The user tapped «Einblenden»: hidden matching calibres are listed too, for this result only.
     @State private var revealed = false
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
-    /// Set when the user taps the segment the app did not detect; applies to this photo only.
+    /// Set when the user taps the segment the app did not detect; applies to this photo only: it was once an
+    /// `@AppStorage("scanMode")` and stuck to every later photo. Keep it `@State`.
     @State private var override: ScanMode?
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
@@ -91,10 +92,12 @@ struct MatchesView: View {
         .navigationTitle("Treffer")
         .navigationBarTitleDisplayMode(.inline)
         .task {
+            // Once per photo: the stack restarts the task every time this screen reappears (review 2026-11-10).
+            guard overview == nil else { return }
             let result = await PhotoAnalyzer.analyze(photo)
-            if let region = Self.previewRegion(around: Self.detectedBoxes(result), imageSize: photo.size) {
-                preview = (PhotoAnalyzer.cropped(photo, to: region), region)
-            }
+            // The list shows at most a few hundred points: a 48 MP photo is cut to the cartridges and shrunk, off the main thread.
+            let region = Self.previewRegion(around: Self.detectedBoxes(result), imageSize: photo.size) ?? CGRect(x: 0, y: 0, width: 1, height: 1)
+            preview = (await Task.detached { PhotoAnalyzer.cropped(photo, to: region, maxSide: Self.previewSide) }.value, region)
             overview = result
             if !result.hasSeveralObjects {
                 analysis = result
@@ -178,6 +181,9 @@ struct MatchesView: View {
                        height: (ys.max() ?? 0) - (ys.min() ?? 0))]
     }
 
+    /// Pixels of the preview's long side: twice the 420 pt the list shows at most, at 3x.
+    static let previewSide: CGFloat = 2520
+
     /// The part of the photo the preview shows: every detected cartridge with a margin of half
     /// their larger extent (at least a tenth of the photo's long side) all round, inside the photo.
     /// Nil when nothing was detected, so the whole photo is shown.
@@ -255,7 +261,7 @@ struct MatchesView: View {
     }
 
     /// The length the 1:1 comparison sorts by: the case for an empty case, else the length of the
-    /// «1:1 sortieren nach» setting (`CompareLength`).
+    /// «Sortieren nach» setting of the 1:1 comparison (`CompareLength`).
     static func comparedLength(_ m: Match, by: CompareLength = .current) -> Double {
         m.part == .emptyCase ? m.cartridge.dimensions.caseLength : m.cartridge.compareLength(by)
     }

@@ -13,6 +13,23 @@ final class DimensionMatcherTests: XCTestCase {
         XCTAssertNotEqual(nineByTwentyOne?.fit, .good)
     }
 
+    /// A fired hull has opened to the length in its name (review 2026-11-10): typed as the case length it is its gauge.
+    func testAFiredHullFitsItsGaugeByCaseLength() {
+        for (length, gauge) in [(70.0, "12/70"), (76.0, "12/76"), (89.0, "12/89")] {
+            let matches = DimensionMatcher.rank(MeasuredDimensions(caseLength: length, rim: 22.3))
+            XCTAssertEqual(matches.first?.cartridge.id, gauge, "\(length)")
+            XCTAssertEqual(matches.first?.fit, .good, "\(length)")
+        }
+    }
+
+    /// A rebated rim is narrower than the base; the typed rim is scored against the rim (review 2026-11-10).
+    func testRebatedRimFitsItsCalibre() {
+        // Its rim is the .44 Magnum's, so both fit exactly (the base, 13.8, would put it 0.7 mm off).
+        let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 40.9, caseLength: 32.6, rim: 13.1))
+        XCTAssertEqual(Set(matches.prefix(2).map(\.cartridge.id)), [".44 Magnum", ".50 Action Express"])
+        XCTAssertEqual(matches.first { $0.cartridge.id == ".50 Action Express" }?.fit, .good)
+    }
+
     /// A shotshell's length depends on its crimp: Raven's folded-crimp 12/70 shells measure 57.8 mm
     /// and his Remington 65.5 mm against the catalogue's 64.0 mm; all are 12/70.
     func testShotshellsOfEveryCrimpFitTheirGauge() throws {

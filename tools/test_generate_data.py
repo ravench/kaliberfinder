@@ -220,6 +220,38 @@ class LookalikeTests(unittest.TestCase):
         win = next(g for g in groups if ".308 Winchester" in g["calibres"])
         self.assertEqual(win, {"differs": ["load"], "calibres": [".308 Winchester", "7.62x51 mm NATO"]})
 
+    def test_rimfire_and_centrefire_versions_are_grouped_by_ignition(self):
+        by_name = {c["name"]: c for c in generate_data.build()}
+        groups = generate_data.lookalikes(set(by_name))
+        for rimfire, centrefire in [("10.4x38 mm R Vetterli", "10.4x38 mm R Vetterli Centrefire"),
+                                    (".44 Henry", ".44 Henry Centrefire"), (".32 Long Rimfire", ".32 Long Centrefire")]:
+            self.assertEqual(by_name[rimfire]["kind"], "rimfire")
+            self.assertNotIn("primer", by_name[rimfire])
+            self.assertEqual(by_name[centrefire]["kind"], "rimmed")
+            self.assertIn("primer", by_name[centrefire])
+            self.assertIn({"differs": ["ignition"], "calibres": [rimfire, centrefire]}, groups)
+
     def test_unknown_member_fails_loudly(self):
         with self.assertRaises(AssertionError):
             generate_data.lookalikes({"9x19 mm"})
+
+
+class CatalogueOnlyDataTests(unittest.TestCase):
+    """calibre-data keeps some data for the catalogue only (tip colour codes; later also fired-by lists and
+    cannon rounds). The app reads none of it: the same six categories and fields as before."""
+
+    def test_catalogue_only_data_stays_out(self):
+        from cartridges import TIP_COLOURS
+        built = generate_data.build()
+        self.assertTrue(TIP_COLOURS)
+        self.assertEqual({c["category"] for c in built},
+                         {"Randfeuer", "Kurzwaffe", "Langwaffe", "Schwarzpulver", "Flinte", "Luftdruck"})
+        self.assertEqual(set().union(*built), {"id", "name", "category", "kind", "aliases", "displayAliases",
+                                               "headstamps", "obsolete", "rare", "country", "worldwide", "blank",
+                                               "dimensions", "outline", "primer"})
+
+    def test_cip_corrections_reach_the_json(self):
+        """calibre-data #68: the PRC rounds from their C.I.P. sheets."""
+        by_name = {c["name"]: c["dimensions"] for c in generate_data.build()}
+        self.assertEqual(by_name["6.5 PRC"]["overallLength"], 75.06)
+        self.assertEqual((by_name["7 mm PRC"]["caseLength"], by_name["7 mm PRC"]["overallLength"]), (57.91, 84.84))

@@ -147,6 +147,21 @@ final class MatcherTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(CompareButton.margin, 20)
     }
 
+    /// A fired 12/70 hull has opened to 70 mm (review 2026-11-10): with LiDAR it fits its gauge exactly, as
+    /// an empty case, instead of trailing the 12/76 whose loaded range it falls into.
+    func testAFiredHullFitsItsGauge() throws {
+        let shell = try XCTUnwrap(CartridgeCatalog.cartridge(id: "12/70"))
+        let shape = try XCTUnwrap(ShapeMatcher.catalogue[shell.id])
+        let hull = ShapeMeasurement(aspect: 70 / 20.6, profile: shape.profile, widths: shape.widths)
+        let size = MeasuredSize(length: 70 / Matcher.lengthScaleWhole, diameter: 20.6 / Matcher.diameterScale, lengthError: 1, diameterError: 0.3)
+        let matches = Matcher.rank(shape: hull, size: size, limit: .max)
+        let twelve = try XCTUnwrap(matches.first { $0.cartridge.id == shell.id })
+        XCTAssertEqual(try XCTUnwrap(twelve.sizeDeviation), 0, accuracy: 1e-9)
+        XCTAssertEqual(twelve.part, .emptyCase)
+        XCTAssertEqual(twelve.score, try XCTUnwrap(matches.first?.score), accuracy: 1e-9, "as good as the best")
+        XCTAssertEqual(Matcher.shotshellPart(Matcher.Photo(shape: hull, size: size, perspective: nil, mouth: nil), shell), .emptyCase)
+    }
+
     /// A folded-crimp 12/70 shell is 6 mm shorter than the catalogue's 64 mm (Raven 2026-11-08): with
     /// LiDAR it still fits its gauge's length, as a 65.5 mm Remington does.
     func testAShortShotshellStillFitsByLength() throws {

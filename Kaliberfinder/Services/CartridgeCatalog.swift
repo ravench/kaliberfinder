@@ -52,10 +52,6 @@ enum CartridgeCatalog {
 
     static func cartridge(id: String) -> Cartridge? { byID[id] }
 
-    /// The present-day countries the catalogue knows (those with a flag), by name: where training photos are taken.
-    static let countries: [Cartridge.Country] = Dictionary(all.compactMap(\.country).filter { $0.flag != nil }.map { ($0.code, $0) },
-                                                           uniquingKeysWith: { a, _ in a }).values.sorted { $0.name.loc < $1.name.loc }
-
     /// UserDefaults key of the «Veraltete Kaliber berücksichtigen» switch. Off by default.
     static let includeObsoleteKey = "includeObsoleteCalibres"
     /// UserDefaults key of the «Seltene Kaliber berücksichtigen» switch. Off by default.
@@ -106,10 +102,10 @@ enum CartridgeCatalog {
     }
 }
 
-/// Calibres that look alike but are cartridges of their own (calibre-data `LOOKALIKES`): a measurement
-/// or the load tells them apart. Every member's page links to the group, which lists them all.
+/// Calibres that look alike but are cartridges of their own (calibre-data `LOOKALIKES`): a measurement,
+/// the load or the ignition tells them apart. Every member's page links to the group, which lists them all.
 struct LookalikeGroup: Decodable, Identifiable, Hashable {
-    /// What tells them apart: "rim", "bore", "length", "seating" or "load".
+    /// What tells them apart: "rim", "bore", "length", "seating", "load" or "ignition".
     let differs: [String]
     /// Catalogue ids, the parent first.
     let calibres: [String]
@@ -125,6 +121,7 @@ struct LookalikeGroup: Decodable, Identifiable, Hashable {
         case "length": "Länge"
         case "seating": "Setztiefe des Geschosses"
         case "load": "Ladung"
+        case "ignition": "Zündung"
         default: difference
         }
     }
