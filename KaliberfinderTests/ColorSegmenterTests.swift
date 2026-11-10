@@ -503,6 +503,10 @@ final class ColorSegmenterTests: XCTestCase {
         let cropped = PhotoAnalyzer.cropped(image, to: CGRect(x: 0.25, y: 0.5, width: 0.5, height: 0.5))
         XCTAssertEqual(cropped.size.width * cropped.scale, 200, accuracy: 1)
         XCTAssertEqual(cropped.size.height * cropped.scale, 150, accuracy: 1)
+        // Shrunk for the list: the long side is capped, the proportions stay.
+        let small = PhotoAnalyzer.cropped(image, to: CGRect(x: 0.25, y: 0.5, width: 0.5, height: 0.5), maxSide: 100)
+        XCTAssertEqual(small.size.width * small.scale, 100, accuracy: 1)
+        XCTAssertEqual(small.size.height * small.scale, 75, accuracy: 1)
     }
 
     func testFocusRegionAddsAMarginInsideThePhoto() {

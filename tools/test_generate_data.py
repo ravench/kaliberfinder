@@ -234,3 +234,24 @@ class LookalikeTests(unittest.TestCase):
     def test_unknown_member_fails_loudly(self):
         with self.assertRaises(AssertionError):
             generate_data.lookalikes({"9x19 mm"})
+
+
+class CatalogueOnlyDataTests(unittest.TestCase):
+    """calibre-data keeps some data for the catalogue only (tip colour codes; later also fired-by lists and
+    cannon rounds). The app reads none of it: the same six categories and fields as before."""
+
+    def test_catalogue_only_data_stays_out(self):
+        from cartridges import TIP_COLOURS
+        built = generate_data.build()
+        self.assertTrue(TIP_COLOURS)
+        self.assertEqual({c["category"] for c in built},
+                         {"Randfeuer", "Kurzwaffe", "Langwaffe", "Schwarzpulver", "Flinte", "Luftdruck"})
+        self.assertEqual(set().union(*built), {"id", "name", "category", "kind", "aliases", "displayAliases",
+                                               "headstamps", "obsolete", "rare", "country", "worldwide", "blank",
+                                               "dimensions", "outline", "primer"})
+
+    def test_cip_corrections_reach_the_json(self):
+        """calibre-data #68: the PRC rounds from their C.I.P. sheets."""
+        by_name = {c["name"]: c["dimensions"] for c in generate_data.build()}
+        self.assertEqual(by_name["6.5 PRC"]["overallLength"], 75.06)
+        self.assertEqual((by_name["7 mm PRC"]["caseLength"], by_name["7 mm PRC"]["overallLength"]), (57.91, 84.84))
