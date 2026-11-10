@@ -217,6 +217,13 @@ final class CatalogTests: XCTestCase {
         XCTAssertEqual(group.calibres, [".308 Winchester", "7.62x51 mm NATO"])
         XCTAssertEqual(group.differs, ["load"])
         XCTAssertEqual(LookalikeGroup.title("load"), "Ladung")
+        // Every difference the catalogue names has a German title (and so a translation).
+        for difference in Set(groups.flatMap(\.differs)) {
+            XCTAssertNotEqual(LookalikeGroup.title(difference), difference, "\(difference) has no title")
+        }
+        let vetterli = try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: XCTUnwrap(CartridgeCatalog.cartridge(id: "10.4x38 mm R Vetterli"))))
+        XCTAssertEqual(vetterli.calibres, ["10.4x38 mm R Vetterli", "10.4x38 mm R Vetterli Centrefire"])
+        XCTAssertEqual(vetterli.differs.map { LookalikeGroup.title($0) }, ["Zündung"])
         XCTAssertNil(CartridgeCatalog.lookalikeGroup(of: try XCTUnwrap(CartridgeCatalog.cartridge(id: ".22 LR"))))
         // Identical-looking members compare once, at 1:1 generally too.
         XCTAssertEqual(LookalikeGroupView.compared(group.members).map(\.id), [".308 Winchester"])

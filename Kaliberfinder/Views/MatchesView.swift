@@ -255,7 +255,7 @@ struct MatchesView: View {
     }
 
     /// The length the 1:1 comparison sorts by: the case for an empty case, else the length of the
-    /// «1:1 sortieren nach» setting (`CompareLength`).
+    /// «Sortieren nach» setting of the 1:1 comparison (`CompareLength`).
     static func comparedLength(_ m: Match, by: CompareLength = .current) -> Double {
         m.part == .emptyCase ? m.cartridge.dimensions.caseLength : m.cartridge.compareLength(by)
     }
