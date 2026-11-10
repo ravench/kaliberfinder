@@ -184,6 +184,8 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertNil(saved.package.measurements?.caseLength)
         XCTAssertTrue(Measurements().isEmpty)
         XCTAssertFalse(Measurements(bullet: 9).isEmpty)
+        XCTAssertFalse(Measurements(base: 9.9).isEmpty)
+        XCTAssertFalse(Measurements(primerDiameter: 4.5).isEmpty)
     }
 
     /// Country, materials, primer and the shoulder measurements are in package.json only once entered (2026-11-09).
@@ -208,10 +210,9 @@ final class TrainingCaptureTests: XCTestCase {
             XCTAssertNotEqual(Materials.title(token), token, token)
         }
         XCTAssertEqual(Materials.title("jacket"), "Vollmantel")
-        // The country picker offers the catalogue's present-day countries with their flags, Switzerland among them.
-        let countries = CartridgeCatalog.countries
+        // The country picker offers every present-day country with its flag (CountriesTests), Switzerland among them.
+        let countries = Countries.current
         XCTAssertTrue(countries.contains { $0.code == "CH" && $0.flag == "🇨🇭" })
-        XCTAssertTrue(countries.allSatisfy { $0.flag != nil }, "former states and NATO have no flag emoji and are left out")
         XCTAssertEqual(Set(countries.map(\.code)).count, countries.count)
     }
 

@@ -80,7 +80,7 @@ struct CapturePackage: Codable, Equatable {
     /// True when the round carries a bullet its calibre does not usually have (another weight or shape), so
     /// tuning the matcher against this series takes care; not written when nil.
     var atypicalBullet: Bool?
-    /// Where the photos were taken: the ISO code of one of `CartridgeCatalog.countries`; nil until chosen (2026-11-09).
+    /// Where the photos were taken: an ISO 3166-1 code (`Countries`); nil until chosen (2026-11-09).
     var country: String?
     /// What the round is made of, one of `Materials` (`bulletMaterials` etc.); nil until chosen (2026-11-09).
     var bulletMaterial: String?
@@ -102,13 +102,17 @@ struct Measurements: Codable, Equatable {
     var overallLength: Double?
     var caseLength: Double?
     var rim: Double?
+    /// The case just above the rim or extractor groove (Raven 2026-11-09).
+    var base: Double?
     var bullet: Double?
     /// Base to shoulder, and the shoulder's diameter (2026-11-09).
     var shoulderLength: Double?
     var shoulder: Double?
+    /// The primer's diameter (Raven 2026-11-09); nil for rimfire.
+    var primerDiameter: Double?
 
     var isEmpty: Bool {
-        [overallLength, caseLength, rim, bullet, shoulderLength, shoulder].allSatisfy { $0 == nil }
+        [overallLength, caseLength, rim, base, bullet, shoulderLength, shoulder, primerDiameter].allSatisfy { $0 == nil }
     }
 }
 
