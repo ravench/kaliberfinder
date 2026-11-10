@@ -12,6 +12,9 @@ INFO_PLIST = {
 }
 
 T = {
+    "Kein Foto erhalten, bitte noch einmal.": ("No photo received, please try again.", "Aucune photo reçue, veuillez réessayer.", "Nessuna foto ricevuta, riprova."),
+    "Kein Zugriff auf die Kamera. Erlaube ihn in den Einstellungen.": ("No access to the camera. Allow it in Settings.", "Pas d'accès à la caméra. Autorisez-le dans les Réglages.", "Nessun accesso alla fotocamera. Consentilo nelle Impostazioni."),
+    "Einstellungen öffnen": ("Open Settings", "Ouvrir les Réglages", "Apri Impostazioni"),
     "Ähnliche Kaliber": ("Similar calibres", "Calibres semblables", "Calibri simili"),
     "Unterscheiden sich in: %@": ("Differ in: %@", "Diffèrent par : %@", "Differiscono per: %@"),
     "Laufdurchmesser": ("bore", "calibre du canon", "diametro della canna"),
