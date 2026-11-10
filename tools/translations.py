@@ -291,6 +291,7 @@ T = {
     "Erkennung farbig zeigen": ("Show detection in colour", "Afficher la détection en couleur", "Mostra il rilevamento a colori"),
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
     "Kamera": ("Camera", "Caméra", "Fotocamera"),
+    "Scharf ab %lld cm": ("In focus from %lld cm", "Net à partir de %lld cm", "A fuoco da %lld cm"),
     "Neue Aufnahmeserie": ("New capture series", "Nouvelle série de prises", "Nuova serie di scatti"),
     "Wähle das Kaliber, das du fotografierst, und mache mehrere Fotos davon. Gespeichert werden das Foto, die LiDAR-Tiefe, die Kameradaten und die Vision-Maske. Teile die Serie als ZIP, sie kommt in die Tests.": (
         "Choose the calibre you are photographing and take several photos of it. The photo, the LiDAR depth, the camera data and the Vision mask are saved. Share the series as a ZIP; it goes into the tests.",

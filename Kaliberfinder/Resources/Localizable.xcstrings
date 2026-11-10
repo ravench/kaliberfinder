@@ -4532,6 +4532,29 @@
         }
       }
     },
+    "Scharf ab %lld cm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In focus from %lld cm"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Net à partir de %lld cm"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A fuoco da %lld cm"
+          }
+        }
+      }
+    },
     "Schrot (209)": {
       "extractionState": "manual",
       "localizations": {
