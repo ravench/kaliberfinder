@@ -16,14 +16,14 @@ final class MeasuringGuideTests: XCTestCase {
     }
 
     /// Drawing, lines and letters stay inside the sketch's box, and a letter neither overlaps another
-    /// nor sits on a line.
+    /// nor sits on a line or the drawing.
     func testLettersAndLinesFitTheBox() {
         let box = MeasuringGuide.box
         func inside(_ r: CGRect) -> Bool { r.minX >= box.minX && r.maxX <= box.maxX && r.minY >= box.minY && r.maxY <= box.maxY }
         let segments = MeasuringGuide.marks.map { [$0.from, $0.to] } + MeasuringGuide.extensions
         let shapes = [MeasuringGuide.caseOutline.boundingRect, MeasuringGuide.bullet.boundingRect]
         for r in shapes + segments.map(Self.bounds) { XCTAssertTrue(inside(r), "\(r)") }
-        // A bold capital is about ¾ of the font size wide and high (generous for I, tight for W).
+        // A bold capital on its baseline is about ¾ of the font size wide and high (generous for I, tight for W).
         let size = MeasuringGuide.letterSize
         let letters = MeasuringGuide.marks.map { mark in
             let w = 0.75 * size * Double(mark.letter.count), h = 0.75 * size
@@ -33,6 +33,10 @@ final class MeasuringGuideTests: XCTestCase {
             XCTAssertTrue(inside(r), letter)
             for (other, o) in letters.dropFirst(i + 1) { XCTAssertFalse(r.intersects(o), "\(letter) \(other)") }
             for s in segments { XCTAssertFalse(r.intersects(Self.bounds(s).insetBy(dx: -0.5, dy: -0.5)), "\(letter) \(s)") }
+            let corners = [CGPoint(x: r.minX, y: r.minY), CGPoint(x: r.maxX, y: r.minY), CGPoint(x: r.minX, y: r.maxY), CGPoint(x: r.maxX, y: r.maxY)]
+            for shape in [MeasuringGuide.caseOutline, MeasuringGuide.bullet] {
+                XCTAssertFalse(corners.contains { shape.contains($0) }, letter)
+            }
         }
     }
 

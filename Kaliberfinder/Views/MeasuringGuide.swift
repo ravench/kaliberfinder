@@ -5,7 +5,7 @@ import SwiftUI
 /// head, each measurement marked with the letter its field carries. The same sketch for every calibre,
 /// drawn in the units of `box` and scaled to the width it gets.
 struct MeasuringGuide: View {
-    /// A dimension line from `from` to `to`, its letter centred above `label`.
+    /// A dimension line from `from` to `to`, its letter centred on `label` (the baseline).
     struct Mark {
         let letter: String
         let from: CGPoint
@@ -76,8 +76,10 @@ struct MeasuringGuide: View {
             let ticks = Self.marks.flatMap { [$0.from, $0.to] }.map { [CGPoint(x: $0.x - 3, y: $0.y + 3), CGPoint(x: $0.x + 3, y: $0.y - 3)] }
             context.stroke(Self.lines(Self.marks.map { [$0.from, $0.to] } + ticks), with: ink, lineWidth: 1.3)
             for mark in Self.marks {
-                let letter = Text(verbatim: mark.letter).font(.system(size: Self.letterSize, weight: .bold)).foregroundStyle(Color.accentColor)
-                context.draw(letter, at: mark.label, anchor: .bottom)
+                // `label` is the letter's baseline, as in the page's SVG.
+                let letter = context.resolve(Text(verbatim: mark.letter).font(.system(size: Self.letterSize, weight: .bold)).foregroundStyle(Color.accentColor))
+                let baseline = letter.firstBaseline(in: letter.measure(in: CGSize(width: 1000, height: 1000)))
+                context.draw(letter, at: CGPoint(x: mark.label.x, y: mark.label.y - baseline), anchor: .top)
             }
         }
         .aspectRatio(Self.box.width / Self.box.height, contentMode: .fit)
