@@ -8,7 +8,7 @@ final class HomeSectionTests: XCTestCase {
     }
 
     func testSettingsPageHoldsUnitsRealSizeAndCopyright() {
-        XCTAssertEqual(SettingsSection.allCases, [.units, .realSize, .copyright])
+        XCTAssertEqual(SettingsSection.allCases, [.units, .realSize, .compare, .photo, .info])
     }
 
     func testSettingsShowVersionAndBuild() {

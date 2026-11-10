@@ -2,11 +2,11 @@ import SwiftUI
 
 /// The settings page's sections, top to bottom. The recognition switches stay on the home screen.
 enum SettingsSection: CaseIterable {
-    case units, realSize, copyright
+    case units, realSize, compare, photo, info
 }
 
-/// Settings opened as a sheet by the home screen's gear button: units, screen size, empty cases at 1:1, the coloured
-/// outline, and the app version, calibre-data commit and licence line.
+/// Settings opened as a sheet by the home screen's gear button (tidied up with Raven, 2026-11-10): units,
+/// screen size, the 1:1 comparison, the photo, and the app's version, calibre data and licence line.
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var scale: ScaleModel
@@ -24,67 +24,11 @@ struct SettingsView: View {
         List {
             ForEach(SettingsSection.allCases, id: \.self) { section in
                 switch section {
-                case .units:
-                Section("Einheiten") {
-                    UnitPicker(unit: $unit)
-                }
-                case .realSize:
-                Section {
-                    NavigationLink { CalibrationView() } label: {
-                        LabeledContent {
-                            Text(verbatim: unit.scaleText(pointsPerMM: scale.pointsPerMM))
-                        } label: {
-                            Text("Bildschirm")
-                            Text(scale.resolution.source.title.loc)
-                        }
-                    }
-                } header: {
-                    Text("Originalgrösse")
-                } footer: {
-                    Text("Prüfe die Grösse einmal mit einer Bankkarte.")
-                }
-                Section {
-                    Toggle("Geschosse beim Vergleich mit leeren Hülsen zeigen", isOn: $bulletsOnCases)
-                }
-                Section {
-                    Picker("1:1 sortieren nach", selection: $compareLength) {
-                        ForEach(CompareLength.allCases) { Text($0.title.loc).tag($0) }
-                    }
-                } footer: {
-                    Text("Reihenfolge der Patronen im 1:1-Vergleich.")
-                }
-                Section {
-                    Toggle("Erkennung farbig zeigen", isOn: $partColours)
-                } footer: {
-                    Text("Grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Körper.")
-                }
-                if LiDARCamera.isAvailable {
-                    Section {
-                        Toggle("1:1-Vergleich nach Trefferqualität sortieren", isOn: $compareByFit)
-                    } footer: {
-                        Text("Nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone.")
-                    }
-                }
-                case .copyright:
-                if trainingCapture {
-                    Section {
-                        NavigationLink { TrainingCaptureView() } label: {
-                            Label { Text("Trainingsdaten aufnehmen") } icon: { Image(systemName: "tray.and.arrow.down") }
-                        }
-                    } footer: {
-                        Text("Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.")
-                    }
-                }
-                Section {
-                    LabeledContent("Version", value: Bundle.main.versionText)
-                    if let source = CartridgeCatalog.source {
-                        LabeledContent("Kaliberdaten", value: source.text)
-                    }
-                    Text("© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .onTapGesture(count: 5) { trainingCapture.toggle() }
-                }
+                case .units: units
+                case .realSize: realSize
+                case .compare: compare
+                case .photo: photo
+                case .info: info
                 }
             }
         }
@@ -95,6 +39,84 @@ struct SettingsView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Fertig") { dismiss() }
             }
+        }
+    }
+
+    private var units: some View {
+        Section("Einheiten") {
+            UnitPicker(unit: $unit)
+        }
+    }
+
+    private var realSize: some View {
+        Section {
+            NavigationLink { CalibrationView() } label: {
+                LabeledContent {
+                    Text(verbatim: unit.scaleText(pointsPerMM: scale.pointsPerMM))
+                } label: {
+                    Text("Bildschirm")
+                    Text(scale.resolution.source.title.loc)
+                }
+            }
+        } header: {
+            Text("Originalgrösse")
+        } footer: {
+            Text("Prüfe die Grösse einmal mit einer Bankkarte.")
+        }
+    }
+
+    /// Everything about the 1:1 comparison in one place: the order, the LiDAR phones' switch, the bullets.
+    private var compare: some View {
+        Section {
+            Picker("Sortieren nach", selection: $compareLength) {
+                ForEach(CompareLength.allCases) { Text($0.title.loc).tag($0) }
+            }
+            if LiDARCamera.isAvailable {
+                Toggle("Nach Trefferqualität sortieren", isOn: $compareByFit)
+            }
+            Toggle("Geschosse bei leeren Hülsen zeigen", isOn: $bulletsOnCases)
+        } header: {
+            Text("1:1-Vergleich")
+        } footer: {
+            if LiDARCamera.isAvailable {
+                Text("Nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone.")
+            }
+        }
+    }
+
+    private var photo: some View {
+        Section {
+            Toggle("Erkennung farbig zeigen", isOn: $partColours)
+        } header: {
+            Text("Foto")
+        } footer: {
+            Text("Grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Körper.")
+        }
+    }
+
+    @ViewBuilder private var info: some View {
+        if trainingCapture {
+            Section {
+                NavigationLink { TrainingCaptureView() } label: {
+                    Label { Text("Trainingsdaten aufnehmen") } icon: { Image(systemName: "tray.and.arrow.down") }
+                }
+            } header: {
+                Text("Entwickler")
+            } footer: {
+                Text("Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.")
+            }
+        }
+        Section {
+            LabeledContent("Version", value: Bundle.main.versionText)
+            if let source = CartridgeCatalog.source {
+                LabeledContent("Kaliberdaten", value: source.text)
+            }
+            Text("© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .onTapGesture(count: 5) { trainingCapture.toggle() }
+        } header: {
+            Text("Info")
         }
     }
 }
