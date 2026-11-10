@@ -6,16 +6,17 @@ import SwiftUI
 struct MeasurementsView: View {
     let cartridge: Cartridge
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
-    /// Size of a label (name over value); grows with the text size up to xxxLarge, where the label
-    /// text stops growing (`dynamicTypeSize` below): the drawing needs the room. The values in any
-    /// size are on the calibre's page.
-    @ScaledMetric(relativeTo: .caption) private var labelWidth = 86.0
-    @ScaledMetric(relativeTo: .caption) private var labelHeight = 36.0
-    private static let largestLabel = (width: 114.0, height: 54.0)
+    /// Size of a label (name over value): `DimensionLayout.label`, grown with the text size up to
+    /// `DimensionLayout.largestLabel`. The width gets there at about xxLarge, the height at xxxLarge,
+    /// where the text stops growing (`dynamicTypeSize` below): the drawing needs the room. Long values
+    /// then shrink a little to fit; the values in any size are on the calibre's page.
+    @ScaledMetric(relativeTo: .caption) private var labelWidth = DimensionLayout.label.width
+    @ScaledMetric(relativeTo: .caption) private var labelHeight = DimensionLayout.label.height
 
     var body: some View {
         GeometryReader { geo in
-            let asked = CGSize(width: min(labelWidth, Self.largestLabel.width), height: min(labelHeight, Self.largestLabel.height))
+            let largest = DimensionLayout.largestLabel
+            let asked = CGSize(width: min(labelWidth, largest.width), height: min(labelHeight, largest.height))
             let layout = DimensionLayout(cartridge: cartridge, size: geo.size, label: asked)
             ZStack(alignment: .topLeading) {
                 CartridgeView(cartridge: cartridge, pointsPerMM: layout.scale)
@@ -133,6 +134,11 @@ struct DimensionLayout {
     /// Filled arrowheads at both ends of each dimension line.
     let arrowheads: [[CGPoint]]
 
+    /// A label's size (name over value) at the default text size; `MeasurementsView` grows it with the text.
+    static let label = CGSize(width: 86, height: 36)
+    /// The largest label: as wide as the .700 Nitro Express, the widest calibre, leaves room for on an
+    /// iPhone SE at `minScale`; as high as `label` at xxxLarge.
+    static let largestLabel = CGSize(width: 114, height: 54)
     /// Label column to drawing: room for a leader to bend to a label moved off its line.
     static let labelGap = 18.0
     /// Drawing to the first length line.
