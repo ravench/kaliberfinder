@@ -6,9 +6,9 @@ final class MeasurementsTests: XCTestCase {
     /// An iPhone 17 Pro and an iPhone SE, inside the screen's margins.
     private let phone = CGSize(width: 370, height: 700)
     private let small = CGSize(width: 343, height: 520)
-    private let label = CGSize(width: 74, height: 30)
-    /// The labels at text size xxxLarge (MeasurementsView.largestLabel).
-    private let largest = CGSize(width: 111, height: 45)
+    private let label = DimensionLayout.label
+    /// The labels at text size xxxLarge.
+    private let largest = DimensionLayout.largestLabel
 
     private func layout(_ id: String, size: CGSize? = nil, label: CGSize? = nil) throws -> DimensionLayout {
         DimensionLayout(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: id)), size: size ?? phone, label: label ?? self.label)
