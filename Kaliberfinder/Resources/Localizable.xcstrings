@@ -3221,6 +3221,29 @@
         }
       }
     },
+    "Land suchen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search countries"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rechercher un pays"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerca paese"
+          }
+        }
+      }
+    },
     "Langwaffe": {
       "extractionState": "manual",
       "localizations": {
@@ -5701,6 +5724,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Innesco"
+          }
+        }
+      }
+    },
+    "Zündhütchen-Durchmesser": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primer diameter"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diamètre de l'amorce"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diametro dell'innesco"
           }
         }
       }
