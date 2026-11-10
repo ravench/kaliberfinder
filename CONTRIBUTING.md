@@ -1,26 +1,7 @@
 # Contributing
 
-Thanks for helping with Kaliberfinder! Pull requests are welcome: bug fixes,
-features, translations or better cartridge data.
-
-## Licence in short
-
-- The code is **source-available** under the
-  [PolyForm Noncommercial License 1.0.0](LICENSE.md). You may read, build, change
-  and use it for yourself, your club or any other noncommercial purpose, and share
-  your changes under the same terms.
-- **Commercial use is not allowed**, including selling the app or a copy of it in
-  the App Store, or making money from it in other ways. Only the project owner may
-  publish the app commercially.
-
-## Contributor License Agreement
-
-Before your first pull request can be merged, you need to agree to the
-[Contributor License Agreement](CLA.md). You keep the copyright in your work, but
-grant the project owner the right to use it in any way, including in a paid App
-Store release.
-
-To agree, tick the CLA checkbox in the pull request description.
+Kaliberfinder is closed source ([LICENSE.md](LICENSE.md)). Only people Simon Giotta
+invites work on it, under a written agreement with Simon Giotta. These notes are for them.
 
 ## Guidelines
 

@@ -110,11 +110,5 @@ Admin role (Users and Access, Integrations, Team Keys): `ASC_KEY_ID` (Key ID),
 
 ## Licence
 
-© 2026 Simon Giotta. Source-available under the
-[PolyForm Noncommercial License 1.0.0](LICENSE.md): anyone may read, build, modify
-and use the app for noncommercial purposes, and pull requests are welcome. Commercial
-use, including selling the app or a copy of it in the App Store, is reserved to the
-copyright holder.
-
-Contributions require agreeing to the [Contributor License Agreement](CLA.md);
-see [CONTRIBUTING.md](CONTRIBUTING.md).
+© 2026 Simon Giotta. All rights reserved: Kaliberfinder is closed source, see
+[LICENSE.md](LICENSE.md). The calibre catalogue carries its own licence, listed there.

@@ -53,9 +53,10 @@ class TranslationTests(unittest.TestCase):
                 text = re.sub(r"\\\([^)]*\)", "", literal.group(1)) if literal else ""  # interpolations are data
                 self.assertFalse(re.search("[A-Za-zÄÖÜäöü]{2}", text), f"{name}:{i}: {line.strip()}")
 
-    def test_copyright_line_names_the_licence(self):
-        for value in T["© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0"]:
-            self.assertIn("PolyForm Noncommercial 1.0.0", value)
+    def test_copyright_line_names_no_open_licence(self):
+        # Closed source since 2026-11-10: the Settings line is the copyright alone.
+        self.assertNotIn("PolyForm", open(os.path.join(os.path.dirname(__file__), "..", "Kaliberfinder", "Views", "SettingsView.swift")).read())
+        self.assertEqual(set(T["© 2026 Simon Giotta"]), {"© 2026 Simon Giotta"})
 
     def test_placeholders_survive_translation(self):
         for key, values in T.items():
