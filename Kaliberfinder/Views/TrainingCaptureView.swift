@@ -272,14 +272,10 @@ struct TrainingPackageView: View {
                 Text("Serie")
             }
             Section {
-                measured("Gesamtlänge", value: measurements.overallLength)
-                measured("Hülsenlänge", value: measurements.caseLength)
-                measured("Randdurchmesser", value: measurements.rim)
-                measured("Bodendurchmesser", value: measurements.base)
-                measured("Schulterdurchmesser", value: measurements.shoulder)
-                measured("Schulterlänge", value: measurements.shoulderLength)
-                measured("Geschossdurchmesser", value: measurements.bullet)
-                measured("Zündhütchen-Durchmesser", value: measurements.primerDiameter)
+                // Where each value is taken, as on the old-ammunition page (Raven 2026-11-10).
+                MeasuringGuide()
+                    .padding(.vertical, 4)
+                ForEach(Self.calliperFields, id: \.letter) { measured($0) }
             } header: {
                 Text("Mit der Schieblehre gemessen")
             }
@@ -335,7 +331,6 @@ struct TrainingPackageView: View {
 
     private func reload() { shots = capture.shots }
 
-    /// A calliper value with its unit, «9.95 mm»; a dash until measured.
     /// A picker over `options` (`Materials`), «–» for none; stores the token.
     private func choice(_ title: LocalizedStringKey, selection: Binding<String?>, options: [String]) -> some View {
         Picker(title, selection: selection) {
@@ -344,14 +339,42 @@ struct TrainingPackageView: View {
         }
     }
 
-    private func measured(_ title: LocalizedStringKey, value: Binding<Double?>) -> some View {
-        LabeledContent(title) {
+    /// A calliper field: its letter on the sketch (`MeasuringGuide`), its name and what it says about the round.
+    struct CalliperField {
+        let letter: String
+        let title: LocalizedStringKey
+        let value: WritableKeyPath<Measurements, Double?>
+    }
+
+    static let calliperFields = [
+        CalliperField(letter: "OAL", title: "Gesamtlänge", value: \.overallLength),
+        CalliperField(letter: "L", title: "Hülsenlänge", value: \.caseLength),
+        CalliperField(letter: "R", title: "Randdurchmesser", value: \.rim),
+        CalliperField(letter: "B", title: "Bodendurchmesser", value: \.base),
+        CalliperField(letter: "S", title: "Schulterdurchmesser", value: \.shoulder),
+        CalliperField(letter: "H", title: "Schulterlänge", value: \.shoulderLength),
+        CalliperField(letter: "D", title: "Geschossdurchmesser", value: \.bullet),
+        CalliperField(letter: "P", title: "Zündhütchen-Durchmesser", value: \.primerDiameter),
+    ]
+
+    /// A calliper value with its unit, «9.95 mm»; a dash until measured.
+    private func measured(_ field: CalliperField) -> some View {
+        LabeledContent {
             HStack(spacing: 4) {
-                TextField("–", value: value, format: .number.precision(.fractionLength(0...2)))
+                TextField("–", value: measurements[dynamicMember: field.value], format: .number.precision(.fractionLength(0...2)))
                     .keyboardType(.decimalPad)
                     .multilineTextAlignment(.trailing)
                     .frame(maxWidth: 80)
                 Text(verbatim: LengthUnit.metric.symbol).foregroundStyle(.secondary)
+            }
+        } label: {
+            HStack(spacing: 8) {
+                Text(verbatim: field.letter)
+                    .font(.footnote.bold())
+                    .foregroundStyle(Color.accentColor)
+                    .frame(minWidth: 30, alignment: .leading)
+                    .accessibilityHidden(true)
+                Text(field.title)
             }
         }
     }
