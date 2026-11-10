@@ -12,7 +12,11 @@ final class CatalogTests: XCTestCase {
         for c in CartridgeCatalog.all {
             let d = c.dimensions
             XCTAssertGreaterThan(d.overallLength, 0, c.name)
-            XCTAssertGreaterThanOrEqual(d.overallLength + 0.01, d.caseLength, "\(c.name): case longer than cartridge")
+            if c.kind == "shot" {  // the hull opened by firing is longer than the loaded shell
+                XCTAssertGreaterThanOrEqual(d.caseLength, d.overallLength, "\(c.name): opened hull shorter than the shell")
+            } else {
+                XCTAssertGreaterThanOrEqual(d.overallLength + 0.01, d.caseLength, "\(c.name): case longer than cartridge")
+            }
             XCTAssertGreaterThan(d.rim, 0, c.name)
             XCTAssertLessThanOrEqual(c.outline.width, max(d.rim, d.base, d.bullet) + 0.01, c.name)
             XCTAssertEqual(c.outline.height, d.overallLength, accuracy: 0.01, c.name)

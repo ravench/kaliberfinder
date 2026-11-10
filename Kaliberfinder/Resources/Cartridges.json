@@ -1,8 +1,8 @@
 {
  "version": 1,
  "calibreData": {
-  "commit": "2fe43d04909cf56739138e1de5a28b46eea46ba3",
-  "date": "2026-11-10T10:38:18+01:00"
+  "commit": "eafed3bc88ca621def9091d2e1aba5efad1b8f0c",
+  "date": "2026-11-10T11:22:44+01:00"
  },
  "cartridges": [
   {
@@ -16115,7 +16115,7 @@
     "rim": 22.3,
     "base": 20.6,
     "neck": 20.6,
-    "caseLength": 64.0,
+    "caseLength": 70.0,
     "overallLength": 64.0,
     "bullet": 20.6
    },
@@ -16148,7 +16148,7 @@
     "rim": 22.3,
     "base": 20.6,
     "neck": 20.6,
-    "caseLength": 70.0,
+    "caseLength": 76.0,
     "overallLength": 70.0,
     "bullet": 20.6
    },
@@ -16181,7 +16181,7 @@
     "rim": 22.3,
     "base": 20.6,
     "neck": 20.6,
-    "caseLength": 82.0,
+    "caseLength": 89.0,
     "overallLength": 82.0,
     "bullet": 20.6
    },
@@ -16215,7 +16215,7 @@
     "rim": 20.5,
     "base": 18.9,
     "neck": 18.9,
-    "caseLength": 64.0,
+    "caseLength": 70.0,
     "overallLength": 64.0,
     "bullet": 18.9
    },
@@ -16249,7 +16249,7 @@
     "rim": 19.0,
     "base": 17.6,
     "neck": 17.6,
-    "caseLength": 64.0,
+    "caseLength": 70.0,
     "overallLength": 64.0,
     "bullet": 17.6
    },
@@ -16282,7 +16282,7 @@
     "rim": 19.0,
     "base": 17.6,
     "neck": 17.6,
-    "caseLength": 70.0,
+    "caseLength": 76.0,
     "overallLength": 70.0,
     "bullet": 17.6
    },
@@ -16316,7 +16316,7 @@
     "rim": 17.5,
     "base": 16.0,
     "neck": 16.0,
-    "caseLength": 64.0,
+    "caseLength": 70.0,
     "overallLength": 64.0,
     "bullet": 16.0
    },
@@ -16350,7 +16350,7 @@
     "rim": 13.3,
     "base": 11.8,
     "neck": 11.8,
-    "caseLength": 70.0,
+    "caseLength": 76.0,
     "overallLength": 70.0,
     "bullet": 11.8
    },

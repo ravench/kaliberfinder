@@ -65,13 +65,13 @@ final class ShotshellPartTests: XCTestCase {
         XCTAssertNil(Matcher.shotshellPart(Matcher.Photo(shape: ball.shape, size: size(11)), ball.cartridge), "an end view")
     }
 
-    /// The detection labels the photo; both parts compare a shotshell as the whole shell, so the list is the same.
+    /// The detection labels the photo; both parts compare a shotshell as a shell or a fired hull, so the list is the same.
     func testTheMatchingDoesNotChangeWithThePart() throws {
         let (shell, shape) = try catalogue()
-        for length in [58.0, 70.0] {
+        for (length, part) in [(58.0, ShapePart.cartridge), (70.0, .emptyCase)] {
             let matches = Matcher.rank(shape: shape, size: size(length), limit: .max)
             let twelve = try XCTUnwrap(matches.first { $0.cartridge.id == shell.id }, "\(length)")
-            XCTAssertEqual(twelve.part, .cartridge, "\(length)")
+            XCTAssertEqual(twelve.part, part, "\(length)")
             XCTAssertEqual(matches.map(\.cartridge.id), Matcher.rank(shape: shape, size: size(length), mode: .emptyCase, limit: .max).map(\.cartridge.id), "\(length)")
         }
     }
