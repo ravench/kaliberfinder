@@ -28,13 +28,13 @@ final class ShotshellPartTests: XCTestCase {
 
     func testAnOpenHullIsAnEmptyCase() throws {
         let (shell, shape) = try catalogue()
-        // A fired 12/70 hull opens back to about 70 mm; the border lies 2 mm past the longest crimp (65.9 mm).
+        // A fired 12/70 hull opens back to 70 mm; the border lies halfway between the longest crimp (65.9 mm) and that.
         for length in [70.0, 68.0] {
             XCTAssertEqual(Matcher.shotshellPart(Matcher.Photo(shape: shape, size: size(length)), shell), .emptyCase, "\(length)")
             XCTAssertEqual(ScanMode.detected(in: shape, size: size(length), first: shell), .emptyCase, "\(length)")
         }
         XCTAssertEqual(Matcher.shotshellPart(Matcher.Photo(shape: shape, size: size(67.5)), shell), .cartridge)
-        XCTAssertEqual(shell.overallLengths.upperBound + Matcher.lengthTolerance, 67.92, accuracy: 0.001)
+        XCTAssertEqual((shell.overallLengths.upperBound + shell.dimensions.caseLength) / 2, 67.96, accuracy: 0.001)
     }
 
     func testTheEndRiseIsTakenOutOfTheLength() throws {
