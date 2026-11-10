@@ -9,6 +9,8 @@ struct LiDARCameraView: View {
     @StateObject private var camera: LiDARCamera
     @Environment(\.dismiss) private var dismiss
     @State private var isCapturing = false
+    /// The last shutter press delivered no photo (review 2026-11-10): said under the hint, the shutter free again.
+    @State private var failed = false
 
     init(choice: CameraChoice = .lidar, onPick: @escaping (UIImage, DepthScale?) -> Void) {
         self.onPick = onPick
@@ -34,7 +36,9 @@ struct LiDARCameraView: View {
             CameraPreview(camera: camera, gravity: hasDepth ? .resizeAspectFill : .resizeAspect).ignoresSafeArea()
             VStack(spacing: 12) {
                 Group {
-                    if hasDepth {
+                    if camera.accessDenied {
+                        CameraDeniedHint()
+                    } else if hasDepth {
                         Text("Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, 20–30 cm darüber.")
                     } else {
                         // The camera's own closest focus: a 2x telephoto focuses at half a metre, the 17 Pro's 4x at 1.16 m.
@@ -45,6 +49,9 @@ struct LiDARCameraView: View {
                 .multilineTextAlignment(.center)
                 .padding(10)
                 .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
+                if failed {
+                    Text("Kein Foto erhalten, bitte noch einmal.").font(.footnote).foregroundStyle(.red)
+                }
                 Spacer()
                 if hasDepth {
                     Label(camera.guidance.title.loc, systemImage: camera.guidance == .ready ? "checkmark.circle.fill" : "ruler")
@@ -61,6 +68,9 @@ struct LiDARCameraView: View {
                     Button {
                         isCapturing = true
                         camera.capture { image, depth in
+                            isCapturing = false
+                            failed = image == nil
+                            guard let image else { return }
                             onPick(image, depth)
                             dismiss()
                         }
@@ -80,6 +90,16 @@ struct LiDARCameraView: View {
         }
         .onAppear { camera.start() }
         .onDisappear { camera.stop() }
+    }
+}
+
+/// What both camera screens say when the user has not allowed the camera: where to allow it.
+struct CameraDeniedHint: View {
+    var body: some View {
+        Text("Kein Zugriff auf die Kamera. Erlaube ihn in den Einstellungen.")
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            Link(destination: url) { Text("Einstellungen öffnen") }  // Text(…) so the key is extracted
+        }
     }
 }
 

@@ -67,6 +67,8 @@ final class LiDARCamera: NSObject, ObservableObject {
 
     @Published private(set) var guidance: LiDARGuidance = .noDepth
     @Published private(set) var isRunning = false
+    /// The user has not allowed the camera: the preview stays black, the screens say where to allow it.
+    @Published private(set) var accessDenied = false
     /// The closest distance the camera focuses at, in mm, once it runs; the hint on screen uses it for cameras
     /// without depth (a 2x telephoto focuses much closer than the 17 Pro's 4x). Nil until known or unknown.
     @Published private(set) var minimumFocusDistance: Int?
@@ -81,7 +83,7 @@ final class LiDARCamera: NSObject, ObservableObject {
     private(set) var gravity: [Double]?
     private var device: AVCaptureDevice?
     private var lastDepthUpdate = Date.distantPast
-    private var onPhoto: ((UIImage, DepthScale?) -> Void)?
+    private var onPhoto: ((UIImage?, DepthScale?) -> Void)?
     private var onRawPhoto: ((AVCapturePhoto, CaptureMoment) -> Void)?
     /// How the phone and the camera stood when the raw photo was taken, read just before it.
     private var rawMoment = CaptureMoment()
@@ -120,7 +122,7 @@ final class LiDARCamera: NSObject, ObservableObject {
 
     func start() {
         AVCaptureDevice.requestAccess(for: .video) { [self] granted in
-            guard granted else { return }
+            guard granted else { DispatchQueue.main.async { self.accessDenied = true }; return }
             queue.async { [self] in
                 if session.inputs.isEmpty { configure() }
                 session.startRunning()
@@ -143,8 +145,9 @@ final class LiDARCamera: NSObject, ObservableObject {
         queue.async { [self] in session.stopRunning() }
     }
 
-    /// Takes a photo; `completion` gets the image and, when the depth was usable, its scale.
-    func capture(_ completion: @escaping (UIImage, DepthScale?) -> Void) {
+    /// Takes a photo; `completion` gets the image and, when the depth was usable, its scale, or nil when the
+    /// capture failed (an interrupted session), so the shutter can be freed.
+    func capture(_ completion: @escaping (UIImage?, DepthScale?) -> Void) {
         let angle = rotationAngle
         queue.async { [self] in
             onPhoto = completion
@@ -310,7 +313,10 @@ extension LiDARCamera: AVCapturePhotoCaptureDelegate {
         }
         let completion = onPhoto
         onPhoto = nil
-        guard let data = photo.fileDataRepresentation(), let image = UIImage(data: data) else { return }
+        guard let data = photo.fileDataRepresentation(), let image = UIImage(data: data) else {
+            DispatchQueue.main.async { completion?(nil, nil) }
+            return
+        }
         let scale = Self.depthScale(photo.depthData)
         DispatchQueue.main.async { completion?(image, scale) }
     }

@@ -426,6 +426,9 @@ private struct TrainingCameraSession: View {
                     .padding(10)
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
                 if let failure { Text(verbatim: failure).font(.footnote).foregroundStyle(.red) }
+                if camera.accessDenied {
+                    CameraDeniedHint().font(.footnote).padding(10).background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
+                }
                 Spacer()
                 // Without depth the camera cannot say how far it is: its closest focus tells how close to go (Raven 2026-11-09).
                 if camera.choice.deviceType != .builtInLiDARDepthCamera, let mm = camera.minimumFocusDistance {
