@@ -5613,6 +5613,29 @@
         }
       }
     },
+    "Zündung": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ignition"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "percussion"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "innesco"
+          }
+        }
+      }
+    },
     "gerade Hülse": {
       "extractionState": "manual",
       "localizations": {

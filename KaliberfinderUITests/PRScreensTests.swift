@@ -290,6 +290,22 @@ final class PRScreensTests: XCTestCase {
         snap("35-Aehnliche-Kaliber-1zu1")
     }
 
+    /// A cartridge made both as rimfire and centrefire (calibre-data, Raven 2026-11-09): the rimfire
+    /// Vetterli's page and its group with the centrefire version, which differ in ignition.
+    func testIgnitionGroup() {
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("Vetterli")
+        }
+        guard open(app.staticTexts["10.4x38 mm R Vetterli"].firstMatch) else { return }
+        snap("36-Vetterli")
+        guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Ähnliche Kaliber")).firstMatch) else { return }
+        XCTAssertTrue(app.navigationBars["Ähnliche Kaliber"].waitForExistence(timeout: 5), "The group page did not open")
+        snap("37-Vetterli-Zuendung")
+    }
+
     /// The hidden «Trainingsdaten» screen, on the example package of KaliberfinderTests/Captures so
     /// it shows the same series on every run: the saved series, and one of them opened from the list.
     func testTrainingCapture() {
