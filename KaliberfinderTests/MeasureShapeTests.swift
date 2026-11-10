@@ -14,7 +14,8 @@ final class MeasureShapeTests: XCTestCase {
         XCTAssertFalse(ids(straight).contains(".17 HMR"))
         XCTAssertTrue(straight.allSatisfy { $0.cartridge.dimensions.shoulder == nil && $0.cartridge.hasCase })
         let bottleneck = DimensionMatcher.rank(MeasuredDimensions(overallLength: 32.3, shape: .bottleneck))
-        // .22 TCM is just as close to 32.3 mm as the .17 HMR.
+        // The nearest bottleneck cases: .17 HMR (34.67 mm since its C.I.P. sheet), then 7.65 mm Parabellum (29.8 mm)
+        // and 7.63x25 mm Mauser (34.8 mm).
         XCTAssertTrue(ids(bottleneck).prefix(2).contains(".17 HMR"), "\(ids(bottleneck))")
         XCTAssertTrue(bottleneck.allSatisfy { $0.cartridge.dimensions.shoulder != nil })
     }
@@ -38,9 +39,10 @@ final class MeasureShapeTests: XCTestCase {
     func testCompareTakesEveryMatch() {
         let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 32.3))
         let compare = DimensionMatcher.toCompare(matches)
-        // .45 ACP, .32 S&W Long, .38 Super, 10 mm Auto and .17 HMR (and others) are all within 1 mm.
-        // (The .22 WMR is 34.3 mm long since calibre-data's municion.org check, so it no longer is.)
-        XCTAssertTrue(Set(compare.map(\.id)).isSuperset(of: [".45 ACP", ".32 S&W Long", ".38 Super", "10 mm Auto", ".17 HMR"]),
+        // .45 ACP, .32 S&W Long, .38 Super and 10 mm Auto (and others) are all within 1 mm. (The .22 WMR
+        // is 34.3 mm long since calibre-data's municion.org check, the .17 HMR 34.67 mm since its C.I.P.
+        // sheet, so they no longer are.)
+        XCTAssertTrue(Set(compare.map(\.id)).isSuperset(of: [".45 ACP", ".32 S&W Long", ".38 Super", "10 mm Auto"]),
                       "\(compare.map(\.id))")
         XCTAssertTrue(compare.allSatisfy { c in matches.first { $0.cartridge == c }?.fit != .poor })
         XCTAssertEqual(MeasureView.compareTitle(matches: matches, selected: 0),
