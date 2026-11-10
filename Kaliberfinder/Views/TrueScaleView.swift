@@ -62,7 +62,7 @@ private struct CentredOrFlushBottom: Layout {
 struct TrueScaleView: View {
     let cartridges: [Cartridge]
     /// Calibres a photo was compared with as empty cases: their labels add the case length, and
-    /// their drawings leave out the bullet when «Geschosse beim Vergleich mit leeren Hülsen zeigen» is off;
+    /// their drawings leave out the bullet when «Geschosse bei leeren Hülsen zeigen» is off;
     /// then «L» is the case length.
     var emptyCases: Set<String> = []
     /// Why a photo's matches that fit well are listed, by calibre id (`MatchesView.goodMatches`): shown in green under the name.
