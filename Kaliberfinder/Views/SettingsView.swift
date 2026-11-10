@@ -62,7 +62,7 @@ struct SettingsView: View {
                 ForEach(CompareLength.allCases) { Text($0.title.loc).tag($0) }
             }
             if LiDARCamera.isAvailable {
-                Toggle("Nach Trefferqualität sortieren", isOn: $compareByFit)
+                Toggle("Mit LiDAR nach Trefferqualität sortieren", isOn: $compareByFit)
             }
             Toggle("Geschosse bei leeren Hülsen zeigen", isOn: $bulletsOnCases)
         } header: {
