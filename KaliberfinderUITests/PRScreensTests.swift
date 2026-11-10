@@ -290,8 +290,8 @@ final class PRScreensTests: XCTestCase {
         snap("35-Aehnliche-Kaliber-1zu1")
     }
 
-    /// The hidden «Trainingsdaten» screen, on the example package of KaliberfinderTests/Captures so
-    /// it shows the same series on every run: the saved series, and one of them opened from the list.
+    /// The hidden «Trainingsdaten» screen, on the example packages of KaliberfinderTests/Captures so
+    /// it shows the same series on every run: the saved series, and two of them opened from the list.
     func testTrainingCapture() {
         let captures = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("KaliberfinderTests/Captures")
@@ -305,6 +305,11 @@ final class PRScreensTests: XCTestCase {
         guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
         XCTAssertTrue(app.buttons["Als ZIP teilen"].waitForExistence(timeout: 5), "The saved series did not open")
         snap("22-Trainingsdaten-Serie")
+        // The calliper fields with the calibre's drawing over them, on a bottleneck case.
+        back()
+        guard open(app.staticTexts["7.5x55 mm Swiss (GP 11)"].firstMatch) else { return }
+        scroll()
+        snap("22b-Trainingsdaten-Masszeichnung")
     }
 
     /// With the hidden training capture on, a calibre's detail page starts a series of that calibre.

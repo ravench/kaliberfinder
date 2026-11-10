@@ -186,6 +186,14 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertFalse(Measurements(bullet: 9).isEmpty)
     }
 
+    /// The series screen puts the calliper's values on the calibre's drawing, each on its own line
+    /// (Raven 2026-11-10); one not measured yet stays off the values.
+    func testMeasurementsGoOnTheDrawing() {
+        XCTAssertEqual(Measurements().drawn, [:])
+        XCTAssertEqual(Measurements(overallLength: 77.5, rim: 12.6, shoulderLength: 44.6).drawn, [.overall: 77.5, .rim: 12.6, .shoulderLength: 44.6])
+        XCTAssertEqual(Set(Measurements.drawn.keys), [.overall, .caseLength, .rim, .shoulder, .shoulderLength, .bullet])
+    }
+
     /// Country, materials, primer and the shoulder measurements are in package.json only once entered (2026-11-09).
     func testCountryMaterialsAndShoulderAreWrittenWhenEntered() throws {
         let url = try store.create(package())

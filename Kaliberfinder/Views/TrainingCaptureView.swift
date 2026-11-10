@@ -273,6 +273,12 @@ struct TrainingPackageView: View {
                 Text("Serie")
             }
             Section {
+                // Which value is which, on the calibre's drawing; an unlisted round has none.
+                if !package.isUnlisted, let cartridge = CartridgeCatalog.cartridge(id: package.calibre) {
+                    MeasurementsView(cartridge: cartridge, parts: Set(Measurements.drawn.keys), measured: measurements.wrappedValue.drawn)
+                        .frame(height: 300)
+                        .padding(.vertical, 8)
+                }
                 measured("Gesamtlänge", value: measurements.overallLength)
                 measured("Hülsenlänge", value: measurements.caseLength)
                 measured("Randdurchmesser", value: measurements.rim)

@@ -22,7 +22,12 @@ struct CartridgeDetailView: View {
                 NavigationLink { TrueScaleView(cartridges: [cartridge], linksToDetails: false) } label: {
                     Label("In Originalgrösse anzeigen", systemImage: "ruler")
                 }
-                NavigationLink { MeasurementsView(cartridge: cartridge) } label: {
+                NavigationLink {
+                    MeasurementsView(cartridge: cartridge)
+                        .padding()
+                        .navigationTitle(Text(verbatim: cartridge.name))
+                        .navigationBarTitleDisplayMode(.inline)
+                } label: {
                     Label("Masszeichnung anzeigen", systemImage: "pencil.and.ruler")
                 }
                 if let group = CartridgeCatalog.lookalikeGroup(of: cartridge) {

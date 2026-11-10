@@ -10,8 +10,12 @@ final class MeasurementsTests: XCTestCase {
     /// The labels at text size xxxLarge (MeasurementsView.largestLabel).
     private let largest = CGSize(width: 111, height: 45)
 
-    private func layout(_ id: String, size: CGSize? = nil, label: CGSize? = nil) throws -> DimensionLayout {
-        DimensionLayout(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: id)), size: size ?? phone, label: label ?? self.label)
+    /// The training series' calliper values (`TrainingPackageView`), in its list row on a 17 Pro and an SE.
+    private let calliper = Set(Measurements.drawn.keys)
+    private let rows = [CGSize(width: 322, height: 300), CGSize(width: 311, height: 300)]
+
+    private func layout(_ id: String, size: CGSize? = nil, label: CGSize? = nil, parts: Set<DimensionLayout.Part> = DimensionLayout.Part.catalogue) throws -> DimensionLayout {
+        DimensionLayout(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: id)), size: size ?? phone, label: label ?? self.label, parts: parts)
     }
 
     /// The drawing shows what the detail screen lists: no bullet on blanks and shot shells, no neck on
@@ -78,34 +82,50 @@ final class MeasurementsTests: XCTestCase {
     /// On a phone every calibre fits, also with the largest labels (text size xxxLarge): lines and labels
     /// stay on screen, the diameter labels keep the order of their lines, and labels do not overlap.
     func testEveryCalibreFitsAPhone() {
-        let slack: CGFloat = 1e-6
         for (size, asked) in [(phone, label), (small, label), (phone, largest), (small, largest)] {
             for c in CartridgeCatalog.all {
                 let layout = DimensionLayout(cartridge: c, size: size, label: asked)
-                let label = layout.labelSize
                 XCTAssertGreaterThanOrEqual(layout.scale, DimensionLayout.minScale - 1e-9, c.id)
-                XCTAssertLessThanOrEqual(label.width, asked.width)
-                let points = layout.dimensions.flatMap { [$0.from, $0.to] } + layout.lines.joined() + layout.arrowheads.joined()
-                for p in points {
-                    XCTAssertTrue(p.x >= -slack && p.x <= size.width + slack && p.y >= -slack && p.y <= size.height + slack, "\(c.id) \(p)")
-                }
-                let diameters = layout.dimensions.filter(\.trailing)
-                for (a, b) in zip(diameters, diameters.dropFirst()) {
-                    XCTAssertLessThan(a.from.y, b.from.y, "\(c.id) \(a.part) \(b.part)")
-                    XCTAssertGreaterThanOrEqual(b.anchor.y - a.anchor.y, label.height - slack, "\(c.id) \(a.part) \(b.part)")
-                }
-                let lengths = layout.dimensions.filter { !$0.trailing }
-                for (a, b) in zip(lengths, lengths.dropFirst()) {
-                    XCTAssertGreaterThanOrEqual(abs(b.anchor.y - a.anchor.y), label.height - slack, "\(c.id) lengths")
-                }
-                for d in layout.dimensions {
-                    let left = d.trailing ? d.anchor.x - label.width : d.anchor.x
-                    XCTAssertGreaterThanOrEqual(left, -slack, "\(c.id) \(d.part)")
-                    XCTAssertLessThanOrEqual(left + label.width, size.width + slack, "\(c.id) \(d.part)")
-                    XCTAssertGreaterThanOrEqual(d.anchor.y - label.height / 2, -slack, "\(c.id) \(d.part)")
-                    XCTAssertLessThanOrEqual(d.anchor.y + label.height / 2, size.height + slack, "\(c.id) \(d.part)")
+                XCTAssertLessThanOrEqual(layout.labelSize.width, asked.width)
+                assertFits(layout, in: size, c.id)
+            }
+        }
+    }
+
+    /// The training series' drawing fits its row too, for every calibre and both label sizes.
+    func testEveryCalibreFitsTheTrainingSeries() {
+        for size in rows {
+            for asked in [label, largest] {
+                for c in CartridgeCatalog.all {
+                    assertFits(DimensionLayout(cartridge: c, size: size, label: asked, parts: calliper), in: size, c.id)
                 }
             }
+        }
+    }
+
+    /// Lines and labels stay inside `size`, the diameter labels keep the order of their lines, and labels
+    /// do not overlap.
+    private func assertFits(_ layout: DimensionLayout, in size: CGSize, _ id: String) {
+        let slack: CGFloat = 1e-6, label = layout.labelSize
+        let points = layout.dimensions.flatMap { [$0.from, $0.to] } + layout.lines.joined() + layout.arrowheads.joined()
+        for p in points {
+            XCTAssertTrue(p.x >= -slack && p.x <= size.width + slack && p.y >= -slack && p.y <= size.height + slack, "\(id) \(p)")
+        }
+        let diameters = layout.dimensions.filter(\.trailing)
+        for (a, b) in zip(diameters, diameters.dropFirst()) {
+            XCTAssertLessThan(a.from.y, b.from.y, "\(id) \(a.part) \(b.part)")
+            XCTAssertGreaterThanOrEqual(b.anchor.y - a.anchor.y, label.height - slack, "\(id) \(a.part) \(b.part)")
+        }
+        let lengths = layout.dimensions.filter { !$0.trailing }
+        for (a, b) in zip(lengths, lengths.dropFirst()) {
+            XCTAssertGreaterThanOrEqual(abs(b.anchor.y - a.anchor.y), label.height - slack, "\(id) lengths")
+        }
+        for d in layout.dimensions {
+            let left = d.trailing ? d.anchor.x - label.width : d.anchor.x
+            XCTAssertGreaterThanOrEqual(left, -slack, "\(id) \(d.part)")
+            XCTAssertLessThanOrEqual(left + label.width, size.width + slack, "\(id) \(d.part)")
+            XCTAssertGreaterThanOrEqual(d.anchor.y - label.height / 2, -slack, "\(id) \(d.part)")
+            XCTAssertLessThanOrEqual(d.anchor.y + label.height / 2, size.height + slack, "\(id) \(d.part)")
         }
     }
 
@@ -151,15 +171,35 @@ final class MeasurementsTests: XCTestCase {
         let bullet = try XCTUnwrap(nine.dimensions.first { $0.part == .bullet })
         let overall = try XCTUnwrap(nine.dimensions.first { $0.part == .overall })
         let en = Locale(identifier: "en_US")
-        XCTAssertEqual(DimensionLayout.valueText(bullet, unit: .metric, locale: en), "Ø 9.01 mm")
-        XCTAssertEqual(DimensionLayout.valueText(bullet, unit: .imperial, locale: en), "Ø 0.355 in")
-        XCTAssertEqual(DimensionLayout.valueText(overall, unit: .metric, locale: en), "29.7 mm")
-        XCTAssertEqual(DimensionLayout.valueText(overall, unit: .imperial, locale: en), "1.169 in")
+        XCTAssertEqual(DimensionLayout.valueText(bullet.part, mm: bullet.mm, unit: .metric, locale: en), "Ø 9.01 mm")
+        XCTAssertEqual(DimensionLayout.valueText(bullet.part, mm: bullet.mm, unit: .imperial, locale: en), "Ø 0.355 in")
+        XCTAssertEqual(DimensionLayout.valueText(overall.part, mm: overall.mm, unit: .metric, locale: en), "29.7 mm")
+        XCTAssertEqual(DimensionLayout.valueText(overall.part, mm: overall.mm, unit: .imperial, locale: en), "1.169 in")
         // A whole number keeps a decimal in the drawing (Raven, 2026-11-09: «Show 9mm as 9.0mm»).
         let two23 = try layout(".223 Remington")
         let shoulder = try XCTUnwrap(two23.dimensions.first { $0.part == .shoulder })
-        XCTAssertEqual(DimensionLayout.valueText(shoulder, unit: .metric, locale: en), "Ø 9.0 mm")
+        XCTAssertEqual(DimensionLayout.valueText(shoulder.part, mm: shoulder.mm, unit: .metric, locale: en), "Ø 9.0 mm")
         XCTAssertEqual(LengthUnit.metric.format(9, locale: en), "9 mm", "elsewhere the number stays as it was")
+        // A calliper value not measured yet.
+        XCTAssertEqual(DimensionLayout.valueText(.rim, mm: nil, unit: .metric), "Ø –")
+        XCTAssertEqual(DimensionLayout.valueText(.shoulderLength, mm: nil, unit: .metric), "–")
+        XCTAssertEqual(DimensionLayout.valueText(.shoulderLength, mm: 44.65, unit: .metric, locale: en), "44.65 mm")
+    }
+
+    /// The training series draws only what the calliper measures (Raven 2026-11-10): on a bottleneck case
+    /// also the base to where the shoulder starts, level with the shoulder's diameter, as the inner length.
+    func testTrainingSeriesDrawsTheCalliperValues() throws {
+        let gp11 = try layout("7.5x55 mm Swiss (GP 11)", parts: calliper)
+        XCTAssertEqual(gp11.dimensions.map(\.part), [.bullet, .shoulder, .rim, .shoulderLength, .caseLength, .overall])
+        XCTAssertEqual(try layout("9x19 mm", parts: calliper).dimensions.map(\.part), [.bullet, .rim, .caseLength, .overall], "no shoulder")
+        let toShoulder = try XCTUnwrap(gp11.dimensions.first { $0.part == .shoulderLength })
+        let shoulder = try XCTUnwrap(gp11.dimensions.first { $0.part == .shoulder })
+        // GP 11's generated outline: the shoulder meets the body 32.9 mm below the tip, 44.6 mm above the base.
+        XCTAssertEqual(toShoulder.mm, 44.6, accuracy: 0.15)
+        XCTAssertEqual(Double(shoulder.from.y - toShoulder.from.y), 0.5 * gp11.scale, accuracy: 1e-6, "the shoulder's line is 0.5 mm lower, on the body")
+        let caseLength = try XCTUnwrap(gp11.dimensions.first { $0.part == .caseLength })
+        XCTAssertEqual(Double(caseLength.from.x - toShoulder.from.x), DimensionLayout.lengthSpacing, accuracy: 1e-6)
+        XCTAssertNil(DimensionLayout.lengths(of: try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))).first { $0.part == .shoulderLength })
     }
 
     /// A ball's diameter is at its equator.

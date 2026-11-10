@@ -1,0 +1,17 @@
+{
+  "app" : "",
+  "calibre" : "7.5x55 mm Swiss (GP 11)",
+  "created" : "2026-11-04T23:00:00Z",
+  "device" : "",
+  "format" : 1,
+  "measurements" : {
+    "bullet" : 7.77,
+    "caseLength" : 55.6,
+    "overallLength" : 77.5,
+    "rim" : 12.6,
+    "shoulder" : 11.6
+  },
+  "note" : "Example series without photos for the PR screens tour: a bottleneck case on the measuring drawing, the base to the shoulder not measured yet. The values are the catalogue's.",
+  "part" : "cartridge",
+  "system" : ""
+}
