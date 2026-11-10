@@ -223,7 +223,7 @@ final class PRScreensTests: XCTestCase {
     }
 
     /// One of Raven's empty 6 mm BR cases: its outline ends flat at the mouth, without a bullet.
-    /// Then its match at 1:1 with «Geschosse beim Vergleich mit leeren Hülsen zeigen» off (the matches don't use it).
+    /// Then its match at 1:1 with «Geschosse bei leeren Hülsen zeigen» off (the matches don't use it).
     func testEmptyCasePhoto() {
         app.launchArguments += ["-showBulletsOnEmptyCases", "NO"]
         photoMatches("photo-6mmbr-case", shot: "15-Foto-leere-Huelse", compareShot: "18-Foto-Huelse-ohne-Geschoss")
@@ -288,6 +288,22 @@ final class PRScreensTests: XCTestCase {
         guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "1:1 vergleichen")).firstMatch),
               app.navigationBars["1:1"].waitForExistence(timeout: 5) else { return }
         snap("35-Aehnliche-Kaliber-1zu1")
+    }
+
+    /// A cartridge made both as rimfire and centrefire (calibre-data, Raven 2026-11-09): the rimfire
+    /// Vetterli's page and its group with the centrefire version, which differ in ignition.
+    func testIgnitionGroup() {
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("Vetterli")
+        }
+        guard open(app.staticTexts["10.4x38 mm R Vetterli"].firstMatch) else { return }
+        snap("36-Vetterli")
+        guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Ähnliche Kaliber")).firstMatch) else { return }
+        XCTAssertTrue(app.navigationBars["Ähnliche Kaliber"].waitForExistence(timeout: 5), "The group page did not open")
+        snap("37-Vetterli-Zuendung")
     }
 
     /// The hidden «Trainingsdaten» screen, on the example package of KaliberfinderTests/Captures so
