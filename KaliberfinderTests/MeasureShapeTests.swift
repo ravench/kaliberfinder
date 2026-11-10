@@ -14,7 +14,7 @@ final class MeasureShapeTests: XCTestCase {
         XCTAssertFalse(ids(straight).contains(".17 HMR"))
         XCTAssertTrue(straight.allSatisfy { $0.cartridge.dimensions.shoulder == nil && $0.cartridge.hasCase })
         let bottleneck = DimensionMatcher.rank(MeasuredDimensions(overallLength: 32.3, shape: .bottleneck))
-        // The nearest bottleneck cases: .17 HMR (34.67 mm since its C.I.P. sheet) and 7.65 mm Parabellum (34.8 mm).
+        // The nearest bottleneck cases: .17 HMR (34.67 mm since its C.I.P. sheet) and 7.63x25 mm Mauser (34.8 mm).
         XCTAssertTrue(ids(bottleneck).prefix(2).contains(".17 HMR"), "\(ids(bottleneck))")
         XCTAssertTrue(bottleneck.allSatisfy { $0.cartridge.dimensions.shoulder != nil })
     }
