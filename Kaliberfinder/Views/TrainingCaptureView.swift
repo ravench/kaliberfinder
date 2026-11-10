@@ -296,8 +296,8 @@ struct TrainingPackageView: View {
         .scrollDismissesKeyboard(.interactively)
         .onAppear(perform: reload)
         .onChange(of: package) { _, new in
-            // Written as typed; nothing measured and no atypical bullet leave their keys out of package.json.
-            guard new != capture.package else { return }
+            // Written as typed, also back to the value the screen opened with (review 2026-11-10); nothing
+            // measured and no atypical bullet leave their keys out of package.json.
             do { try CaptureStore.update(new, at: capture.url) } catch { status = error.localizedDescription }
         }
         .fullScreenCover(isPresented: $showCamera, onDismiss: reload) {

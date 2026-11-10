@@ -7,6 +7,8 @@ struct CalibrationView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var value: Double = 6
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
+    /// The slider's and the ± buttons' range, inside what `ScreenScale.calibrated` accepts (3…9).
+    static let range = 4.0...8.0
 
     var body: some View {
         let card = ScreenScale.cardSize
@@ -21,15 +23,15 @@ struct CalibrationView: View {
                     .background(RoundedRectangle(cornerRadius: 3.18 * value).fill(Color.accentColor.opacity(0.08)))
                     .frame(width: card.height * value, height: card.width * value)
                 VStack {
-                    Slider(value: $value, in: 4...8)
+                    Slider(value: $value, in: Self.range)
                     HStack {
-                        Button { value -= 0.005 } label: { Image(systemName: "minus.circle") }
+                        Button { value = max(Self.range.lowerBound, value - 0.005) } label: { Image(systemName: "minus.circle") }
                             .accessibilityLabel("Kleiner")
                         Spacer()
                         Text(verbatim: unit.scaleText(pointsPerMM: value, precise: true))
                             .font(.footnote.monospacedDigit())
                         Spacer()
-                        Button { value += 0.005 } label: { Image(systemName: "plus.circle") }
+                        Button { value = min(Self.range.upperBound, value + 0.005) } label: { Image(systemName: "plus.circle") }
                             .accessibilityLabel("Grösser")
                     }
                     .font(.title2)
