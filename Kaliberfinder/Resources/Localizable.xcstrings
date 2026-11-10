@@ -1680,29 +1680,6 @@
         }
       }
     },
-    "Foto": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Photo"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Photo"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Foto"
-          }
-        }
-      }
-    },
     "Foto aufnehmen": {
       "extractionState": "manual",
       "localizations": {
@@ -1814,6 +1791,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Foto ricevuta. Apri Kaliberfinder per vedere le corrispondenze."
+          }
+        }
+      }
+    },
+    "Fotoerkennung": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo recognition"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconnaissance photo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riconoscimento foto"
           }
         }
       }

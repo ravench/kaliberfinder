@@ -16,7 +16,7 @@ T = {
     "Sortieren nach": ("Sort by", "Trier par", "Ordina per"),
     "Nach Trefferqualität sortieren": ("Sort by match quality", "Trier par qualité de correspondance", "Ordina per qualità della corrispondenza"),
     "Geschosse bei leeren Hülsen zeigen": ("Show bullets on empty cases", "Afficher les projectiles sur les douilles vides", "Mostra le palle sui bossoli vuoti"),
-    "Foto": ("Photo", "Photo", "Foto"),
+    "Fotoerkennung": ("Photo recognition", "Reconnaissance photo", "Riconoscimento foto"),
     "Entwickler": ("Developer", "Développeur", "Sviluppatore"),
     "Info": ("About", "À propos", "Info"),
     "Ähnliche Kaliber": ("Similar calibres", "Calibres semblables", "Calibri simili"),

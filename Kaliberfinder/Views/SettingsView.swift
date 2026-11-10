@@ -2,11 +2,11 @@ import SwiftUI
 
 /// The settings page's sections, top to bottom. The recognition switches stay on the home screen.
 enum SettingsSection: CaseIterable {
-    case units, realSize, compare, photo, info
+    case units, compare, photo, info
 }
 
 /// Settings opened as a sheet by the home screen's gear button (tidied up with Raven, 2026-11-10): units,
-/// screen size, the 1:1 comparison, the photo, and the app's version, calibre data and licence line.
+/// the 1:1 comparison (with the screen's real size), the photo, and the app's version, calibre data and licence line.
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var scale: ScaleModel
@@ -25,7 +25,6 @@ struct SettingsView: View {
             ForEach(SettingsSection.allCases, id: \.self) { section in
                 switch section {
                 case .units: units
-                case .realSize: realSize
                 case .compare: compare
                 case .photo: photo
                 case .info: info
@@ -48,7 +47,8 @@ struct SettingsView: View {
         }
     }
 
-    private var realSize: some View {
+    /// Everything about the 1:1 comparison in one place: the screen's size, the order, the LiDAR phones' switch, the bullets.
+    private var compare: some View {
         Section {
             NavigationLink { CalibrationView() } label: {
                 LabeledContent {
@@ -58,16 +58,6 @@ struct SettingsView: View {
                     Text(scale.resolution.source.title.loc)
                 }
             }
-        } header: {
-            Text("Originalgrösse")
-        } footer: {
-            Text("Prüfe die Grösse einmal mit einer Bankkarte.")
-        }
-    }
-
-    /// Everything about the 1:1 comparison in one place: the order, the LiDAR phones' switch, the bullets.
-    private var compare: some View {
-        Section {
             Picker("Sortieren nach", selection: $compareLength) {
                 ForEach(CompareLength.allCases) { Text($0.title.loc).tag($0) }
             }
@@ -79,7 +69,10 @@ struct SettingsView: View {
             Text("1:1-Vergleich")
         } footer: {
             if LiDARCamera.isAvailable {
-                Text("Nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone.")
+                Text("Prüfe die Grösse einmal mit einer Bankkarte.") + Text(verbatim: " ")
+                    + Text("Nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone.")
+            } else {
+                Text("Prüfe die Grösse einmal mit einer Bankkarte.")
             }
         }
     }
@@ -88,7 +81,7 @@ struct SettingsView: View {
         Section {
             Toggle("Erkennung farbig zeigen", isOn: $partColours)
         } header: {
-            Text("Foto")
+            Text("Fotoerkennung")
         } footer: {
             Text("Grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Körper.")
         }
