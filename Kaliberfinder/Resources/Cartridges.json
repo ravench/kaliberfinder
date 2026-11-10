@@ -1,8 +1,8 @@
 {
  "version": 1,
  "calibreData": {
-  "commit": "c999a0ca73cbd7de149227b2b87e2bbcc87ea77b",
-  "date": "2026-11-09T22:32:24+01:00"
+  "commit": "f0492012d258bfc5eedb3b204f62a3d8fe32d107",
+  "date": "2026-11-10T06:58:44+01:00"
  },
  "cartridges": [
   {
@@ -15479,7 +15479,7 @@
    "id": "10.4x38 mm R Vetterli",
    "name": "10.4x38 mm R Vetterli",
    "category": "Schwarzpulver",
-   "kind": "rimmed",
+   "kind": "rimfire",
    "aliases": [
     "vetterli",
     "10.4",
@@ -15509,11 +15509,51 @@
    "outline": {
     "width": 15.7,
     "height": 56.22,
-    "case": "M15.70 56.22 L15.70 54.72 L14.66 54.72 L14.40 30.11 L13.56 25.47 L13.56 18.01 L2.13 18.01 L2.13 25.47 L1.30 30.11 L1.04 54.72 L0.00 54.72 L0.00 56.22 Z",
+    "case": "M15.70 56.22 L15.70 55.12 L14.66 55.12 L14.40 30.11 L13.56 25.47 L13.56 18.01 L2.13 18.01 L2.13 25.47 L1.30 30.11 L1.04 55.12 L0.00 55.12 L0.00 56.22 Z",
     "bullet": "M13.31 18.01 L13.31 14.05 L13.30 13.04 L13.25 12.04 L13.18 11.04 L13.08 10.03 L12.95 9.03 L12.78 8.03 L12.58 7.02 L12.33 6.02 L12.03 5.02 L11.67 4.01 L11.23 3.01 L10.66 2.01 L9.88 1.00 L8.72 0.00 L7.85 0.00 L6.98 0.00 L5.82 1.00 L5.04 2.01 L4.47 3.01 L4.03 4.01 L3.67 5.02 L3.37 6.02 L3.12 7.02 L2.92 8.03 L2.75 9.03 L2.62 10.03 L2.52 11.04 L2.45 12.04 L2.40 13.04 L2.39 14.05 L2.39 18.01 Z",
     "patch": "M13.31 18.01 L13.31 9.00 L2.39 9.00 L2.39 18.01 Z",
     "bulletMaterial": "lead",
     "caseMaterial": "copper"
+   }
+  },
+  {
+   "id": "10.4x38 mm R Vetterli Centrefire",
+   "name": "10.4x38 mm R Vetterli Centrefire",
+   "category": "Schwarzpulver",
+   "kind": "rimmed",
+   "aliases": [
+    "vetterlicf",
+    "10.4cf",
+    "10.4x38cf",
+    "41swisscf"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "rare": true,
+   "country": {
+    "code": "CH",
+    "name": "Schweiz",
+    "flag": "🇨🇭"
+   },
+   "worldwide": false,
+   "blank": false,
+   "dimensions": {
+    "rim": 15.7,
+    "base": 13.62,
+    "neck": 11.43,
+    "caseLength": 38.21,
+    "overallLength": 56.22,
+    "bullet": 10.92,
+    "shoulder": 13.1
+   },
+   "outline": {
+    "width": 15.7,
+    "height": 56.22,
+    "case": "M15.70 56.22 L15.70 54.72 L14.66 54.72 L14.40 30.11 L13.56 25.47 L13.56 18.01 L2.13 18.01 L2.13 25.47 L1.30 30.11 L1.04 54.72 L0.00 54.72 L0.00 56.22 Z",
+    "bullet": "M13.31 18.01 L13.31 14.05 L13.30 13.04 L13.25 12.04 L13.18 11.04 L13.08 10.03 L12.95 9.03 L12.78 8.03 L12.58 7.02 L12.33 6.02 L12.03 5.02 L11.67 4.01 L11.23 3.01 L10.66 2.01 L9.88 1.00 L8.72 0.00 L7.85 0.00 L6.98 0.00 L5.82 1.00 L5.04 2.01 L4.47 3.01 L4.03 4.01 L3.67 5.02 L3.37 6.02 L3.12 7.02 L2.92 8.03 L2.75 9.03 L2.62 10.03 L2.52 11.04 L2.45 12.04 L2.40 13.04 L2.39 14.05 L2.39 18.01 Z",
+    "patch": "M13.31 18.01 L13.31 9.00 L2.39 9.00 L2.39 18.01 Z",
+    "bulletMaterial": "lead"
    },
    "primer": {
     "type": "large-rifle",
@@ -15728,6 +15768,46 @@
    }
   },
   {
+   "id": ".44 Henry Centrefire",
+   "name": ".44 Henry Centrefire",
+   "category": "Schwarzpulver",
+   "kind": "rimmed",
+   "aliases": [
+    "44henrycf",
+    "44-200"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
+   "blank": false,
+   "dimensions": {
+    "rim": 13.28,
+    "base": 11.3,
+    "neck": 11.25,
+    "caseLength": 22.35,
+    "overallLength": 34.54,
+    "bullet": 10.74
+   },
+   "outline": {
+    "width": 13.28,
+    "height": 34.54,
+    "case": "M13.28 34.54 L13.28 33.04 L12.29 33.04 L12.27 12.19 L1.01 12.19 L0.99 33.04 L0.00 33.04 L0.00 34.54 Z",
+    "bullet": "M12.01 12.19 L12.01 8.53 L12.00 7.92 L11.95 7.31 L11.89 6.70 L11.79 6.09 L11.66 5.49 L11.49 4.88 L11.29 4.27 L11.05 3.66 L10.75 3.05 L10.40 2.44 L9.96 1.83 L9.59 1.22 L9.59 0.61 L9.59 0.00 L6.64 0.00 L3.69 0.00 L3.69 0.61 L3.69 1.22 L3.32 1.83 L2.88 2.44 L2.53 3.05 L2.23 3.66 L1.99 4.27 L1.79 4.88 L1.62 5.49 L1.49 6.09 L1.39 6.70 L1.33 7.31 L1.28 7.92 L1.27 8.53 L1.27 12.19 Z",
+    "bulletMaterial": "lead"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
+   }
+  },
+  {
    "id": ".44-40 WCF",
    "name": ".44-40 WCF",
    "category": "Schwarzpulver",
@@ -15851,6 +15931,46 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
+   }
+  },
+  {
+   "id": ".32 Long Centrefire",
+   "name": ".32 Long Centrefire",
+   "category": "Schwarzpulver",
+   "kind": "rimmed",
+   "aliases": [
+    "32longcf",
+    "32cflong"
+   ],
+   "displayAliases": [],
+   "headstamps": [],
+   "obsolete": true,
+   "rare": true,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
+   "blank": false,
+   "dimensions": {
+    "rim": 9.37,
+    "base": 8.15,
+    "neck": 8.08,
+    "caseLength": 20.82,
+    "overallLength": 34.29,
+    "bullet": 8.05
+   },
+   "outline": {
+    "width": 9.37,
+    "height": 34.29,
+    "case": "M9.37 34.29 L9.37 32.79 L8.76 32.79 L8.72 13.47 L0.64 13.47 L0.61 32.79 L0.00 32.79 L0.00 34.29 Z",
+    "bullet": "M8.71 13.47 L8.71 10.51 L8.70 9.76 L8.67 9.01 L8.62 8.26 L8.54 7.50 L8.44 6.75 L8.32 6.00 L8.17 5.25 L7.99 4.50 L7.77 3.75 L7.50 3.00 L7.17 2.25 L6.76 1.50 L6.18 0.75 L5.33 0.00 L4.68 0.00 L4.04 0.00 L3.19 0.75 L2.61 1.50 L2.20 2.25 L1.87 3.00 L1.60 3.75 L1.38 4.50 L1.20 5.25 L1.05 6.00 L0.93 6.75 L0.83 7.50 L0.75 8.26 L0.70 9.01 L0.67 9.76 L0.66 10.51 L0.66 13.47 Z",
+    "bulletMaterial": "lead"
+   },
+   "primer": {
+    "type": "small-rifle",
+    "diameter": 4.45
    }
   },
   {
@@ -16423,11 +16543,11 @@
   },
   {
    "differs": [
-    "seating"
+    "load"
    ],
    "calibres": [
-    ".32 S&W Long",
-    ".32 S&W Long Wadcutter"
+    ".38 ACP",
+    ".38 Super"
    ]
   },
   {
@@ -16435,8 +16555,26 @@
     "load"
    ],
    "calibres": [
-    ".38 ACP",
-    ".38 Super"
+    "9x19 mm",
+    "9 mm Glisenti"
+   ]
+  },
+  {
+   "differs": [
+    "load"
+   ],
+   "calibres": [
+    "9x23 mm Largo",
+    "9x23 mm Winchester"
+   ]
+  },
+  {
+   "differs": [
+    "seating"
+   ],
+   "calibres": [
+    ".32 S&W Long",
+    ".32 S&W Long Wadcutter"
    ]
   },
   {
@@ -16450,38 +16588,13 @@
   },
   {
    "differs": [
-    "rim"
+    "rim",
+    "load"
    ],
    "calibres": [
-    ".45 ACP",
-    ".45 Auto Rim"
-   ]
-  },
-  {
-   "differs": [
-    "length"
-   ],
-   "calibres": [
-    ".450/400 Nitro Express 3 inch",
-    ".450/400 Nitro Express 3¼ inch"
-   ]
-  },
-  {
-   "differs": [
-    "rim"
-   ],
-   "calibres": [
-    "5.6x50 mm Magnum",
-    "5.6x50 mm R Magnum"
-   ]
-  },
-  {
-   "differs": [
-    "rim"
-   ],
-   "calibres": [
-    "5.6x57 mm",
-    "5.6x57 mm R"
+    "7x57 mm Mauser",
+    "7x57 mm R",
+    ".275 Rigby"
    ]
   },
   {
@@ -16491,44 +16604,6 @@
    "calibres": [
     "6.5x57 mm Mauser",
     "6.5x57 mm R"
-   ]
-  },
-  {
-   "differs": [
-    "rim"
-   ],
-   "calibres": [
-    "6.5x65 mm RWS",
-    "6.5x65 mm R RWS"
-   ]
-  },
-  {
-   "differs": [
-    "rim"
-   ],
-   "calibres": [
-    "6.5x68 mm",
-    "6.5x68 mm R"
-   ]
-  },
-  {
-   "differs": [
-    "bore"
-   ],
-   "calibres": [
-    "7.62x54 mm R",
-    "7.62x53 mm R"
-   ]
-  },
-  {
-   "differs": [
-    "rim",
-    "load"
-   ],
-   "calibres": [
-    "7x57 mm Mauser",
-    "7x57 mm R",
-    ".275 Rigby"
    ]
   },
   {
@@ -16558,6 +16633,51 @@
     "rim"
    ],
    "calibres": [
+    ".45 ACP",
+    ".45 Auto Rim"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
+    "5.6x50 mm Magnum",
+    "5.6x50 mm R Magnum"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
+    "5.6x57 mm",
+    "5.6x57 mm R"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
+    "6.5x65 mm RWS",
+    "6.5x65 mm R RWS"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
+    "6.5x68 mm",
+    "6.5x68 mm R"
+   ]
+  },
+  {
+   "differs": [
+    "rim"
+   ],
+   "calibres": [
     "8x60 mm S",
     "8x60 mm RS"
    ]
@@ -16574,29 +16694,66 @@
   },
   {
    "differs": [
-    "load"
-   ],
-   "calibres": [
-    "9x19 mm",
-    "9 mm Glisenti"
-   ]
-  },
-  {
-   "differs": [
-    "load"
-   ],
-   "calibres": [
-    "9x23 mm Largo",
-    "9x23 mm Winchester"
-   ]
-  },
-  {
-   "differs": [
     "rim"
    ],
    "calibres": [
     "9x57 mm Mauser",
     "9x57 mm R"
+   ]
+  },
+  {
+   "differs": [
+    "bore"
+   ],
+   "calibres": [
+    "7.62x54 mm R",
+    "7.62x53 mm R"
+   ]
+  },
+  {
+   "differs": [
+    "length"
+   ],
+   "calibres": [
+    ".450/400 Nitro Express 3 inch",
+    ".450/400 Nitro Express 3¼ inch"
+   ]
+  },
+  {
+   "differs": [
+    "ignition"
+   ],
+   "calibres": [
+    "10.4x38 mm R Vetterli",
+    "10.4x38 mm R Vetterli Centrefire"
+   ]
+  },
+  {
+   "differs": [
+    "ignition"
+   ],
+   "calibres": [
+    ".44 Henry",
+    ".44 Henry Centrefire"
+   ]
+  },
+  {
+   "differs": [
+    "ignition"
+   ],
+   "calibres": [
+    ".32 Long Rimfire",
+    ".32 Long Centrefire"
+   ]
+  },
+  {
+   "differs": [
+    "ignition",
+    "length"
+   ],
+   "calibres": [
+    "10.4 mm Swiss Ordnance 1872 Rimfire",
+    "10.4 mm Swiss Ordnance 1878"
    ]
   }
  ]

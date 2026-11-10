@@ -89,8 +89,8 @@ def build():
 
 def lookalikes(names):
     """The lookalike groups (calibre-data LOOKALIKES): calibres of their own that look alike, the parent
-    first, with what tells them apart ("rim", "bore", "length", "seating", "load"). Raven, 2026-11-08: the
-    app shows every member's group and compares it at 1:1."""
+    first, with what tells them apart ("rim", "bore", "length", "seating", "load", "ignition"). Raven,
+    2026-11-08: the app shows every member's group and compares it at 1:1."""
     groups = [{"differs": list(differs), "calibres": list(members)} for differs, members in LOOKALIKES]
     unknown = {n for g in groups for n in g["calibres"]} - set(names)
     assert not unknown, f"lookalikes of unknown calibres: {unknown}"
