@@ -52,9 +52,9 @@ parentheses.
 - **Units** (Einheiten): metric (mm, the default) or US imperial (inches, three decimals,
   ruler in 1/16 in). Data and matching stay in millimetres; only display and input change.
 
-The cartridge data is a copy of the catalogue in
-[Schiesstagebuch](https://github.com/ravench/schiesstagebuch). Dimensions are rounded
-reference values (CIP/SAAMI), not reloading data.
+The cartridge data comes from the shared [calibre-data](https://github.com/ravench/calibre-data)
+repository (a git submodule at `calibre-data/`, also used by Schiesstagebuch), one TOML file per
+calibre. Dimensions are rounded reference values (CIP/SAAMI), not reloading data.
 
 ## Building
 
@@ -69,7 +69,7 @@ open Kaliberfinder.xcodeproj
 If you build your own copy, replace `DEVELOPMENT_TEAM` and the bundle id in `project.yml`
 with your own, or pick your team under Signing & Capabilities.
 
-Generated files (commit them after a change):
+Generated files (commit them after a change; the tools need Python 3.11 or newer):
 
 ```sh
 python3 tools/generate_data.py   # Resources/Cartridges.json from the calibre-data submodule

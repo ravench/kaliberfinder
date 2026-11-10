@@ -12,12 +12,20 @@ INFO_PLIST = {
 }
 
 T = {
+    "1:1-Vergleich": ("1:1 comparison", "Comparaison 1:1", "Confronto 1:1"),
+    "Sortieren nach": ("Sort by", "Trier par", "Ordina per"),
+    "Nach Trefferqualität sortieren": ("Sort by match quality", "Trier par qualité de correspondance", "Ordina per qualità della corrispondenza"),
+    "Geschosse bei leeren Hülsen zeigen": ("Show bullets on empty cases", "Afficher les projectiles sur les douilles vides", "Mostra le palle sui bossoli vuoti"),
+    "Fotoerkennung": ("Photo recognition", "Reconnaissance photo", "Riconoscimento foto"),
+    "Entwickler": ("Developer", "Développeur", "Sviluppatore"),
+    "Info": ("About", "À propos", "Info"),
     "Ähnliche Kaliber": ("Similar calibres", "Calibres semblables", "Calibri simili"),
     "Unterscheiden sich in: %@": ("Differ in: %@", "Diffèrent par : %@", "Differiscono per: %@"),
     "Laufdurchmesser": ("bore", "calibre du canon", "diametro della canna"),
     "Länge": ("length", "longueur", "lunghezza"),
     "Setztiefe des Geschosses": ("bullet seating", "enfoncement du projectile", "inserimento della palla"),
     "Ladung": ("load", "charge", "carica"),
+    "Zündung": ("ignition", "percussion", "percussione"),
     "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, gut %lld cm darüber.": ("Lay the cartridge flat on a light background and hold the device parallel, a good %lld cm above it.", "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à un bon %lld cm au-dessus.", "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, a un buon %lld cm sopra."),
     "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah wie es scharf stellt.": ("Lay the cartridge flat on a light background and hold the device parallel, as close as it focuses.", "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, aussi près qu'il fait la mise au point.", "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, vicino quanto mette a fuoco."),
     "LiDAR": ("LiDAR", "LiDAR", "LiDAR"),
@@ -49,8 +57,6 @@ T = {
     "Gerundete Richtwerte nach CIP/SAAMI, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.": ("Rounded reference values after CIP/SAAMI, not reloading data. Primer: Boxer; military cases may have Berdan.", "Valeurs indicatives arrondies selon CIP/SAAMI, pas de données de rechargement. Amorce : Boxer ; les douilles militaires peuvent être Berdan.", "Valori indicativi arrotondati secondo CIP/SAAMI, non dati di ricarica. Innesco: Boxer; i bossoli militari possono avere Berdan."),
     "Wähle die Kaliber aus, die du nebeneinander sehen willst.": ("Pick the calibres you want to see side by side.", "Choisissez les calibres que vous voulez voir côte à côte.", "Scegli i calibri che vuoi vedere uno accanto all'altro."),
     "Für Patronen, die die App nicht kennt: eigener Name, von der Auswertung ausgenommen.": ("For rounds the app does not know: your own name, left out of the evaluation.", "Pour des cartouches inconnues de l'app : votre propre nom, exclues de l'évaluation.", "Per cartucce che l'app non conosce: nome proprio, escluse dalla valutazione."),
-    "1:1 sortieren nach": ("Sort 1:1 by", "Trier le 1:1 par", "Ordina 1:1 per"),
-    "Reihenfolge der Patronen im 1:1-Vergleich.": ("Order of the cartridges in the 1:1 comparison.", "Ordre des cartouches dans la comparaison 1:1.", "Ordine delle cartucce nel confronto 1:1."),
     # Calibre tags and countries (CartridgeRow, CartridgeDetailView). Country names come from
     # generate_data.COUNTRY_NAMES.
     "Selten": ("Rare", "Rare", "Raro"),
@@ -98,10 +104,6 @@ T = {
     "Erkannt: %@": ("Detected: %@", "Détecté : %@", "Riconosciuto: %@"),
     "Flaschenhals": ("bottleneck", "à épaulement", "a collo di bottiglia"),
     "Leere Hülse": ("Empty case", "Douille vide", "Bossolo vuoto"),
-    "Geschosse beim Vergleich mit leeren Hülsen zeigen": ("Show bullets when comparing empty cases", "Afficher les projectiles en comparant des douilles vides",
-                                                          "Mostra le palle nel confronto con bossoli vuoti"),
-    "1:1-Vergleich nach Trefferqualität sortieren": ("Sort the 1:1 comparison by match quality", "Trier la comparaison 1:1 par qualité de correspondance",
-                                                     "Ordina il confronto 1:1 per qualità della corrispondenza"),
     "leere Hülse": ("empty case", "douille vide", "bossolo vuoto"),
     "Patrone": ("Cartridge", "Cartouche", "Cartuccia"),
     "mit Rand": ("rimmed", "à bourrelet", "con orlo"),
@@ -291,6 +293,7 @@ T = {
     "Erkennung farbig zeigen": ("Show detection in colour", "Afficher la détection en couleur", "Mostra il rilevamento a colori"),
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
     "Kamera": ("Camera", "Caméra", "Fotocamera"),
+    "Scharf ab %lld cm": ("In focus from %lld cm", "Net à partir de %lld cm", "A fuoco da %lld cm"),
     "Neue Aufnahmeserie": ("New capture series", "Nouvelle série de prises", "Nuova serie di scatti"),
     "Wähle das Kaliber, das du fotografierst, und mache mehrere Fotos davon. Gespeichert werden das Foto, die LiDAR-Tiefe, die Kameradaten und die Vision-Maske. Teile die Serie als ZIP, sie kommt in die Tests.": (
         "Choose the calibre you are photographing and take several photos of it. The photo, the LiDAR depth, the camera data and the Vision mask are saved. Share the series as a ZIP; it goes into the tests.",
