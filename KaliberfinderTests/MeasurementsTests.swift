@@ -194,8 +194,9 @@ final class MeasurementsTests: XCTestCase {
         XCTAssertEqual(try layout("9x19 mm", parts: calliper).dimensions.map(\.part), [.bullet, .rim, .caseLength, .overall], "no shoulder")
         let toShoulder = try XCTUnwrap(gp11.dimensions.first { $0.part == .shoulderLength })
         let shoulder = try XCTUnwrap(gp11.dimensions.first { $0.part == .shoulder })
-        // GP 11's generated outline: the shoulder meets the body 32.9 mm below the tip, 44.6 mm above the base.
-        XCTAssertEqual(toShoulder.mm, 44.6, accuracy: 0.15)
+        // GP 11's generated outline: the shoulder meets the body 32.92 mm below the tip; the 0.1 mm search
+        // reaches the shoulder's width (less 0.15 mm) at 32.8 mm, 44.7 mm above the base.
+        XCTAssertEqual(toShoulder.mm, 44.7, accuracy: 0.05)
         XCTAssertEqual(Double(shoulder.from.y - toShoulder.from.y), 0.5 * gp11.scale, accuracy: 1e-6, "the shoulder's line is 0.5 mm lower, on the body")
         let caseLength = try XCTUnwrap(gp11.dimensions.first { $0.part == .caseLength })
         XCTAssertEqual(Double(caseLength.from.x - toShoulder.from.x), DimensionLayout.lengthSpacing, accuracy: 1e-6)

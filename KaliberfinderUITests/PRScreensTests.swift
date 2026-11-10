@@ -308,6 +308,7 @@ final class PRScreensTests: XCTestCase {
         // The calliper fields with the calibre's drawing over them, on a bottleneck case.
         back()
         guard open(app.staticTexts["7.5x55 mm Swiss (GP 11)"].firstMatch) else { return }
+        XCTAssertTrue(app.buttons["Als ZIP teilen"].waitForExistence(timeout: 5), "The GP 11 series did not open")
         scroll()
         snap("22b-Trainingsdaten-Masszeichnung")
     }
