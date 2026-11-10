@@ -110,16 +110,6 @@ struct Measurements: Codable, Equatable {
     var isEmpty: Bool {
         [overallLength, caseLength, rim, bullet, shoulderLength, shoulder].allSatisfy { $0 == nil }
     }
-
-    /// Where each value goes on the calibre's dimensioned drawing (`MeasurementsView`), which the series
-    /// screen shows over the fields (Raven 2026-11-10).
-    static let drawn: [DimensionLayout.Part: KeyPath<Measurements, Double?>] = [
-        .overall: \.overallLength, .caseLength: \.caseLength, .rim: \.rim,
-        .shoulder: \.shoulder, .shoulderLength: \.shoulderLength, .bullet: \.bullet
-    ]
-
-    /// The values measured so far, by the part of the drawing they belong to.
-    var drawn: [DimensionLayout.Part: Double] { Self.drawn.compactMapValues { self[keyPath: $0] } }
 }
 
 /// The choices for what a photographed round is made of (`CapturePackage`): stored as the token, shown by
