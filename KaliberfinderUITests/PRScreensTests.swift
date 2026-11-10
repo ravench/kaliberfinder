@@ -291,7 +291,7 @@ final class PRScreensTests: XCTestCase {
     }
 
     /// The hidden «Trainingsdaten» screen, on the example packages of KaliberfinderTests/Captures so
-    /// it shows the same series on every run: the saved series, and two of them opened from the list.
+    /// it shows the same series on every run: the saved series, and one of them opened from the list.
     func testTrainingCapture() {
         let captures = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("KaliberfinderTests/Captures")
@@ -305,9 +305,20 @@ final class PRScreensTests: XCTestCase {
         guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
         XCTAssertTrue(app.buttons["Als ZIP teilen"].waitForExistence(timeout: 5), "The saved series did not open")
         snap("22-Trainingsdaten-Serie")
-        // The calliper fields with the calibre's drawing over them, on a bottleneck case.
-        back()
-        guard open(app.staticTexts["7.5x55 mm Swiss (GP 11)"].firstMatch) else { return }
+    }
+
+    /// The calliper fields of a series with the calibre's drawing over them, on the GP 11 example
+    /// package (a bottleneck case, no photos).
+    func testTrainingMeasuringDrawing() {
+        let captures = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("KaliberfinderTests/Captures")
+        app.terminate()
+        app.launchArguments += ["-trainingCaptureEnabled", "YES", "-screenTourCaptures", captures.path]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]),
+              open(app.buttons["Trainingsdaten aufnehmen"].firstMatch),
+              open(app.staticTexts["7.5x55 mm Swiss (GP 11)"].firstMatch) else { return }
         XCTAssertTrue(app.buttons["Als ZIP teilen"].waitForExistence(timeout: 5), "The GP 11 series did not open")
         scroll()
         snap("22b-Trainingsdaten-Masszeichnung")
