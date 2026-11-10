@@ -96,9 +96,12 @@ struct LiDARCameraView: View {
 /// What both camera screens say when the user has not allowed the camera: where to allow it.
 struct CameraDeniedHint: View {
     var body: some View {
-        Text("Kein Zugriff auf die Kamera. Erlaube ihn in den Einstellungen.")
-        if let url = URL(string: UIApplication.openSettingsURLString) {
-            Link(destination: url) { Text("Einstellungen öffnen") }  // Text(…) so the key is extracted
+        // One view, so the callers' padding and background wrap the text and the link together (review 2026-11-10).
+        VStack(spacing: 4) {
+            Text("Kein Zugriff auf die Kamera. Erlaube ihn in den Einstellungen.")
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                Link(destination: url) { Text("Einstellungen öffnen") }  // Text(…) so the key is extracted
+            }
         }
     }
 }
