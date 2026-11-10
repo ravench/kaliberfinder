@@ -65,18 +65,19 @@ enum DimensionMatcher {
         guard !measured.isEmpty else { return [] }
         let matches = cartridges.filter(measured.shape.fits).map { c -> (DimensionMatch, Double) in
             let d = c.dimensions
-            // A shotshell's case is the whole shell, as long as its crimp makes it.
-            let caseLengths = c.kind == "shot" ? c.overallLengths : d.caseLength...d.caseLength
-            let pairs: [(Double?, ClosedRange<Double>)] = [
-                (measured.overallLength, c.overallLengths),
+            // A shotshell's case is the whole shell, as long as its crimp makes it, or opened by firing to its case length.
+            let caseLengths = c.kind == "shot" ? [c.overallLengths, d.caseLength...d.caseLength] : [d.caseLength...d.caseLength]
+            let pairs: [(Double?, [ClosedRange<Double>])] = [
+                (measured.overallLength, [c.overallLengths]),
                 (measured.caseLength, caseLengths),
-                (measured.rim, max(d.rim, d.base)...max(d.rim, d.base)),
-                (measured.bullet, d.bullet...d.bullet),
+                (measured.rim, [max(d.rim, d.base)...max(d.rim, d.base)]),
+                (measured.bullet, [d.bullet...d.bullet]),
             ]
-            let deviations = pairs.compactMap { pair in pair.0.map { max(0, outside($0, pair.1) - tolerance) } }
-            // Within a shotshell's crimp range, nearer the catalogue's length goes first (12/70 before 12/76).
-            let entered = measured.overallLength ?? measured.caseLength
-            let fromCatalogue = c.kind == "shot" ? entered.map { abs($0 - d.overallLength) } ?? 0 : 0
+            let deviations = pairs.compactMap { pair in pair.0.map { v in max(0, (pair.1.map { outside(v, $0) }.min() ?? 0) - tolerance) } }
+            // Within a shotshell's crimp range, nearer the catalogue's length goes first (12/70 before 12/76);
+            // a typed case length is a hull, nearer its opened length.
+            let fromCatalogue = c.kind != "shot" ? 0
+                : measured.overallLength.map { abs($0 - d.overallLength) } ?? measured.caseLength.map { abs($0 - d.caseLength) } ?? 0
             return (DimensionMatch(cartridge: c,
                                    maxDeviation: deviations.max() ?? 0,
                                    meanDeviation: deviations.reduce(0, +) / Double(deviations.count)), fromCatalogue)

@@ -227,6 +227,13 @@ enum Matcher {
             if hasBullet, let mouth = photo.mouth { d += mouthPenalty(mouth, c, size: photo.size) }
             candidates.append((d + neck, deviation, .cartridge))
         }
+        if mode != .cartridge, c.kind == "shot", let whole, !whole.isEndView {
+            // A fired hull has opened from its crimp to the case length (a 12/70 to 70 mm): the outline stretched (review 2026-11-10).
+            let hull = ShapeMeasurement(aspect: whole.aspect * c.dimensions.caseLength / c.dimensions.overallLength, profile: whole.profile, widths: whole.widths)
+            let (d, deviation) = distance(photo, Expected(shape: hull, length: c.dimensions.caseLength, diameter: c.dimensions.base,
+                                                          lengthScale: lengthScaleWhole, front: endWidth(hull) / 2, back: rim(hull) / 2))
+            candidates.append((d + neck, deviation, .emptyCase))
+        }
         if mode != .cartridge, let emptyCase, !emptyCase.isEndView {
             var (d, deviation) = distance(photo, Expected(shape: emptyCase, length: c.dimensions.caseLength, diameter: c.dimensions.base,
                                                           lengthScale: lengthScaleCase, front: endWidth(emptyCase) / 2, back: rim(emptyCase) / 2))
@@ -280,14 +287,14 @@ enum Matcher {
     }
 
     /// What a shotshell's LiDAR length says lies in the photo. A loaded shell is as long as its crimp
-    /// range allows (`Cartridge.overallLengths`, with `lengthTolerance`); a fired hull's crimp has opened
-    /// back, so it is longer: a 12/70 hull is about 70 mm open against 58 to 66 mm loaded, and the border
-    /// lies halfway, at 67.9 mm. Nil for other kinds, without a size or for an end view, when the outline
-    /// decides (`ScanMode.part(for:)`). The matching is not affected: both parts compare a shotshell whole.
+    /// range allows (`Cartridge.overallLengths`); a fired hull's crimp has opened back to the case length:
+    /// a 12/70 hull is 70 mm open against 58 to 66 mm loaded, and the border lies halfway, at 68 mm. Nil for
+    /// other kinds, without a size or for an end view, when the outline decides (`ScanMode.part(for:)`).
+    /// `score` compares both: the loaded shell's crimp range and the opened hull.
     static func shotshellPart(_ photo: Photo, _ c: Cartridge) -> ShapePart? {
         guard c.kind == "shot", !photo.shape.isEndView, let whole = ShapeMatcher.catalogue[c.id], !whole.isEndView,
               let length = measuredLength(photo, wholeExpected(c, whole, hasBullet: false)) else { return nil }
-        return length > c.overallLengths.upperBound + lengthTolerance ? .emptyCase : .cartridge
+        return length > (c.overallLengths.upperBound + c.dimensions.caseLength) / 2 ? .emptyCase : .cartridge
     }
 
     /// Mean difference of the slice widths (relative to the body), or of the coarse profile where a shape
