@@ -18,7 +18,8 @@ struct MatchesView: View {
     /// The user tapped «Einblenden»: hidden matching calibres are listed too, for this result only.
     @State private var revealed = false
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
-    /// Set when the user taps the segment the app did not detect; applies to this photo only.
+    /// Set when the user taps the segment the app did not detect; applies to this photo only: it was once an
+    /// `@AppStorage("scanMode")` and stuck to every later photo. Keep it `@State`.
     @State private var override: ScanMode?
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
