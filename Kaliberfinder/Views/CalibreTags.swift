@@ -12,8 +12,8 @@ enum CalibreTag: CaseIterable {
         switch self {
         case .rare: c.rare
         case .obsolete: c.obsolete
-        // In a lookalike group of calibre-data; those of one size share a row (Raven, 2026-11-11).
-        case .group: CartridgeCatalog.lookalikeGroup(of: c) != nil
+        // In a one-size lookalike group of calibre-data (Raven, 2026-11-11; `LookalikeGroup.sameSize`).
+        case .group: CartridgeCatalog.sizeGroup(of: c) != nil
         }
     }
 
@@ -45,16 +45,20 @@ enum CalibreTag: CaseIterable {
     }
 }
 
-/// A small capsule with the tag's icon and word, e.g. «Selten».
+/// A small capsule with the tag's icon and word, e.g. «Selten»; `text` replaces the word (a group's name).
 struct TagChip: View {
     let tag: CalibreTag
+    var text: String?
     @ScaledMetric(relativeTo: .caption2) private var iconSize: CGFloat = 11
 
     var body: some View {
         HStack(spacing: 3) {
             TagIcon(tag: tag).frame(width: iconSize, height: iconSize)
-            Text(tag.title.loc)
+            Text(verbatim: text ?? tag.title.loc)
         }
+        // One line always: in a row's trailing slot the calibre's name wraps, not the tag (the 13 mini).
+        .lineLimit(1)
+        .fixedSize()
         .font(.caption2.weight(.semibold))
         .foregroundStyle(tag.color)
         .padding(.horizontal, 6)

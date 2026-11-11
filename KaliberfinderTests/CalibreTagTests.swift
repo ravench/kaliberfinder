@@ -11,10 +11,23 @@ final class CalibreTagTests: XCTestCase {
         XCTAssertEqual(CalibreTag.of(try cartridge("7.5x53.5 mm Swiss (GP 1890)")), [.obsolete])
         XCTAssertEqual(CalibreTag.of(try cartridge(".450 No. 2 Nitro Express")), [.rare])
         XCTAssertEqual(CalibreTag.of(try cartridge("7.5x55 mm Swiss (GP 11)")), [])
-        // Members of a calibre-data lookalike group carry the group tag, whatever their size (Raven, 2026-11-11).
+        // Members of a one-size lookalike group carry the group tag; a group told apart by a measurement
+        // (the rimmed 7x57 R) does not (Raven, PR 188: «for a group, where cases have the same size»).
         XCTAssertEqual(CalibreTag.of(try cartridge("9x19 mm")), [.group])
-        XCTAssertEqual(CalibreTag.of(try cartridge("7x57 mm R")), [.group])
+        XCTAssertEqual(CalibreTag.of(try cartridge("7x57 mm R")), [])
+        XCTAssertTrue(try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: try cartridge("9x19 mm"))).sameSize)
+        XCTAssertTrue(try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: try cartridge(".32 S&W Long Wadcutter"))).sameSize, "seating")
+        XCTAssertTrue(try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: try cartridge("10.4x38 mm R Vetterli"))).sameSize, "ignition")
+        XCTAssertFalse(try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: try cartridge("7x57 mm R"))).sameSize, "rim")
+        XCTAssertFalse(try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: try cartridge("7x64 mm"))).sameSize, "rim and length")
+        XCTAssertFalse(try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: try cartridge("6x47 mm SM"))).sameSize, "bore")
+        XCTAssertNil(CartridgeCatalog.sizeGroup(of: try cartridge("7x57 mm R")))
         XCTAssertEqual(CalibreTag.group.title, "Gruppe")
+        // The group's name as a tag on another member; the parent gets the short «Gruppe» in the trailing slot.
+        XCTAssertNil(CartridgeRow.groupName(for: try cartridge(".223 Remington"), linksToGroup: true))
+        XCTAssertEqual(CartridgeRow.groupName(for: try cartridge("5.6 mm GP 90"), linksToGroup: true), ".223 Remington")
+        XCTAssertNil(CartridgeRow.groupName(for: try cartridge("5.6 mm GP 90"), linksToGroup: false))
+        XCTAssertNil(CartridgeRow.groupName(for: try cartridge("7x57 mm R"), linksToGroup: true))
         // The tag only on a row that opens the group page, not on the members inside it (Raven, PR 188 review).
         XCTAssertEqual(CartridgeRow.tags(for: try cartridge("9x19 mm"), linksToGroup: true), [.group])
         XCTAssertEqual(CartridgeRow.tags(for: try cartridge("9x19 mm"), linksToGroup: false), [])

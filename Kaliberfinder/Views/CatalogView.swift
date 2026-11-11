@@ -98,7 +98,16 @@ struct CartridgeRow: View {
         CalibreTag.of(cartridge).filter { $0 != .group || linksToGroup }
     }
 
+    /// Where the row opens the group (Raven, PR 188 review): the group's name on another member, as a tag under
+    /// the name (the 5.6 mm GP 90 with «.223 Remington»); nil on the parent, which names the merged results row
+    /// and gets the short «Gruppe» in the trailing slot next to the origin, where a name would squeeze the row.
+    static func groupName(for cartridge: Cartridge, linksToGroup: Bool) -> String? {
+        guard linksToGroup, let group = CartridgeCatalog.sizeGroup(of: cartridge), group.id != cartridge.id else { return nil }
+        return group.id
+    }
+
     var body: some View {
+        let groupName = Self.groupName(for: cartridge, linksToGroup: linksToGroup)
         HStack(spacing: 12) {
             CartridgeThumbnail(cartridge: cartridge)
             VStack(alignment: .leading, spacing: 2) {
@@ -112,20 +121,24 @@ struct CartridgeRow: View {
                         .fontWeight(highlighted ? .semibold : nil)
                         .foregroundStyle(highlighted ? AnyShapeStyle(.green) : AnyShapeStyle(.secondary))
                 }
-                let tags = Self.tags(for: cartridge, linksToGroup: linksToGroup)
-                if !tags.isEmpty {
+                let chips = Self.tags(for: cartridge, linksToGroup: linksToGroup).filter { $0 != .group }.map { ($0, String?.none) }
+                    + (groupName.map { [(CalibreTag.group, String?.some($0))] } ?? [])
+                if !chips.isEmpty {
                     // Own line, so the tags never wrap into the detail text; three of them stack on a narrow
-                    // screen rather than hyphenate (the 13 mini with «Selten», «Veraltet» and «Gruppe»).
+                    // screen rather than hyphenate (the 13 mini with «Selten», «Veraltet» and a group's name).
                     ViewThatFits(in: .horizontal) {
-                        HStack(spacing: 4) { ForEach(tags, id: \.self) { TagChip(tag: $0) } }
-                        VStack(alignment: .leading, spacing: 2) { ForEach(tags, id: \.self) { TagChip(tag: $0) } }
+                        HStack(spacing: 4) { ForEach(Array(chips.enumerated()), id: \.offset) { TagChip(tag: $0.element.0, text: $0.element.1) } }
+                        VStack(alignment: .leading, spacing: 2) { ForEach(Array(chips.enumerated()), id: \.offset) { TagChip(tag: $0.element.0, text: $0.element.1) } }
                     }
                     .padding(.top, 1)
                 }
             }
             Spacer(minLength: 0)
-            // Trailing slot: rows without a flag or globe keep the same layout.
-            OriginMarks(cartridges: [cartridge] + merged)
+            // Trailing slot: the parent's «Gruppe», then the origin; rows without a flag or globe keep the same layout.
+            HStack(spacing: 6) {
+                if groupName == nil, Self.tags(for: cartridge, linksToGroup: linksToGroup).contains(.group) { TagChip(tag: .group) }
+                OriginMarks(cartridges: [cartridge] + merged)
+            }
         }
     }
 }

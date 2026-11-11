@@ -48,6 +48,11 @@ enum CartridgeCatalog {
         lookalikes.first { $0.calibres.contains(c.id) }
     }
 
+    /// The lookalike group that stands for `c` in rows and tags: one whose cases are of one size (`sameSize`).
+    static func sizeGroup(of c: Cartridge) -> LookalikeGroup? {
+        lookalikeGroup(of: c).flatMap { $0.sameSize ? $0 : nil }
+    }
+
     private static let byID = Dictionary(all.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
 
     static func cartridge(id: String) -> Cartridge? { byID[id] }
@@ -112,6 +117,11 @@ struct LookalikeGroup: Decodable, Identifiable, Hashable {
 
     var id: String { calibres[0] }
     var members: [Cartridge] { calibres.compactMap(CartridgeCatalog.cartridge(id:)) }
+
+    /// The members' cases are of one size, told apart by load, seating or ignition only: the results show
+    /// such a group as one row, the tag names it and a member opens the group first (Raven, PR 188). A group
+    /// told apart by a measurement (rim, length, bore) is a page of its own, reached from its members' pages.
+    var sameSize: Bool { !differs.contains { ["rim", "length", "bore"].contains($0) } }
 
     /// German name of a difference, used as localization key.
     static func title(_ difference: String) -> String {

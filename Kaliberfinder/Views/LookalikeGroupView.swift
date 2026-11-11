@@ -31,13 +31,13 @@ struct LookalikeGroupView: View {
     }
 }
 
-/// Where a tapped calibre leads: its lookalike group first, from which each calibre opens; a calibre
-/// without a group opens its own page (Raven, 2026-11-11).
+/// Where a tapped calibre leads: its one-size lookalike group first, from which each calibre opens; a calibre
+/// without such a group opens its own page (Raven, 2026-11-11).
 struct CalibrePage: View {
     let cartridge: Cartridge
 
     var body: some View {
-        if let group = CartridgeCatalog.lookalikeGroup(of: cartridge) {
+        if let group = CartridgeCatalog.sizeGroup(of: cartridge) {
             LookalikeGroupView(group: group)
         } else {
             CartridgeDetailView(cartridge: cartridge)
