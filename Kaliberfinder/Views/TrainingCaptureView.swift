@@ -374,7 +374,8 @@ struct TrainingPackageView: View {
                     .foregroundStyle(Color.accentColor)
                     .frame(minWidth: 30, alignment: .leading)
                     .accessibilityHidden(true)
-                Text(field.title)
+                // Wraps rather than cut off «Zündhütchen-Durchmesser» beside the letter.
+                Text(field.title).fixedSize(horizontal: false, vertical: true)
             }
         }
     }
