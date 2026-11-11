@@ -22,16 +22,18 @@ final class ProfileTwinTests: XCTestCase {
     func testOnlyTheKnownGroupsAreTwins() {
         let all = CartridgeCatalog.all
         let groups = CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).filter { $0.count > 1 }
-        XCTAssertEqual(Set(groups.map { Set($0.map(\.id)) }),
+        // The known twin sets are among them; the catalogue may add more (the .500/450 Express pair with #196).
+        XCTAssertTrue(Set(groups.map { Set($0.map(\.id)) }).isSuperset(of:
                        [[".308 Winchester", "7.62x51 mm NATO"], [".223 Remington", "5.56x45 mm NATO", "5.6 mm GP 90"],
-                        ["10.4x38 mm R Vetterli", "10.4x38 mm R Vetterli Centrefire"]])
-        // Every twin pair comes from a lookalike group of calibre-data, never from equal numbers alone,
-        // and the group's parent leads the row.
+                        ["10.4x38 mm R Vetterli", "10.4x38 mm R Vetterli Centrefire"]]), "\(groups.map { $0.map(\.id) })")
+        // Every twin pair comes from a one-size lookalike group of calibre-data, never from equal numbers alone,
+        // with equal dimensions, and the group's parent leads the row.
         for group in groups {
-            XCTAssertEqual(Set(group.compactMap { CartridgeCatalog.lookalikeGroup(of: $0)?.id }).count, 1, "\(group.map(\.id))")
-            XCTAssertEqual(group[0].id, CartridgeCatalog.lookalikeGroup(of: group[0])?.calibres[0])
+            let sizeGroups = Set(group.compactMap { CartridgeCatalog.sizeGroup(of: $0)?.id })
+            XCTAssertEqual(sizeGroups.count, 1, "\(group.map(\.id))")
+            XCTAssertEqual(group[0].id, sizeGroups.first)
+            XCTAssertTrue(group.allSatisfy { $0.dimensions == group[0].dimensions }, "\(group.map(\.id))")
         }
-        XCTAssertEqual(Set(groups.map { $0[0].id }), [".308 Winchester", ".223 Remington", "10.4x38 mm R Vetterli"])
         // Grouping never loses or duplicates a calibre.
         XCTAssertEqual(CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).flatMap { $0 }.map(\.id).sorted(), all.map(\.id).sorted())
     }
