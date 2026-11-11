@@ -253,7 +253,9 @@ jobs:
             git push -q origin "HEAD:refs/heads/$SCREENS_BRANCH" && break
             cd .. && sleep $((attempt * 3))
           done
-          BASE_URL="https://raw.githubusercontent.com/${SCREENS_REPO}/$(git rev-parse HEAD)/${PR}"
+          # github.com/…/raw/… rather than raw.githubusercontent.com: it also works once app-screens is
+          # private, for viewers who are signed in and can read it (not in notification emails).
+          BASE_URL="https://github.com/${SCREENS_REPO}/raw/$(git rev-parse HEAD)/${PR}"
           cd ..
           python3 pr_screens.py comment changed "$BASE_URL" "$RUN_URL" > comment.md
           # One comment per pull request, updated on every run.
