@@ -22,7 +22,17 @@ final class AppStoreScreensTests: XCTestCase {
     override func setUp() {
         continueAfterFailure = true
         app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", Self.locales[language] ?? "de_CH"]
+        app.launchArguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", Self.locales[language] ?? "de_CH",
+                               "-\(Self.calibrationKey)", String(Self.pointsPerMM(iPad: UIDevice.current.userInterfaceIdiom == .pad))]
+    }
+
+    /// ScaleModel.calibrationKey: the simulators the store needs may be newer than the app's model table, and an
+    /// unknown model shows «Bildschirm nicht kalibriert» on the 1:1 screen. The store shows a calibrated screen.
+    static let calibrationKey = "calibratedPointsPerMM"
+
+    /// The real density of the store's devices: iPhone Pro Max 460 ppi at 3x, iPad Pro 13" 264 ppi at 2x.
+    static func pointsPerMM(iPad: Bool) -> Double {
+        iPad ? 264 / 25.4 / 2 : 460 / 25.4 / 3
     }
 
     func testScreens() {
@@ -35,6 +45,12 @@ final class AppStoreScreensTests: XCTestCase {
         save("01-matches")
         let compare = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix("Alle passenden 1:1 vergleichen (%lld)")))
         if open(compare.firstMatch), app.navigationBars["1:1"].waitForExistence(timeout: 5) {
+            // The row stands by length, the 9 mm towards the end: on the iPhone, scroll until it shows.
+            let nine = app.staticTexts["9x19 mm"]
+            for _ in 0..<6 where !(nine.exists && nine.isHittable) {
+                let row = app.coordinate(withNormalizedOffset: CGVector(dx: 0.85, dy: 0.6))
+                row.press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.25, dy: 0.6)))
+            }
             save("02-real-size")
         }
 
@@ -60,10 +76,18 @@ final class AppStoreScreensTests: XCTestCase {
             }
         }
 
-        // 6: entering measured dimensions.
+        // 6: entering measured dimensions, a 9 mm's length and bullet filled in.
         app.terminate()
         app.launch()
         if open(app.buttons[t("Masse eingeben")].firstMatch) {
+            let fields = app.textFields
+            let separator = Locale(identifier: Self.locales[language] ?? "de_CH").decimalSeparator ?? "."
+            for (index, value) in [(0, "29\(separator)7"), (3, "9\(separator)0")] where fields.count > index {
+                fields.element(boundBy: index).tap()
+                fields.element(boundBy: index).typeText(value)
+            }
+            app.collectionViews.firstMatch.swipeDown() // the list hides the keyboard when dragged
+            _ = app.staticTexts[t("Mögliche Kaliber")].waitForExistence(timeout: 5)
             save("06-dimensions")
         }
     }
