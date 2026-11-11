@@ -63,6 +63,15 @@ struct CartridgeDetailView: View {
                     LabeledContent("Zündhütchen", value: "Randfeuer, ohne Zündhütchen".loc)
                 }
             }
+            if !cartridge.tipColours.isEmpty {
+                Section {
+                    ForEach(cartridge.tipColours, id: \.self) { TipColourRow(tip: $0) }
+                } header: {
+                    Text("Farbcodes der Geschossspitze")
+                } footer: {
+                    Text("Militärische Laborierungen, die Farben von der Spitze abwärts.")
+                }
+            }
             Section {
                 LabeledContent("Kategorie", value: cartridge.category.loc)
                 LabeledContent("Bauart", value: Self.kindTitle(cartridge.kind).loc)
@@ -112,5 +121,49 @@ struct CartridgeDetailView: View {
         case "pellet": "Diabolo"
         default: "Andere"
         }
+    }
+}
+
+/// One tip colour code of a calibre: the painted tip, what it means, the loads and the countries.
+struct TipColourRow: View {
+    let tip: Cartridge.TipColour
+
+    var body: some View {
+        HStack(spacing: 12) {
+            TipSwatch(colours: tip.colours)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(verbatim: tip.meaning.map { Cartridge.TipColour.title($0).loc }.joined(separator: " · "))
+                if let description = tip.description {
+                    Text(verbatim: description).font(.footnote).foregroundStyle(.secondary)
+                }
+            }
+            Spacer(minLength: 0)
+            HStack(spacing: 4) { ForEach(tip.countries, id: \.code) { CountryFlag(country: $0) } }
+        }
+    }
+}
+
+/// A painted bullet tip: the colour bands from the tip down, in a small capsule.
+struct TipSwatch: View {
+    let colours: [String]
+    @ScaledMetric(relativeTo: .body) private var height: CGFloat = 30
+
+    /// The colour of each calibre-data colour name; a test keeps it complete.
+    static let colours: [String: Color] = [
+        "black": .black, "white": .white, "grey": .gray, "silver": Color(white: 0.78), "red": .red, "orange": .orange,
+        "yellow": .yellow, "green": .green, "blue": .blue, "purple": .purple, "brown": .brown,
+    ]
+
+    var body: some View {
+        VStack(spacing: 0) {
+            ForEach(Array(colours.enumerated()), id: \.offset) { _, name in
+                (Self.colours[name] ?? .clear).frame(maxHeight: .infinity)
+            }
+        }
+        .frame(width: height / 2, height: height)
+        .clipShape(Capsule())
+        .overlay(Capsule().stroke(.secondary.opacity(0.4), lineWidth: 0.5))
+        .accessibilityElement()
+        .accessibilityLabel(Text(colours.map { Cartridge.TipColour.colourName($0).loc }.joined(separator: ", ")))
     }
 }

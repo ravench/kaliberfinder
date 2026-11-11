@@ -22,6 +22,13 @@ struct CalibrationView: View {
                     .stroke(Color.accentColor, lineWidth: 1)
                     .background(RoundedRectangle(cornerRadius: 3.18 * value).fill(Color.accentColor.opacity(0.08)))
                     .frame(width: card.height * value, height: card.width * value)
+            }
+            .padding()
+        }
+        // The slider and the buttons at the bottom of the screen, under the card (Raven, 2026-11-11: on an
+        // iPad they hung in the middle); the card outline above scrolls when it is taller than what is left.
+        .safeAreaInset(edge: .bottom) {
+            VStack(spacing: 16) {
                 VStack {
                     Slider(value: $value, in: Self.range)
                     HStack {
@@ -53,6 +60,7 @@ struct CalibrationView: View {
                 }
             }
             .padding()
+            .background(.bar)
         }
         .navigationTitle("Bildschirm kalibrieren")
         .navigationBarTitleDisplayMode(.inline)

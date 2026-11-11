@@ -468,13 +468,14 @@ private struct TrainingCameraSession: View {
                 }
                 Spacer()
                 // Without depth the camera cannot say how far it is: its closest focus tells how close to go (Raven 2026-11-09).
-                if camera.choice.deviceType != .builtInLiDARDepthCamera, let mm = camera.minimumFocusDistance {
+                if !camera.hasDepth, let mm = camera.minimumFocusDistance {
                     Text(String(format: "Scharf ab %lld cm".loc, Int((Double(mm) / 10).rounded(.up))))
                         .font(.subheadline)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
                         .background(.ultraThinMaterial, in: Capsule())
                 }
+                // The distance guide with every camera, «Keine Tiefe gemessen» included (Raven, PR 183).
                 Label(camera.guidance.title.loc, systemImage: camera.guidance == .ready ? "checkmark.circle.fill" : "ruler")
                     .font(.headline)
                     .padding(.horizontal, 14)
