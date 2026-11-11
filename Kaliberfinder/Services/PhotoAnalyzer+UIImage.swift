@@ -27,15 +27,7 @@ extension PhotoAnalyzer {
 
     /// The part of the photo inside `region` (fractions of the upright photo), upright, shrunk to `maxSide` pixels.
     static func cropped(_ image: UIImage, to region: CGRect, maxSide: CGFloat = .infinity) -> UIImage {
-        let size = image.size
-        let crop = CGRect(x: region.minX * size.width, y: region.minY * size.height,
-                          width: region.width * size.width, height: region.height * size.height)
-        let scale = min(1, maxSide / max(crop.width, crop.height))
-        let format = UIGraphicsImageRendererFormat()
-        format.scale = 1
-        return UIGraphicsImageRenderer(size: CGSize(width: crop.width * scale, height: crop.height * scale), format: format).image { _ in
-            image.draw(in: CGRect(x: -crop.minX * scale, y: -crop.minY * scale, width: size.width * scale, height: size.height * scale))
-        }
+        upright(image, region: region, maxSide: maxSide).map { UIImage(cgImage: $0) } ?? image
     }
 
     /// Two looks: the whole photo, then the full-size part around the cartridge it found

@@ -5843,6 +5843,29 @@
         }
       }
     },
+    "als leere Hülse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "as an empty case"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "comme douille vide"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "come bossolo vuoto"
+          }
+        }
+      }
+    },
     "gerade Hülse": {
       "extractionState": "manual",
       "localizations": {

@@ -54,6 +54,12 @@ final class MatcherTests: XCTestCase {
         let both = Match(cartridge: c, score: 1.5, shapeDistance: 0.1, sizeDeviation: 0.5)
         XCTAssertEqual(MatchesView.reason(for: both), ["Form passt gut".loc, "Grösse passt ungefähr".loc].joined(separator: " · "))
         XCTAssertEqual(MatchesView.reason(for: Match(cartridge: c, score: 0, shapeDistance: nil)), "")
+        // Compared as an empty case while the photo is shown as a cartridge: said on the row; not the other way round
+        // (balls and shotshells are always compared whole).
+        let asCase = Match(cartridge: c, score: 1.5, shapeDistance: 0.1, sizeDeviation: nil, part: .emptyCase)
+        XCTAssertEqual(MatchesView.reason(for: asCase, shownPart: .cartridge), ["als leere Hülse".loc, "Form passt gut".loc].joined(separator: " · "))
+        XCTAssertEqual(MatchesView.reason(for: asCase, shownPart: .emptyCase), "Form passt gut".loc)
+        XCTAssertEqual(MatchesView.reason(for: both, shownPart: .emptyCase), MatchesView.reason(for: both))
         XCTAssertEqual(MatchesView.notes(for: PhotoAnalysis(shape: nil)).count, 2)
         let side = ShapeMeasurement(aspect: 3, profile: [1])
         XCTAssertTrue(MatchesView.notes(for: PhotoAnalysis(shape: side)).isEmpty)

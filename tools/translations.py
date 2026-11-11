@@ -109,6 +109,7 @@ T = {
     "Erkannt: %@": ("Detected: %@", "Détecté : %@", "Riconosciuto: %@"),
     "Flaschenhals": ("bottleneck", "à épaulement", "a collo di bottiglia"),
     "Leere Hülse": ("Empty case", "Douille vide", "Bossolo vuoto"),
+    "als leere Hülse": ("as an empty case", "comme douille vide", "come bossolo vuoto"),
     "leere Hülse": ("empty case", "douille vide", "bossolo vuoto"),
     "Patrone": ("Cartridge", "Cartouche", "Cartuccia"),
     "mit Rand": ("rimmed", "à bourrelet", "con orlo"),

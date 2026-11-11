@@ -20,7 +20,7 @@ struct MatchesView: View {
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     /// Set when the user taps the segment the app did not detect; applies to this photo only: it was once an
     /// `@AppStorage("scanMode")` and stuck to every later photo. Keep it `@State`.
-    @State private var override: ScanMode?
+    @State var override: ScanMode?
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
     @AppStorage(Self.compareByFitKey) private var compareByFit = true
@@ -33,10 +33,14 @@ struct MatchesView: View {
         List {
             Section {
                 let frames = Self.frames(overview: overview, measured: analysis, picking: needsPick, mode: shown)
-                CandidatePhotoView(photo: preview?.image ?? photo, candidates: frames.candidates, measured: frames.measured, parts: frames.parts,
-                                   mouthLine: Self.mouthLine(measured: analysis, picking: needsPick, mode: shown),
-                                   region: preview?.region ?? CGRect(x: 0, y: 0, width: 1, height: 1),
-                                   maxHeight: needsPick ? 420 : 220) { choose($0) }
+                // Never the photo itself: a 48 MP photo would be decoded for a 220 pt row (review 2026-11-10).
+                if let preview {
+                    CandidatePhotoView(photo: preview.image, candidates: frames.candidates, measured: frames.measured, parts: frames.parts,
+                                       mouthLine: Self.mouthLine(measured: analysis, picking: needsPick, mode: shown),
+                                       region: preview.region, maxHeight: needsPick ? 420 : 220) { choose($0) }
+                } else {
+                    ProgressView().frame(maxWidth: .infinity, minHeight: 220)
+                }
                 if needsPick {
                     Label(Self.severalObjectsText, systemImage: "hand.tap")
                         .foregroundStyle(.orange)
@@ -94,10 +98,14 @@ struct MatchesView: View {
         .task {
             // Once per photo: the stack restarts the task every time this screen reappears (review 2026-11-10).
             guard overview == nil else { return }
+            // The list shows at most a few hundred points: the photo is shrunk off the main thread before the analysis
+            // (a 48 MP photo is 190 MB decoded), then cut to the cartridges it finds.
+            let whole = CGRect(x: 0, y: 0, width: 1, height: 1)
+            if preview == nil { preview = (await Task.detached { PhotoAnalyzer.cropped(photo, to: whole, maxSide: Self.previewSide) }.value, whole) }
             let result = await PhotoAnalyzer.analyze(photo)
-            // The list shows at most a few hundred points: a 48 MP photo is cut to the cartridges and shrunk, off the main thread.
-            let region = Self.previewRegion(around: Self.detectedBoxes(result), imageSize: photo.size) ?? CGRect(x: 0, y: 0, width: 1, height: 1)
-            preview = (await Task.detached { PhotoAnalyzer.cropped(photo, to: region, maxSide: Self.previewSide) }.value, region)
+            if let region = Self.previewRegion(around: Self.detectedBoxes(result), imageSize: photo.size) {
+                preview = (await Task.detached { PhotoAnalyzer.cropped(photo, to: region, maxSide: Self.previewSide) }.value, region)
+            }
             overview = result
             if !result.hasSeveralObjects {
                 analysis = result
@@ -134,10 +142,11 @@ struct MatchesView: View {
             Section {
                 if hiddenFirst, let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
                 // Calibres that look exactly the same from the side share one row.
+                let shownPart = analysis?.shape.map { shown.part(for: $0) }
                 ForEach(Matcher.grouped(matches)) { g in
                     // The calibre's page, as «Alle Kaliber» shows it; its 1:1 link draws this calibre alone (Raven, 2026-11-08).
                     NavigationLink { CartridgeDetailView(cartridge: g.lead.cartridge) } label: {
-                        CartridgeRow(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead),
+                        CartridgeRow(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead, shownPart: shownPart),
                                      highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
                     }
                 }
@@ -276,9 +285,12 @@ struct MatchesView: View {
         String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, toCompare(matches).count)
     }
 
-    /// Why a calibre is listed, e.g. "Form passt gut · Grösse passt ungefähr".
-    static func reason(for m: Match) -> String {
+    /// Why a calibre is listed, e.g. "Form passt gut · Grösse passt ungefähr"; "als leere Hülse" when the calibre was
+    /// compared as an empty case while the screen shows the photo as a cartridge (`shownPart`): a fired shotshell
+    /// hull next to the next gauge loaded, or a calibre that only fits without its bullet (review 2026-11-10).
+    static func reason(for m: Match, shownPart: ShapePart? = nil) -> String {
         var parts: [String] = []
+        if shownPart == .cartridge, m.part == .emptyCase { parts.append("als leere Hülse".loc) }
         switch m.shapeFit {
         case .good: parts.append("Form passt gut".loc)
         case .rough: parts.append("Form passt ungefähr".loc)
