@@ -1,0 +1,41 @@
+name: Store listing
+# Writes the App Store texts in store/<lang>/ into App Store Connect (tools/store_listing.py). Start it by
+# hand under Actions; without «apply» it only lists what would change. Never attaches a build or submits
+# anything for review. Needs the App Store Connect secrets of testflight.yml.
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Write the changes (off = dry run)
+        type: boolean
+        default: false
+      create_version:
+        description: Create this version when none is being prepared, e.g. 1.0.0 (empty = don't)
+        type: string
+        default: ""
+      promo_only:
+        description: Only the promotional text, also on the live version (needs no review)
+        type: boolean
+        default: false
+defaults:
+  run:
+    shell: bash -eo pipefail {0}
+jobs:
+  listing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+      CREATE_VERSION: ${{ inputs.create_version }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Write the listing
+        run: |
+          echo "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
+          ARGS=()
+          if [ -n "$CREATE_VERSION" ]; then ARGS+=(--create-version "$CREATE_VERSION"); fi
+          if [ "${{ inputs.promo_only }}" = "true" ]; then ARGS+=(--promo-only); fi
+          if [ "${{ inputs.apply }}" = "true" ]; then ARGS+=(--apply); fi
+          python3 tools/store_listing.py "$RUNNER_TEMP/AuthKey.p8" "${ARGS[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
