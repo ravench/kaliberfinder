@@ -15,6 +15,7 @@ struct CartridgeView: View {
     static let paper = Color(red: 0.95, green: 0.93, blue: 0.88)
     static let lacqueredSteel = Color(red: 0.42, green: 0.42, blue: 0.33)
     static let nickel = Color(red: 0.78, green: 0.80, blue: 0.81)
+    static let aluminium = Color(red: 0.66, green: 0.68, blue: 0.69)
     /// Plastic tip (V-Max, ELD, FTX, Ballistic Tip): most makers use red.
     static let polymer = Color(red: 0.80, green: 0.10, blue: 0.14)
     /// Airsoft BB: most are white plastic.
@@ -38,6 +39,7 @@ struct CartridgeView: View {
         case "copper": return copper
         case "steel": return lacqueredSteel
         case "nickel": return nickel
+        case "aluminium": return aluminium
         case "paper": return paper
         default: return brass
         }

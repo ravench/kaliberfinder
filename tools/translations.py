@@ -110,6 +110,14 @@ T = {
     "Weltweit verbreitet": ("Used worldwide", "Répandu dans le monde entier", "Diffuso in tutto il mondo"),
     "Russisches Kaiserreich": ("Russian Empire", "Empire russe", "Impero russo"),
     "Sowjetunion": ("Soviet Union", "Union soviétique", "Unione Sovietica"),
+    "Norwegen": ("Norway", "Norvège", "Norvegia"),
+    "Niederlande": ("Netherlands", "Pays-Bas", "Paesi Bassi"),
+    "Brasilien": ("Brazil", "Brésil", "Brasile"),
+    "Ägypten": ("Egypt", "Égypte", "Egitto"),
+    "Serbien": ("Serbia", "Serbie", "Serbia"),
+    "Thailand": ("Thailand", "Thaïlande", "Tailandia"),
+    "Osmanisches Reich": ("Ottoman Empire", "Empire ottoman", "Impero ottomano"),
+    "Kanada": ("Canada", "Canada", "Canada"),
     "Tschechoslowakei": ("Czechoslovakia", "Tchécoslovaquie", "Cecoslovacchia"),
     "DDR": ("East Germany", "RDA", "DDR"),
     "Jugoslawien": ("Yugoslavia", "Yougoslavie", "Jugoslavia"),
@@ -343,7 +351,7 @@ T = {
     "Nicht gespeichert: %@": ("Not saved: %@", "Non enregistré : %@", "Non salvato: %@"),
     "Nicht in der Liste": ("Not in the list", "Pas dans la liste", "Non nell'elenco"),
     "Name": ("Name", "Nom", "Nome"),
-    # Tip colour codes (calibre-data [[tip_colours]]), shown on the calibre page.
+    # Tip colour codes (calibre-data [[colour_codes]], part "tip"), shown on the calibre page.
     "Farbcodes der Geschossspitze": ("Bullet tip colour codes", "Codes couleur de la pointe", "Codici colore della punta"),
     "Militärische Laborierungen, die Farben von der Spitze abwärts.":
         ("Military loads, the colours from the tip down.", "Chargements militaires, les couleurs de la pointe vers le bas.",

@@ -199,7 +199,7 @@ class BulletMaterialTests(unittest.TestCase):
         self.assertEqual(by_name[".44 Henry"]["outline"]["caseMaterial"], "copper")
         self.assertNotIn("caseMaterial", by_name["9x19 mm"]["outline"])
         self.assertEqual(by_name[".45-70 Government"]["outline"]["currentCaseMaterials"], ["brass"])
-        self.assertEqual(by_name["9x19 mm"]["outline"]["currentCaseMaterials"], ["steel"])
+        self.assertEqual(by_name["9x19 mm"]["outline"]["currentCaseMaterials"], ["steel", "aluminium"])
         self.assertTrue(set(generate_data.CASE_COLOURS) >= {c["outline"]["caseMaterial"] for c in by_name.values()
                                                              if "caseMaterial" in c["outline"]})
 
@@ -230,7 +230,9 @@ class LookalikeTests(unittest.TestCase):
             self.assertNotIn("primer", by_name[rimfire])
             self.assertEqual(by_name[centrefire]["kind"], "rimmed")
             self.assertIn("primer", by_name[centrefire])
-            self.assertIn({"differs": ["ignition"], "calibres": [rimfire, centrefire]}, groups)
+            group = next(g for g in groups if rimfire in g["calibres"])  # the .32s share theirs with other lengths
+            self.assertIn("ignition", group["differs"])
+            self.assertIn(centrefire, group["calibres"])
 
     def test_unknown_member_fails_loudly(self):
         with self.assertRaises(AssertionError):
