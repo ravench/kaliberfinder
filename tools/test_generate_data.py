@@ -250,6 +250,17 @@ class CatalogueOnlyDataTests(unittest.TestCase):
                                                "headstamps", "obsolete", "rare", "country", "worldwide", "blank",
                                                "dimensions", "outline", "primer"})
 
+    def test_swiss_match_reaches_the_json(self):
+        """calibre-data #77: the 6x47 mm SM (Swiss Match) from its C.I.P. sheet, a Swiss rifle round with
+        a large rifle primer."""
+        sm = next(c for c in generate_data.build() if c["name"] == "6x47 mm SM")
+        self.assertEqual((sm["category"], sm["country"]["code"], sm["primer"]["type"]), ("Langwaffe", "CH", "large-rifle"))
+        self.assertEqual((sm["dimensions"]["caseLength"], sm["dimensions"]["overallLength"], sm["dimensions"]["bullet"]),
+                         (47.0, 66.0, 6.18))
+        self.assertIn("swiss match", sm["aliases"])
+        groups = generate_data.lookalikes({c["name"] for c in generate_data.build()})
+        self.assertIn({"differs": ["bore"], "calibres": ["6x47 mm SM", "6.5x47 mm Lapua"]}, groups)
+
     def test_cip_corrections_reach_the_json(self):
         """calibre-data #68: the PRC rounds from their C.I.P. sheets."""
         by_name = {c["name"]: c["dimensions"] for c in generate_data.build()}
