@@ -173,7 +173,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("pull_request:", self.workflow)
         self.assertIn("SCREENS_TOUR: ${{ needs.changes.outputs.screens }}", self.workflow)
         self.assertIn("if: env.SCREENS_TOUR == 'true'", self.workflow)
-        self.assertRegex(self.workflow, r"runs-on: macos-2[6-9]")
+        self.assertRegex(self.workflow, r"runs-on: .*macos-2[6-9]")
 
     def test_reuses_the_build_and_its_simulator(self):
         # No second Mac runner: the tour runs on the Build job's build, without compiling it again.
@@ -206,7 +206,10 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("SCREENS_BRANCH: ${{ github.event.repository.name }}/pr-screens", comment)
         self.assertIn("secrets.SCREENS_DEPLOY_KEY", comment)
         self.assertIn('git remote add origin "git@github.com:${SCREENS_REPO}.git"', comment)
-        self.assertIn("https://raw.githubusercontent.com/${SCREENS_REPO}/", comment)
+        # raw.githubusercontent.com answers 404 for a private repo; github.com/…/raw/… works for
+        # signed-in viewers who can read it.
+        self.assertIn("https://github.com/${SCREENS_REPO}/raw/", comment)
+        self.assertNotIn("https://raw.githubusercontent.com", self.workflow)
         self.assertNotIn("contents: write", self.workflow)
 
     def test_tour_exists_and_matches_the_comment_hint(self):

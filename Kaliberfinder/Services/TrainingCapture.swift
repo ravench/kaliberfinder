@@ -80,11 +80,21 @@ struct CapturePackage: Codable, Equatable {
     /// True when the round carries a bullet its calibre does not usually have (another weight or shape), so
     /// tuning the matcher against this series takes care; not written when nil.
     var atypicalBullet: Bool?
-    /// Where the photos were taken: an ISO 3166-1 code (`Countries`); nil until chosen (2026-11-09).
+    /// The country of the series: an ISO 3166-1 code, or a former state's code (`Countries`); nil until chosen (2026-11-09).
     var country: String?
-    /// What the round is made of, one of `Materials` (`bulletMaterials` etc.); nil until chosen (2026-11-09).
-    var bulletMaterial: String?
+    /// What the round is, as a row of the old-ammunition table records it (Raven 2026-11-11): its headstamp
+    /// (the table's `hs`) and a token of `RoundFacts` for its ignition (`ign`), head (`head`), case shape
+    /// (`shape`), case material (`mat`) and bullet (`bt`); each nil until entered. The note is the table's
+    /// `desc`, the measurements its `d`.
+    var headstamp: String?
+    var ignition: String?
+    var head: String?
+    var shape: String?
     var caseMaterial: String?
+    var bullet: String?
+    /// The earlier choices (2026-11-09/10: jacket, lead, steel, plastic; boxer, berdan, rimfire), no longer
+    /// shown but kept in the file, so a series filled in then loses nothing when it is edited.
+    var bulletMaterial: String?
     var primer: String?
 
     var scanMode: ScanMode { ScanMode(rawValue: part) ?? .auto }
@@ -108,38 +118,52 @@ struct Measurements: Codable, Equatable {
     /// Base to shoulder, and the shoulder's diameter (2026-11-09).
     var shoulderLength: Double?
     var shoulder: Double?
+    /// The neck's diameter at the case mouth (Raven 2026-11-11).
+    var neck: Double?
     /// The primer's diameter (Raven 2026-11-09); nil for rimfire.
     var primerDiameter: Double?
 
     var isEmpty: Bool {
-        [overallLength, caseLength, rim, base, bullet, shoulderLength, shoulder, primerDiameter].allSatisfy { $0 == nil }
+        [overallLength, caseLength, rim, base, bullet, shoulderLength, shoulder, neck, primerDiameter].allSatisfy { $0 == nil }
     }
 }
 
-/// The choices for what a photographed round is made of (`CapturePackage`): stored as the token, shown by
+/// The choices for what a photographed round is (`CapturePackage`), those of the old-ammunition table
+/// (/mnt/project-files/ammo-check, Raven 2026-11-11) in its order: stored as the table's token, shown by
 /// the German title.
-enum Materials {
-    static let bullet = ["jacket", "lead", "steel", "plastic"]
-    static let cases = ["brass", "steel", "aluminium", "nickel", "plastic", "paper"]
-    static let primer = ["boxer", "berdan", "rimfire"]
-
-    /// German title of a token, used as localization key.
-    static func title(_ token: String) -> String {
-        switch token {
-        case "jacket": "Vollmantel"
-        case "lead": "Blei"
-        case "steel": "Stahl"
-        case "plastic": "Kunststoff"
-        case "brass": "Messing"
-        case "aluminium": "Aluminium"
-        case "nickel": "Nickel"
-        case "paper": "Papier"
-        case "boxer": "Boxer"
-        case "berdan": "Berdan"
-        case "rimfire": "Randfeuer"
-        default: token
-        }
+enum RoundFacts {
+    struct Option: Hashable {
+        let token: String
+        /// German, used as localization key.
+        let title: String
     }
+
+    static let ignition = [
+        Option(token: "centrefire", title: "Zentralfeuer"), Option(token: "rimfire", title: "Randfeuer"),
+        Option(token: "pinfire", title: "Stiftfeuer"), Option(token: "other", title: "Andere"),
+    ]
+    static let head = [
+        Option(token: "rimless", title: "Randlos"), Option(token: "semi", title: "Halbrand"),
+        Option(token: "rimmed", title: "Mit Rand"), Option(token: "rebated", title: "Zurückgesetzter Rand"),
+        Option(token: "belted", title: "Gürtelhülse"),
+    ]
+    static let shape = [
+        Option(token: "straight", title: "Gerade Hülse"), Option(token: "tapered", title: "Konische Hülse"),
+        Option(token: "bottleneck", title: "Hülse mit Flaschenhals"),
+    ]
+    static let caseMaterial = [
+        Option(token: "brass", title: "Messing"), Option(token: "nickel", title: "Vernickelt"),
+        Option(token: "steel", title: "Stahl"), Option(token: "copper", title: "Kupfer"),
+        Option(token: "aluminium", title: "Aluminium"), Option(token: "paper", title: "Papier oder Kunststoff"),
+        Option(token: "other", title: "Andere"),
+    ]
+    static let bullet = [
+        Option(token: "fmj", title: "Vollmantel"), Option(token: "lead", title: "Blei"),
+        Option(token: "soft", title: "Teilmantel"), Option(token: "hp", title: "Hohlspitz"),
+        Option(token: "wc", title: "Wadcutter"), Option(token: "paper", title: "Mit Papierpflaster"),
+        Option(token: "shot", title: "Schrot"), Option(token: "blank", title: "Keines: Platzpatrone"),
+        Option(token: "empty", title: "Keines: leere Hülse"), Option(token: "other", title: "Andere"),
+    ]
 }
 
 /// One of the phone's back cameras, to tell what a telephoto could do for the photos: how close it

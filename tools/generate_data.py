@@ -100,7 +100,8 @@ def lookalikes(names):
 def calibre_data():
     """The calibre-data commit the catalogue is read from and its date, shown in the app's settings."""
     commit, date = subprocess.check_output(["git", "log", "-1", "--format=%H %cI"], cwd=DATA, text=True).split()
-    return {"commit": commit, "date": date}
+    # Newer git writes a UTC offset as "Z", older as "+00:00"; one spelling keeps the JSON the same.
+    return {"commit": commit, "date": date.replace("Z", "+00:00")}
 
 
 # Preview fills of cases that are not brass (CartridgeView uses the same colours).

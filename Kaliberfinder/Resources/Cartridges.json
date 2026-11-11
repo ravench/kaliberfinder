@@ -1,8 +1,8 @@
 {
  "version": 1,
  "calibreData": {
-  "commit": "eafed3bc88ca621def9091d2e1aba5efad1b8f0c",
-  "date": "2026-11-10T11:22:44+01:00"
+  "commit": "732d96c579a438b6f29aa331e7828b2a2f79db03",
+  "date": "2026-11-11T10:45:57+01:00"
  },
  "cartridges": [
   {
@@ -15268,6 +15268,51 @@
    }
   },
   {
+   "id": "6x47 mm SM",
+   "name": "6x47 mm SM",
+   "category": "Langwaffe",
+   "kind": "rimless",
+   "aliases": [
+    "6x47",
+    "6x47sm",
+    "6x47 sm",
+    "swiss match",
+    "6mm sm"
+   ],
+   "displayAliases": [
+    "6x47 Swiss Match"
+   ],
+   "headstamps": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "CH",
+    "name": "Schweiz",
+    "flag": "🇨🇭"
+   },
+   "worldwide": false,
+   "blank": false,
+   "dimensions": {
+    "rim": 12.01,
+    "base": 11.96,
+    "neck": 6.87,
+    "caseLength": 47.0,
+    "overallLength": 66.0,
+    "bullet": 6.18,
+    "shoulder": 11.59
+   },
+   "outline": {
+    "width": 12.01,
+    "height": 66.0,
+    "case": "M12.01 66.00 L12.01 64.63 L11.20 64.63 L11.20 63.23 L11.98 62.15 L11.80 31.31 L9.44 27.26 L9.44 19.00 L2.57 19.00 L2.57 27.26 L0.21 31.31 L0.02 62.15 L0.81 63.23 L0.81 64.63 L0.00 64.63 L0.00 66.00 Z",
+    "bullet": "M9.09 19.00 L9.09 12.92 L9.07 12.00 L9.00 11.07 L8.91 10.15 L8.80 9.23 L8.66 8.31 L8.49 7.38 L8.31 6.46 L8.10 5.54 L7.86 4.61 L7.59 3.69 L7.30 2.77 L6.96 1.85 L6.57 0.92 L6.16 0.00 L6.00 0.00 L5.85 0.00 L5.44 0.92 L5.05 1.85 L4.71 2.77 L4.42 3.69 L4.15 4.61 L3.91 5.54 L3.70 6.46 L3.52 7.38 L3.35 8.31 L3.21 9.23 L3.10 10.15 L3.01 11.07 L2.94 12.00 L2.92 12.92 L2.92 19.00 Z"
+   },
+   "primer": {
+    "type": "large-rifle",
+    "diameter": 5.33
+   }
+  },
+  {
    "id": ".36 Rundkugel (.375)",
    "name": ".36 Rundkugel (.375)",
    "category": "Schwarzpulver",
@@ -16754,6 +16799,15 @@
    "calibres": [
     "10.4 mm Swiss Ordnance 1872 Rimfire",
     "10.4 mm Swiss Ordnance 1878"
+   ]
+  },
+  {
+   "differs": [
+    "bore"
+   ],
+   "calibres": [
+    "6x47 mm SM",
+    "6.5x47 mm Lapua"
    ]
   }
  ]

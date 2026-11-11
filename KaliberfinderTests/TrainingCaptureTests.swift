@@ -185,35 +185,54 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertTrue(Measurements().isEmpty)
         XCTAssertFalse(Measurements(bullet: 9).isEmpty)
         XCTAssertFalse(Measurements(base: 9.9).isEmpty)
+        XCTAssertFalse(Measurements(neck: 8.6).isEmpty)
         XCTAssertFalse(Measurements(primerDiameter: 4.5).isEmpty)
     }
 
-    /// Country, materials, primer and the shoulder measurements are in package.json only once entered (2026-11-09).
-    func testCountryMaterialsAndShoulderAreWrittenWhenEntered() throws {
+    /// Country, what the round is and the shoulder measurements are in package.json only once entered (2026-11-09).
+    func testCountryRoundFactsAndShoulderAreWrittenWhenEntered() throws {
         let url = try store.create(package())
         var package = try XCTUnwrap(store.packages().first).package
         let json = { try String(data: Data(contentsOf: url.appendingPathComponent(TrainingCapture.packageFile)), encoding: .utf8) ?? "" }
-        for key in ["country", "bulletMaterial", "caseMaterial", "primer", "shoulder"] { XCTAssertFalse(try json().contains(key), key) }
+        for key in ["country", "headstamp", "ignition", "head", "shape", "caseMaterial", "bullet", "shoulder"] {
+            XCTAssertFalse(try json().contains("\"\(key)\""), key)
+        }
         package.country = "CH"
-        package.bulletMaterial = "jacket"
+        package.headstamp = "GECO 9mm Luger"
+        package.ignition = "centrefire"
+        package.head = "rimless"
+        package.shape = "tapered"
         package.caseMaterial = "brass"
-        package.primer = "boxer"
+        package.bullet = "fmj"
+        package.primer = "boxer"  // as chosen on 2026-11-10: kept, though no longer shown
         package.measurements = Measurements(shoulderLength: 45.0, shoulder: 11.5)
         try CaptureStore.update(package, at: url)
         let saved = try XCTUnwrap(store.packages().first).package
         XCTAssertEqual(saved.country, "CH")
-        XCTAssertEqual([saved.bulletMaterial, saved.caseMaterial, saved.primer], ["jacket", "brass", "boxer"])
+        XCTAssertEqual([saved.headstamp, saved.ignition, saved.head, saved.shape, saved.caseMaterial, saved.bullet],
+                       ["GECO 9mm Luger", "centrefire", "rimless", "tapered", "brass", "fmj"])
+        XCTAssertEqual(saved.primer, "boxer")
         XCTAssertEqual(saved.measurements, Measurements(shoulderLength: 45.0, shoulder: 11.5))
         XCTAssertFalse(Measurements(shoulder: 11.5).isEmpty)
-        // Every token offered has a German title of its own.
-        for token in Materials.bullet + Materials.cases + Materials.primer {
-            XCTAssertNotEqual(Materials.title(token), token, token)
-        }
-        XCTAssertEqual(Materials.title("jacket"), "Vollmantel")
         // The country picker offers every present-day country with its flag (CountriesTests), Switzerland among them.
         let countries = Countries.current
         XCTAssertTrue(countries.contains { $0.code == "CH" && $0.flag == "🇨🇭" })
         XCTAssertEqual(Set(countries.map(\.code)).count, countries.count)
+    }
+
+    /// The choices are those of the old-ammunition table, token for token in its order (Raven 2026-11-11), so a
+    /// series and a row of the table say the same about a round; within a list every title is its own.
+    func testRoundFactsAreTheAmmoTablesChoices() {
+        XCTAssertEqual(RoundFacts.ignition.map(\.token), ["centrefire", "rimfire", "pinfire", "other"])
+        XCTAssertEqual(RoundFacts.head.map(\.token), ["rimless", "semi", "rimmed", "rebated", "belted"])
+        XCTAssertEqual(RoundFacts.shape.map(\.token), ["straight", "tapered", "bottleneck"])
+        XCTAssertEqual(RoundFacts.caseMaterial.map(\.token), ["brass", "nickel", "steel", "copper", "aluminium", "paper", "other"])
+        XCTAssertEqual(RoundFacts.bullet.map(\.token), ["fmj", "lead", "soft", "hp", "wc", "paper", "shot", "blank", "empty", "other"])
+        for options in [RoundFacts.ignition, RoundFacts.head, RoundFacts.shape, RoundFacts.caseMaterial, RoundFacts.bullet] {
+            XCTAssertEqual(Set(options.map(\.title)).count, options.count, "\(options)")
+        }
+        // The calliper fields follow the table's legend.
+        XCTAssertEqual(TrainingPackageView.calliperFields.map(\.letter), ["D", "N", "S", "B", "R", "P", "H", "L", "OAL"])
     }
 
     /// The note and the atypical-bullet flag are edited on the series screen; the flag is only in the file when set.

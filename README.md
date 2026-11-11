@@ -108,6 +108,32 @@ Admin role (Users and Access, Integrations, Team Keys): `ASC_KEY_ID` (Key ID),
 `ASC_ISSUER_ID` (Issuer ID) and `ASC_KEY_P8` (the whole content of the downloaded
 `AuthKey_….p8`). Without them the workflow skips the upload. Forks don't get the secrets.
 
+## CI on your own Mac
+
+The Mac jobs (Build, TestFlight, Evaluate matching) run on GitHub's macOS runner, or on a
+self-hosted Mac while the repo is private and the repository variable `MAC_RUNNER` names it.
+Register the runner only once the repo is private, and remove it (`./svc.sh uninstall`, then
+`./config.sh remove`) before the repo ever goes public again: on a public repo, a pull request
+could change its own workflow to run code on that Mac. The Linux jobs stay on GitHub. While the
+Mac is off or asleep, or its runner user is logged out, the Mac jobs wait (up to 24 hours)
+instead of falling back to GitHub's runner.
+
+1. On the Mac, make a standard macOS user just for the runner: CI erases and restarts its
+   iPhone simulator on every run, and a user of its own keeps your simulators, keys and keychain
+   out of reach.
+2. As an admin, install Xcode 26 with the iOS simulator and open it once. Then run
+   `brew install xcodegen git-lfs gh`, `sudo gem install xcpretty`, `sudo DevToolsSecurity -enable`
+   and `sudo dseditgroup -o edit -a <runner user> -t user _developer`, so the runner user can run
+   tests without a password prompt. As the runner user, run `git lfs install` and add
+   `eval "$(/opt/homebrew/bin/brew shellenv)"` to `~/.zprofile`, then open a new Terminal window.
+3. Under Settings › Actions › Runners › New self-hosted runner (macOS, ARM64), run the commands it
+   shows in that window, then `./svc.sh install && ./svc.sh start`. The runner works while its
+   user is logged in: after a restart, log it in once and switch back to your own user. Keep it
+   to one runner, which takes the Mac jobs one after another: two would erase each other's
+   simulators.
+4. Under Settings › Secrets and variables › Actions › Variables, set `MAC_RUNNER` to
+   `self-hosted`. Delete the variable to send the Mac jobs back to GitHub's runner.
+
 ## Licence
 
 © 2026 Simon Giotta. All rights reserved: Kaliberfinder is closed source, see

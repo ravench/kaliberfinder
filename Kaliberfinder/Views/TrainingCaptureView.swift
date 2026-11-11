@@ -228,6 +228,10 @@ struct TrainingPackageView: View {
         Binding { package.atypicalBullet == true } set: { package.atypicalBullet = $0 ? true : nil }
     }
 
+    private var headstamp: Binding<String> {
+        Binding { package.headstamp ?? "" } set: { package.headstamp = $0.isEmpty ? nil : $0 }
+    }
+
     var body: some View {
         List {
             Section {
@@ -257,29 +261,31 @@ struct TrainingPackageView: View {
             }
             Section {
                 TextField("Notiz", text: $package.note, prompt: Text("z. B. Holztisch, Tageslicht"), axis: .vertical)
-                // Where the photos were taken: every present-day country, searchable (Raven, 2026-11-09).
+                // Every present-day country and the former states, searchable (Raven, 2026-11-09 and 2026-11-11).
                 NavigationLink {
                     CountryPickerView(selection: $package.country)
                 } label: {
                     LabeledContent("Land", value: package.country.map { Countries.title(of: $0) } ?? "–")
                 }
+                // What the round is, as the old-ammunition table records it (Raven 2026-11-11).
+                TextField("Bodenstempel", text: headstamp)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.characters)
+                choice("Zündart", selection: $package.ignition, options: RoundFacts.ignition)
+                choice("Randform", selection: $package.head, options: RoundFacts.head)
+                choice("Hülsenform", selection: $package.shape, options: RoundFacts.shape)
+                choice("Hülsenmaterial", selection: $package.caseMaterial, options: RoundFacts.caseMaterial)
+                choice("Geschoss", selection: $package.bullet, options: RoundFacts.bullet)
                 // A bullet the calibre does not usually carry, so tuning the matcher knows to be careful with this series.
                 Toggle("Atypisches Geschoss", isOn: atypicalBullet)
-                choice("Geschossmaterial", selection: $package.bulletMaterial, options: Materials.bullet)
-                choice("Hülsenmaterial", selection: $package.caseMaterial, options: Materials.cases)
-                choice("Zündhütchen", selection: $package.primer, options: Materials.primer)
             } header: {
                 Text("Serie")
             }
             Section {
-                measured("Gesamtlänge", value: measurements.overallLength)
-                measured("Hülsenlänge", value: measurements.caseLength)
-                measured("Randdurchmesser", value: measurements.rim)
-                measured("Bodendurchmesser", value: measurements.base)
-                measured("Schulterdurchmesser", value: measurements.shoulder)
-                measured("Schulterlänge", value: measurements.shoulderLength)
-                measured("Geschossdurchmesser", value: measurements.bullet)
-                measured("Zündhütchen-Durchmesser", value: measurements.primerDiameter)
+                // Where each value is taken, as on the old-ammunition page (Raven 2026-11-10).
+                MeasuringGuide()
+                    .padding(.vertical, 4)
+                ForEach(Self.calliperFields, id: \.letter) { measured($0) }
             } header: {
                 Text("Mit der Schieblehre gemessen")
             }
@@ -335,23 +341,53 @@ struct TrainingPackageView: View {
 
     private func reload() { shots = capture.shots }
 
-    /// A calliper value with its unit, «9.95 mm»; a dash until measured.
-    /// A picker over `options` (`Materials`), «–» for none; stores the token.
-    private func choice(_ title: LocalizedStringKey, selection: Binding<String?>, options: [String]) -> some View {
+    /// A picker over `options` (`RoundFacts`), «–» for none; stores the token.
+    private func choice(_ title: LocalizedStringKey, selection: Binding<String?>, options: [RoundFacts.Option]) -> some View {
         Picker(title, selection: selection) {
             Text(verbatim: "–").tag(String?.none)
-            ForEach(options, id: \.self) { Text(Materials.title($0).loc).tag(String?.some($0)) }
+            ForEach(options, id: \.token) { Text($0.title.loc).tag(String?.some($0.token)) }
         }
     }
 
-    private func measured(_ title: LocalizedStringKey, value: Binding<Double?>) -> some View {
-        LabeledContent(title) {
+    /// A calliper field: its letter on the sketch (`MeasuringGuide`), its name and what it says about the round.
+    struct CalliperField {
+        let letter: String
+        let title: LocalizedStringKey
+        let value: WritableKeyPath<Measurements, Double?>
+    }
+
+    /// In the order of the old-ammunition table's legend.
+    static let calliperFields = [
+        CalliperField(letter: "D", title: "Geschossdurchmesser", value: \.bullet),
+        CalliperField(letter: "N", title: "Halsdurchmesser", value: \.neck),
+        CalliperField(letter: "S", title: "Schulterdurchmesser", value: \.shoulder),
+        CalliperField(letter: "B", title: "Bodendurchmesser", value: \.base),
+        CalliperField(letter: "R", title: "Randdurchmesser", value: \.rim),
+        CalliperField(letter: "P", title: "Zündhütchen-Durchmesser", value: \.primerDiameter),
+        CalliperField(letter: "H", title: "Schulterlänge", value: \.shoulderLength),
+        CalliperField(letter: "L", title: "Hülsenlänge", value: \.caseLength),
+        CalliperField(letter: "OAL", title: "Gesamtlänge", value: \.overallLength),
+    ]
+
+    /// A calliper value with its unit, «9.95 mm»; a dash until measured.
+    private func measured(_ field: CalliperField) -> some View {
+        LabeledContent {
             HStack(spacing: 4) {
-                TextField("–", value: value, format: .number.precision(.fractionLength(0...2)))
+                TextField("–", value: measurements[dynamicMember: field.value], format: .number.precision(.fractionLength(0...2)))
                     .keyboardType(.decimalPad)
                     .multilineTextAlignment(.trailing)
                     .frame(maxWidth: 80)
                 Text(verbatim: LengthUnit.metric.symbol).foregroundStyle(.secondary)
+            }
+        } label: {
+            HStack(spacing: 8) {
+                Text(verbatim: field.letter)
+                    .font(.footnote.bold())
+                    .foregroundStyle(Color.accentColor)
+                    .frame(minWidth: 30, alignment: .leading)
+                    .accessibilityHidden(true)
+                // Shrinks rather than cut off «Zündhütchen-Durchmesser» beside the letter; the row doesn't grow for a second line.
+                Text(field.title).lineLimit(1).minimumScaleFactor(0.7)
             }
         }
     }
@@ -498,8 +534,8 @@ private struct ShareSheet: UIViewControllerRepresentable {
     func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
 }
 
-/// The country a series was photographed in: every present-day country with its flag, searchable; the
-/// first row clears the choice.
+/// The country of a series: every present-day country with its flag and the former states, searchable;
+/// the first row clears the choice.
 struct CountryPickerView: View {
     @Binding var selection: String?
     @Environment(\.dismiss) private var dismiss
