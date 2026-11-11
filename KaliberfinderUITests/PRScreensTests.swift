@@ -432,21 +432,13 @@ final class PRScreensTests: XCTestCase {
         return true
     }
 
-    /// Scrolls the Settings sheet to its last section and makes sure the training switch is on, so its
-    /// link shows. The drags run along the left edge: a swipe through the middle can catch the switch
-    /// and turn it off again.
+    /// Scrolls the Settings sheet to its last section, where the training switch (on by launch argument)
+    /// and its link sit. The drags run along the left edge: a swipe through the middle can catch the
+    /// switch and turn it off.
     private func settingsBottom() -> Bool {
         for _ in 0..<6 {
             app.coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.8))
                 .press(forDuration: 0.01, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.2)))
-        }
-        let toggle = app.switches["Trainingsdaten"].firstMatch
-        guard toggle.waitForExistence(timeout: 5) else {
-            XCTFail("Training switch not found")
-            return false
-        }
-        if toggle.value as? String != "1" {
-            toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap() // the knob, at the row's end
         }
         return true
     }
