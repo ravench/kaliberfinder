@@ -272,7 +272,7 @@ struct TrainingPackageView: View {
                     .autocorrectionDisabled()
                     .textInputAutocapitalization(.characters)
                 choice("Zündart", selection: $package.ignition, options: RoundFacts.ignition)
-                choice("Randform", selection: $package.head, options: RoundFacts.head)
+                choice("Randform", selection: $package.head, options: RoundFacts.head, icon: HeadIcon.image)
                 choice("Hülsenform", selection: $package.shape, options: RoundFacts.shape)
                 choice("Hülsenmaterial", selection: $package.caseMaterial, options: RoundFacts.caseMaterial)
                 choice("Geschoss", selection: $package.bullet, options: RoundFacts.bullet)
@@ -341,11 +341,15 @@ struct TrainingPackageView: View {
 
     private func reload() { shots = capture.shots }
 
-    /// A picker over `options` (`RoundFacts`), «–» for none; stores the token.
-    private func choice(_ title: LocalizedStringKey, selection: Binding<String?>, options: [RoundFacts.Option]) -> some View {
+    /// A picker over `options` (`RoundFacts`), «–» for none, an icon per token where `icon` has one; stores the token.
+    private func choice(_ title: LocalizedStringKey, selection: Binding<String?>, options: [RoundFacts.Option],
+                        icon: @escaping (String) -> UIImage? = { _ in nil }) -> some View {
         Picker(title, selection: selection) {
             Text(verbatim: "–").tag(String?.none)
-            ForEach(options, id: \.token) { Text($0.title.loc).tag(String?.some($0.token)) }
+            ForEach(options, id: \.token) { option in
+                Label { Text(option.title.loc) } icon: { icon(option.token).map { Image(uiImage: $0) } }
+                    .tag(String?.some(option.token))
+            }
         }
     }
 

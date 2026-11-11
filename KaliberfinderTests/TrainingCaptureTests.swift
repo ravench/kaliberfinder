@@ -235,6 +235,23 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(TrainingPackageView.calliperFields.map(\.letter), ["D", "N", "S", "B", "R", "P", "H", "L", "OAL"])
     }
 
+    func testEveryHeadChoiceHasItsRimSilhouette() {
+        let rim = { (token: String) in HeadIcon.profile(token)!.last!.halfWidth }
+        let body = HeadIcon.profile("rimless")![0].halfWidth
+        XCTAssertEqual(rim("rimless"), body)
+        XCTAssertGreaterThan(rim("rimmed"), rim("semi"))
+        XCTAssertGreaterThan(rim("semi"), body)
+        XCTAssertLessThan(rim("rebated"), body)
+        XCTAssertEqual(rim("belted"), body)
+        XCTAssertGreaterThan(HeadIcon.profile("belted")!.map(\.halfWidth).max()!, body, "the belt stands out of the body")
+        for option in RoundFacts.head {
+            let image = HeadIcon.image(option.token)
+            XCTAssertEqual(image?.renderingMode, .alwaysTemplate, option.token)
+            XCTAssertEqual(image?.size, CGSize(width: HeadIcon.size, height: HeadIcon.size), option.token)
+        }
+        XCTAssertNil(HeadIcon.image("other"))
+    }
+
     /// The note and the atypical-bullet flag are edited on the series screen; the flag is only in the file when set.
     func testNoteAndAtypicalBulletAreEditable() throws {
         let url = try store.create(package())
