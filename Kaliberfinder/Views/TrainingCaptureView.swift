@@ -439,15 +439,13 @@ private struct TrainingCameraSession: View {
                         .padding(.vertical, 6)
                         .background(.ultraThinMaterial, in: Capsule())
                 }
-                // The distance guide only where there is depth, as on the app's photo screen.
-                if camera.hasDepth {
-                    Label(camera.guidance.title.loc, systemImage: camera.guidance == .ready ? "checkmark.circle.fill" : "ruler")
-                        .font(.headline)
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 8)
-                        .background(camera.guidance == .ready ? Color.green.opacity(0.85) : Color.black.opacity(0.6), in: Capsule())
-                        .foregroundStyle(.white)
-                }
+                // The distance guide with every camera, «Keine Tiefe gemessen» included (Raven, PR 183).
+                Label(camera.guidance.title.loc, systemImage: camera.guidance == .ready ? "checkmark.circle.fill" : "ruler")
+                    .font(.headline)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(camera.guidance == .ready ? Color.green.opacity(0.85) : Color.black.opacity(0.6), in: Capsule())
+                    .foregroundStyle(.white)
                 HStack {
                     Button("Fertig") { dismiss() }
                         .foregroundStyle(.white)
