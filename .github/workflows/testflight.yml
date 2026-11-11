@@ -140,8 +140,10 @@ jobs:
           python3 -m unittest discover -s tools -p 'test_changelog.py'
           command -v xcodegen >/dev/null || brew install xcodegen
           xcodegen generate
-          # RUNNER_TEMP is emptied after the job, key included.
+          # RUNNER_TEMP is emptied after the job, key included, and so are xcodebuild's temporary
+          # files and distribution logs from here on.
           echo "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
+          echo "TMPDIR=$RUNNER_TEMP" >> "$GITHUB_ENV"
           python3 tools/testflight.py export-options "$RUNNER_TEMP/ExportOptions.plist"
           python3 tools/testflight.py export-options "$RUNNER_TEMP/ExportLocal.plist" export
           BUILD=$(python3 tools/testflight.py build-number "${{ github.run_number }}")
