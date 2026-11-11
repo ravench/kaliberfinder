@@ -22,6 +22,19 @@ final class DimensionMatcherTests: XCTestCase {
         }
     }
 
+    /// A fired hull measured as the length of what one holds, typed as Gesamtlänge (review 2026-11-10): its gauge fits too.
+    func testAFiredHullFitsItsGaugeByOverallLength() {
+        let hull = DimensionMatcher.rank(MeasuredDimensions(overallLength: 70, rim: 22.3))
+        XCTAssertEqual(Set(hull.prefix(2).map(\.cartridge.id)), ["12/70", "12/76"], "an opened 12/70 or a loaded 12/76")
+        XCTAssertTrue(hull.prefix(2).allSatisfy { $0.fit == .good })
+        let loaded = DimensionMatcher.rank(MeasuredDimensions(overallLength: 64, rim: 22.3))
+        XCTAssertEqual(loaded.first?.cartridge.id, "12/70")
+        XCTAssertEqual(loaded.first?.fit, .good)
+        let long = DimensionMatcher.rank(MeasuredDimensions(overallLength: 76, rim: 22.3))
+        XCTAssertEqual(long.first?.cartridge.id, "12/76")
+        XCTAssertEqual(long.first { $0.cartridge.id == "12/70" }?.fit, .poor)
+    }
+
     /// A rebated rim is narrower than the base; the typed rim is scored against the rim (review 2026-11-10).
     func testRebatedRimFitsItsCalibre() {
         // Its rim is the .44 Magnum's, so both fit exactly (the base, 13.8, would put it 0.7 mm off).

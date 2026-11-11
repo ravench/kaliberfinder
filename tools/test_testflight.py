@@ -210,10 +210,11 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn('CURRENT_PROJECT_VERSION="$BUILD_NUMBER"', self.workflow)
 
     def test_builds_with_ios_26_sdk(self):
-        # App Store Connect rejects builds made with an SDK older than iOS 26 (Xcode 26).
+        # App Store Connect rejects builds made with an SDK older than iOS 26 (Xcode 26); a
+        # self-hosted Mac (MAC_RUNNER) needs Xcode 26 too (README).
         for name in ("build.yml", "testflight.yml"):
             with open(os.path.join(testflight.ROOT, ".github", "workflows", name)) as f:
-                runners = re.findall(r"runs-on:\s*macos-(\d+)", f.read())
+                runners = re.findall(r"runs-on:.*macos-(\d+)", f.read())
             self.assertTrue(runners, name)
             for version in runners:
                 self.assertGreaterEqual(int(version), 26, name)

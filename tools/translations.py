@@ -17,7 +17,7 @@ T = {
     "Einstellungen öffnen": ("Open Settings", "Ouvrir les Réglages", "Apri Impostazioni"),
     "1:1-Vergleich": ("1:1 comparison", "Comparaison 1:1", "Confronto 1:1"),
     "Sortieren nach": ("Sort by", "Trier par", "Ordina per"),
-    "Nach Trefferqualität sortieren": ("Sort by match quality", "Trier par qualité de correspondance", "Ordina per qualità della corrispondenza"),
+    "Mit LiDAR nach Trefferqualität sortieren": ("Sort by match quality with LiDAR", "Avec LiDAR, trier par qualité de correspondance", "Con LiDAR, ordina per qualità della corrispondenza"),
     "Geschosse bei leeren Hülsen zeigen": ("Show bullets on empty cases", "Afficher les projectiles sur les douilles vides", "Mostra le palle sui bossoli vuoti"),
     "Fotoerkennung": ("Photo recognition", "Reconnaissance photo", "Riconoscimento foto"),
     "Entwickler": ("Developer", "Développeur", "Sviluppatore"),
@@ -122,6 +122,7 @@ T = {
     "Erkannt: %@": ("Detected: %@", "Détecté : %@", "Riconosciuto: %@"),
     "Flaschenhals": ("bottleneck", "à épaulement", "a collo di bottiglia"),
     "Leere Hülse": ("Empty case", "Douille vide", "Bossolo vuoto"),
+    "als leere Hülse": ("as an empty case", "comme douille vide", "come bossolo vuoto"),
     "leere Hülse": ("empty case", "douille vide", "bossolo vuoto"),
     "Patrone": ("Cartridge", "Cartouche", "Cartuccia"),
     "mit Rand": ("rimmed", "à bourrelet", "con orlo"),
@@ -299,10 +300,7 @@ T = {
     "Vom Gerätemodell": ("From the device model", "Selon le modèle d'appareil", "Dal modello di dispositivo"),
     "Zurücksetzen": ("Reset", "Réinitialiser", "Ripristina"),
     # Hidden developer screen (TrainingCaptureView, SettingsView): five taps on the copyright line.
-    "© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0": (
-        "© 2026 Simon Giotta · Licence: PolyForm Noncommercial 1.0.0",
-        "© 2026 Simon Giotta · Licence : PolyForm Noncommercial 1.0.0",
-        "© 2026 Simon Giotta · Licenza: PolyForm Noncommercial 1.0.0"),
+    "© 2026 Simon Giotta": ("© 2026 Simon Giotta", "© 2026 Simon Giotta", "© 2026 Simon Giotta"),
     "Trainingsdaten aufnehmen": ("Record training data", "Enregistrer des données d'entraînement", "Registra dati di addestramento"),
     "Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.": (
         "Developer feature. Tapping the copyright line five times hides it again.",

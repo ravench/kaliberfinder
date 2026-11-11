@@ -101,7 +101,9 @@ jobs:
     concurrency:
       group: testflight
       cancel-in-progress: false
-    runs-on: macos-26
+    # GitHub's Mac, or the self-hosted one named in the MAC_RUNNER variable while the repo is
+    # private (README, CI on your own Mac).
+    runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}
     permissions:
       # Tags the uploaded commit (testflight/<build>): the next build's notes start after it.
       contents: write
@@ -136,10 +138,12 @@ jobs:
         run: |
           python3 -m unittest discover -s tools -p 'test_testflight.py'
           python3 -m unittest discover -s tools -p 'test_changelog.py'
-          brew install xcodegen
+          command -v xcodegen >/dev/null || brew install xcodegen
           xcodegen generate
-          # The runner is thrown away after the job, key included.
+          # RUNNER_TEMP is emptied after the job, key included, and so are xcodebuild's temporary
+          # files and distribution logs from here on.
           echo "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
+          echo "TMPDIR=$RUNNER_TEMP" >> "$GITHUB_ENV"
           python3 tools/testflight.py export-options "$RUNNER_TEMP/ExportOptions.plist"
           python3 tools/testflight.py export-options "$RUNNER_TEMP/ExportLocal.plist" export
           BUILD=$(python3 tools/testflight.py build-number "${{ github.run_number }}")
@@ -179,6 +183,7 @@ jobs:
             -configuration Release \
             -destination 'generic/platform=iOS' \
             -archivePath "$RUNNER_TEMP/Kaliberfinder.xcarchive" \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
             CODE_SIGNING_ALLOWED=NO \
             MARKETING_VERSION="$MARKETING_VERSION" \
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER" | tee "$RUNNER_TEMP/archive.log" | xcpretty

@@ -62,7 +62,7 @@ struct SettingsView: View {
                 ForEach(CompareLength.allCases) { Text($0.title.loc).tag($0) }
             }
             if LiDARCamera.isAvailable {
-                Toggle("Nach Trefferqualität sortieren", isOn: $compareByFit)
+                Toggle("Mit LiDAR nach Trefferqualität sortieren", isOn: $compareByFit)
             }
             Toggle("Geschosse bei leeren Hülsen zeigen", isOn: $bulletsOnCases)
         } header: {
@@ -104,7 +104,7 @@ struct SettingsView: View {
             if let source = CartridgeCatalog.source {
                 LabeledContent("Kaliberdaten", value: source.text)
             }
-            Text("© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0")
+            Text("© 2026 Simon Giotta")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
                 .onTapGesture(count: 5) { trainingCapture.toggle() }

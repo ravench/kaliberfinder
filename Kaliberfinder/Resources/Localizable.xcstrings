@@ -3888,6 +3888,29 @@
         }
       }
     },
+    "Mit LiDAR nach Trefferqualität sortieren": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sort by match quality with LiDAR"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avec LiDAR, trier par qualité de correspondance"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con LiDAR, ordina per qualità della corrispondenza"
+          }
+        }
+      }
+    },
     "Mit Papierpflaster": {
       "extractionState": "manual",
       "localizations": {
@@ -3999,29 +4022,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "NATO"
-          }
-        }
-      }
-    },
-    "Nach Trefferqualität sortieren": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sort by match quality"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trier par qualité de correspondance"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ordina per qualità della corrispondenza"
           }
         }
       }
@@ -6142,6 +6142,29 @@
         }
       }
     },
+    "als leere Hülse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "as an empty case"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "comme douille vide"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "come bossolo vuoto"
+          }
+        }
+      }
+    },
     "gerade Hülse": {
       "extractionState": "manual",
       "localizations": {
@@ -6326,25 +6349,25 @@
         }
       }
     },
-    "© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0": {
+    "© 2026 Simon Giotta": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "© 2026 Simon Giotta · Licence: PolyForm Noncommercial 1.0.0"
+            "value": "© 2026 Simon Giotta"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "© 2026 Simon Giotta · Licence : PolyForm Noncommercial 1.0.0"
+            "value": "© 2026 Simon Giotta"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "© 2026 Simon Giotta · Licenza: PolyForm Noncommercial 1.0.0"
+            "value": "© 2026 Simon Giotta"
           }
         }
       }

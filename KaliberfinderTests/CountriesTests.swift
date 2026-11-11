@@ -18,6 +18,7 @@ final class CountriesTests: XCTestCase {
         let switzerland = try? XCTUnwrap(german.first { $0.code == "CH" })
         XCTAssertEqual(switzerland?.name, "Schweiz")
         XCTAssertEqual(switzerland?.flag, "🇨🇭")
+        XCTAssertEqual(switzerland?.title, "🇨🇭 Schweiz")
         XCTAssertEqual(german.map(\.name), german.map(\.name).sorted { $0.localizedStandardCompare($1) == .orderedAscending }, "by name")
         XCTAssertEqual(Countries.title(of: "CH", locale: Locale(identifier: "de_CH")), "🇨🇭 Schweiz")
         XCTAssertEqual(Countries.title(of: "QQ", locale: Locale(identifier: "de_CH")), "🇶🇶 QQ", "an unknown code stays readable")
