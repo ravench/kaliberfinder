@@ -16278,6 +16278,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "tipColours": [],
    "dimensions": {
     "rim": 12.01,
     "base": 11.96,
