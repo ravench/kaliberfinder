@@ -62,8 +62,7 @@ struct LiDARCameraView: View {
                         .foregroundStyle(.white)
                 }
                 HStack {
-                    Button("Abbrechen") { dismiss() }
-                        .foregroundStyle(.white)
+                    Button { dismiss() } label: { Text("Abbrechen").cameraPill() }
                     Spacer()
                     Button {
                         isCapturing = true
@@ -82,7 +81,7 @@ struct LiDARCameraView: View {
                     .accessibilityLabel("Foto aufnehmen")
                     Spacer()
                     // Balances the cancel button so the shutter stays centred.
-                    Text("Abbrechen").hidden()
+                    Text("Abbrechen").cameraPill().hidden()
                 }
                 .padding(.horizontal, 24)
             }
@@ -126,5 +125,16 @@ struct CameraPreview: UIViewRepresentable {
         override static var layerClass: AnyClass { AVCaptureVideoPreviewLayer.self }
         // swiftlint:disable:next force_cast
         var previewLayer: AVCaptureVideoPreviewLayer { layer as! AVCaptureVideoPreviewLayer }
+    }
+}
+
+/// The text buttons on the camera screens: a dark capsule the size of a finger, since a bare label
+/// at the bottom of the viewfinder is hard to hit (Raven, TestFlight 1174).
+extension View {
+    func cameraPill() -> some View {
+        padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .background(Color.black.opacity(0.6), in: Capsule())
+            .foregroundStyle(.white)
     }
 }

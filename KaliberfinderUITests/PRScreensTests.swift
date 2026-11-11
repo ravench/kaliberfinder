@@ -341,6 +341,21 @@ final class PRScreensTests: XCTestCase {
         guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
         XCTAssertTrue(app.buttons["Als ZIP teilen"].waitForExistence(timeout: 5), "The saved series did not open")
         snap("22-Trainingsdaten-Serie")
+        // The rim shapes drawn next to the Randform choices (Raven, TestFlight 1174); the fixture's own
+        // choice closes the menu again.
+        let head = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Randform'")).firstMatch
+        if head.waitForExistence(timeout: 5) {
+            head.tap()
+            if app.buttons["Randlos"].waitForExistence(timeout: 5) { snap("22c-Trainingsdaten-Randform") }
+            app.buttons["Randlos"].tap()
+        }
+        // The case shapes drawn the same way (TestFlight 1175).
+        let shape = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Hülsenform'")).firstMatch
+        if shape.waitForExistence(timeout: 5) {
+            shape.tap()
+            if app.buttons["Konische Hülse"].waitForExistence(timeout: 5) { snap("22d-Trainingsdaten-Huelsenform") }
+            app.buttons["Konische Hülse"].tap()
+        }
         // The calliper fields at the end, with the sketch of where to measure over them.
         scroll()
         snap("22b-Trainingsdaten-Schieblehre")

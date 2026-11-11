@@ -235,6 +235,30 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(TrainingPackageView.calliperFields.map(\.letter), ["D", "N", "S", "B", "R", "P", "H", "L", "OAL"])
     }
 
+    func testEveryHeadAndShapeChoiceHasItsOutline() {
+        let rim = { (token: String) in CaseIcon.profile(token)!.last!.halfWidth }
+        let body = CaseIcon.profile("rimless")![0].halfWidth
+        XCTAssertEqual(rim("rimless"), body)
+        XCTAssertGreaterThan(rim("rimmed"), rim("semi"))
+        XCTAssertGreaterThan(rim("semi"), body)
+        XCTAssertLessThan(rim("rebated"), body)
+        XCTAssertEqual(rim("belted"), body)
+        XCTAssertGreaterThan(CaseIcon.profile("belted")!.map(\.halfWidth).max()!, body, "the belt stands out of the body")
+        // The case shapes (TestFlight 1175): the mouth against the body.
+        let mouth = { (token: String) in CaseIcon.profile(token)![0].halfWidth }
+        let widest = { (token: String) in CaseIcon.profile(token)!.map(\.halfWidth).max()! }
+        XCTAssertEqual(mouth("straight"), widest("straight"))
+        XCTAssertLessThan(mouth("tapered"), widest("tapered"))
+        XCTAssertLessThan(mouth("bottleneck"), mouth("tapered"))
+        for option in RoundFacts.head + RoundFacts.shape {
+            let image = CaseIcon.image(option.token)
+            XCTAssertEqual(image?.renderingMode, .alwaysTemplate, option.token)
+            // Wider than high: the clear margin that keeps the outline off the word in the collapsed row.
+            XCTAssertEqual(image?.size, CGSize(width: CaseIcon.size + CaseIcon.margin, height: CaseIcon.size), option.token)
+        }
+        XCTAssertNil(CaseIcon.image("other"))
+    }
+
     /// The note and the atypical-bullet flag are edited on the series screen; the flag is only in the file when set.
     func testNoteAndAtypicalBulletAreEditable() throws {
         let url = try store.create(package())

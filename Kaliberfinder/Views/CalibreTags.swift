@@ -207,7 +207,7 @@ struct DrawnFlag: View {
     let code: String
 
     /// Codes this view can draw; generate_data.py DRAWN_FLAGS must match.
-    static let codes: Set<String> = ["RUE", "AH", "SU", "CS", "NATO"]
+    static let codes: Set<String> = ["RUE", "AH", "SU", "CS", "OE", "NATO"]
 
     var body: some View {
         switch code {
@@ -230,6 +230,17 @@ struct DrawnFlag: View {
                         p.addLines([.zero, CGPoint(x: geo.size.width / 2, y: geo.size.height / 2), CGPoint(x: 0, y: geo.size.height)])
                     }
                     .fill(Color(red: 0.07, green: 0.27, blue: 0.49))
+                }
+            }
+        case "OE":  // a white crescent and star on red
+            Color(red: 0.89, green: 0.04, blue: 0.09).overlay {
+                GeometryReader { geo in
+                    let h = geo.size.height, c = CGPoint(x: geo.size.width * 0.42, y: h / 2)
+                    Circle().fill(.white).frame(width: h * 0.56, height: h * 0.56).position(c)
+                    Circle().fill(Color(red: 0.89, green: 0.04, blue: 0.09))
+                        .frame(width: h * 0.45, height: h * 0.45).position(x: c.x + h * 0.11, y: c.y)
+                    Image(systemName: "star.fill").resizable().foregroundStyle(.white)
+                        .frame(width: h * 0.22, height: h * 0.22).position(x: c.x + h * 0.3, y: c.y)
                 }
             }
         case "NATO":

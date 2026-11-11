@@ -272,8 +272,8 @@ struct TrainingPackageView: View {
                     .autocorrectionDisabled()
                     .textInputAutocapitalization(.characters)
                 choice("Zündart", selection: $package.ignition, options: RoundFacts.ignition)
-                choice("Randform", selection: $package.head, options: RoundFacts.head)
-                choice("Hülsenform", selection: $package.shape, options: RoundFacts.shape)
+                choice("Randform", selection: $package.head, options: RoundFacts.head, icon: CaseIcon.image)
+                choice("Hülsenform", selection: $package.shape, options: RoundFacts.shape, icon: CaseIcon.image)
                 choice("Hülsenmaterial", selection: $package.caseMaterial, options: RoundFacts.caseMaterial)
                 choice("Geschoss", selection: $package.bullet, options: RoundFacts.bullet)
                 // A bullet the calibre does not usually carry, so tuning the matcher knows to be careful with this series.
@@ -341,11 +341,15 @@ struct TrainingPackageView: View {
 
     private func reload() { shots = capture.shots }
 
-    /// A picker over `options` (`RoundFacts`), «–» for none; stores the token.
-    private func choice(_ title: LocalizedStringKey, selection: Binding<String?>, options: [RoundFacts.Option]) -> some View {
+    /// A picker over `options` (`RoundFacts`), «–» for none, an icon per token where `icon` has one; stores the token.
+    private func choice(_ title: LocalizedStringKey, selection: Binding<String?>, options: [RoundFacts.Option],
+                        icon: @escaping (String) -> UIImage? = { _ in nil }) -> some View {
         Picker(title, selection: selection) {
             Text(verbatim: "–").tag(String?.none)
-            ForEach(options, id: \.token) { Text($0.title.loc).tag(String?.some($0.token)) }
+            ForEach(options, id: \.token) { option in
+                Label { Text(option.title.loc) } icon: { icon(option.token).map { Image(uiImage: $0) } }
+                    .tag(String?.some(option.token))
+            }
         }
     }
 
@@ -483,8 +487,7 @@ private struct TrainingCameraSession: View {
                     .background(camera.guidance == .ready ? Color.green.opacity(0.85) : Color.black.opacity(0.6), in: Capsule())
                     .foregroundStyle(.white)
                 HStack {
-                    Button("Fertig") { dismiss() }
-                        .foregroundStyle(.white)
+                    Button { dismiss() } label: { Text("Fertig").cameraPill() }
                     Spacer()
                     Button(action: shoot) {
                         Circle().strokeBorder(.white, lineWidth: 4).frame(width: 72, height: 72)
@@ -492,7 +495,7 @@ private struct TrainingCameraSession: View {
                     }
                     .disabled(saving || !camera.isRunning)
                     Spacer()
-                    Text("Fertig").hidden()
+                    Text("Fertig").cameraPill().hidden()
                 }
                 .padding(.horizontal, 24)
             }
