@@ -272,8 +272,8 @@ struct TrainingPackageView: View {
                     .autocorrectionDisabled()
                     .textInputAutocapitalization(.characters)
                 choice("Zündart", selection: $package.ignition, options: RoundFacts.ignition)
-                choice("Randform", selection: $package.head, options: RoundFacts.head, icon: HeadIcon.image)
-                choice("Hülsenform", selection: $package.shape, options: RoundFacts.shape)
+                choice("Randform", selection: $package.head, options: RoundFacts.head, icon: CaseIcon.image)
+                choice("Hülsenform", selection: $package.shape, options: RoundFacts.shape, icon: CaseIcon.image)
                 choice("Hülsenmaterial", selection: $package.caseMaterial, options: RoundFacts.caseMaterial)
                 choice("Geschoss", selection: $package.bullet, options: RoundFacts.bullet)
                 // A bullet the calibre does not usually carry, so tuning the matcher knows to be careful with this series.
