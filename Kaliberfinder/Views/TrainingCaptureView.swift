@@ -228,6 +228,10 @@ struct TrainingPackageView: View {
         Binding { package.atypicalBullet == true } set: { package.atypicalBullet = $0 ? true : nil }
     }
 
+    private var headstamp: Binding<String> {
+        Binding { package.headstamp ?? "" } set: { package.headstamp = $0.isEmpty ? nil : $0 }
+    }
+
     var body: some View {
         List {
             Section {
@@ -263,11 +267,15 @@ struct TrainingPackageView: View {
                 } label: {
                     LabeledContent("Land", value: package.country.map { Countries.title(of: $0) } ?? "–")
                 }
+                // What the round is, as the old-ammunition table records it (Raven 2026-11-11).
+                TextField("Bodenstempel", text: headstamp)
+                choice("Zündart", selection: $package.ignition, options: RoundFacts.ignition)
+                choice("Randform", selection: $package.head, options: RoundFacts.head)
+                choice("Hülsenform", selection: $package.shape, options: RoundFacts.shape)
+                choice("Hülsenmaterial", selection: $package.caseMaterial, options: RoundFacts.caseMaterial)
+                choice("Geschoss", selection: $package.bullet, options: RoundFacts.bullet)
                 // A bullet the calibre does not usually carry, so tuning the matcher knows to be careful with this series.
                 Toggle("Atypisches Geschoss", isOn: atypicalBullet)
-                choice("Geschossmaterial", selection: $package.bulletMaterial, options: Materials.bullet)
-                choice("Hülsenmaterial", selection: $package.caseMaterial, options: Materials.cases)
-                choice("Zündhütchen", selection: $package.primer, options: Materials.primer)
             } header: {
                 Text("Serie")
             }
@@ -331,11 +339,11 @@ struct TrainingPackageView: View {
 
     private func reload() { shots = capture.shots }
 
-    /// A picker over `options` (`Materials`), «–» for none; stores the token.
-    private func choice(_ title: LocalizedStringKey, selection: Binding<String?>, options: [String]) -> some View {
+    /// A picker over `options` (`RoundFacts`), «–» for none; stores the token.
+    private func choice(_ title: LocalizedStringKey, selection: Binding<String?>, options: [RoundFacts.Option]) -> some View {
         Picker(title, selection: selection) {
             Text(verbatim: "–").tag(String?.none)
-            ForEach(options, id: \.self) { Text(Materials.title($0).loc).tag(String?.some($0)) }
+            ForEach(options, id: \.token) { Text($0.title.loc).tag(String?.some($0.token)) }
         }
     }
 
@@ -346,16 +354,17 @@ struct TrainingPackageView: View {
         let value: WritableKeyPath<Measurements, Double?>
     }
 
+    /// In the order of the old-ammunition table's legend.
     static let calliperFields = [
-        CalliperField(letter: "OAL", title: "Gesamtlänge", value: \.overallLength),
-        CalliperField(letter: "L", title: "Hülsenlänge", value: \.caseLength),
-        CalliperField(letter: "R", title: "Randdurchmesser", value: \.rim),
-        CalliperField(letter: "B", title: "Bodendurchmesser", value: \.base),
-        CalliperField(letter: "S", title: "Schulterdurchmesser", value: \.shoulder),
-        CalliperField(letter: "H", title: "Schulterlänge", value: \.shoulderLength),
-        CalliperField(letter: "N", title: "Halsdurchmesser", value: \.neck),
         CalliperField(letter: "D", title: "Geschossdurchmesser", value: \.bullet),
+        CalliperField(letter: "N", title: "Halsdurchmesser", value: \.neck),
+        CalliperField(letter: "S", title: "Schulterdurchmesser", value: \.shoulder),
+        CalliperField(letter: "B", title: "Bodendurchmesser", value: \.base),
+        CalliperField(letter: "R", title: "Randdurchmesser", value: \.rim),
         CalliperField(letter: "P", title: "Zündhütchen-Durchmesser", value: \.primerDiameter),
+        CalliperField(letter: "H", title: "Schulterlänge", value: \.shoulderLength),
+        CalliperField(letter: "L", title: "Hülsenlänge", value: \.caseLength),
+        CalliperField(letter: "OAL", title: "Gesamtlänge", value: \.overallLength),
     ]
 
     /// A calliper value with its unit, «9.95 mm»; a dash until measured.

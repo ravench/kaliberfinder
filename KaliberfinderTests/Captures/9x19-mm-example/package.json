@@ -1,12 +1,14 @@
 {
   "app" : "",
-  "bulletMaterial" : "jacket",
+  "bullet" : "fmj",
   "calibre" : "9x19 mm",
   "caseMaterial" : "brass",
   "country" : "CH",
   "created" : "2026-11-04T23:30:00Z",
   "device" : "",
   "format" : 1,
+  "head" : "rimless",
+  "ignition" : "centrefire",
   "measurements" : {
     "bullet" : 9.0,
     "overallLength" : 29.6,
@@ -14,6 +16,6 @@
   },
   "note" : "Example package made from one of Raven's 9 mm photos of 2026-11-04 (library photo, no depth). Real captures from the app's hidden «Trainingsdaten» screen go next to it.",
   "part" : "cartridge",
-  "primer" : "boxer",
+  "shape" : "tapered",
   "system" : ""
 }

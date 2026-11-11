@@ -875,29 +875,6 @@
         }
       }
     },
-    "Berdan": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Berdan"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Berdan"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Berdan"
-          }
-        }
-      }
-    },
     "Berdan Nitro (.254)": {
       "extractionState": "manual",
       "localizations": {
@@ -1082,25 +1059,25 @@
         }
       }
     },
-    "Boxer": {
+    "Bodenstempel": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Boxer"
+            "value": "Headstamp"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Boxer"
+            "value": "Marquage du culot"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Boxer"
+            "value": "Punzonatura del fondello"
           }
         }
       }
@@ -2209,29 +2186,6 @@
         }
       }
     },
-    "Geschossmaterial": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bullet material"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matière du projectile"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Materiale della palla"
-          }
-        }
-      }
-    },
     "Geschätzt, bitte kalibrieren": {
       "extractionState": "manual",
       "localizations": {
@@ -2462,6 +2416,29 @@
         }
       }
     },
+    "Halbrand": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semi-rimmed"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À demi-bourrelet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con semi-orlo"
+          }
+        }
+      }
+    },
     "Hals": {
       "extractionState": "manual",
       "localizations": {
@@ -2531,6 +2508,29 @@
         }
       }
     },
+    "Hohlspitz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hollow point"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pointe creuse"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Punta cava"
+          }
+        }
+      }
+    },
     "Hülse": {
       "extractionState": "manual",
       "localizations": {
@@ -2596,6 +2596,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bossolo a collo di bottiglia"
+          }
+        }
+      }
+    },
+    "Hülsenform": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Case shape"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forme de la douille"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forma del bossolo"
           }
         }
       }
@@ -3175,6 +3198,52 @@
         }
       }
     },
+    "Keines: Platzpatrone": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "None: blank"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun : cartouche à blanc"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna: cartuccia a salve"
+          }
+        }
+      }
+    },
+    "Keines: leere Hülse": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "None: empty case"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun : douille vide"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna: bossolo vuoto"
+          }
+        }
+      }
+    },
     "Kleiner": {
       "extractionState": "manual",
       "localizations": {
@@ -3198,25 +3267,48 @@
         }
       }
     },
-    "Kunststoff": {
+    "Konische Hülse": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plastic"
+            "value": "Tapered case"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plastique"
+            "value": "Douille conique"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plastica"
+            "value": "Bossolo conico"
+          }
+        }
+      }
+    },
+    "Kupfer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copper"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuivre"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rame"
           }
         }
       }
@@ -4210,25 +4302,48 @@
         }
       }
     },
-    "Papier": {
+    "Papier oder Kunststoff": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paper"
+            "value": "Paper or plastic hull"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Papier"
+            "value": "Étui en papier ou plastique"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Carta"
+            "value": "Bossolo di carta o plastica"
+          }
+        }
+      }
+    },
+    "Papierpflaster": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paper patched"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calepiné papier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con camiciatura in carta"
           }
         }
       }
@@ -4601,6 +4716,29 @@
         }
       }
     },
+    "Randform": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Head"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Culot"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fondello"
+          }
+        }
+      }
+    },
     "Randlos": {
       "extractionState": "manual",
       "localizations": {
@@ -4689,6 +4827,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "A fuoco da %lld cm"
+          }
+        }
+      }
+    },
+    "Schrot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shot"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plombs"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pallini"
           }
         }
       }
@@ -5153,6 +5314,52 @@
         }
       }
     },
+    "Stiftfeuer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pinfire"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À broche"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A spillo"
+          }
+        }
+      }
+    },
+    "Teilmantel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soft point"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semi-blindé"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semiblindata"
+          }
+        }
+      }
+    },
     "Tiefe relativ": {
       "extractionState": "manual",
       "localizations": {
@@ -5567,6 +5774,29 @@
         }
       }
     },
+    "Wadcutter": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wadcutter"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wadcutter"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wadcutter"
+          }
+        }
+      }
+    },
     "Was du messen kannst; eine Länge und ein Durchmesser reichen oft.": {
       "extractionState": "manual",
       "localizations": {
@@ -5751,6 +5981,52 @@
         }
       }
     },
+    "Zentralfeuer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Centrefire"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Percussion centrale"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Percussione centrale"
+          }
+        }
+      }
+    },
+    "Zurückgesetzter Rand": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rebated"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À bourrelet réduit"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con orlo ridotto"
+          }
+        }
+      }
+    },
     "Zurücksetzen": {
       "extractionState": "manual",
       "localizations": {
@@ -5770,6 +6046,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ripristina"
+          }
+        }
+      }
+    },
+    "Zündart": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ignition"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type d'amorçage"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo di innesco"
           }
         }
       }
