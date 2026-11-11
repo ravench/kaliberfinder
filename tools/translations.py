@@ -22,7 +22,6 @@ T = {
     "Fotoerkennung": ("Photo recognition", "Reconnaissance photo", "Riconoscimento foto"),
     "Entwickler": ("Developer", "Développeur", "Sviluppatore"),
     "Info": ("About", "À propos", "Info"),
-    "Ähnliche Kaliber": ("Similar calibres", "Calibres semblables", "Calibri simili"),
     "Unterscheiden sich in: %@": ("Differ in: %@", "Diffèrent par : %@", "Differiscono per: %@"),
     "Laufdurchmesser": ("bore", "calibre du canon", "diametro della canna"),
     "Länge": ("length", "longueur", "lunghezza"),
@@ -114,10 +113,6 @@ T = {
     "Tschechoslowakei": ("Czechoslovakia", "Tchécoslovaquie", "Cecoslovacchia"),
     "Gruppe": ("Group", "Groupe", "Gruppo"),
     "Gruppe %@": ("Group %@", "Groupe %@", "Gruppo %@"),
-    "Gruppe: sieht anderen Kalibern gleich (siehe Ähnliche Kaliber); gleich grosse stehen in der Trefferliste in einer Zeile.":
-        ("Group: looks like other calibres (see Similar calibres); those of one size share a row in the matches list.",
-         "Groupe : ressemble à d'autres calibres (voir Calibres similaires) ; ceux de même taille partagent une ligne dans les résultats.",
-         "Gruppo: somiglia ad altri calibri (vedi Calibri simili); quelli della stessa misura condividono una riga nei risultati."),
     "DDR": ("East Germany", "RDA", "DDR"),
     "Jugoslawien": ("Yugoslavia", "Yougoslavie", "Jugoslavia"),
     "China": ("China", "Chine", "Cina"),

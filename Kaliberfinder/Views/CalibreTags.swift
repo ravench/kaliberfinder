@@ -26,12 +26,13 @@ enum CalibreTag: CaseIterable {
         }
     }
 
-    /// German explanation for the detail view, used as localization key.
-    var explanation: String {
+    /// German explanation for the detail view, used as localization key; none for the group, whose
+    /// page the detail view names instead.
+    var explanation: String? {
         switch self {
         case .rare: "Selten: wird kaum je gefunden. Ein Treffer ist eher eine ähnliche Patrone, also genau nachmessen."
         case .obsolete: "Veraltet: wird nicht mehr regulär hergestellt."
-        case .group: "Gruppe: sieht anderen Kalibern gleich (siehe Ähnliche Kaliber); gleich grosse stehen in der Trefferliste in einer Zeile."
+        case .group: nil
         }
     }
 

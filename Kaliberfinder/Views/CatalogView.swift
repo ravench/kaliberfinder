@@ -71,7 +71,7 @@ struct CatalogView: View {
             }
             .foregroundStyle(.primary)
         } else {
-            NavigationLink { CalibrePage(cartridge: c) } label: { CartridgeRow(cartridge: c) }
+            NavigationLink { CalibrePage(cartridge: c) } label: { CartridgeRow(cartridge: c, linksToGroup: true) }
         }
     }
 
@@ -89,6 +89,14 @@ struct CartridgeRow: View {
     /// `cartridge` (their group's parent) and the «Gruppe» tag says so; the group page lists them
     /// (Raven, 2026-11-11: the «Im Profil nicht unterscheidbar» note is obsolete with the tag).
     var merged: [Cartridge] = []
+    /// The row opens the calibre's group page (`CalibrePage`), so the «Gruppe» tag says where it leads;
+    /// members inside the group page and rows that only select show no such tag (Raven, PR 188).
+    var linksToGroup = false
+
+    /// The tags the row shows: all of the calibre's, the group tag only where the row leads to the group.
+    static func tags(for cartridge: Cartridge, linksToGroup: Bool) -> [CalibreTag] {
+        CalibreTag.of(cartridge).filter { $0 != .group || linksToGroup }
+    }
 
     var body: some View {
         HStack(spacing: 12) {
@@ -104,7 +112,7 @@ struct CartridgeRow: View {
                         .fontWeight(highlighted ? .semibold : nil)
                         .foregroundStyle(highlighted ? AnyShapeStyle(.green) : AnyShapeStyle(.secondary))
                 }
-                let tags = CalibreTag.of(cartridge)
+                let tags = Self.tags(for: cartridge, linksToGroup: linksToGroup)
                 if !tags.isEmpty {
                     // Own line, so the tags never wrap into the detail text; three of them stack on a narrow
                     // screen rather than hyphenate (the 13 mini with «Selten», «Veraltet» and «Gruppe»).

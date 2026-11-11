@@ -2462,29 +2462,6 @@
         }
       }
     },
-    "Gruppe: sieht anderen Kalibern gleich (siehe Ähnliche Kaliber); gleich grosse stehen in der Trefferliste in einer Zeile.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Group: looks like other calibres (see Similar calibres); those of one size share a row in the matches list."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Groupe : ressemble à d'autres calibres (voir Calibres similaires) ; ceux de même taille partagent une ligne dans les résultats."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gruppo: somiglia ad altri calibri (vedi Calibri simili); quelli della stessa misura condividono una riga nei risultati."
-          }
-        }
-      }
-    },
     "Grösse nicht messbar: Treffer nur nach Form.": {
       "extractionState": "manual",
       "localizations": {
@@ -6897,29 +6874,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "© 2026 Simon Giotta"
-          }
-        }
-      }
-    },
-    "Ähnliche Kaliber": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Similar calibres"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Calibres semblables"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Calibri simili"
           }
         }
       }

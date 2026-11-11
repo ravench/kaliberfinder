@@ -15,6 +15,11 @@ final class CalibreTagTests: XCTestCase {
         XCTAssertEqual(CalibreTag.of(try cartridge("9x19 mm")), [.group])
         XCTAssertEqual(CalibreTag.of(try cartridge("7x57 mm R")), [.group])
         XCTAssertEqual(CalibreTag.group.title, "Gruppe")
+        // The tag only on a row that opens the group page, not on the members inside it (Raven, PR 188 review).
+        XCTAssertEqual(CartridgeRow.tags(for: try cartridge("9x19 mm"), linksToGroup: true), [.group])
+        XCTAssertEqual(CartridgeRow.tags(for: try cartridge("9x19 mm"), linksToGroup: false), [])
+        XCTAssertEqual(CartridgeRow.tags(for: try cartridge("11x59 mm R Gras"), linksToGroup: false), [.rare, .obsolete])
+        XCTAssertNil(CalibreTag.group.explanation, "the detail page names the group instead")
     }
 
     func testCountries() throws {
