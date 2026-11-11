@@ -287,10 +287,7 @@ T = {
     "Vom Gerätemodell": ("From the device model", "Selon le modèle d'appareil", "Dal modello di dispositivo"),
     "Zurücksetzen": ("Reset", "Réinitialiser", "Ripristina"),
     # Hidden developer screen (TrainingCaptureView, SettingsView): five taps on the copyright line.
-    "© 2026 Simon Giotta · Lizenz: PolyForm Noncommercial 1.0.0": (
-        "© 2026 Simon Giotta · Licence: PolyForm Noncommercial 1.0.0",
-        "© 2026 Simon Giotta · Licence : PolyForm Noncommercial 1.0.0",
-        "© 2026 Simon Giotta · Licenza: PolyForm Noncommercial 1.0.0"),
+    "© 2026 Simon Giotta": ("© 2026 Simon Giotta", "© 2026 Simon Giotta", "© 2026 Simon Giotta"),
     "Trainingsdaten aufnehmen": ("Record training data", "Enregistrer des données d'entraînement", "Registra dati di addestramento"),
     "Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.": (
         "Developer feature. Tapping the copyright line five times hides it again.",

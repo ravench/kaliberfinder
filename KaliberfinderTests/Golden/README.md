@@ -20,3 +20,7 @@ the shots changed. A change that improves matching updates `baseline.json` in th
 the test prints the new one after the `GOLDEN` lines (CI log, step «Golden set report»).
 
 The masks come from Git LFS: clone with Git LFS installed (`brew install git-lfs && git lfs install`).
+
+The masks and JSON here are made from the private training photos and fall under their terms: all
+rights reserved, for Kaliberfinder only (see the training repo's `LICENSE.md` and
+[LICENSE.md](../../LICENSE.md)).

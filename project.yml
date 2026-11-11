@@ -30,7 +30,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: ch.giotta.kaliberfinder
-        # Signing team of the maintainer. Forks: replace with your own team ID (or remove it and pick a team in Xcode).
+        # Signing team of the maintainer. To run it on your own device, pick your own team in Xcode (don't commit it).
         DEVELOPMENT_TEAM: PD9YC6KM5T
         CODE_SIGN_STYLE: Automatic
         MARKETING_VERSION: "0.1.0"
