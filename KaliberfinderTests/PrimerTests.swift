@@ -26,6 +26,7 @@ final class PrimerTests: XCTestCase {
     func testEveryCentrefireCaseHasAPrimerThatFits() {
         // The Kolibri and Liliput pistol rounds (COTW 18) have heads of 3.6 to 5 mm and primers smaller than
         // any reloading size; calibre-data lists them, unchecked, as small pistol (4.45 mm), the smallest it has.
+        // Take them out of this list once calibre-data gives them a sourced primer size.
         let tinyPrimers: Set = ["2.7 mm Kolibri", "3 mm Kolibri", "4.25 mm Liliput"]
         for c in CartridgeCatalog.all where c.hasCase && c.kind != "rimfire" {
             guard let primer = c.primer else { XCTFail("\(c.name) has no primer"); continue }

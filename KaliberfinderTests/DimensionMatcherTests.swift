@@ -85,7 +85,7 @@ final class DimensionMatcherTests: XCTestCase {
         XCTAssertEqual(matches.first?.cartridge.id, "7.5x53.5 mm Swiss (GP 1890)")
         XCTAssertEqual(matches.first?.fit, .good)
         let gp11 = matches.first { $0.cartridge.id == "7.5x55 mm Swiss (GP 11)" }
-        XCTAssertNotEqual(gp11?.fit, .good, "GP 11's case is 1 mm longer")
+        XCTAssertNotEqual(gp11?.fit, .good, "GP 11's case is about 2 mm longer")
         let cadet = matches.first { $0.cartridge.id == "7.5 mm Kadettenpatrone" }
         XCTAssertNotEqual(cadet?.fit, .good, "the Kadettenpatrone has the GP 90/23's longer case")
     }

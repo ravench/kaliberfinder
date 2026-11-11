@@ -184,7 +184,7 @@ final class CatalogTests: XCTestCase {
         XCTAssertTrue(finds("357 REM MAG", ".357 Magnum"))
         // Every word must be found.
         XCTAssertEqual(CartridgeCatalog.search("Vetterli 9").map(\.id), [])
-        // Other Mauser rounds with an 8 in the name (8x51 mm, 10.75x68 mm …) come after it.
+        // Search keeps catalogue order, and other Mauser rounds with an 8 in the name (8x51 mm, 10.75x68 mm …) are listed after it.
         XCTAssertEqual(CartridgeCatalog.search("Mauser 8").first?.id, "8x57 mm IS")
     }
 
@@ -263,6 +263,7 @@ final class CatalogTests: XCTestCase {
         // calibre-data groups the .22 LR with the .21 Sharp, the .22 LR case with a .21 bullet.
         let lr = try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: XCTUnwrap(CartridgeCatalog.cartridge(id: ".22 LR"))))
         XCTAssertEqual(lr.calibres, [".22 LR", ".21 Sharp"])
+        XCTAssertNil(try CartridgeCatalog.lookalikeGroup(of: XCTUnwrap(CartridgeCatalog.cartridge(id: ".22 WMR"))), "no group")
         // Identical-looking members compare once, at 1:1 generally too.
         XCTAssertEqual(LookalikeGroupView.compared(group.members).map(\.id), [".308 Winchester"])
         XCTAssertEqual(TrueScaleView.unique(group.members + [win]).map(\.id), [".308 Winchester"])
