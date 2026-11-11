@@ -285,7 +285,10 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(CameraChoice.wide.deviceType, .builtInWideAngleCamera)
         XCTAssertEqual(CameraChoice.wide.title, "Weitwinkel")
         XCTAssertEqual(LiDARCamera.canCapture, !LiDARCamera.choices.isEmpty)
-        XCTAssertNil(LiDARCamera.appChoice, "the simulator has neither scanner nor telephoto, so the system camera takes the photo")
+        XCTAssertNil(LiDARCamera.appChoice, "the simulator has no back camera, so the home screen shows no photo button")
+        // Only the LiDAR camera's photos carry depth: the guides show only with it.
+        XCTAssertTrue(LiDARCamera(choice: .lidar).hasDepth)
+        XCTAssertFalse(LiDARCamera(choice: .wide).hasDepth)
         // The hint names the camera's own closest focus, rounded up to 10 cm: 1160 mm on the 17 Pro, about 500 on a 2x.
         XCTAssertTrue(LiDARCameraView.distanceHint(minimumFocusDistance: 1160).contains("120 cm"))
         XCTAssertTrue(LiDARCameraView.distanceHint(minimumFocusDistance: 480).contains("50 cm"))
