@@ -3796,6 +3796,29 @@
         }
       }
     },
+    "Mit LiDAR nach Trefferqualität sortieren": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sort by match quality with LiDAR"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avec LiDAR, trier par qualité de correspondance"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con LiDAR, ordina per qualità della corrispondenza"
+          }
+        }
+      }
+    },
     "Mit Rand": {
       "extractionState": "manual",
       "localizations": {
@@ -3884,29 +3907,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "NATO"
-          }
-        }
-      }
-    },
-    "Nach Trefferqualität sortieren": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sort by match quality"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trier par qualité de correspondance"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ordina per qualità della corrispondenza"
           }
         }
       }

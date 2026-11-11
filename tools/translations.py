@@ -17,7 +17,7 @@ T = {
     "Einstellungen öffnen": ("Open Settings", "Ouvrir les Réglages", "Apri Impostazioni"),
     "1:1-Vergleich": ("1:1 comparison", "Comparaison 1:1", "Confronto 1:1"),
     "Sortieren nach": ("Sort by", "Trier par", "Ordina per"),
-    "Nach Trefferqualität sortieren": ("Sort by match quality", "Trier par qualité de correspondance", "Ordina per qualità della corrispondenza"),
+    "Mit LiDAR nach Trefferqualität sortieren": ("Sort by match quality with LiDAR", "Avec LiDAR, trier par qualité de correspondance", "Con LiDAR, ordina per qualità della corrispondenza"),
     "Geschosse bei leeren Hülsen zeigen": ("Show bullets on empty cases", "Afficher les projectiles sur les douilles vides", "Mostra le palle sui bossoli vuoti"),
     "Fotoerkennung": ("Photo recognition", "Reconnaissance photo", "Riconoscimento foto"),
     "Entwickler": ("Developer", "Développeur", "Sviluppatore"),
