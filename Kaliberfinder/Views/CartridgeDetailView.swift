@@ -85,10 +85,6 @@ struct CartridgeDetailView: View {
                 if !cartridge.displayAliases.isEmpty {
                     LabeledContent("Auch bekannt als", value: cartridge.displayAliases.joined(separator: ", "))
                 }
-                let twins = CartridgeCatalog.twins(of: cartridge)
-                if !twins.isEmpty {
-                    LabeledContent("Im Profil nicht unterscheidbar von", value: twins.map(\.name).joined(separator: ", "))
-                }
             } footer: {
                 Text("Gerundete Richtwerte nach CIP/SAAMI, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.")
             }

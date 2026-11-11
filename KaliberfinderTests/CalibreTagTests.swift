@@ -10,7 +10,11 @@ final class CalibreTagTests: XCTestCase {
         XCTAssertEqual(CalibreTag.of(try cartridge("11x59 mm R Gras")), [.rare, .obsolete])
         XCTAssertEqual(CalibreTag.of(try cartridge("7.5x53.5 mm Swiss (GP 1890)")), [.obsolete])
         XCTAssertEqual(CalibreTag.of(try cartridge(".450 No. 2 Nitro Express")), [.rare])
-        XCTAssertEqual(CalibreTag.of(try cartridge("9x19 mm")), [])
+        XCTAssertEqual(CalibreTag.of(try cartridge("7.5x55 mm Swiss (GP 11)")), [])
+        // Members of a calibre-data lookalike group carry the group tag, whatever their size (Raven, 2026-11-11).
+        XCTAssertEqual(CalibreTag.of(try cartridge("9x19 mm")), [.group])
+        XCTAssertEqual(CalibreTag.of(try cartridge("7x57 mm R")), [.group])
+        XCTAssertEqual(CalibreTag.group.title, "Gruppe")
     }
 
     func testCountries() throws {

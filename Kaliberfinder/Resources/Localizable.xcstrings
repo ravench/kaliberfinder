@@ -2301,6 +2301,75 @@
         }
       }
     },
+    "Gruppe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Group"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groupe"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gruppo"
+          }
+        }
+      }
+    },
+    "Gruppe %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Group %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groupe %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gruppo %@"
+          }
+        }
+      }
+    },
+    "Gruppe: sieht anderen Kalibern gleich (siehe Ähnliche Kaliber); gleich grosse stehen in der Trefferliste in einer Zeile.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Group: looks like other calibres (see Similar calibres); those of one size share a row in the matches list."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groupe : ressemble à d'autres calibres (voir Calibres similaires) ; ceux de même taille partagent une ligne dans les résultats."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gruppo: somiglia ad altri calibri (vedi Calibri simili); quelli della stessa misura condividono una riga nei risultati."
+          }
+        }
+      }
+    },
     "Grösse nicht messbar: Treffer nur nach Form.": {
       "extractionState": "manual",
       "localizations": {
@@ -2688,75 +2757,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nella foto"
-          }
-        }
-      }
-    },
-    "Im Profil nicht unterscheidbar": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indistinguishable in profile"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indiscernable de profil"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indistinguibile di profilo"
-          }
-        }
-      }
-    },
-    "Im Profil nicht unterscheidbar von": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indistinguishable in profile from"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indiscernable de profil de"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indistinguibile di profilo da"
-          }
-        }
-      }
-    },
-    "Im Profil nicht unterscheidbar von %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indistinguishable in profile from %@"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indiscernable de profil de %@"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indistinguibile di profilo da %@"
           }
         }
       }

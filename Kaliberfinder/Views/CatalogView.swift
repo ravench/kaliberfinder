@@ -71,7 +71,7 @@ struct CatalogView: View {
             }
             .foregroundStyle(.primary)
         } else {
-            NavigationLink { CartridgeDetailView(cartridge: c) } label: { CartridgeRow(cartridge: c) }
+            NavigationLink { CalibrePage(cartridge: c) } label: { CartridgeRow(cartridge: c) }
         }
     }
 
@@ -85,22 +85,19 @@ struct CartridgeRow: View {
     var detail: String?
     /// Shows the detail in green, for a calibre that fits well.
     var highlighted = false
-    /// Calibres that look exactly like `cartridge` from the side, shown in the same row.
+    /// Calibres that look exactly like `cartridge` from the side, in the same row: the row names only
+    /// `cartridge` (their group's parent) and the «Gruppe» tag says so; the group page lists them
+    /// (Raven, 2026-11-11: the «Im Profil nicht unterscheidbar» note is obsolete with the tag).
     var merged: [Cartridge] = []
 
     var body: some View {
         HStack(spacing: 12) {
             CartridgeThumbnail(cartridge: cartridge)
             VStack(alignment: .leading, spacing: 2) {
-                Text(verbatim: ([cartridge] + merged).map(\.name).joined(separator: " / "))
+                Text(verbatim: cartridge.name)
                 let aliases = cartridge.displayAliases.joined(separator: ", ")
                 if !aliases.isEmpty {
                     Text(verbatim: aliases).font(.caption).foregroundStyle(.secondary)
-                }
-                if let note = CartridgeCatalog.profileNote(for: cartridge, merged: merged) {
-                    Label { Text(verbatim: note) } icon: { Image(systemName: "equal.circle") }
-                        .font(.caption)
-                        .foregroundStyle(.orange)
                 }
                 if let detail {
                     Text(verbatim: detail).font(.caption)
@@ -109,9 +106,13 @@ struct CartridgeRow: View {
                 }
                 let tags = CalibreTag.of(cartridge)
                 if !tags.isEmpty {
-                    // Own line, so the tags never wrap into the detail text.
-                    HStack(spacing: 4) { ForEach(tags, id: \.self) { TagChip(tag: $0) } }
-                        .padding(.top, 1)
+                    // Own line, so the tags never wrap into the detail text; three of them stack on a narrow
+                    // screen rather than hyphenate (the 13 mini with «Selten», «Veraltet» and «Gruppe»).
+                    ViewThatFits(in: .horizontal) {
+                        HStack(spacing: 4) { ForEach(tags, id: \.self) { TagChip(tag: $0) } }
+                        VStack(alignment: .leading, spacing: 2) { ForEach(tags, id: \.self) { TagChip(tag: $0) } }
+                    }
+                    .padding(.top, 1)
                 }
             }
             Spacer(minLength: 0)

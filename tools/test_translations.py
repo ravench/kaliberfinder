@@ -11,12 +11,6 @@ EN, FR, IT = 0, 1, 2
 
 
 class TranslationTests(unittest.TestCase):
-    def test_profile_twin_label_matches_the_sentence(self):
-        """The detail-view label and the «… von %@» note use the same wording."""
-        label, sentence = T["Im Profil nicht unterscheidbar von"], T["Im Profil nicht unterscheidbar von %@"]
-        for lang in (EN, FR, IT):
-            self.assertEqual(sentence[lang], label[lang] + " %@")
-
     def test_italian_primer_sizes_agree_in_gender(self):
         self.assertEqual(T["Büchse klein"][IT], "Carabina piccola")
         self.assertEqual(T["Pistole klein"][IT], "Pistola piccola")

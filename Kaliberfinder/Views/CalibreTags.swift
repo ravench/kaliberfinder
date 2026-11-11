@@ -1,8 +1,8 @@
 import SwiftUI
 
-/// The «Selten» and «Veraltet» tags of a calibre, in display order.
+/// The «Selten», «Veraltet» and «Gruppe» tags of a calibre, in display order.
 enum CalibreTag: CaseIterable {
-    case rare, obsolete
+    case rare, obsolete, group
 
     static func of(_ c: Cartridge) -> [CalibreTag] {
         allCases.filter { $0.applies(to: c) }
@@ -12,6 +12,8 @@ enum CalibreTag: CaseIterable {
         switch self {
         case .rare: c.rare
         case .obsolete: c.obsolete
+        // In a lookalike group of calibre-data; those of one size share a row (Raven, 2026-11-11).
+        case .group: CartridgeCatalog.lookalikeGroup(of: c) != nil
         }
     }
 
@@ -20,6 +22,7 @@ enum CalibreTag: CaseIterable {
         switch self {
         case .rare: "Selten"
         case .obsolete: "Veraltet"
+        case .group: "Gruppe"
         }
     }
 
@@ -28,6 +31,7 @@ enum CalibreTag: CaseIterable {
         switch self {
         case .rare: "Selten: wird kaum je gefunden. Ein Treffer ist eher eine ähnliche Patrone, also genau nachmessen."
         case .obsolete: "Veraltet: wird nicht mehr regulär hergestellt."
+        case .group: "Gruppe: sieht anderen Kalibern gleich (siehe Ähnliche Kaliber); gleich grosse stehen in der Trefferliste in einer Zeile."
         }
     }
 
@@ -35,6 +39,7 @@ enum CalibreTag: CaseIterable {
         switch self {
         case .rare: .orange
         case .obsolete: .secondary
+        case .group: .blue
         }
     }
 }
@@ -68,6 +73,7 @@ struct TagIcon: View {
             switch tag {
             case .rare: investigate(s)
             case .obsolete: factoryOff(s)
+            case .group: equals(s)
             }
         }
         .accessibilityHidden(true)
@@ -87,6 +93,14 @@ struct TagIcon: View {
             .stroke(style: StrokeStyle(lineWidth: 1.5 * s, lineCap: .round))
             Path { p in p.addEllipse(in: CGRect(x: 5.7 * s, y: 8.7 * s, width: 1.8 * s, height: 1.8 * s)) }
         }
+    }
+
+    private func equals(_ s: CGFloat) -> some View {
+        Path { p in
+            p.move(to: CGPoint(x: 3 * s, y: 5.5 * s)); p.addLine(to: CGPoint(x: 13 * s, y: 5.5 * s))
+            p.move(to: CGPoint(x: 3 * s, y: 10.5 * s)); p.addLine(to: CGPoint(x: 13 * s, y: 10.5 * s))
+        }
+        .stroke(style: StrokeStyle(lineWidth: 2.3 * s, lineCap: .round))
     }
 
     private func factoryOff(_ s: CGFloat) -> some View {

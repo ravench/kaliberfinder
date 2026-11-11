@@ -38,7 +38,8 @@ final class PRScreensTests: XCTestCase {
                 search.tap()
                 search.typeText("9x19")
             }
-            if open(app.staticTexts["9x19 mm"].firstMatch) {
+            // A member of a lookalike group opens its group first (Raven, 2026-11-11), the calibre from there.
+            if open(app.staticTexts["9x19 mm"].firstMatch), open(app.staticTexts["9x19 mm"].firstMatch) {
                 snap("05-Kaliber")
                 if open(app.buttons["Masszeichnung anzeigen"].firstMatch) {
                     snap("05c-Masszeichnung")
@@ -281,9 +282,8 @@ final class PRScreensTests: XCTestCase {
             search.tap()
             search.typeText(".308 Win")
         }
-        guard open(app.staticTexts[".308 Winchester"].firstMatch),
-              open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Ähnliche Kaliber")).firstMatch) else { return }
-        XCTAssertTrue(app.navigationBars["Ähnliche Kaliber"].waitForExistence(timeout: 5), "The group page did not open")
+        guard open(app.staticTexts[".308 Winchester"].firstMatch) else { return }
+        XCTAssertTrue(app.navigationBars["Gruppe .308 Winchester"].waitForExistence(timeout: 5), "The group page did not open")
         snap("34-Aehnliche-Kaliber")
         guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "1:1 vergleichen")).firstMatch),
               app.navigationBars["1:1"].waitForExistence(timeout: 5) else { return }
@@ -300,10 +300,11 @@ final class PRScreensTests: XCTestCase {
             search.typeText("Vetterli")
         }
         guard open(app.staticTexts["10.4x38 mm R Vetterli"].firstMatch) else { return }
-        snap("36-Vetterli")
-        guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Ähnliche Kaliber")).firstMatch) else { return }
-        XCTAssertTrue(app.navigationBars["Ähnliche Kaliber"].waitForExistence(timeout: 5), "The group page did not open")
+        XCTAssertTrue(app.navigationBars["Gruppe 10.4x38 mm R Vetterli"].waitForExistence(timeout: 5), "The group page did not open")
         snap("37-Vetterli-Zuendung")
+        guard open(app.staticTexts["10.4x38 mm R Vetterli"].firstMatch) else { return }
+        XCTAssertTrue(app.navigationBars["10.4x38 mm R Vetterli"].waitForExistence(timeout: 5), "The calibre's page did not open from the group")
+        snap("36-Vetterli")
     }
 
     /// A calibre drawn to its C.I.P. sheet (calibre-data #68): the 6.5 PRC is 75.06 mm long, not 84.8.
@@ -347,7 +348,7 @@ final class PRScreensTests: XCTestCase {
             search.tap()
             search.typeText("9x19\n")
         }
-        guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
+        guard open(app.staticTexts["9x19 mm"].firstMatch), open(app.staticTexts["9x19 mm"].firstMatch) else { return }  // group, then calibre
         snap("28-Kaliber-Trainingsdaten")
         guard open(app.buttons["Trainingsdaten aufnehmen"].firstMatch) else { return }
         XCTAssertTrue(app.navigationBars["Neue Serie"].waitForExistence(timeout: 5), "The new series sheet did not open")
