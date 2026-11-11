@@ -333,6 +333,9 @@ final class PRScreensTests: XCTestCase {
         guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
         XCTAssertTrue(app.buttons["Als ZIP teilen"].waitForExistence(timeout: 5), "The saved series did not open")
         snap("22-Trainingsdaten-Serie")
+        // The calliper fields at the end, with the sketch of where to measure over them.
+        scroll()
+        snap("22b-Trainingsdaten-Schieblehre")
     }
 
     /// With the hidden training capture on, a calibre's detail page starts a series of that calibre.
