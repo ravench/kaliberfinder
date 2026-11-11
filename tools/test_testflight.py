@@ -193,6 +193,27 @@ class WorkflowTests(unittest.TestCase):
         # ...but the export only keeps entitlements the archived app is signed with.
         self.assertIn('codesign --force --sign - --entitlements "$ENTITLEMENTS"', archive)
 
+    def test_releases_leave_out_the_training_capture(self):
+        # App Review guideline 2.3.1: no hidden features in what goes to the App Store. Release tag
+        # builds compile with APP_STORE (TrainingCapture.isAvailable); main builds keep the tool.
+        step = self.workflow.split("- name: Archive")[1].split("- name:")[0]
+        self.assertIn("REF_TYPE: ${{ github.ref_type }}", step)
+        self.assertIn('if [ "$REF_TYPE" = tag ]; then APP_STORE=(\'SWIFT_ACTIVE_COMPILATION_CONDITIONS=$(inherited) APP_STORE\'); fi', step)
+        self.assertIn('"${APP_STORE[@]}"', step.split("xcodebuild archive")[1])
+        swift = os.path.join(testflight.ROOT, "Kaliberfinder", "Services", "TrainingCapture.swift")
+        with open(swift) as f:
+            self.assertIn("#if APP_STORE\n    static let isAvailable = false", f.read())
+
+    def test_screens_ask_whether_the_training_capture_is_available(self):
+        # The stored switch alone would bring the tool back in an App Store build.
+        views = os.path.join(testflight.ROOT, "Kaliberfinder", "Views")
+        for name in sorted(os.listdir(views)):
+            with open(os.path.join(views, name)) as f:
+                text = f.read()
+            if "TrainingCapture.enabledKey" in text:
+                self.assertNotRegex(text, r"if trainingCapture\b", name)
+                self.assertIn("TrainingCapture.isOn(trainingCapture)", text, name)
+
     def test_entitlements_checked_before_upload(self):
         check = self.workflow.index("check-entitlements")
         upload = self.workflow.index("ExportOptions.plist\"", self.workflow.index("- name: Upload to TestFlight"))

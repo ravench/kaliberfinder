@@ -15,6 +15,13 @@ final class TrainingCaptureTests: XCTestCase {
         try? FileManager.default.removeItem(at: root)
     }
 
+    /// Development and main TestFlight builds have the tool; App Store builds (APP_STORE) do not.
+    func testSwitchNeedsTheToolInTheBuild() {
+        XCTAssertTrue(TrainingCapture.isAvailable)
+        XCTAssertTrue(TrainingCapture.isOn(true))
+        XCTAssertFalse(TrainingCapture.isOn(false))
+    }
+
     private var store: CaptureStore { CaptureStore(root: root) }
 
     private func package(_ calibre: String = "9x19 mm", created: Date = Date(timeIntervalSince1970: 1_800_000_000)) -> CapturePackage {

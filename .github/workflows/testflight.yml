@@ -176,7 +176,13 @@ jobs:
         # certificate until the team hit Apple's limit (2026-11-03), and ad hoc signing is not
         # allowed for iOS. The export steps sign with the cloud-managed distribution certificate.
         if: steps.secrets.outputs.ready == 'true'
+        env:
+          # A release (tag v<version>) goes to the App Store: compiled with APP_STORE, it leaves out the
+          # hidden training capture (TrainingCapture.isAvailable, App Review guideline 2.3.1).
+          REF_TYPE: ${{ github.ref_type }}
         run: |
+          APP_STORE=()
+          if [ "$REF_TYPE" = tag ]; then APP_STORE=('SWIFT_ACTIVE_COMPILATION_CONDITIONS=$(inherited) APP_STORE'); fi
           xcodebuild archive \
             -project Kaliberfinder.xcodeproj \
             -scheme Kaliberfinder \
@@ -186,7 +192,8 @@ jobs:
             -derivedDataPath "$RUNNER_TEMP/DerivedData" \
             CODE_SIGNING_ALLOWED=NO \
             MARKETING_VERSION="$MARKETING_VERSION" \
-            CURRENT_PROJECT_VERSION="$BUILD_NUMBER" | tee "$RUNNER_TEMP/archive.log" | xcpretty
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            "${APP_STORE[@]}" | tee "$RUNNER_TEMP/archive.log" | xcpretty
           # The export keeps the entitlements the archived app is signed with, and an unsigned app has
           # none: sign it ad hoc with the project's entitlements (App Group) first. Extensions
           # (<Name>.appex, entitlements in <Name>/<Name>.entitlements) before the app that contains them.

@@ -88,7 +88,7 @@ struct SettingsView: View {
     }
 
     @ViewBuilder private var info: some View {
-        if trainingCapture {
+        if TrainingCapture.isOn(trainingCapture) {
             Section {
                 NavigationLink { TrainingCaptureView() } label: {
                     Label { Text("Trainingsdaten aufnehmen") } icon: { Image(systemName: "tray.and.arrow.down") }
@@ -107,7 +107,7 @@ struct SettingsView: View {
             Text("© 2026 Simon Giotta")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
-                .onTapGesture(count: 5) { trainingCapture.toggle() }
+                .onTapGesture(count: 5) { if TrainingCapture.isAvailable { trainingCapture.toggle() } }
         } header: {
             Text("Info")
         }

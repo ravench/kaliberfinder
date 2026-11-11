@@ -22,6 +22,18 @@ import UniformTypeIdentifiers
 enum TrainingCapture {
     /// UserDefaults key of the hidden switch.
     static let enabledKey = "trainingCaptureEnabled"
+
+    /// Whether this build has the tool at all. App Store releases (the `v<version>` tag builds of
+    /// testflight.yml) are compiled with APP_STORE and leave it out: App Review guideline 2.3.1 does
+    /// not allow hidden features. Ordinary TestFlight builds from main keep it.
+    #if APP_STORE
+    static let isAvailable = false
+    #else
+    static let isAvailable = true
+    #endif
+
+    /// The switch as the screens see it: the stored value, never on in a build without the tool.
+    static func isOn(_ stored: Bool) -> Bool { isAvailable && stored }
     static let format = 1
     static let packageFile = "package.json"
     static let shotFile = "shot.json"

@@ -35,7 +35,7 @@ struct CartridgeDetailView: View {
                         }
                     }
                 }
-                if trainingCapture {
+                if TrainingCapture.isOn(trainingCapture) {
                     NavigationLink { TrainingCaptureView(newSeriesFor: cartridge) } label: {
                         Label("Trainingsdaten aufnehmen", systemImage: "tray.and.arrow.down")
                     }
