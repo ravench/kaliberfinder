@@ -33,7 +33,7 @@ COUNTRY_NAMES = {
     "JP": "Japan", "PL": "Polen", "FI": "Finnland", "PH": "Philippinen", "AR": "Argentinien",
     "RUE": "Russisches Kaiserreich", "SU": "Sowjetunion", "CS": "Tschechoslowakei", "CN": "China",
     "NO": "Norwegen", "NL": "Niederlande", "BR": "Brasilien", "EG": "Ägypten", "RS": "Serbien",
-    "TH": "Thailand", "OE": "Osmanisches Reich", "NATO": "NATO",
+    "TH": "Thailand", "OE": "Osmanisches Reich", "CA": "Kanada", "NATO": "NATO",
 }
 # Former states and unions without a flag emoji; the app draws these flags itself (DrawnFlag).
 DRAWN_FLAGS = {"RUE", "AH", "SU", "CS", "OE", "NATO"}

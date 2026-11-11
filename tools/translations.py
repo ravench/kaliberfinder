@@ -118,6 +118,7 @@ T = {
     "Serbien": ("Serbia", "Serbie", "Serbia"),
     "Thailand": ("Thailand", "Thaïlande", "Tailandia"),
     "Osmanisches Reich": ("Ottoman Empire", "Empire ottoman", "Impero ottomano"),
+    "Kanada": ("Canada", "Canada", "Canada"),
     "Tschechoslowakei": ("Czechoslovakia", "Tchécoslovaquie", "Cecoslovacchia"),
     "DDR": ("East Germany", "RDA", "DDR"),
     "Jugoslawien": ("Yugoslavia", "Yougoslavie", "Jugoslavia"),
