@@ -23,9 +23,11 @@ struct Changelog: Decodable {
     }
 
     /// The notes to show at this start: those of a build other than the one shown last. Marks `build` as shown.
+    /// A fresh install shows none: someone who just got the app from the App Store has nothing to compare with.
     static func toShow(build: String, language: String, defaults: UserDefaults = .standard, changelog: Changelog? = load()) -> [String]? {
-        guard defaults.string(forKey: shownBuildKey) != build else { return nil }
+        let shown = defaults.string(forKey: shownBuildKey)
+        guard shown != build else { return nil }
         defaults.set(build, forKey: shownBuildKey)
-        return changelog?.bullets(language: language)
+        return shown == nil ? nil : changelog?.bullets(language: language)
     }
 }
