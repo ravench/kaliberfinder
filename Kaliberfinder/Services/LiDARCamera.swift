@@ -30,9 +30,9 @@ final class LiDARCamera: NSObject, ObservableObject {
     /// Whether this device can take training photos at all: any back camera, scanner or not.
     static var canCapture: Bool { !choices.isEmpty }
 
-    /// The camera the app's own photo screen uses: the LiDAR camera, else the telephoto; nil where neither
-    /// exists, and the system camera takes the photo.
-    static var appChoice: CameraChoice? { isAvailable ? .lidar : telephotoChoices().first }
+    /// The camera the app's own photo screen uses: the LiDAR camera, else the telephoto, else the wide camera
+    /// (TestFlight 1158: the system camera offered 0.5x on the iPhone 13); nil only without a back camera.
+    static var appChoice: CameraChoice? { choices.first }
 
     /// The telephoto at its full view: its 4:3 format with the largest photo (the widest view among equals), at
     /// the least zoom. Raven, 2026-11-09: the 31 telephoto shots of the training data were at the full view all
@@ -61,6 +61,8 @@ final class LiDARCamera: NSObject, ObservableObject {
 
     let choice: CameraChoice
     var deviceType: AVCaptureDevice.DeviceType { choice.deviceType }
+    /// Whether the photos come with depth: only the LiDAR camera's do.
+    var hasDepth: Bool { deviceType == .builtInLiDARDepthCamera }
 
     init(choice: CameraChoice = .lidar) {
         self.choice = choice
@@ -217,7 +219,9 @@ final class LiDARCamera: NSObject, ObservableObject {
             return (!hasDepth || !f.supportedDepthDataFormats.isEmpty) && d.width * 3 == d.height * 4
         }
         let chosen = choice.format.flatMap { device.formats.indices.contains($0) ? device.formats[$0] : nil }
-        if let format = chosen ?? candidates.max(by: { Self.largest($0.supportedMaxPhotoDimensions).width < Self.largest($1.supportedMaxPhotoDimensions).width }) {
+        // Among formats whose photos are equally large, the largest stream: the first of equals is the smallest in
+        // the list (192×144 without depth; TestFlight 1158 showed it blurred on the iPhone 13 and the iPad mini).
+        if let format = chosen ?? candidates.max(by: { Self.rank($0) < Self.rank($1) }) {
             try? device.lockForConfiguration()
             device.activeFormat = format
             // The whole sensor unless the choice says otherwise: the 17 Pro's telephoto comes up zoomed to its 8x crop.
@@ -244,6 +248,11 @@ final class LiDARCamera: NSObject, ObservableObject {
         if photo.width > 0, photoOutput.maxPhotoDimensions.width != photo.width {
             photoOutput.maxPhotoDimensions = photo
         }
+    }
+
+    /// A format's photo size, then its stream size: the pick where the choice does not name a format.
+    static func rank(_ format: AVCaptureDevice.Format) -> (Int32, Int32) {
+        (largest(format.supportedMaxPhotoDimensions).width, format.formatDescription.dimensions.width)
     }
 
     /// The largest of a format's photo sizes (by width); zero when it names none.

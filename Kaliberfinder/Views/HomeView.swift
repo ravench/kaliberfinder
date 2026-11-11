@@ -24,7 +24,7 @@ struct HomeView: View {
     private let canTakePhoto: Bool
 
     /// `canTakePhoto`: tests lay out a phone's home screen on the simulator, which has no camera.
-    init(canTakePhoto: Bool = LiDARCamera.isAvailable || CameraPicker.isAvailable) {
+    init(canTakePhoto: Bool = LiDARCamera.canCapture) {
         self.canTakePhoto = canTakePhoto
     }
 
@@ -118,12 +118,9 @@ struct HomeView: View {
         .onChange(of: scenePhase) { _, phase in if phase == .active { takeSharedPhoto() } }
         .onAppear { takeSharedPhoto(); showNotes() }
         .fullScreenCover(isPresented: $showCamera) {
-            // The LiDAR camera, else the telephoto at 4x (Raven, 2026-11-09); the system camera only without both.
+            // The app's own camera on every device (Raven, 2026-11-11): the LiDAR camera, else the telephoto, else the wide.
             if let choice = LiDARCamera.appChoice {
                 LiDARCameraView(choice: choice) { photo = PickedPhoto(image: $0, depth: $1) }
-            } else {
-                CameraPicker { photo = PickedPhoto(image: $0) }
-                    .ignoresSafeArea()
             }
         }
         .onChange(of: libraryItem) { _, item in
@@ -210,4 +207,15 @@ extension View {
             self
         }
     }
+}
+
+/// A photo to analyse, identified so it can drive navigation.
+struct PickedPhoto: Identifiable, Hashable {
+    let id = UUID()
+    let image: UIImage
+    /// From the LiDAR camera; nil for the telephoto, the wide camera and the photo library.
+    var depth: DepthScale?
+
+    static func == (a: PickedPhoto, b: PickedPhoto) -> Bool { a.id == b.id }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
 }

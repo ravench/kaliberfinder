@@ -2,8 +2,8 @@ import AVFoundation
 import SwiftUI
 
 /// The app's own camera screen (LIDAR-02): preview, guide and shutter. With the LiDAR camera the guide
-/// shows distance and tilt; on a phone without a scanner the telephoto takes the photo, from its closest
-/// focus on, without depth (Raven, 2026-11-09).
+/// shows distance and tilt; on a phone without a scanner the telephoto, else the wide camera, takes the photo,
+/// from its closest focus on, without depth (Raven, 2026-11-09).
 struct LiDARCameraView: View {
     let onPick: (UIImage, DepthScale?) -> Void
     @StateObject private var camera: LiDARCamera
@@ -17,7 +17,7 @@ struct LiDARCameraView: View {
         _camera = StateObject(wrappedValue: LiDARCamera(choice: choice))
     }
 
-    private var hasDepth: Bool { camera.choice.deviceType == .builtInLiDARDepthCamera }
+    private var hasDepth: Bool { camera.hasDepth }
 
     /// For a camera without depth: hold it just beyond its closest focus, rounded up to 10 cm; «so nah wie
     /// möglich» until the camera has said.
