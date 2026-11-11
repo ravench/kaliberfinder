@@ -133,7 +133,8 @@ class CalibreDataSubmoduleTests(unittest.TestCase):
             stored = json.load(f)["calibreData"]
         self.assertEqual(stored["commit"], head, "run: python3 tools/generate_data.py")
         # The committer date with its offset, which the app decodes as ISO 8601.
-        self.assertRegex(stored["date"], r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(Z|[+-]\d\d:\d\d)$")
+        self.assertRegex(stored["date"], r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d[+-]\d\d:\d\d$",
+                         "a numeric offset, never Z, whichever git version wrote it")
 
 class PatchedBulletTests(unittest.TestCase):
     """GP 1890: paper-patched lead body with a steel-capped round nose."""
@@ -249,6 +250,17 @@ class CatalogueOnlyDataTests(unittest.TestCase):
         self.assertEqual(set().union(*built), {"id", "name", "category", "kind", "aliases", "displayAliases",
                                                "headstamps", "obsolete", "rare", "country", "worldwide", "blank",
                                                "dimensions", "outline", "primer", "tipColours"})
+
+    def test_swiss_match_reaches_the_json(self):
+        """calibre-data #77: the 6x47 mm SM (Swiss Match) from its C.I.P. sheet, a Swiss rifle round with
+        a large rifle primer."""
+        sm = next(c for c in generate_data.build() if c["name"] == "6x47 mm SM")
+        self.assertEqual((sm["category"], sm["country"]["code"], sm["primer"]["type"]), ("Langwaffe", "CH", "large-rifle"))
+        self.assertEqual((sm["dimensions"]["caseLength"], sm["dimensions"]["overallLength"], sm["dimensions"]["bullet"]),
+                         (47.0, 66.0, 6.18))
+        self.assertIn("swiss match", sm["aliases"])
+        groups = generate_data.lookalikes({c["name"] for c in generate_data.build()})
+        self.assertIn({"differs": ["bore"], "calibres": ["6x47 mm SM", "6.5x47 mm Lapua"]}, groups)
 
     def test_cip_corrections_reach_the_json(self):
         """calibre-data #68: the PRC rounds from their C.I.P. sheets."""
