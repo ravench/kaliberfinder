@@ -204,12 +204,14 @@ final class TrainingCaptureTests: XCTestCase {
         package.shape = "tapered"
         package.caseMaterial = "brass"
         package.bullet = "fmj"
+        package.primer = "boxer"  // as chosen on 2026-11-10: kept, though no longer shown
         package.measurements = Measurements(shoulderLength: 45.0, shoulder: 11.5)
         try CaptureStore.update(package, at: url)
         let saved = try XCTUnwrap(store.packages().first).package
         XCTAssertEqual(saved.country, "CH")
         XCTAssertEqual([saved.headstamp, saved.ignition, saved.head, saved.shape, saved.caseMaterial, saved.bullet],
                        ["GECO 9mm Luger", "centrefire", "rimless", "tapered", "brass", "fmj"])
+        XCTAssertEqual(saved.primer, "boxer")
         XCTAssertEqual(saved.measurements, Measurements(shoulderLength: 45.0, shoulder: 11.5))
         XCTAssertFalse(Measurements(shoulder: 11.5).isEmpty)
         // The country picker offers every present-day country with its flag (CountriesTests), Switzerland among them.

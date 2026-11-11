@@ -85,14 +85,17 @@ struct CapturePackage: Codable, Equatable {
     /// What the round is, as a row of the old-ammunition table records it (Raven 2026-11-11): its headstamp
     /// (the table's `hs`) and a token of `RoundFacts` for its ignition (`ign`), head (`head`), case shape
     /// (`shape`), case material (`mat`) and bullet (`bt`); each nil until entered. The note is the table's
-    /// `desc`, the measurements its `d`. Packages from 2026-11-09 may also carry bulletMaterial and primer,
-    /// which are no longer read.
+    /// `desc`, the measurements its `d`.
     var headstamp: String?
     var ignition: String?
     var head: String?
     var shape: String?
     var caseMaterial: String?
     var bullet: String?
+    /// The earlier choices (2026-11-09/10: jacket, lead, steel, plastic; boxer, berdan, rimfire), no longer
+    /// shown but kept in the file, so a series filled in then loses nothing when it is edited.
+    var bulletMaterial: String?
+    var primer: String?
 
     var scanMode: ScanMode { ScanMode(rawValue: part) ?? .auto }
     var isUnlisted: Bool { unlisted == true }
@@ -149,7 +152,7 @@ enum RoundFacts {
         Option(token: "bottleneck", title: "Hülse mit Flaschenhals"),
     ]
     static let caseMaterial = [
-        Option(token: "brass", title: "Messing"), Option(token: "nickel", title: "Nickel"),
+        Option(token: "brass", title: "Messing"), Option(token: "nickel", title: "Vernickelt"),
         Option(token: "steel", title: "Stahl"), Option(token: "copper", title: "Kupfer"),
         Option(token: "aluminium", title: "Aluminium"), Option(token: "paper", title: "Papier oder Kunststoff"),
         Option(token: "other", title: "Andere"),
@@ -157,7 +160,7 @@ enum RoundFacts {
     static let bullet = [
         Option(token: "fmj", title: "Vollmantel"), Option(token: "lead", title: "Blei"),
         Option(token: "soft", title: "Teilmantel"), Option(token: "hp", title: "Hohlspitz"),
-        Option(token: "wc", title: "Wadcutter"), Option(token: "paper", title: "Papierpflaster"),
+        Option(token: "wc", title: "Wadcutter"), Option(token: "paper", title: "Mit Papierpflaster"),
         Option(token: "shot", title: "Schrot"), Option(token: "blank", title: "Keines: Platzpatrone"),
         Option(token: "empty", title: "Keines: leere Hülse"), Option(token: "other", title: "Andere"),
     ]
