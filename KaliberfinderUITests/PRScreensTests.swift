@@ -389,6 +389,15 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// The calibration screen: the slider and the buttons dock at the bottom (Raven, 2026-11-11, on an iPad).
+    func testCalibration() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]),
+              open(app.staticTexts["Bildschirm"].firstMatch) else { return }
+        XCTAssertTrue(app.buttons["Speichern"].waitForExistence(timeout: 5), "The calibration screen did not open")
+        snap("38-Bildschirm-kalibrieren")
+    }
+
     private func open(_ element: XCUIElement) -> Bool {
         guard element.waitForExistence(timeout: 5) else {
             XCTFail("\(element) not found")
