@@ -32,7 +32,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     let outline: Outline
     /// Nil for rimfire and for balls, Minié bullets and pellets.
     let primer: Primer?
-    /// The painted bullet tips of military loads (calibre-data [[tip_colours]]); empty for most calibres.
+    /// The painted bullet tips of military loads (calibre-data [[colour_codes]] with part "tip"); empty for most calibres.
     let tipColours: [TipColour]
 
     /// One tip colour code: what a painted tip means (Raven, 2026-11-11: shown on the calibre page).

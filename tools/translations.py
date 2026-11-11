@@ -351,7 +351,7 @@ T = {
     "Nicht gespeichert: %@": ("Not saved: %@", "Non enregistré : %@", "Non salvato: %@"),
     "Nicht in der Liste": ("Not in the list", "Pas dans la liste", "Non nell'elenco"),
     "Name": ("Name", "Nom", "Nome"),
-    # Tip colour codes (calibre-data [[tip_colours]]), shown on the calibre page.
+    # Tip colour codes (calibre-data [[colour_codes]], part "tip"), shown on the calibre page.
     "Farbcodes der Geschossspitze": ("Bullet tip colour codes", "Codes couleur de la pointe", "Codici colore della punta"),
     "Militärische Laborierungen, die Farben von der Spitze abwärts.":
         ("Military loads, the colours from the tip down.", "Chargements militaires, les couleurs de la pointe vers le bas.",
