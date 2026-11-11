@@ -4,7 +4,7 @@ import SwiftUI
 struct CartridgeDetailView: View {
     let cartridge: Cartridge
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
-    /// The hidden developer switch (`TrainingCapture`): with it on, a series of this calibre starts from here.
+    /// The training switch at the bottom of Settings (`TrainingCapture`): with it on, a series of this calibre starts from here.
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
 
     var body: some View {

@@ -20,7 +20,7 @@ import UniformTypeIdentifiers
 ///         vision-instances.png  Vision's foreground instances, one 8-bit label per pixel (0 = none)
 ///       02/ …
 enum TrainingCapture {
-    /// UserDefaults key of the hidden switch.
+    /// UserDefaults key of the switch at the bottom of Settings.
     static let enabledKey = "trainingCaptureEnabled"
     static let format = 1
     static let packageFile = "package.json"

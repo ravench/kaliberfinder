@@ -300,11 +300,11 @@ T = {
     "Speichern": ("Save", "Enregistrer", "Salva"),
     "Vom Gerätemodell": ("From the device model", "Selon le modèle d'appareil", "Dal modello di dispositivo"),
     "Zurücksetzen": ("Reset", "Réinitialiser", "Ripristina"),
-    # Hidden developer screen (TrainingCaptureView, SettingsView): five taps on the copyright line.
+    # Training capture (TrainingCaptureView, SettingsView): the switch at the bottom of Settings.
     "© 2026 Simon Giotta": ("© 2026 Simon Giotta", "© 2026 Simon Giotta", "© 2026 Simon Giotta"),
     "Trainingsdaten aufnehmen": ("Record training data", "Enregistrer des données d'entraînement", "Registra dati di addestramento"),
     "Speichert Fotoserien bekannter Patronen mit den Messwerten der App auf dem Gerät, als Testdaten für die Erkennung.": (
-        "Saves photo series of known cartridges with the app's measurements on the device, as test data for the recognition.",
+        "Saves photo series of known cartridges with the app's measurements on the device, as test data for recognition.",
         "Enregistre sur l'appareil des séries de photos de cartouches connues avec les mesures de l'app, comme données de test pour la reconnaissance.",
         "Salva sul dispositivo serie di foto di cartucce note con le misure dell'app, come dati di prova per il riconoscimento."),
     "Erkennung farbig zeigen": ("Show detection in colour", "Afficher la détection en couleur", "Mostra il rilevamento a colori"),

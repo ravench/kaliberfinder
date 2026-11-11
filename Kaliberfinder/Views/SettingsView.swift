@@ -110,7 +110,9 @@ struct SettingsView: View {
                 Label { Text("Trainingsdaten") } icon: { Image(systemName: "tray.and.arrow.down") }
             }
             if trainingCapture {
-                NavigationLink("Trainingsdaten aufnehmen") { TrainingCaptureView() }
+                NavigationLink { TrainingCaptureView() } label: {
+                    Label("Trainingsdaten aufnehmen", systemImage: "camera")
+                }
             }
         } footer: {
             Text("Speichert Fotoserien bekannter Patronen mit den Messwerten der App auf dem Gerät, als Testdaten für die Erkennung.")

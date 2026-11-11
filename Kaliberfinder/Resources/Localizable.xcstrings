@@ -5596,7 +5596,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Saves photo series of known cartridges with the app's measurements on the device, as test data for the recognition."
+            "value": "Saves photo series of known cartridges with the app's measurements on the device, as test data for recognition."
           }
         },
         "fr": {
