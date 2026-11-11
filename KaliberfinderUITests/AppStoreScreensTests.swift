@@ -46,7 +46,8 @@ final class AppStoreScreensTests: XCTestCase {
         let compare = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix("Alle passenden 1:1 vergleichen (%lld)")))
         if open(compare.firstMatch), app.navigationBars["1:1"].waitForExistence(timeout: 5) {
             // The row stands by length, the 9 mm towards the end: on the iPhone, scroll until it shows.
-            let nine = app.staticTexts["9x19 mm"]
+            // Each column is a button whose label holds the calibre's name.
+            let nine = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "9x19 mm")).firstMatch
             for _ in 0..<6 where !(nine.exists && nine.isHittable) {
                 let row = app.coordinate(withNormalizedOffset: CGVector(dx: 0.85, dy: 0.6))
                 row.press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.25, dy: 0.6)))
@@ -86,7 +87,11 @@ final class AppStoreScreensTests: XCTestCase {
                 fields.element(boundBy: index).tap()
                 fields.element(boundBy: index).typeText(value)
             }
-            app.collectionViews.firstMatch.swipeDown() // the list hides the keyboard when dragged
+            // .scrollDismissesKeyboard(.interactively): the drag has to reach down into the keyboard.
+            app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45))
+                .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.98)))
+            for _ in 0..<6 where app.keyboards.count > 0 { usleep(500_000) }
+            XCTAssertEqual(app.keyboards.count, 0, "Keyboard still showing")
             _ = app.staticTexts[t("Mögliche Kaliber")].waitForExistence(timeout: 5)
             save("06-dimensions")
         }
