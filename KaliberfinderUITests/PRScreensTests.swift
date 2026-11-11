@@ -85,7 +85,14 @@ final class PRScreensTests: XCTestCase {
                 search.tap()
                 search.typeText(query + "\n") // return hides the keyboard
             }
-            guard open(app.staticTexts[name].firstMatch), open(app.buttons["Masszeichnung anzeigen"].firstMatch) else { return }
+            guard open(app.staticTexts[name].firstMatch) else { return }
+            if query == "GP 11" {
+                // The tip colour codes of calibre-data sit under the measurements (Raven, 2026-11-11).
+                scroll()
+                snap("39-GP11-Geschossspitzen")
+                scroll(up: false)
+            }
+            guard open(app.buttons["Masszeichnung anzeigen"].firstMatch) else { return }
             snap(shot)
         }
     }

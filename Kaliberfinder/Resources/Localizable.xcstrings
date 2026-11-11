@@ -967,6 +967,29 @@
         }
       }
     },
+    "Blau": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "blue"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bleu"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "blu"
+          }
+        }
+      }
+    },
     "Blei": {
       "extractionState": "manual",
       "localizations": {
@@ -1078,6 +1101,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Punzonatura del fondello"
+          }
+        }
+      }
+    },
+    "Brand": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incendiary"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incendiaire"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incendiaria"
+          }
+        }
+      }
+    },
+    "Braun": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "brown"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "brun"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "marrone"
           }
         }
       }
@@ -1519,6 +1588,29 @@
         }
       }
     },
+    "Farbcodes der Geschossspitze": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bullet tip colour codes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codes couleur de la pointe"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codici colore della punta"
+          }
+        }
+      }
+    },
     "Fertig": {
       "extractionState": "manual",
       "localizations": {
@@ -1956,6 +2048,29 @@
         }
       }
     },
+    "Gelb": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "yellow"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "jaune"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "giallo"
+          }
+        }
+      }
+    },
     "Gemessen in Zoll": {
       "extractionState": "manual",
       "localizations": {
@@ -2255,6 +2370,29 @@
         }
       }
     },
+    "Grau": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "grey"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gris"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "grigio"
+          }
+        }
+      }
+    },
     "Grossbritannien": {
       "extractionState": "manual",
       "localizations": {
@@ -2389,6 +2527,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Più grande"
+          }
+        }
+      }
+    },
+    "Grün": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "green"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vert"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "verde"
           }
         }
       }
@@ -3612,6 +3773,29 @@
         }
       }
     },
+    "Leuchtspur": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tracer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Traçant"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tracciante"
+          }
+        }
+      }
+    },
     "LiDAR": {
       "extractionState": "manual",
       "localizations": {
@@ -3746,6 +3930,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "lunghezza"
+          }
+        }
+      }
+    },
+    "Markierung": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spotting"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marqueur"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcatrice"
           }
         }
       }
@@ -3907,6 +4114,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Metrico (mm)"
+          }
+        }
+      }
+    },
+    "Militärische Laborierungen, die Farben von der Spitze abwärts.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Military loads, the colours from the tip down."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chargements militaires, les couleurs de la pointe vers le bas."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cariche militari, i colori dalla punta in giù."
           }
         }
       }
@@ -4325,6 +4555,29 @@
         }
       }
     },
+    "Orange": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "orange"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "orange"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "arancione"
+          }
+        }
+      }
+    },
     "Originalgrösse": {
       "extractionState": "manual",
       "localizations": {
@@ -4344,6 +4597,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Grandezza reale"
+          }
+        }
+      }
+    },
+    "Panzerbrechend": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Armour-piercing"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perforant"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perforante"
           }
         }
       }
@@ -4785,6 +5061,29 @@
         }
       }
     },
+    "Rot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "red"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rouge"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rosso"
+          }
+        }
+      }
+    },
     "Rundkugel": {
       "extractionState": "manual",
       "localizations": {
@@ -4988,6 +5287,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lunghezza fino alla spalla"
+          }
+        }
+      }
+    },
+    "Schwarz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "black"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "noir"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nero"
           }
         }
       }
@@ -5199,6 +5521,29 @@
         }
       }
     },
+    "Silber": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "silver"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "argent"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "argento"
+          }
+        }
+      }
+    },
     "Sortieren nach": {
       "extractionState": "manual",
       "localizations": {
@@ -5291,6 +5636,29 @@
         }
       }
     },
+    "Spreng": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Explosive"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Explosif"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esplosiva"
+          }
+        }
+      }
+    },
     "Stahl": {
       "extractionState": "manual",
       "localizations": {
@@ -5310,6 +5678,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Acciaio"
+          }
+        }
+      }
+    },
+    "Standardgeschoss": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ball"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordinaire"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordinaria"
           }
         }
       }
@@ -5590,6 +5981,29 @@
         }
       }
     },
+    "Unterschall": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subsonic"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subsonique"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subsonica"
+          }
+        }
+      }
+    },
     "Unterscheiden sich in: %@": {
       "extractionState": "manual",
       "localizations": {
@@ -5774,6 +6188,29 @@
         }
       }
     },
+    "Violett": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "purple"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "violet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "viola"
+          }
+        }
+      }
+    },
     "Vollmantel": {
       "extractionState": "manual",
       "localizations": {
@@ -5885,6 +6322,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cosa c'è nella foto?"
+          }
+        }
+      }
+    },
+    "Weiss": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "white"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "blanc"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bianco"
           }
         }
       }
@@ -6046,6 +6506,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Percussione centrale"
+          }
+        }
+      }
+    },
+    "Zerfallend": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frangible"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fragmentable"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frangibile"
           }
         }
       }
