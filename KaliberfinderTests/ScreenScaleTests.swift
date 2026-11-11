@@ -17,6 +17,17 @@ final class ScreenScaleTests: XCTestCase {
         XCTAssertEqual(r.pointsPerMM, 476 / 25.4 / 2.88, accuracy: 0.0001)
     }
 
+    @MainActor func testIPadMiniAtItsOwnNativeScale() {
+        // iPad mini (A17 Pro): 326 ppi at 2x. TestFlight 1158 drew it at two thirds: the model had taken the
+        // iPhones' 3 for want of a connected scene, and `ScaleModel` now asks the main screen instead.
+        let r = ScreenScale.resolve(model: "iPad16,1", nativeScale: 2, calibrated: nil)
+        XCTAssertEqual(r.pointsPerMM, 326 / 25.4 / 2, accuracy: 0.0001)
+        XCTAssertEqual(r.pointsPerMM * 90, 577.6, accuracy: 0.1, "9 cm of ruler")
+        let wrong = ScreenScale.resolve(model: "iPad16,1", nativeScale: 3, calibrated: nil)
+        XCTAssertEqual(wrong.pointsPerMM / r.pointsPerMM, 2.0 / 3, accuracy: 0.0001)
+        XCTAssertEqual(ScaleModel(model: "iPad16,1").pointsPerMM, ScreenScale.resolve(model: "iPad16,1", nativeScale: Double(UIScreen.main.nativeScale), calibrated: nil).pointsPerMM, accuracy: 0.0001, "the screen's scale, not 3")
+    }
+
     func testDisplayZoomChangesPointsPerMM() {
         let standard = ScreenScale.resolve(model: "iPhone16,1", nativeScale: 3, calibrated: nil)
         let zoomed = ScreenScale.resolve(model: "iPhone16,1", nativeScale: 3.5, calibrated: nil)

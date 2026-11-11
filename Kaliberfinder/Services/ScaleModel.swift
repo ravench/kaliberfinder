@@ -37,7 +37,9 @@ final class ScaleModel: ObservableObject {
     }
 
     private static func currentNativeScale() -> Double {
+        // The app makes its model before any scene is connected; the main screen then, deprecated but right:
+        // a fallback of 3 drew the iPad mini (2x) at two thirds (TestFlight 1158), unseen on the 3x iPhones.
         let scene = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first
-        return Double(scene?.screen.nativeScale ?? 3)
+        return Double(scene?.screen.nativeScale ?? UIScreen.main.nativeScale)
     }
 }
