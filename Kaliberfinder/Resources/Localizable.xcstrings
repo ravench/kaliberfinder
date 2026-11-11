@@ -916,7 +916,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Prova"
+            "value": "Prova forzata"
           }
         }
       }
@@ -2382,13 +2382,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pointe de la balle"
+            "value": "Pointe du projectile"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Punta del proiettile"
+            "value": "Punta della palla"
           }
         }
       }
@@ -2865,7 +2865,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Culot de l'étui"
+            "value": "Culot de la douille"
           }
         },
         "it": {

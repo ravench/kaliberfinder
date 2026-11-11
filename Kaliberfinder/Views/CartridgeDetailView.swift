@@ -173,8 +173,8 @@ struct ColourSwatch: View {
     var body: some View {
         Group {
             if part == "annulus" {
-                Circle().fill(CartridgeView.brass)
-                    .overlay(Circle().stroke(Self.colours[colours.first ?? ""] ?? .clear, lineWidth: height * 0.12))
+                Circle().fill(Self.colours[colours.first ?? ""] ?? .clear)
+                    .overlay(Circle().fill(CartridgeView.brass).padding(height * 0.12))
                     .overlay(Circle().stroke(.secondary.opacity(0.4), lineWidth: 0.5))
                     .frame(width: height * 0.6, height: height * 0.6)
             } else if part == "base" {

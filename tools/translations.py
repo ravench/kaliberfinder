@@ -357,10 +357,10 @@ T = {
     "Militärische Laborierungen. Spitze: die Farben von der Spitze abwärts.":
         ("Military loads. Tip: the colours from the tip down.", "Chargements militaires. Pointe : les couleurs de la pointe vers le bas.",
          "Cariche militari. Punta: i colori dalla punta in giù."),
-    "Geschossspitze": ("Bullet tip", "Pointe de la balle", "Punta del proiettile"),
-    "Hülsenboden": ("Case base", "Culot de l'étui", "Fondello del bossolo"),
+    "Geschossspitze": ("Bullet tip", "Pointe du projectile", "Punta della palla"),
+    "Hülsenboden": ("Case base", "Culot de la douille", "Fondello del bossolo"),
     "Zündhütchenring": ("Primer ring", "Anneau d'amorce", "Anello dell'innesco"),
-    "Beschuss": ("Proof", "Épreuve", "Prova"),
+    "Beschuss": ("Proof", "Épreuve", "Prova forzata"),
     "Reduzierte Ladung": ("Reduced charge", "Charge réduite", "Carica ridotta"),
     "Standardgeschoss": ("Ball", "Ordinaire", "Ordinaria"),
     "Panzerbrechend": ("Armour-piercing", "Perforant", "Perforante"),
