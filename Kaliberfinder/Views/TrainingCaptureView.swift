@@ -487,8 +487,7 @@ private struct TrainingCameraSession: View {
                     .background(camera.guidance == .ready ? Color.green.opacity(0.85) : Color.black.opacity(0.6), in: Capsule())
                     .foregroundStyle(.white)
                 HStack {
-                    Button("Fertig") { dismiss() }
-                        .foregroundStyle(.white)
+                    Button { dismiss() } label: { Text("Fertig").cameraPill() }
                     Spacer()
                     Button(action: shoot) {
                         Circle().strokeBorder(.white, lineWidth: 4).frame(width: 72, height: 72)
@@ -496,7 +495,7 @@ private struct TrainingCameraSession: View {
                     }
                     .disabled(saving || !camera.isRunning)
                     Spacer()
-                    Text("Fertig").hidden()
+                    Text("Fertig").cameraPill().hidden()
                 }
                 .padding(.horizontal, 24)
             }
