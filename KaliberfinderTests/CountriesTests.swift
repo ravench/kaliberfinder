@@ -41,6 +41,7 @@ final class CountriesTests: XCTestCase {
         XCTAssertTrue(schw.contains("CH") && schw.contains("SE"), "\(schw)")
         XCTAssertFalse(schw.contains("DE"))
         XCTAssertTrue(Countries.matching("li", in: german).map(\.code).contains("LI"), "by code")
-        XCTAssertEqual(Countries.matching("Österreich", in: german).map(\.code), ["AT"])
+        // Österreich-Ungarn, a former state, comes after today's Austria.
+        XCTAssertEqual(Countries.matching("Österreich", in: german).map(\.code), ["AT", "AH"])
     }
 }

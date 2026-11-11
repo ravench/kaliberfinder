@@ -132,13 +132,19 @@ final class CatalogTests: XCTestCase {
 
     func testGP1890IsSeparateFromGP11AndGP90() throws {
         let gp1890 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x53.5 mm Swiss (GP 1890)"))
-        XCTAssertEqual(gp1890.dimensions.caseLength, 54.6, accuracy: 0.001, "the case of Raven's 1906 round, not the 53.5 of the name")
-        XCTAssertEqual(gp1890.dimensions.overallLength, 77.0, accuracy: 0.001)
+        // Raven's 1906 round re-measured: the 53.5 mm case of the name (calibre-data #97, #104).
+        XCTAssertEqual(gp1890.dimensions.caseLength, 53.5, accuracy: 0.001)
+        XCTAssertEqual(gp1890.dimensions.overallLength, 76.0, accuracy: 0.001)
         XCTAssertEqual(gp1890.category, CartridgeCatalog.Category.rifle.rawValue)
         XCTAssertTrue(gp1890.hasCase)
-        for text in ["GP 1890", "GP 90/23", "7.5mm GP 90", "Patrone 1890", "7,5x53,5"] {
+        for text in ["GP 1890", "7.5mm GP 90", "Patrone 1890", "7,5x53,5"] {
             XCTAssertTrue(CartridgeCatalog.search(text).contains { $0.id == gp1890.id }, text)
         }
+        // The GP 90/23 is its own calibre now, with the 1 mm longer case.
+        let gp9023 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x54.5 mm Swiss (GP 90/23)"))
+        XCTAssertGreaterThan(gp9023.dimensions.caseLength, gp1890.dimensions.caseLength)
+        XCTAssertTrue(CartridgeCatalog.search("GP 90/23").contains { $0.id == gp9023.id })
+        XCTAssertFalse(CartridgeCatalog.search("GP 90/23").contains { $0.id == gp1890.id })
     }
 
     func testGP1890HasPaperPatchedSteelCappedBullet() throws {
@@ -178,7 +184,8 @@ final class CatalogTests: XCTestCase {
         XCTAssertTrue(finds("357 REM MAG", ".357 Magnum"))
         // Every word must be found.
         XCTAssertEqual(CartridgeCatalog.search("Vetterli 9").map(\.id), [])
-        XCTAssertEqual(CartridgeCatalog.search("Mauser 8").map(\.id), ["8x57 mm IS"])
+        // Other Mauser rounds with an 8 in the name (8x51 mm, 10.75x68 mm …) come after it.
+        XCTAssertEqual(CartridgeCatalog.search("Mauser 8").first?.id, "8x57 mm IS")
     }
 
     func testSwissArmyNamesFindTheParabellumRounds() {
@@ -209,11 +216,13 @@ final class CatalogTests: XCTestCase {
     func testKadettenpatroneIsItsOwnRareRound() throws {
         let kp = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5 mm Kadettenpatrone"))
         XCTAssertEqual(kp.category, CartridgeCatalog.Category.rifle.rawValue)
-        // Measured on Raven's round: the GP 1890's case (54.8 measured, drawn at 54.6), longer overall,
-        // with a jacketed round nose. Not a profile twin of the GP 1890.
+        // Measured on Raven's round: the GP 90/23's case (54.8 measured, drawn at 54.6), longer overall,
+        // with a jacketed round nose. Not a profile twin of the GP 1890 or the GP 90/23.
         let gp1890 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x53.5 mm Swiss (GP 1890)"))
-        XCTAssertEqual(kp.dimensions.caseLength, gp1890.dimensions.caseLength, accuracy: 0.001)
-        XCTAssertEqual(kp.dimensions.rim, gp1890.dimensions.rim, accuracy: 0.001)
+        let gp9023 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x54.5 mm Swiss (GP 90/23)"))
+        XCTAssertEqual(kp.dimensions.caseLength, gp9023.dimensions.caseLength, accuracy: 0.001)
+        XCTAssertEqual(kp.dimensions.rim, gp9023.dimensions.rim, accuracy: 0.001)
+        XCTAssertFalse(CartridgeCatalog.sameProfile(kp, gp9023))
         XCTAssertEqual(kp.dimensions.overallLength, 77.5, accuracy: 0.001)
         XCTAssertFalse(CartridgeCatalog.sameProfile(kp, gp1890))
         XCTAssertNil(kp.outline.bulletMaterial, "a jacket, not the GP 1890's steel cap")
@@ -251,7 +260,9 @@ final class CatalogTests: XCTestCase {
         let vetterli = try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: XCTUnwrap(CartridgeCatalog.cartridge(id: "10.4x38 mm R Vetterli"))))
         XCTAssertEqual(vetterli.calibres, ["10.4x38 mm R Vetterli", "10.4x38 mm R Vetterli Centrefire"])
         XCTAssertEqual(vetterli.differs.map { LookalikeGroup.title($0) }, ["Zündung"])
-        XCTAssertNil(CartridgeCatalog.lookalikeGroup(of: try XCTUnwrap(CartridgeCatalog.cartridge(id: ".22 LR"))))
+        // calibre-data groups the .22 LR with the .21 Sharp, the .22 LR case with a .21 bullet.
+        let lr = try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: XCTUnwrap(CartridgeCatalog.cartridge(id: ".22 LR"))))
+        XCTAssertEqual(lr.calibres, [".22 LR", ".21 Sharp"])
         // Identical-looking members compare once, at 1:1 generally too.
         XCTAssertEqual(LookalikeGroupView.compared(group.members).map(\.id), [".308 Winchester"])
         XCTAssertEqual(TrueScaleView.unique(group.members + [win]).map(\.id), [".308 Winchester"])

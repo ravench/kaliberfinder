@@ -200,8 +200,9 @@ final class MatcherTests: XCTestCase {
             XCTAssertTrue(ShapeMatcher.catalogue[m.cartridge.id]?.features?.isRimmed == true, m.cartridge.id)
         }
         // The rim is found whichever end the base is at: lying the other way round, the same rim costs the same.
+        // (1.241, was 1.243: since #196 calibre-data draws the Lebel's rim at its own thickness and its first, flat nose.)
         let wsm = try expected(".300 Winchester Short Magnum")
-        XCTAssertEqual(Matcher.missingRim(shape, wsm), Matcher.missingRimWeight * (1.243 - 1.009 - Matcher.rimTolerance), accuracy: 0.01)
+        XCTAssertEqual(Matcher.missingRim(shape, wsm), Matcher.missingRimWeight * (1.241 - 1.009 - Matcher.rimTolerance), accuracy: 0.01)
         XCTAssertEqual(Matcher.missingRim(shape.reversed(), wsm), Matcher.missingRim(shape, wsm))
         // A rim at least as wide as the photo's costs nothing, nor one within the tolerance.
         XCTAssertEqual(Matcher.missingRim(shape, shape), 0)
