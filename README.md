@@ -116,7 +116,7 @@ and writes them as PNG files. It runs by hand, not in CI; once per device and la
 
 ```sh
 xcrun simctl status_bar booted override --time 9:41 --batteryState charged --batteryLevel 100
-TEST_RUNNER_SCREENS_LANG=en TEST_RUNNER_SCREENS_DIR="$PWD/screens/iphone-en" \
+TEST_RUNNER_SCREENS_LANG=en TEST_RUNNER_SCREENS_DIR=/tmp/kaliberfinder-screens/iphone-en \
   xcodebuild test -project Kaliberfinder.xcodeproj -scheme KaliberfinderScreens \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
   -only-testing:KaliberfinderUITests/AppStoreScreensTests
