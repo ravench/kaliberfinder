@@ -261,7 +261,7 @@ struct TrainingPackageView: View {
             }
             Section {
                 TextField("Notiz", text: $package.note, prompt: Text("z. B. Holztisch, Tageslicht"), axis: .vertical)
-                // Where the photos were taken: every present-day country, searchable (Raven, 2026-11-09).
+                // Every present-day country and the former states, searchable (Raven, 2026-11-09 and 2026-11-11).
                 NavigationLink {
                     CountryPickerView(selection: $package.country)
                 } label: {
@@ -534,8 +534,8 @@ private struct ShareSheet: UIViewControllerRepresentable {
     func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
 }
 
-/// The country a series was photographed in: every present-day country with its flag, searchable; the
-/// first row clears the choice.
+/// The country of a series: every present-day country with its flag and the former states, searchable;
+/// the first row clears the choice.
 struct CountryPickerView: View {
     @Binding var selection: String?
     @Environment(\.dismiss) private var dismiss

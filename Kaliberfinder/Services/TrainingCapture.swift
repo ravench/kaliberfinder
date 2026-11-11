@@ -80,7 +80,7 @@ struct CapturePackage: Codable, Equatable {
     /// True when the round carries a bullet its calibre does not usually have (another weight or shape), so
     /// tuning the matcher against this series takes care; not written when nil.
     var atypicalBullet: Bool?
-    /// Where the photos were taken: an ISO 3166-1 code (`Countries`); nil until chosen (2026-11-09).
+    /// The country of the series: an ISO 3166-1 code, or a former state's code (`Countries`); nil until chosen (2026-11-09).
     var country: String?
     /// What the round is, as a row of the old-ammunition table records it (Raven 2026-11-11): its headstamp
     /// (the table's `hs`) and a token of `RoundFacts` for its ignition (`ign`), head (`head`), case shape

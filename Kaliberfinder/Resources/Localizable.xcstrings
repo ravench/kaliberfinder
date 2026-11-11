@@ -1151,6 +1151,29 @@
         }
       }
     },
+    "DDR": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "East Germany"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RDA"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DDR"
+          }
+        }
+      }
+    },
     "Das Foto konnte nicht übernommen werden.": {
       "extractionState": "manual",
       "localizations": {
@@ -2895,6 +2918,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Giappone"
+          }
+        }
+      }
+    },
+    "Jugoslawien": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yugoslavia"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yougoslavie"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jugoslavia"
           }
         }
       }

@@ -112,6 +112,8 @@ T = {
     "Russisches Kaiserreich": ("Russian Empire", "Empire russe", "Impero russo"),
     "Sowjetunion": ("Soviet Union", "Union soviétique", "Unione Sovietica"),
     "Tschechoslowakei": ("Czechoslovakia", "Tchécoslovaquie", "Cecoslovacchia"),
+    "DDR": ("East Germany", "RDA", "DDR"),
+    "Jugoslawien": ("Yugoslavia", "Yougoslavie", "Jugoslavia"),
     "China": ("China", "Chine", "Cina"),
     "NATO": ("NATO", "OTAN", "NATO"),
     "Alle passenden 1:1 vergleichen (%lld)": ("Compare all matches 1:1 (%lld)", "Comparer toutes les correspondances 1:1 (%lld)", "Confronta tutte le corrispondenze 1:1 (%lld)"),
