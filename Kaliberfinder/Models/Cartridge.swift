@@ -32,7 +32,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     let outline: Outline
     /// Nil for rimfire and for balls, Minié bullets and pellets.
     let primer: Primer?
-    /// The painted bullet tips of military loads (calibre-data [[tip_colours]]); empty for most calibres.
+    /// The painted bullet tips of military loads (calibre-data [[colour_codes]] with part "tip"); empty for most calibres.
     let tipColours: [TipColour]
 
     /// One tip colour code: what a painted tip means (Raven, 2026-11-11: shown on the calibre page).
@@ -141,7 +141,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
         /// "steel" for a steel-capped nose or a steel BB, "lead" for a bare lead bullet, "plastic"
         /// for an airsoft BB; nil means copper (or lead without a case).
         let bulletMaterial: String?
-        /// "copper", "steel" (lacquered), "nickel", "paper" or "hybrid" where the case is not brass.
+        /// "copper", "steel" (lacquered), "nickel", "aluminium", "paper" or "hybrid" where the case is not brass.
         let caseMaterial: String?
         /// "steel" for the steel head of a hybrid case (.277 Fury); nil means brass.
         let headMaterial: String?
