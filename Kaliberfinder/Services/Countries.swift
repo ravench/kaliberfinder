@@ -9,6 +9,8 @@ enum Countries {
         var id: String { code }
         /// The regional indicator pair of the code, e.g. 🇨🇭.
         var flag: String { Self.flag(of: code) }
+        /// E.g. "🇨🇭 Schweiz", as the pickers and the series screen show a country.
+        var title: String { flag + " " + name }
 
         static func flag(of code: String) -> String {
             String(code.uppercased().unicodeScalars.compactMap { UnicodeScalar(0x1F1E6 + $0.value - 65).map(Character.init) })
@@ -39,6 +41,6 @@ enum Countries {
 
     /// E.g. "🇨🇭 Schweiz" for "CH"; the code itself when the system does not know it.
     static func title(of code: String, locale: Locale = .current) -> String {
-        "\(Country.flag(of: code)) \(locale.localizedString(forRegionCode: code) ?? code)"
+        Country(code: code, name: locale.localizedString(forRegionCode: code) ?? code).title
     }
 }

@@ -511,7 +511,7 @@ struct CountryPickerView: View {
                 row(title: "–", chosen: selection == nil) { selection = nil }
             }
             ForEach(Countries.matching(query)) { country in
-                row(title: country.flag + " " + country.name, chosen: country.code == selection) { selection = country.code }
+                row(title: country.title, chosen: country.code == selection) { selection = country.code }
             }
         }
         .searchable(text: $query, prompt: Text("Land suchen"))
