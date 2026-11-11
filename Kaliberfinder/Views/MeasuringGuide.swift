@@ -22,6 +22,7 @@ struct MeasuringGuide: View {
         Mark(letter: "R", from: pt(44.8, 52.8), to: pt(44.8, 139.2), label: pt(44.8, 26)),
         Mark(letter: "B", from: pt(84, 59.2), to: pt(84, 132.8), label: pt(84, 26)),
         Mark(letter: "S", from: pt(276, 61.2), to: pt(276, 130.8), label: pt(276, 26)),
+        Mark(letter: "N", from: pt(340, 70.5), to: pt(340, 121.5), label: pt(340, 26)),
         Mark(letter: "D", from: pt(380, 72.3), to: pt(380, 119.7), label: pt(380, 26)),
         Mark(letter: "P", from: pt(578, 96), to: pt(610, 96), label: pt(594, 26)),
         // Lengths from the head, below; H ends where the shoulder starts.
@@ -40,7 +41,7 @@ struct MeasuringGuide: View {
     /// From the drawing to the letters above and to the length lines below.
     static let extensions: [[CGPoint]] = [
         [pt(44.8, 52), pt(44.8, 30)], [pt(84, 58), pt(84, 30)], [pt(276, 60), pt(276, 30)],
-        [pt(380, 71), pt(380, 30)], [pt(594, 80), pt(594, 30)],
+        [pt(340, 69), pt(340, 30)], [pt(380, 71), pt(380, 30)], [pt(594, 80), pt(594, 30)],
         [pt(40, 142), pt(40, 208)], [pt(286, 134), pt(286, 160)],
         [pt(362.2, 124), pt(362.2, 184)], [pt(503.2, 100), pt(503.2, 208)],
     ]

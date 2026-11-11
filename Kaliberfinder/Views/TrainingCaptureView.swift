@@ -353,6 +353,7 @@ struct TrainingPackageView: View {
         CalliperField(letter: "B", title: "Bodendurchmesser", value: \.base),
         CalliperField(letter: "S", title: "Schulterdurchmesser", value: \.shoulder),
         CalliperField(letter: "H", title: "Schulterlänge", value: \.shoulderLength),
+        CalliperField(letter: "N", title: "Halsdurchmesser", value: \.neck),
         CalliperField(letter: "D", title: "Geschossdurchmesser", value: \.bullet),
         CalliperField(letter: "P", title: "Zündhütchen-Durchmesser", value: \.primerDiameter),
     ]

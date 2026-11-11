@@ -108,11 +108,13 @@ struct Measurements: Codable, Equatable {
     /// Base to shoulder, and the shoulder's diameter (2026-11-09).
     var shoulderLength: Double?
     var shoulder: Double?
+    /// The neck's diameter at the case mouth (Raven 2026-11-11).
+    var neck: Double?
     /// The primer's diameter (Raven 2026-11-09); nil for rimfire.
     var primerDiameter: Double?
 
     var isEmpty: Bool {
-        [overallLength, caseLength, rim, base, bullet, shoulderLength, shoulder, primerDiameter].allSatisfy { $0 == nil }
+        [overallLength, caseLength, rim, base, bullet, shoulderLength, shoulder, neck, primerDiameter].allSatisfy { $0 == nil }
     }
 }
 

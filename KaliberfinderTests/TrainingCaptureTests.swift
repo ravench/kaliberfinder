@@ -185,6 +185,7 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertTrue(Measurements().isEmpty)
         XCTAssertFalse(Measurements(bullet: 9).isEmpty)
         XCTAssertFalse(Measurements(base: 9.9).isEmpty)
+        XCTAssertFalse(Measurements(neck: 8.6).isEmpty)
         XCTAssertFalse(Measurements(primerDiameter: 4.5).isEmpty)
     }
 
