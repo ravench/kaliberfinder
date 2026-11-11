@@ -62,7 +62,9 @@ jobs:
   build:
     needs: changes
     if: needs.changes.outputs.mac == 'true'
-    runs-on: macos-26
+    # GitHub's Mac, or the self-hosted one named in the MAC_RUNNER variable while the repo is
+    # private (README, CI on your own Mac).
+    runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}
     permissions:
       contents: read # the PR screens below push their images to ravench/app-screens with a deploy key
       pull-requests: write # and comment on the pull request
@@ -77,7 +79,7 @@ jobs:
           lfs: true
           # The merge commit and its first parent, the base branch, for the PR screens.
           fetch-depth: 2
-      - run: brew install xcodegen
+      - run: command -v xcodegen >/dev/null || brew install xcodegen
       - run: xcodegen generate
       - name: Pick an iPhone simulator and a build folder
         run: |
@@ -87,7 +89,10 @@ jobs:
           echo "DERIVED_DATA=$RUNNER_TEMP/DerivedData" >> "$GITHUB_ENV"
           # Outside the checkout, which the base branch tour replaces; upload-artifact rejects '..' paths.
           echo "SCREENS=$RUNNER_TEMP/screens" >> "$GITHUB_ENV"
-          # A fresh simulator takes minutes to boot; it boots while the app compiles.
+          # Erased first, so a Mac that keeps its simulators starts as clean as GitHub's. A fresh
+          # simulator takes minutes to boot; it boots while the app compiles.
+          xcrun simctl shutdown "$UDID" 2>/dev/null || true
+          xcrun simctl erase "$UDID"
           xcrun simctl boot "$UDID"
       # The evaluation tool (tools/evaluate) compiles the analysis code for macOS, so a change to it
       # must keep it free of UIKit. Only type-checked: a few seconds while the simulator boots.
@@ -229,9 +234,11 @@ jobs:
           cd "$SCREENS"
           # ravench/app-screens accepts this repo's deploy key; the host key is GitHub's published one.
           [ -n "$SCREENS_DEPLOY_KEY" ] || { echo "::error::The SCREENS_DEPLOY_KEY secret is missing"; exit 1; }
-          mkdir -p ~/.ssh && printf '%s\n' "$SCREENS_DEPLOY_KEY" > ~/.ssh/app-screens && chmod 600 ~/.ssh/app-screens
-          echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" >> ~/.ssh/known_hosts
-          export GIT_SSH_COMMAND="ssh -i ~/.ssh/app-screens -o IdentitiesOnly=yes"
+          # Both in RUNNER_TEMP, which is emptied after the job, not in the runner's home folder.
+          KEY="$RUNNER_TEMP/app-screens" HOSTS="$RUNNER_TEMP/known_hosts"
+          printf '%s\n' "$SCREENS_DEPLOY_KEY" > "$KEY" && chmod 600 "$KEY"
+          echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" > "$HOSTS"
+          export GIT_SSH_COMMAND="ssh -i $KEY -o IdentitiesOnly=yes -o UserKnownHostsFile=$HOSTS"
           # Each pull request has its own folder on the branch; retry if another run pushed first.
           for attempt in 1 2 3 4 5 fail; do
             [ "$attempt" != fail ] || { echo "Could not push to $SCREENS_REPO"; exit 1; }

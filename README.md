@@ -108,6 +108,25 @@ Admin role (Users and Access, Integrations, Team Keys): `ASC_KEY_ID` (Key ID),
 `ASC_ISSUER_ID` (Issuer ID) and `ASC_KEY_P8` (the whole content of the downloaded
 `AuthKey_….p8`). Without them the workflow skips the upload. Forks don't get the secrets.
 
+## CI on your own Mac
+
+The Mac jobs (Build, TestFlight, Evaluate matching) run on GitHub's macOS runner, or on a
+self-hosted Mac once the repo is private and the repository variable `MAC_RUNNER` names it.
+On a public repo they never use it, since anyone's pull request could then run code on it.
+The Linux jobs stay on GitHub.
+
+1. On the Mac, make a standard macOS user just for the runner: CI erases and restarts its
+   iPhone simulator on every run, and a user of its own keeps your simulators, keys and keychain
+   out of reach.
+2. As an admin, install Xcode 26 with the iOS simulator, `brew install xcodegen git-lfs gh` and
+   `sudo gem install xcpretty`. As the runner user, run `git lfs install` and add
+   `eval "$(/opt/homebrew/bin/brew shellenv)"` to `~/.zprofile`, then open a new Terminal window.
+3. Under Settings › Actions › Runners › New self-hosted runner (macOS, ARM64), run the commands it
+   shows in that window, then `./svc.sh install && ./svc.sh start`. The runner works while its
+   user is logged in: after a restart, log it in once and switch back to your own user.
+4. Under Settings › Secrets and variables › Actions › Variables, set `MAC_RUNNER` to
+   `self-hosted`. Delete the variable to go back to GitHub's runner.
+
 ## Licence
 
 © 2026 Simon Giotta. All rights reserved: Kaliberfinder is closed source, see
