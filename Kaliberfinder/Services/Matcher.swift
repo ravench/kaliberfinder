@@ -65,8 +65,9 @@ enum ScanMode: String, CaseIterable, Identifiable {
     }
 
     /// What to compare the photo with when nothing else decides: a square-cut end is a case mouth, a
-    /// narrowing end a bullet tip (SCAN-02). Matching itself weighs both (`Matcher.rank`): the end's width
-    /// says how likely each is, and the better comparison wins per calibre.
+    /// narrowing end a bullet tip (SCAN-02). Matching weighs both by the end's width, and the better
+    /// comparison wins per calibre, unless a bullet tip comes with the colours' case mouth: then the
+    /// cartridge alone (`Matcher.score`).
     func part(for shape: ShapeMeasurement) -> ShapePart {
         switch self {
         case .cartridge: .cartridge
@@ -112,7 +113,8 @@ enum Matcher {
     static let lengthScaleCase = 0.96
     static let diameterScale = 1.02
     /// The end's width (median of the first three slices, relative to the body) that is as likely a case
-    /// mouth as a bullet tip; farther on either side costs `partWeight` per unit, a flat end twice.
+    /// mouth as a bullet tip; farther on either side costs `partWeight` per unit, a flat end twice. Narrower
+    /// with the colours showing the case mouth, the empty case is not compared at all (`score`).
     static let partWeight = 0.5
     static let partMiddle = 0.7
     /// The case's share of the length where the colours show the mouth (`ShapeContour.mouth`), against the
@@ -218,6 +220,11 @@ enum Matcher {
         let end = endWidth(shape)
         let hasBullet = c.hasCase && !wholeOnly
         let caseOnly = mode == .emptyCase || (mode == .auto && hasBullet && endIsAMouth(shape))
+        // A bullet tip (the end neither a mouth nor flat) where the colours show the bullet meeting the case is
+        // a cartridge, compared whole only, as if «Patrone» were chosen (Raven, TestFlight 1174: a .32-20 drawn
+        // without its bullet in the 1:1 view). An empty bottleneck case has a narrow neck too, but no colour
+        // border, and keeps both comparisons; a flat end does so as well, which a wadcutter's outline shares.
+        let asCartridge = mode == .cartridge || (mode == .auto && photo.mouth != nil && mode.part(for: shape) == .cartridge)
         let neck = shape.neck.flatMap { $0.isClear && c.dimensions.neck / c.dimensions.base > $0.width + neckTolerance ? neckPenalty : 0 } ?? 0
         var candidates: [(distance: Double, deviation: Double?, part: ShapePart)] = []
         if !caseOnly || emptyCase == nil, let whole, !whole.isEndView {
@@ -227,14 +234,14 @@ enum Matcher {
             if hasBullet, let mouth = photo.mouth { d += mouthPenalty(mouth, c, size: photo.size) }
             candidates.append((d + neck, deviation, .cartridge))
         }
-        if mode != .cartridge, c.kind == "shot", let whole, !whole.isEndView {
+        if !asCartridge, c.kind == "shot", let whole, !whole.isEndView {
             // A fired hull has opened from its crimp to the case length (a 12/70 to 70 mm): the outline stretched (review 2026-11-10).
             let hull = ShapeMeasurement(aspect: whole.aspect * c.dimensions.caseLength / c.dimensions.overallLength, profile: whole.profile, widths: whole.widths)
             let (d, deviation) = distance(photo, Expected(shape: hull, length: c.dimensions.caseLength, diameter: c.dimensions.base,
                                                           lengthScale: lengthScaleWhole, front: endWidth(hull) / 2, back: rim(hull) / 2))
             candidates.append((d + neck, deviation, .emptyCase))
         }
-        if mode != .cartridge, let emptyCase, !emptyCase.isEndView {
+        if !asCartridge, let emptyCase, !emptyCase.isEndView {
             var (d, deviation) = distance(photo, Expected(shape: emptyCase, length: c.dimensions.caseLength, diameter: c.dimensions.base,
                                                           lengthScale: lengthScaleCase, front: endWidth(emptyCase) / 2, back: rim(emptyCase) / 2))
             if mode == .auto, !caseOnly { d += partWeight * max(0, partMiddle - end) }

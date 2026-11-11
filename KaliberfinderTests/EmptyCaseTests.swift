@@ -91,6 +91,27 @@ final class EmptyCaseTests: XCTestCase {
         }
     }
 
+    /// A photo with a bullet tip whose colours show the case mouth is a cartridge: in automatic mode no calibre
+    /// is listed as its empty case (Raven, TestFlight 1174: the .32-20 drawn without its bullet in the 1:1 view).
+    /// Without the colour border both stay compared (an empty bottleneck case has a narrow neck too; the golden
+    /// set's GP 90 and 6 mm BR cases), as for a flat end (`testEmptyRifleCaseFindsRifleCalibres`).
+    func testBulletTipIsNeverMatchedAsAnEmptyCase() throws {
+        var checked = 0
+        for id in ["9x19 mm", ".45 ACP", "7.5x55 mm Swiss (GP 11)", ".308 Winchester", ".32 H&R Magnum"] {
+            let shape = try photo(cartridge(id), part: .cartridge)
+            // A flat-nosed bullet nearly as wide as the case ends like a mouth (the .32 H&R): both are compared then.
+            guard ScanMode.auto.part(for: shape) == .cartridge else { continue }
+            checked += 1
+            let c = try cartridge(id)
+            let mouth = (c.dimensions.overallLength - c.dimensions.caseLength) / c.dimensions.overallLength
+            let matches = Matcher.rank(shape: shape, mouth: mouth, limit: .max)
+            XCTAssertFalse(matches.isEmpty, id)
+            XCTAssertTrue(matches.allSatisfy { $0.part == .cartridge },
+                          id + ": " + matches.filter { $0.part == .emptyCase }.map(\.cartridge.id).joined(separator: ", "))
+        }
+        XCTAssertGreaterThanOrEqual(checked, 3)
+    }
+
     func testModeOverridesTheDetection() throws {
         let shape = try photo(cartridge(".308 Winchester"), part: .emptyCase)
         XCTAssertEqual(ScanMode.cartridge.part(for: shape), .cartridge)
