@@ -98,8 +98,9 @@ class ReleaseNotesTests(unittest.TestCase):
     def test_the_repo_has_the_notes_file_with_the_format(self):
         with open(os.path.join(ROOT, "RELEASE_NOTES.md")) as f:
             text = f.read()
-        self.assertIn("## 0.2.0", text)
         self.assertIn("### de", text)
+        # The first App Store release has its hand-written notes in every language.
+        self.assertEqual(sorted(changelog.hand_written("1.0.0", text)), ["de", "en", "fr", "it"])
 
 
 class CommitsTests(unittest.TestCase):
