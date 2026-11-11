@@ -32,6 +32,53 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     let outline: Outline
     /// Nil for rimfire and for balls, Minié bullets and pellets.
     let primer: Primer?
+    /// The painted bullet tips of military loads (calibre-data [[tip_colours]]); empty for most calibres.
+    let tipColours: [TipColour]
+
+    /// One tip colour code: what a painted tip means (Raven, 2026-11-11: shown on the calibre page).
+    struct TipColour: Decodable, Hashable {
+        /// Colour names from the tip down: ["red", "silver"] is a red tip above a silver band.
+        let colours: [String]
+        /// What the code means, combined: ["armour-piercing", "incendiary"] is an API load.
+        let meaning: [String]
+        /// The loads that carry it, e.g. "US M20, Swiss M.65".
+        let description: String?
+        let countries: [Country]
+
+        /// German title of a meaning, used as localization key.
+        static func title(_ meaning: String) -> String {
+            switch meaning {
+            case "ball": "Standardgeschoss"
+            case "armour-piercing": "Panzerbrechend"
+            case "incendiary": "Brand"
+            case "explosive": "Spreng"
+            case "tracer": "Leuchtspur"
+            case "spotting": "Markierung"
+            case "subsonic": "Unterschall"
+            case "frangible": "Zerfallend"
+            default: meaning
+            }
+        }
+
+        /// German name of a colour, used as localization key (what VoiceOver reads for the swatch); capitalised,
+        /// as the string extractor takes a lower-case word for a symbol name.
+        static func colourName(_ colour: String) -> String {
+            switch colour {
+            case "black": "Schwarz"
+            case "white": "Weiss"
+            case "grey": "Grau"
+            case "silver": "Silber"
+            case "red": "Rot"
+            case "orange": "Orange"
+            case "yellow": "Gelb"
+            case "green": "Grün"
+            case "blue": "Blau"
+            case "purple": "Violett"
+            case "brown": "Braun"
+            default: colour
+            }
+        }
+    }
 
     /// A country from calibre-data ORIGIN.
     struct Country: Decodable, Hashable {

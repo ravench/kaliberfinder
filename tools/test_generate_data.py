@@ -241,17 +241,45 @@ class CatalogueOnlyDataTests(unittest.TestCase):
     cannon rounds). The app reads none of it: the same six categories and fields as before."""
 
     def test_catalogue_only_data_stays_out(self):
-        from cartridges import TIP_COLOURS
+        from cartridges import FIRED_BY
         built = generate_data.build()
-        self.assertTrue(TIP_COLOURS)
+        self.assertTrue(FIRED_BY)
         self.assertEqual({c["category"] for c in built},
                          {"Randfeuer", "Kurzwaffe", "Langwaffe", "Schwarzpulver", "Flinte", "Luftdruck"})
         self.assertEqual(set().union(*built), {"id", "name", "category", "kind", "aliases", "displayAliases",
                                                "headstamps", "obsolete", "rare", "country", "worldwide", "blank",
-                                               "dimensions", "outline", "primer"})
+                                               "dimensions", "outline", "primer", "tipColours"})
 
     def test_cip_corrections_reach_the_json(self):
         """calibre-data #68: the PRC rounds from their C.I.P. sheets."""
         by_name = {c["name"]: c["dimensions"] for c in generate_data.build()}
         self.assertEqual(by_name["6.5 PRC"]["overallLength"], 75.06)
         self.assertEqual((by_name["7 mm PRC"]["caseLength"], by_name["7 mm PRC"]["overallLength"]), (57.91, 84.84))
+
+
+class TipColourTests(unittest.TestCase):
+    """The tip colour codes of calibre-data reach the JSON, for the calibre page (Raven, 2026-11-11)."""
+
+    def setUp(self):
+        self.by_name = {c["name"]: c for c in generate_data.build()}
+
+    def test_codes_with_their_colours_meanings_loads_and_countries(self):
+        nato = self.by_name["7.62x51 mm NATO"]["tipColours"]
+        self.assertEqual([t["colours"] for t in nato], [["black"], ["orange"], ["purple"]])
+        self.assertEqual(nato[0]["meaning"], ["armour-piercing"])
+        self.assertEqual(nato[0]["description"], "M61 and M993")
+        self.assertEqual(nato[0]["countries"], [{"code": "US", "name": "USA", "flag": "🇺🇸"}])
+        self.assertNotIn("sources", nato[0])
+        bmg = self.by_name[".50 BMG"]["tipColours"]
+        self.assertIn(["red", "silver"], [t["colours"] for t in bmg], "from the tip down")
+
+    def test_every_entry_has_the_list_and_most_are_empty(self):
+        self.assertTrue(all(isinstance(c["tipColours"], list) for c in self.by_name.values()))
+        self.assertEqual(self.by_name["9x19 mm"]["tipColours"], [])
+        self.assertEqual(self.by_name["7.5x55 mm Swiss (GP 11)"]["tipColours"],
+                         [{"colours": ["red"], "meaning": ["tracer"], "description": "Tracer M.1911 (Leuchtspurpatrone)",
+                           "countries": [{"code": "CH", "name": "Schweiz", "flag": "🇨🇭"}]}])
+
+    def test_a_former_state_is_drawn(self):
+        soviet = next(t for t in self.by_name["7.62x54 mm R"]["tipColours"] if any(c["code"] == "SU" for c in t["countries"]))
+        self.assertEqual([c for c in soviet["countries"] if c["code"] == "SU"], [{"code": "SU", "name": "Sowjetunion"}])

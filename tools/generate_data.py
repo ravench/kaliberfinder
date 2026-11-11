@@ -16,7 +16,7 @@ import json, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
-from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_DIAMETERS, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
+from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, TIP_COLOURS, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_DIAMETERS, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
 from outline import outline, bullet_profile  # noqa: E402,F401  (bullet_profile re-exported for tests)
 from headstamps import HEADSTAMPS  # noqa: E402
 
@@ -43,12 +43,24 @@ def country(name):
     introduced the calibre (calibre-data ORIGIN), or {} for gauges, balls, pellets, blanks and calibres
     whose origin is still open."""
     o = origin(name)
-    if not o:
-        return {}
-    code, _, flag = o
+    return {"country": country_entry(o[0])} if o else {}
+
+
+def country_entry(code):
+    """{"code", "name" (German), "flag" (emoji, absent for drawn flags)} of a calibre-data country code."""
+    flag = COUNTRIES[code][1]
     assert code in COUNTRY_NAMES, f"{code}: add its German name to COUNTRY_NAMES"
     assert flag or code in DRAWN_FLAGS, f"{code} has no flag emoji: draw it in DrawnFlag"
-    return {"country": {"code": code, "name": COUNTRY_NAMES[code], **({"flag": flag} if flag else {})}}
+    return {"code": code, "name": COUNTRY_NAMES[code], **({"flag": flag} if flag else {})}
+
+
+def tip_colours(name):
+    """What the painted bullet tips of a calibre's military loads mean (calibre-data TIP_COLOURS): the
+    colours from the tip down, the meanings, the loads and the countries, as the calibre page lists them
+    (Raven, 2026-11-11). The sources stay in calibre-data."""
+    return [{"colours": list(t["colours"]), "meaning": list(t["meaning"]),
+             **({"description": t["description"]} if t["description"] else {}),
+             "countries": [country_entry(c) for c in t["countries"]]} for t in TIP_COLOURS.get(name, [])]
 
 
 def dimensions(s):
@@ -79,6 +91,7 @@ def build():
                                "rare": is_rare(s["name"]), **country(s["name"]),
                                "worldwide": is_worldwide(s["name"]),
                                "blank": s["profile"] == CRIMPED,
+                               "tipColours": tip_colours(s["name"]),
                                "dimensions": dimensions(s), "outline": outline(s),
                                **primer(s)})
     names = {c["name"] for c in cartridges}
