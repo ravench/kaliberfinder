@@ -3888,6 +3888,29 @@
         }
       }
     },
+    "Mit Papierpflaster": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paper patched"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calepiné papier"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con camiciatura in carta"
+          }
+        }
+      }
+    },
     "Mit Rand": {
       "extractionState": "manual",
       "localizations": {
@@ -4164,29 +4187,6 @@
         }
       }
     },
-    "Nickel": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nickel"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nickel"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nichel"
-          }
-        }
-      }
-    },
     "Notiz": {
       "extractionState": "manual",
       "localizations": {
@@ -4321,29 +4321,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bossolo di carta o plastica"
-          }
-        }
-      }
-    },
-    "Papierpflaster": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paper patched"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Calepiné papier"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Con camiciatura in carta"
           }
         }
       }
@@ -5682,6 +5659,29 @@
         }
       }
     },
+    "Vernickelt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nickel-plated"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nickelé"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichelato"
+          }
+        }
+      }
+    },
     "Version": {
       "extractionState": "manual",
       "localizations": {
@@ -6016,7 +6016,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "À bourrelet réduit"
+            "value": "À culot rétreint"
           }
         },
         "it": {
@@ -6062,13 +6062,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Type d'amorçage"
+            "value": "Type de percussion"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tipo di innesco"
+            "value": "Tipo di percussione"
           }
         }
       }

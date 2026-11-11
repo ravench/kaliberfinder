@@ -11,13 +11,19 @@ their photos in `../Golden` (see its README).
 <calibre>-<yyyyMMdd-HHmmss>/
   package.json            calibre (catalogue id), part (cartridge | emptyCase), note, device, iOS, app version;
                           unlisted: true when calibre is the name of a round the catalogue lacks;
-                          measurements: what the calliper says about the round, in mm (overallLength,
-                          caseLength, rim, bullet, shoulder, shoulderLength; each only when measured);
+                          measurements: what the calliper says about the round, in mm (bullet, neck,
+                          shoulder, base, rim, primerDiameter, shoulderLength, caseLength,
+                          overallLength; each only when measured);
                           atypicalBullet: true when the round carries a bullet its calibre does not
                           usually have, so tuning against the series takes care;
-                          country: ISO code of the country the photos were taken in (one the catalogue knows, e.g. "CH"); bulletMaterial (jacket |
-                          lead | steel | plastic), caseMaterial (brass | steel | aluminium | nickel |
-                          plastic | paper), primer (boxer | berdan | rimfire); each only when entered
+                          country: ISO code of the country the photos were taken in (one the catalogue knows, e.g. "CH");
+                          what the round is, with the old-ammunition table's choices: headstamp (text),
+                          ignition (centrefire | rimfire | pinfire | other), head (rimless | semi |
+                          rimmed | rebated | belted), shape (straight | tapered | bottleneck),
+                          caseMaterial (brass | nickel | steel | copper | aluminium | paper | other),
+                          bullet (fmj | lead | soft | hp | wc | paper | shot | blank | empty | other);
+                          each only when entered. Series from 2026-11-09/10 may also carry
+                          bulletMaterial and primer, which are kept but not shown
   01/
     shot.json             source, EXIF orientation, depth map size and accuracy, camera calibration,
                           LiDAR table distance and focal length, gravity and tilt, closest focus

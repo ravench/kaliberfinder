@@ -269,6 +269,8 @@ struct TrainingPackageView: View {
                 }
                 // What the round is, as the old-ammunition table records it (Raven 2026-11-11).
                 TextField("Bodenstempel", text: headstamp)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.characters)
                 choice("Zündart", selection: $package.ignition, options: RoundFacts.ignition)
                 choice("Randform", selection: $package.head, options: RoundFacts.head)
                 choice("Hülsenform", selection: $package.shape, options: RoundFacts.shape)
