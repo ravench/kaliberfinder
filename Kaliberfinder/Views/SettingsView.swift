@@ -2,7 +2,7 @@ import SwiftUI
 
 /// The settings page's sections, top to bottom. The recognition switches stay on the home screen.
 enum SettingsSection: CaseIterable {
-    case units, compare, photo, info
+    case units, compare, photo, info, training
 }
 
 /// Settings opened as a sheet by the home screen's gear button (tidied up with Raven, 2026-11-10): units,
@@ -15,7 +15,7 @@ struct SettingsView: View {
     @AppStorage(CompareLength.key) private var compareLength: CompareLength = .caseLength
     /// Only phones with a LiDAR scanner measure the photo, so only they get the switch (`MatchesView.compareByFitKey`).
     @AppStorage(MatchesView.compareByFitKey) private var compareByFit = true
-    /// Hidden developer switch: five taps on the copyright line (`TrainingCapture`).
+    /// The training capture's switch at the bottom, off by default (`TrainingCapture`).
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
     /// The photo's outline coloured by detection (`ShapeContour.partColoursKey`); for everyone since 2026-11-08.
     @AppStorage(ShapeContour.partColoursKey) private var partColours = false
@@ -28,6 +28,7 @@ struct SettingsView: View {
                 case .compare: compare
                 case .photo: photo
                 case .info: info
+                case .training: training
                 }
             }
         }
@@ -87,18 +88,7 @@ struct SettingsView: View {
         }
     }
 
-    @ViewBuilder private var info: some View {
-        if trainingCapture {
-            Section {
-                NavigationLink { TrainingCaptureView() } label: {
-                    Label { Text("Trainingsdaten aufnehmen") } icon: { Image(systemName: "tray.and.arrow.down") }
-                }
-            } header: {
-                Text("Entwickler")
-            } footer: {
-                Text("Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.")
-            }
-        }
+    private var info: some View {
         Section {
             LabeledContent("Version", value: Bundle.main.versionText)
             if let source = CartridgeCatalog.source {
@@ -107,9 +97,23 @@ struct SettingsView: View {
             Text("© 2026 Simon Giotta")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
-                .onTapGesture(count: 5) { trainingCapture.toggle() }
         } header: {
             Text("Info")
+        }
+    }
+
+    /// The training capture (Raven, 2026-11-11): a visible switch, off by default, instead of the
+    /// five hidden taps, so the App Store version has no hidden feature (guideline 2.3.1).
+    private var training: some View {
+        Section {
+            Toggle(isOn: $trainingCapture) {
+                Label { Text("Trainingsdaten") } icon: { Image(systemName: "tray.and.arrow.down") }
+            }
+            if trainingCapture {
+                NavigationLink("Trainingsdaten aufnehmen") { TrainingCaptureView() }
+            }
+        } footer: {
+            Text("Speichert Fotoserien bekannter Patronen mit den Messwerten der App auf dem Gerät, als Testdaten für die Erkennung.")
         }
     }
 }

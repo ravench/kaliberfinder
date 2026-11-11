@@ -8,7 +8,7 @@ final class HomeSectionTests: XCTestCase {
     }
 
     func testSettingsPageHoldsUnitsRealSizeAndCopyright() {
-        XCTAssertEqual(SettingsSection.allCases, [.units, .compare, .photo, .info])
+        XCTAssertEqual(SettingsSection.allCases, [.units, .compare, .photo, .info, .training])  // the training switch last (Raven, 2026-11-11)
     }
 
     func testSettingsShowVersionAndBuild() {

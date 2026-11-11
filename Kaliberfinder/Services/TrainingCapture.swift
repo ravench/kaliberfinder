@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 /// calibre with everything the phone measured, saved as a package for the private training repo
 /// (ravench/kaliberfinder-training), whose golden shots come back as KaliberfinderTests/Golden.
 ///
-/// A hidden developer tool, switched on by tapping the copyright line five times. It can be removed
+/// A tool for invited helpers, switched on at the bottom of Settings (off by default). It can be removed
 /// with TrainingCapture*.swift, TrainingRecorder.swift and its lines in SettingsView and LiDARCamera.
 ///
 /// Package layout (format 1):

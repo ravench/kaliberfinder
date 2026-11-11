@@ -2,8 +2,8 @@ import AVFoundation
 import PhotosUI
 import SwiftUI
 
-// Hidden developer screens for recording training data (see `TrainingCapture`). Reached by
-// tapping the copyright line in Settings five times; translated like the rest of the app.
+// Screens for recording training data (see `TrainingCapture`). Reached by
+// the switch at the bottom of Settings; translated like the rest of the app.
 
 /// The saved series and a button for a new one.
 struct TrainingCaptureView: View {
