@@ -115,8 +115,8 @@ self-hosted Mac while the repo is private and the repository variable `MAC_RUNNE
 Register the runner only once the repo is private, and remove it (`./svc.sh uninstall`, then
 `./config.sh remove`) before the repo ever goes public again: on a public repo, a pull request
 could change its own workflow to run code on that Mac. The Linux jobs stay on GitHub. While the
-Mac is off or its runner user is logged out, the Mac jobs wait (up to 24 hours) instead of
-falling back to GitHub's runner.
+Mac is off or asleep, or its runner user is logged out, the Mac jobs wait (up to 24 hours)
+instead of falling back to GitHub's runner.
 
 1. On the Mac, make a standard macOS user just for the runner: CI erases and restarts its
    iPhone simulator on every run, and a user of its own keeps your simulators, keys and keychain
@@ -128,7 +128,9 @@ falling back to GitHub's runner.
    `eval "$(/opt/homebrew/bin/brew shellenv)"` to `~/.zprofile`, then open a new Terminal window.
 3. Under Settings › Actions › Runners › New self-hosted runner (macOS, ARM64), run the commands it
    shows in that window, then `./svc.sh install && ./svc.sh start`. The runner works while its
-   user is logged in: after a restart, log it in once and switch back to your own user.
+   user is logged in: after a restart, log it in once and switch back to your own user. Keep it
+   to one runner, which takes the Mac jobs one after another: two would erase each other's
+   simulators.
 4. Under Settings › Secrets and variables › Actions › Variables, set `MAC_RUNNER` to
    `self-hosted`. Delete the variable to send the Mac jobs back to GitHub's runner.
 

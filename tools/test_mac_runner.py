@@ -11,6 +11,18 @@ def workflow(name):
     return (WORKFLOWS / name).read_text()
 
 
+def xcodebuild_builds(text):
+    """Each xcodebuild call that builds or tests, with its continuation lines."""
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        if re.search(r"xcodebuild (build-for-testing|test-without-building|test|archive|build)\b", line):
+            command = [line]
+            while command[-1].rstrip().endswith("\\"):
+                i += 1
+                command.append(lines[i])
+            yield "\n".join(command)
+
+
 class MacRunnerTests(unittest.TestCase):
     def test_mac_jobs_use_the_self_hosted_mac_only_while_private(self):
         # The repo's own workflows never send a public repo's jobs to that Mac (README).
@@ -34,6 +46,8 @@ class MacRunnerTests(unittest.TestCase):
 
     def test_a_mac_that_keeps_its_state_starts_clean(self):
         build = workflow("build.yml")
+        # Shut down first: erase fails on a simulator a crashed run left booted.
+        self.assertLess(build.index('xcrun simctl shutdown "$UDID"'), build.index('xcrun simctl erase "$UDID"'))
         self.assertLess(build.index('xcrun simctl erase "$UDID"'), build.index('xcrun simctl boot "$UDID"'))
         last_step = build.rsplit("\n      - ", 1)[1]
         self.assertIn("if: always()", last_step)
@@ -44,6 +58,15 @@ class MacRunnerTests(unittest.TestCase):
             for line in path.read_text().splitlines():
                 if "brew install xcodegen" in line:
                     self.assertIn("command -v xcodegen >/dev/null ||", line, path.name)
+
+    def test_builds_go_to_runner_temp(self):
+        # Xcode's default DerivedData is in the home folder, where a self-hosted Mac would keep it.
+        builds = 0
+        for path in sorted(WORKFLOWS.glob("*.yml")):
+            for command in xcodebuild_builds(path.read_text()):
+                builds += 1
+                self.assertIn("-derivedDataPath", command, f"{path.name}: {command.splitlines()[0].strip()}")
+        self.assertGreaterEqual(builds, 5)
 
 
 if __name__ == "__main__":
