@@ -10,8 +10,9 @@ import UIKit
 /// 2x on the XS and 11 Pro, 3x on the 13 to 15 Pro, 4x on the 17 Pro).
 /// Each shot records the zoom, the field of view and the format it was taken with.
 final class LiDARCamera: NSObject, ObservableObject {
-    /// LIDAR-01: only devices with the scanner get the depth camera.
-    static var isAvailable: Bool { isAvailable(.builtInLiDARDepthCamera) }
+    /// LIDAR-01: only devices with the scanner get the depth camera. Found once, like `choices`: the home and
+    /// settings screens asked AVFoundation on every render (review 2026-11-10).
+    static let isAvailable = isAvailable(.builtInLiDARDepthCamera)
 
     static func isAvailable(_ type: AVCaptureDevice.DeviceType) -> Bool {
         AVCaptureDevice.default(type, for: .video, position: .back) != nil
