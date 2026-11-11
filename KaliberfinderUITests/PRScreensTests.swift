@@ -87,7 +87,7 @@ final class PRScreensTests: XCTestCase {
             }
             guard open(app.staticTexts[name].firstMatch) else { return }
             if query == "GP 11" {
-                // The tip colour codes of calibre-data sit under the measurements (Raven, 2026-11-11).
+                // The tip and base colour codes of calibre-data sit under the measurements (Raven, 2026-11-11).
                 scroll()
                 snap("39-GP11-Geschossspitzen")
                 scroll(up: false)
@@ -95,6 +95,20 @@ final class PRScreensTests: XCTestCase {
             guard open(app.buttons["Masszeichnung anzeigen"].firstMatch) else { return }
             snap(shot)
         }
+    }
+
+    /// Primer-ring colour codes on a calibre page: the .303 British's pre-NATO British code (Raven, 2026-11-11).
+    func testPrimerRingColourCodes() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText(".303 British\n") // return hides the keyboard
+        }
+        guard open(app.staticTexts[".303 British"].firstMatch) else { return }
+        scroll()
+        snap("40-303-Zuendhuetchenringe")
     }
 
     /// Loose balls in other materials: the steel BB and the plastic airsoft BBs.

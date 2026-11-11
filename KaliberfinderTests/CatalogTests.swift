@@ -64,22 +64,26 @@ final class CatalogTests: XCTestCase {
         XCTAssertFalse(ball.hasCase)
     }
 
-    func testTipColourCodesComeFromCalibreData() throws {
-        // GP 11: one code, the red tracer tip; every meaning and colour the catalogue uses has a title and a colour.
+    func testColourCodesComeFromCalibreData() throws {
+        // GP 11: the red tracer tip, then the older red (tracer) and purple (armour-piercing) bases; every
+        // part, meaning and colour the catalogue uses has a title and a colour.
         let gp11 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x55 mm Swiss (GP 11)"))
-        XCTAssertEqual(gp11.tipColours.map(\.colours), [["red"]])
-        XCTAssertEqual(gp11.tipColours.first?.meaning, ["tracer"])
-        XCTAssertEqual(gp11.tipColours.first?.countries.map(\.code), ["CH"])
-        XCTAssertEqual(Cartridge.TipColour.title("tracer"), "Leuchtspur")
-        XCTAssertTrue(try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm")).tipColours.isEmpty)
-        let codes = CartridgeCatalog.all.flatMap(\.tipColours)
+        XCTAssertEqual(gp11.colourCodes.map(\.part), ["tip", "base", "base"])
+        XCTAssertEqual(gp11.colourCodes.map(\.colours), [["red"], ["red"], ["purple"]])
+        XCTAssertEqual(gp11.colourCodes.map(\.meaning), [["tracer"], ["tracer"], ["armour-piercing"]])
+        XCTAssertEqual(gp11.colourCodes.first?.countries.map(\.code), ["CH"])
+        XCTAssertEqual(Cartridge.ColourCode.title("tracer"), "Leuchtspur")
+        XCTAssertTrue(try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm")).colourCodes.isEmpty)
+        let codes = CartridgeCatalog.all.flatMap(\.colourCodes)
+        XCTAssertEqual(Set(codes.map(\.part)), ["tip", "base", "annulus"])
+        for part in ["tip", "base", "annulus"] { XCTAssertNotEqual(ColourCodeRow.partTitle(part), part) }
         XCTAssertGreaterThan(codes.count, 30)
         for meaning in Set(codes.flatMap(\.meaning)) {
-            XCTAssertNotEqual(Cartridge.TipColour.title(meaning), meaning, "\(meaning) has no title")
+            XCTAssertNotEqual(Cartridge.ColourCode.title(meaning), meaning, "\(meaning) has no title")
         }
         for colour in Set(codes.flatMap(\.colours)) {
-            XCTAssertNotEqual(Cartridge.TipColour.colourName(colour), colour, "\(colour) has no name")
-            XCTAssertNotNil(TipSwatch.colours[colour], "\(colour) has no colour")
+            XCTAssertNotEqual(Cartridge.ColourCode.colourName(colour), colour, "\(colour) has no name")
+            XCTAssertNotNil(ColourSwatch.colours[colour], "\(colour) has no colour")
         }
     }
 

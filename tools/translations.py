@@ -352,11 +352,16 @@ T = {
     "Nicht gespeichert: %@": ("Not saved: %@", "Non enregistré : %@", "Non salvato: %@"),
     "Nicht in der Liste": ("Not in the list", "Pas dans la liste", "Non nell'elenco"),
     "Name": ("Name", "Nom", "Nome"),
-    # Tip colour codes (calibre-data [[colour_codes]], part "tip"), shown on the calibre page.
-    "Farbcodes der Geschossspitze": ("Bullet tip colour codes", "Codes couleur de la pointe", "Codici colore della punta"),
-    "Militärische Laborierungen, die Farben von der Spitze abwärts.":
-        ("Military loads, the colours from the tip down.", "Chargements militaires, les couleurs de la pointe vers le bas.",
-         "Cariche militari, i colori dalla punta in giù."),
+    # Colour codes of bullet tips, case bases and primer rings (calibre-data [[colour_codes]]), on the calibre page.
+    "Farbcodes": ("Colour codes", "Codes couleur", "Codici colore"),
+    "Militärische Laborierungen. Spitze: die Farben von der Spitze abwärts.":
+        ("Military loads. Tip: the colours from the tip down.", "Chargements militaires. Pointe : les couleurs de la pointe vers le bas.",
+         "Cariche militari. Punta: i colori dalla punta in giù."),
+    "Geschossspitze": ("Bullet tip", "Pointe de la balle", "Punta del proiettile"),
+    "Hülsenboden": ("Case base", "Culot de l'étui", "Fondello del bossolo"),
+    "Zündhütchenring": ("Primer ring", "Anneau d'amorce", "Anello dell'innesco"),
+    "Beschuss": ("Proof", "Épreuve", "Prova"),
+    "Reduzierte Ladung": ("Reduced charge", "Charge réduite", "Carica ridotta"),
     "Standardgeschoss": ("Ball", "Ordinaire", "Ordinaria"),
     "Panzerbrechend": ("Armour-piercing", "Perforant", "Perforante"),
     "Brand": ("Incendiary", "Incendiaire", "Incendiaria"),

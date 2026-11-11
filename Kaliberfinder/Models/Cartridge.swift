@@ -32,12 +32,15 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     let outline: Outline
     /// Nil for rimfire and for balls, Minié bullets and pellets.
     let primer: Primer?
-    /// The painted bullet tips of military loads (calibre-data [[colour_codes]] with part "tip"); empty for most calibres.
-    let tipColours: [TipColour]
+    /// The painted bullet tips, case bases and primer rings of military loads (calibre-data [[colour_codes]]);
+    /// empty for most calibres.
+    let colourCodes: [ColourCode]
 
-    /// One tip colour code: what a painted tip means (Raven, 2026-11-11: shown on the calibre page).
-    struct TipColour: Decodable, Hashable {
-        /// Colour names from the tip down: ["red", "silver"] is a red tip above a silver band.
+    /// One colour code: what a painted tip, base or primer ring means (Raven, 2026-11-11: shown on the calibre page).
+    struct ColourCode: Decodable, Hashable {
+        /// "tip" (the bullet tip), "base" (the case head) or "annulus" (the lacquer ring around the primer).
+        let part: String
+        /// Colour names; a tip's from the tip down (["red", "silver"] is a red tip above a silver band), a base or ring has one.
         let colours: [String]
         /// What the code means, combined: ["armour-piercing", "incendiary"] is an API load.
         let meaning: [String]
@@ -56,6 +59,8 @@ struct Cartridge: Decodable, Identifiable, Hashable {
             case "spotting": "Markierung"
             case "subsonic": "Unterschall"
             case "frangible": "Zerfallend"
+            case "proof": "Beschuss"
+            case "reduced-charge": "Reduzierte Ladung"
             default: meaning
             }
         }

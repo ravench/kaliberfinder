@@ -63,13 +63,13 @@ struct CartridgeDetailView: View {
                     LabeledContent("Zündhütchen", value: "Randfeuer, ohne Zündhütchen".loc)
                 }
             }
-            if !cartridge.tipColours.isEmpty {
+            if !cartridge.colourCodes.isEmpty {
                 Section {
-                    ForEach(cartridge.tipColours, id: \.self) { TipColourRow(tip: $0) }
+                    ForEach(cartridge.colourCodes, id: \.self) { ColourCodeRow(code: $0) }
                 } header: {
-                    Text("Farbcodes der Geschossspitze")
+                    Text("Farbcodes")
                 } footer: {
-                    Text("Militärische Laborierungen, die Farben von der Spitze abwärts.")
+                    Text("Militärische Laborierungen. Spitze: die Farben von der Spitze abwärts.")
                 }
             }
             Section {
@@ -128,27 +128,39 @@ struct CartridgeDetailView: View {
     }
 }
 
-/// One tip colour code of a calibre: the painted tip, what it means, the loads and the countries.
-struct TipColourRow: View {
-    let tip: Cartridge.TipColour
+/// One colour code of a calibre: the painted tip or base, what it means, where it sits, the loads and the countries.
+struct ColourCodeRow: View {
+    let code: Cartridge.ColourCode
 
     var body: some View {
         HStack(spacing: 12) {
-            TipSwatch(colours: tip.colours)
+            ColourSwatch(part: code.part, colours: code.colours)
             VStack(alignment: .leading, spacing: 2) {
-                Text(verbatim: tip.meaning.map { Cartridge.TipColour.title($0).loc }.joined(separator: " · "))
-                if let description = tip.description {
-                    Text(verbatim: description).font(.footnote).foregroundStyle(.secondary)
-                }
+                Text(verbatim: code.meaning.map { Cartridge.ColourCode.title($0).loc }.joined(separator: " · "))
+                Text(verbatim: ([Self.partTitle(code.part).loc] + [code.description].compactMap { $0 })
+                    .joined(separator: " · "))
+                    .font(.footnote).foregroundStyle(.secondary)
             }
             Spacer(minLength: 0)
-            HStack(spacing: 4) { ForEach(tip.countries, id: \.code) { CountryFlag(country: $0) } }
+            HStack(spacing: 4) { ForEach(code.countries, id: \.code) { CountryFlag(country: $0) } }
+        }
+    }
+
+    /// German name of where the paint is, used as localization key.
+    static func partTitle(_ part: String) -> String {
+        switch part {
+        case "base": "Hülsenboden"
+        case "annulus": "Zündhütchenring"
+        case "tip": "Geschossspitze"
+        default: part
         }
     }
 }
 
-/// A painted bullet tip: the colour bands from the tip down, in a small capsule.
-struct TipSwatch: View {
+/// A painted bullet tip (the colour bands from the tip down, in a small capsule), a painted case
+/// base (a disc, as the case is seen from below) or a primer ring (a ring around a brass primer).
+struct ColourSwatch: View {
+    let part: String
     let colours: [String]
     @ScaledMetric(relativeTo: .body) private var height: CGFloat = 30
 
@@ -159,15 +171,29 @@ struct TipSwatch: View {
     ]
 
     var body: some View {
-        VStack(spacing: 0) {
-            ForEach(Array(colours.enumerated()), id: \.offset) { _, name in
-                (Self.colours[name] ?? .clear).frame(maxHeight: .infinity)
+        Group {
+            if part == "annulus" {
+                Circle().fill(CartridgeView.brass)
+                    .overlay(Circle().stroke(Self.colours[colours.first ?? ""] ?? .clear, lineWidth: height * 0.12))
+                    .overlay(Circle().stroke(.secondary.opacity(0.4), lineWidth: 0.5))
+                    .frame(width: height * 0.6, height: height * 0.6)
+            } else if part == "base" {
+                Circle().fill(Self.colours[colours.first ?? ""] ?? .clear)
+                    .overlay(Circle().stroke(.secondary.opacity(0.4), lineWidth: 0.5))
+                    .frame(width: height * 0.8, height: height * 0.8)
+            } else {
+                VStack(spacing: 0) {
+                    ForEach(Array(colours.enumerated()), id: \.offset) { _, name in
+                        (Self.colours[name] ?? .clear).frame(maxHeight: .infinity)
+                    }
+                }
+                .frame(width: height / 2, height: height)
+                .clipShape(Capsule())
+                .overlay(Capsule().stroke(.secondary.opacity(0.4), lineWidth: 0.5))
             }
         }
-        .frame(width: height / 2, height: height)
-        .clipShape(Capsule())
-        .overlay(Capsule().stroke(.secondary.opacity(0.4), lineWidth: 0.5))
+        .frame(width: height * 0.8, height: height)
         .accessibilityElement()
-        .accessibilityLabel(Text(colours.map { Cartridge.TipColour.colourName($0).loc }.joined(separator: ", ")))
+        .accessibilityLabel(Text(colours.map { Cartridge.ColourCode.colourName($0).loc }.joined(separator: ", ")))
     }
 }
