@@ -213,6 +213,9 @@ class WorkflowTests(unittest.TestCase):
             if "TrainingCapture.enabledKey" in text:
                 self.assertNotRegex(text, r"if trainingCapture\b", name)
                 self.assertIn("TrainingCapture.isOn(trainingCapture)", text, name)
+            # Every way into the tool goes through that switch.
+            if name != "TrainingCaptureView.swift" and "TrainingCaptureView(" in text:
+                self.assertIn("TrainingCapture.isOn(trainingCapture)", text, name)
 
     def test_entitlements_checked_before_upload(self):
         check = self.workflow.index("check-entitlements")
