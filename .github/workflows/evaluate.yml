@@ -30,7 +30,9 @@ permissions:
   contents: read
 jobs:
   evaluate:
-    runs-on: macos-26
+    # GitHub's Mac, or the self-hosted one named in the MAC_RUNNER variable while the repo is
+    # private (README, CI on your own Mac).
+    runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}
     env:
       # A fine-grained token that can only read ravench/kaliberfinder-training. Without it (forks
       # get no secrets) the job evaluates the public golden set instead.
@@ -69,6 +71,8 @@ jobs:
           # Its golden set is not needed: the same shots as below are evaluated.
           GIT_LFS_SKIP_SMUDGE: 1
         run: |
+          # A Mac that keeps its checkout still lists the last run's worktree, now deleted.
+          git worktree prune
           git worktree add -q "$RUNNER_TEMP/before" "origin/$COMPARE" || git worktree add -q "$RUNNER_TEMP/before" "$COMPARE"
           if [ ! -x "$RUNNER_TEMP/before/tools/evaluate/build.sh" ]; then
             echo "::notice::$COMPARE has no evaluation tool yet: no comparison"

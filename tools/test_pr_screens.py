@@ -173,7 +173,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("pull_request:", self.workflow)
         self.assertIn("SCREENS_TOUR: ${{ needs.changes.outputs.screens }}", self.workflow)
         self.assertIn("if: env.SCREENS_TOUR == 'true'", self.workflow)
-        self.assertRegex(self.workflow, r"runs-on: macos-2[6-9]")
+        self.assertRegex(self.workflow, r"runs-on: .*macos-2[6-9]")
 
     def test_reuses_the_build_and_its_simulator(self):
         # No second Mac runner: the tour runs on the Build job's build, without compiling it again.
