@@ -94,8 +94,14 @@ final class AppStoreScreensTests: XCTestCase {
             // .scrollDismissesKeyboard(.interactively): the drag has to reach down into the keyboard.
             app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45))
                 .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.98)))
-            for _ in 0..<6 where app.keyboards.count > 0 { usleep(500_000) }
-            XCTAssertEqual(app.keyboards.count, 0, "Keyboard still showing")
+            // On the iPad the number pad floats as a popover that app.keyboards doesn't count: tap beside
+            // the form (the margin, then the title) until its keys are gone.
+            let spots = [CGVector(dx: 0.03, dy: 0.85), CGVector(dx: 0.5, dy: 0.07)]
+            for spot in spots where app.keys["1"].exists || app.keyboards.count > 0 {
+                app.coordinate(withNormalizedOffset: spot).tap()
+                sleep(1)
+            }
+            XCTAssertFalse(app.keys["1"].exists || app.keyboards.count > 0, "Keyboard still showing")
             _ = app.staticTexts[t("Mögliche Kaliber")].waitForExistence(timeout: 5)
             save("06-dimensions")
         }
