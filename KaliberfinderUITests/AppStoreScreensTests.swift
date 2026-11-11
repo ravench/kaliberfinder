@@ -48,7 +48,9 @@ final class AppStoreScreensTests: XCTestCase {
             // The row stands by length, the 9 mm towards the end: on the iPhone, scroll until it shows.
             // Each column is a button whose label holds the calibre's name.
             let nine = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "9x19 mm")).firstMatch
-            for _ in 0..<6 where !(nine.exists && nine.isHittable) {
+            // Not isHittable: for a column outside the scroll view it throws instead of answering false.
+            let screen = app.windows.firstMatch.frame
+            for _ in 0..<6 where !(nine.exists && screen.contains(nine.frame)) {
                 let row = app.coordinate(withNormalizedOffset: CGVector(dx: 0.85, dy: 0.6))
                 row.press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.25, dy: 0.6)))
             }
@@ -84,8 +86,10 @@ final class AppStoreScreensTests: XCTestCase {
             let fields = app.textFields
             let separator = Locale(identifier: Self.locales[language] ?? "de_CH").decimalSeparator ?? "."
             for (index, value) in [(0, "29\(separator)7"), (3, "9\(separator)0")] where fields.count > index {
-                fields.element(boundBy: index).tap()
-                fields.element(boundBy: index).typeText(value)
+                // The field fills the row on the iPad but its text sits right: tap there for focus.
+                fields.element(boundBy: index).coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+                for _ in 0..<6 where app.keyboards.count == 0 { usleep(500_000) }
+                app.typeText(value)
             }
             // .scrollDismissesKeyboard(.interactively): the drag has to reach down into the keyboard.
             app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45))
