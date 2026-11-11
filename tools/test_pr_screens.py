@@ -206,7 +206,10 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("SCREENS_BRANCH: ${{ github.event.repository.name }}/pr-screens", comment)
         self.assertIn("secrets.SCREENS_DEPLOY_KEY", comment)
         self.assertIn('git remote add origin "git@github.com:${SCREENS_REPO}.git"', comment)
-        self.assertIn("https://raw.githubusercontent.com/${SCREENS_REPO}/", comment)
+        # raw.githubusercontent.com answers 404 for a private repo; github.com/…/raw/… works for
+        # signed-in viewers who can read it.
+        self.assertIn("https://github.com/${SCREENS_REPO}/raw/", comment)
+        self.assertNotIn("https://raw.githubusercontent.com", self.workflow)
         self.assertNotIn("contents: write", self.workflow)
 
     def test_tour_exists_and_matches_the_comment_hint(self):
