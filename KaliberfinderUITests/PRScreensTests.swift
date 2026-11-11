@@ -348,6 +348,13 @@ final class PRScreensTests: XCTestCase {
             if app.buttons["Randlos"].waitForExistence(timeout: 5) { snap("22c-Trainingsdaten-Randform") }
             app.buttons["Randlos"].tap()
         }
+        // Paper and plastic hulls as two choices (TestFlight 1175); the fixture's brass closes the menu again.
+        let material = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Hülsenmaterial'")).firstMatch
+        if material.waitForExistence(timeout: 5) {
+            material.tap()
+            if app.buttons["Kunststoff"].waitForExistence(timeout: 5) { snap("22e-Trainingsdaten-Huelsenmaterial") }
+            app.buttons["Messing"].tap()
+        }
         // The calliper fields at the end, with the sketch of where to measure over them.
         scroll()
         snap("22b-Trainingsdaten-Schieblehre")

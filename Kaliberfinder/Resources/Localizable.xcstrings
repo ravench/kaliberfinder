@@ -3497,6 +3497,29 @@
         }
       }
     },
+    "Kunststoff": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plastic"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plastique"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plastica"
+          }
+        }
+      }
+    },
     "Kupfer": {
       "extractionState": "manual",
       "localizations": {
@@ -4624,25 +4647,25 @@
         }
       }
     },
-    "Papier oder Kunststoff": {
+    "Papier": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paper or plastic hull"
+            "value": "Paper"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Étui en papier ou plastique"
+            "value": "Papier"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bossolo di carta o plastica"
+            "value": "Carta"
           }
         }
       }
