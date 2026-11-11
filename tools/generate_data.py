@@ -16,7 +16,7 @@ import json, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
-from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, TIP_COLOURS, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_DIAMETERS, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
+from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, COLOUR_CODES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_DIAMETERS, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
 from outline import outline, bullet_profile  # noqa: E402,F401  (bullet_profile re-exported for tests)
 from headstamps import HEADSTAMPS  # noqa: E402
 
@@ -32,10 +32,11 @@ COUNTRY_NAMES = {
     "DK": "Dänemark", "BE": "Belgien", "ES": "Spanien", "PT": "Portugal", "CZ": "Tschechien",
     "JP": "Japan", "PL": "Polen", "FI": "Finnland", "PH": "Philippinen", "AR": "Argentinien",
     "RUE": "Russisches Kaiserreich", "SU": "Sowjetunion", "CS": "Tschechoslowakei", "CN": "China",
-    "NATO": "NATO",
+    "NO": "Norwegen", "NL": "Niederlande", "BR": "Brasilien", "EG": "Ägypten", "RS": "Serbien",
+    "TH": "Thailand", "OE": "Osmanisches Reich", "NATO": "NATO",
 }
 # Former states and unions without a flag emoji; the app draws these flags itself (DrawnFlag).
-DRAWN_FLAGS = {"RUE", "AH", "SU", "CS", "NATO"}
+DRAWN_FLAGS = {"RUE", "AH", "SU", "CS", "OE", "NATO"}
 
 
 def country(name):
@@ -55,12 +56,12 @@ def country_entry(code):
 
 
 def tip_colours(name):
-    """What the painted bullet tips of a calibre's military loads mean (calibre-data TIP_COLOURS): the
+    """What the painted bullet tips of a calibre's military loads mean (calibre-data COLOUR_CODES, the tips only): the
     colours from the tip down, the meanings, the loads and the countries, as the calibre page lists them
     (Raven, 2026-11-11). The sources stay in calibre-data."""
     return [{"colours": list(t["colours"]), "meaning": list(t["meaning"]),
              **({"description": t["description"]} if t["description"] else {}),
-             "countries": [country_entry(c) for c in t["countries"]]} for t in TIP_COLOURS.get(name, [])]
+             "countries": [country_entry(c) for c in t["countries"]]} for t in COLOUR_CODES.get(name, []) if t["part"] == "tip"]
 
 
 def dimensions(s):
@@ -118,7 +119,7 @@ def calibre_data():
 
 
 # Preview fills of cases that are not brass (CartridgeView uses the same colours).
-CASE_COLOURS = {"copper": "#b87333", "steel": "#6b6a55", "nickel": "#c8cbce", "paper": "#f2ede0", "hybrid": "#e3c16f"}
+CASE_COLOURS = {"copper": "#b87333", "steel": "#6b6a55", "nickel": "#c8cbce", "aluminium": "#a9adb1", "paper": "#f2ede0", "hybrid": "#e3c16f"}
 
 
 def preview(cartridges, path):
