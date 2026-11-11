@@ -17,6 +17,10 @@ on:
         description: Only the promotional text, also on the live version (needs no review)
         type: boolean
         default: false
+# One at a time: two runs would both add the same language.
+concurrency:
+  group: store-listing
+  cancel-in-progress: false
 defaults:
   run:
     shell: bash -eo pipefail {0}
@@ -38,4 +42,4 @@ jobs:
           if [ -n "$CREATE_VERSION" ]; then ARGS+=(--create-version "$CREATE_VERSION"); fi
           if [ "${{ inputs.promo_only }}" = "true" ]; then ARGS+=(--promo-only); fi
           if [ "${{ inputs.apply }}" = "true" ]; then ARGS+=(--apply); fi
-          python3 tools/store_listing.py "$RUNNER_TEMP/AuthKey.p8" "${ARGS[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+          python3 tools/store_listing.py "$RUNNER_TEMP/AuthKey.p8" "${ARGS[@]}" 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"

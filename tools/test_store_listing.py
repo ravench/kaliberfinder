@@ -77,6 +77,20 @@ class PickTests(unittest.TestCase):
     def test_promo_only_may_use_the_live_version(self):
         self.assertEqual(sl.pick_version([self.version("V1", "READY_FOR_SALE")], promo_only=True)["id"], "V1")
 
+    def test_promo_only_prefers_the_live_version_over_a_prepared_update(self):
+        versions = [self.version("V0", "REPLACED_WITH_NEW_VERSION"), self.version("V2", "PREPARE_FOR_SUBMISSION"),
+                    self.version("V1", "READY_FOR_SALE")]
+        self.assertEqual(sl.pick_version(versions, promo_only=True)["id"], "V1")
+        self.assertEqual(sl.pick_version(versions)["id"], "V2")
+        self.assertIsNone(sl.pick_version([self.version("V0", "REPLACED_WITH_NEW_VERSION")], promo_only=True))
+
+    def test_a_new_apps_1_0_is_renamed_to_the_wanted_version(self):
+        version = {"id": "V1", "attributes": {"versionString": "1.0", "appStoreState": "PREPARE_FOR_SUBMISSION"}}
+        self.assertEqual(sl.rename(version, "1.0.0"), ("PATCH", "/appStoreVersions/V1",
+                         {"data": {"type": "appStoreVersions", "id": "V1", "attributes": {"versionString": "1.0.0"}}}))
+        self.assertIsNone(sl.rename(version, "1.0"))
+        self.assertIsNone(sl.rename(version, None))
+
     def test_the_app_info_that_is_not_live(self):
         infos = [{"id": "I1", "attributes": {"state": "READY_FOR_DISTRIBUTION"}}, {"id": "I2", "attributes": {"state": "PREPARE_FOR_SUBMISSION"}}]
         self.assertEqual(sl.pick_info(infos)["id"], "I2")
