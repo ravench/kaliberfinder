@@ -88,14 +88,28 @@ final class PRScreensTests: XCTestCase {
             }
             guard open(app.staticTexts[name].firstMatch) else { return }
             if query == "GP 11" {
-                // The tip colour codes of calibre-data sit under the measurements (Raven, 2026-11-11).
-                scroll()
-                snap("39-GP11-Geschossspitzen")
+                // The colour codes of calibre-data (tip and bases) sit under the measurements (Raven, 2026-11-11).
+                scroll(toRowAbove: "Zündhütchen")
+                snap("39-GP11-Farbcodes")
                 scroll(up: false)
             }
             guard open(app.buttons["Masszeichnung anzeigen"].firstMatch) else { return }
             snap(shot)
         }
+    }
+
+    /// Primer-ring colour codes on a calibre page: the .303 British's pre-NATO British code (Raven, 2026-11-11).
+    func testPrimerRingColourCodes() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText(".303 British\n") // return hides the keyboard
+        }
+        guard open(app.staticTexts[".303 British"].firstMatch) else { return }
+        scroll(toRowAbove: "Zündhütchen")
+        snap("40-303-Zuendhuetchenringe")
     }
 
     /// Loose balls in other materials: the steel BB and the plastic airsoft BBs.
@@ -453,6 +467,21 @@ final class PRScreensTests: XCTestCase {
     private func scroll(up: Bool = true) {
         for _ in 0..<6 {
             if up { app.swipeUp(velocity: .fast) } else { app.swipeDown(velocity: .fast) }
+        }
+    }
+
+    /// Drags the page until the row `label` (the last of the section above) is in the upper third of the
+    /// screen, so the section below it is in the picture whole (a page's end would cut its first rows off).
+    /// Drags, not swipes: a swipe flings the row past the zone.
+    private func scroll(toRowAbove label: String) {
+        let row = app.staticTexts[label].firstMatch, height = app.frame.height
+        for _ in 0..<10 {
+            let top = row.exists ? row.frame.minY : height
+            if top > 0 && top < height / 3 { return }
+            let distance = min(top - height / 4, height * 0.6)
+            guard distance > 0 else { return }  // already above the top: leave the page as it is
+            let from = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85))
+            from.press(forDuration: 0.1, thenDragTo: from.withOffset(CGVector(dx: 0, dy: -distance)))
         }
     }
 

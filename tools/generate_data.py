@@ -55,13 +55,14 @@ def country_entry(code):
     return {"code": code, "name": COUNTRY_NAMES[code], **({"flag": flag} if flag else {})}
 
 
-def tip_colours(name):
-    """What the painted bullet tips of a calibre's military loads mean (calibre-data COLOUR_CODES, the tips only): the
-    colours from the tip down, the meanings, the loads and the countries, as the calibre page lists them
-    (Raven, 2026-11-11). The sources stay in calibre-data."""
-    return [{"colours": list(t["colours"]), "meaning": list(t["meaning"]),
+def colour_codes(name):
+    """What the painted bullet tips, cartridge bases and primer annuli of a calibre's military loads mean
+    (calibre-data COLOUR_CODES): the part ("tip", "base" or "annulus"), the colours (a tip's from the tip
+    down), the meanings, the loads and the countries, as the calibre page lists them (Raven, 2026-11-11).
+    The sources stay in calibre-data."""
+    return [{"part": t["part"], "colours": list(t["colours"]), "meaning": list(t["meaning"]),
              **({"description": t["description"]} if t["description"] else {}),
-             "countries": [country_entry(c) for c in t["countries"]]} for t in COLOUR_CODES.get(name, []) if t["part"] == "tip"]
+             "countries": [country_entry(c) for c in t["countries"]]} for t in COLOUR_CODES.get(name, [])]
 
 
 def dimensions(s):
@@ -92,7 +93,7 @@ def build():
                                "rare": is_rare(s["name"]), **country(s["name"]),
                                "worldwide": is_worldwide(s["name"]),
                                "blank": s["profile"] == CRIMPED,
-                               "tipColours": tip_colours(s["name"]),
+                               "colourCodes": colour_codes(s["name"]),
                                "dimensions": dimensions(s), "outline": outline(s),
                                **primer(s)})
     names = {c["name"] for c in cartridges}

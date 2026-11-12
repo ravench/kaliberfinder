@@ -898,6 +898,29 @@
         }
       }
     },
+    "Beschuss": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proof"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Épreuve"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prova forzata"
+          }
+        }
+      }
+    },
     "Bildschirm": {
       "extractionState": "manual",
       "localizations": {
@@ -1565,25 +1588,25 @@
         }
       }
     },
-    "Farbcodes der Geschossspitze": {
+    "Farbcodes": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bullet tip colour codes"
+            "value": "Colour codes"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Codes couleur de la pointe"
+            "value": "Codes couleur"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Codici colore della punta"
+            "value": "Codici colore"
           }
         }
       }
@@ -2301,6 +2324,29 @@
         }
       }
     },
+    "Geschossspitze": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bullet tip"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pointe du projectile"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Punta della palla"
+          }
+        }
+      }
+    },
     "Geschätzt, bitte kalibrieren": {
       "extractionState": "manual",
       "localizations": {
@@ -2803,6 +2849,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bossolo a collo di bottiglia"
+          }
+        }
+      }
+    },
+    "Hülsenboden": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Case base"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Culot de la douille"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fondello del bossolo"
           }
         }
       }
@@ -4118,25 +4187,25 @@
         }
       }
     },
-    "Militärische Laborierungen, die Farben von der Spitze abwärts.": {
+    "Militärische Laborierungen. Spitze: die Farben von der Spitze abwärts.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Military loads, the colours from the tip down."
+            "value": "Military loads. Tip: the colours from the tip down."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chargements militaires, les couleurs de la pointe vers le bas."
+            "value": "Chargements militaires. Pointe : les couleurs de la pointe vers le bas."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cariche militari, i colori dalla punta in giù."
+            "value": "Cariche militari. Punta: i colori dalla punta in giù."
           }
         }
       }
@@ -5126,6 +5195,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Senza orlo"
+          }
+        }
+      }
+    },
+    "Reduzierte Ladung": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reduced charge"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Charge réduite"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carica ridotta"
           }
         }
       }
@@ -6782,6 +6874,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diametro dell'innesco"
+          }
+        }
+      }
+    },
+    "Zündhütchenring": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primer ring"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anneau d'amorce"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anello dell'innesco"
           }
         }
       }

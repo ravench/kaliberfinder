@@ -45,7 +45,7 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 9.96,
     "base": 9.96,
@@ -88,7 +88,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 9.96,
     "base": 9.96,
@@ -131,7 +131,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 9.98,
     "base": 9.9,
@@ -172,7 +172,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 8.74,
     "base": 8.7,
@@ -221,7 +221,7 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 9.5,
     "base": 9.5,
@@ -269,7 +269,7 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 6.9,
     "base": 5.7,
@@ -307,7 +307,7 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 7.5,
     "base": 6.1,
@@ -351,7 +351,7 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 7.5,
     "base": 6.1,
@@ -399,7 +399,7 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -445,7 +445,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 9.5,
     "base": 8.6,
@@ -488,7 +488,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 10.2,
     "base": 9.7,
@@ -530,7 +530,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 10.8,
     "base": 10.8,
@@ -584,7 +584,7 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 11.2,
     "base": 9.6,
@@ -636,7 +636,7 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 11.2,
     "base": 9.6,
@@ -686,7 +686,7 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 13.1,
     "base": 11.6,
@@ -729,7 +729,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 13.1,
     "base": 13.8,
@@ -766,7 +766,7 @@
    "rare": false,
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 11.5,
     "base": 11.5,
@@ -809,8 +809,9 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [
+   "colourCodes": [
     {
+     "part": "tip",
      "colours": [
       "red"
      ],
@@ -818,6 +819,40 @@
       "tracer"
      ],
      "description": "Tracer M.1911 (Leuchtspurpatrone)",
+     "countries": [
+      {
+       "code": "CH",
+       "name": "Schweiz",
+       "flag": "🇨🇭"
+      }
+     ]
+    },
+    {
+     "part": "base",
+     "colours": [
+      "red"
+     ],
+     "meaning": [
+      "tracer"
+     ],
+     "description": "Tracer, the older marking: the whole base lacquered",
+     "countries": [
+      {
+       "code": "CH",
+       "name": "Schweiz",
+       "flag": "🇨🇭"
+      }
+     ]
+    },
+    {
+     "part": "base",
+     "colours": [
+      "purple"
+     ],
+     "meaning": [
+      "armour-piercing"
+     ],
+     "description": "Armour-piercing, no longer in service (1980)",
      "countries": [
       {
        "code": "CH",
@@ -886,7 +921,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 12.5,
     "base": 12.4,
@@ -938,7 +973,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 12.7,
     "base": 12.6,
@@ -990,7 +1025,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 12.7,
     "base": 12.6,
@@ -1037,7 +1072,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 9.6,
     "base": 9.6,
@@ -1082,7 +1117,7 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 9.6,
     "base": 9.6,
@@ -1130,8 +1165,9 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [
+   "colourCodes": [
     {
+     "part": "tip",
      "colours": [
       "green"
      ],
@@ -1153,6 +1189,7 @@
      ]
     },
     {
+     "part": "tip",
      "colours": [
       "orange"
      ],
@@ -1174,6 +1211,7 @@
      ]
     },
     {
+     "part": "tip",
      "colours": [
       "red"
      ],
@@ -1195,6 +1233,7 @@
      ]
     },
     {
+     "part": "tip",
      "colours": [
       "black"
      ],
@@ -1211,6 +1250,7 @@
      ]
     },
     {
+     "part": "tip",
      "colours": [
       "white"
      ],
@@ -1274,7 +1314,7 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 11.9,
     "base": 11.9,
@@ -1322,8 +1362,9 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [
+   "colourCodes": [
     {
+     "part": "tip",
      "colours": [
       "black"
      ],
@@ -1340,6 +1381,7 @@
      ]
     },
     {
+     "part": "tip",
      "colours": [
       "orange"
      ],
@@ -1356,6 +1398,7 @@
      ]
     },
     {
+     "part": "tip",
      "colours": [
       "purple"
      ],
@@ -1368,6 +1411,57 @@
        "code": "US",
        "name": "USA",
        "flag": "🇺🇸"
+      }
+     ]
+    },
+    {
+     "part": "annulus",
+     "colours": [
+      "purple"
+     ],
+     "meaning": [
+      "ball"
+     ],
+     "description": "British ball",
+     "countries": [
+      {
+       "code": "GB",
+       "name": "Grossbritannien",
+       "flag": "🇬🇧"
+      }
+     ]
+    },
+    {
+     "part": "annulus",
+     "colours": [
+      "red"
+     ],
+     "meaning": [
+      "tracer"
+     ],
+     "description": "British tracer",
+     "countries": [
+      {
+       "code": "GB",
+       "name": "Grossbritannien",
+       "flag": "🇬🇧"
+      }
+     ]
+    },
+    {
+     "part": "annulus",
+     "colours": [
+      "yellow"
+     ],
+     "meaning": [
+      "proof"
+     ],
+     "description": "British proof or standard round",
+     "countries": [
+      {
+       "code": "GB",
+       "name": "Grossbritannien",
+       "flag": "🇬🇧"
       }
      ]
     }
@@ -1416,7 +1510,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 12.01,
     "base": 11.94,
@@ -1462,7 +1556,7 @@
    },
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1508,7 +1602,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 12.8,
     "base": 10.7,
@@ -1560,7 +1654,88 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [
+    {
+     "part": "annulus",
+     "colours": [
+      "black"
+     ],
+     "meaning": [
+      "ball"
+     ],
+     "description": "Light ball, former Czechoslovak code (before the Soviet codes)",
+     "countries": [
+      {
+       "code": "CS",
+       "name": "Tschechoslowakei"
+      }
+     ]
+    },
+    {
+     "part": "annulus",
+     "colours": [
+      "green"
+     ],
+     "meaning": [
+      "ball"
+     ],
+     "description": "Heavy ball, former Czechoslovak code (before the Soviet codes)",
+     "countries": [
+      {
+       "code": "CS",
+       "name": "Tschechoslowakei"
+      }
+     ]
+    },
+    {
+     "part": "annulus",
+     "colours": [
+      "blue"
+     ],
+     "meaning": [
+      "ball"
+     ],
+     "description": "Ball with a mild steel core, former Czechoslovak code (before the Soviet codes)",
+     "countries": [
+      {
+       "code": "CS",
+       "name": "Tschechoslowakei"
+      }
+     ]
+    },
+    {
+     "part": "annulus",
+     "colours": [
+      "red"
+     ],
+     "meaning": [
+      "tracer"
+     ],
+     "description": "Tracer, former Czechoslovak code (before the Soviet codes)",
+     "countries": [
+      {
+       "code": "CS",
+       "name": "Tschechoslowakei"
+      }
+     ]
+    },
+    {
+     "part": "annulus",
+     "colours": [
+      "white"
+     ],
+     "meaning": [
+      "armour-piercing"
+     ],
+     "description": "Armour-piercing, former Czechoslovak code (before the Soviet codes)",
+     "countries": [
+      {
+       "code": "CS",
+       "name": "Tschechoslowakei"
+      }
+     ]
+    }
+   ],
    "dimensions": {
     "rim": 11.95,
     "base": 11.95,
@@ -1601,7 +1776,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 12.0,
     "base": 12.0,
@@ -1641,7 +1816,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 13.5,
     "base": 12.05,
@@ -1683,7 +1858,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 9.98,
     "base": 9.86,
@@ -1723,7 +1898,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 11.52,
     "base": 11.47,
@@ -1764,7 +1939,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 19.0,
     "base": 17.0,
@@ -1809,7 +1984,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 15.7,
     "base": 13.62,
@@ -1851,7 +2026,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 15.7,
     "base": 13.62,
@@ -1897,7 +2072,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 10.4,
     "base": 8.4,
@@ -1938,8 +2113,9 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [
+   "colourCodes": [
     {
+     "part": "tip",
      "colours": [
       "green"
      ],
@@ -1955,6 +2131,7 @@
      ]
     },
     {
+     "part": "tip",
      "colours": [
       "black",
       "red"
@@ -1972,6 +2149,7 @@
      ]
     },
     {
+     "part": "tip",
      "colours": [
       "red"
      ],
@@ -1988,6 +2166,7 @@
      ]
     },
     {
+     "part": "tip",
      "colours": [
       "black",
       "green"
@@ -2048,7 +2227,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 16.9,
     "base": 13.8,
@@ -2090,7 +2269,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 16.76,
     "base": 14.35,
@@ -2128,7 +2307,7 @@
    "rare": false,
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 9.5,
     "base": 9.5,
@@ -2160,7 +2339,7 @@
    "rare": false,
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 22.3,
     "base": 20.6,
@@ -2194,7 +2373,7 @@
    "rare": false,
    "worldwide": true,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 22.3,
     "base": 20.6,
@@ -2228,7 +2407,7 @@
    "rare": false,
    "worldwide": false,
    "blank": false,
-   "tipColours": [],
+   "colourCodes": [],
    "dimensions": {
     "rim": 22.3,
     "base": 20.6,
