@@ -2,13 +2,15 @@
 
     .build/evaluate/evaluate <training> --terms terms-tuning.jsonl      # the app's terms per shot and calibre
     python3 tools/research/matcher/refit.py terms-tuning.jsonl [--check t-tuning.json] [--holdout terms-holdout.jsonl]
-        [--golden terms-golden.jsonl] [--rounds 3] [--restarts 12] [--loo] [--out params.json]
+        [--golden terms-golden.jsonl] [--keep] [--rounds 3] [--restarts 12] [--loo] [--out params.json]
 
 The scoring here mirrors `Matcher.score` and `Matcher.distance` with every weight and tolerance a parameter
 (`Matcher.swift`'s names), and the rows mirror `Evaluation.shot`: the phone's list with the switches off,
 twins in one row, the shot's own calibre's switch on. `--check` proves the mirror against the tool's rows
 before anything moves. The search is the coordinate search with random restarts of fast.py, objective
-calibre first + 0.1 × top 5 on the tuning shots; `--loo` trains without each package and tests on it.
+calibre first + 0.1 × top 5 on the tuning shots; `--keep` lets no step lower calibre-first on the held-back or
+golden shots below today's, nor top 5 by more than three points (Raven: the held-back packages must not get
+worse); `--loo` trains without each package and tests on it.
 """
 import json
 import sys
@@ -172,7 +174,14 @@ class Terms:
         return (r == 1).mean(), ((r >= 1) & (r <= 5)).mean(), r
 
 
+KEEP = []  # (terms, top1 floor, top5 floor): sets no step may worsen
+
+
 def objective(terms, P, idx=None):
+    for kept, floor1, floor5 in KEEP:
+        k1, k5, _ = kept.scores(P)
+        if k1 < floor1 - 1e-9 or k5 < floor5 - 1e-9:
+            return -np.inf
     t1, t5, _ = terms.scores(P, idx)
     return t1 + 0.1 * t5
 
@@ -230,6 +239,15 @@ if __name__ == "__main__":
     holdout = Terms(option("--holdout")) if option("--holdout") else None
     golden = Terms(option("--golden")) if option("--golden") else None
     rounds, n_restarts = int(option("--rounds", 3)), int(option("--restarts", 12))
+    if only := option("--only"):  # search these weights only, the others stay as they are
+        for key in list(GRID):
+            if key not in only.split(","):
+                del GRID[key]
+    if "--keep" in args:
+        for kept in (holdout, golden):
+            if kept:
+                k1, k5, _ = kept.scores(CURRENT)
+                KEEP.append((kept, k1, k5 - 0.03))
     report("current, tuning", tuning, CURRENT)
     if holdout: report("current, held back", holdout, CURRENT)
     if golden: report("current, golden", golden, CURRENT)
