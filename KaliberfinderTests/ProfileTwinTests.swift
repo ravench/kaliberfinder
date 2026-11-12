@@ -4,7 +4,7 @@ import XCTest
 /// Calibres of one calibre-data lookalike group with identical measurements are suggested as one row
 /// (Raven, 2026-11-11: the groups from calibre-data, once per size).
 final class ProfileTwinTests: XCTestCase {
-    private func c(_ id: String) throws -> Cartridge { try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id) }
+    private func c(_ id: String) throws -> Cartridge { try Fixture.cartridge(id) }
 
     func testCatalogueTwins() throws {
         XCTAssertEqual(CartridgeCatalog.twins(of: try c(".308 Winchester")).map(\.id), ["7.62x51 mm NATO"])
@@ -39,7 +39,7 @@ final class ProfileTwinTests: XCTestCase {
     }
 
     func testPhotoMatchesShowTwinsInOneRow() throws {
-        let matches = Matcher.rank(shape: try XCTUnwrap(ShapeMatcher.catalogue[".308 Winchester"]))
+        let matches = Matcher.rank(shape: try Fixture.shape(".308 Winchester"), cartridges: Fixture.catalogue)
         let rows = Matcher.grouped(matches)
         XCTAssertEqual(rows.flatMap(\.items).count, matches.count)
         let first = try XCTUnwrap(rows.first)
@@ -53,7 +53,7 @@ final class ProfileTwinTests: XCTestCase {
     }
 
     func testMeasuredDimensionsShowTwinsInOneRow() throws {
-        let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 57.4, caseLength: 44.7, rim: 9.6))
+        let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 57.4, caseLength: 44.7, rim: 9.6), cartridges: Fixture.current)
         let rows = DimensionMatcher.grouped(matches)
         let first = try XCTUnwrap(rows.first)
         XCTAssertEqual(Set(first.items.map(\.cartridge.id)), [".223 Remington", "5.56x45 mm NATO", "5.6 mm GP 90"])
