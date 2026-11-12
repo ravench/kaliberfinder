@@ -27,7 +27,7 @@ final class CatalogTests: XCTestCase {
     }
 
     func testPicksStandByLengthNotInTheOrderPicked() throws {
-        func c(_ id: String) throws -> Cartridge { try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id) }
+        func c(_ id: String) throws -> Cartridge { try Fixture.cartridge(id) }
         var picks: [Cartridge] = []
         for id in ["7.5x55 mm Swiss (GP 11)", "9x19 mm", ".22 LR", ".30 Super Carry"] { picks = picks.toggling(try c(id), by: .overallLength) }
         // 9x19 and .30 Super Carry are both 29.7 mm long: the narrower one (Ø 8.74 against 9.96) first.
@@ -37,7 +37,7 @@ final class CatalogTests: XCTestCase {
     }
 
     func testTheStandardOrderIsByCaseLength() throws {
-        func c(_ id: String) throws -> Cartridge { try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id) }
+        func c(_ id: String) throws -> Cartridge { try Fixture.cartridge(id) }
         // Cases 15.6, 19.15 and 20.3 mm, though the 9x19 and the .30 Super Carry are equally long loaded.
         let picks = try [c("9x19 mm"), c(".30 Super Carry"), c(".22 LR")]
         XCTAssertEqual(picks.byLength(.caseLength).map(\.id), [".22 LR", "9x19 mm", ".30 Super Carry"])
@@ -77,53 +77,58 @@ final class CatalogTests: XCTestCase {
         }
     }
 
+    // The switches, the search and the named rounds below run on Fixture.catalogue.
+    private let fixture = Fixture.catalogue
+
+    private func finds(_ query: String, _ id: String) -> Bool { CartridgeCatalog.search(query, in: fixture).contains { $0.id == id } }
+
     func testMatchingSkipsRareCalibresUnlessSwitchedOn() {
-        XCTAssertFalse(CartridgeCatalog.matchable(includeObsolete: true).contains(where: \.rare))
-        XCTAssertFalse(CartridgeCatalog.matchable(includeObsolete: false).contains { $0.id == "11x59 mm R Gras" })
-        XCTAssertEqual(CartridgeCatalog.matchable(includeObsolete: true, includeRare: true), CartridgeCatalog.all)
-        let rareOnly = CartridgeCatalog.matchable(includeObsolete: false, includeRare: true)
+        XCTAssertFalse(CartridgeCatalog.matchable(includeObsolete: true, in: fixture).contains(where: \.rare))
+        XCTAssertFalse(CartridgeCatalog.matchable(includeObsolete: false, in: fixture).contains { $0.id == "11x59 mm R Gras" })
+        XCTAssertEqual(CartridgeCatalog.matchable(includeObsolete: true, includeRare: true, in: fixture), fixture)
+        let rareOnly = CartridgeCatalog.matchable(includeObsolete: false, includeRare: true, in: fixture)
         XCTAssertTrue(rareOnly.contains { $0.id == ".450 No. 2 Nitro Express" })
         XCTAssertFalse(rareOnly.contains { $0.id == "11x59 mm R Gras" }, "rare and obsolete needs both switches")
-        XCTAssertTrue(CartridgeCatalog.search("Gras").contains { $0.id == "11x59 mm R Gras" })
+        XCTAssertTrue(finds("Gras", "11x59 mm R Gras"))
     }
 
     func testMatchingSkipsObsoleteCalibresUnlessSwitchedOn() {
-        let current = CartridgeCatalog.matchable(includeObsolete: false)
+        let current = CartridgeCatalog.matchable(includeObsolete: false, in: fixture)
         XCTAssertFalse(current.isEmpty)
         XCTAssertFalse(current.contains(where: \.obsolete))
         XCTAssertFalse(current.contains { $0.id == "7.5x53.5 mm Swiss (GP 1890)" })
-        XCTAssertEqual(CartridgeCatalog.matchable(includeObsolete: true), CartridgeCatalog.all.filter { !$0.rare })
-        XCTAssertTrue(CartridgeCatalog.matchable(includeObsolete: true).contains { $0.id == "7.5x53.5 mm Swiss (GP 1890)" })
+        XCTAssertEqual(CartridgeCatalog.matchable(includeObsolete: true, in: fixture), fixture.filter { !$0.rare })
+        XCTAssertTrue(CartridgeCatalog.matchable(includeObsolete: true, in: fixture).contains { $0.id == "7.5x53.5 mm Swiss (GP 1890)" })
         // The catalogue list and search still show obsolete calibres.
-        XCTAssertTrue(CartridgeCatalog.search("GP 1890").contains { $0.id == "7.5x53.5 mm Swiss (GP 1890)" })
+        XCTAssertTrue(finds("GP 1890", "7.5x53.5 mm Swiss (GP 1890)"))
+        XCTAssertFalse(CartridgeCatalog.current.contains(where: \.obsolete), "the live catalogue's default list")
     }
 
     func testSearchMatchesAliasesIgnoringSpacesDotsAndMM() {
-        XCTAssertTrue(CartridgeCatalog.search("9 mm Luger").contains { $0.id == "9x19 mm" })
-        XCTAssertTrue(CartridgeCatalog.search("9MM LUGER").contains { $0.id == "9x19 mm" })
-        XCTAssertTrue(CartridgeCatalog.search("GP90").contains { $0.id == "5.6 mm GP 90" })
-        XCTAssertTrue(CartridgeCatalog.search("win 308").contains { $0.id == ".308 Winchester" })
-        XCTAssertEqual(CartridgeCatalog.search("").count, CartridgeCatalog.all.count)
-        XCTAssertTrue(CartridgeCatalog.search("no such calibre").isEmpty)
+        XCTAssertTrue(finds("9 mm Luger", "9x19 mm"))
+        XCTAssertTrue(finds("9MM LUGER", "9x19 mm"))
+        XCTAssertTrue(finds("GP90", "5.6 mm GP 90"))
+        XCTAssertTrue(finds("win 308", ".308 Winchester"))
+        XCTAssertEqual(CartridgeCatalog.search("", in: fixture).count, fixture.count)
+        XCTAssertTrue(CartridgeCatalog.search("no such calibre", in: fixture).isEmpty)
     }
 
     func testGP1890IsSeparateFromGP11AndGP90() throws {
-        let gp1890 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x53.5 mm Swiss (GP 1890)"))
+        let gp1890 = try Fixture.cartridge("7.5x53.5 mm Swiss (GP 1890)")
         // The army's 1892 drawing (calibre-data #106), not the 54.6 misread on Raven's 1906 round.
         XCTAssertEqual(gp1890.dimensions.caseLength, 53.5, accuracy: 0.001)
         XCTAssertEqual(gp1890.dimensions.overallLength, 77.2, accuracy: 0.001)
         XCTAssertEqual(gp1890.category, CartridgeCatalog.Category.rifle.rawValue)
         XCTAssertTrue(gp1890.hasCase)
         for text in ["GP 1890", "GP 90/03", "7.5mm GP 90", "Patrone 1890", "7,5x53,5"] {
-            XCTAssertTrue(CartridgeCatalog.search(text).contains { $0.id == gp1890.id }, text)
+            XCTAssertTrue(finds(text, gp1890.id), text)
         }
         // The 1923 rework is its own round (calibre-data #104).
-        XCTAssertFalse(CartridgeCatalog.search("GP 90/23").contains { $0.id == gp1890.id })
-        XCTAssertTrue(CartridgeCatalog.search("GP 90/23").contains { $0.id == "7.5x54.5 mm Swiss (GP 90/23)" })
+        XCTAssertFalse(finds("GP 90/23", gp1890.id))
+        XCTAssertTrue(finds("GP 90/23", "7.5x54.5 mm Swiss (GP 90/23)"))
     }
 
     func testSearchTakesWordsInAnyOrderAcrossAllNames() {
-        func finds(_ query: String, _ id: String) -> Bool { CartridgeCatalog.search(query).contains { $0.id == id } }
         // Words in another order, or with words of the name left out.
         XCTAssertTrue(finds("Vetterli 10.4", "10.4x38 mm R Vetterli"))
         XCTAssertTrue(finds("10.4 Vetterli", "10.4x38 mm R Vetterli"))
@@ -142,18 +147,18 @@ final class CatalogTests: XCTestCase {
         // A headstamp typed as it is, where dropping "mm" joins two words.
         XCTAssertTrue(finds("357 REM MAG", ".357 Magnum"))
         // Every word must be found.
-        XCTAssertEqual(CartridgeCatalog.search("Vetterli 9").map(\.id), [])
+        XCTAssertEqual(CartridgeCatalog.search("Vetterli 9", in: fixture).map(\.id), [])
         XCTAssertTrue(finds("Mauser 8", "8x57 mm IS"))
         XCTAssertFalse(finds("Mauser 8", "7x57 mm Mauser"))
     }
 
     func testKadettenpatroneIsItsOwnRareRound() throws {
-        let kp = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5 mm Kadettenpatrone"))
+        let kp = try Fixture.cartridge("7.5 mm Kadettenpatrone")
         XCTAssertEqual(kp.category, CartridgeCatalog.Category.rifle.rawValue)
         // The GP 90/23's 1 mm longer case (Raven's calliper: 54.6), longer overall, a jacketed round
         // nose. Not a profile twin of the GP 90/23, nor of the GP 1890 on its shorter case.
-        let gp9023 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x54.5 mm Swiss (GP 90/23)"))
-        let gp1890 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x53.5 mm Swiss (GP 1890)"))
+        let gp9023 = try Fixture.cartridge("7.5x54.5 mm Swiss (GP 90/23)")
+        let gp1890 = try Fixture.cartridge("7.5x53.5 mm Swiss (GP 1890)")
         XCTAssertEqual(kp.dimensions.caseLength, gp9023.dimensions.caseLength, accuracy: 0.001)
         XCTAssertEqual(kp.dimensions.rim, gp9023.dimensions.rim, accuracy: 0.001)
         XCTAssertEqual(kp.dimensions.overallLength, 77.5, accuracy: 0.001)
@@ -165,12 +170,12 @@ final class CatalogTests: XCTestCase {
         // Made for the cadet rifle only: matched only with both switches on, always found by search.
         XCTAssertTrue(kp.obsolete)
         XCTAssertTrue(kp.rare)
-        XCTAssertFalse(CartridgeCatalog.matchable(includeObsolete: true).contains { $0.id == kp.id })
-        XCTAssertTrue(CartridgeCatalog.matchable(includeObsolete: true, includeRare: true).contains { $0.id == kp.id })
+        XCTAssertFalse(CartridgeCatalog.matchable(includeObsolete: true, in: fixture).contains { $0.id == kp.id })
+        XCTAssertTrue(CartridgeCatalog.matchable(includeObsolete: true, includeRare: true, in: fixture).contains { $0.id == kp.id })
         for text in ["Kadettenpatrone", "Kadetten-Pat", "Cart. 7,5 mm cadetti", "KG97"] {
-            XCTAssertTrue(CartridgeCatalog.search(text).contains { $0.id == kp.id }, text)
+            XCTAssertTrue(finds(text, kp.id), text)
         }
-        XCTAssertFalse(CartridgeCatalog.search("GP 1890").contains { $0.id == kp.id })
+        XCTAssertFalse(finds("GP 1890", kp.id))
     }
 
     func testLookalikeGroupsNameCatalogueCalibresOnce() throws {
