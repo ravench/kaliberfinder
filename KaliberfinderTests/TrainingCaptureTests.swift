@@ -226,7 +226,7 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(RoundFacts.ignition.map(\.token), ["centrefire", "rimfire", "pinfire", "other"])
         XCTAssertEqual(RoundFacts.head.map(\.token), ["rimless", "semi", "rimmed", "rebated", "belted"])
         XCTAssertEqual(RoundFacts.shape.map(\.token), ["straight", "tapered", "bottleneck"])
-        XCTAssertEqual(RoundFacts.caseMaterial.map(\.token), ["brass", "nickel", "steel", "copper", "aluminium", "paper", "other"])
+        XCTAssertEqual(RoundFacts.caseMaterial.map(\.token), ["brass", "nickel", "steel", "copper", "aluminium", "paper", "plastic", "other"])
         XCTAssertEqual(RoundFacts.bullet.map(\.token), ["fmj", "lead", "soft", "hp", "wc", "paper", "shot", "blank", "empty", "other"])
         for options in [RoundFacts.ignition, RoundFacts.head, RoundFacts.shape, RoundFacts.caseMaterial, RoundFacts.bullet] {
             XCTAssertEqual(Set(options.map(\.title)).count, options.count, "\(options)")

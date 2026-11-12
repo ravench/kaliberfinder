@@ -341,21 +341,11 @@ final class PRScreensTests: XCTestCase {
         guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
         XCTAssertTrue(app.buttons["Als ZIP teilen"].waitForExistence(timeout: 5), "The saved series did not open")
         snap("22-Trainingsdaten-Serie")
-        // The rim shapes drawn next to the Randform choices (Raven, TestFlight 1174); the fixture's own
-        // choice closes the menu again.
-        let head = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Randform'")).firstMatch
-        if head.waitForExistence(timeout: 5) {
-            head.tap()
-            if app.buttons["Randlos"].waitForExistence(timeout: 5) { snap("22c-Trainingsdaten-Randform") }
-            app.buttons["Randlos"].tap()
-        }
-        // The case shapes drawn the same way (TestFlight 1175).
-        let shape = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Hülsenform'")).firstMatch
-        if shape.waitForExistence(timeout: 5) {
-            shape.tap()
-            if app.buttons["Konische Hülse"].waitForExistence(timeout: 5) { snap("22d-Trainingsdaten-Huelsenform") }
-            app.buttons["Konische Hülse"].tap()
-        }
+        // The outlines next to the Randform and Hülsenform choices (TestFlight 1174 and 1175), paper and plastic
+        // hulls as two choices (TestFlight 1175); the fixture's own choice closes each menu again.
+        menuStop("Randform", choice: "Randlos", "22c-Trainingsdaten-Randform")
+        menuStop("Hülsenform", choice: "Konische Hülse", "22d-Trainingsdaten-Huelsenform")
+        menuStop("Hülsenmaterial", choice: "Messing", "22e-Trainingsdaten-Huelsenmaterial")
         // The calliper fields at the end, with the sketch of where to measure over them.
         scroll()
         snap("22b-Trainingsdaten-Schieblehre")
@@ -436,6 +426,16 @@ final class PRScreensTests: XCTestCase {
 
     /// Swipes to the very end (or start): a single swipe or drag stops at a different place on
     /// each run, the end of the content does not.
+    /// Opens the picker menu of the series row whose label starts with `row`, takes the screen while the menu
+    /// is up, and taps `choice`, the fixture's own value, so the menu closes and nothing changes.
+    private func menuStop(_ row: String, choice: String, _ name: String) {
+        let button = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", row)).firstMatch
+        guard button.waitForExistence(timeout: 5) else { return }
+        button.tap()
+        if app.buttons[choice].waitForExistence(timeout: 5) { snap(name) }
+        app.buttons[choice].tap()
+    }
+
     private func scroll(up: Bool = true) {
         for _ in 0..<6 {
             if up { app.swipeUp(velocity: .fast) } else { app.swipeDown(velocity: .fast) }

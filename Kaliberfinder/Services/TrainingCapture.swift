@@ -154,8 +154,10 @@ enum RoundFacts {
     static let caseMaterial = [
         Option(token: "brass", title: "Messing"), Option(token: "nickel", title: "Vernickelt"),
         Option(token: "steel", title: "Stahl"), Option(token: "copper", title: "Kupfer"),
-        Option(token: "aluminium", title: "Aluminium"), Option(token: "paper", title: "Papier oder Kunststoff"),
-        Option(token: "other", title: "Andere"),
+        Option(token: "aluminium", title: "Aluminium"), Option(token: "paper", title: "Papier"),
+        // Paper and plastic hulls apart (Raven, TestFlight 1175); «paper» used to cover both. The hull as
+        // photographed: a shotshell that was paper once and is plastic today is plastic.
+        Option(token: "plastic", title: "Kunststoff"), Option(token: "other", title: "Andere"),
     ]
     static let bullet = [
         Option(token: "fmj", title: "Vollmantel"), Option(token: "lead", title: "Blei"),
