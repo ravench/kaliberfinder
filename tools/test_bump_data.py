@@ -12,7 +12,7 @@ class FixtureFieldsTests(unittest.TestCase):
         catalogue = {"version": 1, "cartridges": [{"id": "a", "primer": {"type": "x"}}, {"id": "b", "outline": {"tip": "M0 0"}}]}
         fixture = {"version": 1, "cartridges": [{"id": "a", "primer": {"type": "x"}}]}
         self.assertTrue(bump_data.fixture_is_current(fixture, catalogue), "b's tip is no field a lacks")
-        self.assertEqual(bump_data.paths(catalogue["cartridges"]), {"id", "primer", "primer.type"})
+        self.assertEqual(bump_data.paths(fixture["cartridges"]), {"id", "primer", "primer.type"})
 
     def test_a_new_or_renamed_field_regenerates_it(self):
         fixture = {"version": 1, "cartridges": [{"id": "a", "tipColours": [{"colours": ["red"]}]}]}
