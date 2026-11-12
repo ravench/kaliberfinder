@@ -1,17 +1,15 @@
 import Foundation
 
-/// Calibres whose catalogue measurements are identical (e.g. .308 Win and 7.62 NATO, or
-/// .223 Rem, 5.56 NATO and GP 90) look exactly the same from the side. A photo or a calliper
-/// cannot tell them apart, so the results list them as one suggestion and say so.
+/// Calibres of one lookalike group (calibre-data `LOOKALIKES`) with identical measurements, e.g. .308 Win
+/// and 7.62 NATO, .223 Rem, 5.56 NATO and GP 90, or the rimfire Vetterli and its centrefire: a photo or a
+/// calliper cannot tell them apart, so the results list them as one suggestion, tagged «Gruppe» (Raven,
+/// 2026-11-11: the groups from calibre-data, once per size).
 extension CartridgeCatalog {
-    /// Same kind, same dimensions and the same silhouette: indistinguishable in the side view.
-    /// Colours (bullet tip, case material) do not count, so .308 Win (soft point) and 7.62 NATO stay twins.
+    /// In the same one-size lookalike group (`LookalikeGroup.sameSize`) and of the same dimensions; a member
+    /// of another size (the shorter Glisenti next to the 9x19 mm) stays a row of its own.
     static func sameProfile(_ a: Cartridge, _ b: Cartridge) -> Bool {
-        a.kind == b.kind && a.dimensions == b.dimensions && silhouette(a.outline) == silhouette(b.outline)
-    }
-
-    private static func silhouette(_ o: Cartridge.Outline) -> [String?] {
-        [String(o.width), String(o.height), o.case, o.head, o.bullet]
+        guard let group = sizeGroup(of: a) else { return false }
+        return group.calibres.contains(b.id) && a.dimensions == b.dimensions
     }
 
     /// The other catalogue calibres that look exactly like `c` from the side, in catalogue order.
@@ -20,7 +18,8 @@ extension CartridgeCatalog {
     }
 
     /// Puts items whose calibres look the same from the side into one group, in the order of each
-    /// group's first item.
+    /// group's first item; within a group the lookalike group's parent leads (.223 Remington before the
+    /// 5.56 NATO and the GP 90), as the row names it.
     static func groupedByProfile<Item>(_ items: [Item], cartridge: (Item) -> Cartridge) -> [[Item]] {
         var groups: [[Item]] = []
         for item in items {
@@ -31,20 +30,15 @@ extension CartridgeCatalog {
                 groups.append([item])
             }
         }
-        return groups
-    }
-
-    /// The note under a suggestion: "Im Profil nicht unterscheidbar" when the row holds several
-    /// calibres, "Im Profil nicht unterscheidbar von …" when its twins are elsewhere, else nil.
-    static func profileNote(for c: Cartridge, merged: [Cartridge] = [], in cartridges: [Cartridge] = all) -> String? {
-        if !merged.isEmpty { return "Im Profil nicht unterscheidbar".loc }
-        let names = twins(of: c, in: cartridges).map(\.name)
-        guard !names.isEmpty else { return nil }
-        return String(format: "Im Profil nicht unterscheidbar von %@".loc, names.joined(separator: ", "))
+        return groups.map { g in
+            guard g.count > 1, let order = lookalikeGroup(of: cartridge(g[0]))?.calibres else { return g }
+            return g.sorted { (order.firstIndex(of: cartridge($0).id) ?? .max) < (order.firstIndex(of: cartridge($1).id) ?? .max) }
+        }
     }
 }
 
-/// One row of suggestions: a calibre, plus the calibres that look exactly the same from the side.
+/// One row of suggestions: a calibre (its lookalike group's parent), plus the calibres that look exactly
+/// the same from the side; the row names the parent and opens the group (Raven, 2026-11-11).
 struct TwinGroup<Item: Identifiable>: Identifiable where Item.ID == String {
     let items: [Item]
 

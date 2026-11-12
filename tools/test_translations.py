@@ -11,12 +11,6 @@ EN, FR, IT = 0, 1, 2
 
 
 class TranslationTests(unittest.TestCase):
-    def test_profile_twin_label_matches_the_sentence(self):
-        """The detail-view label and the «… von %@» note use the same wording."""
-        label, sentence = T["Im Profil nicht unterscheidbar von"], T["Im Profil nicht unterscheidbar von %@"]
-        for lang in (EN, FR, IT):
-            self.assertEqual(sentence[lang], label[lang] + " %@")
-
     def test_no_text_claims_all_values_are_cip_or_saami(self):
         """Many calibres have no C.I.P. or SAAMI sheet and come from books (Raven, 2026-11-11)."""
         for key, values in T.items():

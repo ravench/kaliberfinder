@@ -26,10 +26,11 @@ struct CartridgeDetailView: View {
                     Label("Masszeichnung anzeigen", systemImage: "pencil.and.ruler")
                 }
                 if let group = CartridgeCatalog.lookalikeGroup(of: cartridge) {
-                    // The lookalikes of calibre-data: the group page lists them all and compares them at 1:1.
+                    // The calibre's lookalike group of calibre-data, by its name (Raven, PR 188): the group page
+                    // lists the members and compares them at 1:1.
                     NavigationLink { LookalikeGroupView(group: group) } label: {
                         Label {
-                            LabeledContent("Ähnliche Kaliber", value: group.calibres.filter { $0 != cartridge.id }.joined(separator: ", "))
+                            LabeledContent("Gruppe", value: group.id)
                         } icon: {
                             Image(systemName: "square.on.square")
                         }
@@ -86,17 +87,13 @@ struct CartridgeDetailView: View {
                 if cartridge.worldwide {
                     LabeledContent("Verbreitung", value: "Weltweit verbreitet".loc)  // the globe is in the row above
                 }
-                ForEach(CalibreTag.of(cartridge), id: \.self) { tag in
-                    Label { Text(tag.explanation.loc).font(.footnote) } icon: {
+                ForEach(CalibreTag.of(cartridge).filter { $0.explanation != nil }, id: \.self) { tag in
+                    Label { Text((tag.explanation ?? "").loc).font(.footnote) } icon: {
                         TagIcon(tag: tag).frame(width: 16, height: 16).foregroundStyle(tag.color)
                     }
                 }
                 if !cartridge.displayAliases.isEmpty {
                     LabeledContent("Auch bekannt als", value: cartridge.displayAliases.joined(separator: ", "))
-                }
-                let twins = CartridgeCatalog.twins(of: cartridge)
-                if !twins.isEmpty {
-                    LabeledContent("Im Profil nicht unterscheidbar von", value: twins.map(\.name).joined(separator: ", "))
                 }
             } footer: {
                 Text("Gerundete Richtwerte, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.")

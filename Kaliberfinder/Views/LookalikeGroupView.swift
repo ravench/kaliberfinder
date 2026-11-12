@@ -17,7 +17,7 @@ struct LookalikeGroupView: View {
             }
         }
         .readableWidth()
-        .navigationTitle("Ähnliche Kaliber")
+        .navigationTitle(String(format: "Gruppe %@".loc, group.calibres[0]))
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
             let compared = Self.compared(members)
@@ -28,5 +28,19 @@ struct LookalikeGroupView: View {
     /// Identical-looking calibres once, standing by the length setting; the 1:1 screen names the others under the drawing.
     static func compared(_ members: [Cartridge], by: CompareLength = .current) -> [Cartridge] {
         CartridgeCatalog.groupedByProfile(members, cartridge: { $0 }).map { $0[0] }.byLength(by)
+    }
+}
+
+/// Where a tapped calibre leads: its one-size lookalike group first, from which each calibre opens; a calibre
+/// without such a group opens its own page (Raven, 2026-11-11).
+struct CalibrePage: View {
+    let cartridge: Cartridge
+
+    var body: some View {
+        if let group = CartridgeCatalog.sizeGroup(of: cartridge) {
+            LookalikeGroupView(group: group)
+        } else {
+            CartridgeDetailView(cartridge: cartridge)
+        }
     }
 }

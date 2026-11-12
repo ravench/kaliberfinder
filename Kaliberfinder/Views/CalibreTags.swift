@@ -1,8 +1,8 @@
 import SwiftUI
 
-/// The «Selten» and «Veraltet» tags of a calibre, in display order.
+/// The «Selten», «Veraltet» and «Gruppe» tags of a calibre, in display order.
 enum CalibreTag: CaseIterable {
-    case rare, obsolete
+    case rare, obsolete, group
 
     static func of(_ c: Cartridge) -> [CalibreTag] {
         allCases.filter { $0.applies(to: c) }
@@ -12,6 +12,8 @@ enum CalibreTag: CaseIterable {
         switch self {
         case .rare: c.rare
         case .obsolete: c.obsolete
+        // In a one-size lookalike group of calibre-data (Raven, 2026-11-11; `LookalikeGroup.sameSize`).
+        case .group: CartridgeCatalog.sizeGroup(of: c) != nil
         }
     }
 
@@ -20,14 +22,17 @@ enum CalibreTag: CaseIterable {
         switch self {
         case .rare: "Selten"
         case .obsolete: "Veraltet"
+        case .group: "Gruppe"
         }
     }
 
-    /// German explanation for the detail view, used as localization key.
-    var explanation: String {
+    /// German explanation for the detail view, used as localization key; none for the group, whose
+    /// page the detail view names instead.
+    var explanation: String? {
         switch self {
         case .rare: "Selten: wird kaum je gefunden. Ein Treffer ist eher eine ähnliche Patrone, also genau nachmessen."
         case .obsolete: "Veraltet: wird nicht mehr regulär hergestellt."
+        case .group: nil
         }
     }
 
@@ -35,20 +40,25 @@ enum CalibreTag: CaseIterable {
         switch self {
         case .rare: .orange
         case .obsolete: .secondary
+        case .group: .blue
         }
     }
 }
 
-/// A small capsule with the tag's icon and word, e.g. «Selten».
+/// A small capsule with the tag's icon and word, e.g. «Selten»; `text` replaces the word (a group's name).
 struct TagChip: View {
     let tag: CalibreTag
+    var text: String?
     @ScaledMetric(relativeTo: .caption2) private var iconSize: CGFloat = 11
 
     var body: some View {
         HStack(spacing: 3) {
             TagIcon(tag: tag).frame(width: iconSize, height: iconSize)
-            Text(tag.title.loc)
+            Text(verbatim: text ?? tag.title.loc)
         }
+        // One line always: in a row's trailing slot the calibre's name wraps, not the tag (the 13 mini).
+        .lineLimit(1)
+        .fixedSize()
         .font(.caption2.weight(.semibold))
         .foregroundStyle(tag.color)
         .padding(.horizontal, 6)
@@ -68,6 +78,7 @@ struct TagIcon: View {
             switch tag {
             case .rare: investigate(s)
             case .obsolete: factoryOff(s)
+            case .group: equals(s)
             }
         }
         .accessibilityHidden(true)
@@ -87,6 +98,14 @@ struct TagIcon: View {
             .stroke(style: StrokeStyle(lineWidth: 1.5 * s, lineCap: .round))
             Path { p in p.addEllipse(in: CGRect(x: 5.7 * s, y: 8.7 * s, width: 1.8 * s, height: 1.8 * s)) }
         }
+    }
+
+    private func equals(_ s: CGFloat) -> some View {
+        Path { p in
+            p.move(to: CGPoint(x: 3 * s, y: 5.5 * s)); p.addLine(to: CGPoint(x: 13 * s, y: 5.5 * s))
+            p.move(to: CGPoint(x: 3 * s, y: 10.5 * s)); p.addLine(to: CGPoint(x: 13 * s, y: 10.5 * s))
+        }
+        .stroke(style: StrokeStyle(lineWidth: 2.3 * s, lineCap: .round))
     }
 
     private func factoryOff(_ s: CGFloat) -> some View {

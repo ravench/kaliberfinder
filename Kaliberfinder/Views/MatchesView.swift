@@ -145,9 +145,9 @@ struct MatchesView: View {
                 let shownPart = analysis?.shape.map { shown.part(for: $0) }
                 ForEach(Matcher.grouped(matches)) { g in
                     // The calibre's page, as «Alle Kaliber» shows it; its 1:1 link draws this calibre alone (Raven, 2026-11-08).
-                    NavigationLink { CartridgeDetailView(cartridge: g.lead.cartridge) } label: {
+                    NavigationLink { CalibrePage(cartridge: g.lead.cartridge) } label: {
                         CartridgeRow(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead, shownPart: shownPart),
-                                     highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge))
+                                     highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge), linksToGroup: true)
                     }
                 }
                 if !hiddenFirst, let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
