@@ -2,9 +2,7 @@ import XCTest
 @testable import Kaliberfinder
 
 final class CalibreTagTests: XCTestCase {
-    private func cartridge(_ id: String) throws -> Cartridge {
-        try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)
-    }
+    private func cartridge(_ id: String) throws -> Cartridge { try Fixture.cartridge(id) }
 
     func testTagsComeFromTheCatalogue() throws {
         XCTAssertEqual(CalibreTag.of(try cartridge("11x59 mm R Gras")), [.rare, .obsolete])
