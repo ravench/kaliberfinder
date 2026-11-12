@@ -71,7 +71,9 @@ struct CatalogView: View {
             }
             .foregroundStyle(.primary)
         } else {
-            NavigationLink { CalibrePage(cartridge: c) } label: { CartridgeRow(cartridge: c, linksToGroup: true) }
+            // The calibre itself, with its group as a tag; the group page is a row on the calibre's page
+            // (TestFlight 1185, 2026-11-12: a search for the .223 Remington opened its group instead).
+            NavigationLink { CartridgeDetailView(cartridge: c) } label: { CartridgeRow(cartridge: c, linksToGroup: true) }
         }
     }
 
@@ -89,8 +91,10 @@ struct CartridgeRow: View {
     /// `cartridge` (their group's parent) and the «Gruppe» tag says so; the group page lists them
     /// (Raven, 2026-11-11: the «Im Profil nicht unterscheidbar» note is obsolete with the tag).
     var merged: [Cartridge] = []
-    /// The row opens the calibre's group page (`CalibrePage`), so the «Gruppe» tag says where it leads;
-    /// members inside the group page and rows that only select show no such tag (Raven, PR 188).
+    /// The row shows the calibre's group: as «Gruppe» on the group's namesake, as the group's name on the
+    /// other members. In the matches the namesake's row opens the group page (`CalibrePage`), in the
+    /// catalogue every row opens the calibre, whose page leads to the group (TestFlight 1185). Members
+    /// inside the group page and rows that only select show no such tag (Raven, PR 188).
     var linksToGroup = false
 
     /// The tags the row shows: all of the calibre's, the group tag only where the row leads to the group.
