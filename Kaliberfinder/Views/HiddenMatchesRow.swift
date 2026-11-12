@@ -11,9 +11,9 @@ struct HiddenMatchesRow: View {
             withAnimation { revealed.toggle() }
         } label: {
             HStack {
+                // In the button's own tint, like «Einblenden» (TestFlight 1175: not the tinted grey).
                 Label { Text(verbatim: summary) } icon: { Image(systemName: revealed ? "eye" : "eye.slash") }
                     .font(.subheadline)
-                    .foregroundStyle(.secondary)
                 Spacer()
                 if revealed { Text("Ausblenden") } else { Text("Einblenden").fontWeight(.semibold) }
             }
