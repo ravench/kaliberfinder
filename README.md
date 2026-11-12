@@ -109,6 +109,22 @@ Admin role (Users and Access, Integrations, Team Keys): `ASC_KEY_ID` (Key ID),
 `ASC_ISSUER_ID` (Issuer ID) and `ASC_KEY_P8` (the whole content of the downloaded
 `AuthKey_….p8`). Without them the workflow skips the upload. Forks don't get the secrets.
 
+## App Store screenshots
+
+`KaliberfinderUITests/AppStoreScreensTests.swift` takes the six store screens (matches for a 9 mm
+photo, the matches at 1:1, start, the GP 11's page and drawing, entering dimensions) in one language
+and writes them as PNG files. It runs by hand, not in CI; once per device and language:
+
+```sh
+xcrun simctl status_bar booted override --time 9:41 --batteryState charged --batteryLevel 100
+TEST_RUNNER_SCREENS_LANG=en TEST_RUNNER_SCREENS_DIR=/tmp/kaliberfinder-screens/iphone-en \
+  xcodebuild test -project Kaliberfinder.xcodeproj -scheme KaliberfinderScreens \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
+  -only-testing:KaliberfinderUITests/AppStoreScreensTests
+```
+
+App Store Connect needs the 6.9" iPhone (1320 × 2868) and the 13" iPad (2064 × 2752).
+
 ## CI on your own Mac
 
 The Mac jobs (Build, TestFlight, Evaluate matching) run on GitHub's macOS runner, or on a
