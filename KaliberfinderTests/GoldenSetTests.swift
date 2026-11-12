@@ -32,7 +32,7 @@ final class GoldenSetTests: XCTestCase {
             XCTAssertNotNil(CartridgeCatalog.cartridge(id: package.package.calibre), "\(name): unknown calibre \(package.package.calibre)")
             XCTAssertTrue(TrainingCapture.parts.map(\.rawValue).contains(package.package.part), name)
             XCTAssertFalse(package.shots.isEmpty, name)
-            for entry in package.shots {
+            for entry in Evaluation.included(package.shots, in: name).shots {
                 let shotName = "\(name)/\(entry.url.lastPathComponent)"
                 let mask = try XCTUnwrap(entry.shot.mask, shotName)
                 XCTAssertNotNil(mask.imageWidth, shotName)
@@ -55,7 +55,7 @@ final class GoldenSetTests: XCTestCase {
     func testScoresDoNotDropBelowTheBaseline() throws {
         var results: [String: Evaluation.ShotResult] = [:], lines: [String] = []
         for package in try golden() {
-            for entry in package.shots {
+            for entry in Evaluation.included(package.shots, in: package.url.lastPathComponent).shots {
                 let name = "\(package.url.lastPathComponent)/\(entry.url.lastPathComponent)"
                 let (shot, line) = try replay(entry, named: name, of: package.package)
                 results[name] = shot.result
@@ -110,7 +110,7 @@ final class GoldenSetTests: XCTestCase {
     func testEmptyCasesAreOutlinedWithoutABullet() throws {
         var emptyCases = 0, withNose = 0
         for package in try golden() {
-            for entry in package.shots {
+            for entry in Evaluation.included(package.shots, in: package.url.lastPathComponent).shots {
                 let name = "\(package.url.lastPathComponent)/\(entry.url.lastPathComponent)"
                 let info = try XCTUnwrap(entry.shot.mask, name), labels = try XCTUnwrap(labels(of: entry), name)
                 let image = (width: try XCTUnwrap(info.imageWidth, name), height: try XCTUnwrap(info.imageHeight, name))

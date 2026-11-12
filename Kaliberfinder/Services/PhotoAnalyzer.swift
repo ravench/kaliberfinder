@@ -53,7 +53,8 @@ struct PhotoAnalysis {
 /// Runs Vision on a photo of the cartridge lying on its side: foreground segmentation for the silhouette.
 enum PhotoAnalyzer {
     /// Photos are scaled down to this many pixels on the long side first; plenty for the shape.
-    static let maxDimension: CGFloat = 1600
+    /// A variable so the evaluation tool can sweep it (`--max-side`); the app never sets it.
+    static var maxDimension: CGFloat = 1600
     /// Upper bound on silhouette points handed to the shape measurement.
     static let maxPoints = 40_000
 

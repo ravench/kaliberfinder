@@ -25,6 +25,45 @@ final class EvaluationTests: XCTestCase {
          shot("acp-b/02", ".45 ACP", .emptyCase, rows: [2, 2, 1], rank: 1, first: ".357 SIG")]
     }
 
+    /// The calliper measurements of the package are the truth of the round photographed (Raven, 2026-11-11):
+    /// a cartridge's length against the overall length, an empty case's against the case length, the diameter
+    /// against the base; nothing without a size or a measurement.
+    func testCalliperErrorsComeFromThePackage() {
+        let size = MeasuredSize(length: 30.0, diameter: 9.9, lengthError: 0.3, diameterError: 0.2)
+        let measured = Measurements(overallLength: 29.7, caseLength: 19.1, base: 9.95)
+        let cartridge = Evaluation.sizeErrors(size, part: .cartridge, measurements: measured)
+        XCTAssertEqual(try XCTUnwrap(cartridge.length), 0.3, accuracy: 1e-9)
+        XCTAssertEqual(try XCTUnwrap(cartridge.diameter), -0.05, accuracy: 1e-9)
+        XCTAssertEqual(try XCTUnwrap(Evaluation.sizeErrors(size, part: .emptyCase, measurements: measured).length), 10.9, accuracy: 1e-9)
+        XCTAssertNil(Evaluation.sizeErrors(size, part: .cartridge, measurements: Measurements(rim: 10)).length)
+        XCTAssertNil(Evaluation.sizeErrors(nil, part: .cartridge, measurements: measured).length)
+        XCTAssertNil(Evaluation.sizeErrors(size, part: .cartridge, measurements: nil).diameter)
+        var result = result([1, 1, 1], rank: 1)
+        result.lengthError = 0.3
+        result.diameterError = -0.05
+        let report = Evaluation.report([Evaluation.Shot(name: "nine/01", calibre: "9x19 mm", part: .cartridge, size: size, source: .phone,
+                                                        first: "9x19 mm", result: result)], title: "t")
+        XCTAssertTrue(report.contains("## Against the calliper"), report)
+        XCTAssertTrue(report.contains("| nine | 1 | +0.3 | 0.3 | -0.1 | 0.1 |"), report)
+        XCTAssertFalse(Evaluation.report(shots, title: "t").contains("calliper"), "no measurements, no table")
+        // Older results decode without the errors.
+        let old = try? TrainingCapture.decoder.decode(ShotResult.self, from: Data(#"{"rank":1,"part":true}"#.utf8))
+        XCTAssertNil(old?.lengthError)
+    }
+
+    /// A shot marked `excluded` (blur, a wrong part, a mislabelled round) is left out and named with its reason.
+    func testExcludedShotsAreLeftOutAndNamed() throws {
+        var bad = CaptureShot(photo: "photo.jpg", source: "lidarCamera", captured: Date())
+        bad.excluded = "blurred"
+        let good = CaptureShot(photo: "photo.jpg", source: "lidarCamera", captured: Date())
+        let shots = [SavedShot(url: URL(fileURLWithPath: "/p/01"), shot: good), SavedShot(url: URL(fileURLWithPath: "/p/02"), shot: bad)]
+        let counted = Evaluation.included(shots, in: "p")
+        XCTAssertEqual(counted.shots.map { $0.url.lastPathComponent }, ["01"])
+        XCTAssertEqual(counted.excluded, ["p/02: blurred"])
+        XCTAssertTrue(Evaluation.report([], title: "t", excluded: counted.excluded).contains("1 shots left out as marked: p/02: blurred"))
+        XCTAssertTrue(try XCTUnwrap(String(data: TrainingCapture.encoder.encode(bad), encoding: .utf8)).contains("\"excluded\" : \"blurred\""))
+    }
+
     func testScoresAreSharesOfTheShots() {
         let scores = Evaluation.Scores([result([1, 1, 1], rank: 1, neck: true), result([4, 6, 9], rank: 9, neck: false),
                                         result([1, 2, 3], rank: 3, part: false), result([nil, nil, nil], rank: nil, part: false)])

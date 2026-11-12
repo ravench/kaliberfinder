@@ -233,6 +233,9 @@ struct CaptureShot: Codable, Equatable {
     var fieldOfView: Double?
     var format: String?
     var mask: Mask?
+    /// Why the shot is left out of the evaluation, the golden set and the tuning (blur, a wrong part,
+    /// a mislabelled round), set by hand in the training repo (Raven, 2026-11-11); nil for a shot that counts.
+    var excluded: String?
     /// What the app made of the photo when it was taken.
     var analysis: Analysis?
 
