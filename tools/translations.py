@@ -20,7 +20,6 @@ T = {
     "Mit LiDAR nach Trefferqualität sortieren": ("Sort by match quality with LiDAR", "Avec LiDAR, trier par qualité de correspondance", "Con LiDAR, ordina per qualità della corrispondenza"),
     "Geschosse bei leeren Hülsen zeigen": ("Show bullets on empty cases", "Afficher les projectiles sur les douilles vides", "Mostra le palle sui bossoli vuoti"),
     "Fotoerkennung": ("Photo recognition", "Reconnaissance photo", "Riconoscimento foto"),
-    "Entwickler": ("Developer", "Développeur", "Sviluppatore"),
     "Info": ("About", "À propos", "Info"),
     "Unterscheiden sich in: %@": ("Differ in: %@", "Diffèrent par : %@", "Differiscono per: %@"),
     "Laufdurchmesser": ("bore", "calibre du canon", "diametro della canna"),
@@ -308,13 +307,13 @@ T = {
     "Speichern": ("Save", "Enregistrer", "Salva"),
     "Vom Gerätemodell": ("From the device model", "Selon le modèle d'appareil", "Dal modello di dispositivo"),
     "Zurücksetzen": ("Reset", "Réinitialiser", "Ripristina"),
-    # Hidden developer screen (TrainingCaptureView, SettingsView): five taps on the copyright line.
+    # Training capture (TrainingCaptureView, SettingsView): the switch at the bottom of Settings.
     "© 2026 Simon Giotta": ("© 2026 Simon Giotta", "© 2026 Simon Giotta", "© 2026 Simon Giotta"),
     "Trainingsdaten aufnehmen": ("Record training data", "Enregistrer des données d'entraînement", "Registra dati di addestramento"),
-    "Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.": (
-        "Developer feature. Tapping the copyright line five times hides it again.",
-        "Fonction pour développeurs. Touchez cinq fois la ligne de copyright pour la masquer à nouveau.",
-        "Funzione per sviluppatori. Tocca cinque volte la riga del copyright per nasconderla di nuovo."),
+    "Speichert Fotoserien bekannter Patronen mit den Messwerten der App auf dem Gerät, als Testdaten für die Erkennung.": (
+        "Saves photo series of known cartridges with the app's measurements on the device, as test data for recognition.",
+        "Enregistre sur l'appareil des séries de photos de cartouches connues avec les mesures de l'app, comme données de test pour la reconnaissance.",
+        "Salva sul dispositivo serie di foto di cartucce note con le misure dell'app, come dati di prova per il riconoscimento."),
     "Erkennung farbig zeigen": ("Show detection in colour", "Afficher la détection en couleur", "Mostra il rilevamento a colori"),
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
     "Kamera": ("Camera", "Caméra", "Fotocamera"),

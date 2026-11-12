@@ -1473,52 +1473,6 @@
         }
       }
     },
-    "Entwickler": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Developer"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Développeur"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sviluppatore"
-          }
-        }
-      }
-    },
-    "Entwicklerfunktion. Fünfmal auf die Copyright-Zeile tippen blendet sie wieder aus.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Developer feature. Tapping the copyright line five times hides it again."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fonction pour développeurs. Touchez cinq fois la ligne de copyright pour la masquer à nouveau."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Funzione per sviluppatori. Tocca cinque volte la riga del copyright per nasconderla di nuovo."
-          }
-        }
-      }
-    },
     "Erkannt: %@": {
       "extractionState": "manual",
       "localizations": {
@@ -5770,6 +5724,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Salva"
+          }
+        }
+      }
+    },
+    "Speichert Fotoserien bekannter Patronen mit den Messwerten der App auf dem Gerät, als Testdaten für die Erkennung.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saves photo series of known cartridges with the app's measurements on the device, as test data for recognition."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistre sur l'appareil des séries de photos de cartouches connues avec les mesures de l'app, comme données de test pour la reconnaissance."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salva sul dispositivo serie di foto di cartucce note con le misure dell'app, come dati di prova per il riconoscimento."
           }
         }
       }
