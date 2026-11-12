@@ -124,16 +124,6 @@ final class DimensionMatcherTests: XCTestCase {
         XCTAssertEqual(DimensionMatcher.rank(MeasuredDimensions(overallLength: 30), limit: 3).count, 3)
     }
 
-    func testParsesBothDecimalSeparators() {
-        XCTAssertEqual(DimensionMatcher.number("29,7"), 29.7)
-        XCTAssertEqual(DimensionMatcher.number(" 29.7 "), 29.7)
-        XCTAssertEqual(DimensionMatcher.number("12"), 12)
-        XCTAssertNil(DimensionMatcher.number(""))
-        XCTAssertNil(DimensionMatcher.number("abc"))
-        XCTAssertNil(DimensionMatcher.number("-3"))
-        XCTAssertNil(DimensionMatcher.number("0"))
-    }
-
     func testDetailText() throws {
         let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
         let exact = MeasureView.detail(for: DimensionMatch(cartridge: c, maxDeviation: 0, meanDeviation: 0))

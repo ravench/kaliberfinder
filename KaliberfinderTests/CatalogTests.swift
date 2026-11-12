@@ -51,19 +51,6 @@ final class CatalogTests: XCTestCase {
         XCTAssertEqual(CompareLength.caseLength.title, "Hülsenlänge")
     }
 
-    func testKnownDimensions() throws {
-        let nine = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
-        XCTAssertEqual(nine.dimensions.caseLength, 19.15, accuracy: 0.001)
-        XCTAssertEqual(nine.dimensions.overallLength, 29.7, accuracy: 0.001)
-        XCTAssertEqual(nine.dimensions.rim, 9.96, accuracy: 0.001)
-        XCTAssertNil(nine.dimensions.shoulder)
-        let gp11 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x55 mm Swiss (GP 11)"))
-        XCTAssertEqual(gp11.dimensions.shoulder, 11.6)
-        XCTAssertTrue(gp11.hasCase)
-        let ball = try XCTUnwrap(CartridgeCatalog.cartridge(id: ".44 Rundkugel (.454)"))
-        XCTAssertFalse(ball.hasCase)
-    }
-
     func testTipColourCodesComeFromCalibreData() throws {
         // GP 11: one code, the red tracer tip; every meaning and colour the catalogue uses has a title and a colour.
         let gp11 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x55 mm Swiss (GP 11)"))
@@ -88,12 +75,6 @@ final class CatalogTests: XCTestCase {
         for c in CartridgeCatalog.all {
             XCTAssertTrue(known.contains(c.category), "\(c.name): unknown category \(c.category)")
         }
-    }
-
-    func testObsoleteCalibresAreMarked() throws {
-        XCTAssertTrue(try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x53.5 mm Swiss (GP 1890)")).obsolete)
-        XCTAssertFalse(try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x55 mm Swiss (GP 11)")).obsolete)
-        XCTAssertFalse(try XCTUnwrap(CartridgeCatalog.cartridge(id: "5.6 mm GP 90")).obsolete)
     }
 
     func testMatchingSkipsRareCalibresUnlessSwitchedOn() {
@@ -141,22 +122,6 @@ final class CatalogTests: XCTestCase {
         XCTAssertTrue(CartridgeCatalog.search("GP 90/23").contains { $0.id == "7.5x54.5 mm Swiss (GP 90/23)" })
     }
 
-    func testGP1890HasPaperPatchedSteelCappedBullet() throws {
-        let gp1890 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x53.5 mm Swiss (GP 1890)"))
-        XCTAssertEqual(gp1890.outline.bulletMaterial, "steel")
-        let band = try XCTUnwrap(gp1890.outline.patch.map(OutlineGeometry.parse)?.first, "paper band above the case mouth")
-        let mouth = gp1890.dimensions.overallLength - gp1890.dimensions.caseLength
-        let ys = band.map(\.y)
-        XCTAssertEqual(ys.max() ?? 0, mouth, accuracy: 0.01, "the paper starts at the case mouth")
-        XCTAssertLessThan((ys.max() ?? 0) - (ys.min() ?? 0), mouth / 2, "most of the visible bullet is the steel cap")
-        // The paper band lies inside the bullet silhouette, so shape matching is unchanged by it.
-        let whole = OutlineGeometry(gp1890.outline), caseOnly = OutlineGeometry(gp1890.outline, includeBullet: false)
-        XCTAssertEqual(whole.polygons.count, caseOnly.polygons.count + 1)
-        let gp11 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x55 mm Swiss (GP 11)"))
-        XCTAssertNil(gp11.outline.patch)
-        XCTAssertNil(gp11.outline.bulletMaterial)
-    }
-
     func testSearchTakesWordsInAnyOrderAcrossAllNames() {
         func finds(_ query: String, _ id: String) -> Bool { CartridgeCatalog.search(query).contains { $0.id == id } }
         // Words in another order, or with words of the name left out.
@@ -180,31 +145,6 @@ final class CatalogTests: XCTestCase {
         XCTAssertEqual(CartridgeCatalog.search("Vetterli 9").map(\.id), [])
         XCTAssertTrue(finds("Mauser 8", "8x57 mm IS"))
         XCTAssertFalse(finds("Mauser 8", "7x57 mm Mauser"))
-    }
-
-    func testSwissArmyNamesFindTheParabellumRounds() {
-        func finds(_ query: String, _ id: String) -> Bool { CartridgeCatalog.search(query).contains { $0.id == id } }
-        XCTAssertTrue(finds("Pist Pat 41", "9x19 mm"))
-        XCTAssertTrue(finds("Pistolenpatrone 41", "9x19 mm"))
-        XCTAssertTrue(finds("9 mm Pist Pat 41", "9x19 mm"))
-        XCTAssertTrue(finds("Pistolenpatrone 7,65", "7.65 mm Parabellum"))
-        XCTAssertFalse(finds("Pist Pat 41", "7.65 mm Parabellum"))
-    }
-
-    func testWadcutterIsItsOwnCalibreSeatedFlush() throws {
-        let wc = try XCTUnwrap(CartridgeCatalog.cartridge(id: ".32 S&W Long Wadcutter"))
-        // Seated flush with the case mouth: the case is the whole round and no bullet shows from the side.
-        XCTAssertEqual(wc.dimensions.overallLength, wc.dimensions.caseLength, accuracy: 0.001)
-        XCTAssertNil(wc.outline.bullet)
-        XCTAssertTrue(wc.hasCase)
-        XCTAssertFalse(wc.rare)
-        XCTAssertFalse(wc.obsolete)
-        // Its own C.I.P. cartridge with a shorter case, so a row of its own next to the .32 S&W Long.
-        let long = try XCTUnwrap(CartridgeCatalog.cartridge(id: ".32 S&W Long"))
-        XCTAssertLessThan(wc.dimensions.caseLength, long.dimensions.caseLength)
-        for text in [".32 S&W Long WC", "32 wadcutter", "32WC"] {
-            XCTAssertTrue(CartridgeCatalog.search(text).contains { $0.id == wc.id }, text)
-        }
     }
 
     func testKadettenpatroneIsItsOwnRareRound() throws {

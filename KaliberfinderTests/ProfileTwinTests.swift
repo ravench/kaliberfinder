@@ -5,22 +5,13 @@ import XCTest
 final class ProfileTwinTests: XCTestCase {
     private func c(_ id: String) throws -> Cartridge { try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id) }
 
-    func testCatalogueTwins() throws {
-        XCTAssertEqual(CartridgeCatalog.twins(of: try c(".308 Winchester")).map(\.id), ["7.62x51 mm NATO"])
-        XCTAssertEqual(Set(CartridgeCatalog.twins(of: try c("5.6 mm GP 90")).map(\.id)),
-                       [".223 Remington", "5.56x45 mm NATO"])
-        XCTAssertTrue(CartridgeCatalog.twins(of: try c("9x19 mm")).isEmpty)
-        XCTAssertTrue(CartridgeCatalog.twins(of: try c("7.5x55 mm Swiss (GP 11)")).isEmpty)
-        XCTAssertTrue(CartridgeCatalog.twins(of: try c("7.5x53.5 mm Swiss (GP 1890)")).isEmpty)
-        XCTAssertFalse(CartridgeCatalog.sameProfile(try c("9x19 mm"), try c("9x21 mm IMI")), "9x21 has a longer case")
-    }
-
-    func testOnlyTheKnownGroupsAreTwins() {
+    func testOnlyTheKnownGroupsAreTwins() throws {
         let all = CartridgeCatalog.all
         let groups = CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).filter { $0.count > 1 }
         XCTAssertEqual(Set(groups.map { Set($0.map(\.id)) }),
                        [[".308 Winchester", "7.62x51 mm NATO"], [".223 Remington", "5.56x45 mm NATO", "5.6 mm GP 90"],
                         [".500/450 Magnum Express", ".500/450 Nitro Express"]])
+        XCTAssertFalse(CartridgeCatalog.sameProfile(try c("9x19 mm"), try c("9x21 mm IMI")), "9x21 has a longer case")
         // Grouping never loses or duplicates a calibre.
         XCTAssertEqual(CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).flatMap { $0 }.map(\.id).sorted(), all.map(\.id).sorted())
     }

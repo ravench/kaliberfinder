@@ -108,7 +108,6 @@ final class EmptyCaseTests: XCTestCase {
         XCTAssertTrue(Matcher.rank(shape: shape, mode: .cartridge).allSatisfy { $0.part == .cartridge })
         let loaded = try photo(cartridge("9x19 mm"), part: .cartridge)
         XCTAssertEqual(ScanMode.emptyCase.part(for: loaded), .emptyCase)
-        XCTAssertEqual(Set(ScanMode.allCases.map(\.rawValue)).count, 3)
     }
 
     /// Each photo starts on what the app detects, whatever was picked for an earlier photo

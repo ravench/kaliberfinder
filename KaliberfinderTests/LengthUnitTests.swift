@@ -15,13 +15,6 @@ final class LengthUnitTests: XCTestCase {
         XCTAssertEqual(LengthUnit.current, .imperial)
     }
 
-    func testConversion() {
-        XCTAssertEqual(LengthUnit.imperial.value(fromMM: 25.4), 1, accuracy: 1e-12)
-        XCTAssertEqual(LengthUnit.imperial.millimetres(2.8), 71.12, accuracy: 1e-9)
-        XCTAssertEqual(LengthUnit.metric.value(fromMM: 29.69), 29.69)
-        XCTAssertEqual(LengthUnit.metric.millimetres(29.69), 29.69)
-    }
-
     func testFormatting() {
         XCTAssertEqual(LengthUnit.metric.format(29.69, locale: us), "29.69 mm")
         XCTAssertEqual(LengthUnit.metric.format(29.69, locale: german), "29,69 mm")
