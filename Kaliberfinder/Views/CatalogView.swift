@@ -71,7 +71,9 @@ struct CatalogView: View {
             }
             .foregroundStyle(.primary)
         } else {
-            NavigationLink { CalibrePage(cartridge: c) } label: { CartridgeRow(cartridge: c, linksToGroup: true) }
+            // The calibre itself, with its group as a tag; the group page is a row on the calibre's page
+            // (TestFlight 1185, 2026-11-12: a search for the .223 Remington opened its group instead).
+            NavigationLink { CartridgeDetailView(cartridge: c) } label: { CartridgeRow(cartridge: c, groupTag: .name) }
         }
     }
 
@@ -89,25 +91,27 @@ struct CartridgeRow: View {
     /// `cartridge` (their group's parent) and the «Gruppe» tag says so; the group page lists them
     /// (Raven, 2026-11-11: the «Im Profil nicht unterscheidbar» note is obsolete with the tag).
     var merged: [Cartridge] = []
-    /// The row opens the calibre's group page (`CalibrePage`), so the «Gruppe» tag says where it leads;
-    /// members inside the group page and rows that only select show no such tag (Raven, PR 188).
-    var linksToGroup = false
+    /// How the row shows the calibre's one-size group (Raven, 2026-11-12). `.link`: the row stands for the
+    /// group in the matches and opens its page, with the short «Gruppe» in the trailing slot on the group's
+    /// namesake. `.name`: the row is the calibre itself (catalogue, search) and opens its page; the group's name
+    /// is a tag under the name on every member. `.none`: members inside the group page and rows that select.
+    enum GroupTag { case none, name, link }
+    var groupTag: GroupTag = .none
 
-    /// The tags the row shows: all of the calibre's, the group tag only where the row leads to the group.
-    static func tags(for cartridge: Cartridge, linksToGroup: Bool) -> [CalibreTag] {
-        CalibreTag.of(cartridge).filter { $0 != .group || linksToGroup }
+    /// The tags the row shows: all of the calibre's, «Gruppe» only where the row stands for the group.
+    static func tags(for cartridge: Cartridge, groupTag: GroupTag) -> [CalibreTag] {
+        CalibreTag.of(cartridge).filter { $0 != .group || groupTag == .link }
     }
 
-    /// Where the row opens the group (Raven, PR 188 review): the group's name on another member, as a tag under
-    /// the name (the 5.6 mm GP 90 with «.223 Remington»); nil on the parent, which names the merged results row
-    /// and gets the short «Gruppe» in the trailing slot next to the origin, where a name would squeeze the row.
-    static func groupName(for cartridge: Cartridge, linksToGroup: Bool) -> String? {
-        guard linksToGroup, let group = CartridgeCatalog.sizeGroup(of: cartridge), group.id != cartridge.id else { return nil }
-        return group.id
+    /// The group's name as a tag under the calibre's name: on every member in the catalogue (`.name`), in the
+    /// matches (`.link`) only on a member other than the namesake, which names the row and gets «Gruppe» instead.
+    static func groupName(for cartridge: Cartridge, groupTag: GroupTag) -> String? {
+        guard groupTag != .none, let group = CartridgeCatalog.sizeGroup(of: cartridge) else { return nil }
+        return groupTag == .name || group.id != cartridge.id ? group.id : nil
     }
 
     var body: some View {
-        let groupName = Self.groupName(for: cartridge, linksToGroup: linksToGroup)
+        let groupName = Self.groupName(for: cartridge, groupTag: groupTag)
         HStack(spacing: 12) {
             CartridgeThumbnail(cartridge: cartridge)
             VStack(alignment: .leading, spacing: 2) {
@@ -121,7 +125,7 @@ struct CartridgeRow: View {
                         .fontWeight(highlighted ? .semibold : nil)
                         .foregroundStyle(highlighted ? AnyShapeStyle(.green) : AnyShapeStyle(.secondary))
                 }
-                let chips = Self.tags(for: cartridge, linksToGroup: linksToGroup).filter { $0 != .group }.map { ($0, String?.none) }
+                let chips = Self.tags(for: cartridge, groupTag: groupTag).filter { $0 != .group }.map { ($0, String?.none) }
                     + (groupName.map { [(CalibreTag.group, String?.some($0))] } ?? [])
                 if !chips.isEmpty {
                     // Own line, so the tags never wrap into the detail text; three of them stack on a narrow
@@ -136,7 +140,7 @@ struct CartridgeRow: View {
             Spacer(minLength: 0)
             // Trailing slot: the parent's «Gruppe», then the origin; rows without a flag or globe keep the same layout.
             HStack(spacing: 6) {
-                if groupName == nil, Self.tags(for: cartridge, linksToGroup: linksToGroup).contains(.group) { TagChip(tag: .group) }
+                if groupName == nil, Self.tags(for: cartridge, groupTag: groupTag).contains(.group) { TagChip(tag: .group) }
                 OriginMarks(cartridges: [cartridge] + merged)
             }
         }

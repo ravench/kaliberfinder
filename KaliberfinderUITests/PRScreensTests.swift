@@ -305,7 +305,10 @@ final class PRScreensTests: XCTestCase {
             search.tap()
             search.typeText(".308 Win")
         }
-        guard open(app.staticTexts[".308 Winchester"].firstMatch) else { return }
+        // The search opens the calibre; its «Gruppe» row leads to the group (Raven, 2026-11-12).
+        guard open(app.staticTexts[".308 Winchester"].firstMatch),
+              app.navigationBars[".308 Winchester"].waitForExistence(timeout: 5),
+              open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Gruppe")).firstMatch) else { return }
         XCTAssertTrue(app.navigationBars["Gruppe .308 Winchester"].waitForExistence(timeout: 5), "The group page did not open")
         snap("34-Aehnliche-Kaliber")
         guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "1:1 vergleichen")).firstMatch),
@@ -322,7 +325,9 @@ final class PRScreensTests: XCTestCase {
             search.tap()
             search.typeText("Vetterli")
         }
-        guard open(app.staticTexts["10.4x38 mm R Vetterli"].firstMatch) else { return }
+        guard open(app.staticTexts["10.4x38 mm R Vetterli"].firstMatch),
+              app.navigationBars["10.4x38 mm R Vetterli"].waitForExistence(timeout: 5),
+              open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Gruppe")).firstMatch) else { return }
         XCTAssertTrue(app.navigationBars["Gruppe 10.4x38 mm R Vetterli"].waitForExistence(timeout: 5), "The group page did not open")
         snap("37-Vetterli-Zuendung")
         guard open(app.staticTexts["10.4x38 mm R Vetterli"].firstMatch) else { return }
