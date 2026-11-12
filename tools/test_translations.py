@@ -11,6 +11,12 @@ EN, FR, IT = 0, 1, 2
 
 
 class TranslationTests(unittest.TestCase):
+    def test_no_text_claims_all_values_are_cip_or_saami(self):
+        """Many calibres have no C.I.P. or SAAMI sheet and come from books (Raven, 2026-11-11)."""
+        for key, values in T.items():
+            for text in (key, *values):
+                self.assertNotIn("CIP/SAAMI", text, key)
+
     def test_italian_primer_sizes_agree_in_gender(self):
         self.assertEqual(T["Büchse klein"][IT], "Carabina piccola")
         self.assertEqual(T["Pistole klein"][IT], "Pistola piccola")

@@ -96,7 +96,7 @@ struct CartridgeDetailView: View {
                     LabeledContent("Auch bekannt als", value: cartridge.displayAliases.joined(separator: ", "))
                 }
             } footer: {
-                Text("Gerundete Richtwerte nach CIP/SAAMI, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.")
+                Text("Gerundete Richtwerte, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.")
             }
         }
         .readableWidth()
