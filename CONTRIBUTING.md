@@ -9,8 +9,9 @@ invites work on it, under a written agreement with Simon Giotta. These notes are
   `tools/translations.py`, then run `python3 tools/localize.py`.
 - Cartridge data comes from the shared [calibre-data](https://github.com/ravench/calibre-data)
   repository, a git submodule at `calibre-data/` (run `git submodule update --init` after
-  cloning). Fix dimensions there, then bump the submodule here; headstamp spellings for the
-  catalogue search go into `tools/headstamps.py`. Then run `python3 tools/generate_data.py` and commit the generated JSON.
+  cloning). Fix dimensions there, then `python3 tools/bump_data.py` here: it moves the submodule
+  and regenerates the catalogue JSON, the strings and, when the fields changed, the test fixture;
+  commit the result. Headstamp spellings for the catalogue search go into `tools/headstamps.py`.
 - Every change comes with unit tests; CI runs them and SwiftLint on every push.
 - Keep pull requests small and focused, and describe what you changed and how you tested it.
 - A pull request that changes the GUI shows screenshots. CI comments with the screens that

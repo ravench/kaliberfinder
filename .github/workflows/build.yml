@@ -52,6 +52,17 @@ jobs:
         with:
           # tools/generate_data.py reads the calibre data from the calibre-data submodule.
           submodules: true
+      - name: Submodule not behind main
+        # A merge can keep a branch's older calibre-data pointer and so revert a bump once merged
+        # (PR 188, 2026-11-12): the regenerated catalogue matches that pointer, so the check below
+        # cannot see it. The pointer must be main's or newer.
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch -q --depth=1 origin main
+          main=$(git ls-tree FETCH_HEAD calibre-data | awk '{print $3}')
+          git -C calibre-data fetch -q --unshallow origin 2>/dev/null || git -C calibre-data fetch -q origin
+          git -C calibre-data merge-base --is-ancestor "$main" HEAD \
+            || { echo "::error::calibre-data is at $(git -C calibre-data rev-parse --short HEAD), behind main's ${main:0:7}: run tools/bump_data.py $main"; exit 1; }
       - name: Check generated data and translations
         run: |
           python3 tools/generate_data.py
