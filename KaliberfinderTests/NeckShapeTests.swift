@@ -113,9 +113,7 @@ final class NeckShapeTests: XCTestCase {
         let shape = try photo(cartridge("7.5x55 mm Swiss (GP 11)"), part: .emptyCase)
         let matches = Matcher.rank(shape: shape, mode: .cartridge,
                                    cartridges: CartridgeCatalog.matchable(includeObsolete: true), limit: .max)
-        // Since calibre-data #196 the .30 Carbine (neck 0.91 of the base) comes 5th, 0.001 ahead of the
-        // .375 Ruger, behind four bottleneck rounds: still not among the first four.
-        let wide = matches.prefix(4).filter { $0.cartridge.dimensions.neck / $0.cartridge.dimensions.base > 0.85 }
+        let wide = matches.prefix(5).filter { $0.cartridge.dimensions.neck / $0.cartridge.dimensions.base > 0.85 }
         XCTAssertTrue(wide.isEmpty, wide.map(\.cartridge.id).joined(separator: ", "))
     }
 

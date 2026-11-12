@@ -78,20 +78,19 @@ final class DimensionMatcherTests: XCTestCase {
     }
 
     func testShorterCaseTellsGP1890FromGP11() {
-        // calibre-data #97: Raven's 1906 round, re-measured, has the 53.5 mm case of the name (rim 12.5);
-        // the 54.6 mm case is the GP 90/23's.
-        let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 76.0, caseLength: 53.5, rim: 12.5),
+        // calibre-data #57: GP 1890 is drawn on the 54.6 mm case of Raven's 1906 round (rim 12.7).
+        let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 77.0, caseLength: 54.6, rim: 12.7),
                                             cartridges: CartridgeCatalog.all)
         XCTAssertEqual(matches.first?.cartridge.id, "7.5x53.5 mm Swiss (GP 1890)")
         XCTAssertEqual(matches.first?.fit, .good)
         let gp11 = matches.first { $0.cartridge.id == "7.5x55 mm Swiss (GP 11)" }
-        XCTAssertNotEqual(gp11?.fit, .good, "GP 11's case is about 2 mm longer")
+        XCTAssertNotEqual(gp11?.fit, .good, "GP 11's case is 1 mm longer")
         let cadet = matches.first { $0.cartridge.id == "7.5 mm Kadettenpatrone" }
-        XCTAssertNotEqual(cadet?.fit, .good, "the Kadettenpatrone has the GP 90/23's longer case")
+        XCTAssertNotEqual(cadet?.fit, .good, "the same case, but the Kadettenpatrone is 0.5 mm longer overall")
     }
 
     func testGP1890IsOnlyFoundWithObsoleteCalibresSwitchedOn() {
-        let gp1890 = MeasuredDimensions(overallLength: 76.0, caseLength: 53.5, rim: 12.5)
+        let gp1890 = MeasuredDimensions(overallLength: 77.0, caseLength: 54.6, rim: 12.7)
         let without = DimensionMatcher.rank(gp1890, cartridges: CartridgeCatalog.matchable(includeObsolete: false))
         XCTAssertFalse(without.contains { $0.cartridge.id == "7.5x53.5 mm Swiss (GP 1890)" })
         let with = DimensionMatcher.rank(gp1890, cartridges: CartridgeCatalog.matchable(includeObsolete: true))
