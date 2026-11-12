@@ -11,11 +11,11 @@ enum HiddenTag: CaseIterable {
         }
     }
 
-    /// E.g. "1 veralteter" or "3 seltene", the part of «3 weitere Treffer: …».
+    /// E.g. "1 veraltetes" or "3 seltene", the part of «3 weitere Kaliber: …» (das Kaliber, Raven 2026-11-12).
     func countText(_ n: Int) -> String {
         switch self {
-        case .obsolete: n == 1 ? "1 veralteter".loc : String(format: "%lld veraltete".loc, n)
-        case .rare: n == 1 ? "1 seltener".loc : String(format: "%lld seltene".loc, n)
+        case .obsolete: n == 1 ? "1 veraltetes".loc : String(format: "%lld veraltete".loc, n)
+        case .rare: n == 1 ? "1 seltenes".loc : String(format: "%lld seltene".loc, n)
         }
     }
 
@@ -46,7 +46,7 @@ struct HiddenMatches<Item: CalibreResult> {
     /// hidden tags counts once, under the first.
     let counts: [(tag: HiddenTag, count: Int)]
 
-    /// `worthShowing` keeps far-off hidden calibres from being offered as «weitere Treffer».
+    /// `worthShowing` keeps far-off hidden calibres from being offered as «weitere Kaliber».
     init(_ ranked: [Item], hiding tags: Set<HiddenTag>, limit: Int, worthShowing: (Item) -> Bool = { _ in true }) {
         func tag(of item: Item) -> HiddenTag? {
             HiddenTag.allCases.first { tags.contains($0) && $0.applies(to: item.cartridge) }
@@ -69,10 +69,10 @@ struct HiddenMatches<Item: CalibreResult> {
     /// The list to show: with the hidden ones once the user tapped «Einblenden».
     func list(revealing: Bool) -> [Item] { revealing ? revealed : shown }
 
-    /// "3 weitere Treffer: 3 veraltete", or nil when nothing is hidden.
+    /// "3 weitere Kaliber: 3 veraltete", or nil when nothing is hidden.
     var summary: String? {
         guard !hidden.isEmpty else { return nil }
-        let total = hidden.count == 1 ? "1 weiterer Treffer".loc : String(format: "%lld weitere Treffer".loc, hidden.count)
+        let total = hidden.count == 1 ? "1 weiteres Kaliber".loc : String(format: "%lld weitere Kaliber".loc, hidden.count)
         let parts = counts.map { $0.tag.countText($0.count) }.joined(separator: ", ")
         return "\(total): \(parts)"
     }

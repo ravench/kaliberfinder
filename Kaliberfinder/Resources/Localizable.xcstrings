@@ -139,25 +139,25 @@
         }
       }
     },
-    "%lld weitere Treffer": {
+    "%lld weitere Kaliber": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld more matches"
+            "value": "%lld more calibres"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld autres correspondances"
+            "value": "%lld autres calibres"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld altre corrispondenze"
+            "value": "%lld altri calibri"
           }
         }
       }
@@ -185,7 +185,7 @@
         }
       }
     },
-    "1 seltener": {
+    "1 seltenes": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -208,7 +208,7 @@
         }
       }
     },
-    "1 veralteter": {
+    "1 veraltetes": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -231,25 +231,25 @@
         }
       }
     },
-    "1 weiterer Treffer": {
+    "1 weiteres Kaliber": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "1 more match"
+            "value": "1 more calibre"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "1 autre correspondance"
+            "value": "1 autre calibre"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "1 altra corrispondenza"
+            "value": "1 altro calibro"
           }
         }
       }
