@@ -58,9 +58,9 @@ enum ScanMode: String, CaseIterable, Identifiable {
     /// calibre at the top of the list (`first`) is a shotshell with a LiDAR size, what its length says
     /// (`Matcher.shotshellPart`): a crimped shell has no bullet tip, so its outline alone reads as a case.
     static func detected(in shape: ShapeMeasurement, size: MeasuredSize? = nil, perspective: Double? = nil,
-                         first: Cartridge? = nil) -> ScanMode {
-        let photo = Matcher.Photo(shape: shape, size: size, perspective: perspective)
-        let part = first.flatMap { Matcher.shotshellPart(photo, $0) } ?? auto.part(for: shape)
+                         first: Cartridge? = nil, mouth: Double? = nil) -> ScanMode {
+        let photo = Matcher.Photo(shape: shape, size: size, perspective: perspective, mouth: mouth)
+        let part = first.flatMap { Matcher.shotshellPart(photo, $0) } ?? Matcher.decidedPart(photo) ?? auto.part(for: shape)
         return part == .emptyCase ? .emptyCase : .cartridge
     }
 
@@ -136,10 +136,19 @@ enum Matcher {
     static let wholeKinds: Set<String> = ["shot", "ball", "minie", "pellet"]
 
     /// A square-cut end, or a neck that runs right up to the end (on a loaded round the bullet narrows in
-    /// front of it): the end is a case mouth, and in automatic mode a calibre with a bullet is compared
-    /// as an empty case only. Otherwise the end's width weighs both comparisons (`partWeight`).
+    /// front of it): the end is a case mouth.
     static func endIsAMouth(_ shape: ShapeMeasurement) -> Bool {
         shape.features?.isFlatEnd == true || (shape.neck?.slices.lowerBound ?? .max) <= 2
+    }
+
+    /// The part the photo shows, decided once for every calibre (Raven, 2026-11-11: a cartridge is compared
+    /// with cartridges only): where the colours show the bullet meeting the case (`Photo.mouth`) it is a
+    /// cartridge, flat-nosed or not; without that border a square-cut end or a neck that runs to the end is
+    /// an empty case. Nil where neither says (an empty bottleneck case's neck reads as a tip, and the golden
+    /// masks carry no colours): then both parts are weighed per calibre by the end's width (`partWeight`).
+    static func decidedPart(_ photo: Photo) -> ShapePart? {
+        if photo.mouth != nil { return .cartridge }
+        return endIsAMouth(photo.shape) ? .emptyCase : nil
     }
 
     /// Added when the photo shows a clear neck (`NeckShape.clearUpTo`) and the calibre's neck, over its
@@ -202,8 +211,9 @@ enum Matcher {
         return Array(matches.prefix(limit))
     }
 
-    /// One calibre against the photo: the better of the whole cartridge and its empty case, unless `mode`
-    /// says which; nil when nothing compares (a round silhouette against a long one, or the reverse).
+    /// One calibre against the photo: the part the photo shows (`decidedPart`, or `mode`), else the better of
+    /// the whole cartridge and its empty case; nil when nothing compares (a round silhouette against a long one,
+    /// or the reverse).
     static func score(_ photo: Photo, _ c: Cartridge, mode: ScanMode) -> Match? {
         let shape = photo.shape
         let wholeOnly = c.blank || !c.hasCase || wholeKinds.contains(c.kind)
@@ -217,13 +227,15 @@ enum Matcher {
         }
         let end = endWidth(shape)
         let hasBullet = c.hasCase && !wholeOnly
-        let caseOnly = mode == .emptyCase || (mode == .auto && hasBullet && endIsAMouth(shape))
+        // Decided once for the photo; a shotshell has no bullet, so its loaded and fired forms both stay.
+        let decided = mode == .auto && hasBullet ? decidedPart(photo) : nil
+        let caseOnly = mode == .emptyCase || decided == .emptyCase
         let neck = shape.neck.flatMap { $0.isClear && c.dimensions.neck / c.dimensions.base > $0.width + neckTolerance ? neckPenalty : 0 } ?? 0
         var candidates: [(distance: Double, deviation: Double?, part: ShapePart)] = []
         if !caseOnly || emptyCase == nil, let whole, !whole.isEndView {
             var (d, deviation) = distance(photo, wholeExpected(c, whole, hasBullet: hasBullet))
             // Blanks, shotshells and balls have no bullet to narrow: their end is as it is.
-            if mode == .auto, hasBullet { d += partWeight * max(0, end - partMiddle) }
+            if mode == .auto, hasBullet, decided == nil { d += partWeight * max(0, end - partMiddle) }
             if hasBullet, let mouth = photo.mouth { d += mouthPenalty(mouth, c, size: photo.size) }
             candidates.append((d + neck, deviation, .cartridge))
         }
@@ -234,10 +246,10 @@ enum Matcher {
                                                           lengthScale: lengthScaleWhole, front: endWidth(hull) / 2, back: rim(hull) / 2))
             candidates.append((d + neck, deviation, .emptyCase))
         }
-        if mode != .cartridge, let emptyCase, !emptyCase.isEndView {
+        if mode != .cartridge, decided != .cartridge, let emptyCase, !emptyCase.isEndView {
             var (d, deviation) = distance(photo, Expected(shape: emptyCase, length: c.dimensions.caseLength, diameter: c.dimensions.base,
                                                           lengthScale: lengthScaleCase, front: endWidth(emptyCase) / 2, back: rim(emptyCase) / 2))
-            if mode == .auto, !caseOnly { d += partWeight * max(0, partMiddle - end) }
+            if mode == .auto, decided == nil { d += partWeight * max(0, partMiddle - end) }
             candidates.append((d + neck, deviation, .emptyCase))
         }
         guard let best = candidates.min(by: { $0.distance < $1.distance }) else { return nil }

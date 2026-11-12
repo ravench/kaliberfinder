@@ -110,6 +110,28 @@ final class EmptyCaseTests: XCTestCase {
         XCTAssertEqual(ScanMode.emptyCase.part(for: loaded), .emptyCase)
     }
 
+    /// The part is decided once for the photo (Raven, 2026-11-11): the colours' case mouth makes it a cartridge
+    /// even with a flat nose, and every calibre is compared whole; a square-cut end without that border is an
+    /// empty case, compared as cases only; a narrowing end without colours keeps both parts in play.
+    func testAColourMouthDecidesACartridgeAndAFlatEndWithoutOneACase() throws {
+        let flat = try photo(cartridge(".32 S&W Long Wadcutter"), part: .cartridge)
+        XCTAssertTrue(Matcher.endIsAMouth(flat))
+        XCTAssertEqual(Matcher.decidedPart(Matcher.Photo(shape: flat, mouth: 0.05)), .cartridge)
+        XCTAssertEqual(Matcher.decidedPart(Matcher.Photo(shape: flat)), .emptyCase)
+        XCTAssertTrue(Matcher.rank(shape: flat, mouth: 0.05, limit: .max).filter(\.cartridge.hasCase).allSatisfy { $0.part == .cartridge })
+        XCTAssertEqual(ScanMode.detected(in: flat, mouth: 0.05), .cartridge)
+        XCTAssertEqual(ScanMode.detected(in: flat), .emptyCase)
+        let empty = try photo(cartridge(".45 ACP"), part: .emptyCase)
+        XCTAssertEqual(Matcher.decidedPart(Matcher.Photo(shape: empty)), .emptyCase)
+        XCTAssertTrue(Matcher.rank(shape: empty, limit: .max).filter { $0.cartridge.hasCase && $0.cartridge.kind != "shot" && !$0.cartridge.blank }
+            .allSatisfy { $0.part == .emptyCase }, "cases only")
+        let tip = try photo(cartridge(".308 Winchester"), part: .cartridge)
+        XCTAssertNil(Matcher.decidedPart(Matcher.Photo(shape: tip)), "a narrowing end without colours: both parts stay in play")
+        // A shotshell's loaded and fired forms both stay whatever the colours say: a hull has no bullet.
+        let hull = try photo(cartridge("12/70"), part: .cartridge)
+        XCTAssertTrue(Matcher.rank(shape: hull, mouth: 0.2, mode: .auto, limit: .max).contains { $0.cartridge.kind == "shot" })
+    }
+
     /// Each photo starts on what the app detects, whatever was picked for an earlier photo
     /// (the choice used to be saved under "scanMode" and stuck to every later photo).
     func testEveryPhotoStartsOnTheDetection() {
