@@ -83,7 +83,10 @@ final class MeasurementsTests: XCTestCase {
             for c in CartridgeCatalog.all {
                 let layout = DimensionLayout(cartridge: c, size: size, label: asked)
                 let label = layout.labelSize
-                XCTAssertGreaterThanOrEqual(layout.scale, DimensionLayout.minScale - 1e-9, c.id)
+                // Labels give way down to `minScale`; a round too long for the screen at that scale (the
+                // 150 mm 5.66x39 mm MPS dart) is bounded by the height alone.
+                let tallest = (size.height - DimensionLayout.rimGap - asked.height) / c.outline.height
+                XCTAssertGreaterThanOrEqual(layout.scale, min(DimensionLayout.minScale, tallest) - 1e-9, c.id)
                 XCTAssertLessThanOrEqual(label.width, asked.width)
                 let points = layout.dimensions.flatMap { [$0.from, $0.to] } + layout.lines.joined() + layout.arrowheads.joined()
                 for p in points {

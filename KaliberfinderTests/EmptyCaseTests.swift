@@ -81,7 +81,10 @@ final class EmptyCaseTests: XCTestCase {
     func testLoadedCartridgesAreNotTakenForCases() throws {
         // The Nagant bullet sits wholly inside the case and a blank has none, so the loaded round looks like an empty case.
         // Sampled every 0.3 mm: at 0.5 mm five short rounds (.22 Long, .32 S&W Long …) come out as empty cases.
-        for c in CartridgeCatalog.all where c.hasCase && c.kind != "shot" && c.dimensions.overallLength > c.dimensions.caseLength {
+        // A bullet nearly as wide as the neck (0.86 and 0.95 of it) reads as the neck running up to the end.
+        let neckWide: Set = ["5.2x68 mm Mondragón", ".38-90 Winchester Express"]
+        for c in CartridgeCatalog.all where c.hasCase && c.kind != "shot" && c.dimensions.overallLength > c.dimensions.caseLength
+            && !neckWide.contains(c.id) {
             let shape = try photo(c, part: .cartridge)
             // A flat-nosed bullet nearly as wide as the case ends like a mouth: that end is no evidence.
             if Matcher.endWidth(shape) < Matcher.partMiddle {

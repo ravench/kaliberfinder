@@ -4,7 +4,7 @@ import XCTest
 /// «3 weitere Treffer: 3 veraltete · Einblenden»: matching calibres hidden by a switch.
 final class HiddenMatchesTests: XCTestCase {
     private let gp1890ID = "7.5x53.5 mm Swiss (GP 1890)"
-    private let gp1890 = MeasuredDimensions(overallLength: 77.0, caseLength: 54.6, rim: 12.7)
+    private let gp1890 = MeasuredDimensions(overallLength: 77.2, caseLength: 53.5, rim: 12.5)
 
     private func match(_ c: Cartridge, _ deviation: Double) -> DimensionMatch {
         DimensionMatch(cartridge: c, maxDeviation: deviation, meanDeviation: deviation)

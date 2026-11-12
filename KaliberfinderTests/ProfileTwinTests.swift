@@ -19,7 +19,8 @@ final class ProfileTwinTests: XCTestCase {
         let all = CartridgeCatalog.all
         let groups = CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).filter { $0.count > 1 }
         XCTAssertEqual(Set(groups.map { Set($0.map(\.id)) }),
-                       [[".308 Winchester", "7.62x51 mm NATO"], [".223 Remington", "5.56x45 mm NATO", "5.6 mm GP 90"]])
+                       [[".308 Winchester", "7.62x51 mm NATO"], [".223 Remington", "5.56x45 mm NATO", "5.6 mm GP 90"],
+                        [".500/450 Magnum Express", ".500/450 Nitro Express"]])
         // Grouping never loses or duplicates a calibre.
         XCTAssertEqual(CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).flatMap { $0 }.map(\.id).sorted(), all.map(\.id).sorted())
     }
