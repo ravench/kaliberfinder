@@ -96,8 +96,8 @@ final class SecondLookTests: XCTestCase {
     /// compare with the whole photo at full size (the whole photo is analysed at 1600 px), and its frame
     /// lies on the rod in the whole photo. On the simulator the cut-out stands in for Vision.
     func testALargePhotoIsLookedAtInThePartAtFullSize() async throws {
-        let size = CGSize(width: 4000, height: 3000)
-        let rod = CGRect(x: 1800, y: 1400, width: 300, height: 100)
+        let size = CGSize(width: 2400, height: 1800)
+        let rod = CGRect(x: 1080, y: 840, width: 180, height: 60)
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
         let image = UIGraphicsImageRenderer(size: size, format: format).image { context in
@@ -112,8 +112,8 @@ final class SecondLookTests: XCTestCase {
         let region = try XCTUnwrap(PhotoAnalyzer.focusRegion(around: whole.outline ?? []))
         XCTAssertTrue(region.contains(rodBox), "the second look's part holds the rod")
         let analysis = await PhotoAnalyzer.analyze(image, focusingOn: rodBox)
-        XCTAssertEqual(analysis.imageLongSide, 4000, accuracy: 1, "measured in the full-size part")
-        XCTAssertEqual(try XCTUnwrap(analysis.lengthPixels), 300, accuracy: 8)
+        XCTAssertEqual(analysis.imageLongSide, size.width, accuracy: 1, "measured in the full-size part")
+        XCTAssertEqual(try XCTUnwrap(analysis.lengthPixels), rod.width, accuracy: 8)
         XCTAssertEqual(try XCTUnwrap(analysis.shape?.aspect), 3, accuracy: 0.2)
         let outline = try XCTUnwrap(analysis.outline)
         let centre = CGPoint(x: outline.map(\.x).reduce(0, +) / 4 * size.width, y: outline.map(\.y).reduce(0, +) / 4 * size.height)
@@ -124,9 +124,7 @@ final class SecondLookTests: XCTestCase {
     /// The real .45 ACP photo goes through both looks: the frame still lies on the cartridge and
     /// sizes still refer to the whole photo (1200 px, analysed unscaled).
     func testARealPhotoGetsTheSecondLook() async throws {
-        let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "photo-45acp-wood", withExtension: "jpg"))
-        let image = try XCTUnwrap(UIImage(contentsOfFile: url.path))
-        let analysis = await PhotoAnalyzer.analyze(image)
+        let analysis = try await RealPhotos.analysis("photo-45acp-wood")
         let shape = try XCTUnwrap(analysis.shape)
         XCTAssertEqual(shape.aspect, 2.7, accuracy: 0.3)
         XCTAssertEqual(analysis.imageLongSide, 1200, accuracy: 1)

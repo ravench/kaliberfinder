@@ -20,14 +20,14 @@ final class FirstLookTests: XCTestCase {
     /// cut from the full-size photo, and ends on the colour cut-out of the whole photo. Where Vision
     /// works (the Mac), the whole photo or a crop is enough and the cut-out is never taken.
     func testCascadeCutsEveryRegionBeforeTheColourCutOut() throws {
-        let size = CGSize(width: 2400, height: 1800)
+        let size = CGSize(width: 1800, height: 1350)
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
         let image = UIGraphicsImageRenderer(size: size, format: format).image { context in
             UIColor(white: 0.9, alpha: 1).setFill()
             context.fill(CGRect(origin: .zero, size: size))
             UIColor(red: 0.85, green: 0.65, blue: 0.25, alpha: 1).setFill()
-            context.fill(CGRect(x: 1050, y: 850, width: 300, height: 100))
+            context.fill(CGRect(x: 787, y: 637, width: 225, height: 75))
         }
         let whole = try XCTUnwrap(image.cgImage)
         var cut: [CGRect] = []
@@ -43,7 +43,7 @@ final class FirstLookTests: XCTestCase {
             XCTAssertFalse(analysis.byCrop)
         } else if analysis.byCrop {
             XCTAssertFalse(cut.isEmpty)
-            XCTAssertEqual(analysis.imageLongSide, 2400 * (1600 / (cut.last!.width * 2400)), accuracy: 1,
+            XCTAssertEqual(analysis.imageLongSide, size.width * (1600 / (cut.last!.width * size.width)), accuracy: 1,
                            "the part's pixels are scaled as a look at the whole photo")
         } else {
             XCTAssertTrue(cut.isEmpty, "Vision found the rod in the whole photo")
