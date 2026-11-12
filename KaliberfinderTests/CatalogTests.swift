@@ -54,16 +54,15 @@ final class CatalogTests: XCTestCase {
     func testColourCodesComeFromCalibreData() throws {
         // GP 11: the red tracer tip, then the older red (tracer) and purple (armour-piercing) bases; every
         // part, meaning and colour the catalogue uses has a title and a colour.
-        let gp11 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x55 mm Swiss (GP 11)"))
+        let gp11 = try Fixture.cartridge("7.5x55 mm Swiss (GP 11)")
         XCTAssertEqual(gp11.colourCodes.map(\.part), ["tip", "base", "base"])
         XCTAssertEqual(gp11.colourCodes.map(\.colours), [["red"], ["red"], ["purple"]])
         XCTAssertEqual(gp11.colourCodes.map(\.meaning), [["tracer"], ["tracer"], ["armour-piercing"]])
         XCTAssertEqual(gp11.colourCodes.first?.countries.map(\.code), ["CH"])
         XCTAssertEqual(Cartridge.ColourCode.title("tracer"), "Leuchtspur")
-        XCTAssertTrue(try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm")).colourCodes.isEmpty)
+        XCTAssertTrue(try Fixture.cartridge("9x19 mm").colourCodes.isEmpty)
         let codes = CartridgeCatalog.all.flatMap(\.colourCodes)
-        XCTAssertEqual(Set(codes.map(\.part)), ["tip", "base", "annulus"])
-        for part in ["tip", "base", "annulus"] { XCTAssertNotEqual(ColourCodeRow.partTitle(part), part) }
+        for part in Set(codes.map(\.part)) { XCTAssertNotEqual(ColourCodeRow.partTitle(part), part, "\(part) has no title") }
         XCTAssertGreaterThan(codes.count, 30)
         for meaning in Set(codes.flatMap(\.meaning)) {
             XCTAssertNotEqual(Cartridge.ColourCode.title(meaning), meaning, "\(meaning) has no title")

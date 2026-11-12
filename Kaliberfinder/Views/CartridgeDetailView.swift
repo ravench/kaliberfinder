@@ -170,16 +170,19 @@ struct ColourSwatch: View {
         "yellow": .yellow, "green": .green, "blue": .blue, "purple": .purple, "brown": .brown,
     ]
 
+    /// The edge of every swatch: a white tip, base or ring still shows on the white row.
+    private static let edge = Color.secondary
+
     var body: some View {
         Group {
             if part == "annulus" {
                 Circle().fill(Self.colours[colours.first ?? ""] ?? .clear)
                     .overlay(Circle().fill(CartridgeView.brass).padding(height * 0.12))
-                    .overlay(Circle().stroke(.secondary.opacity(0.4), lineWidth: 0.5))
+                    .overlay(Circle().stroke(Self.edge, lineWidth: 0.5))
                     .frame(width: height * 0.6, height: height * 0.6)
             } else if part == "base" {
                 Circle().fill(Self.colours[colours.first ?? ""] ?? .clear)
-                    .overlay(Circle().stroke(.secondary.opacity(0.4), lineWidth: 0.5))
+                    .overlay(Circle().stroke(Self.edge, lineWidth: 0.5))
                     .frame(width: height * 0.8, height: height * 0.8)
             } else {
                 VStack(spacing: 0) {
@@ -189,11 +192,12 @@ struct ColourSwatch: View {
                 }
                 .frame(width: height / 2, height: height)
                 .clipShape(Capsule())
-                .overlay(Capsule().stroke(.secondary.opacity(0.4), lineWidth: 0.5))
+                .overlay(Capsule().stroke(Self.edge, lineWidth: 0.5))
             }
         }
         .frame(width: height * 0.8, height: height)
         .accessibilityElement()
-        .accessibilityLabel(Text(colours.map { Cartridge.ColourCode.colourName($0).loc }.joined(separator: ", ")))
+        .accessibilityLabel(Text(ColourCodeRow.partTitle(part).loc + ": "
+                                 + colours.map { Cartridge.ColourCode.colourName($0).loc }.joined(separator: ", ")))
     }
 }
