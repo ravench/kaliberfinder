@@ -1,7 +1,7 @@
 import XCTest
 @testable import Kaliberfinder
 
-/// «3 weitere Treffer: 3 veraltete · Einblenden»: matching calibres hidden by a switch. On `Fixture.catalogue`.
+/// «3 weitere Kaliber: 3 veraltete · Einblenden»: matching calibres hidden by a switch. On `Fixture.catalogue`.
 final class HiddenMatchesTests: XCTestCase {
     private let gp1890ID = "7.5x53.5 mm Swiss (GP 1890)"
     private let gp1890 = MeasuredDimensions(overallLength: 77.2, caseLength: 53.5, rim: 12.5)
@@ -38,7 +38,7 @@ final class HiddenMatchesTests: XCTestCase {
         XCTAssertEqual(HiddenMatches([match(gras, 0)], hiding: bothOff, limit: 5).counts.map(\.tag), [.obsolete])
         XCTAssertEqual(HiddenMatches([match(gras, 0)], hiding: [.rare], limit: 5).counts.map(\.tag), [.rare])
         XCTAssertEqual(HiddenMatches([match(gras, 0)], hiding: [.rare], limit: 5).summary,
-                       "1 weiterer Treffer".loc + ": " + "1 seltener".loc)
+                       "1 weiteres Kaliber".loc + ": " + "1 seltenes".loc)
     }
 
     func testHiddenObsoleteMatchIsCountedAndRevealedInRankOrder() throws {
@@ -85,11 +85,11 @@ final class HiddenMatchesTests: XCTestCase {
         XCTAssertEqual(three.shown.map(\.id), [c1.id, c2.id])
         XCTAssertEqual(three.hidden.map(\.id), [o[0].id])
         XCTAssertEqual(three.revealed.map(\.id), [c1.id, o[0].id, c2.id])
-        XCTAssertEqual(three.summary, "1 weiterer Treffer".loc + ": " + "1 veralteter".loc)
+        XCTAssertEqual(three.summary, "1 weiteres Kaliber".loc + ": " + "1 veraltetes".loc)
 
         let all = HiddenMatches(ranked, hiding: [.obsolete], limit: 10)
         XCTAssertEqual(all.revealed.map(\.id), ranked.map(\.id))
-        XCTAssertEqual(all.summary, String(format: "%lld weitere Treffer".loc, 3) + ": " + String(format: "%lld veraltete".loc, 3))
+        XCTAssertEqual(all.summary, String(format: "%lld weitere Kaliber".loc, 3) + ": " + String(format: "%lld veraltete".loc, 3))
 
         XCTAssertNil(HiddenMatches(ranked, hiding: [], limit: 10).summary)
         let near = HiddenMatches(ranked, hiding: [.obsolete], limit: 10) { $0.maxDeviation < 0.35 }
