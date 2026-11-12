@@ -29,42 +29,45 @@ final class ColorSegmenterTests: XCTestCase {
     private func photo(_ c: Cartridge, angle: Double = 0.3, pixelsPerMM: Double = 6,
                        width: Int = 600, height: Int = 800, centres: [(Double, Double)] = [(0.5, 0.5)],
                        also: [Placed] = []) -> RGBImage {
-        var p = [Float](repeating: 0, count: width * height * 3)
-        var seed: UInt64 = 42
-        func noise() -> Float {
-            seed = seed &* 6_364_136_223_846_793_005 &+ 1_442_695_040_888_963_407
-            return Float(seed >> 40) / Float(1 << 24) - 0.5
-        }
-        let stripes = (0..<width).map { _ in noise() * 40 }
-        for y in 0..<height {
-            for x in 0..<width {
-                let shade: Float = y > height * 7 / 10 && x > width / 4 ? 0.6 : 1
-                let grain = stripes[x] + noise() * 10
-                var rgb: [Float] = [205 + grain, 185 + grain, 155 + grain].map { $0 * shade }
-                if y < 60, x > width / 3, x < width * 5 / 6 { rgb = [30, 30, 28] }
-                for c in 0..<3 { p[(y * width + x) * 3 + c] = rgb[c] }
+        let placed = also.map { "\($0.cartridge.id) \($0.angle) \($0.pixelsPerMM) \($0.centre)" }
+        return Once.value("ColorSegmenterTests \(c.id) \(angle) \(pixelsPerMM) \(width)x\(height) \(centres) \(placed)") {
+            var p = [Float](repeating: 0, count: width * height * 3)
+            var seed: UInt64 = 42
+            func noise() -> Float {
+                seed = seed &* 6_364_136_223_846_793_005 &+ 1_442_695_040_888_963_407
+                return Float(seed >> 40) / Float(1 << 24) - 0.5
             }
-        }
-        for item in centres.map({ Placed(c, angle: angle, pixelsPerMM: pixelsPerMM, at: $0) }) + also {
-            let c = item.cartridge, angle = item.angle, pixelsPerMM = item.pixelsPerMM
-            let g = OutlineGeometry(c.outline)
-            let bulletEnd = c.outline.height - c.dimensions.caseLength
-            let half = max(c.outline.height, c.outline.width) * pixelsPerMM
-            let cx = Double(width) * item.centre.0, cy = Double(height) * item.centre.1
-            for y in Int(cy - half)...Int(cy + half) {
-                for x in Int(cx - half)...Int(cx + half) {
-                    // Back to cartridge millimetres: rotate by -angle around the centre.
-                    let dx = Double(x) - cx, dy = Double(y) - cy
-                    let u = (dx * cos(angle) + dy * sin(angle)) / pixelsPerMM + c.outline.width / 2
-                    let v = (-dx * sin(angle) + dy * cos(angle)) / pixelsPerMM + c.outline.height / 2
-                    guard x >= 0, y >= 0, x < width, y < height, g.contains(Point(x: u, y: v)) else { continue }
-                    let rgb: [Float] = v < bulletEnd ? [190, 110, 70] : [200, 160, 60]
-                    let light = Float(0.8 + 0.4 * abs(u / c.outline.width - 0.5))
-                    for k in 0..<3 { p[(y * width + x) * 3 + k] = min(255, rgb[k] * light) }
+            let stripes = (0..<width).map { _ in noise() * 40 }
+            for y in 0..<height {
+                for x in 0..<width {
+                    let shade: Float = y > height * 7 / 10 && x > width / 4 ? 0.6 : 1
+                    let grain = stripes[x] + noise() * 10
+                    var rgb: [Float] = [205 + grain, 185 + grain, 155 + grain].map { $0 * shade }
+                    if y < 60, x > width / 3, x < width * 5 / 6 { rgb = [30, 30, 28] }
+                    for c in 0..<3 { p[(y * width + x) * 3 + c] = rgb[c] }
                 }
             }
+            for item in centres.map({ Placed(c, angle: angle, pixelsPerMM: pixelsPerMM, at: $0) }) + also {
+                let c = item.cartridge, angle = item.angle, pixelsPerMM = item.pixelsPerMM
+                let g = OutlineGeometry(c.outline)
+                let bulletEnd = c.outline.height - c.dimensions.caseLength
+                let half = max(c.outline.height, c.outline.width) * pixelsPerMM
+                let cx = Double(width) * item.centre.0, cy = Double(height) * item.centre.1
+                for y in Int(cy - half)...Int(cy + half) {
+                    for x in Int(cx - half)...Int(cx + half) {
+                        // Back to cartridge millimetres: rotate by -angle around the centre.
+                        let dx = Double(x) - cx, dy = Double(y) - cy
+                        let u = (dx * cos(angle) + dy * sin(angle)) / pixelsPerMM + c.outline.width / 2
+                        let v = (-dx * sin(angle) + dy * cos(angle)) / pixelsPerMM + c.outline.height / 2
+                        guard x >= 0, y >= 0, x < width, y < height, g.contains(Point(x: u, y: v)) else { continue }
+                        let rgb: [Float] = v < bulletEnd ? [190, 110, 70] : [200, 160, 60]
+                        let light = Float(0.8 + 0.4 * abs(u / c.outline.width - 0.5))
+                        for k in 0..<3 { p[(y * width + x) * 3 + k] = min(255, rgb[k] * light) }
+                    }
+                }
+            }
+            return RGBImage(width: width, height: height, pixels: p)
         }
-        return RGBImage(width: width, height: height, pixels: p)
     }
 
     func testFindsTheCartridgeOnWoodWithShadowAndABox() throws {
@@ -142,17 +145,14 @@ final class ColorSegmenterTests: XCTestCase {
     /// Raven's photos from 2026-11-03: a 9 mm and a .45 ACP on wood, where Vision took the board as
     /// the subject, and a 9 mm lying diagonally next to a dark chair and a table edge. Real photos
     /// through the phone's own path (Vision's mask) are the golden set's job (GoldenSetTests).
-    private func realPhoto(_ name: String) throws -> UIImage {
-        let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: name, withExtension: "jpg"), name)
-        return try XCTUnwrap(UIImage(contentsOfFile: url.path), name)
-    }
+    private func realPhoto(_ name: String) throws -> UIImage { try RealPhotos.image(name) }
 
     /// The 9 mm photo through the analysis (the colour cut-out on the simulator): one cartridge,
     /// handgun calibres as the matches, and the frame along the measured silhouette.
     /// (The .45 ACP photo is checked the same way in testAnalyzerOffersBothCartridgesAndMeasuresThePickedOne.)
     func testRealPhotosShowOneHandgunCartridge() async throws {
         for (name, id) in [("photo-9x19-wood", "9x19 mm")] {
-            let analysis = await PhotoAnalyzer.analyze(try realPhoto(name))
+            let analysis = try await RealPhotos.analysis(name)
             XCTAssertFalse(analysis.hasSeveralObjects, "\(name): \(analysis.candidates)")
             let shape = try XCTUnwrap(analysis.shape, name)
             XCTAssertFalse(shape.isEndView, name)
