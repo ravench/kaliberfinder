@@ -4210,6 +4210,29 @@
         }
       }
     },
+    "Miniatur": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miniature"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miniature"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miniatura"
+          }
+        }
+      }
+    },
     "Minié-Geschoss": {
       "extractionState": "manual",
       "localizations": {
@@ -5999,7 +6022,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tailandia"
+            "value": "Thailandia"
           }
         }
       }

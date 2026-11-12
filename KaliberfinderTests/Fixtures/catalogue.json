@@ -1,8 +1,8 @@
 {
  "version": 1,
  "calibreData": {
-  "commit": "0ab235ec47553784afe915f190641ce7bcffefe1",
-  "date": "2026-11-11T21:29:32+01:00"
+  "commit": "53ce89399f22f94fd70d1a12a62d9b2b47eb84f2",
+  "date": "2026-11-12T13:02:31+01:00"
  },
  "cartridges": [
   {
@@ -23,18 +23,12 @@
     "pistolenpatrone 41",
     "9 mm pist pat 41",
     "9mmluger+p",
-    "9mm+p"
+    "9mm+p",
+    "9mm nato"
    ],
    "displayAliases": [
     "9 mm Luger",
     "9 mm Para"
-   ],
-   "headstamps": [
-    "9mm LUGER",
-    "9 LUGER",
-    "9mm PARA",
-    "9x19 PARA",
-    "9mm NATO"
    ],
    "obsolete": false,
    "rare": false,
@@ -78,7 +72,6 @@
     "9x21"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -121,7 +114,6 @@
    "displayAliases": [
     ".30 Luger"
    ],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -162,7 +154,6 @@
     "30supercarry"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -201,16 +192,12 @@
     "380acp",
     "380auto",
     "9kurz",
-    "9mmkurz"
+    "9mmkurz",
+    "9mm k"
    ],
    "displayAliases": [
     ".380 ACP",
     ".380 Auto"
-   ],
-   "headstamps": [
-    "380 AUTO",
-    "9mm K",
-    "9 KURZ"
    ],
    "obsolete": false,
    "rare": false,
@@ -259,7 +246,6 @@
     ".22 Long Rifle",
     "KK"
    ],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -295,9 +281,6 @@
     "17hmr"
    ],
    "displayAliases": [],
-   "headstamps": [
-    "17 HMR"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -333,14 +316,11 @@
    "kind": "rimfire",
    "aliases": [
     "22mag",
-    "22wmr"
+    "22wmr",
+    "22 win mag"
    ],
    "displayAliases": [
     ".22 Magnum"
-   ],
-   "headstamps": [
-    "22 WIN MAG",
-    "22 WMR"
    ],
    "obsolete": false,
    "rare": false,
@@ -385,10 +365,6 @@
    "displayAliases": [
     ".45 Auto",
     "11,43 mm"
-   ],
-   "headstamps": [
-    "45 AUTO",
-    "45 ACP"
    ],
    "obsolete": false,
    "rare": false,
@@ -435,7 +411,6 @@
     "32coltnewpolice"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -472,13 +447,10 @@
    "category": "Kurzwaffe",
    "kind": "rimless",
    "aliases": [
-    "38super"
+    "38super",
+    "38 super auto"
    ],
    "displayAliases": [],
-   "headstamps": [
-    "38 SUPER AUTO",
-    "38 SUPER"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -518,9 +490,6 @@
     "10auto"
    ],
    "displayAliases": [],
-   "headstamps": [
-    "10mm AUTO"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -570,11 +539,6 @@
    "displayAliases": [
     ".38 Spl"
    ],
-   "headstamps": [
-    "38 SPL",
-    "38 SPECIAL",
-    "38 SPL +P"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -619,14 +583,10 @@
     "357magnum",
     "357s&wmag",
     "357s&wmagnum",
-    "357 atomic"
+    "357 atomic",
+    "357 rem mag"
    ],
    "displayAliases": [],
-   "headstamps": [
-    "357 MAG",
-    "357 MAGNUM",
-    "357 REM MAG"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -669,14 +629,11 @@
     "44mag",
     "44magnum",
     "44remmag",
-    "44remingtonmagnum"
+    "44remingtonmagnum",
+    "44 rem mag",
+    "44 rem magnum"
    ],
    "displayAliases": [],
-   "headstamps": [
-    "44 MAG",
-    "44 REM MAG",
-    "44 REM MAGNUM"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -719,7 +676,6 @@
     "50ae"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -761,7 +717,6 @@
     "454ball"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "worldwide": false,
@@ -799,7 +754,6 @@
     "GP 11",
     "7.5 mm Swiss"
    ],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -911,7 +865,6 @@
     "GP 1890",
     "GP 90/03"
    ],
-   "headstamps": [],
    "obsolete": true,
    "rare": false,
    "country": {
@@ -935,13 +888,13 @@
     "width": 12.5,
     "height": 77.2,
     "case": "M12.50 77.20 L12.50 75.60 L11.33 75.60 L11.33 74.30 L12.45 73.60 L12.00 32.70 L10.50 30.43 L10.50 23.70 L2.00 23.70 L2.00 30.43 L0.50 32.70 L0.05 73.60 L1.17 74.30 L1.17 75.60 L0.00 75.60 L0.00 77.20 Z",
-    "bullet": "M10.32 23.70 L10.32 17.54 L10.27 17.54 L10.25 13.20 L10.22 12.19 L10.17 11.17 L10.10 10.16 L10.00 9.14 L9.88 8.13 L9.73 7.11 L9.54 6.09 L9.33 5.08 L9.06 4.06 L8.73 3.05 L8.32 2.03 L7.74 1.02 L6.81 0.00 L6.25 0.00 L5.69 0.00 L4.76 1.02 L4.18 2.03 L3.77 3.05 L3.44 4.06 L3.17 5.08 L2.96 6.09 L2.77 7.11 L2.62 8.13 L2.50 9.14 L2.40 10.16 L2.33 11.17 L2.28 12.19 L2.25 13.20 L2.23 17.54 L2.17 17.54 L2.17 23.70 Z",
-    "patch": "M10.32 23.70 L10.32 17.54 L2.17 17.54 L2.17 23.70 Z",
+    "bullet": "M10.32 23.70 L10.32 11.00 L10.22 11.00 L10.20 9.77 L10.11 8.55 L9.96 7.37 L9.77 6.23 L9.54 5.15 L9.28 4.14 L9.00 3.22 L8.71 2.40 L8.44 1.69 L8.16 1.09 L7.77 0.62 L7.31 0.28 L6.79 0.07 L6.25 0.00 L5.71 0.07 L5.19 0.28 L4.73 0.62 L4.34 1.09 L4.06 1.69 L3.79 2.40 L3.50 3.22 L3.22 4.14 L2.96 5.15 L2.73 6.23 L2.54 7.37 L2.39 8.55 L2.30 9.77 L2.27 11.00 L2.17 11.00 L2.17 23.70 Z",
+    "patch": "M10.32 23.70 L10.32 11.00 L2.17 11.00 L2.17 23.70 Z",
     "bulletMaterial": "steel"
    },
    "primer": {
     "type": "large-rifle",
-    "diameter": 5.33
+    "diameter": 4.92
    }
   },
   {
@@ -963,7 +916,6 @@
    "displayAliases": [
     "GP 90/23"
    ],
-   "headstamps": [],
    "obsolete": true,
    "rare": false,
    "country": {
@@ -1015,7 +967,6 @@
     "Cart. 7,5 mm cadets",
     "Cart. 7,5 mm cadetti"
    ],
-   "headstamps": [],
    "obsolete": true,
    "rare": true,
    "country": {
@@ -1062,7 +1013,6 @@
     "gwpat90"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -1103,11 +1053,6 @@
     "223rem"
    ],
    "displayAliases": [],
-   "headstamps": [
-    "223 REM",
-    "REM 223",
-    "223 REMINGTON"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -1153,10 +1098,6 @@
     "5.56nato"
    ],
    "displayAliases": [],
-   "headstamps": [
-    "5.56",
-    "5.56x45"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -1300,11 +1241,6 @@
     "308win"
    ],
    "displayAliases": [],
-   "headstamps": [
-    "308 WIN",
-    "WIN 308",
-    "308 WINCHESTER"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -1350,10 +1286,6 @@
     "762"
    ],
    "displayAliases": [],
-   "headstamps": [
-    "7.62x51",
-    "7.62 NATO"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -1500,7 +1432,6 @@
     "6mmcm"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -1543,10 +1474,6 @@
     "creedmoor"
    ],
    "displayAliases": [],
-   "headstamps": [
-    "6.5 CREEDMOOR",
-    "6.5 CM"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -1586,13 +1513,11 @@
    "kind": "rimmed",
    "aliases": [
     "30-30",
-    "3030"
+    "3030",
+    "30-30 win",
+    "30 wcf"
    ],
    "displayAliases": [],
-   "headstamps": [
-    "30-30 WIN",
-    "30 WCF"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -1639,11 +1564,6 @@
    ],
    "displayAliases": [
     "8 mm Mauser"
-   ],
-   "headstamps": [
-    "8x57 JS",
-    "8x57 IS",
-    "8mm MAUSER"
    ],
    "obsolete": false,
    "rare": false,
@@ -1766,7 +1686,6 @@
     "7mmmauser"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -1806,7 +1725,6 @@
     "7x57r"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -1848,7 +1766,6 @@
     "30mauser"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -1889,7 +1806,6 @@
     "6.5x54"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -1929,7 +1845,6 @@
     "577/450"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": true,
    "rare": true,
    "country": {
@@ -1974,7 +1889,6 @@
     "10.4x38"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": true,
    "rare": false,
    "country": {
@@ -2016,7 +1930,6 @@
     "41swisscf"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": true,
    "rare": true,
    "country": {
@@ -2045,8 +1958,8 @@
     "bulletMaterial": "lead"
    },
    "primer": {
-    "type": "large-rifle",
-    "diameter": 5.33
+    "type": "berdan-nitro",
+    "diameter": 6.45
    }
   },
   {
@@ -2062,7 +1975,6 @@
     "7.5norwegiannagant"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": true,
    "rare": false,
    "country": {
@@ -2085,7 +1997,8 @@
     "width": 10.4,
     "height": 34.6,
     "case": "M10.40 34.60 L10.40 33.10 L9.40 33.10 L9.40 11.80 L1.00 11.80 L1.00 33.10 L0.00 33.10 L0.00 34.60 Z",
-    "bullet": "M9.20 11.80 L9.20 9.20 L9.19 8.55 L9.16 7.89 L9.11 7.23 L9.03 6.57 L8.94 5.92 L8.81 5.26 L8.66 4.60 L8.48 3.94 L8.26 3.29 L8.00 2.63 L7.67 1.97 L7.26 1.31 L6.68 0.66 L5.84 0.00 L5.20 0.00 L4.56 0.00 L3.72 0.66 L3.14 1.31 L2.73 1.97 L2.40 2.63 L2.14 3.29 L1.92 3.94 L1.74 4.60 L1.59 5.26 L1.46 5.92 L1.37 6.57 L1.29 7.23 L1.24 7.89 L1.21 8.55 L1.20 9.20 L1.20 11.80 Z"
+    "bullet": "M9.20 11.80 L9.20 9.20 L9.19 8.55 L9.16 7.89 L9.11 7.23 L9.03 6.57 L8.94 5.92 L8.81 5.26 L8.66 4.60 L8.48 3.94 L8.26 3.29 L8.00 2.63 L7.67 1.97 L7.26 1.31 L6.68 0.66 L5.84 0.00 L5.20 0.00 L4.56 0.00 L3.72 0.66 L3.14 1.31 L2.73 1.97 L2.40 2.63 L2.14 3.29 L1.92 3.94 L1.74 4.60 L1.59 5.26 L1.46 5.92 L1.37 6.57 L1.29 7.23 L1.24 7.89 L1.21 8.55 L1.20 9.20 L1.20 11.80 Z",
+    "bulletMaterial": "lead"
    },
    "primer": {
     "type": "small-pistol",
@@ -2102,9 +2015,6 @@
     "762x39"
    ],
    "displayAliases": [],
-   "headstamps": [
-    "7.62x39"
-   ],
    "obsolete": false,
    "rare": false,
    "country": {
@@ -2217,7 +2127,6 @@
     "gras"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": true,
    "rare": true,
    "country": {
@@ -2259,7 +2168,6 @@
     "450no2"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": true,
    "country": {
@@ -2302,7 +2210,6 @@
     ".375ball"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "worldwide": false,
@@ -2334,7 +2241,6 @@
     "12gauge"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "worldwide": true,
@@ -2368,7 +2274,6 @@
     "12/76"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "worldwide": true,
@@ -2402,7 +2307,6 @@
     "12/89"
    ],
    "displayAliases": [],
-   "headstamps": [],
    "obsolete": false,
    "rare": false,
    "worldwide": false,

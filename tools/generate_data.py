@@ -5,8 +5,7 @@
 
 The catalogue (cartridges.py) and the outline drawing (outline.py) live in the shared
 calibre-data repository (github.com/ravench/calibre-data), included at calibre-data/ and
-also used by Schiesstagebuch and the calibre poster. Extra headstamp spellings for the
-catalogue search live in tools/headstamps.py.
+also used by Schiesstagebuch and the calibre poster.
 
 Each entry carries its dimensions in millimetres (for the 1:1 drawing and the
 dimension table) and a side-view outline as SVG path data (M/L/Z only), tip at
@@ -16,25 +15,17 @@ import json, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
-from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, COLOUR_CODES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_DIAMETERS, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
+from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, COLOUR_CODES, COUNTRY_NAMES as NAMES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_MM, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
 from outline import outline, bullet_profile  # noqa: E402,F401  (bullet_profile re-exported for tests)
-from headstamps import HEADSTAMPS  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json")
 DATA = os.path.join(ROOT, "calibre-data")
 
-# German names of the calibre-data COUNTRIES, the app's localization keys (en/fr/it in
-# translations.py). Worldwide use is the separate "worldwide" flag, not a country (Raven 2026-11-07).
-COUNTRY_NAMES = {
-    "CH": "Schweiz", "DE": "Deutschland", "AH": "Österreich-Ungarn", "AT": "Österreich",
-    "FR": "Frankreich", "IT": "Italien", "GB": "Grossbritannien", "US": "USA", "SE": "Schweden",
-    "DK": "Dänemark", "BE": "Belgien", "ES": "Spanien", "PT": "Portugal", "CZ": "Tschechien",
-    "JP": "Japan", "PL": "Polen", "FI": "Finnland", "PH": "Philippinen", "AR": "Argentinien",
-    "RUE": "Russisches Kaiserreich", "SU": "Sowjetunion", "CS": "Tschechoslowakei", "CN": "China",
-    "NO": "Norwegen", "NL": "Niederlande", "BR": "Brasilien", "EG": "Ägypten", "RS": "Serbien",
-    "TH": "Thailand", "OE": "Osmanisches Reich", "CA": "Kanada", "NATO": "NATO",
-}
+# German names of the calibre-data COUNTRIES, the app's localization keys; the English, French and
+# Italian names come from calibre-data too (localize.py). Worldwide use is the separate "worldwide"
+# flag, not a country (Raven 2026-11-07).
+COUNTRY_NAMES = {code: names["de"] for code, names in NAMES.items()}
 # Former states and unions without a flag emoji; the app draws these flags itself (DrawnFlag).
 DRAWN_FLAGS = {"RUE", "AH", "SU", "CS", "OE", "NATO"}
 
@@ -75,12 +66,13 @@ def dimensions(s):
 
 
 def primer(s):
-    """Primer type and diameter; none for rimfire and for balls, Minié bullets and pellets."""
+    """Primer type and diameter (the file's measured one, else the size's nominal one); none for rimfire
+    and for balls, Minié bullets and pellets."""
     if s["kind"] in (RIMFIRE, BALL, MINIE, PELLET):
         assert s["name"] not in PRIMERS, f"{s['name']} has no primer"
         return {}
     kind = PRIMERS[s["name"]]  # every centrefire calibre needs one
-    return {"primer": {"type": kind, "diameter": PRIMER_DIAMETERS[kind]}}
+    return {"primer": {"type": kind, "diameter": PRIMER_MM[s["name"]]}}
 
 
 def build():
@@ -89,7 +81,7 @@ def build():
         for s in items:
             cartridges.append({"id": s["name"], "name": s["name"], "category": category, "kind": s["kind"],
                                "aliases": s["aliases"], "displayAliases": DISPLAY_ALIASES.get(s["name"], []),
-                               "headstamps": HEADSTAMPS.get(s["name"], []), "obsolete": is_obsolete(s["name"]),
+                               "obsolete": is_obsolete(s["name"]),
                                "rare": is_rare(s["name"]), **country(s["name"]),
                                "worldwide": is_worldwide(s["name"]),
                                "blank": s["profile"] == CRIMPED,
@@ -97,7 +89,7 @@ def build():
                                "dimensions": dimensions(s), "outline": outline(s),
                                **primer(s)})
     names = {c["name"] for c in cartridges}
-    unknown = (set(DISPLAY_ALIASES) | set(HEADSTAMPS)) - names
+    unknown = set(DISPLAY_ALIASES) - names
     assert not unknown, f"aliases for unknown calibres: {unknown}"
     return cartridges
 

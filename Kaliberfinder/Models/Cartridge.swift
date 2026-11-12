@@ -12,8 +12,6 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     let aliases: [String]
     /// Printable alternative names, e.g. "9 mm Luger" for 9x19 mm.
     let displayAliases: [String]
-    /// Spellings found on headstamps, e.g. "WIN 308", for the catalogue search.
-    let headstamps: [String]
     /// No longer in regular factory production (only surplus, boutique loads or reloading).
     /// Matching skips these unless the «Veraltete Kaliber» switch is on.
     let obsolete: Bool
@@ -109,6 +107,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
             case "large-pistol": "Pistole gross"
             case "small-rifle": "Büchse klein"
             case "large-rifle": "Büchse gross"
+            case "miniature": "Miniatur"
             case "shotshell-209": "Schrot (209)"
             case "bmg-35": ".50 BMG (#35)"
             case "berdan-nitro": "Berdan Nitro (.254)"
@@ -171,7 +170,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     var headDiameter: Double { max(dimensions.rim, dimensions.base) }
 
     /// All names the cartridge is known by, for search.
-    var allNames: [String] { [name] + displayAliases + aliases + headstamps }
+    var allNames: [String] { [name] + displayAliases + aliases }
 }
 
 /// What the 1:1 comparison sorts its cartridges by (Einstellungen, Raven 2026-11-08): the case, as the
