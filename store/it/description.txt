@@ -1,0 +1,25 @@
+Hai trovato una cartuccia o un bossolo vuoto e non conosci il calibro? Kaliberfinder restringe la scelta partendo da una foto e mostra i risultati a grandezza reale sullo schermo.
+
+RICONOSCERE UNA CARTUCCIA
+Fotografa la cartuccia appoggiata di lato su uno sfondo chiaro e uniforme, oppure scegli una foto dalla libreria. Kaliberfinder ritaglia la sagoma e confronta il profilo con i contorni del catalogo. Ottieni un breve elenco di calibri probabili tra cui scegliere, ciascuno con l'indicazione di quanto corrisponde; i calibri troppo lontani non vengono elencati. Funziona anche con i bossoli vuoti e con le cartucce a pallini sparate: l'app distingue la bocca del bossolo da una palla ed esclude calibri in base all'orlo e al colletto. Se nella foto ci sono più cartucce, tocca quella da identificare. Conta solo il contorno, dalla foto non viene letto nulla; i calibri con lo stesso profilo compaiono quindi insieme nell'elenco.
+
+GRANDEZZA REALE (1:1)
+Confronta i risultati a grandezza reale, uno accanto all'altro lungo un righello millimetrato, con il fondello e l'innesco visti da sotto. Appoggia la cartuccia sullo schermo e guarda quale corrisponde. Kaliberfinder conosce la densità dello schermo di ogni iPhone dal XS in poi e degli iPad compatibili con iPadOS 17; puoi anche calibrare lo schermo una volta con una carta bancaria.
+
+LIDAR
+Sugli iPhone Pro e iPad Pro con LiDAR, la fotocamera dell'app misura in più le dimensioni della cartuccia dalla distanza. Con queste misure di solito restano uno o pochi calibri.
+
+SENZA FOTO
+Inserisci ciò che hai misurato (lunghezza totale, lunghezza del bossolo, diametro dell'orlo o della palla, forma del bossolo) e guarda quali calibri corrispondono. Oppure scegli i calibri per nome e confrontali 1:1.
+
+TUTTI I CALIBRI
+Oltre 400 calibri, dagli albori della cartuccia a oggi: percussione anulare, arma corta, arma lunga, polvere nera, fucile a canna liscia e aria compressa, tra cui le cartucce d'ordinanza svizzere (GP 11, GP 90, GP 1890) e cartucce a salve. Per ogni calibro: le dimensioni (lunghezza totale, lunghezza del bossolo, diametri di orlo, base, spalla, colletto e palla), l'innesco, l'origine, gli altri nomi, un disegno quotato e i calibri simili con ciò che li distingue. Per alcuni calibri militari sono indicati i codici colore della punta. I calibri rari e obsoleti sono contrassegnati e restano fuori dai risultati finché non li attivi; se uno corrisponde bene, l'app lo segnala.
+
+INOLTRE
+• Condividi una foto da Foto, File o Messaggi direttamente con Kaliberfinder.
+• Unità metriche o imperiali.
+• Italiano, tedesco, francese e inglese.
+• Per iPhone e iPad.
+• Funziona offline. Nessun account, nessun tracciamento, nessuna pubblicità. Le foto vengono analizzate sul dispositivo e mai caricate.
+
+Le dimensioni sono valori indicativi arrotondati per l'identificazione, non dati di ricarica. Kaliberfinder non vende né promuove armi o munizioni.

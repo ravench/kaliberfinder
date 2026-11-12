@@ -1,0 +1,1 @@
+calibre,caliber,ammo,ammunition,bullet,shell,casing,brass,rifle,pistol,shotgun,9mm,22LR,GP11,LiDAR

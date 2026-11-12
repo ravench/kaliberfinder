@@ -1,0 +1,1 @@
+Kaliber,Munition,Geschoss,Hülse,Gewehr,Pistole,Flinte,9mm,22LR,GP11,GP90,Lineal,LiDAR,Schiessen

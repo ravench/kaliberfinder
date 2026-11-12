@@ -1,0 +1,25 @@
+Vous avez trouvé une cartouche ou une douille vide et vous ne connaissez pas le calibre ? Kaliberfinder réduit le choix à partir d'une photo et affiche les résultats en taille réelle à l'écran.
+
+IDENTIFIER UNE CARTOUCHE
+Photographiez la cartouche posée de côté sur un fond clair et uni, ou choisissez une photo de la photothèque. Kaliberfinder détoure la silhouette et compare le profil avec les contours du catalogue. Vous obtenez une courte liste de calibres probables parmi lesquels choisir, avec pour chacun la qualité de la correspondance ; les calibres trop éloignés ne sont pas listés. Les douilles vides et les cartouches à plombs tirées fonctionnent aussi : l'app distingue l'ouverture d'une douille d'un projectile et écarte des calibres d'après le bourrelet et le collet. S'il y a plusieurs cartouches sur la photo, touchez celle à identifier. Seul le contour compte, rien n'est lu sur la photo ; les calibres de même profil figurent donc ensemble dans la liste.
+
+TAILLE RÉELLE (1:1)
+Comparez les résultats en taille réelle, côte à côte le long d'une règle millimétrée, avec le culot et l'amorce vus de dessous. Posez la cartouche sur l'écran et voyez laquelle correspond. Kaliberfinder connaît la densité d'affichage de chaque iPhone depuis le XS et des iPad compatibles avec iPadOS 17 ; vous pouvez aussi calibrer l'écran une fois avec une carte bancaire.
+
+LIDAR
+Sur les iPhone Pro et iPad Pro équipés du LiDAR, la caméra de l'app mesure en plus les dimensions de la cartouche à partir de la distance. Avec ces mesures, il ne reste en général qu'un calibre ou quelques-uns.
+
+SANS PHOTO
+Saisissez ce que vous avez mesuré (longueur totale, longueur de douille, diamètre du bourrelet ou du projectile, forme de la douille) et voyez quels calibres correspondent. Ou choisissez des calibres par leur nom et comparez-les 1:1.
+
+TOUS LES CALIBRES
+Plus de 400 calibres, des débuts de la cartouche à nos jours : percussion annulaire, arme de poing, arme longue, poudre noire, fusil de chasse et air comprimé, dont les cartouches d'ordonnance suisses (GP 11, GP 90, GP 1890) et des cartouches à blanc. Pour chaque calibre : les dimensions (longueur totale, longueur de douille, diamètres du bourrelet, du culot, de l'épaulement, du collet et du projectile), l'amorce, l'origine, les autres noms, un dessin coté et les calibres semblables avec ce qui les distingue. Pour quelques calibres militaires, les codes couleur de la pointe sont indiqués. Les calibres rares et obsolètes sont signalés et restent hors des résultats tant que vous ne les activez pas ; si l'un d'eux correspond bien, l'app le signale.
+
+AUSSI
+• Partagez une photo depuis Photos, Fichiers ou Messages directement vers Kaliberfinder.
+• Unités métriques ou impériales.
+• Français, allemand, anglais et italien.
+• Pour iPhone et iPad.
+• Fonctionne hors ligne. Pas de compte, pas de suivi, pas de publicité. Les photos sont analysées sur l'appareil et jamais envoyées.
+
+Les dimensions sont des valeurs indicatives arrondies, destinées à l'identification, pas des données de rechargement. Kaliberfinder ne vend ni ne promeut d'armes ou de munitions.
