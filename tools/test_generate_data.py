@@ -122,8 +122,10 @@ class CalibreDataSubmoduleTests(unittest.TestCase):
         with open(os.path.join(ROOT, ".gitmodules")) as f:
             self.assertIn("url = https://github.com/ravench/calibre-data", f.read())
         with open(os.path.join(ROOT, ".github", "workflows", "build.yml")) as f:
-            build_job = f.read().split("  build:", 1)[1]
+            tools_job, build_job = f.read().split("  tools:", 1)[1].split("  build:", 1)
         self.assertIn("submodules: true", build_job.split("- run:", 1)[0])
+        # A pull request's pointer is main's or newer, so a merge cannot revert a bump (tools/bump_data.py).
+        self.assertIn("merge-base --is-ancestor", tools_job)
 
     def test_catalogue_names_the_commit_it_was_read_from(self):
         """Settings show the calibre-data commit of the app's catalogue (CartridgeCatalog.source)."""
