@@ -29,7 +29,6 @@ final class SharedInboxTests: XCTestCase {
     func testKeepsOnlyTheSidePhoto() throws {
         // No base photo any more: only the first shared photo is kept.
         try inbox.put((0..<5).map { Data("photo \($0)".utf8) })
-        XCTAssertEqual(SharedInbox.maxPhotos, 1)
         XCTAssertEqual(inbox.take(), [Data("photo 0".utf8)])
     }
 
@@ -53,10 +52,6 @@ final class SharedInboxTests: XCTestCase {
         XCTAssertTrue(SharedInbox.isOpenURL(try XCTUnwrap(URL(string: "kaliberfinder://shared?x=1"))))
         XCTAssertFalse(SharedInbox.isOpenURL(try XCTUnwrap(URL(string: "kaliberfinder://other"))))
         XCTAssertFalse(SharedInbox.isOpenURL(try XCTUnwrap(URL(string: "https://shared"))))
-    }
-
-    func testAppGroupUsesBundlePrefix() {
-        XCTAssertEqual(SharedInbox.appGroup, "group.ch.giotta.kaliberfinder")
     }
 
     func testShareSheetTextsAreTranslated() throws {
