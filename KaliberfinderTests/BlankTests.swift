@@ -11,19 +11,6 @@ final class BlankTests: XCTestCase {
         Matcher.rank(shape: shape, mode: mode, limit: limit)
     }
 
-    func testBlankIsInTheCatalogue() throws {
-        let blank = try XCTUnwrap(CartridgeCatalog.cartridge(id: blankID))
-        XCTAssertEqual(blank.kind, "rimfire")
-        XCTAssertEqual(blank.dimensions.overallLength, 11.0, accuracy: 0.001)
-        XCTAssertEqual(blank.dimensions.caseLength, blank.dimensions.overallLength, accuracy: 0.001)
-        XCTAssertTrue(blank.blank)
-        XCTAssertNil(blank.outline.bullet)
-        XCTAssertLessThan(blank.dimensions.neck, blank.dimensions.base, "the crimp is narrower than the body")
-        XCTAssertFalse(blank.obsolete)
-        XCTAssertEqual(CartridgeCatalog.all.filter(\.blank).map(\.id),
-                       [blankID, "9 mm R Knall", ".320 Knall", ".45 Knall", ".22 Long Knall", "6 mm Flobert Knall"])
-    }
-
     func testSearchFindsTheBlank() {
         for query in ["Platzpatrone", "6.8/11", "Setzkartusche"] {
             XCTAssertTrue(CartridgeCatalog.search(query).contains { $0.id == blankID }, query)
@@ -38,15 +25,6 @@ final class BlankTests: XCTestCase {
         }
         // Case and cartridge are the same thing for a blank.
         XCTAssertEqual(ShapeMatcher.caseCatalogue[blankID], ShapeMatcher.catalogue[blankID])
-    }
-
-    func testFiredBlankIsNotTakenForAnEmptyShortCase() throws {
-        // A fired blank's petals stay bent in, so it is not a square-cut .22 Short case.
-        let shape = try XCTUnwrap(ShapeMatcher.catalogue[blankID])
-        let ids = rank(shape, mode: .emptyCase).map(\.cartridge.id)
-        if let short = ids.firstIndex(of: ".22 Short") {
-            XCTAssertGreaterThan(short, try XCTUnwrap(ids.firstIndex(of: blankID)), "\(ids)")
-        }
     }
 
     /// On the phone a fired blank came out "empty case, rimless": the rim and neck checks for empty

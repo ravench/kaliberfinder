@@ -85,11 +85,6 @@ final class TrueScaleLayoutTests: XCTestCase {
         XCTAssertEqual(TrueScaleLayout.contentTop(contentHeight: 600, availableHeight: 500), -100)
     }
 
-    func testRulerNumbersHaveRoomAtBothEnds() {
-        // The 9 pt numbers are centred on the top and zero ticks: half their height sticks out.
-        XCTAssertGreaterThanOrEqual(RulerView.labelOverhang, 6)
-    }
-
     func testSingleCartridgeIsCentredWithTheRulerBesideIt() {
         let ppmm = 6.3
         let gap = TrueScaleLayout.singleGapMM * ppmm

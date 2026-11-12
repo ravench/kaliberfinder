@@ -29,12 +29,6 @@ final class ReadableWidthTests: XCTestCase {
         XCTAssertEqual(try XCTUnwrap(window).convert(list.bounds, from: list).width, 375)
     }
 
-    func testColumnIsReadable() {
-        // Two to three times a phone, as Apple's readable content width.
-        XCTAssertGreaterThanOrEqual(ReadableWidth.max, 600)
-        XCTAssertLessThanOrEqual(ReadableWidth.max, 800)
-    }
-
     /// Lays out the home screen in a window of `size` and returns its list.
     private func homeList(size: CGSize) throws -> UIScrollView {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)

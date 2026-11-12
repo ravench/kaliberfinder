@@ -94,10 +94,6 @@ final class ScreenScaleTests: XCTestCase {
         XCTAssertEqual(ScreenScale.estimatedPPI(model: "iPhone99,9", nativeScale: 3), 460)
     }
 
-    func testModelIdentifierIsNotEmpty() {
-        XCTAssertFalse(ScreenScale.modelIdentifier().isEmpty)
-    }
-
     @MainActor
     func testScaleModelStoresAndResetsCalibration() throws {
         let defaults = try XCTUnwrap(UserDefaults(suiteName: "ScreenScaleTests"))

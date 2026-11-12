@@ -2209,25 +2209,25 @@
         }
       }
     },
-    "Gerundete Richtwerte nach CIP/SAAMI, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.": {
+    "Gerundete Richtwerte, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rounded reference values after CIP/SAAMI, not reloading data. Primer: Boxer; military cases may have Berdan."
+            "value": "Rounded reference values, not reloading data. Primer: Boxer; military cases may have Berdan."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Valeurs indicatives arrondies selon CIP/SAAMI, pas de données de rechargement. Amorce : Boxer ; les douilles militaires peuvent être Berdan."
+            "value": "Valeurs indicatives arrondies, pas de données de rechargement. Amorce : Boxer ; les douilles militaires peuvent être Berdan."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Valori indicativi arrotondati secondo CIP/SAAMI, non dati di ricarica. Innesco: Boxer; i bossoli militari possono avere Berdan."
+            "value": "Valori indicativi arrotondati, non dati di ricarica. Innesco: Boxer; i bossoli militari possono avere Berdan."
           }
         }
       }
