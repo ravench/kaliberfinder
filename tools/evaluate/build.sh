@@ -5,7 +5,7 @@
 # `build.sh --typecheck` only checks that it compiles (the Build workflow does that).
 set -eu
 cd "$(dirname "$0")/../.."
-SOURCES="tools/evaluate/main.swift KaliberfinderTests/Evaluation.swift Kaliberfinder/Models/*.swift
+SOURCES="tools/evaluate/main.swift tools/evaluate/terms.swift KaliberfinderTests/Evaluation.swift Kaliberfinder/Models/*.swift
   $(grep -L -E '^import (UIKit|SwiftUI|AVFoundation|CoreMotion)' Kaliberfinder/Services/*.swift || true)"
 if [ "${1:-}" = --typecheck ]; then
   # shellcheck disable=SC2086 # the file list is split on purpose

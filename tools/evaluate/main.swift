@@ -6,7 +6,7 @@ import Foundation
 import ImageIO
 
 let usage = """
-usage: evaluate [shots] [--holdout] [--mac-vision] [--one-look] [--max-side N] [--json FILE] [--compare FILE] [--report FILE]
+usage: evaluate [shots] [--holdout] [--mac-vision] [--one-look] [--max-side N] [--json FILE] [--compare FILE] [--report FILE] [--terms FILE]
 
   shots         the training repo (its captures/ and splits.json), or a folder of capture packages
                 such as KaliberfinderTests/Golden; default $KALIBERFINDER_TRAINING or ../kaliberfinder-training
@@ -17,6 +17,7 @@ usage: evaluate [shots] [--holdout] [--mac-vision] [--one-look] [--max-side N] [
   --json FILE   writes every shot's result, for --compare in a later run
   --compare FILE  compares with such an earlier run
   --report FILE writes the report there too (it always goes to the standard output)
+  --terms FILE  writes the matcher's raw terms of every shot and calibre, for tools/research/matcher/refit.py
 """
 
 func fail(_ message: String) -> Never {
@@ -33,6 +34,7 @@ struct Options {
     var json: URL?
     var compare: URL?
     var report: URL?
+    var terms: URL?
 
     init(_ arguments: [String]) {
         let environment = ProcessInfo.processInfo.environment["KALIBERFINDER_TRAINING"]
@@ -53,6 +55,7 @@ struct Options {
             case "--json": json = file()
             case "--compare": compare = file()
             case "--report": report = file()
+            case "--terms": terms = file()
             case let path where !path.hasPrefix("-"): shots = URL(fileURLWithPath: path)
             default: fail(usage)
             }
@@ -162,6 +165,7 @@ if packages.count < found.count {
 }
 
 let started = Date()
+var termLines: [String] = options.terms == nil ? [] : [Terms.catalogue()]
 var shots: [Evaluation.Shot] = []
 var secondLooks = 0, picks = 0, excluded: [String] = []
 for package in packages {
@@ -180,6 +184,10 @@ for package in packages {
         let share = analysis.contour?.mouth.map { String(format: ", case %.3f of %.3f", 1 - $0, calibre) } ?? ""
         FileHandle.standardError.write(Data("\(name) rows \(rows) rank \(r.rank.map(String.init) ?? "–") first \(shot.first ?? "–") (\(source.rawValue)\(look)\(share))\n".utf8))
         shots.append(shot)
+        if options.terms != nil, let line = Terms.shot(name, calibre: package.package.calibre, part: package.package.scanMode,
+                                                       analysis: analysis, depth: entry.shot.scale?.depthScale) {
+            termLines.append(line)
+        }
     }
 }
 FileHandle.standardError.write(Data(String(format: "%d shots in %.0f s, %d left out as marked\n", shots.count, Date().timeIntervalSince(started), excluded.count).utf8))
@@ -197,6 +205,7 @@ let report = Evaluation.report(shots, title: "Matching on \(shots.count) \(kind)
 print(report)
 do {
     if let url = options.report { try Data(report.utf8).write(to: url) }
+    if let url = options.terms { try Data((termLines.joined(separator: "\n") + "\n").utf8).write(to: url) }
     if let url = options.json {
         let results = Dictionary(uniqueKeysWithValues: shots.map { ($0.name, $0.result) })
         try TrainingCapture.encoder.encode(Evaluation.Baseline(results)).write(to: url)
