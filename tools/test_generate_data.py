@@ -80,11 +80,21 @@ class RareAndCountryTests(unittest.TestCase):
             self.assertIn(f'"{code}"', codes, code)  # DrawnFlag.codes must list it too
 
     def test_every_catalogue_country_has_a_translated_name(self):
-        from cartridges import COUNTRIES
+        """The German name is the key, the other three languages come from calibre-data too (localize.py);
+        translations.py holds none of them twice."""
+        from cartridges import COUNTRIES, COUNTRY_NAMES
         from translations import T
         self.assertEqual(set(COUNTRIES), set(generate_data.COUNTRY_NAMES))
-        for name in generate_data.COUNTRY_NAMES.values():
-            self.assertIn(name, T, name)
+        self.assertEqual(generate_data.COUNTRY_NAMES["GB"], "Grossbritannien")
+        for code, name in generate_data.COUNTRY_NAMES.items():
+            self.assertEqual(set(COUNTRY_NAMES[code]), {"en", "de", "fr", "it"}, code)
+            self.assertNotIn(name, T, name)
+
+    def test_a_miniature_primer_carries_its_measured_diameter(self):
+        """The Kolibri rounds' primers are smaller than any reloading size (calibre-data #108)."""
+        by_name = {c["name"]: c for c in generate_data.build()}
+        self.assertEqual(by_name["2.7 mm Kolibri"]["primer"], {"type": "miniature", "diameter": 2.2})
+        self.assertEqual(by_name["9x19 mm"]["primer"], {"type": "small-pistol", "diameter": 4.45})
 
     def test_no_country_means_no_key(self):
         self.assertNotIn("country", self.by_name["12/70"])
@@ -152,7 +162,7 @@ class PatchedBulletTests(unittest.TestCase):
         mouth = s["oal"] - s["case"]  # y grows downwards from the tip
         ys = [float(p.split()[1]) for p in o["patch"].replace("Z", "").replace("M", "L").split("L") if p.strip()]
         self.assertAlmostEqual(max(ys), mouth, places=2)
-        self.assertLess(max(ys) - min(ys), mouth / 2, "most of the visible bullet is the steel cap")
+        self.assertLess(max(ys) - min(ys), mouth, "the paper stops before the tip (calibre-data #113 draws it to the 1892 drawing)")
 
     def test_profile_steps_in_where_the_paper_ends(self):
         s = spec(GP1890)
@@ -252,7 +262,7 @@ class CatalogueOnlyDataTests(unittest.TestCase):
         self.assertEqual({c["category"] for c in built},
                          {"Randfeuer", "Kurzwaffe", "Langwaffe", "Schwarzpulver", "Flinte", "Luftdruck"})
         self.assertEqual(set().union(*built), {"id", "name", "category", "kind", "aliases", "displayAliases",
-                                               "headstamps", "obsolete", "rare", "country", "worldwide", "blank",
+                                               "obsolete", "rare", "country", "worldwide", "blank",
                                                "dimensions", "outline", "primer", "colourCodes"})
 
     def test_swiss_match_reaches_the_json(self):

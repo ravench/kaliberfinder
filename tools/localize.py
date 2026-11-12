@@ -12,12 +12,15 @@ sys.path.insert(0, os.path.dirname(__file__))
 from extract_strings import keys
 from translations import T, INFO_PLIST
 from generate_data import COUNTRY_NAMES
+from cartridges import COUNTRY_NAMES as NAMES  # noqa: E402  (on the path since generate_data)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "Kaliberfinder", "Resources", "Localizable.xcstrings")
 EXTRA = {"Andere"}  # default title in CartridgeDetailView.kindTitle, which the extractor can't see
 EXTRA |= set(COUNTRY_NAMES.values())  # country names come from Cartridges.json
 
+# The countries' English, French and Italian names are calibre-data's.
+T = {**T, **{n["de"]: (n["en"], n["fr"], n["it"]) for n in NAMES.values()}}
 used = set(keys()) | EXTRA
 missing = sorted(k for k in used if k not in T)
 if missing:

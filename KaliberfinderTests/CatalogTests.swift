@@ -140,7 +140,7 @@ final class CatalogTests: XCTestCase {
         XCTAssertTrue(finds("Revolver 1882", "7.5 mm Swiss Ordnance 1882"))
         // Each word may be in a different name: «GP 11» in the name, «K31» a search alias.
         XCTAssertTrue(finds("GP 11 K31", "7.5x55 mm Swiss (GP 11)"))
-        // Only other names hold the word (search aliases, «Auch bekannt als», headstamps).
+        // Only other names hold the word (search aliases, «Auch bekannt als»).
         XCTAssertTrue(finds("Parabellum", "9x19 mm"))
         XCTAssertTrue(finds("Schmidt Rubin", "7.5x53.5 mm Swiss (GP 1890)"))
         XCTAssertTrue(finds("9 mm Para", "9x19 mm"))
