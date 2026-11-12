@@ -83,14 +83,22 @@ final class EmptyCaseTests: XCTestCase {
         // Sampled every 0.3 mm: at 0.5 mm five short rounds (.22 Long, .32 S&W Long …) come out as empty cases.
         // A bullet nearly as wide as the neck (0.86 and 0.95 of it) reads as the neck running up to the end.
         let neckWide: Set = ["5.2x68 mm Mondragón", ".38-90 Winchester Express"]
-        for c in CartridgeCatalog.all where c.hasCase && c.kind != "shot" && c.dimensions.overallLength > c.dimensions.caseLength
-            && !neckWide.contains(c.id) {
-            let shape = try photo(c, part: .cartridge)
+        let rounds = CartridgeCatalog.all.filter {
+            $0.hasCase && $0.kind != "shot" && $0.dimensions.overallLength > $0.dimensions.caseLength && !neckWide.contains($0.id)
+        }
+        // Two silhouettes per calibre, on every core; the detection reads only static tables.
+        var parts = [(loaded: ShapePart?, empty: ShapePart?)?](repeating: nil, count: rounds.count)
+        let lock = NSLock()
+        DispatchQueue.concurrentPerform(iterations: rounds.count) { i in
+            guard let loaded = try? photo(rounds[i], part: .cartridge), let empty = try? photo(rounds[i], part: .emptyCase) else { return }
             // A flat-nosed bullet nearly as wide as the case ends like a mouth: that end is no evidence.
-            if Matcher.endWidth(shape) < Matcher.partMiddle {
-                XCTAssertEqual(ScanMode.auto.part(for: shape), .cartridge, c.id)
-            }
-            XCTAssertEqual(ScanMode.auto.part(for: try photo(c, part: .emptyCase)), .emptyCase, c.id)
+            let judged = Matcher.endWidth(loaded) < Matcher.partMiddle ? ScanMode.auto.part(for: loaded) : nil
+            lock.lock(); parts[i] = (judged, ScanMode.auto.part(for: empty)); lock.unlock()
+        }
+        for (c, part) in zip(rounds, parts) {
+            guard let part else { XCTFail("\(c.id): no silhouette"); continue }
+            if let loaded = part.loaded { XCTAssertEqual(loaded, .cartridge, c.id) }
+            XCTAssertEqual(part.empty, .emptyCase, c.id)
         }
     }
 
