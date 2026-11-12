@@ -15,6 +15,11 @@ final class GoldenSetTests: XCTestCase {
         get throws { try XCTUnwrap(Bundle(for: Self.self).url(forResource: "Golden", withExtension: nil), "Golden folder missing in the test bundle") }
     }
 
+    /// The shot's mask, decoded once for the three tests that replay every shot.
+    private func labels(of entry: SavedShot) -> [UInt8]? {
+        Once.value("GoldenSetTests mask \(entry.url.path)") { CaptureStore.mask(of: entry.shot, at: entry.url) }
+    }
+
     private func golden() throws -> [SavedCapture] {
         CaptureStore(root: try root).packages().sorted { $0.url.lastPathComponent < $1.url.lastPathComponent }
     }
@@ -32,7 +37,7 @@ final class GoldenSetTests: XCTestCase {
                 let mask = try XCTUnwrap(entry.shot.mask, shotName)
                 XCTAssertNotNil(mask.imageWidth, shotName)
                 XCTAssertNotNil(mask.imageHeight, shotName)
-                XCTAssertNotNil(CaptureStore.mask(of: entry.shot, at: entry.url), "\(shotName): mask (is Git LFS installed?)")
+                XCTAssertNotNil(labels(of: entry), "\(shotName): mask (is Git LFS installed?)")
                 XCTAssertNotNil(entry.shot.analysis, shotName)
             }
         }
@@ -107,7 +112,7 @@ final class GoldenSetTests: XCTestCase {
         for package in try golden() {
             for entry in package.shots {
                 let name = "\(package.url.lastPathComponent)/\(entry.url.lastPathComponent)"
-                let info = try XCTUnwrap(entry.shot.mask, name), labels = try XCTUnwrap(CaptureStore.mask(of: entry.shot, at: entry.url), name)
+                let info = try XCTUnwrap(entry.shot.mask, name), labels = try XCTUnwrap(labels(of: entry), name)
                 let image = (width: try XCTUnwrap(info.imageWidth, name), height: try XCTUnwrap(info.imageHeight, name))
                 let analysis = PhotoAnalyzer.analyze(instanceLabels: labels, mask: (info.width, info.height), image: image, isBrass: true)
                 guard let shape = analysis.shape, let contour = analysis.contour, ScanMode.auto.part(for: shape) == .emptyCase else { continue }
@@ -128,7 +133,7 @@ final class GoldenSetTests: XCTestCase {
     /// One shot through the phone's path, and its report line.
     private func replay(_ entry: SavedShot, named name: String, of package: CapturePackage) throws -> (Evaluation.Shot, String) {
         let shot = entry.shot
-        let info = try XCTUnwrap(shot.mask), labels = try XCTUnwrap(CaptureStore.mask(of: shot, at: entry.url))
+        let info = try XCTUnwrap(shot.mask), labels = try XCTUnwrap(labels(of: entry))
         let image = (width: try XCTUnwrap(info.imageWidth), height: try XCTUnwrap(info.imageHeight))
         let analysis = PhotoAnalyzer.analyze(instanceLabels: labels, mask: (info.width, info.height), image: image,
                                              isBrass: shot.analysis?.isBrass ?? true)

@@ -23,33 +23,35 @@ final class CaseMouthTests: XCTestCase {
     /// where its case mouth is, as a fraction of its length from the tip.
     private func photo(_ c: Cartridge, bullet: [Float], metal: [Float]? = nil, caseOnly: Bool = false, caseFront: Double = 0,
                        highlight: Double = 0, noise: Float = 0, angle: Double = 0.7) -> (image: RGBImage, points: [Point], mouth: Double) {
-        let size = 1000
-        let g = OutlineGeometry(c.outline, includeBullet: !caseOnly)
-        let bulletEnd = c.outline.height - c.dimensions.caseLength
-        var pixels = [Float](repeating: 0, count: size * size * 3)
-        for i in 0..<(size * size) { pixels[i * 3] = 128; pixels[i * 3 + 1] = 126; pixels[i * 3 + 2] = 122 }
-        var points: [Point] = []
-        let cosine = cos(angle), sine = sin(angle)
-        let lit = bullet.map { 0.4 * $0 + 0.6 * 240 }
-        let metal = metal ?? brass
-        for y in 0..<size {
-            for x in 0..<size {
-                // Back to the outline's millimetres (x across, y from the tip), turned by -angle.
-                let dx = (Double(x) + 0.5 - 500) / ppm, dy = (Double(y) + 0.5 - 500) / ppm
-                let u = dx * cosine + dy * sine, v = -dx * sine + dy * cosine
-                guard u > -1, v > -1, u < c.outline.width + 1, v < c.outline.height + 1, g.contains(Point(x: u, y: v)) else { continue }
-                // Lit from one side: darker across the cartridge, the colour itself unchanged.
-                let light = Float(0.75 + 0.25 * u / c.outline.width)
-                let colour = v < bulletEnd - highlight ? bullet : v < bulletEnd ? lit : v < bulletEnd + caseFront ? bullet : metal
-                for k in 0..<3 {
-                    // The same noise on every run: a hash of the pixel and channel, -1 to 1.
-                    let hash = Float((x &* 73_856_093 ^ y &* 19_349_663 ^ (k + 1) &* 83_492_791) & 0xFFFF) / 32_767.5 - 1
-                    pixels[(y * size + x) * 3 + k] = colour[k] * light + noise * hash
+        Once.value("CaseMouthTests \(c.id) \(bullet) \(metal ?? []) \(caseOnly) \(caseFront) \(highlight) \(noise) \(angle)") {
+            let size = 1000
+            let g = OutlineGeometry(c.outline, includeBullet: !caseOnly)
+            let bulletEnd = c.outline.height - c.dimensions.caseLength
+            var pixels = [Float](repeating: 0, count: size * size * 3)
+            for i in 0..<(size * size) { pixels[i * 3] = 128; pixels[i * 3 + 1] = 126; pixels[i * 3 + 2] = 122 }
+            var points: [Point] = []
+            let cosine = cos(angle), sine = sin(angle)
+            let lit = bullet.map { 0.4 * $0 + 0.6 * 240 }
+            let metal = metal ?? brass
+            for y in 0..<size {
+                for x in 0..<size {
+                    // Back to the outline's millimetres (x across, y from the tip), turned by -angle.
+                    let dx = (Double(x) + 0.5 - 500) / ppm, dy = (Double(y) + 0.5 - 500) / ppm
+                    let u = dx * cosine + dy * sine, v = -dx * sine + dy * cosine
+                    guard u > -1, v > -1, u < c.outline.width + 1, v < c.outline.height + 1, g.contains(Point(x: u, y: v)) else { continue }
+                    // Lit from one side: darker across the cartridge, the colour itself unchanged.
+                    let light = Float(0.75 + 0.25 * u / c.outline.width)
+                    let colour = v < bulletEnd - highlight ? bullet : v < bulletEnd ? lit : v < bulletEnd + caseFront ? bullet : metal
+                    for k in 0..<3 {
+                        // The same noise on every run: a hash of the pixel and channel, -1 to 1.
+                        let hash = Float((x &* 73_856_093 ^ y &* 19_349_663 ^ (k + 1) &* 83_492_791) & 0xFFFF) / 32_767.5 - 1
+                        pixels[(y * size + x) * 3 + k] = colour[k] * light + noise * hash
+                    }
+                    points.append(Point(x: Double(x), y: Double(y)))
                 }
-                points.append(Point(x: Double(x), y: Double(y)))
             }
+            return (RGBImage(width: size, height: size, pixels: pixels), points, bulletEnd / c.outline.height)
         }
-        return (RGBImage(width: size, height: size, pixels: pixels), points, bulletEnd / c.outline.height)
     }
 
     /// The outline of the photo's cartridge, with and without its colours.
@@ -210,8 +212,7 @@ final class CaseMouthTests: XCTestCase {
     /// Raven's 9 mm on wood (the colour cut-out on the simulator): the copper bullet ends about a third
     /// of the way from the tip (19.15 mm case in a 29.7 mm round).
     func testMouthOnRavensPhoto() async throws {
-        let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "photo-9x19-wood", withExtension: "jpg"))
-        let analysis = await PhotoAnalyzer.analyze(try XCTUnwrap(UIImage(contentsOfFile: url.path)))
+        let analysis = try await RealPhotos.analysis("photo-9x19-wood")
         let contour = try XCTUnwrap(analysis.contour)
         let mouth = try XCTUnwrap(contour.mouth, "\(contour.parts)")
         XCTAssertEqual(mouth, 1 - 19.15 / 29.7, accuracy: 0.08)

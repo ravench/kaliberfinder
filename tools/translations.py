@@ -72,7 +72,7 @@ T = {
     "Patrone auf dem Bildschirm vergleichen.": ("Compare the cartridge on the screen.", "Comparez la cartouche sur l'écran.", "Confronta la cartuccia sullo schermo."),
     "Was du messen kannst; eine Länge und ein Durchmesser reichen oft.": ("What you can measure; a length and a diameter are often enough.", "Ce que vous pouvez mesurer ; une longueur et un diamètre suffisent souvent.", "Quello che riesci a misurare; una lunghezza e un diametro spesso bastano."),
     "Ausgewählte Kaliber werden 1:1 nebeneinander gezeigt.": ("Selected calibres are shown 1:1 side by side.", "Les calibres sélectionnés sont affichés côte à côte à l'échelle 1:1.", "I calibri selezionati sono mostrati 1:1 uno accanto all'altro."),
-    "Gerundete Richtwerte nach CIP/SAAMI, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.": ("Rounded reference values after CIP/SAAMI, not reloading data. Primer: Boxer; military cases may have Berdan.", "Valeurs indicatives arrondies selon CIP/SAAMI, pas de données de rechargement. Amorce : Boxer ; les douilles militaires peuvent être Berdan.", "Valori indicativi arrotondati secondo CIP/SAAMI, non dati di ricarica. Innesco: Boxer; i bossoli militari possono avere Berdan."),
+    "Gerundete Richtwerte, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.": ("Rounded reference values, not reloading data. Primer: Boxer; military cases may have Berdan.", "Valeurs indicatives arrondies, pas de données de rechargement. Amorce : Boxer ; les douilles militaires peuvent être Berdan.", "Valori indicativi arrotondati, non dati di ricarica. Innesco: Boxer; i bossoli militari possono avere Berdan."),
     "Wähle die Kaliber aus, die du nebeneinander sehen willst.": ("Pick the calibres you want to see side by side.", "Choisissez les calibres que vous voulez voir côte à côte.", "Scegli i calibri che vuoi vedere uno accanto all'altro."),
     "Für Patronen, die die App nicht kennt: eigener Name, von der Auswertung ausgenommen.": ("For rounds the app does not know: your own name, left out of the evaluation.", "Pour des cartouches inconnues de l'app : votre propre nom, exclues de l'évaluation.", "Per cartucce che l'app non conosce: nome proprio, escluse dalla valutazione."),
     # Calibre tags and countries (CartridgeRow, CartridgeDetailView). Country names come from
@@ -111,6 +111,14 @@ T = {
     "Weltweit verbreitet": ("Used worldwide", "Répandu dans le monde entier", "Diffuso in tutto il mondo"),
     "Russisches Kaiserreich": ("Russian Empire", "Empire russe", "Impero russo"),
     "Sowjetunion": ("Soviet Union", "Union soviétique", "Unione Sovietica"),
+    "Norwegen": ("Norway", "Norvège", "Norvegia"),
+    "Niederlande": ("Netherlands", "Pays-Bas", "Paesi Bassi"),
+    "Brasilien": ("Brazil", "Brésil", "Brasile"),
+    "Ägypten": ("Egypt", "Égypte", "Egitto"),
+    "Serbien": ("Serbia", "Serbie", "Serbia"),
+    "Thailand": ("Thailand", "Thaïlande", "Tailandia"),
+    "Osmanisches Reich": ("Ottoman Empire", "Empire ottoman", "Impero ottomano"),
+    "Kanada": ("Canada", "Canada", "Canada"),
     "Tschechoslowakei": ("Czechoslovakia", "Tchécoslovaquie", "Cecoslovacchia"),
     "DDR": ("East Germany", "RDA", "DDR"),
     "Jugoslawien": ("Yugoslavia", "Yougoslavie", "Jugoslavia"),
@@ -344,7 +352,7 @@ T = {
     "Nicht gespeichert: %@": ("Not saved: %@", "Non enregistré : %@", "Non salvato: %@"),
     "Nicht in der Liste": ("Not in the list", "Pas dans la liste", "Non nell'elenco"),
     "Name": ("Name", "Nom", "Nome"),
-    # Tip colour codes (calibre-data [[tip_colours]]), shown on the calibre page.
+    # Tip colour codes (calibre-data [[colour_codes]], part "tip"), shown on the calibre page.
     "Farbcodes der Geschossspitze": ("Bullet tip colour codes", "Codes couleur de la pointe", "Codici colore della punta"),
     "Militärische Laborierungen, die Farben von der Spitze abwärts.":
         ("Military loads, the colours from the tip down.", "Chargements militaires, les couleurs de la pointe vers le bas.",

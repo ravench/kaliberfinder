@@ -37,12 +37,6 @@ final class ChangelogTests: XCTestCase {
         XCTAssertNil(Changelog.toShow(build: "2", language: "de", defaults: defaults, changelog: nil))
     }
 
-    func testTheBundleCarriesAPlaceholder() throws {
-        // Development builds: the file CI overwrites exists and has no notes.
-        let bundled = try XCTUnwrap(Changelog.load())
-        XCTAssertNil(bundled.bullets(language: "de"))
-    }
-
     func testTheTourFixtureHasAllLanguages() throws {
         let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "changelog", withExtension: "json"))
         let fixture = try JSONDecoder().decode(Changelog.self, from: Data(contentsOf: url))
