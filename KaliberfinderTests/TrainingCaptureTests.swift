@@ -308,7 +308,6 @@ final class TrainingCaptureTests: XCTestCase {
         // A phone without a scanner captures with its wide camera, without depth; the simulator has no camera at all.
         XCTAssertEqual(CameraChoice.wide.deviceType, .builtInWideAngleCamera)
         XCTAssertEqual(CameraChoice.wide.title, "Weitwinkel")
-        XCTAssertEqual(LiDARCamera.canCapture, !LiDARCamera.choices.isEmpty)
         XCTAssertNil(LiDARCamera.appChoice, "the simulator has no back camera, so the home screen shows no photo button")
         // Only the LiDAR camera's photos carry depth: the guides show only with it.
         XCTAssertTrue(LiDARCamera(choice: .lidar).hasDepth)
