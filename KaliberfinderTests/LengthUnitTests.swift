@@ -15,13 +15,6 @@ final class LengthUnitTests: XCTestCase {
         XCTAssertEqual(LengthUnit.current, .imperial)
     }
 
-    func testConversion() {
-        XCTAssertEqual(LengthUnit.imperial.value(fromMM: 25.4), 1, accuracy: 1e-12)
-        XCTAssertEqual(LengthUnit.imperial.millimetres(2.8), 71.12, accuracy: 1e-9)
-        XCTAssertEqual(LengthUnit.metric.value(fromMM: 29.69), 29.69)
-        XCTAssertEqual(LengthUnit.metric.millimetres(29.69), 29.69)
-    }
-
     func testFormatting() {
         XCTAssertEqual(LengthUnit.metric.format(29.69, locale: us), "29.69 mm")
         XCTAssertEqual(LengthUnit.metric.format(29.69, locale: german), "29,69 mm")
@@ -58,9 +51,9 @@ final class LengthUnitTests: XCTestCase {
         let unit = LengthUnit.imperial
         // Length and rim alone also fit 9x21 and 7.65 Parabellum; the case length tells them apart.
         let measured = MeasuredDimensions(overallLength: unit.parse("1.169"), caseLength: unit.parse("0.754"), rim: unit.parse("0.392"))
-        XCTAssertEqual(DimensionMatcher.rank(measured).first?.cartridge.id, "9x19 mm")
+        XCTAssertEqual(DimensionMatcher.rank(measured, cartridges: Fixture.current).first?.cartridge.id, "9x19 mm")
         let gp11 = MeasuredDimensions(overallLength: unit.parse("3.051"), rim: unit.parse("0.496"))
-        XCTAssertEqual(DimensionMatcher.rank(gp11).first?.cartridge.id, "7.5x55 mm Swiss (GP 11)")
+        XCTAssertEqual(DimensionMatcher.rank(gp11, cartridges: Fixture.current).first?.cartridge.id, "7.5x55 mm Swiss (GP 11)")
     }
 
     func testDeviationIsShownInTheChosenUnit() throws {

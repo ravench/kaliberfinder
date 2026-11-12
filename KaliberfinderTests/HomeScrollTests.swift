@@ -67,7 +67,6 @@ final class HomeScrollTests: XCTestCase {
             RunLoop.main.run(until: Date().addingTimeInterval(0.1))
             list = scrollViews(in: window).first { $0.contentSize.height > 0 }
         }
-        RunLoop.main.run(until: Date().addingTimeInterval(1))
         window.layoutIfNeeded()
         return try XCTUnwrap(list, "No list on the home screen")
     }

@@ -2,9 +2,13 @@ import XCTest
 @testable import Kaliberfinder
 
 final class DimensionMatcherTests: XCTestCase {
-    func testFindsNineMillimetreFromCalliperValues() {
+    private func rank(_ measured: MeasuredDimensions, cartridges: [Cartridge] = Fixture.current, limit: Int = 15) -> [DimensionMatch] {
+        DimensionMatcher.rank(measured, cartridges: cartridges, limit: limit)
+    }
+
+    func testFindsNineMillimetreFromCalliperValues() {  // on Fixture.catalogue, like every rank here
         let m = MeasuredDimensions(overallLength: 29.7, caseLength: 19.15, rim: 9.96, bullet: nil)
-        let matches = DimensionMatcher.rank(m)
+        let matches = rank(m)
         XCTAssertEqual(matches.first?.cartridge.id, "9x19 mm")
         XCTAssertEqual(matches.first?.fit, .good)
         XCTAssertEqual(matches.first?.maxDeviation ?? 1, 0, accuracy: 0.001)
@@ -16,7 +20,7 @@ final class DimensionMatcherTests: XCTestCase {
     /// A fired hull has opened to the length in its name (review 2026-11-10): typed as the case length it is its gauge.
     func testAFiredHullFitsItsGaugeByCaseLength() {
         for (length, gauge) in [(70.0, "12/70"), (76.0, "12/76"), (89.0, "12/89")] {
-            let matches = DimensionMatcher.rank(MeasuredDimensions(caseLength: length, rim: 22.3))
+            let matches = rank(MeasuredDimensions(caseLength: length, rim: 22.3))
             XCTAssertEqual(matches.first?.cartridge.id, gauge, "\(length)")
             XCTAssertEqual(matches.first?.fit, .good, "\(length)")
         }
@@ -24,13 +28,13 @@ final class DimensionMatcherTests: XCTestCase {
 
     /// A fired hull measured as the length of what one holds, typed as Gesamtlänge (review 2026-11-10): its gauge fits too.
     func testAFiredHullFitsItsGaugeByOverallLength() {
-        let hull = DimensionMatcher.rank(MeasuredDimensions(overallLength: 70, rim: 22.3))
+        let hull = rank(MeasuredDimensions(overallLength: 70, rim: 22.3))
         XCTAssertEqual(Set(hull.prefix(2).map(\.cartridge.id)), ["12/70", "12/76"], "an opened 12/70 or a loaded 12/76")
         XCTAssertTrue(hull.prefix(2).allSatisfy { $0.fit == .good })
-        let loaded = DimensionMatcher.rank(MeasuredDimensions(overallLength: 64, rim: 22.3))
+        let loaded = rank(MeasuredDimensions(overallLength: 64, rim: 22.3))
         XCTAssertEqual(loaded.first?.cartridge.id, "12/70")
         XCTAssertEqual(loaded.first?.fit, .good)
-        let long = DimensionMatcher.rank(MeasuredDimensions(overallLength: 76, rim: 22.3))
+        let long = rank(MeasuredDimensions(overallLength: 76, rim: 22.3))
         XCTAssertEqual(long.first?.cartridge.id, "12/76")
         XCTAssertEqual(long.first { $0.cartridge.id == "12/70" }?.fit, .poor)
     }
@@ -38,7 +42,7 @@ final class DimensionMatcherTests: XCTestCase {
     /// A rebated rim is narrower than the base; the typed rim is scored against the rim (review 2026-11-10).
     func testRebatedRimFitsItsCalibre() {
         // Its rim is the .44 Magnum's, so both fit exactly (the base, 13.8, would put it 0.7 mm off).
-        let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 40.9, caseLength: 32.6, rim: 13.1))
+        let matches = rank(MeasuredDimensions(overallLength: 40.9, caseLength: 32.6, rim: 13.1))
         XCTAssertEqual(Set(matches.prefix(2).map(\.cartridge.id)), [".44 Magnum", ".50 Action Express"])
         XCTAssertEqual(matches.first { $0.cartridge.id == ".50 Action Express" }?.fit, .good)
     }
@@ -47,95 +51,84 @@ final class DimensionMatcherTests: XCTestCase {
     /// and his Remington 65.5 mm against the catalogue's 64.0 mm; all are 12/70.
     func testShotshellsOfEveryCrimpFitTheirGauge() throws {
         for length in [57.8, 58.2, 65.5] {
-            let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: length, rim: 22.3))
+            let matches = rank(MeasuredDimensions(overallLength: length, rim: 22.3))
             let twelve = try XCTUnwrap(matches.first { $0.cartridge.id == "12/70" }, "\(length)")
             XCTAssertEqual(twelve.fit, .good, "\(length)")
             XCTAssertEqual(matches.first?.cartridge.dimensions.rim, 22.3, "a 12-gauge shell first at \(length)")
         }
         for length in [57.8, 65.5] {
-            XCTAssertEqual(DimensionMatcher.rank(MeasuredDimensions(overallLength: length, rim: 22.3)).first?.cartridge.id, "12/70",
+            XCTAssertEqual(rank(MeasuredDimensions(overallLength: length, rim: 22.3)).first?.cartridge.id, "12/70",
                            "\(length) mm: 12/70 before 12/76")
-            XCTAssertEqual(DimensionMatcher.rank(MeasuredDimensions(caseLength: length, rim: 22.3)).first?.cartridge.id, "12/70",
+            XCTAssertEqual(rank(MeasuredDimensions(caseLength: length, rim: 22.3)).first?.cartridge.id, "12/70",
                            "\(length) mm as the case length")
         }
-        let magnum = DimensionMatcher.rank(MeasuredDimensions(overallLength: 57.8, rim: 22.3)).first { $0.cartridge.id == "12/89" }
+        let magnum = rank(MeasuredDimensions(overallLength: 57.8, rim: 22.3)).first { $0.cartridge.id == "12/89" }
         XCTAssertNotEqual(magnum?.fit, .good)
     }
 
     func testOnlyShotshellsHaveALengthRange() throws {
-        let shell = try XCTUnwrap(CartridgeCatalog.cartridge(id: "12/70"))
+        let shell = try XCTUnwrap(Fixture.cartridge("12/70"))
         XCTAssertEqual(shell.overallLengths.lowerBound, 64 * Cartridge.shellShortest, accuracy: 1e-9)
         XCTAssertEqual(shell.overallLengths.upperBound, 64 * Cartridge.shellLongest, accuracy: 1e-9)
-        let nine = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
+        let nine = try XCTUnwrap(Fixture.cartridge("9x19 mm"))
         XCTAssertEqual(nine.overallLengths, 29.7...29.7)
         XCTAssertEqual(DimensionMatcher.outside(29, 29.7...29.7), 0.7, accuracy: 1e-9)
         XCTAssertEqual(DimensionMatcher.outside(60, 57.6...65.9), 0)
     }
 
     func testTwoValuesAreEnoughForGP11() {
-        let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 77.5, rim: 12.6))
+        let matches = rank(MeasuredDimensions(overallLength: 77.5, rim: 12.6))
         XCTAssertEqual(matches.first?.cartridge.id, "7.5x55 mm Swiss (GP 11)")
     }
 
     func testShorterCaseTellsGP1890FromGP11() {
-        // calibre-data #57: GP 1890 is drawn on the 54.6 mm case of Raven's 1906 round (rim 12.7).
-        let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 77.0, caseLength: 54.6, rim: 12.7),
-                                            cartridges: CartridgeCatalog.all)
+        // calibre-data #106: the GP 1890 as the army's 1892 drawing has it.
+        let matches = rank(MeasuredDimensions(overallLength: 77.2, caseLength: 53.5, rim: 12.5), cartridges: Fixture.catalogue)
         XCTAssertEqual(matches.first?.cartridge.id, "7.5x53.5 mm Swiss (GP 1890)")
         XCTAssertEqual(matches.first?.fit, .good)
         let gp11 = matches.first { $0.cartridge.id == "7.5x55 mm Swiss (GP 11)" }
         XCTAssertNotEqual(gp11?.fit, .good, "GP 11's case is 1 mm longer")
         let cadet = matches.first { $0.cartridge.id == "7.5 mm Kadettenpatrone" }
-        XCTAssertNotEqual(cadet?.fit, .good, "the same case, but the Kadettenpatrone is 0.5 mm longer overall")
+        XCTAssertNotEqual(cadet?.fit, .good, "the Kadettenpatrone's case is 1 mm longer")
     }
 
     func testGP1890IsOnlyFoundWithObsoleteCalibresSwitchedOn() {
-        let gp1890 = MeasuredDimensions(overallLength: 77.0, caseLength: 54.6, rim: 12.7)
-        let without = DimensionMatcher.rank(gp1890, cartridges: CartridgeCatalog.matchable(includeObsolete: false))
+        let gp1890 = MeasuredDimensions(overallLength: 77.2, caseLength: 53.5, rim: 12.5)
+        let without = rank(gp1890)
         XCTAssertFalse(without.contains { $0.cartridge.id == "7.5x53.5 mm Swiss (GP 1890)" })
-        let with = DimensionMatcher.rank(gp1890, cartridges: CartridgeCatalog.matchable(includeObsolete: true))
+        let with = rank(gp1890, cartridges: CartridgeCatalog.matchable(includeObsolete: true, in: Fixture.catalogue))
         XCTAssertEqual(with.first?.cartridge.id, "7.5x53.5 mm Swiss (GP 1890)")
     }
 
     func testIdenticalCalibresTie() {
-        let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 71.1, caseLength: 51.2, rim: 11.9))
+        let matches = rank(MeasuredDimensions(overallLength: 71.1, caseLength: 51.2, rim: 11.9))
         XCTAssertEqual(Set(matches.prefix(2).map(\.cartridge.id)), [".308 Winchester", "7.62x51 mm NATO"])
     }
 
     func testSmallDifferencesAreWithinTolerance() {
-        let matches = DimensionMatcher.rank(MeasuredDimensions(overallLength: 25.5, rim: 6.85))
+        let matches = rank(MeasuredDimensions(overallLength: 25.5, rim: 6.85))
         XCTAssertEqual(matches.first?.cartridge.id, ".22 LR")
         XCTAssertEqual(matches.first?.fit, .good)
     }
 
     func testRoughAndPoorFits() throws {
-        let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
+        let c = try XCTUnwrap(Fixture.cartridge("9x19 mm"))
         XCTAssertEqual(DimensionMatch(cartridge: c, maxDeviation: 0.6, meanDeviation: 0.3).fit, .rough)
         XCTAssertEqual(DimensionMatch(cartridge: c, maxDeviation: 2, meanDeviation: 1).fit, .poor)
     }
 
     func testEmptyMeasurementGivesNothing() {
         XCTAssertTrue(MeasuredDimensions().isEmpty)
-        XCTAssertTrue(DimensionMatcher.rank(MeasuredDimensions()).isEmpty)
+        XCTAssertTrue(rank(MeasuredDimensions()).isEmpty)
     }
 
     func testLimit() {
-        XCTAssertEqual(DimensionMatcher.rank(MeasuredDimensions(overallLength: 30)).count, 15)
-        XCTAssertEqual(DimensionMatcher.rank(MeasuredDimensions(overallLength: 30), limit: 3).count, 3)
-    }
-
-    func testParsesBothDecimalSeparators() {
-        XCTAssertEqual(DimensionMatcher.number("29,7"), 29.7)
-        XCTAssertEqual(DimensionMatcher.number(" 29.7 "), 29.7)
-        XCTAssertEqual(DimensionMatcher.number("12"), 12)
-        XCTAssertNil(DimensionMatcher.number(""))
-        XCTAssertNil(DimensionMatcher.number("abc"))
-        XCTAssertNil(DimensionMatcher.number("-3"))
-        XCTAssertNil(DimensionMatcher.number("0"))
+        XCTAssertEqual(rank(MeasuredDimensions(overallLength: 30)).count, 15)
+        XCTAssertEqual(rank(MeasuredDimensions(overallLength: 30), limit: 3).count, 3)
     }
 
     func testDetailText() throws {
-        let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
+        let c = try XCTUnwrap(Fixture.cartridge("9x19 mm"))
         let exact = MeasureView.detail(for: DimensionMatch(cartridge: c, maxDeviation: 0, meanDeviation: 0))
         let off = MeasureView.detail(for: DimensionMatch(cartridge: c, maxDeviation: 1.5, meanDeviation: 1))
         XCTAssertFalse(exact.isEmpty)

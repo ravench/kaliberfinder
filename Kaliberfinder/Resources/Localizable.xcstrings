@@ -1128,6 +1128,29 @@
         }
       }
     },
+    "Brasilien": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brazil"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brésil"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brasile"
+          }
+        }
+      }
+    },
     "Braun": {
       "extractionState": "manual",
       "localizations": {
@@ -2163,25 +2186,25 @@
         }
       }
     },
-    "Gerundete Richtwerte nach CIP/SAAMI, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.": {
+    "Gerundete Richtwerte, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rounded reference values after CIP/SAAMI, not reloading data. Primer: Boxer; military cases may have Berdan."
+            "value": "Rounded reference values, not reloading data. Primer: Boxer; military cases may have Berdan."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Valeurs indicatives arrondies selon CIP/SAAMI, pas de données de rechargement. Amorce : Boxer ; les douilles militaires peuvent être Berdan."
+            "value": "Valeurs indicatives arrondies, pas de données de rechargement. Amorce : Boxer ; les douilles militaires peuvent être Berdan."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Valori indicativi arrotondati secondo CIP/SAAMI, non dati di ricarica. Innesco: Boxer; i bossoli militari possono avere Berdan."
+            "value": "Valori indicativi arrotondati, non dati di ricarica. Innesco: Boxer; i bossoli militari possono avere Berdan."
           }
         }
       }
@@ -3240,6 +3263,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fotocamera"
+          }
+        }
+      }
+    },
+    "Kanada": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canada"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canada"
           }
         }
       }
@@ -4463,6 +4509,52 @@
         }
       }
     },
+    "Niederlande": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Netherlands"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pays-Bas"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paesi Bassi"
+          }
+        }
+      }
+    },
+    "Norwegen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Norway"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Norvège"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Norvegia"
+          }
+        }
+      }
+    },
     "Notiz": {
       "extractionState": "manual",
       "localizations": {
@@ -4597,6 +4689,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Grandezza reale"
+          }
+        }
+      }
+    },
+    "Osmanisches Reich": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ottoman Empire"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empire ottoman"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impero ottomano"
           }
         }
       }
@@ -5475,6 +5590,29 @@
         }
       }
     },
+    "Serbien": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serbia"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serbie"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serbia"
+          }
+        }
+      }
+    },
     "Serie": {
       "extractionState": "manual",
       "localizations": {
@@ -5770,6 +5908,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Semiblindata"
+          }
+        }
+      }
+    },
+    "Thailand": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thailand"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thaïlande"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tailandia"
           }
         }
       }
@@ -6897,6 +7058,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "© 2026 Simon Giotta"
+          }
+        }
+      }
+    },
+    "Ägypten": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egypt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Égypte"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egitto"
           }
         }
       }

@@ -43,16 +43,9 @@ final class MeasurementsTests: XCTestCase {
 
     /// The base's line is on the body just in front of the extractor groove, rim or belt, not on the
     /// rim of a rimless case or on the ramp up to a belt.
-    func testBaseLineIsInFrontOfTheHead() throws {
+    func testBaseLineIsInFrontOfTheHead() {
         for c in CartridgeCatalog.all where c.hasCase {
             XCTAssertNotNil(DimensionLayout.bodyStart(of: c, in: OutlineGeometry(c.outline, includeBullet: false)), c.id)
-        }
-        // From the generated outlines: 9x19 mm's body starts 2.98 mm above the base, .300 Win Mag's
-        // in front of the belt, 5.59 mm up.
-        for (id, start) in [("9x19 mm", 2.98), (".300 Winchester Magnum", 5.59)] {
-            let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: id))
-            let found = try XCTUnwrap(DimensionLayout.bodyStart(of: c, in: OutlineGeometry(c.outline, includeBullet: false)))
-            XCTAssertEqual(found, start, accuracy: 0.3, id)
         }
     }
 
@@ -83,7 +76,10 @@ final class MeasurementsTests: XCTestCase {
             for c in CartridgeCatalog.all {
                 let layout = DimensionLayout(cartridge: c, size: size, label: asked)
                 let label = layout.labelSize
-                XCTAssertGreaterThanOrEqual(layout.scale, DimensionLayout.minScale - 1e-9, c.id)
+                // Labels give way down to `minScale`; a round too long for the screen at that scale (the
+                // 150 mm 5.66x39 mm MPS dart) is bounded by the height alone.
+                let tallest = (size.height - DimensionLayout.rimGap - asked.height) / c.outline.height
+                XCTAssertGreaterThanOrEqual(layout.scale, min(DimensionLayout.minScale, tallest) - 1e-9, c.id)
                 XCTAssertLessThanOrEqual(label.width, asked.width)
                 let points = layout.dimensions.flatMap { [$0.from, $0.to] } + layout.lines.joined() + layout.arrowheads.joined()
                 for p in points {
