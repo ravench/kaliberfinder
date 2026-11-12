@@ -88,7 +88,7 @@ final class AppStoreScreensTests: XCTestCase {
             for (index, value) in [(0, "29\(separator)7"), (3, "9\(separator)0")] where fields.count > index {
                 // The field fills the row on the iPad but its text sits right: tap there for focus.
                 fields.element(boundBy: index).coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
-                for _ in 0..<6 where app.keyboards.count == 0 { usleep(500_000) }
+                for _ in 0..<6 where !app.keyboards.firstMatch.exists { usleep(500_000) }
                 app.typeText(value)
             }
             // .scrollDismissesKeyboard(.interactively): the drag has to reach down into the keyboard.
@@ -97,11 +97,11 @@ final class AppStoreScreensTests: XCTestCase {
             // On the iPad the number pad floats as a popover that app.keyboards doesn't count: tap beside
             // the form (the margin, then the title) until its keys are gone.
             let spots = [CGVector(dx: 0.03, dy: 0.85), CGVector(dx: 0.5, dy: 0.07)]
-            for spot in spots where app.keys["1"].exists || app.keyboards.count > 0 {
+            for spot in spots where app.keys["1"].exists || app.keyboards.firstMatch.exists {
                 app.coordinate(withNormalizedOffset: spot).tap()
                 sleep(1)
             }
-            XCTAssertFalse(app.keys["1"].exists || app.keyboards.count > 0, "Keyboard still showing")
+            XCTAssertFalse(app.keys["1"].exists || app.keyboards.firstMatch.exists, "Keyboard still showing")
             _ = app.staticTexts[t("Mögliche Kaliber")].waitForExistence(timeout: 5)
             save("06-dimensions")
         }
