@@ -33,8 +33,11 @@ def paths(value, prefix=""):
 
 def fixture_is_current(fixture, catalogue):
     """Whether the frozen fixture still has the catalogue's fields, nested ones too (a key the app's
-    model gained or lost makes every fixture test fail with «not in Fixtures/catalogue.json»)."""
-    return paths(fixture["cartridges"]) == paths(catalogue["cartridges"]) and set(fixture) == set(catalogue)
+    model gained or lost makes every fixture test fail with «not in Fixtures/catalogue.json»).
+    Compared on the fixture's own calibres: a field only other calibres have is not missing."""
+    chosen = {c["id"] for c in fixture["cartridges"]}
+    same = [c for c in catalogue["cartridges"] if c["id"] in chosen]
+    return paths(fixture["cartridges"]) == paths(same) and set(fixture) == set(catalogue)
 
 
 def git(*args):

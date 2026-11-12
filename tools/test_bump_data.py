@@ -9,9 +9,9 @@ class FixtureFieldsTests(unittest.TestCase):
     """The frozen test fixture is regenerated only when the catalogue's fields change, nested ones too."""
 
     def test_same_fields_keep_the_fixture(self):
-        catalogue = {"version": 1, "cartridges": [{"id": "a", "primer": {"type": "x"}}, {"id": "b"}]}
+        catalogue = {"version": 1, "cartridges": [{"id": "a", "primer": {"type": "x"}}, {"id": "b", "outline": {"tip": "M0 0"}}]}
         fixture = {"version": 1, "cartridges": [{"id": "a", "primer": {"type": "x"}}]}
-        self.assertTrue(bump_data.fixture_is_current(fixture, catalogue))
+        self.assertTrue(bump_data.fixture_is_current(fixture, catalogue), "b's tip is no field a lacks")
         self.assertEqual(bump_data.paths(catalogue["cartridges"]), {"id", "primer", "primer.type"})
 
     def test_a_new_or_renamed_field_regenerates_it(self):
