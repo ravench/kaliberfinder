@@ -53,11 +53,20 @@ final class ShapeMatcherTests: XCTestCase {
     }
 
     func testMostOfTheCatalogueIsAmongTheFirstFive() throws {
-        let ranks = try CartridgeCatalog.all.enumerated().map { i, c in
-            try rankIfListed(of: c, angle: Double(i % 7) * 0.45, pixelsPerMM: 5 + Double(i % 4))
+        // Every calibre ranked against all 758, on every core: the matcher reads only its static tables.
+        let all = CartridgeCatalog.all
+        var ranks = [Int??](repeating: nil, count: all.count)
+        let lock = NSLock()
+        DispatchQueue.concurrentPerform(iterations: all.count) { i in
+            let rank = measure(all[i], angle: Double(i % 7) * 0.45, pixelsPerMM: 5 + Double(i % 4)).map { m in
+                Matcher.rank(shape: m, cartridges: all, limit: .max).firstIndex { $0.cartridge.id == all[i].id }
+            }
+            lock.lock(); ranks[i] = rank; lock.unlock()
         }
-        let found = ranks.filter { ($0 ?? .max) < 5 }.count
-        XCTAssertGreaterThanOrEqual(Double(found) / Double(CartridgeCatalog.all.count), 0.95)
+        let unmeasured = zip(all, ranks).filter { $0.1 == nil }.map(\.0.name)
+        XCTAssertTrue(unmeasured.isEmpty, unmeasured.joined(separator: ", "))
+        let found = ranks.filter { ($0.flatMap { $0 } ?? .max) < 5 }.count
+        XCTAssertGreaterThanOrEqual(Double(found) / Double(all.count), 0.95)
     }
 
     func testMeasurementDoesNotDependOnRotationOrScale() throws {

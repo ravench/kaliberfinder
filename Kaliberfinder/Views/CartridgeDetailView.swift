@@ -99,7 +99,7 @@ struct CartridgeDetailView: View {
                     LabeledContent("Im Profil nicht unterscheidbar von", value: twins.map(\.name).joined(separator: ", "))
                 }
             } footer: {
-                Text("Gerundete Richtwerte nach CIP/SAAMI, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.")
+                Text("Gerundete Richtwerte, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.")
             }
         }
         .readableWidth()

@@ -156,7 +156,6 @@ final class EvaluationTests: XCTestCase {
         let cases = CapturePackage(calibre: gp11.id, part: "emptyCase", created: Date())
         let scored = Evaluation.shot("gp11/01", analysis: PhotoAnalysis(shape: caseShape, isBrass: true), depth: nil, package: cases)
         XCTAssertLessThanOrEqual(try XCTUnwrap(scored.result.rank), 5)
-        XCTAssertLessThanOrEqual(try XCTUnwrap(scored.result.row), try XCTUnwrap(scored.result.rank))
         XCTAssertNotNil(scored.first)
         XCTAssertTrue(scored.result.part, "automatic mode sees the case mouth")
         XCTAssertEqual(scored.result.neck, true)

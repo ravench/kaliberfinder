@@ -17,7 +17,7 @@ final class LocalizationTests: XCTestCase {
         XCTAssertFalse(en.isEmpty)
         for lang in ["en", "fr", "it"] {
             let t = try table(lang)
-            XCTAssertEqual(Set(t.keys), Set(en.keys), "\(lang) has different keys")
+            if lang != "en" { XCTAssertEqual(Set(t.keys), Set(en.keys), "\(lang) has different keys") }
             for (key, value) in t {
                 XCTAssertFalse(value.isEmpty, "\(lang): \(key)")
                 XCTAssertEqual(placeholders(value), placeholders(key), "\(lang) translation of \(key) changes the placeholders")

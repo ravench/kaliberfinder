@@ -54,7 +54,8 @@ parentheses.
 
 The cartridge data comes from the shared [calibre-data](https://github.com/ravench/calibre-data)
 repository (a git submodule at `calibre-data/`, also used by Schiesstagebuch), one TOML file per
-calibre. Dimensions are rounded reference values (CIP/SAAMI), not reloading data.
+calibre. Dimensions are rounded reference values (C.I.P. and SAAMI where they exist, else reference books; each
+calibre lists its sources there), not reloading data.
 
 ## Building
 
