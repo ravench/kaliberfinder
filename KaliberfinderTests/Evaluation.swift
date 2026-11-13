@@ -187,7 +187,8 @@ enum Evaluation {
         // As the phone's picker highlights it: from the outline, or a shotshell in the first row by its length.
         let first = rows[.off]?.first?.lead.cartridge
         let part = analysis.shape.map {
-            ScanMode.detected(in: $0, size: analysis.rawSize(depth: depth), perspective: analysis.perspective(depth: depth), first: first) == package.scanMode
+            ScanMode.detected(in: $0, size: analysis.rawSize(depth: depth), perspective: analysis.perspective(depth: depth), first: first,
+                              mouth: analysis.contour?.mouth) == package.scanMode
         } ?? false
         let expected = calibre.flatMap {
             ShapeMatcher.expected(for: $0, part: package.scanMode == .emptyCase ? .emptyCase : .cartridge)

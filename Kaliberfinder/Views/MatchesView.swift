@@ -125,7 +125,7 @@ struct MatchesView: View {
     private var detected: ScanMode? {
         guard let analysis, let shape = analysis.shape, !shape.isEndView else { return nil }
         return ScanMode.detected(in: shape, size: analysis.rawSize(depth: depth), perspective: analysis.perspective(depth: depth),
-                                 first: matches.first?.cartridge)
+                                 first: matches.first?.cartridge, mouth: analysis.contour?.mouth)
     }
 
     /// The part the screen shows the photo as, on the outline and in the notes: the user's choice, else the detection.
