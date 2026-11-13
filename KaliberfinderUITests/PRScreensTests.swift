@@ -51,6 +51,20 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// Measurements typed by hand, 29.7 mm long with a 9 mm bullet: the 9x19 group is one row of the results
+    /// (Raven, 2026-11-13). The values come as launch arguments: the number pad does not go away on the simulator.
+    func testMeasuredMatches() {
+        app.terminate()
+        app.launchArguments += ["-screenTourLength", "29.7", "-screenTourBullet", "9.0"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
+        XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
+        snap("03b-Masse-Treffer")  // the 9x19 group's row leads
+        scroll()
+        snap("03b-Masse-Treffer-unten")
+    }
+
     /// Calibres picked long, short, middle stand by length: in the picked list and on the 1:1 screen.
     func testPickAndCompare() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")

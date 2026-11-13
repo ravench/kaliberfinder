@@ -2,10 +2,11 @@ import SwiftUI
 
 /// Find calibres from dimensions measured by hand; pick results and compare them 1:1.
 struct MeasureView: View {
-    @State private var overallLength = ""
+    // For the PR screens tour only: `-screenTourLength 29.7 -screenTourBullet 9.0` fill the fields past the number pad.
+    @State private var overallLength = UserDefaults.standard.string(forKey: "screenTourLength") ?? ""
     @State private var caseLength = ""
     @State private var rim = ""
-    @State private var bullet = ""
+    @State private var bullet = UserDefaults.standard.string(forKey: "screenTourBullet") ?? ""
     @State private var shape: CaseShape = .any
     @State private var selection: [Cartridge] = []
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
