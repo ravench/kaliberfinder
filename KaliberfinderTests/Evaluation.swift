@@ -39,6 +39,11 @@ enum Evaluation {
         var rank: Int?
         var part: Bool
         var neck: Bool?
+        /// The LiDAR size against the calliper measurements of the round photographed (`CapturePackage.measurements`),
+        /// in mm, measured minus calliper: the length of the part (the case of an empty case) and the body's diameter;
+        /// nil without a size or a measurement (Raven, 2026-11-11: the calliper is the truth, not the catalogue).
+        var lengthError: Double?
+        var diameterError: Double?
 
         /// The row with the switches set as `switches`.
         func row(_ switches: Switches) -> Int? {
@@ -151,6 +156,20 @@ enum Evaluation {
         packages.filter { !$0.package.isUnlisted }
     }
 
+    /// The shots that count, and the names and reasons of those marked `excluded` (`CaptureShot.excluded`).
+    static func included(_ shots: [SavedShot], in package: String) -> (shots: [SavedShot], excluded: [String]) {
+        (shots.filter { $0.shot.excluded == nil },
+         shots.compactMap { entry in entry.shot.excluded.map { "\(package)/\(entry.url.lastPathComponent): \($0)" } })
+    }
+
+    /// The measured size against the calliper: the length of the part photographed (a cartridge's overall
+    /// length, an empty case's case length) and the diameter against the base, each measured minus calliper.
+    static func sizeErrors(_ size: MeasuredSize?, part: ScanMode, measurements: Measurements?) -> (length: Double?, diameter: Double?) {
+        guard let size, let m = measurements else { return (nil, nil) }
+        let length = part == .emptyCase ? m.caseLength : m.overallLength
+        return (length.map { size.length - $0 }, m.base.map { size.diameter - $0 })
+    }
+
     /// Scores the analysis of a photo of `package`'s calibre and part, with the LiDAR scale it was
     /// taken with, in automatic mode as the phone starts: its row in the list the phone shows for each
     /// setting of the switches (see `Evaluation`) and its rank among every calibre.
@@ -174,10 +193,11 @@ enum Evaluation {
             ShapeMatcher.expected(for: $0, part: package.scanMode == .emptyCase ? .emptyCase : .cartridge)
         }
         let neck = expected?.neck?.isClear == true ? analysis.shape?.neck != nil : nil
+        let errors = sizeErrors(size, part: package.scanMode, measurements: package.measurements)
         return Shot(name: name, calibre: package.calibre, part: package.scanMode, size: size,
                     source: analysis.shape == nil ? .none : source, first: first?.id,
                     result: ShotResult(row: row(.off), rowObsolete: row(.obsolete), rowAll: row(.obsoleteAndRare),
-                                       rank: rank, part: part, neck: neck))
+                                       rank: rank, part: part, neck: neck, lengthError: errors.length, diameterError: errors.diameter))
     }
 
     /// What the phone lists of `ranked` (every calibre, in rank order) with the switches set as
@@ -191,15 +211,35 @@ enum Evaluation {
     /// The report in Markdown: the scores overall, by calibre and by kind of shot, what calibres
     /// are taken for, and every shot whose calibre is not in the first row with the switches off. Shot
     /// names and numbers only, never a photo. `before`: an earlier run (`Baseline`) to compare with.
-    static func report(_ shots: [Shot], title: String, before: Baseline? = nil) -> String {
+    static func report(_ shots: [Shot], title: String, before: Baseline? = nil, excluded: [String] = []) -> String {
         var lines = ["# \(title)", "", summary(Scores(shots.map(\.result)), count: shots.count), ""]
+        if !excluded.isEmpty {
+            lines += ["\(excluded.count) shots left out as marked: " + excluded.joined(separator: "; "), ""]
+        }
         if let before { lines += comparison(shots, with: before) }
         let byCalibre = Dictionary(grouping: shots) { "\($0.calibre), \(partName($0.part))" }
         lines += table("Calibre", byCalibre.keys.sorted().map { ($0, byCalibre[$0] ?? []) })
         lines += table("Shots", kinds(shots))
+        lines += calliper(shots)
         lines += confusions(shots)
         lines += misses(shots)
         return lines.joined(separator: "\n")
+    }
+
+    /// The LiDAR size against the calliper, per package that has measurements: the mean error and the
+    /// mean absolute error of the length and the diameter, in mm.
+    static func calliper(_ shots: [Shot]) -> [String] {
+        let measured = shots.filter { $0.result.lengthError != nil || $0.result.diameterError != nil }
+        guard !measured.isEmpty else { return [] }
+        let byPackage = Dictionary(grouping: measured) { String($0.name.prefix { $0 != "/" }) }
+        func mean(_ values: [Double]) -> String { values.isEmpty ? "–" : String(format: "%+.1f", values.reduce(0, +) / Double(values.count)) }
+        func absMean(_ values: [Double]) -> String { values.isEmpty ? "–" : String(format: "%.1f", values.map(abs).reduce(0, +) / Double(values.count)) }
+        return ["## Against the calliper", "", "| Package | Shots | Length | |Length| | Diameter | |Diameter| |", "| --- | ---: | ---: | ---: | ---: | ---: |"]
+            + byPackage.keys.sorted().map { name in
+                let group = byPackage[name] ?? []
+                let lengths = group.compactMap(\.result.lengthError), diameters = group.compactMap(\.result.diameterError)
+                return "| \(name) | \(group.count) | \(mean(lengths)) | \(absMean(lengths)) | \(mean(diameters)) | \(absMean(diameters)) |"
+            } + [""]
     }
 
     static func summary(_ scores: Scores, count: Int) -> String {

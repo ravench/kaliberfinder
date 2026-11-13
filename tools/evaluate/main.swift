@@ -6,13 +6,14 @@ import Foundation
 import ImageIO
 
 let usage = """
-usage: evaluate [shots] [--holdout] [--mac-vision] [--one-look] [--json FILE] [--compare FILE] [--report FILE]
+usage: evaluate [shots] [--holdout] [--mac-vision] [--one-look] [--max-side N] [--json FILE] [--compare FILE] [--report FILE]
 
   shots         the training repo (its captures/ and splits.json), or a folder of capture packages
                 such as KaliberfinderTests/Golden; default $KALIBERFINDER_TRAINING or ../kaliberfinder-training
   --holdout     the held-back packages of splits.json instead of the tuning shots
   --mac-vision  Vision on the Mac also for shots where the phone's Vision found nothing
   --one-look    without the second look at the cartridge cut out of the full-size photo
+  --max-side N  the photo and its cut-outs scaled to N pixels on the long side (PhotoAnalyzer.maxDimension, 1600)
   --json FILE   writes every shot's result, for --compare in a later run
   --compare FILE  compares with such an earlier run
   --report FILE writes the report there too (it always goes to the standard output)
@@ -28,6 +29,7 @@ struct Options {
     var holdout = false
     var macVision = false
     var oneLook = false
+    var maxSide: Int?
     var json: URL?
     var compare: URL?
     var report: URL?
@@ -45,6 +47,9 @@ struct Options {
             case "--holdout": holdout = true
             case "--mac-vision": macVision = true
             case "--one-look": oneLook = true
+            case "--max-side":
+                guard let side = Int(rest.popFirst() ?? ""), side > 0 else { fail(usage) }
+                maxSide = side
             case "--json": json = file()
             case "--compare": compare = file()
             case "--report": report = file()
@@ -142,6 +147,7 @@ func analyse(_ entry: SavedShot, macVision: Bool, oneLook: Bool) -> (PhotoAnalys
 }
 
 let options = Options(Array(CommandLine.arguments.dropFirst()))
+if let maxSide = options.maxSide { PhotoAnalyzer.maxDimension = CGFloat(maxSide) }
 guard !CartridgeCatalog.all.isEmpty else { fail("Cartridges.json is missing next to the tool: build it with tools/evaluate/build.sh") }
 let captures = options.shots.appendingPathComponent("captures")
 let root = FileManager.default.fileExists(atPath: captures.path) ? captures : options.shots
@@ -157,9 +163,11 @@ if packages.count < found.count {
 
 let started = Date()
 var shots: [Evaluation.Shot] = []
-var secondLooks = 0, picks = 0
+var secondLooks = 0, picks = 0, excluded: [String] = []
 for package in packages {
-    for entry in package.shots {
+    let counted = Evaluation.included(package.shots, in: package.url.lastPathComponent)
+    excluded += counted.excluded
+    for entry in counted.shots {
         let name = "\(package.url.lastPathComponent)/\(entry.url.lastPathComponent)"
         let (analysis, source, looked) = analyse(entry, macVision: options.macVision, oneLook: options.oneLook)
         let shot = Evaluation.shot(name, analysis: analysis, depth: entry.shot.scale?.depthScale, package: package.package, source: source)
@@ -174,7 +182,7 @@ for package in packages {
         shots.append(shot)
     }
 }
-FileHandle.standardError.write(Data(String(format: "%d shots in %.0f s\n", shots.count, Date().timeIntervalSince(started)).utf8))
+FileHandle.standardError.write(Data(String(format: "%d shots in %.0f s, %d left out as marked\n", shots.count, Date().timeIntervalSince(started), excluded.count).utf8))
 
 let before = options.compare.map { url -> Evaluation.Baseline in
     guard let data = try? Data(contentsOf: url), let baseline = try? TrainingCapture.decoder.decode(Evaluation.Baseline.self, from: data)
@@ -184,7 +192,8 @@ let before = options.compare.map { url -> Evaluation.Baseline in
 let kind = options.holdout ? "held-back" : "tuning"
 let looks = options.oneLook ? "one look only"
     : "second look on \(secondLooks); first of several cartridges picked on \(picks)"
-let report = Evaluation.report(shots, title: "Matching on \(shots.count) \(kind) shots (\(looks))", before: before)
+let side = options.maxSide.map { ", \($0) px" } ?? ""
+let report = Evaluation.report(shots, title: "Matching on \(shots.count) \(kind) shots (\(looks)\(side))", before: before, excluded: excluded)
 print(report)
 do {
     if let url = options.report { try Data(report.utf8).write(to: url) }
