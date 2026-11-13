@@ -31,6 +31,14 @@ final class ProfileTwinTests: XCTestCase {
         XCTAssertEqual(CartridgeCatalog.groupedByProfile(both, cartridge: { $0 }, merged: true).map(\.count), [2])
     }
 
+    /// A comparison column of a group member stands for the group; a calibre's own 1:1 shows the calibre.
+    func testComparisonColumnStandsForTheGroup() throws {
+        let glisenti = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9 mm Glisenti"))
+        XCTAssertEqual(TrueScaleView.shownGroup(of: glisenti, linking: true)?.id, "9x19 mm")
+        XCTAssertNil(TrueScaleView.shownGroup(of: glisenti, linking: false))
+        XCTAssertNil(TrueScaleView.shownGroup(of: try c(".45 ACP"), linking: true))
+    }
+
     func testOnlyTheKnownGroupsAreTwins() {
         let all = CartridgeCatalog.all
         let groups = CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).filter { $0.count > 1 }
