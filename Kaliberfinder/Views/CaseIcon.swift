@@ -10,7 +10,7 @@ enum CaseIcon {
     static func profile(_ token: String) -> [(y: CGFloat, halfWidth: CGFloat)]? {
         switch token {
         case "rimless": [(0, 5), (8, 5), (8, 3.6), (11, 3.6), (11, 5), (15, 5)]
-        case "semi": [(0, 5), (8, 5), (8, 3.6), (11, 3.6), (11, 6.2), (15, 6.2)]
+        case "semi", "semi-rimmed": [(0, 5), (8, 5), (8, 3.6), (11, 3.6), (11, 6.2), (15, 6.2)]
         case "rimmed": [(0, 5), (11, 5), (11, 7.3), (15, 7.3)]
         case "rebated": [(0, 5), (8, 5), (8, 3), (11, 3), (11, 4), (15, 4)]
         case "belted": [(0, 5), (2.5, 5), (2.5, 6.6), (6, 6.6), (6, 3.6), (11, 3.6), (11, 5), (15, 5)]

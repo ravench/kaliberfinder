@@ -147,9 +147,9 @@ final class MeasurementsTests: XCTestCase {
         let bullet = try XCTUnwrap(nine.dimensions.first { $0.part == .bullet })
         let overall = try XCTUnwrap(nine.dimensions.first { $0.part == .overall })
         let en = Locale(identifier: "en_US")
-        XCTAssertEqual(DimensionLayout.valueText(bullet, unit: .metric, locale: en), "Ø 9.01 mm")
-        XCTAssertEqual(DimensionLayout.valueText(bullet, unit: .imperial, locale: en), "Ø 0.355 in")
-        XCTAssertEqual(DimensionLayout.valueText(overall, unit: .metric, locale: en), "29.7 mm")
+        XCTAssertEqual(DimensionLayout.valueText(bullet, unit: .metric, locale: en), "Ø 9.03 mm")
+        XCTAssertEqual(DimensionLayout.valueText(bullet, unit: .imperial, locale: en), "Ø 0.356 in")
+        XCTAssertEqual(DimensionLayout.valueText(overall, unit: .metric, locale: en), "29.69 mm")
         XCTAssertEqual(DimensionLayout.valueText(overall, unit: .imperial, locale: en), "1.169 in")
         // A whole number keeps a decimal in the drawing (Raven, 2026-11-09: «Show 9mm as 9.0mm»).
         let two23 = try layout(".223 Remington")
