@@ -144,16 +144,7 @@ struct MatchesView: View {
                 // A one-size group is one row, its best calibre leading (Raven, 2026-11-13).
                 let shownPart = analysis?.shape.map { shown.part(for: $0) }
                 ForEach(Matcher.grouped(matches)) { g in
-                    let c = g.lead.cartridge
-                    let row = CartridgeRow(cartridge: c, detail: Self.reason(for: g.lead, shownPart: shownPart),
-                                           highlighted: g.lead.fitsWell, groupTag: .group)
-                    // A group's row opens the group; a calibre's row its page, as «Alle Kaliber» shows it, whose 1:1
-                    // link draws this calibre alone (Raven, 2026-11-08) and which links the group (Raven, 2026-11-13).
-                    if let group = CartridgeCatalog.sizeGroup(of: c) {
-                        NavigationLink { LookalikeGroupView(group: group) } label: { row }
-                    } else {
-                        NavigationLink { CartridgeDetailView(cartridge: c) } label: { row }
-                    }
+                    ResultLink(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead, shownPart: shownPart), highlighted: g.lead.fitsWell)
                 }
                 if !hiddenFirst, let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
             } header: {

@@ -737,29 +737,6 @@
         }
       }
     },
-    "Ausgewählte Kaliber werden 1:1 nebeneinander gezeigt.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Selected calibres are shown 1:1 side by side."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les calibres sélectionnés sont affichés côte à côte à l'échelle 1:1."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "I calibri selezionati sono mostrati 1:1 uno accanto all'altro."
-          }
-        }
-      }
-    },
     "Auswählen": {
       "extractionState": "manual",
       "localizations": {
