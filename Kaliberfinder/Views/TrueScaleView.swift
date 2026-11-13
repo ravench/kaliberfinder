@@ -194,9 +194,10 @@ struct TrueScaleView: View {
     private func label(for c: Cartridge) -> some View {
         VStack(spacing: 2) {
             Text(verbatim: c.name).font(.caption.bold())
-            // The drawing stands for its one-size group: the others look exactly like this one.
-            if CartridgeCatalog.sizeGroup(of: c) != nil {
-                TagChip(tag: .group)
+            // The drawing stands for its one-size group: the others look exactly like this one. With the
+            // groups' setting off each member has its column, named after the group as in the catalogue.
+            if let group = CartridgeCatalog.sizeGroup(of: c) {
+                TagChip(tag: .group, text: CartridgeCatalog.groupsSizeGroups ? nil : group.id)
             }
             if let why = goodMatches[c.id] {
                 Text(verbatim: why).font(.caption2.weight(.semibold)).foregroundStyle(.green)

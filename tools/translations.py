@@ -19,6 +19,8 @@ T = {
     "Sortieren nach": ("Sort by", "Trier par", "Ordina per"),
     "Mit LiDAR nach Trefferqualität sortieren": ("Sort by match quality with LiDAR", "Avec LiDAR, trier par qualité de correspondance", "Con LiDAR, ordina per qualità della corrispondenza"),
     "Geschosse bei leeren Hülsen zeigen": ("Show bullets on empty cases", "Afficher les projectiles sur les douilles vides", "Mostra le palle sui bossoli vuoti"),
+    "Gleich grosse Kaliber als Gruppe zeigen": ("Show calibres of one size as a group", "Regrouper les calibres de même taille", "Raggruppa i calibri della stessa misura"),
+    "Aus: jedes Kaliber der Gruppe als eigener Treffer, auch im 1:1-Vergleich.": ("Off: every calibre of the group as its own match, in the 1:1 comparison too.", "Désactivé : chaque calibre du groupe comme résultat à part, aussi dans la comparaison 1:1.", "Disattivato: ogni calibro del gruppo come risultato a sé, anche nel confronto 1:1."),
     "Fotoerkennung": ("Photo recognition", "Reconnaissance photo", "Riconoscimento foto"),
     "Info": ("About", "À propos", "Info"),
     "Unterscheiden sich in: %@": ("Differ in: %@", "Diffèrent par : %@", "Differiscono per: %@"),

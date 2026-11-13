@@ -668,6 +668,29 @@
         }
       }
     },
+    "Aus: jedes Kaliber der Gruppe als eigener Treffer, auch im 1:1-Vergleich.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Off: every calibre of the group as its own match, in the 1:1 comparison too."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactivé : chaque calibre du groupe comme résultat à part, aussi dans la comparaison 1:1."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disattivato: ogni calibro del gruppo come risultato a sé, anche nel confronto 1:1."
+          }
+        }
+      }
+    },
     "Ausblenden": {
       "extractionState": "manual",
       "localizations": {
@@ -2343,6 +2366,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Salvate"
+          }
+        }
+      }
+    },
+    "Gleich grosse Kaliber als Gruppe zeigen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show calibres of one size as a group"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regrouper les calibres de même taille"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raggruppa i calibri della stessa misura"
           }
         }
       }

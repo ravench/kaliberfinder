@@ -61,6 +61,13 @@ enum CartridgeCatalog {
     static let includeObsoleteKey = "includeObsoleteCalibres"
     /// UserDefaults key of the «Seltene Kaliber berücksichtigen» switch. Off by default.
     static let includeRareKey = "includeRareCalibres"
+    /// Settings switch, on by default: the calibres of a one-size lookalike group are one result row and one
+    /// 1:1 column; off, each is its own, with the group's name as its tag (Raven, 2026-11-13).
+    static let groupSizeGroupsKey = "groupSizeGroups"
+    static var groupsSizeGroups: Bool {
+        // bool(forKey:) also reads a launch argument's "NO"; only an unset key means the default.
+        UserDefaults.standard.object(forKey: groupSizeGroupsKey) == nil || UserDefaults.standard.bool(forKey: groupSizeGroupsKey)
+    }
 
     /// The calibres photo and dimension matching compare against: obsolete and rare ones only
     /// when asked. The catalogue list and search always show every calibre.
