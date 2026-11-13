@@ -60,7 +60,7 @@ final class ProfileTwinTests: XCTestCase {
         let compare = DimensionMatcher.toCompare(matches).map(\.id)
         XCTAssertEqual(compare.first, first.lead.cartridge.id)
         XCTAssertEqual(compare.filter { first.items.map(\.cartridge.id).contains($0) }.count, 1, "the shape is compared once")
-        XCTAssertEqual(MeasureView.compareTitle(matches: matches, selected: 0),
+        XCTAssertEqual(MeasureView.compareTitle(matches: matches),
                        String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, compare.count))
     }
 }

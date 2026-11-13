@@ -82,6 +82,24 @@ struct CatalogView: View {
     }
 }
 
+/// A row of the photo or measurement results: a one-size group's row opens the group page, a calibre's row the
+/// calibre's page, as «Alle Kaliber» shows it, whose 1:1 link draws this calibre alone (Raven, 2026-11-08) and
+/// which links the group (Raven, 2026-11-13).
+struct ResultLink: View {
+    let cartridge: Cartridge
+    var detail: String?
+    var highlighted = false
+
+    var body: some View {
+        let row = CartridgeRow(cartridge: cartridge, detail: detail, highlighted: highlighted, groupTag: .group)
+        if let group = CartridgeCatalog.sizeGroup(of: cartridge) {
+            NavigationLink { LookalikeGroupView(group: group) } label: { row }
+        } else {
+            NavigationLink { CartridgeDetailView(cartridge: cartridge) } label: { row }
+        }
+    }
+}
+
 struct CartridgeRow: View {
     let cartridge: Cartridge
     var detail: String?

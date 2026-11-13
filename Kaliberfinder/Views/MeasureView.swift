@@ -1,6 +1,7 @@
 import SwiftUI
 
-/// Find calibres from dimensions measured by hand; pick results and compare them 1:1.
+/// Find calibres from dimensions measured by hand: each result opens its page, the fitting ones compare 1:1,
+/// as after a photo (Raven, 2026-11-13).
 struct MeasureView: View {
     // For the PR screens tour only: `-screenTourLength 29.7 -screenTourBullet 9.0` fill the fields past the number pad.
     @State private var overallLength = UserDefaults.standard.string(forKey: "screenTourLength") ?? ""
@@ -8,7 +9,6 @@ struct MeasureView: View {
     @State private var rim = ""
     @State private var bullet = UserDefaults.standard.string(forKey: "screenTourBullet") ?? ""
     @State private var shape: CaseShape = .any
-    @State private var selection: [Cartridge] = []
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
@@ -44,24 +44,15 @@ struct MeasureView: View {
             }
             if !matches.isEmpty || ranked.summary != nil {
                 Section {
-                    // A one-size group is one row (Raven, 2026-11-13); picking it picks its best calibre.
+                    // A one-size group is one row (Raven, 2026-11-13), its best calibre leading.
                     ForEach(DimensionMatcher.grouped(matches)) { g in
-                        let m = g.lead
-                        Button { toggle(m.cartridge) } label: {
-                            HStack {
-                                CartridgeRow(cartridge: m.cartridge, detail: Self.detail(for: m, unit: unit), groupTag: .group)
-                                Spacer()
-                                Image(systemName: selection.contains(m.cartridge) ? "checkmark.circle.fill" : "circle")
-                                    .foregroundStyle(selection.contains(m.cartridge) ? Color.accentColor : .secondary)
-                            }
-                        }
-                        .foregroundStyle(.primary)
+                        ResultLink(cartridge: g.lead.cartridge, detail: Self.detail(for: g.lead, unit: unit))
                     }
                     if let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
                 } header: {
                     Text("Mögliche Kaliber")
                 } footer: {
-                    Text("Ausgewählte Kaliber werden 1:1 nebeneinander gezeigt.")
+                    Text("Patrone auf dem Bildschirm vergleichen.")
                 }
             }
         }
@@ -70,9 +61,8 @@ struct MeasureView: View {
         .navigationTitle("Masse eingeben")
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
-            let compare = selection.isEmpty ? DimensionMatcher.toCompare(matches) : selection
-            if !compare.isEmpty {
-                CompareButton(title: Self.compareTitle(matches: matches, selected: selection.count), cartridges: compare)
+            if !matches.isEmpty {
+                CompareButton(title: Self.compareTitle(matches: matches), cartridges: DimensionMatcher.toCompare(matches))
             }
         }
         .onChange(of: unit) { old, new in
@@ -80,11 +70,7 @@ struct MeasureView: View {
                 text.wrappedValue = LengthUnit.convert(text.wrappedValue, from: old, to: new)
             }
         }
-        .onChange(of: measured) { _, _ in
-            revealed = false
-            let ids = Set(DimensionMatcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), measured).shown.map(\.id))
-            selection.removeAll { !ids.contains($0.id) }
-        }
+        .onChange(of: measured) { _, _ in revealed = false }
     }
 
     private func field(_ title: LocalizedStringKey, text: Binding<String>) -> some View {
@@ -96,13 +82,8 @@ struct MeasureView: View {
         }
     }
 
-    private func toggle(_ c: Cartridge) {
-        selection = selection.toggling(c)
-    }
-
-    /// The compare button: the picked calibres, else all that fit, else the best three.
-    static func compareTitle(matches: [DimensionMatch], selected: Int) -> String {
-        if selected > 0 { return String(format: "1:1 vergleichen (%lld)".loc, selected) }
+    /// The compare button: all that fit, else the best three.
+    static func compareTitle(matches: [DimensionMatch]) -> String {
         let fitting = DimensionMatcher.grouped(matches).filter { $0.lead.fit != .poor }.count
         return fitting > 0 ? String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, fitting) : "Die besten drei 1:1 vergleichen".loc
     }
