@@ -72,7 +72,6 @@ struct TrueScaleView: View {
     @EnvironmentObject private var scale: ScaleModel
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(Self.bulletsOnCasesKey) private var bulletsOnCases = true
-    @State private var showZoomHint = false
 
     /// Settings switch, on by default: empty cases are compared with the bullet drawn.
     static let bulletsOnCasesKey = "showBulletsOnEmptyCases"
@@ -146,23 +145,6 @@ struct TrueScaleView: View {
             // Cuts off what sticks out at the top when the band does not fit.
             .clipped()
         }
-        .simultaneousGesture(MagnifyGesture().onChanged { _ in showZoomHint = true })
-        .overlay(alignment: .bottom) {
-            if showZoomHint {
-                Label("1:1 – Zoomen ist abgeschaltet, damit die Grösse stimmt.", systemImage: "lock")
-                    .font(.footnote)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 10)
-                    .background(.regularMaterial, in: Capsule())
-                    .padding(.bottom, 24)
-                    .transition(.opacity)
-                    .task {
-                        try? await Task.sleep(for: .seconds(2.5))
-                        withAnimation { showZoomHint = false }
-                    }
-            }
-        }
-        .animation(.default, value: showZoomHint)
         .navigationTitle("1:1")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -212,9 +194,9 @@ struct TrueScaleView: View {
     private func label(for c: Cartridge) -> some View {
         VStack(spacing: 2) {
             Text(verbatim: c.name).font(.caption.bold())
-            // Calibres with the same measurements look exactly like this one.
-            ForEach(CartridgeCatalog.twins(of: c)) { twin in
-                Text(verbatim: "= \(twin.name)").font(.caption2).foregroundStyle(.secondary)
+            // The drawing stands for its one-size group: the others look exactly like this one.
+            if CartridgeCatalog.sizeGroup(of: c) != nil {
+                TagChip(tag: .group)
             }
             if let why = goodMatches[c.id] {
                 Text(verbatim: why).font(.caption2.weight(.semibold)).foregroundStyle(.green)
