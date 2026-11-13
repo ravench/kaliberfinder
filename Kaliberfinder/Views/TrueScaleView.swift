@@ -193,7 +193,7 @@ struct TrueScaleView: View {
     @ViewBuilder
     private func column<Content: View>(of c: Cartridge, @ViewBuilder content: () -> Content) -> some View {
         if linksToDetails {
-            NavigationLink { CalibrePage(cartridge: c) } label: { VStack(spacing: 6, content: content) }
+            NavigationLink { CartridgeDetailView(cartridge: c) } label: { VStack(spacing: 6, content: content) }
                 .buttonStyle(.plain)
         } else {
             VStack(spacing: 6, content: content)

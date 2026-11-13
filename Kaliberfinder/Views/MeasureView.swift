@@ -2,10 +2,11 @@ import SwiftUI
 
 /// Find calibres from dimensions measured by hand; pick results and compare them 1:1.
 struct MeasureView: View {
-    @State private var overallLength = ""
+    // For the PR screens tour only: `-screenTourLength 29.7 -screenTourBullet 9.0` fill the fields past the number pad.
+    @State private var overallLength = UserDefaults.standard.string(forKey: "screenTourLength") ?? ""
     @State private var caseLength = ""
     @State private var rim = ""
-    @State private var bullet = ""
+    @State private var bullet = UserDefaults.standard.string(forKey: "screenTourBullet") ?? ""
     @State private var shape: CaseShape = .any
     @State private var selection: [Cartridge] = []
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
@@ -43,13 +44,12 @@ struct MeasureView: View {
             }
             if !matches.isEmpty || ranked.summary != nil {
                 Section {
-                    // Calibres with identical measurements share one row; picking it picks the first.
+                    // A one-size group is one row (Raven, 2026-11-13); picking it picks its best calibre.
                     ForEach(DimensionMatcher.grouped(matches)) { g in
                         let m = g.lead
                         Button { toggle(m.cartridge) } label: {
                             HStack {
-                                CartridgeRow(cartridge: m.cartridge, detail: Self.detail(for: m, unit: unit),
-                                             merged: g.others.map(\.cartridge))
+                                CartridgeRow(cartridge: m.cartridge, detail: Self.detail(for: m, unit: unit), groupTag: .group)
                                 Spacer()
                                 Image(systemName: selection.contains(m.cartridge) ? "checkmark.circle.fill" : "circle")
                                     .foregroundStyle(selection.contains(m.cartridge) ? Color.accentColor : .secondary)

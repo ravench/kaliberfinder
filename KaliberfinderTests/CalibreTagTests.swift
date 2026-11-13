@@ -26,10 +26,14 @@ final class CalibreTagTests: XCTestCase {
         XCTAssertEqual(CartridgeRow.groupName(for: try cartridge(".223 Remington"), groupTag: .name), ".223 Remington")
         XCTAssertEqual(CartridgeRow.groupName(for: try cartridge("5.6 mm GP 90"), groupTag: .name), ".223 Remington")
         XCTAssertEqual(CartridgeRow.tags(for: try cartridge("9x19 mm"), groupTag: .name), [], "no «Gruppe» chip in the catalogue")
-        // Matches: the namesake's row stands for the group with «Gruppe» and opens it; another member names the group.
-        XCTAssertNil(CartridgeRow.groupName(for: try cartridge(".223 Remington"), groupTag: .link))
-        XCTAssertEqual(CartridgeRow.groupName(for: try cartridge("5.6 mm GP 90"), groupTag: .link), ".223 Remington")
-        XCTAssertEqual(CartridgeRow.tags(for: try cartridge("9x19 mm"), groupTag: .link), [.group])
+        // Results (Raven, 2026-11-13): the row is the group, whichever member leads: «Gruppe» alone, no name tag,
+        // none of a member's «Selten» or «Veraltet»; a calibre without a one-size group keeps its own.
+        XCTAssertEqual(CartridgeRow.shownGroup(for: try cartridge("5.6 mm GP 90"), groupTag: .group)?.id, ".223 Remington")
+        XCTAssertNil(CartridgeRow.groupName(for: try cartridge("5.6 mm GP 90"), groupTag: .group))
+        XCTAssertEqual(CartridgeRow.tags(for: try cartridge("9x19 mm"), groupTag: .group), [.group])
+        XCTAssertEqual(CartridgeRow.tags(for: try cartridge("10.4x38 mm R Vetterli Centrefire"), groupTag: .group), [.group])
+        XCTAssertNil(CartridgeRow.shownGroup(for: try cartridge("11x59 mm R Gras"), groupTag: .group))
+        XCTAssertEqual(CartridgeRow.tags(for: try cartridge("11x59 mm R Gras"), groupTag: .group), [.rare, .obsolete])
         // Members inside the group page and rows that select show nothing of the group (Raven, PR 188 review).
         XCTAssertNil(CartridgeRow.groupName(for: try cartridge("5.6 mm GP 90"), groupTag: .none))
         XCTAssertNil(CartridgeRow.groupName(for: try cartridge("7x57 mm R"), groupTag: .name), "no one-size group")

@@ -5,11 +5,10 @@ import Foundation
 /// calliper cannot tell them apart, so the results list them as one suggestion, tagged «Gruppe» (Raven,
 /// 2026-11-11: the groups from calibre-data, once per size).
 extension CartridgeCatalog {
-    /// In the same one-size lookalike group (`LookalikeGroup.sameSize`) and of the same dimensions; a member
-    /// of another size (the shorter Glisenti next to the 9x19 mm) stays a row of its own.
+    /// In the same one-size lookalike group (`LookalikeGroup.sameSize`): calibre-data says their cases are of one
+    /// size, so a few hundredths in the sheets (the 9 mm Glisenti next to the 9x19 mm) do not split them (Raven, 2026-11-13).
     static func sameProfile(_ a: Cartridge, _ b: Cartridge) -> Bool {
-        guard let group = sizeGroup(of: a) else { return false }
-        return group.calibres.contains(b.id) && a.dimensions == b.dimensions
+        sizeGroup(of: a)?.calibres.contains(b.id) ?? false
     }
 
     /// The other catalogue calibres that look exactly like `c` from the side, in catalogue order.

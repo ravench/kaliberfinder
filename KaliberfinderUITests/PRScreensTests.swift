@@ -38,8 +38,8 @@ final class PRScreensTests: XCTestCase {
                 search.tap()
                 search.typeText("9x19")
             }
-            // A member of a lookalike group opens its group first (Raven, 2026-11-11), the calibre from there.
-            if open(app.staticTexts["9x19 mm"].firstMatch), open(app.staticTexts["9x19 mm"].firstMatch) {
+            // A row opens its calibre's page; the group is a row on that page (Raven, 2026-11-13).
+            if open(app.staticTexts["9x19 mm"].firstMatch) {
                 snap("05-Kaliber")
                 if open(app.buttons["Masszeichnung anzeigen"].firstMatch) {
                     snap("05c-Masszeichnung")
@@ -49,6 +49,20 @@ final class PRScreensTests: XCTestCase {
                 snap("05-Kaliber-unten")  // origin, prevalence and tags sit below the measurements
             }
         }
+    }
+
+    /// Measurements typed by hand, 29.7 mm long with a 9 mm bullet: the 9x19 group is one row of the results
+    /// (Raven, 2026-11-13). The values come as launch arguments: the number pad does not go away on the simulator.
+    func testMeasuredMatches() {
+        app.terminate()
+        app.launchArguments += ["-screenTourLength", "29.7", "-screenTourBullet", "9.0"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
+        XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
+        snap("03b-Masse-Treffer")  // the 9x19 group's row leads
+        scroll()
+        snap("03b-Masse-Treffer-unten")
     }
 
     /// Calibres picked long, short, middle stand by length: in the picked list and on the 1:1 screen.
@@ -385,7 +399,7 @@ final class PRScreensTests: XCTestCase {
             search.tap()
             search.typeText("9x19\n")
         }
-        guard open(app.staticTexts["9x19 mm"].firstMatch), open(app.staticTexts["9x19 mm"].firstMatch) else { return }  // group, then calibre
+        guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
         snap("28-Kaliber-Trainingsdaten")
         guard open(app.buttons["Trainingsdaten aufnehmen"].firstMatch) else { return }
         XCTAssertTrue(app.navigationBars["Neue Serie"].waitForExistence(timeout: 5), "The new series sheet did not open")
