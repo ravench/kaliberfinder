@@ -43,13 +43,12 @@ struct MeasureView: View {
             }
             if !matches.isEmpty || ranked.summary != nil {
                 Section {
-                    // Calibres with identical measurements share one row; picking it picks the first.
+                    // A one-size group is one row (Raven, 2026-11-13); picking it picks its best calibre.
                     ForEach(DimensionMatcher.grouped(matches)) { g in
                         let m = g.lead
                         Button { toggle(m.cartridge) } label: {
                             HStack {
-                                CartridgeRow(cartridge: m.cartridge, detail: Self.detail(for: m, unit: unit),
-                                             merged: g.others.map(\.cartridge))
+                                CartridgeRow(cartridge: m.cartridge, detail: Self.detail(for: m, unit: unit), groupTag: .group)
                                 Spacer()
                                 Image(systemName: selection.contains(m.cartridge) ? "checkmark.circle.fill" : "circle")
                                     .foregroundStyle(selection.contains(m.cartridge) ? Color.accentColor : .secondary)

@@ -1,8 +1,8 @@
 import XCTest
 @testable import Kaliberfinder
 
-/// Calibres of one calibre-data lookalike group with identical measurements are suggested as one row
-/// (Raven, 2026-11-11: the groups from calibre-data, once per size).
+/// Calibres of one one-size calibre-data lookalike group are suggested as one row, the group's
+/// (Raven, 2026-11-11: the groups from calibre-data, once per size; 2026-11-13: whatever their sheets say).
 final class ProfileTwinTests: XCTestCase {
     private func c(_ id: String) throws -> Cartridge { try Fixture.cartridge(id) }
 
@@ -12,7 +12,7 @@ final class ProfileTwinTests: XCTestCase {
                        [".223 Remington", "5.56x45 mm NATO"])
         XCTAssertEqual(CartridgeCatalog.twins(of: try c("10.4x38 mm R Vetterli")).map(\.id), ["10.4x38 mm R Vetterli Centrefire"],
                        "the ignition does not show from the side")
-        XCTAssertTrue(CartridgeCatalog.twins(of: try c("9x19 mm")).isEmpty, "the Glisenti of its group is shorter")
+        XCTAssertEqual(CartridgeCatalog.twins(of: try c("9x19 mm")).map(\.id), ["9 mm Glisenti"], "one size by calibre-data, 0.5 mm apart in the sheets")
         XCTAssertTrue(CartridgeCatalog.twins(of: try c("7x57 mm Mauser")).isEmpty, "the 7x57 R of its group has a rim")
         XCTAssertTrue(CartridgeCatalog.twins(of: try c("7.5x55 mm Swiss (GP 11)")).isEmpty)
         XCTAssertTrue(CartridgeCatalog.twins(of: try c("7.5x53.5 mm Swiss (GP 1890)")).isEmpty)
@@ -27,12 +27,11 @@ final class ProfileTwinTests: XCTestCase {
                        [[".308 Winchester", "7.62x51 mm NATO"], [".223 Remington", "5.56x45 mm NATO", "5.6 mm GP 90"],
                         ["10.4x38 mm R Vetterli", "10.4x38 mm R Vetterli Centrefire"]]), "\(groups.map { $0.map(\.id) })")
         // Every twin pair comes from a one-size lookalike group of calibre-data, never from equal numbers alone,
-        // with equal dimensions, and the group's parent leads the row.
+        // and the group's parent leads the row.
         for group in groups {
             let sizeGroups = Set(group.compactMap { CartridgeCatalog.sizeGroup(of: $0)?.id })
             XCTAssertEqual(sizeGroups.count, 1, "\(group.map(\.id))")
             XCTAssertEqual(group[0].id, sizeGroups.first)
-            XCTAssertTrue(group.allSatisfy { $0.dimensions == group[0].dimensions }, "\(group.map(\.id))")
         }
         // Grouping never loses or duplicates a calibre.
         XCTAssertEqual(CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).flatMap { $0 }.map(\.id).sorted(), all.map(\.id).sorted())

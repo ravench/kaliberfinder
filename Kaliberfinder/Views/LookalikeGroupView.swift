@@ -30,17 +30,3 @@ struct LookalikeGroupView: View {
         CartridgeCatalog.groupedByProfile(members, cartridge: { $0 }).map { $0[0] }.byLength(by)
     }
 }
-
-/// Where a tapped calibre leads: its one-size lookalike group first, from which each calibre opens; a calibre
-/// without such a group opens its own page (Raven, 2026-11-11).
-struct CalibrePage: View {
-    let cartridge: Cartridge
-
-    var body: some View {
-        if let group = CartridgeCatalog.sizeGroup(of: cartridge) {
-            LookalikeGroupView(group: group)
-        } else {
-            CartridgeDetailView(cartridge: cartridge)
-        }
-    }
-}

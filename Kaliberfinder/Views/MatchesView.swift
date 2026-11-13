@@ -141,13 +141,18 @@ struct MatchesView: View {
             let hiddenFirst = Self.hasGoodMatch(ranked.hidden)
             Section {
                 if hiddenFirst, let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
-                // Calibres that look exactly the same from the side share one row.
+                // A one-size group is one row, its best calibre leading (Raven, 2026-11-13).
                 let shownPart = analysis?.shape.map { shown.part(for: $0) }
                 ForEach(Matcher.grouped(matches)) { g in
-                    // The calibre's page, as «Alle Kaliber» shows it; its 1:1 link draws this calibre alone (Raven, 2026-11-08).
-                    NavigationLink { CalibrePage(cartridge: g.lead.cartridge) } label: {
-                        CartridgeRow(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead, shownPart: shownPart),
-                                     highlighted: g.lead.fitsWell, merged: g.others.map(\.cartridge), groupTag: .link)
+                    let c = g.lead.cartridge
+                    let row = CartridgeRow(cartridge: c, detail: Self.reason(for: g.lead, shownPart: shownPart),
+                                           highlighted: g.lead.fitsWell, groupTag: .group)
+                    // A group's row opens the group; a calibre's row its page, as «Alle Kaliber» shows it, whose 1:1
+                    // link draws this calibre alone (Raven, 2026-11-08) and which links the group (Raven, 2026-11-13).
+                    if let group = CartridgeCatalog.sizeGroup(of: c) {
+                        NavigationLink { LookalikeGroupView(group: group) } label: { row }
+                    } else {
+                        NavigationLink { CartridgeDetailView(cartridge: c) } label: { row }
                     }
                 }
                 if !hiddenFirst, let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }

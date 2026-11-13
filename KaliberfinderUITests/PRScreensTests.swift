@@ -38,8 +38,8 @@ final class PRScreensTests: XCTestCase {
                 search.tap()
                 search.typeText("9x19")
             }
-            // A member of a lookalike group opens its group first (Raven, 2026-11-11), the calibre from there.
-            if open(app.staticTexts["9x19 mm"].firstMatch), open(app.staticTexts["9x19 mm"].firstMatch) {
+            // A row opens its calibre's page; the group is a row on that page (Raven, 2026-11-13).
+            if open(app.staticTexts["9x19 mm"].firstMatch) {
                 snap("05-Kaliber")
                 if open(app.buttons["Masszeichnung anzeigen"].firstMatch) {
                     snap("05c-Masszeichnung")
@@ -385,7 +385,7 @@ final class PRScreensTests: XCTestCase {
             search.tap()
             search.typeText("9x19\n")
         }
-        guard open(app.staticTexts["9x19 mm"].firstMatch), open(app.staticTexts["9x19 mm"].firstMatch) else { return }  // group, then calibre
+        guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
         snap("28-Kaliber-Trainingsdaten")
         guard open(app.buttons["Trainingsdaten aufnehmen"].firstMatch) else { return }
         XCTAssertTrue(app.navigationBars["Neue Serie"].waitForExistence(timeout: 5), "The new series sheet did not open")
