@@ -6,16 +6,21 @@ import XCTest
 final class ProfileTwinTests: XCTestCase {
     private func c(_ id: String) throws -> Cartridge { try Fixture.cartridge(id) }
 
+    /// The other catalogue calibres that look exactly like `c` from the side, in catalogue order.
+    private func twins(of c: Cartridge) -> [Cartridge] {
+        CartridgeCatalog.all.filter { $0.id != c.id && CartridgeCatalog.sameProfile($0, c) }
+    }
+
     func testCatalogueTwins() throws {
-        XCTAssertEqual(CartridgeCatalog.twins(of: try c(".308 Winchester")).map(\.id), ["7.62x51 mm NATO"])
-        XCTAssertEqual(Set(CartridgeCatalog.twins(of: try c("5.6 mm GP 90")).map(\.id)),
+        XCTAssertEqual(twins(of: try c(".308 Winchester")).map(\.id), ["7.62x51 mm NATO"])
+        XCTAssertEqual(Set(twins(of: try c("5.6 mm GP 90")).map(\.id)),
                        [".223 Remington", "5.56x45 mm NATO"])
-        XCTAssertEqual(CartridgeCatalog.twins(of: try c("10.4x38 mm R Vetterli")).map(\.id), ["10.4x38 mm R Vetterli Centrefire"],
+        XCTAssertEqual(twins(of: try c("10.4x38 mm R Vetterli")).map(\.id), ["10.4x38 mm R Vetterli Centrefire"],
                        "the ignition does not show from the side")
-        XCTAssertEqual(CartridgeCatalog.twins(of: try c("9x19 mm")).map(\.id), ["9 mm Glisenti"], "one size by calibre-data, 0.5 mm apart in the sheets")
-        XCTAssertTrue(CartridgeCatalog.twins(of: try c("7x57 mm Mauser")).isEmpty, "the 7x57 R of its group has a rim")
-        XCTAssertTrue(CartridgeCatalog.twins(of: try c("7.5x55 mm Swiss (GP 11)")).isEmpty)
-        XCTAssertTrue(CartridgeCatalog.twins(of: try c("7.5x53.5 mm Swiss (GP 1890)")).isEmpty)
+        XCTAssertEqual(twins(of: try c("9x19 mm")).map(\.id), ["9 mm Glisenti"], "one size by calibre-data, 0.5 mm apart in the sheets")
+        XCTAssertTrue(twins(of: try c("7x57 mm Mauser")).isEmpty, "the 7x57 R of its group has a rim")
+        XCTAssertTrue(twins(of: try c("7.5x55 mm Swiss (GP 11)")).isEmpty)
+        XCTAssertTrue(twins(of: try c("7.5x53.5 mm Swiss (GP 1890)")).isEmpty)
         XCTAssertFalse(CartridgeCatalog.sameProfile(try c("9x19 mm"), try c("9x21 mm IMI")), "9x21 has a longer case")
     }
 

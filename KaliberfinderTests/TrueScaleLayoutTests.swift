@@ -103,7 +103,6 @@ final class TrueScaleLayoutTests: XCTestCase {
         let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "en"))
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
         XCTAssertEqual(en["Originalgrösse"], "Real size")
-        XCTAssertNotNil(en["1:1 – Zoomen ist abgeschaltet, damit die Grösse stimmt."])
         XCTAssertEqual(en["Hülse %@"], "Case %@")
         XCTAssertEqual(en["Geschosse bei leeren Hülsen zeigen"], "Show bullets on empty cases")
     }

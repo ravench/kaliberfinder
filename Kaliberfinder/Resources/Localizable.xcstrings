@@ -277,29 +277,6 @@
         }
       }
     },
-    "1:1 – Zoomen ist abgeschaltet, damit die Grösse stimmt.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1:1 – zoom is off so the size stays true."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1:1 – le zoom est désactivé pour garder la taille réelle."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1:1 – lo zoom è disattivato per mantenere la dimensione reale."
-          }
-        }
-      }
-    },
     "1:1-Vergleich": {
       "extractionState": "manual",
       "localizations": {

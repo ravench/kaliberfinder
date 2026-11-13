@@ -11,11 +11,6 @@ extension CartridgeCatalog {
         sizeGroup(of: a)?.calibres.contains(b.id) ?? false
     }
 
-    /// The other catalogue calibres that look exactly like `c` from the side, in catalogue order.
-    static func twins(of c: Cartridge, in cartridges: [Cartridge] = all) -> [Cartridge] {
-        cartridges.filter { $0.id != c.id && sameProfile($0, c) }
-    }
-
     /// Puts items whose calibres look the same from the side into one group, in the order of each
     /// group's first item; within a group the lookalike group's parent leads (.223 Remington before the
     /// 5.56 NATO and the GP 90), as the row names it.

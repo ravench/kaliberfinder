@@ -258,6 +258,15 @@ final class PRScreensTests: XCTestCase {
     /// A loaded 9 mm: the outline follows its round bullet nose. Then all its matches at 1:1, by overall length.
     func testLoadedCartridgePhoto() {
         photoMatches("photo-9x19-wood", shot: "13-Foto-Patrone", compareShot: "14-Foto-1zu1")
+        // The 9x19 stands towards the end of the row: drag until it shows, with its group tag (Raven, 2026-11-13).
+        guard app.navigationBars["1:1"].exists else { return }
+        let nine = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "9x19 mm")).firstMatch
+        let screen = app.windows.firstMatch.frame
+        for _ in 0..<6 where !(nine.exists && screen.contains(nine.frame)) {
+            app.coordinate(withNormalizedOffset: CGVector(dx: 0.85, dy: 0.6))
+                .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.25, dy: 0.6)))
+        }
+        snap("14b-Foto-1zu1-9x19")
     }
 
     /// One of Raven's empty 6 mm BR cases: its outline ends flat at the mouth, without a bullet.

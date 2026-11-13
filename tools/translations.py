@@ -108,10 +108,6 @@ T = {
     "ohne Rand": ("rimless", "sans bourrelet", "senza orlo"),
     "Was liegt im Bild?": ("What is in the photo?", "Qu'y a-t-il sur la photo ?", "Cosa c'è nella foto?"),
     "gerade Hülse": ("straight case", "douille droite", "bossolo dritto"),
-    "1:1 – Zoomen ist abgeschaltet, damit die Grösse stimmt.": (
-        "1:1 – zoom is off so the size stays true.",
-        "1:1 – le zoom est désactivé pour garder la taille réelle.",
-        "1:1 – lo zoom è disattivato per mantenere la dimensione reale."),
     "Abbrechen": ("Cancel", "Annuler", "Annulla"),
     "Abstand ausserhalb 12–45 cm: Grösse nicht gemessen, Treffer nur nach Form.": (
         "Distance outside 12–45 cm: size not measured, matches by shape only.",
