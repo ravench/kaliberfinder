@@ -150,7 +150,7 @@ T = {
     "Lineal in Zoll": ("Ruler in inches", "Règle en pouces", "Righello in pollici"),
     "Metrisch (mm)": ("Metric (mm)", "Métrique (mm)", "Metrico (mm)"),
     ".50 BMG (#35)": (".50 BMG (#35)", ".50 BMG (#35)", ".50 BMG (#35)"),
-    "Berdan Nitro (.254)": ("Berdan Nitro (.254)", "Berdan Nitro (.254)", "Berdan Nitro (.254)"),
+    "Berdan Nitro": ("Berdan Nitro", "Berdan Nitro", "Berdan Nitro"),
     "Boden mit Zündhütchen %@": ("Case head with %@ primer", "Culot avec amorce %@", "Fondello con innesco %@"),
     "Büchse gross": ("Large rifle", "Grande carabine", "Carabina grande"),
     "Miniatur": ("Miniature", "Miniature", "Miniatura"),

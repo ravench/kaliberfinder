@@ -95,7 +95,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     /// The primer in the centre of the case head (that of the original factory ammunition).
     struct Primer: Decodable, Hashable {
-        /// small-pistol, large-pistol, small-rifle, large-rifle, shotshell-209, bmg-35 or berdan-nitro.
+        /// small-pistol, large-pistol, small-rifle, large-rifle, miniature, shotshell-209, bmg-35 or berdan-nitro.
         let type: String
         /// Cup diameter in mm.
         let diameter: Double
@@ -110,7 +110,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
             case "miniature": "Miniatur"
             case "shotshell-209": "Schrot (209)"
             case "bmg-35": ".50 BMG (#35)"
-            case "berdan-nitro": "Berdan Nitro (.254)"
+            case "berdan-nitro": "Berdan Nitro"  // in several sizes: the row shows the calibre's own diameter
             default: type
             }
         }
