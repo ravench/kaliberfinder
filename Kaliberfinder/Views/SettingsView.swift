@@ -2,7 +2,7 @@ import SwiftUI
 
 /// The settings page's sections, top to bottom. The recognition switches stay on the home screen.
 enum SettingsSection: CaseIterable {
-    case units, compare, results, photo, info, training
+    case units, compare, results, photo, info, developer
 }
 
 /// Settings opened as a sheet by the home screen's gear button (tidied up with Raven, 2026-11-10): units,
@@ -15,8 +15,6 @@ struct SettingsView: View {
     @AppStorage(CompareLength.key) private var compareLength: CompareLength = .caseLength
     /// Only phones with a LiDAR scanner measure the photo, so only they get the switch (`MatchesView.compareByFitKey`).
     @AppStorage(MatchesView.compareByFitKey) private var compareByFit = true
-    /// The training capture's switch at the bottom, off by default (`TrainingCapture`).
-    @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
     /// The photo's outline coloured by detection (`ShapeContour.partColoursKey`); for everyone since 2026-11-08.
     @AppStorage(ShapeContour.partColoursKey) private var partColours = false
     /// One row and one 1:1 column per one-size group, or every calibre (`CartridgeCatalog.groupSizeGroupsKey`).
@@ -31,7 +29,7 @@ struct SettingsView: View {
                 case .results: results
                 case .photo: photo
                 case .info: info
-                case .training: training
+                case .developer: developer
                 }
             }
         }
@@ -115,20 +113,12 @@ struct SettingsView: View {
         }
     }
 
-    /// The training capture (Raven, 2026-11-11): a visible switch, off by default, instead of the
-    /// five hidden taps, so the App Store version has no hidden feature (guideline 2.3.1).
-    private var training: some View {
+    /// The developer's switches behind one row at the bottom (Raven, 2026-11-14): `DeveloperOptionsView`.
+    private var developer: some View {
         Section {
-            Toggle(isOn: $trainingCapture) {
-                Label { Text("Trainingsdaten") } icon: { Image(systemName: "tray.and.arrow.down") }
+            NavigationLink { DeveloperOptionsView() } label: {
+                Label("Entwickleroptionen", systemImage: "wrench.and.screwdriver")
             }
-            if trainingCapture {
-                NavigationLink { TrainingCaptureView() } label: {
-                    Label("Trainingsdaten aufnehmen", systemImage: "camera")
-                }
-            }
-        } footer: {
-            Text("Speichert Fotoserien bekannter Patronen mit den Messwerten der App auf dem Gerät, als Testdaten für die Erkennung.")
         }
     }
 }

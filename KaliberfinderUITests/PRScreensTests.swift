@@ -25,6 +25,10 @@ final class PRScreensTests: XCTestCase {
             snap("06-Einstellungen")
             scroll()
             snap("06b-Einstellungen-unten")  // version and calibre-data commit
+            if open(app.buttons["Entwickleroptionen"].firstMatch) {
+                snap("06c-Entwickleroptionen")
+                app.navigationBars["Entwickleroptionen"].buttons.firstMatch.tap()  // back() would hit the home bar's gear
+            }
             app.buttons["Fertig"].firstMatch.tap()
         }
         if open(app.buttons["Masse eingeben"].firstMatch) {
@@ -272,7 +276,7 @@ final class PRScreensTests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]),
-              settingsBottom(),
+              developerOptions(),
               open(app.buttons["Trainingsdaten aufnehmen"].firstMatch),
               open(app.buttons["Neue Aufnahmeserie"].firstMatch),
               open(app.staticTexts["Fotografiertes Kaliber"].firstMatch) else { return }
@@ -293,7 +297,7 @@ final class PRScreensTests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]),
-              settingsBottom(),
+              developerOptions(),
               open(app.buttons["Trainingsdaten aufnehmen"].firstMatch),
               open(app.buttons["Neue Aufnahmeserie"].firstMatch),
               open(app.staticTexts["Fotografiertes Kaliber"].firstMatch) else { return }
@@ -458,7 +462,7 @@ final class PRScreensTests: XCTestCase {
         app.launchArguments += ["-trainingCaptureEnabled", "YES", "-screenTourCaptures", captures.path]
         app.launch()
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
-        guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]), settingsBottom() else { return }
+        guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]), developerOptions() else { return }
         snap("21a-Einstellungen-Trainingsdaten")  // the switch on, with the link below it
         guard open(app.buttons["Trainingsdaten aufnehmen"].firstMatch) else { return }
         snap("21-Trainingsdaten")
@@ -589,15 +593,15 @@ final class PRScreensTests: XCTestCase {
         return true
     }
 
-    /// Scrolls the Settings sheet to its last section, where the training switch (on by launch argument)
-    /// and its link sit. The drags run along the left edge: a swipe through the middle can catch the
-    /// switch and turn it off.
-    private func settingsBottom() -> Bool {
+    /// Scrolls the Settings sheet to its last section and opens the developer options, where the training
+    /// switch (on by launch argument) and its link sit. The drags run along the left edge: a swipe through
+    /// the middle can catch a switch and turn it off.
+    private func developerOptions() -> Bool {
         for _ in 0..<6 {
             app.coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.8))
                 .press(forDuration: 0.01, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.2)))
         }
-        return true
+        return open(app.buttons["Entwickleroptionen"].firstMatch)
     }
 
     private func back() {

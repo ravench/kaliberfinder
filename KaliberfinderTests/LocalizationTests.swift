@@ -35,6 +35,7 @@ final class LocalizationTests: XCTestCase {
 
     func testDeveloperScreenAndCopyrightAreTranslated() throws {
         let en = try table("en")
+        XCTAssertEqual(en["Entwickleroptionen"], "Developer options")
         XCTAssertEqual(en["Trainingsdaten aufnehmen"], "Record training data")
         XCTAssertEqual(en["Neue Aufnahmeserie"], "New capture series")
         XCTAssertEqual(en["%lld von %lld Fotos hinzugefügt"], "%lld of %lld photos added")
