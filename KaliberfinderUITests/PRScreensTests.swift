@@ -125,7 +125,8 @@ final class PRScreensTests: XCTestCase {
         guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
         XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
         scroll(toRowAbove: "Mögliche Kaliber")
-        XCTAssertTrue(app.staticTexts["7.5 FK"].exists, "No rare calibre is listed: the switches' launch arguments did not arrive")
+        // The 8 mm Rast-Gasser: rare and well sourced, so the developer switch does not hide it (the 7.5 FK is).
+        XCTAssertTrue(app.staticTexts["8 mm Rast-Gasser"].exists, "No rare calibre is listed: the switches' launch arguments did not arrive")
         // The row's own label: another row (9 mm Mauser, 0.98 mm) rounds to «1.0 mm» too.
         let group = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "7.63x25 mm")).firstMatch
         XCTAssertTrue(group.exists, "The 7.63x25 mm group's row is not on the screen")
@@ -242,8 +243,12 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
-    /// The Swiss cadet round, found by the name on its box, with its own drawing.
+    /// The Swiss cadet round, found by the name on its box, with its own drawing. Its measurements have no source
+    /// yet, so only the developer switch «Unbelegte Kaliber zeigen» lists it.
     func testKadettenpatrone() {
+        app.terminate()
+        app.launchArguments += ["-showUnsourcedCalibres", "YES"]
+        app.launch()
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         let search = app.searchFields.firstMatch
@@ -288,7 +293,7 @@ final class PRScreensTests: XCTestCase {
             search.tap()
             search.typeText("Schmidt Rubin\n") // return hides the keyboard
         }
-        XCTAssertTrue(app.staticTexts["7.5x53.5 mm Swiss (GP 1890)"].waitForExistence(timeout: 5), "not found by another name")
+        XCTAssertTrue(app.staticTexts["7.5x53.5 mm Swiss (Patrone Modell 1890)"].waitForExistence(timeout: 5), "not found by another name")
         snap("23-Trainingsdaten-Kalibersuche")
     }
 
