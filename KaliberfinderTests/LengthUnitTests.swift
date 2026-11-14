@@ -16,9 +16,9 @@ final class LengthUnitTests: XCTestCase {
     }
 
     func testFormatting() {
-        XCTAssertEqual(LengthUnit.metric.format(29.69, locale: us), "29.69 mm")
-        XCTAssertEqual(LengthUnit.metric.format(29.69, locale: german), "29,69 mm")
-        XCTAssertEqual(LengthUnit.metric.format(12, locale: us), "12 mm")
+        XCTAssertEqual(LengthUnit.metric.format(29.69, locale: us), "29.7 mm")
+        XCTAssertEqual(LengthUnit.metric.format(29.69, locale: german), "29,7 mm")
+        XCTAssertEqual(LengthUnit.metric.format(12, locale: us), "12.0 mm")
         // Inches with three decimals, like US load data.
         XCTAssertEqual(LengthUnit.imperial.format(29.69, locale: us), "1.169 in")
         XCTAssertEqual(LengthUnit.imperial.format(7.82, locale: us), "0.308 in")

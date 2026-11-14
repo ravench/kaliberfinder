@@ -150,15 +150,15 @@ final class MeasurementsTests: XCTestCase {
         let bullet = try XCTUnwrap(nine.dimensions.first { $0.part == .bullet })
         let overall = try XCTUnwrap(nine.dimensions.first { $0.part == .overall })
         let en = Locale(identifier: "en_US")
-        XCTAssertEqual(DimensionLayout.valueText(bullet, unit: .metric, locale: en), "Ø 9.03 mm")
+        XCTAssertEqual(DimensionLayout.valueText(bullet, unit: .metric, locale: en), "Ø 9.0 mm")
         XCTAssertEqual(DimensionLayout.valueText(bullet, unit: .imperial, locale: en), "Ø 0.356 in")
-        XCTAssertEqual(DimensionLayout.valueText(overall, unit: .metric, locale: en), "29.69 mm")
+        XCTAssertEqual(DimensionLayout.valueText(overall, unit: .metric, locale: en), "29.7 mm")
         XCTAssertEqual(DimensionLayout.valueText(overall, unit: .imperial, locale: en), "1.169 in")
-        // A whole number keeps a decimal in the drawing (Raven, 2026-11-09: «Show 9mm as 9.0mm»).
+        // A whole number keeps a decimal (Raven, 2026-11-09: «Show 9mm as 9.0mm»), everywhere since the 0.1 mm rounding.
         let two23 = try layout(".223 Remington")
         let shoulder = try XCTUnwrap(two23.dimensions.first { $0.part == .shoulder })
         XCTAssertEqual(DimensionLayout.valueText(shoulder, unit: .metric, locale: en), "Ø 9.0 mm")
-        XCTAssertEqual(LengthUnit.metric.format(9, locale: en), "9 mm", "elsewhere the number stays as it was")
+        XCTAssertEqual(LengthUnit.metric.format(9, locale: en), "9.0 mm")
     }
 
     /// A ball's diameter is at its equator.
