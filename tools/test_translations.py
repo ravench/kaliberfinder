@@ -44,6 +44,13 @@ class TranslationTests(unittest.TestCase):
     def test_share_extension_texts_pair_up(self):
         self.assertEqual(T["Das Foto konnte nicht übernommen werden."][FR], "Impossible de recevoir la photo.")
 
+    def test_every_translation_is_used(self):
+        """A text removed from the app leaves no translation behind (e.g. «Alle Kaliber durchsuchen», 2026-11-14)."""
+        from extract_strings import keys
+        from generate_data import COUNTRY_NAMES
+        used = set(keys()) | {"Andere"} | set(COUNTRY_NAMES.values())  # as tools/localize.py counts them
+        self.assertEqual(sorted(k for k in T if k not in used), [])
+
     def test_no_verbatim_german_in_the_views(self):
         """Every literal shown to the user goes through the string table, the developer screen too."""
         views = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Kaliberfinder", "Views")
