@@ -17,8 +17,8 @@ final class BulletMaterialTests: XCTestCase {
         XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge("7.5x53.5 mm Swiss (GP 1890)")), CartridgeView.steel)
     }
 
-    /// A jacket that is not copper-coloured is drawn in its metal: the silver cupronickel of the GP 11 and of
-    /// other early service rounds, steel on the 7.65x53 mm Argentine (calibre-data #151).
+    /// A jacket that is not copper-coloured is drawn in its metal: the silver cupronickel of the GP 11 and, since
+    /// calibre-data #151, of other early service rounds like the 8x57 mm IS; steel on the 7.65x53 mm Argentine.
     func testSilverAndSteelJackets() throws {
         for id in ["7.5x55 mm Swiss (GP 11)", "8x57 mm IS"] {
             XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge(id)), CartridgeView.nickel, id)

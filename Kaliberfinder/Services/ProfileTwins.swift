@@ -59,10 +59,11 @@ struct TwinGroup<Item: Identifiable>: Identifiable where Item.ID == String {
 
 extension Matcher {
     /// How much farther from the photo than its group's nearest calibre a row's lead may be (`TwinGroup`), as a
-    /// `distance`: a third of a fit's width. On the catalogue's own outlines the members of a group told apart by
-    /// load are at most 0.07 apart, except the 6 mm BR Norma, loaded 6 mm longer than its parent (0.27); a flush
-    /// wadcutter and its parent are 0.5 apart (2026-11-14). Side views only: no group holds a round thing, which
-    /// is all an end view is compared with.
+    /// `distance`: a third of a fit's width. On the catalogue's own outlines the members of most groups are at most
+    /// 0.07 apart, so the parent leads. Three pairs are farther apart, and a member's photo is led by the member:
+    /// a flush wadcutter and its parent (0.5), the 6 mm BR Norma, loaded 6 mm longer than its parent (0.27), and
+    /// the two .44 Henry (0.15). Measured 2026-11-14 on calibre-data #151. Side views only: no group holds a round
+    /// thing, which is all an end view is compared with.
     static let groupMargin = 0.1
 
     /// Ranked matches with identical-looking calibres in one row. The margin alone picks a row's lead: every row
