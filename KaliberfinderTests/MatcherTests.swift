@@ -120,7 +120,7 @@ final class MatcherTests: XCTestCase {
         // Cases 55.6, 51.2, 48.77 and 48.8 mm (the SAAMI sheets): the 6 mm Creedmoor's shorter case first.
         XCTAssertEqual(MatchesView.toCompare(try ids.map { try match($0, .emptyCase) }).map(\.id),
                        ["6 mm Creedmoor", "6.5 mm Creedmoor", ".308 Winchester", "7.5x55 mm Swiss (GP 11)"])
-        // Loaded, by the whole round the same calibres are 77.5, 71.1 (Ø 11.9), 71.1 (Ø 12.01) and 71.8 mm long …
+        // Loaded, by the whole round the same calibres are 77.5, 71.12 (Ø 11.9), 71.12 (Ø 11.99) and 71.8 mm long …
         XCTAssertEqual(MatchesView.toCompare(try ids.map { try match($0, .cartridge) }, by: .overallLength).map(\.id),
                        [".308 Winchester", "6 mm Creedmoor", "6.5 mm Creedmoor", "7.5x55 mm Swiss (GP 11)"])
         // … and by the case, the standard, they stand like the empty cases.

@@ -223,6 +223,7 @@ T = {
     "Gesamtlänge": ("Overall length", "Longueur totale", "Lunghezza totale"),
     "Geschossdurchmesser": ("Bullet diameter", "Diamètre du projectile", "Diametro della palla"),
     "Grösser": ("Larger", "Plus grand", "Più grande"),
+    "Gürteldurchmesser": ("Belt diameter", "Diamètre de la ceinture", "Diametro della cintura"),
     "Gürtelhülse": ("Belted", "À ceinture", "Con cintura"),
     "Halsdurchmesser": ("Neck diameter", "Diamètre du collet", "Diametro del colletto"),
     "Hülse %@": ("Case %@", "Douille %@", "Bossolo %@"),

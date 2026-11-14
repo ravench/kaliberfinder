@@ -57,11 +57,14 @@ def colour_codes(name):
 
 
 def dimensions(s):
-    """Dimensions as shown in the app. Shoulder only for bottleneck cases."""
+    """Dimensions as shown in the app. Shoulder only for bottleneck cases, belt only where it is wider than
+    the rim (calibre-data's [mm] belt)."""
     d = {"rim": s["rim"], "base": s["base"], "neck": s["neck"], "caseLength": s["case"],
          "overallLength": s["oal"], "bullet": s["bullet"]}
     if s["shoulder"]:
         d["shoulder"] = s["shoulder"]
+    if s["belt"]:
+        d["belt"] = s["belt"]
     return d
 
 

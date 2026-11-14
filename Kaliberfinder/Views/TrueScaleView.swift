@@ -220,7 +220,7 @@ struct TrueScaleView: View {
                     .minimumScaleFactor(0.7)
             }
             Text(verbatim: Self.lengthText(c, caseOnly: caseOnly(c), unit: unit)).font(.caption2)
-            Text(verbatim: "Ø \(unit.format(max(c.dimensions.rim, c.dimensions.base)))").font(.caption2)
+            Text(verbatim: "Ø \(unit.format(c.headDiameter))").font(.caption2)
         }
         .multilineTextAlignment(.center)
         // Takes the height it needs, so a long name wraps instead of being cut short.
