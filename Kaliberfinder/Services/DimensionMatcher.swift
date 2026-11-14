@@ -63,7 +63,8 @@ enum DimensionMatcher {
                      cartridges: [Cartridge] = CartridgeCatalog.current,
                      limit: Int = 15) -> [DimensionMatch] {
         guard !measured.isEmpty else { return [] }
-        let matches = cartridges.filter(measured.shape.fits).map { c -> (DimensionMatch, Double) in
+        // A typed bullet diameter was measured on a bullet: a blank has none (its `dimensions.bullet` only repeats the case's diameter).
+        let matches = cartridges.filter { measured.shape.fits($0) && !(measured.bullet != nil && $0.blank) }.map { c -> (DimensionMatch, Double) in
             let d = c.dimensions
             // A shotshell is as long as its crimp makes it, or opened by firing to its case length, whichever field it was typed in.
             let shell = c.kind == "shot" ? [c.overallLengths, d.caseLength...d.caseLength] : nil
