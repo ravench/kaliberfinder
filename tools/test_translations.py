@@ -46,9 +46,8 @@ class TranslationTests(unittest.TestCase):
 
     def test_every_translation_is_used(self):
         """A text removed from the app leaves no translation behind (e.g. «Alle Kaliber durchsuchen», 2026-11-14)."""
-        from extract_strings import keys
-        from generate_data import COUNTRY_NAMES
-        used = set(keys()) | {"Andere"} | set(COUNTRY_NAMES.values())  # as tools/localize.py counts them
+        from extract_strings import used_keys
+        used = used_keys()
         self.assertEqual(sorted(k for k in T if k not in used), [])
 
     def test_no_verbatim_german_in_the_views(self):

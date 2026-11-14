@@ -1,3 +1,4 @@
+import UIKit
 import XCTest
 
 /// A tour of the main screens, one screenshot per stop. The Build job's PR screens run it on the
@@ -397,6 +398,23 @@ final class PRScreensTests: XCTestCase {
         // With the measurements in the top block (Raven, 2026-11-08), so no scrolling.
         XCTAssertTrue(app.buttons["Masse von Hand eingeben"].waitForExistence(timeout: 5), "The link to measure by hand is not shown")
         snap("31-Foto-unsicher")
+    }
+
+    /// A photo with no cartridge on it, so no matches: the way on is measuring by hand, with no link to
+    /// the whole catalogue any more (Raven, 2026-11-14).
+    func testNoMatches() throws {
+        let photo = FileManager.default.temporaryDirectory.appendingPathComponent("tour-empty-paper.png")
+        let paper = UIGraphicsImageRenderer(size: CGSize(width: 1200, height: 900)).image { context in
+            UIColor(white: 0.93, alpha: 1).setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 1200, height: 900))
+        }
+        try XCTUnwrap(paper.pngData()).write(to: photo)
+        app.terminate()
+        app.launchArguments += ["-screenTourPhoto", photo.path]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Treffer"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["Masse von Hand eingeben"].waitForExistence(timeout: 90), "The link to measure by hand is not shown")
+        snap("31b-Foto-ohne-Treffer")
     }
 
     /// A calibre's lookalike group (Raven, 2026-11-08): from the .308 Winchester's page to the group, and the group at 1:1.
