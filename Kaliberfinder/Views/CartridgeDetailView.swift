@@ -47,6 +47,9 @@ struct CartridgeDetailView: View {
                 if cartridge.hasCase {
                     LabeledContent(cartridge.kind == "shot" ? "Hülsenlänge (offen)".loc : "Hülsenlänge".loc, value: unit.format(d.caseLength))
                     LabeledContent("Randdurchmesser", value: unit.format(d.rim))
+                    if let belt = d.belt {
+                        LabeledContent("Gürteldurchmesser", value: unit.format(belt))
+                    }
                     LabeledContent("Bodendurchmesser", value: unit.format(d.base))
                     if let shoulder = d.shoulder {
                         LabeledContent("Schulterdurchmesser", value: unit.format(shoulder))

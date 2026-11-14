@@ -2646,6 +2646,29 @@
         }
       }
     },
+    "Gürteldurchmesser": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belt diameter"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diamètre de la ceinture"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diametro della cintura"
+          }
+        }
+      }
+    },
     "Gürtelhülse": {
       "extractionState": "manual",
       "localizations": {
