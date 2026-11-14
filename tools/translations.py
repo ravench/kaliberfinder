@@ -283,6 +283,11 @@ T = {
     "Erkennung farbig zeigen": ("Show detection in colour", "Afficher la détection en couleur", "Mostra il rilevamento a colori"),
     "Entwickleroptionen": ("Developer options", "Options de développement", "Opzioni per sviluppatori"),
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
+    "Unbelegte Kaliber zeigen": ("Show unsourced calibres", "Afficher les calibres sans source", "Mostra i calibri senza fonte"),
+    "Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt. Sonst weder in Listen, Suche noch Treffern.":
+        ("Calibres whose measurements are not well sourced in calibre-data: parts of their drawing are estimated. Otherwise neither in lists, search nor matches.",
+         "Calibres dont les mesures ne sont pas bien documentées dans calibre-data : une partie de leur dessin est estimée. Sinon ni dans les listes, ni dans la recherche, ni dans les résultats.",
+         "Calibri le cui misure non sono ben documentate in calibre-data: parti del loro disegno sono stimate. Altrimenti né negli elenchi, né nella ricerca, né nei risultati."),
     "Kamera": ("Camera", "Caméra", "Fotocamera"),
     "Scharf ab %lld cm": ("In focus from %lld cm", "Net à partir de %lld cm", "A fuoco da %lld cm"),
     "Neue Aufnahmeserie": ("New capture series", "Nouvelle série de prises", "Nuova serie di scatti"),

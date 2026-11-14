@@ -20,7 +20,7 @@ final class ProfileTwinTests: XCTestCase {
         XCTAssertEqual(twins(of: try c("9x19 mm")).map(\.id), ["9 mm Glisenti"], "one size by calibre-data, 0.5 mm apart in the sheets")
         XCTAssertTrue(twins(of: try c("7x57 mm Mauser")).isEmpty, "the 7x57 R of its group has a rim")
         XCTAssertTrue(twins(of: try c("7.5x55 mm Swiss (GP 11)")).isEmpty)
-        XCTAssertTrue(twins(of: try c("7.5x53.5 mm Swiss (GP 1890)")).isEmpty)
+        XCTAssertTrue(twins(of: try c("7.5x53.5 mm Swiss (Patrone Modell 1890)")).isEmpty)
         XCTAssertFalse(CartridgeCatalog.sameProfile(try c("9x19 mm"), try c("9x21 mm IMI")), "9x21 has a longer case")
     }
 

@@ -4,6 +4,7 @@ import SwiftUI
 /// stay out of the users' way: the training capture, visible rather than hidden (App Store guideline 2.3.1).
 struct DeveloperOptionsView: View {
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
+    @AppStorage(CartridgeCatalog.showUnsourcedKey) private var showUnsourced = false
 
     var body: some View {
         List {
@@ -18,6 +19,13 @@ struct DeveloperOptionsView: View {
                 }
             } footer: {
                 Text("Speichert Fotoserien bekannter Patronen mit den Messwerten der App auf dem Gerät, als Testdaten für die Erkennung.")
+            }
+            Section {
+                Toggle(isOn: $showUnsourced) {
+                    Label { Text("Unbelegte Kaliber zeigen") } icon: { Image(systemName: "questionmark.square.dashed") }
+                }
+            } footer: {
+                Text("Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt. Sonst weder in Listen, Suche noch Treffern.")
             }
         }
         .readableWidth()

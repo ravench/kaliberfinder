@@ -11,7 +11,7 @@ IDS = [
     "9x19 mm", "9x21 mm IMI", "7.65 mm Parabellum", ".30 Super Carry", "9 mm Browning kurz (.380 ACP)",
     ".22 LR", ".17 HMR", ".22 WMR", ".45 ACP", ".32 S&W Long", ".38 Super", "10 mm Auto",
     ".38 Special", ".357 Magnum", ".44 Magnum", ".50 Action Express", ".44 Rundkugel (.454)",
-    "7.5x55 mm Swiss (GP 11)", "7.5x53.5 mm Swiss (GP 1890)", "7.5x54.5 mm Swiss (GP 90/23)", "7.5 mm Kadettenpatrone",
+    "7.5x55 mm Swiss (GP 11)", "7.5x53.5 mm Swiss (Patrone Modell 1890)", "7.5x54.5 mm Swiss (GP 90/23)", "7.5 mm Kadettenpatrone",
     "5.6 mm GP 90", ".223 Remington", "5.56x45 mm NATO", ".308 Winchester", "7.62x51 mm NATO",
     "6 mm Creedmoor", "6.5 mm Creedmoor", ".30-30 Winchester", "8x57 mm IS", "7x57 mm Mauser", "7x57 mm R",
     "7.63x25 mm Mauser", "6.5x54 mm Mannlicher-Schönauer", ".577/450 Martini-Henry",

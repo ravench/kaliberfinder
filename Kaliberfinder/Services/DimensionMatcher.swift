@@ -75,9 +75,10 @@ enum DimensionMatcher {
                 (measured.bullet, [d.bullet...d.bullet]),
             ]
             let deviations = pairs.compactMap { pair in pair.0.map { v in max(0, (pair.1.map { outside(v, $0) }.min() ?? 0) - tolerance) } }
-            // Within a shotshell's crimp range, nearer the catalogue's length goes first (12/70 before 12/76), loaded or opened.
+            // Within a shotshell's crimp range, nearer the hull length goes first (12/70 before 12/76), loaded or opened;
+            // the catalogue's length is the folded crimp's maximum (calibre-data #155), too short for a roll crimp.
             let typed = measured.overallLength ?? measured.caseLength
-            let fromCatalogue = c.kind == "shot" ? typed.map { min(abs($0 - d.overallLength), abs($0 - d.caseLength)) } ?? 0 : 0
+            let fromCatalogue = c.kind == "shot" ? typed.map { abs($0 - d.caseLength) } ?? 0 : 0
             return (DimensionMatch(cartridge: c,
                                    maxDeviation: deviations.max() ?? 0,
                                    meanDeviation: deviations.reduce(0, +) / Double(deviations.count)), fromCatalogue)

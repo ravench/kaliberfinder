@@ -12,7 +12,7 @@ struct CatalogView: View {
     }
 
     var body: some View {
-        let results = CartridgeCatalog.search(query)
+        let results = CartridgeCatalog.search(query, in: CartridgeCatalog.visible())
         List {
             if selecting {
                 Section {

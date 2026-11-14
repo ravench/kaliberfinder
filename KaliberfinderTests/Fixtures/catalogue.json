@@ -39,6 +39,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 9.96,
@@ -81,6 +82,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 9.96,
@@ -123,6 +125,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 9.98,
@@ -163,6 +166,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 8.74,
@@ -208,6 +212,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 9.5,
@@ -255,6 +260,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 6.9,
@@ -290,6 +296,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 7.5,
@@ -331,6 +338,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 7.5,
@@ -375,6 +383,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 12.0,
@@ -420,6 +429,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 9.5,
@@ -460,6 +470,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 10.2,
@@ -499,6 +510,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 10.8,
@@ -548,6 +560,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 11.2,
@@ -596,6 +609,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 11.2,
@@ -643,6 +657,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 13.1,
@@ -685,6 +700,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 13.1,
@@ -721,6 +737,7 @@
    "rare": false,
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 11.5,
@@ -763,6 +780,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [
     {
      "part": "tip",
@@ -837,8 +855,8 @@
    }
   },
   {
-   "id": "7.5x53.5 mm Swiss (GP 1890)",
-   "name": "7.5x53.5 mm Swiss (GP 1890)",
+   "id": "7.5x53.5 mm Swiss (Patrone Modell 1890)",
+   "name": "7.5x53.5 mm Swiss (Patrone Modell 1890)",
    "category": "Langwaffe",
    "kind": "rimless",
    "aliases": [
@@ -874,6 +892,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 12.5,
@@ -925,6 +944,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 12.7,
@@ -976,6 +996,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": false,
    "colourCodes": [],
    "dimensions": {
     "rim": 12.7,
@@ -1022,6 +1043,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 9.6,
@@ -1062,6 +1084,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 9.6,
@@ -1106,6 +1129,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [
     {
      "part": "tip",
@@ -1250,6 +1274,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 11.9,
@@ -1294,6 +1319,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [
     {
      "part": "tip",
@@ -1441,6 +1467,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 12.01,
@@ -1483,6 +1510,7 @@
    },
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 12.0,
@@ -1527,6 +1555,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 12.8,
@@ -1574,6 +1603,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [
     {
      "part": "annulus",
@@ -1695,6 +1725,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 12.0,
@@ -1734,6 +1765,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 13.5,
@@ -1775,6 +1807,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 9.98,
@@ -1814,6 +1847,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 11.52,
@@ -1854,6 +1888,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": false,
    "colourCodes": [],
    "dimensions": {
     "rim": 19.0,
@@ -1898,6 +1933,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 15.7,
@@ -1939,6 +1975,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 15.7,
@@ -1984,6 +2021,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 10.4,
@@ -2023,6 +2061,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [
     {
      "part": "tip",
@@ -2136,6 +2175,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 16.9,
@@ -2177,6 +2217,7 @@
    },
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 16.76,
@@ -2214,6 +2255,7 @@
    "rare": false,
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 9.5,
@@ -2245,6 +2287,7 @@
    "rare": false,
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 22.3,
@@ -2278,6 +2321,7 @@
    "rare": false,
    "worldwide": true,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 22.3,
@@ -2311,6 +2355,7 @@
    "rare": false,
    "worldwide": false,
    "blank": false,
+   "wellSourced": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 22.3,
@@ -2345,14 +2390,14 @@
    ]
   },
   {
-   "name": "7.5x53.5 mm Swiss (GP 1890)",
+   "name": "7.5x53.5 mm Swiss (Patrone Modell 1890)",
    "differs": [
     "bore",
     "length",
     "load"
    ],
    "calibres": [
-    "7.5x53.5 mm Swiss (GP 1890)",
+    "7.5x53.5 mm Swiss (Patrone Modell 1890)",
     "7.5x54.5 mm Swiss (GP 90/23)",
     "7.5 mm Kadettenpatrone"
    ]

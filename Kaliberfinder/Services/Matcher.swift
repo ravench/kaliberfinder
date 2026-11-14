@@ -101,8 +101,9 @@ enum Matcher {
     /// LiDAR size: per 10 mm beyond the tolerance.
     static let lengthWeight = 2.0
     static let lengthTolerance = 2.0
-    /// Inside a shotshell's crimp range (`Cartridge.overallLengths`) the catalogue's length still counts,
-    /// this much: a folded 12/70 is no outsider, but a 64 mm shell is still a 12/70 before a 12/76.
+    /// Inside a shotshell's crimp range (`Cartridge.overallLengths`) the nearness to its hull length still counts,
+    /// this much: a folded 12/70 is no outsider, but a 65.5 mm shell, a roll-crimped 12/70 or a short 12/76, is a
+    /// 12/70 first. The hull, not the catalogue's length: that is the folded crimp's maximum since calibre-data #155.
     static let crimpRangeWeight = 0.25
     static let diameterWeight = 1.0
     static let diameterTolerance = 0.3
@@ -179,7 +180,8 @@ enum Matcher {
     /// widths (a bullet tip lies on the axis, a case mouth or a crimp half its width up, the head half the rim).
     struct Expected {
         let shape: ShapeMeasurement
-        /// The catalogue's length, and the lengths a loaded round can have (a shotshell's depend on its crimp).
+        /// The catalogue's length (a shotshell's hull length), and the lengths a loaded round can have (a
+        /// shotshell's depend on its crimp).
         let length: Double
         var lengths: ClosedRange<Double>?
         let diameter: Double
@@ -275,7 +277,7 @@ enum Matcher {
         let diameter = size.diameter * diameterScale
         let lengths = expected.lengths ?? expected.length...expected.length
         let lengthOff = max(0, DimensionMatcher.outside(length, lengths) - lengthTolerance)
-        // Within the range, the catalogue's length counts `crimpRangeWeight` as much (0 for a single length).
+        // Within the range, the distance to `expected.length` counts `crimpRangeWeight` as much (0 for a single length).
         let fromCatalogue = max(0, abs(length - expected.length) - lengthTolerance) - lengthOff
         let diameterOff = max(0, abs(diameter - expected.diameter) - diameterTolerance)
         d += lengthWeight * (lengthOff + crimpRangeWeight * fromCatalogue) / 10 + diameterWeight * diameterOff / 10
@@ -285,7 +287,8 @@ enum Matcher {
     /// The whole cartridge `c` to compare with, from its catalogue outline `whole`: a bullet's tip lies
     /// on the axis; a crimp or a ball's end stands half its width above it.
     static func wholeExpected(_ c: Cartridge, _ whole: ShapeMeasurement, hasBullet: Bool) -> Expected {
-        Expected(shape: whole, length: c.dimensions.overallLength, lengths: c.overallLengths, diameter: c.dimensions.base,
+        Expected(shape: whole, length: c.kind == "shot" ? c.dimensions.caseLength : c.dimensions.overallLength,
+                 lengths: c.overallLengths, diameter: c.dimensions.base,
                  lengthScale: lengthScaleWhole, front: hasBullet ? 0 : endWidth(whole) / 2, back: rim(whole) / 2)
     }
 

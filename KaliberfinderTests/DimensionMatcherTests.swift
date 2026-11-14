@@ -84,7 +84,7 @@ final class DimensionMatcherTests: XCTestCase {
     func testShorterCaseTellsGP1890FromGP11() {
         // calibre-data #106: the GP 1890 as the army's 1892 drawing has it.
         let matches = rank(MeasuredDimensions(overallLength: 77.2, caseLength: 53.5, rim: 12.5), cartridges: Fixture.catalogue)
-        XCTAssertEqual(matches.first?.cartridge.id, "7.5x53.5 mm Swiss (GP 1890)")
+        XCTAssertEqual(matches.first?.cartridge.id, "7.5x53.5 mm Swiss (Patrone Modell 1890)")
         XCTAssertEqual(matches.first?.fit, .good)
         let gp11 = matches.first { $0.cartridge.id == "7.5x55 mm Swiss (GP 11)" }
         XCTAssertNotEqual(gp11?.fit, .good, "GP 11's case is 1 mm longer")
@@ -95,9 +95,9 @@ final class DimensionMatcherTests: XCTestCase {
     func testGP1890IsOnlyFoundWithObsoleteCalibresSwitchedOn() {
         let gp1890 = MeasuredDimensions(overallLength: 77.2, caseLength: 53.5, rim: 12.5)
         let without = rank(gp1890)
-        XCTAssertFalse(without.contains { $0.cartridge.id == "7.5x53.5 mm Swiss (GP 1890)" })
+        XCTAssertFalse(without.contains { $0.cartridge.id == "7.5x53.5 mm Swiss (Patrone Modell 1890)" })
         let with = rank(gp1890, cartridges: CartridgeCatalog.matchable(includeObsolete: true, in: Fixture.catalogue))
-        XCTAssertEqual(with.first?.cartridge.id, "7.5x53.5 mm Swiss (GP 1890)")
+        XCTAssertEqual(with.first?.cartridge.id, "7.5x53.5 mm Swiss (Patrone Modell 1890)")
     }
 
     func testIdenticalCalibresTie() {

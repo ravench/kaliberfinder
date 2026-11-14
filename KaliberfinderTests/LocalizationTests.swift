@@ -37,6 +37,7 @@ final class LocalizationTests: XCTestCase {
         let en = try table("en")
         XCTAssertEqual(en["Entwickleroptionen"], "Developer options")
         XCTAssertEqual(en["Trainingsdaten aufnehmen"], "Record training data")
+        XCTAssertEqual(en["Unbelegte Kaliber zeigen"], "Show unsourced calibres")
         XCTAssertEqual(en["Neue Aufnahmeserie"], "New capture series")
         XCTAssertEqual(en["%lld von %lld Fotos hinzugefügt"], "%lld of %lld photos added")
         XCTAssertEqual(en["Nicht in der Liste"], "Not in the list")

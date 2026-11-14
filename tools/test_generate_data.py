@@ -12,7 +12,7 @@ def spec(name):
     return next(s for _, items in CATALOGUE for s in items if s["name"] == name)
 
 
-GP1890 = "7.5x53.5 mm Swiss (GP 1890)"
+GP1890 = "7.5x53.5 mm Swiss (Patrone Modell 1890)"  # renamed in calibre-data #154
 
 
 
@@ -38,6 +38,14 @@ class RareAndCountryTests(unittest.TestCase):
 
     def setUp(self):
         self.by_name = {c["name"]: c for c in generate_data.build()}
+
+    def test_every_entry_says_whether_it_is_well_sourced(self):
+        """calibre-data's outline.well_sourced decides, never the app (Raven, 2026-11-14): the Developer Options
+        switch «Unbelegte Kaliber zeigen» hides the others from the user."""
+        self.assertTrue(all(isinstance(c["wellSourced"], bool) for c in self.by_name.values()))
+        self.assertTrue(self.by_name["9x19 mm"]["wellSourced"])
+        self.assertFalse(self.by_name["7.5 mm Kadettenpatrone"]["wellSourced"], "its measurements are listed as unsourced")
+        self.assertFalse(self.by_name["9x23 mm Winchester"]["wellSourced"], "no extractor groove in [case_head]")
 
     def test_every_entry_has_the_rare_flag(self):
         self.assertTrue(all(isinstance(c["rare"], bool) for c in self.by_name.values()))
@@ -283,7 +291,7 @@ class CatalogueOnlyDataTests(unittest.TestCase):
         self.assertEqual({c["category"] for c in built},
                          {"Randfeuer", "Kurzwaffe", "Langwaffe", "Schwarzpulver", "Flinte", "Luftdruck"})
         self.assertEqual(set().union(*built), {"id", "name", "category", "kind", "aliases", "displayAliases",
-                                               "obsolete", "rare", "country", "worldwide", "blank",
+                                               "obsolete", "rare", "country", "worldwide", "blank", "wellSourced",
                                                "dimensions", "outline", "primer", "colourCodes"})
 
     def test_swiss_match_reaches_the_json(self):

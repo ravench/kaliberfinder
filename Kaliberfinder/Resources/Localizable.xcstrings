@@ -3175,6 +3175,29 @@
         }
       }
     },
+    "Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt. Sonst weder in Listen, Suche noch Treffern.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibres whose measurements are not well sourced in calibre-data: parts of their drawing are estimated. Otherwise neither in lists, search nor matches."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibres dont les mesures ne sont pas bien documentées dans calibre-data : une partie de leur dessin est estimée. Sinon ni dans les listes, ni dans la recherche, ni dans les résultats."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibri le cui misure non sono ben documentate in calibre-data: parti del loro disegno sono stimate. Altrimenti né negli elenchi, né nella ricerca, né nei risultati."
+          }
+        }
+      }
+    },
     "Kaliber, z. B. 9 mm Luger": {
       "extractionState": "manual",
       "localizations": {
@@ -6253,6 +6276,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stati Uniti"
+          }
+        }
+      }
+    },
+    "Unbelegte Kaliber zeigen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show unsourced calibres"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher les calibres sans source"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra i calibri senza fonte"
           }
         }
       }

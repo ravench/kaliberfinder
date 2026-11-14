@@ -6,7 +6,7 @@ struct LookalikeGroupView: View {
     let group: LookalikeGroup
 
     var body: some View {
-        let members = group.members
+        let members = CartridgeCatalog.visible(group.members)
         List {
             Section {
                 ForEach(members) { c in

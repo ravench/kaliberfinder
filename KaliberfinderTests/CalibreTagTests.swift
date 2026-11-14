@@ -7,7 +7,7 @@ final class CalibreTagTests: XCTestCase {
 
     func testTagsComeFromTheCatalogue() throws {
         XCTAssertEqual(CalibreTag.of(try cartridge("11x59 mm R Gras")), [.rare, .obsolete])
-        XCTAssertEqual(CalibreTag.of(try cartridge("7.5x53.5 mm Swiss (GP 1890)")), [.obsolete])
+        XCTAssertEqual(CalibreTag.of(try cartridge("7.5x53.5 mm Swiss (Patrone Modell 1890)")), [.obsolete])
         XCTAssertEqual(CalibreTag.of(try cartridge(".450 No. 2 Nitro Express")), [.rare])
         XCTAssertEqual(CalibreTag.of(try cartridge("7.5x55 mm Swiss (GP 11)")), [])
         // Members of a one-size lookalike group carry the group tag; a group told apart by a measurement

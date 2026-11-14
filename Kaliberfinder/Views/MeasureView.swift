@@ -24,7 +24,8 @@ struct MeasureView: View {
     }
 
     var body: some View {
-        let ranked = DimensionMatcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), measured)
+        let ranked = DimensionMatcher.rankHiding(HiddenTag.hidden(includeObsolete: includeObsolete, includeRare: includeRare), measured,
+                                                 cartridges: CartridgeCatalog.visible())
         let matches = ranked.list(revealing: revealed)
         List {
             Section {

@@ -14,7 +14,7 @@ final class BulletMaterialTests: XCTestCase {
             XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge(id)), CartridgeView.lead, id)
         }
         XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge("9x19 mm")), CartridgeView.copper)
-        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge("7.5x53.5 mm Swiss (GP 1890)")), CartridgeView.steel)
+        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge("7.5x53.5 mm Swiss (Patrone Modell 1890)")), CartridgeView.steel)
     }
 
     /// A jacket that is not copper-coloured is drawn in its metal: the silver cupronickel of the GP 11 and, since
