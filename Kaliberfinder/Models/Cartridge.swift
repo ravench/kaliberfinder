@@ -119,6 +119,8 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     struct Dimensions: Decodable, Hashable {
         let rim: Double
+        /// The belt of a belted case where it is wider than the rim (the .378 Weatherby head); nil otherwise.
+        let belt: Double?
         let base: Double
         /// Only for bottleneck cases.
         let shoulder: Double?
@@ -167,8 +169,8 @@ struct Cartridge: Decodable, Identifiable, Hashable {
         return kind == "shot" ? length * Self.shellShortest...length * Self.shellLongest : length...length
     }
 
-    /// Diameter of the case head seen from below: the rim, or the base where it is wider.
-    var headDiameter: Double { max(dimensions.rim, dimensions.base) }
+    /// Diameter of the case head seen from below: the rim, or the base or the belt where it is wider.
+    var headDiameter: Double { max(dimensions.rim, dimensions.base, dimensions.belt ?? 0) }
 
     /// All names the cartridge is known by, for search.
     var allNames: [String] { [name] + displayAliases + aliases }

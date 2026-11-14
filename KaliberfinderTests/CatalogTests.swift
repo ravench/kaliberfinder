@@ -18,11 +18,24 @@ final class CatalogTests: XCTestCase {
                 XCTAssertGreaterThanOrEqual(d.overallLength + 0.01, d.caseLength, "\(c.name): case longer than cartridge")
             }
             XCTAssertGreaterThan(d.rim, 0, c.name)
-            XCTAssertLessThanOrEqual(c.outline.width, max(d.rim, d.base, d.bullet) + 0.01, c.name)
+            XCTAssertLessThanOrEqual(c.outline.width, max(d.rim, d.base, d.bullet, d.belt ?? 0) + 0.01, c.name)
             XCTAssertEqual(c.outline.height, d.overallLength, accuracy: 0.01, c.name)
             if let shoulder = d.shoulder {
                 XCTAssertLessThanOrEqual(d.neck, shoulder, c.name)
             }
+        }
+    }
+
+    /// A belt wider than the rim (calibre-data #150, the .378 Weatherby head) is the head's width: the side view
+    /// is drawn that wide, and the case seen from below with it.
+    func testABeltWiderThanTheRimIsTheHeadsWidth() {
+        let belted = CartridgeCatalog.all.filter { $0.dimensions.belt != nil }
+        XCTAssertFalse(belted.isEmpty)
+        for c in belted {
+            XCTAssertEqual(c.kind, "belted", c.name)
+            XCTAssertEqual(c.headDiameter, c.dimensions.belt, c.name)
+            XCTAssertGreaterThan(c.headDiameter, c.dimensions.rim, c.name)
+            XCTAssertEqual(c.outline.width, c.headDiameter, accuracy: 0.01, c.name)
         }
     }
 

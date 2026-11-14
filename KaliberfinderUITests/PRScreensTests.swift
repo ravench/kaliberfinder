@@ -524,6 +524,22 @@ final class PRScreensTests: XCTestCase {
         snap("42-Berdan-Zuendhuetchen")
     }
 
+    /// A belt wider than the rim (calibre-data #150): the .378 Weatherby Magnum is drawn with its belt, and its
+    /// measurements name the belt's diameter.
+    func testBeltWiderThanTheRim() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText(".378 Weatherby\n") // return hides the keyboard
+        }
+        guard open(app.staticTexts[".378 Weatherby Magnum"].firstMatch) else { return }
+        snap("43-Guertel-378-Weatherby")
+        scroll(toRowAbove: "Gesamtlänge")
+        snap("43b-Guertel-378-Weatherby-Masse")
+    }
+
     /// The calibration screen: the slider and the buttons dock at the bottom (Raven, 2026-11-11, on an iPad).
     func testCalibration() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
