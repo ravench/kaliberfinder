@@ -20,7 +20,7 @@ struct CartridgeDetailView: View {
                 }
                 .padding(.vertical, 8)
                 NavigationLink { TrueScaleView(cartridges: [cartridge], linksToDetails: false) } label: {
-                    Label("In Originalgrösse anzeigen", systemImage: "ruler")
+                    Label { Text("In Originalgrösse anzeigen") } icon: { OneToOneIcon() }
                 }
                 NavigationLink { MeasurementsView(cartridge: cartridge) } label: {
                     Label("Masszeichnung anzeigen", systemImage: "pencil.and.ruler")
@@ -96,7 +96,7 @@ struct CartridgeDetailView: View {
                     LabeledContent("Auch bekannt als", value: cartridge.displayAliases.joined(separator: ", "))
                 }
             } footer: {
-                Text("Gerundete Richtwerte, keine Wiederladedaten. Zündhütchen: Boxer; Militärhülsen können Berdan haben.")
+                Text("Gerundete Richtwerte, keine Wiederladedaten.")
             }
         }
         .readableWidth()

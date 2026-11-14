@@ -47,9 +47,7 @@ final class MeasureShapeTests: XCTestCase {
         XCTAssertTrue(Set(compare.map(\.id)).isSuperset(of: [".45 ACP", ".32 S&W Long", ".38 Super", "10 mm Auto"]),
                       "\(compare.map(\.id))")
         XCTAssertTrue(compare.allSatisfy { c in matches.first { $0.cartridge == c }?.fit != .poor })
-        XCTAssertEqual(MeasureView.compareTitle(matches: matches, selected: 0),
-                       String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, compare.count))
-        XCTAssertEqual(MeasureView.compareTitle(matches: matches, selected: 2), String(format: "1:1 vergleichen (%lld)".loc, 2))
+        XCTAssertEqual(MeasureView.compareTitle(matches: matches), String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, compare.count))
     }
 
     func testCompareFallsBackToTheBestThree() {
@@ -58,7 +56,7 @@ final class MeasureShapeTests: XCTestCase {
         XCTAssertTrue(matches.allSatisfy { $0.fit == .poor })
         XCTAssertEqual(Set(DimensionMatcher.toCompare(matches).map(\.id)), Set(ids(matches).prefix(3)))
         XCTAssertEqual(DimensionMatcher.toCompare(matches).map(\.id), DimensionMatcher.toCompare(matches).byLength().map(\.id), "by length")
-        XCTAssertEqual(MeasureView.compareTitle(matches: matches, selected: 0), "Die besten drei 1:1 vergleichen".loc)
+        XCTAssertEqual(MeasureView.compareTitle(matches: matches), "Die besten drei 1:1 vergleichen".loc)
         XCTAssertTrue(DimensionMatcher.toCompare([]).isEmpty)
     }
 

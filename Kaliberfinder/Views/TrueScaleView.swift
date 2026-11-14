@@ -223,18 +223,27 @@ struct TrueScaleView: View {
 struct OneToOneBadge: View {
     var body: some View {
         HStack(spacing: 8) {
-            Text(verbatim: "1:1")
-                .font(.caption.weight(.heavy).monospacedDigit())
-                .padding(.horizontal, 6)
-                .padding(.vertical, 2)
-                .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 4))
-                .foregroundStyle(.white)
+            OneToOneIcon()
             Text("Originalgrösse")
                 .font(.footnote)
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .combine)
+    }
+}
+
+/// The «1:1» box of the badge, also the icon of what leads to the 1:1 screen (Raven, 2026-11-13).
+struct OneToOneIcon: View {
+    var body: some View {
+        Text(verbatim: "1:1")
+            .font(.caption.weight(.heavy).monospacedDigit())
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2)
+            .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 4))
+            .foregroundStyle(.white)
+            // A row's icon slot is narrower than the box: never «…».
+            .fixedSize()
     }
 }
 
