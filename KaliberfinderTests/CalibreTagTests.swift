@@ -42,37 +42,43 @@ final class CalibreTagTests: XCTestCase {
         XCTAssertNil(CalibreTag.group.explanation, "the detail page names the group instead")
     }
 
-    /// A result row or 1:1 column that stands for a group carries the group's name, but never one of a calibre the
-    /// switches leave out of matching: with them off the .38 Super came up as the obsolete «.38 ACP» and the 6 mm BR
-    /// Norma as «6 mm BR Remington», each drawn as that parent (review 2026-11-13).
-    func testAGroupIsNotShownAsAMemberTheSwitchesLeaveOut() throws {
-        let off: (Cartridge) -> Bool = { $0.obsolete || $0.rare }, on: (Cartridge) -> Bool = { _ in false }
+    /// A result row or 1:1 column that stands for a group is called after the family, else after the member it draws,
+    /// so never after a calibre it does not list. It carried the parent's name and drawing: a .38 Super came up as the
+    /// obsolete «.38 ACP» the switches leave out, a wadcutter as the «.32 S&W Long» with its bullet out (review 2026-11-13).
+    func testAGroupRowIsCalledAfterACalibreItLists() throws {
         let superAuto = try cartridge(".38 Super"), acp = try cartridge(".38 ACP")
         let group = try XCTUnwrap(CartridgeCatalog.sizeGroup(of: superAuto))
         XCTAssertEqual(group.name, ".38 ACP")
-        XCTAssertEqual(group.shownName(drawing: superAuto, leftOut: off), ".38 Super")
-        XCTAssertEqual(group.shownName(drawing: superAuto, leftOut: on), ".38 ACP", "the parent is searched for too: the group's name")
-        XCTAssertEqual(group.shownName(drawing: acp, leftOut: off), ".38 ACP", "shown with «Einblenden», the parent leads and is drawn")
-        let norma = try cartridge("6 mm BR Norma")
-        XCTAssertEqual(try XCTUnwrap(CartridgeCatalog.sizeGroup(of: norma)).shownName(drawing: norma, leftOut: off), "6 mm BR Norma")
-        // A family's name stays, whoever is drawn, and so does the name of a parent the search includes.
-        let tokarev = try cartridge("7.62x25 mm Tokarev"), gp90 = try cartridge("5.6 mm GP 90")
-        XCTAssertEqual(try XCTUnwrap(CartridgeCatalog.sizeGroup(of: tokarev)).shownName(drawing: tokarev, leftOut: off), "7.63x25 mm")
-        XCTAssertEqual(try XCTUnwrap(CartridgeCatalog.sizeGroup(of: gp90)).shownName(drawing: gp90, leftOut: off), ".223 Remington")
-        // The catalogue's tag names the group as the database does.
-        XCTAssertEqual(CartridgeRow.groupName(for: tokarev, groupTag: .name), "7.63x25 mm")
-        XCTAssertEqual(CartridgeRow.groupName(for: superAuto, groupTag: .name), ".38 ACP")
+        XCTAssertEqual(group.shownName(drawing: superAuto), ".38 Super")
+        XCTAssertEqual(group.shownName(drawing: acp), ".38 ACP")
+        // A family's name stays, whoever is drawn.
+        let family = try XCTUnwrap(CartridgeCatalog.sizeGroup(of: try cartridge("7.62x25 mm Tokarev")))
+        XCTAssertEqual(family.members.map(family.shownName(drawing:)), ["7.63x25 mm", "7.63x25 mm", "7.63x25 mm"])
+        XCTAssertEqual(family.members.first?.id, ".30 Borchardt")
 
-        // The switches as they stand, both off by default.
-        let defaults = try XCTUnwrap(UserDefaults(suiteName: "CalibreTagTests"))
-        defaults.removePersistentDomain(forName: "CalibreTagTests")
-        defer { defaults.removePersistentDomain(forName: "CalibreTagTests") }
-        XCTAssertTrue(CartridgeCatalog.isLeftOut(acp, defaults: defaults))
-        XCTAssertFalse(CartridgeCatalog.isLeftOut(superAuto, defaults: defaults))
-        defaults.set(true, forKey: CartridgeCatalog.includeObsoleteKey)
-        XCTAssertTrue(CartridgeCatalog.isLeftOut(acp, defaults: defaults), "obsolete and rare")
-        defaults.set(true, forKey: CartridgeCatalog.includeRareKey)
-        XCTAssertFalse(CartridgeCatalog.isLeftOut(acp, defaults: defaults))
+        // The rows «Masse eingeben» lists, the switches off (both tags hidden) or on.
+        func row(_ length: Double, _ bullet: Double, hiding: Set<HiddenTag>) throws -> (members: [String], title: String) {
+            let ranked = DimensionMatcher.rankHiding(hiding, MeasuredDimensions(overallLength: length, bullet: bullet))
+            let first = try XCTUnwrap(DimensionMatcher.grouped(ranked.shown).first)
+            return (first.items.map(\.cartridge.id), CartridgeRow.title(for: first.lead.cartridge, groupTag: .group))
+        }
+        let off = Set(HiddenTag.allCases)
+        XCTAssertEqual(try row(32.5, 9.04, hiding: off).title, ".38 Super", "the .38 ACP is not searched")
+        let both = try row(32.5, 9.04, hiding: [])
+        XCTAssertEqual(both.members, [".38 ACP", ".38 Super"])
+        XCTAssertEqual(both.title, ".38 ACP", "the parent leads its group's matches and names the row")
+        // A parent that is searched but too far off to be listed: the wadcutter sits flush, 9 mm shorter.
+        let wadcutter = try row(23.3, 8.0, hiding: off)
+        XCTAssertEqual(wadcutter.members, [".32 S&W Long Wadcutter"])
+        XCTAssertEqual(wadcutter.title, ".32 S&W Long Wadcutter")
+        XCTAssertEqual(try row(58.0, 6.2, hiding: []).title, "6 mm BR Norma", "the 6 mm BR Remington is 2 mm shorter")
+        XCTAssertEqual(try row(35.2, 7.9, hiding: off).title, "7.63x25 mm")
+        // A calibre's own row and a calibre without a one-size group keep their names.
+        XCTAssertEqual(CartridgeRow.title(for: superAuto, groupTag: .name), ".38 Super")
+        XCTAssertEqual(CartridgeRow.title(for: try cartridge("7x57 mm R"), groupTag: .group), "7x57 mm R")
+        // The catalogue's tag names the group as the database does.
+        XCTAssertEqual(CartridgeRow.groupName(for: try cartridge("7.63x25 mm Mauser"), groupTag: .name), "7.63x25 mm")
+        XCTAssertEqual(CartridgeRow.groupName(for: superAuto, groupTag: .name), ".38 ACP")
     }
 
     func testRowMarksAreTheGlobeThenEachCountryOnce() throws {

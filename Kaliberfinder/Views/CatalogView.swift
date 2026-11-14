@@ -127,6 +127,11 @@ struct CartridgeRow: View {
         shownGroup(for: cartridge, groupTag: groupTag) != nil ? [.group] : CalibreTag.of(cartridge).filter { $0 != .group }
     }
 
+    /// The row's first line: the calibre's name, or what its group is called where the row stands for the group.
+    static func title(for cartridge: Cartridge, groupTag: GroupTag) -> String {
+        shownGroup(for: cartridge, groupTag: groupTag)?.shownName(drawing: cartridge) ?? cartridge.name
+    }
+
     /// The group's name as a tag under the calibre's name, in the catalogue (`.name`).
     static func groupName(for cartridge: Cartridge, groupTag: GroupTag) -> String? {
         groupTag == .name ? CartridgeCatalog.sizeGroup(of: cartridge)?.name : nil
@@ -137,10 +142,10 @@ struct CartridgeRow: View {
         let groupName = Self.groupName(for: cartridge, groupTag: groupTag)
         HStack(spacing: 12) {
             // A group's row draws the calibre it came with: the parent, which leads its group's matches, or the
-            // first member listed when the switches leave the parent out (the .38 Super, not the obsolete .38 ACP).
+            // first member listed when the parent is not among them (hidden by a switch, or too far off).
             CartridgeThumbnail(cartridge: cartridge)
             VStack(alignment: .leading, spacing: 2) {
-                Text(verbatim: group?.shownName(drawing: cartridge) ?? cartridge.name)
+                Text(verbatim: Self.title(for: cartridge, groupTag: groupTag))
                 let aliases = group == nil ? cartridge.displayAliases.joined(separator: ", ") : ""
                 if !aliases.isEmpty {
                     Text(verbatim: aliases).font(.caption).foregroundStyle(.secondary)

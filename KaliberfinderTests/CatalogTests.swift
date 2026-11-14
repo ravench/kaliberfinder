@@ -228,11 +228,6 @@ final class CatalogTests: XCTestCase {
         for g in groups where CartridgeCatalog.cartridge(id: g.name) != nil {
             XCTAssertTrue(g.calibres.contains(g.name), "\(g.name) names a group it is not in")
         }
-        // A file without names (before 2026-11-14, the tests' frozen catalogue): the parent's.
-        let unnamed = try JSONDecoder().decode(LookalikeGroup.self, from: Data(#"{"differs": ["load"], "calibres": ["A", "B"]}"#.utf8))
-        XCTAssertEqual(unnamed.name, "A")
-        let named = try JSONDecoder().decode(LookalikeGroup.self, from: Data(#"{"name": "AB", "differs": ["load"], "calibres": ["A", "B"]}"#.utf8))
-        XCTAssertEqual([named.name, named.id], ["AB", "A"])
     }
 
     func testNormalized() {
