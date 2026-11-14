@@ -121,8 +121,10 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
         scroll(toRowAbove: "Mögliche Kaliber")
         XCTAssertTrue(app.staticTexts["7.5 FK"].exists, "No rare calibre is listed: the switches' launch arguments did not arrive")
-        XCTAssertTrue(app.staticTexts["7.63x25 mm"].exists, "The 7.63x25 mm group's row is not on the screen")
-        XCTAssertFalse(app.staticTexts["Abweichung bis 1.0 mm"].exists, "The 7.63x25 mm row is rated as the .30 Borchardt")
+        // The row's own label: another row (9 mm Mauser, 0.98 mm) rounds to «1.0 mm» too.
+        let group = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "7.63x25 mm")).firstMatch
+        XCTAssertTrue(group.exists, "The 7.63x25 mm group's row is not on the screen")
+        XCTAssertFalse(group.label.contains("Abweichung bis 1.0 mm"), "The 7.63x25 mm row is rated as the .30 Borchardt")
         snap("03h-Masse-Treffer-Gruppe-passt")
     }
 
