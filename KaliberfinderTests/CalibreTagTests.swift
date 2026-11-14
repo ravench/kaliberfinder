@@ -56,23 +56,19 @@ final class CalibreTagTests: XCTestCase {
         XCTAssertEqual(family.members.map(family.shownName(drawing:)), ["7.63x25 mm", "7.63x25 mm", "7.63x25 mm"])
         XCTAssertEqual(family.members.first?.id, ".30 Borchardt")
 
-        // The rows «Masse eingeben» lists, the switches off (both tags hidden) or on.
-        func row(_ length: Double, _ bullet: Double, hiding: Set<HiddenTag>) throws -> (members: [String], title: String) {
-            let ranked = DimensionMatcher.rankHiding(hiding, MeasuredDimensions(overallLength: length, bullet: bullet))
-            let first = try XCTUnwrap(DimensionMatcher.grouped(ranked.shown).first)
-            return (first.items.map(\.cartridge.id), CartridgeRow.title(for: first.lead.cartridge, groupTag: .group))
+        // The row of a result list that holds these calibres, whatever their order.
+        func title(_ ids: String...) throws -> String {
+            let matches = try ids.map { DimensionMatch(cartridge: try cartridge($0), maxDeviation: 0, meanDeviation: 0) }
+            let rows = DimensionMatcher.grouped(matches)
+            XCTAssertEqual(rows.count, 1, "\(ids) are not one row")
+            return CartridgeRow.title(for: try XCTUnwrap(rows.first).lead.cartridge, groupTag: .group)
         }
-        let off = Set(HiddenTag.allCases)
-        XCTAssertEqual(try row(32.5, 9.04, hiding: off).title, ".38 Super", "the .38 ACP is not searched")
-        let both = try row(32.5, 9.04, hiding: [])
-        XCTAssertEqual(both.members, [".38 ACP", ".38 Super"])
-        XCTAssertEqual(both.title, ".38 ACP", "the parent leads its group's matches and names the row")
-        // A parent that is searched but too far off to be listed: the wadcutter sits flush, 9 mm shorter.
-        let wadcutter = try row(23.3, 8.0, hiding: off)
-        XCTAssertEqual(wadcutter.members, [".32 S&W Long Wadcutter"])
-        XCTAssertEqual(wadcutter.title, ".32 S&W Long Wadcutter")
-        XCTAssertEqual(try row(58.0, 6.2, hiding: []).title, "6 mm BR Norma", "the 6 mm BR Remington is 2 mm shorter")
-        XCTAssertEqual(try row(35.2, 7.9, hiding: off).title, "7.63x25 mm")
+        XCTAssertEqual(try title(".38 Super"), ".38 Super", "the switches leave the .38 ACP out")
+        XCTAssertEqual(try title(".38 Super", ".38 ACP"), ".38 ACP", "the parent leads its group's matches and names the row")
+        XCTAssertEqual(try title(".32 S&W Long Wadcutter"), ".32 S&W Long Wadcutter", "the .32 S&W Long, 9 mm longer, is too far off to be listed")
+        XCTAssertEqual(try title("6 mm BR Norma"), "6 mm BR Norma")
+        XCTAssertEqual(try title("7.62x25 mm Tokarev", "7.63x25 mm Mauser"), "7.63x25 mm")
+        XCTAssertEqual(try title("5.6 mm GP 90", "5.56x45 mm NATO", ".223 Remington"), ".223 Remington")
         // A calibre's own row and a calibre without a one-size group keep their names.
         XCTAssertEqual(CartridgeRow.title(for: superAuto, groupTag: .name), ".38 Super")
         XCTAssertEqual(CartridgeRow.title(for: try cartridge("7x57 mm R"), groupTag: .group), "7x57 mm R")

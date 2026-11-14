@@ -95,9 +95,8 @@ final class PRScreensTests: XCTestCase {
         XCTAssertFalse(app.staticTexts[".38 ACP"].exists || app.staticTexts[".30 Borchardt"].exists, "A row is called after a calibre it does not list")
         snap("03d-Masse-Treffer-Gruppennamen")
         // The 7.63x25 mm group fits roughly: its column at 1:1.
-        if open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden 1:1")).firstMatch),
-           app.navigationBars["1:1"].waitForExistence(timeout: 5) {
-            snap("03e-Masse-1zu1-Gruppenname")
+        if open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden 1:1")).firstMatch) {
+            if app.navigationBars["1:1"].waitForExistence(timeout: 5) { snap("03e-Masse-1zu1-Gruppenname") }
             back()
         }
         // The group's page, then a member's page with its «Gruppe» row.

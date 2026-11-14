@@ -12,6 +12,9 @@ import os
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.dirname(__file__))
+from catalogue_fixture import groups_among  # noqa: E402
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "calibre-data")
 CATALOGUE = os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json")
@@ -38,9 +41,8 @@ def fixture_is_current(fixture, catalogue):
     have is not missing."""
     chosen = {c["id"] for c in fixture["cartridges"]}
     same = [c for c in catalogue["cartridges"] if c["id"] in chosen]
-    groups = [g for g in catalogue.get("lookalikes", []) if chosen.issuperset(g["calibres"])]
-    return (paths(fixture["cartridges"]) == paths(same) and paths(fixture.get("lookalikes", [])) == paths(groups)
-            and set(fixture) == set(catalogue))
+    return (paths(fixture["cartridges"]) == paths(same) and set(fixture) == set(catalogue)
+            and paths(fixture.get("lookalikes", [])) == paths(groups_among(catalogue, chosen)))
 
 
 def git(*args):
