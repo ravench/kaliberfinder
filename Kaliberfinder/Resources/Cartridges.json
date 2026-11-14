@@ -593,7 +593,7 @@
    "obsolete": false,
    "rare": false,
    "worldwide": false,
-   "blank": false,
+   "blank": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 9.5,
@@ -633,7 +633,7 @@
    "obsolete": false,
    "rare": false,
    "worldwide": false,
-   "blank": false,
+   "blank": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 8.0,
@@ -667,7 +667,7 @@
    "obsolete": false,
    "rare": false,
    "worldwide": false,
-   "blank": false,
+   "blank": true,
    "colourCodes": [],
    "dimensions": {
     "rim": 8.0,

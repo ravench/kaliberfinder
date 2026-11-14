@@ -38,4 +38,30 @@ final class BlankTests: XCTestCase {
         let match = try XCTUnwrap(rank(shape, mode: .emptyCase, limit: .max).first { $0.cartridge.id == blankID })
         XCTAssertEqual(match.part, .cartridge)
     }
+
+    /// A blank closed inside the case (9 mm P.A.K., 8 mm and .315 Knall) has no bullet either. It is flagged
+    /// like the crimped ones (review 2026-11-13: it was not, so its page listed a bullet diameter and a photo
+    /// was compared with its «empty case»), and compared whole in every mode.
+    func testBlanksClosedInsideTheCaseAreComparedWhole() throws {
+        for id in ["9 mm P.A.K.", "8 mm Knall", ".315 Knall"] {
+            XCTAssertEqual(CartridgeCatalog.cartridge(id: id)?.blank, true, id)
+            let shape = try XCTUnwrap(ShapeMatcher.catalogue[id])
+            for mode in ScanMode.allCases {
+                let match = try XCTUnwrap(rank(shape, mode: mode, limit: .max).first { $0.cartridge.id == id }, "\(id), \(mode)")
+                XCTAssertEqual(match.part, .cartridge, "\(id), \(mode)")
+            }
+        }
+    }
+
+    /// «Masse eingeben»: a typed bullet diameter was measured on a bullet, so no blank is listed. A blank's
+    /// `dimensions.bullet` only repeats its case's diameter, which the 8 mm Knall used to fit exactly.
+    func testATypedBulletDiameterLeavesTheBlanksOut() throws {
+        let d = try XCTUnwrap(CartridgeCatalog.cartridge(id: "8 mm Knall")).dimensions
+        let byCase = DimensionMatcher.rank(MeasuredDimensions(caseLength: d.caseLength, rim: d.rim), cartridges: CartridgeCatalog.all, limit: .max)
+        XCTAssertEqual(byCase.first { $0.cartridge.id == "8 mm Knall" }?.fit, .good)
+        let withBullet = DimensionMatcher.rank(MeasuredDimensions(caseLength: d.caseLength, rim: d.rim, bullet: d.bullet),
+                                               cartridges: CartridgeCatalog.all, limit: .max)
+        XCTAssertFalse(withBullet.isEmpty)
+        XCTAssertFalse(withBullet.contains { $0.cartridge.blank })
+    }
 }

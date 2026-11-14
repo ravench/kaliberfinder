@@ -63,14 +63,15 @@ enum DimensionMatcher {
                      cartridges: [Cartridge] = CartridgeCatalog.current,
                      limit: Int = 15) -> [DimensionMatch] {
         guard !measured.isEmpty else { return [] }
-        let matches = cartridges.filter(measured.shape.fits).map { c -> (DimensionMatch, Double) in
+        // A typed bullet diameter was measured on a bullet: a blank has none (its `dimensions.bullet` only repeats the case's diameter).
+        let matches = cartridges.filter { measured.shape.fits($0) && !(measured.bullet != nil && $0.blank) }.map { c -> (DimensionMatch, Double) in
             let d = c.dimensions
             // A shotshell is as long as its crimp makes it, or opened by firing to its case length, whichever field it was typed in.
             let shell = c.kind == "shot" ? [c.overallLengths, d.caseLength...d.caseLength] : nil
             let pairs: [(Double?, [ClosedRange<Double>])] = [
                 (measured.overallLength, shell ?? [c.overallLengths]),
                 (measured.caseLength, shell ?? [d.caseLength...d.caseLength]),
-                (measured.rim, [d.rim...d.rim]),  // not the base: 43 calibres have a rebated rim
+                (measured.rim, [d.rim...d.rim]),  // not the base: a rebated rim is narrower than it
                 (measured.bullet, [d.bullet...d.bullet]),
             ]
             let deviations = pairs.compactMap { pair in pair.0.map { v in max(0, (pair.1.map { outside(v, $0) }.min() ?? 0) - tolerance) } }

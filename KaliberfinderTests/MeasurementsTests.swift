@@ -22,6 +22,7 @@ final class MeasurementsTests: XCTestCase {
                        [.bullet, .neck, .shoulder, .base, .rim, .caseLength, .overall])
         XCTAssertEqual(try layout("12/70").dimensions.map(\.part), [.base, .rim, .overall])
         XCTAssertEqual(try layout(".22 Blank (6.8/11)").dimensions.map(\.part), [.neck, .base, .rim, .overall])
+        XCTAssertEqual(try layout("9 mm P.A.K.").dimensions.map(\.part), [.neck, .base, .rim, .overall])  // closed inside the case
         XCTAssertEqual(try layout(".32 S&W Long Wadcutter").dimensions.map(\.part), [.bullet, .neck, .base, .rim, .overall])
         XCTAssertEqual(try layout("6 mm Airsoft-BB").dimensions.map(\.part), [.bullet, .overall])
     }

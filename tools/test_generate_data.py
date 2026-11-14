@@ -103,18 +103,28 @@ class RareAndCountryTests(unittest.TestCase):
 
 
 class BlankFlagTests(unittest.TestCase):
-    """Crimped blanks are flagged, so the app can leave out the bullet diameter."""
+    """Blanks are flagged, so the app leaves out the bullet diameter and compares a photo with them whole."""
 
-    def test_only_the_crimped_blank_is_a_blank(self):
+    def test_the_blanks_are_the_ones_calibre_data_calls_blanks(self):
         cartridges = generate_data.build()
         self.assertTrue(all(isinstance(c["blank"], bool) for c in cartridges))
-        # The flat-capped 8 mm and .315 Knall are drawn like shot shells, not as crimped blanks.
-        self.assertEqual([c["name"] for c in cartridges if c["blank"]],
-                         [".22 Blank (6.8/11)", "9 mm R Knall", ".320 Knall", ".45 Knall",
-                          ".22 Long Knall", "6 mm Flobert Knall"])
+        # Star-crimped ones, and the ones closed inside the case (9 mm P.A.K., 8 mm and .315 Knall): the
+        # catalogue's own rule (cartridges.is_blank), not a second one here that knew only the crimp.
+        # Sorted, not in catalogue order: where the blanks stand in the catalogue is calibre-data's business.
+        self.assertEqual(sorted(c["name"] for c in cartridges if c["blank"]),
+                         sorted([".22 Blank (6.8/11)", "9 mm P.A.K.", "8 mm Knall", ".315 Knall", "9 mm R Knall",
+                                 ".320 Knall", ".45 Knall", ".22 Long Knall", "6 mm Flobert Knall"]))
+        # A bullet seated inside the case is still a bullet.
+        for name in (".32 S&W Long Wadcutter", "7.62x38 mm R Nagant"):
+            self.assertFalse(next(c for c in cartridges if c["name"] == name)["blank"], name)
         for blank in (c for c in cartridges if c["blank"]):
             self.assertNotIn("bullet", blank["outline"])
             self.assertEqual(blank["dimensions"]["caseLength"], blank["dimensions"]["overallLength"])
+        # The rule is for cartridges: a shot shell or a loose ball whose measurements coincide is no blank.
+        shell = {"kind": generate_data.SHOT, "profile": "flat", "rim": 20.0, "base": 20.0, "neck": 20.0, "bullet": 20.0,
+                 "case": 65.0, "oal": 65.0}
+        self.assertFalse(generate_data.blank(shell))
+        self.assertTrue(generate_data.blank({**shell, "kind": "rimless"}))
 
 
 class CalibreDataSubmoduleTests(unittest.TestCase):
@@ -215,10 +225,6 @@ class BulletMaterialTests(unittest.TestCase):
         self.assertEqual(by_name["9x19 mm"]["outline"]["currentCaseMaterials"], ["steel", "aluminium"])
         self.assertTrue(set(generate_data.CASE_COLOURS) >= {c["outline"]["caseMaterial"] for c in by_name.values()
                                                              if "caseMaterial" in c["outline"]})
-
-
-if __name__ == "__main__":
-    unittest.main()
 
 
 class LookalikeTests(unittest.TestCase):
@@ -335,3 +341,7 @@ class ColourCodeTests(unittest.TestCase):
     def test_a_former_state_is_drawn(self):
         soviet = next(t for t in self.by_name["7.62x54 mm R"]["colourCodes"] if any(c["code"] == "SU" for c in t["countries"]))
         self.assertEqual([c for c in soviet["countries"] if c["code"] == "SU"], [{"code": "SU", "name": "Sowjetunion"}])
+
+
+if __name__ == "__main__":
+    unittest.main()

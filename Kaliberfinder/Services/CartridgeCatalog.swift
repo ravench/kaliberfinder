@@ -1,6 +1,6 @@
 import Foundation
 
-/// The built-in calibre catalogue (a copy of the Schiesstagebuch data).
+/// The built-in calibre catalogue, generated from the calibre-data repository (`tools/generate_data.py`).
 enum CartridgeCatalog {
     /// Catalogue categories. Raw values are the German names stored in the data.
     enum Category: String, CaseIterable {

@@ -852,25 +852,25 @@
         }
       }
     },
-    "Berdan Nitro (.254)": {
+    "Berdan Nitro": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Berdan Nitro (.254)"
+            "value": "Berdan Nitro"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Berdan Nitro (.254)"
+            "value": "Berdan Nitro"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Berdan Nitro (.254)"
+            "value": "Berdan Nitro"
           }
         }
       }

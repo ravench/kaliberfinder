@@ -169,6 +169,24 @@ final class PRScreensTests: XCTestCase {
         snap("40-303-Zuendhuetchenringe")
     }
 
+    /// A blank closed inside the case (9 mm P.A.K.): no bullet diameter on its page or in its drawing.
+    func testClosedBlank() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("P.A.K.\n") // return hides the keyboard
+        }
+        guard open(app.staticTexts["9 mm P.A.K."].firstMatch) else { return }
+        scroll(toRowAbove: "Gesamtlänge") // «Masse» whole: the bullet's row was its last but one
+        snap("41-Knallpatrone-PAK")
+        scroll(up: false)
+        if open(app.buttons["Masszeichnung anzeigen"].firstMatch) {
+            snap("41b-Knallpatrone-PAK-Masszeichnung")
+        }
+    }
+
     /// Loose balls in other materials: the steel BB and the plastic airsoft BBs.
     func testBBs() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
@@ -488,6 +506,22 @@ final class PRScreensTests: XCTestCase {
                 snap(compareShot)
             }
         }
+    }
+
+    /// A Berdan primer's row: the title without a size, then the calibre's own diameter (8.15x46 mm R).
+    func testBerdanPrimer() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("8.15x46\n") // return hides the keyboard
+        }
+        guard open(app.staticTexts["8.15x46 mm R"].firstMatch) else { return }
+        scroll()  // the page's end holds the measurements' last row, the primer
+        let row = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Berdan Nitro, ")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 5), "No Berdan primer row on the 8.15x46 mm R's page")
+        snap("42-Berdan-Zuendhuetchen")
     }
 
     /// The calibration screen: the slider and the buttons dock at the bottom (Raven, 2026-11-11, on an iPad).

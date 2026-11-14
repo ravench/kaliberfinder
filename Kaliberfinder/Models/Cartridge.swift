@@ -7,7 +7,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     let name: String
     /// German category name from the catalogue, see `CartridgeCatalog.Category`.
     let category: String
-    /// rimless, rimmed, belted, rimfire, shot, ball, minie or pellet.
+    /// rimless, semi-rimmed, rimmed, belted, rimfire, shot, ball, minie or pellet.
     let kind: String
     let aliases: [String]
     /// Printable alternative names, e.g. "9 mm Luger" for 9x19 mm.
@@ -24,7 +24,8 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     /// In common use worldwide (calibre-data WORLDWIDE), shown as a globe next to the flag.
     /// Independent of `country`: 9x19 mm is German and worldwide.
     let worldwide: Bool
-    /// A crimped blank (power-tool load, starter pistol blank): no bullet, the case is the whole cartridge.
+    /// A blank: no bullet, the case is the whole cartridge. Star-crimped (power-tool load, starter pistol
+    /// blank) or closed inside the case (9 mm P.A.K.); calibre-data's `is_blank` decides.
     let blank: Bool
     let dimensions: Dimensions
     let outline: Outline
@@ -85,7 +86,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     /// A country from calibre-data ORIGIN.
     struct Country: Decodable, Hashable {
-        /// ISO code; RUE, AH, SU and CS for former states, NATO for the alliance.
+        /// ISO code; RUE, AH, SU, CS and OE for former states, NATO for the alliance.
         let code: String
         /// German name, used as localization key.
         let name: String
@@ -95,7 +96,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     /// The primer in the centre of the case head (that of the original factory ammunition).
     struct Primer: Decodable, Hashable {
-        /// small-pistol, large-pistol, small-rifle, large-rifle, shotshell-209, bmg-35 or berdan-nitro.
+        /// small-pistol, large-pistol, small-rifle, large-rifle, miniature, shotshell-209, bmg-35 or berdan-nitro.
         let type: String
         /// Cup diameter in mm.
         let diameter: Double
@@ -110,7 +111,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
             case "miniature": "Miniatur"
             case "shotshell-209": "Schrot (209)"
             case "bmg-35": ".50 BMG (#35)"
-            case "berdan-nitro": "Berdan Nitro (.254)"
+            case "berdan-nitro": "Berdan Nitro"  // in several sizes: the row shows the calibre's own diameter
             default: type
             }
         }
@@ -135,7 +136,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
         let `case`: String?
         let head: String?
         let bullet: String?
-        /// Paper band drawn over the bullet (paper-patched GP 1890 bullet); nil for jacketed bullets.
+        /// Paper band drawn over a paper-patched bullet (the GP 1890's and those of black-powder rounds); nil for the others.
         /// Not part of the silhouette: `bullet` already covers it.
         let patch: String?
         /// Tip drawn over the bullet (not part of the silhouette): bare lead of a soft point, or a

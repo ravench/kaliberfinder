@@ -15,7 +15,7 @@ import json, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
-from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, LOOKALIKE_NAMES, COLOUR_CODES, COUNTRY_NAMES as NAMES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_MM, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
+from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, LOOKALIKE_NAMES, COLOUR_CODES, COUNTRY_NAMES as NAMES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_MM, RIMFIRE, SHOT, LOOSE, BALL, MINIE, PELLET, is_blank  # noqa: E402
 from outline import outline, bullet_profile  # noqa: E402,F401  (bullet_profile re-exported for tests)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -75,6 +75,14 @@ def primer(s):
     return {"primer": {"type": kind, "diameter": PRIMER_MM[s["name"]]}}
 
 
+def blank(s):
+    """No bullet, the case is the whole round: star-crimped, or closed inside the case like the 9 mm P.A.K.
+    calibre-data's own rule (is_blank) as its checks apply it, to cartridges only: not to a shot shell or a
+    loose projectile, whose measurements can coincide the same way."""
+    return (s["kind"] != SHOT and s["kind"] not in LOOSE
+            and is_blank(s["profile"], s["rim"], s["base"], s["neck"], s["bullet"], s["case"], s["oal"]))
+
+
 def build():
     cartridges = []
     for category, items in CATALOGUE:
@@ -84,7 +92,7 @@ def build():
                                "obsolete": is_obsolete(s["name"]),
                                "rare": is_rare(s["name"]), **country(s["name"]),
                                "worldwide": is_worldwide(s["name"]),
-                               "blank": s["profile"] == CRIMPED,
+                               "blank": blank(s),
                                "colourCodes": colour_codes(s["name"]),
                                "dimensions": dimensions(s), "outline": outline(s),
                                **primer(s)})

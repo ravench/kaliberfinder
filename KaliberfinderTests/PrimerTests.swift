@@ -21,6 +21,16 @@ final class PrimerTests: XCTestCase {
         }
     }
 
+    /// The row shows the calibre's own diameter after the title, so a type that comes in several sizes names no
+    /// number in its title (review 2026-11-13: «Berdan Nitro (.254)» stood before every Berdan diameter).
+    func testATypeOfSeveralSizesNamesNoneInItsTitle() {
+        let primers = CartridgeCatalog.all.compactMap(\.primer)
+        XCTAssertFalse(primers.isEmpty)
+        for (type, sizes) in Dictionary(grouping: primers, by: \.type) where Set(sizes.map(\.diameter)).count > 1 {
+            XCTAssertNil(sizes[0].title.rangeOfCharacter(from: .decimalDigits), "\(type): \(sizes[0].title)")
+        }
+    }
+
     func testHeadGeometry() throws {
         let nine = try cartridge("9x19 mm")
         XCTAssertEqual(nine.headDiameter, 10.01)  // the SAAMI rim
