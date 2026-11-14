@@ -70,7 +70,7 @@ enum DimensionMatcher {
             let pairs: [(Double?, [ClosedRange<Double>])] = [
                 (measured.overallLength, shell ?? [c.overallLengths]),
                 (measured.caseLength, shell ?? [d.caseLength...d.caseLength]),
-                (measured.rim, [d.rim...d.rim]),  // not the base: a rebated rim is narrower than it
+                (measured.rim, [d.rim...d.rim]),  // not the base: 43 calibres have a rebated rim
                 (measured.bullet, [d.bullet...d.bullet]),
             ]
             let deviations = pairs.compactMap { pair in pair.0.map { v in max(0, (pair.1.map { outside(v, $0) }.min() ?? 0) - tolerance) } }

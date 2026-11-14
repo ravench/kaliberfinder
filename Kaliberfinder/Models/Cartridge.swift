@@ -7,7 +7,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     let name: String
     /// German category name from the catalogue, see `CartridgeCatalog.Category`.
     let category: String
-    /// rimless, semi-rimmed, rimmed, belted, rimfire, shot, ball, minie or pellet.
+    /// rimless, rimmed, belted, rimfire, shot, ball, minie or pellet.
     let kind: String
     let aliases: [String]
     /// Printable alternative names, e.g. "9 mm Luger" for 9x19 mm.
@@ -85,7 +85,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     /// A country from calibre-data ORIGIN.
     struct Country: Decodable, Hashable {
-        /// ISO code; RUE, AH, SU, CS and OE for former states, NATO for the alliance.
+        /// ISO code; RUE, AH, SU and CS for former states, NATO for the alliance.
         let code: String
         /// German name, used as localization key.
         let name: String
@@ -110,7 +110,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
             case "miniature": "Miniatur"
             case "shotshell-209": "Schrot (209)"
             case "bmg-35": ".50 BMG (#35)"
-            case "berdan-nitro": "Berdan Nitro"  // in three sizes: the row shows the calibre's own diameter
+            case "berdan-nitro": "Berdan Nitro"  // in several sizes: the row shows the calibre's own diameter
             default: type
             }
         }
@@ -135,7 +135,7 @@ struct Cartridge: Decodable, Identifiable, Hashable {
         let `case`: String?
         let head: String?
         let bullet: String?
-        /// Paper band drawn over a paper-patched bullet (the GP 1890's and those of black-powder rounds); nil for the others.
+        /// Paper band drawn over the bullet (paper-patched GP 1890 bullet); nil for jacketed bullets.
         /// Not part of the silhouette: `bullet` already covers it.
         let patch: String?
         /// Tip drawn over the bullet (not part of the silhouette): bare lead of a soft point, or a

@@ -53,7 +53,7 @@ final class ShapeMatcherTests: XCTestCase {
     }
 
     func testMostOfTheCatalogueIsAmongTheFirstFive() throws {
-        // Every calibre ranked against the whole catalogue, on every core: the matcher reads only its static tables.
+        // Every calibre ranked against all 758, on every core: the matcher reads only its static tables.
         let all = CartridgeCatalog.all
         var ranks = [Int??](repeating: nil, count: all.count)
         let lock = NSLock()

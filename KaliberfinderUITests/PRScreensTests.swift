@@ -463,7 +463,7 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
-    /// A Berdan primer's row: the title without a size, then the calibre's own diameter (8.15x46 mm R: 6.35 mm).
+    /// A Berdan primer's row: the title without a size, then the calibre's own diameter (8.15x46 mm R).
     func testBerdanPrimer() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
@@ -473,7 +473,9 @@ final class PRScreensTests: XCTestCase {
             search.typeText("8.15x46\n") // return hides the keyboard
         }
         guard open(app.staticTexts["8.15x46 mm R"].firstMatch) else { return }
-        scroll(toRowAbove: "Halsdurchmesser")
+        scroll()  // the page's end holds the measurements' last row, the primer
+        let row = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Berdan Nitro, ")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 5), "No Berdan primer row on the 8.15x46 mm R's page")
         snap("42-Berdan-Zuendhuetchen")
     }
 
