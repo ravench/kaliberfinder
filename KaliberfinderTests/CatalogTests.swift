@@ -18,7 +18,7 @@ final class CatalogTests: XCTestCase {
                 XCTAssertGreaterThanOrEqual(d.overallLength + 0.01, d.caseLength, "\(c.name): case longer than cartridge")
             }
             XCTAssertGreaterThan(d.rim, 0, c.name)
-            XCTAssertLessThanOrEqual(c.outline.width, max(d.rim, d.base, d.bullet, d.belt ?? 0) + 0.01, c.name)
+            XCTAssertLessThanOrEqual(c.outline.width, max(c.headDiameter, d.bullet) + 0.01, c.name)
             XCTAssertEqual(c.outline.height, d.overallLength, accuracy: 0.01, c.name)
             if let shoulder = d.shoulder {
                 XCTAssertLessThanOrEqual(d.neck, shoulder, c.name)

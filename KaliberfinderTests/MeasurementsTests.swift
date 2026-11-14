@@ -37,6 +37,7 @@ final class MeasurementsTests: XCTestCase {
             for mark in DimensionLayout.diameters(of: c) where mark.part != .rim && !(mark.part == .bullet && flush) {
                 let width = (mark.part == .bullet ? whole : empty).width(at: mark.y)
                 // Above a belt the body is drawn 1.5 % narrower than the base diameter: 0.3 mm on the .55 Boys.
+                // calibre-data #152 draws it at the base diameter: with the bump that takes it, 0.25 holds for all again.
                 let accuracy = mark.part == .base && c.kind == "belted" ? max(0.25, 0.02 * mark.mm) : 0.25
                 XCTAssertEqual(width, mark.mm, accuracy: accuracy, "\(c.id) \(mark.part)")
             }
