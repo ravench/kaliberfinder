@@ -17,7 +17,7 @@ struct LookalikeGroupView: View {
             }
         }
         .readableWidth()
-        .navigationTitle(String(format: "Gruppe %@".loc, group.calibres[0]))
+        .navigationTitle(String(format: "Gruppe %@".loc, group.name))
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
             let compared = Self.compared(members)

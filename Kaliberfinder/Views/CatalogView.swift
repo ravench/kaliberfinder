@@ -109,10 +109,11 @@ struct CartridgeRow: View {
     /// Shows the detail in green, for a calibre that fits well.
     var highlighted = false
     /// How the row shows the calibre's one-size group. `.group`: the row is the group (photo and measurement results;
-    /// Raven, 2026-11-13): the group's name and the «Gruppe» chip, no aliases, flags, «Selten» or «Veraltet», which
-    /// its members carry; a calibre without such a group is a plain row. `.name`: the row is the calibre (catalogue,
-    /// search) with the group's name as a tag under its name, on every member (Raven, 2026-11-12). `.none`: members
-    /// inside the group page and rows that select. A row that names a calibre opens that calibre, which links the group.
+    /// Raven, 2026-11-13): the group's name (`LookalikeGroup.shownName(drawing:)`) and the «Gruppe» chip, no aliases, flags,
+    /// «Selten» or «Veraltet», which its members carry; a calibre without such a group is a plain row. `.name`: the row
+    /// is the calibre (catalogue, search) with the group's name as a tag under its name, on every member (Raven,
+    /// 2026-11-12). `.none`: members inside the group page and rows that select. A row that names a calibre opens that
+    /// calibre, which links the group.
     enum GroupTag { case none, name, group }
     var groupTag: GroupTag = .none
 
@@ -126,19 +127,25 @@ struct CartridgeRow: View {
         shownGroup(for: cartridge, groupTag: groupTag) != nil ? [.group] : CalibreTag.of(cartridge).filter { $0 != .group }
     }
 
+    /// The row's first line: the calibre's name, or what its group is called where the row stands for the group.
+    static func title(for cartridge: Cartridge, groupTag: GroupTag) -> String {
+        shownGroup(for: cartridge, groupTag: groupTag)?.shownName(drawing: cartridge) ?? cartridge.name
+    }
+
     /// The group's name as a tag under the calibre's name, in the catalogue (`.name`).
     static func groupName(for cartridge: Cartridge, groupTag: GroupTag) -> String? {
-        groupTag == .name ? CartridgeCatalog.sizeGroup(of: cartridge)?.id : nil
+        groupTag == .name ? CartridgeCatalog.sizeGroup(of: cartridge)?.name : nil
     }
 
     var body: some View {
         let group = Self.shownGroup(for: cartridge, groupTag: groupTag)
         let groupName = Self.groupName(for: cartridge, groupTag: groupTag)
         HStack(spacing: 12) {
-            // A group's row draws its parent.
-            CartridgeThumbnail(cartridge: group.flatMap { CartridgeCatalog.cartridge(id: $0.id) } ?? cartridge)
+            // A group's row draws the calibre it came with: the parent, which leads its group's matches, or the
+            // first member listed when the parent is not among them (hidden by a switch, or too far off).
+            CartridgeThumbnail(cartridge: cartridge)
             VStack(alignment: .leading, spacing: 2) {
-                Text(verbatim: group?.id ?? cartridge.name)
+                Text(verbatim: Self.title(for: cartridge, groupTag: groupTag))
                 let aliases = group == nil ? cartridge.displayAliases.joined(separator: ", ") : ""
                 if !aliases.isEmpty {
                     Text(verbatim: aliases).font(.caption).foregroundStyle(.secondary)

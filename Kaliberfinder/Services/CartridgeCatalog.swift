@@ -117,6 +117,8 @@ enum CartridgeCatalog {
 /// Calibres that look alike but are cartridges of their own (calibre-data `LOOKALIKES`): a measurement,
 /// the load or the ignition tells them apart. Every member's page links to the group, which lists them all.
 struct LookalikeGroup: Decodable, Identifiable, Hashable {
+    /// The group's name in calibre-data: the parent's, or the family's («7.63x25 mm», whose parent is the .30 Borchardt).
+    let name: String
     /// What tells them apart: "rim", "bore", "length", "seating", "load" or "ignition".
     let differs: [String]
     /// Catalogue ids, the parent first.
@@ -124,6 +126,12 @@ struct LookalikeGroup: Decodable, Identifiable, Hashable {
 
     var id: String { calibres[0] }
     var members: [Cartridge] { calibres.compactMap(CartridgeCatalog.cartridge(id:)) }
+
+    /// What a result row or a 1:1 column that stands for the group and draws `member` is called: the family's name,
+    /// else the member's own. The parent leads its group's matches, so it names the row whenever it is among them,
+    /// and a row is never named after a calibre it does not list: a .38 Super came up as the obsolete .38 ACP, a
+    /// .32 S&W Long Wadcutter as the .32 S&W Long with its bullet out (review 2026-11-13).
+    func shownName(drawing member: Cartridge) -> String { calibres.contains(name) ? member.name : name }
 
     /// The members' cases are of one size, told apart by load, seating or ignition only: the results show
     /// such a group as one row, the tag names it and a member opens the group first (Raven, PR 188). A group

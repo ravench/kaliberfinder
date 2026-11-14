@@ -203,11 +203,11 @@ struct TrueScaleView: View {
     private func label(for c: Cartridge) -> some View {
         VStack(spacing: 2) {
             let shown = Self.shownGroup(of: c, linking: linksToDetails)
-            Text(verbatim: shown?.id ?? c.name).font(.caption.bold())
+            Text(verbatim: shown?.shownName(drawing: c) ?? c.name).font(.caption.bold())
             // A group's column: the others look exactly like this one. With the groups' setting off each
             // member has its column, named after the group as in the catalogue.
             if let group = CartridgeCatalog.sizeGroup(of: c) {
-                TagChip(tag: .group, text: shown == nil ? group.id : nil)
+                TagChip(tag: .group, text: shown == nil ? group.name : nil)
             }
             if let why = goodMatches[c.id] {
                 Text(verbatim: why).font(.caption2.weight(.semibold)).foregroundStyle(.green)

@@ -13,7 +13,7 @@ extension CartridgeCatalog {
 
     /// Puts items whose calibres look the same from the side into one group, in the order of each
     /// group's first item; within a group the lookalike group's parent leads (.223 Remington before the
-    /// 5.56 NATO and the GP 90), as the row names it.
+    /// 5.56 NATO and the GP 90), and the row draws and names its lead (`LookalikeGroup.shownName`).
     static func groupedByProfile<Item>(_ items: [Item], cartridge: (Item) -> Cartridge,
                                        merged: Bool = groupsSizeGroups) -> [[Item]] {
         guard merged else { return items.map { [$0] } }
@@ -33,8 +33,8 @@ extension CartridgeCatalog {
     }
 }
 
-/// One row of suggestions: a calibre (its lookalike group's parent), plus the calibres that look exactly
-/// the same from the side; the row names the parent and opens the group (Raven, 2026-11-11).
+/// One row of suggestions: a calibre (its lookalike group's parent, if that is among the suggestions), plus the
+/// calibres that look exactly the same from the side; the row draws its lead and opens the group (Raven, 2026-11-11).
 struct TwinGroup<Item: Identifiable>: Identifiable where Item.ID == String {
     let items: [Item]
 
