@@ -38,4 +38,18 @@ final class BlankTests: XCTestCase {
         let match = try XCTUnwrap(rank(shape, mode: .emptyCase, limit: .max).first { $0.cartridge.id == blankID })
         XCTAssertEqual(match.part, .cartridge)
     }
+
+    /// A blank closed inside the case (9 mm P.A.K., 8 mm and .315 Knall) has no bullet either. It is flagged
+    /// like the crimped ones (review 2026-11-13: it was not, so its page listed a bullet diameter and a photo
+    /// was compared with its «empty case»), and compared whole in every mode.
+    func testBlanksClosedInsideTheCaseAreComparedWhole() throws {
+        for id in ["9 mm P.A.K.", "8 mm Knall", ".315 Knall"] {
+            XCTAssertEqual(CartridgeCatalog.cartridge(id: id)?.blank, true, id)
+            let shape = try XCTUnwrap(ShapeMatcher.catalogue[id])
+            for mode in ScanMode.allCases {
+                let match = try XCTUnwrap(rank(shape, mode: mode, limit: .max).first { $0.cartridge.id == id }, "\(id), \(mode)")
+                XCTAssertEqual(match.part, .cartridge, "\(id), \(mode)")
+            }
+        }
+    }
 }

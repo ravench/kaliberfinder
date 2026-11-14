@@ -24,7 +24,8 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     /// In common use worldwide (calibre-data WORLDWIDE), shown as a globe next to the flag.
     /// Independent of `country`: 9x19 mm is German and worldwide.
     let worldwide: Bool
-    /// A crimped blank (power-tool load, starter pistol blank): no bullet, the case is the whole cartridge.
+    /// A blank: no bullet, the case is the whole cartridge. Star-crimped (power-tool load, starter pistol
+    /// blank) or closed inside the case (9 mm P.A.K.); calibre-data's `is_blank` decides.
     let blank: Bool
     let dimensions: Dimensions
     let outline: Outline

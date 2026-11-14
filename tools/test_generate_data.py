@@ -103,15 +103,19 @@ class RareAndCountryTests(unittest.TestCase):
 
 
 class BlankFlagTests(unittest.TestCase):
-    """Crimped blanks are flagged, so the app can leave out the bullet diameter."""
+    """Blanks are flagged, so the app leaves out the bullet diameter and compares a photo with them whole."""
 
-    def test_only_the_crimped_blank_is_a_blank(self):
+    def test_the_blanks_are_the_ones_calibre_data_calls_blanks(self):
         cartridges = generate_data.build()
         self.assertTrue(all(isinstance(c["blank"], bool) for c in cartridges))
-        # The flat-capped 8 mm and .315 Knall are drawn like shot shells, not as crimped blanks.
-        self.assertEqual([c["name"] for c in cartridges if c["blank"]],
-                         [".22 Blank (6.8/11)", "9 mm R Knall", ".320 Knall", ".45 Knall",
-                          ".22 Long Knall", "6 mm Flobert Knall"])
+        # Star-crimped ones, and the ones closed inside the case (9 mm P.A.K., 8 mm and .315 Knall): the
+        # catalogue's own rule (cartridges.is_blank), not a second one here that knew only the crimp.
+        self.assertEqual({c["name"] for c in cartridges if c["blank"]},
+                         {".22 Blank (6.8/11)", "9 mm P.A.K.", "8 mm Knall", ".315 Knall", "9 mm R Knall",
+                          ".320 Knall", ".45 Knall", ".22 Long Knall", "6 mm Flobert Knall"})
+        # A bullet seated inside the case is still a bullet.
+        for name in (".32 S&W Long Wadcutter", "7.62x38 mm R Nagant"):
+            self.assertFalse(next(c for c in cartridges if c["name"] == name)["blank"], name)
         for blank in (c for c in cartridges if c["blank"]):
             self.assertNotIn("bullet", blank["outline"])
             self.assertEqual(blank["dimensions"]["caseLength"], blank["dimensions"]["overallLength"])

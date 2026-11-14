@@ -126,6 +126,22 @@ final class PRScreensTests: XCTestCase {
         snap("40-303-Zuendhuetchenringe")
     }
 
+    /// A blank closed inside the case (9 mm P.A.K.): no bullet diameter on its page or in its drawing.
+    func testClosedBlank() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("P.A.K.\n") // return hides the keyboard
+        }
+        guard open(app.staticTexts["9 mm P.A.K."].firstMatch) else { return }
+        snap("41-Knallpatrone-PAK")
+        if open(app.buttons["Masszeichnung anzeigen"].firstMatch) {
+            snap("41b-Knallpatrone-PAK-Masszeichnung")
+        }
+    }
+
     /// Loose balls in other materials: the steel BB and the plastic airsoft BBs.
     func testBBs() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
