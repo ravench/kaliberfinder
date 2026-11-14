@@ -83,4 +83,53 @@ final class ProfileTwinTests: XCTestCase {
         XCTAssertEqual(MeasureView.compareTitle(matches: matches),
                        String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, compare.count))
     }
+
+    /// A row is drawn and rated as its group's parent, unless another member is nearer by more than a margin or the
+    /// only one to fit. Measured exactly, a .32 S&W Long Wadcutter came up as the .32 S&W Long, «Abweichung bis 9.09 mm»,
+    /// and a 7.62x25 mm Tokarev as the .30 Borchardt, 1 mm off, which the 1:1 button then left out (review 2026-11-13).
+    func testAMemberClearlyNearerThanTheParentLeadsItsRow() throws {
+        func live(_ id: String) throws -> Cartridge { try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id) }
+        let swLong = ".32 S&W Long", wadcutter = ".32 S&W Long Wadcutter", luger = "9x19 mm", glisenti = "9 mm Glisenti"
+        let borchardt = ".30 Borchardt", mauser = "7.63x25 mm Mauser", tokarev = "7.62x25 mm Tokarev"
+        XCTAssertEqual(CartridgeCatalog.lookalikeGroup(of: try live(tokarev))?.calibres, [borchardt, mauser, tokarev])
+
+        // Dimension matches off by this much each, the best first as the ranking hands them over.
+        func measured(_ deviations: KeyValuePairs<String, Double>) throws -> [DimensionMatch] {
+            try deviations.map { id, deviation in
+                DimensionMatch(cartridge: try live(id), maxDeviation: deviation, meanDeviation: deviation)
+            }
+        }
+        // The calibres of the one row they make, its lead first.
+        func row(_ deviations: KeyValuePairs<String, Double>) throws -> [String] {
+            let rows = DimensionMatcher.grouped(try measured(deviations))
+            XCTAssertEqual(rows.count, 1, "\(deviations.map(\.key)) are not one row")
+            return rows.flatMap(\.items).map(\.cartridge.id)
+        }
+        XCTAssertEqual(try row([wadcutter: 0, swLong: 9.09]), [wadcutter, swLong], "the parent is 9 mm too long")
+        XCTAssertEqual(try row([wadcutter: 1.08, swLong: 7.86]), [wadcutter, swLong], "also where neither fits")
+        XCTAssertEqual(try row([swLong: 0, wadcutter: 9.09]), [swLong, wadcutter])
+        XCTAssertEqual(try row([mauser: 0, tokarev: 0.25, borchardt: 0.61]), [mauser, borchardt, tokarev])
+        XCTAssertEqual(try row([tokarev: 0, mauser: 0.25, borchardt: 1.01]), [mauser, borchardt, tokarev],
+                       "the first of the group's order within the margin, not the nearest")
+        // Less than the margin leaves the row its parent's: these sheets are 0.48 mm apart in overall length.
+        XCTAssertEqual(try row([glisenti: 0, luger: 0.33]), [luger, glisenti], "a 29.2 mm round stays a 9x19 mm")
+        XCTAssertEqual(try row([glisenti: 1.33, luger: 1.36]), [luger, glisenti])
+        XCTAssertEqual(try row([tokarev: 0.5, mauser: 0.6, borchardt: 0.9]), [borchardt, mauser, tokarev])
+        // Unless only another fits: the row counts as fitting then.
+        XCTAssertEqual(try row([tokarev: 0.75, mauser: 1.15]), [tokarev, mauser])
+        XCTAssertEqual(try row([glisenti: 0.56, luger: 1.04]), [glisenti, luger])
+        // The 1:1 button takes and counts the row as it is rated.
+        let found = try measured([tokarev: 0, mauser: 0.25, borchardt: 1.01])
+        XCTAssertEqual(DimensionMatcher.toCompare(found).map(\.id), [mauser])
+        XCTAssertEqual(MeasureView.compareTitle(matches: found), String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, 1))
+
+        // A photo's row goes by the distance the list is ranked by.
+        func photoRow(_ distances: KeyValuePairs<String, Double>) throws -> [String] {
+            let matches = try distances.map { id, distance in Match(cartridge: try live(id), score: -distance, shapeDistance: distance) }
+            return Matcher.grouped(matches).flatMap(\.items).map(\.cartridge.id)
+        }
+        XCTAssertEqual(try photoRow([wadcutter: 0.1, swLong: 0.35]), [wadcutter, swLong], "a wadcutter's photo is not the .32 S&W Long's")
+        XCTAssertEqual(try photoRow([wadcutter: 0.1, swLong: 0.15]), [swLong, wadcutter])
+        XCTAssertEqual(try photoRow([glisenti: 0.28, luger: 0.31]), [luger, glisenti], "a few hundredths, though across a fit's border")
+    }
 }

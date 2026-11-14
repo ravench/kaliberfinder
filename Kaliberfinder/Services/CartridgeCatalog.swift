@@ -128,9 +128,10 @@ struct LookalikeGroup: Decodable, Identifiable, Hashable {
     var members: [Cartridge] { calibres.compactMap(CartridgeCatalog.cartridge(id:)) }
 
     /// What a result row or a 1:1 column that stands for the group and draws `member` is called: the family's name,
-    /// else the member's own. The parent leads its group's matches, so it names the row whenever it is among them,
-    /// and a row is never named after a calibre it does not list: a .38 Super came up as the obsolete .38 ACP, a
-    /// .32 S&W Long Wadcutter as the .32 S&W Long with its bullet out (review 2026-11-13).
+    /// else the member's own. The parent leads its group's matches, and so names the row, unless it is not among
+    /// them or another fits clearly better (`TwinGroup`). So a row is never named after a calibre it does not list
+    /// or one that is clearly farther off: a .38 Super came up as the obsolete .38 ACP, a .32 S&W Long Wadcutter
+    /// as the .32 S&W Long with its bullet out (review 2026-11-13).
     func shownName(drawing member: Cartridge) -> String { calibres.contains(name) ? member.name : name }
 
     /// The members' cases are of one size, told apart by load, seating or ignition only: the results show

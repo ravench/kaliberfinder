@@ -64,7 +64,7 @@ final class CalibreTagTests: XCTestCase {
             return CartridgeRow.title(for: try XCTUnwrap(rows.first).lead.cartridge, groupTag: .group)
         }
         XCTAssertEqual(try title(".38 Super"), ".38 Super", "the switches leave the .38 ACP out")
-        XCTAssertEqual(try title(".38 Super", ".38 ACP"), ".38 ACP", "the parent leads its group's matches and names the row")
+        XCTAssertEqual(try title(".38 Super", ".38 ACP"), ".38 ACP", "the parent is as near as the member, so it leads the row and names it")
         XCTAssertEqual(try title(".32 S&W Long Wadcutter"), ".32 S&W Long Wadcutter", "the .32 S&W Long, 9 mm longer, is too far off to be listed")
         XCTAssertEqual(try title("6 mm BR Norma"), "6 mm BR Norma")
         XCTAssertEqual(try title("7.62x25 mm Tokarev", "7.63x25 mm Mauser"), "7.63x25 mm")
