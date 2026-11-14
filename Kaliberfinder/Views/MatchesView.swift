@@ -141,7 +141,7 @@ struct MatchesView: View {
             let hiddenFirst = Self.hasGoodMatch(ranked.hidden)
             Section {
                 if hiddenFirst, let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
-                // A one-size group is one row, its best calibre leading (Raven, 2026-11-13).
+                // A one-size group is one row (Raven, 2026-11-13), drawn and rated as its lead (`TwinGroup`).
                 let shownPart = analysis?.shape.map { shown.part(for: $0) }
                 ForEach(Matcher.grouped(matches)) { g in
                     ResultLink(cartridge: g.lead.cartridge, detail: Self.reason(for: g.lead, shownPart: shownPart), highlighted: g.lead.fitsWell)

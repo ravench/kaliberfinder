@@ -44,7 +44,7 @@ struct MeasureView: View {
             }
             if !matches.isEmpty || ranked.summary != nil {
                 Section {
-                    // A one-size group is one row (Raven, 2026-11-13), its best calibre leading.
+                    // A one-size group is one row (Raven, 2026-11-13), drawn and rated as its lead (`TwinGroup`).
                     ForEach(DimensionMatcher.grouped(matches)) { g in
                         ResultLink(cartridge: g.lead.cartridge, detail: Self.detail(for: g.lead, unit: unit))
                     }
