@@ -20,16 +20,20 @@ IDS = [
 ]
 
 
+def groups_among(catalogue, ids):
+    """The catalogue's lookalike groups whose members are all among `ids`: the ones the fixture keeps."""
+    chosen = set(ids)
+    return [g for g in catalogue.get("lookalikes", []) if chosen.issuperset(g["calibres"])]
+
+
 def main():
     with open(os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json")) as f:
         catalogue = json.load(f)
     by_id = {c["id"]: c for c in catalogue["cartridges"]}
     missing = [i for i in IDS if i not in by_id]
     assert not missing, f"not in the catalogue: {missing}"
-    chosen = set(IDS)
     fixture = {"version": catalogue["version"], "calibreData": catalogue["calibreData"],
-               "cartridges": [by_id[i] for i in IDS],
-               "lookalikes": [g for g in catalogue["lookalikes"] if chosen.issuperset(g["calibres"])]}
+               "cartridges": [by_id[i] for i in IDS], "lookalikes": groups_among(catalogue, IDS)}
     with open(os.path.join(ROOT, "KaliberfinderTests", "Fixtures", "catalogue.json"), "w") as f:
         json.dump(fixture, f, ensure_ascii=False, indent=1)
         f.write("\n")

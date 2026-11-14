@@ -81,6 +81,51 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// A group goes by calibre-data's name, and its row or column by a calibre it lists (review 2026-11-13): 34.3 mm long
+    /// with an 8.8 mm bullet lists «7.63x25 mm» (was the obsolete «.30 Borchardt») and «.38 Super» (was «.38 ACP»).
+    func testGroupNames() {
+        app.terminate()
+        app.launchArguments += ["-screenTourLength", "34.3", "-screenTourBullet", "8.8"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
+        XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
+        scroll(toRowAbove: "Mögliche Kaliber")
+        XCTAssertTrue(app.staticTexts[".38 Super"].exists, "The .38 Super's group is not listed under its name")
+        XCTAssertFalse(app.staticTexts[".38 ACP"].exists || app.staticTexts[".30 Borchardt"].exists, "A row is called after a calibre it does not list")
+        snap("03d-Masse-Treffer-Gruppennamen")
+        // The 7.63x25 mm group fits roughly: its column at 1:1.
+        if open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden 1:1")).firstMatch) {
+            if app.navigationBars["1:1"].waitForExistence(timeout: 5) { snap("03e-Masse-1zu1-Gruppenname") }
+            back()
+        }
+        // The group's page, then a member's page with its «Gruppe» row.
+        guard open(app.staticTexts["7.63x25 mm"].firstMatch) else { return }
+        XCTAssertTrue(app.navigationBars["Gruppe 7.63x25 mm"].waitForExistence(timeout: 5), "The group page did not open")
+        snap("03f-Gruppe-mit-Familienname")
+        guard open(app.staticTexts["7.63x25 mm Mauser"].firstMatch),
+              app.navigationBars["7.63x25 mm Mauser"].waitForExistence(timeout: 5) else { return }
+        snap("03g-Kaliber-Gruppenzeile")
+    }
+
+    /// A group's row goes to a member that is clearly nearer than its parent (review 2026-11-13). 35.2 mm long with a
+    /// 7.9 mm bullet is a 7.62x25 mm Tokarev; with the obsolete and rare calibres switched on, its row was drawn and
+    /// rated as the group's parent, the .30 Borchardt: «Abweichung bis 1.01 mm», and not among the 1:1 button's.
+    func testGroupRowOfANearerMember() {
+        app.terminate()
+        app.launchArguments += ["-screenTourLength", "35.2", "-screenTourBullet", "7.9",
+                                "-includeObsoleteCalibres", "YES", "-includeRareCalibres", "YES"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
+        XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
+        scroll(toRowAbove: "Mögliche Kaliber")
+        XCTAssertTrue(app.staticTexts["7.5 FK"].exists, "No rare calibre is listed: the switches' launch arguments did not arrive")
+        XCTAssertTrue(app.staticTexts["7.63x25 mm"].exists, "The 7.63x25 mm group's row is not on the screen")
+        XCTAssertFalse(app.staticTexts["Abweichung bis 1.01 mm"].exists, "The 7.63x25 mm row is rated as the .30 Borchardt")
+        snap("03h-Masse-Treffer-Gruppe-passt")
+    }
+
     /// Calibres picked long, short, middle stand by length: in the picked list and on the 1:1 screen.
     func testPickAndCompare() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
@@ -495,6 +540,22 @@ final class PRScreensTests: XCTestCase {
         let row = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Berdan Nitro, ")).firstMatch
         XCTAssertTrue(row.waitForExistence(timeout: 5), "No Berdan primer row on the 8.15x46 mm R's page")
         snap("42-Berdan-Zuendhuetchen")
+    }
+
+    /// A belt wider than the rim (calibre-data #150): the .378 Weatherby Magnum is drawn with its belt, and its
+    /// measurements name the belt's diameter.
+    func testBeltWiderThanTheRim() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText(".378 Weatherby\n") // return hides the keyboard
+        }
+        guard open(app.staticTexts[".378 Weatherby Magnum"].firstMatch) else { return }
+        snap("43-Guertel-378-Weatherby")
+        scroll(toRowAbove: "Gesamtlänge")
+        snap("43b-Guertel-378-Weatherby-Masse")
     }
 
     /// The calibration screen: the slider and the buttons dock at the bottom (Raven, 2026-11-11, on an iPad).

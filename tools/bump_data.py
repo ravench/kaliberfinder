@@ -12,6 +12,9 @@ import os
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.dirname(__file__))
+from catalogue_fixture import groups_among  # noqa: E402
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "calibre-data")
 CATALOGUE = os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json")
@@ -34,10 +37,12 @@ def paths(value, prefix=""):
 def fixture_is_current(fixture, catalogue):
     """Whether the frozen fixture still has the catalogue's fields, nested ones too (a key the app's
     model gained or lost makes every fixture test fail with «not in Fixtures/catalogue.json»).
-    Compared on the fixture's own calibres: a field only other calibres have is not missing."""
+    Compared on the fixture's own calibres and their lookalike groups: a field only other calibres
+    have is not missing."""
     chosen = {c["id"] for c in fixture["cartridges"]}
     same = [c for c in catalogue["cartridges"] if c["id"] in chosen]
-    return paths(fixture["cartridges"]) == paths(same) and set(fixture) == set(catalogue)
+    return (paths(fixture["cartridges"]) == paths(same) and set(fixture) == set(catalogue)
+            and paths(fixture.get("lookalikes", [])) == paths(groups_among(catalogue, chosen)))
 
 
 def git(*args):

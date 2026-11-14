@@ -18,11 +18,24 @@ final class CatalogTests: XCTestCase {
                 XCTAssertGreaterThanOrEqual(d.overallLength + 0.01, d.caseLength, "\(c.name): case longer than cartridge")
             }
             XCTAssertGreaterThan(d.rim, 0, c.name)
-            XCTAssertLessThanOrEqual(c.outline.width, max(d.rim, d.base, d.bullet) + 0.01, c.name)
+            XCTAssertLessThanOrEqual(c.outline.width, max(c.headDiameter, d.bullet) + 0.01, c.name)
             XCTAssertEqual(c.outline.height, d.overallLength, accuracy: 0.01, c.name)
             if let shoulder = d.shoulder {
                 XCTAssertLessThanOrEqual(d.neck, shoulder, c.name)
             }
+        }
+    }
+
+    /// A belt wider than the rim (calibre-data #150, the .378 Weatherby head) is the head's width: the side view
+    /// is drawn that wide, and the case seen from below with it.
+    func testABeltWiderThanTheRimIsTheHeadsWidth() {
+        let belted = CartridgeCatalog.all.filter { $0.dimensions.belt != nil }
+        XCTAssertFalse(belted.isEmpty)
+        for c in belted {
+            XCTAssertEqual(c.kind, "belted", c.name)
+            XCTAssertEqual(c.headDiameter, c.dimensions.belt, c.name)
+            XCTAssertGreaterThan(c.headDiameter, c.dimensions.rim, c.name)
+            XCTAssertEqual(c.outline.width, c.headDiameter, accuracy: 0.01, c.name)
         }
     }
 
@@ -210,6 +223,24 @@ final class CatalogTests: XCTestCase {
         let mauser = try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: XCTUnwrap(CartridgeCatalog.cartridge(id: "7x57 mm Mauser"))))
         XCTAssertEqual(mauser.differs, ["rim", "load"])
         XCTAssertGreaterThanOrEqual(LookalikeGroupView.compared(mauser.members).count, 2, "the rimmed 7x57 R stands apart")
+    }
+
+    /// A group goes by calibre-data's name: its parent's, or the family's (review 2026-11-13: the app took the
+    /// parent's for every group, so the 7.63x25 mm rounds stood under the obsolete .30 Borchardt).
+    func testLookalikeGroupsCarryTheDatabaseName() throws {
+        func group(of id: String) throws -> LookalikeGroup {
+            try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)), id)
+        }
+        XCTAssertEqual(try group(of: "7.62x51 mm NATO").name, ".308 Winchester")
+        let mauser = try group(of: "7.62x25 mm Tokarev")
+        XCTAssertEqual([mauser.name, mauser.id], ["7.63x25 mm", ".30 Borchardt"])
+        XCTAssertEqual(try group(of: "7x57 mm R").name, "7x57 mm")
+        // A name is a group's own: no calibre's but a member's, and no two groups share one.
+        let groups = CartridgeCatalog.lookalikes
+        XCTAssertEqual(Set(groups.map(\.name)).count, groups.count)
+        for g in groups where CartridgeCatalog.cartridge(id: g.name) != nil {
+            XCTAssertTrue(g.calibres.contains(g.name), "\(g.name) names a group it is not in")
+        }
     }
 
     func testNormalized() {
