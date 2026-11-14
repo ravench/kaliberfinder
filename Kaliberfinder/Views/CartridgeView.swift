@@ -21,8 +21,9 @@ struct CartridgeView: View {
     /// Airsoft BB: most are white plastic.
     static let plastic = Color(red: 0.97, green: 0.97, blue: 0.96)
 
-    /// Fill of the bullet: steel cap (GP 1890) or steel BB, bare lead, plastic airsoft BB, the silver
-    /// cupronickel jacket of early service rounds (GP 11), or copper jacket; other balls and pellets are lead.
+    /// Fill of the bullet: steel cap (GP 1890), steel jacket (7.65x53 mm Argentine) or steel BB, bare lead,
+    /// plastic airsoft BB, the silver cupronickel jacket of early service rounds (GP 11), or copper jacket;
+    /// other balls and pellets are lead.
     static func bulletFill(for cartridge: Cartridge) -> Color {
         switch cartridge.outline.bulletMaterial {
         case "steel": steel

@@ -262,9 +262,7 @@ struct DimensionLayout {
     /// wider or narrower, and stays there for 1 mm (a belt's ramp only crosses it). Nil if none.
     static func bodyStart(of c: Cartridge, in empty: OutlineGeometry) -> Double? {
         let d = c.dimensions, height = c.outline.height
-        // Above a belt the body is drawn 1.5 % narrower than the base diameter (calibre-data outline.py).
-        let tolerance = max(0.25, 0.02 * d.base)
-        func atBase(_ t: Double) -> Bool { abs(empty.width(at: height - t) - d.base) <= tolerance }
+        func atBase(_ t: Double) -> Bool { abs(empty.width(at: height - t) - d.base) <= 0.25 }
         var below = atBase(0.01)
         for t in stride(from: step, to: min(d.caseLength, 20), by: step) {
             let here = atBase(t)
