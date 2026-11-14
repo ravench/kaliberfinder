@@ -558,6 +558,19 @@ final class PRScreensTests: XCTestCase {
         snap("43b-Guertel-378-Weatherby-Masse")
     }
 
+    /// The silver jacket of an early service round (calibre-data #151): the 8x57 mm IS was drawn with a copper bullet.
+    func testSilverJacket() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("8x57\n") // return hides the keyboard
+        }
+        guard open(app.staticTexts["8x57 mm IS"].firstMatch) else { return }
+        snap("44-Silbermantel-8x57-IS")
+    }
+
     /// The calibration screen: the slider and the buttons dock at the bottom (Raven, 2026-11-11, on an iPad).
     func testCalibration() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
