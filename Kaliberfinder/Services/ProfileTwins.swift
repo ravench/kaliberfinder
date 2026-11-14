@@ -12,8 +12,8 @@ extension CartridgeCatalog {
     }
 
     /// Puts items whose calibres look the same from the side into one group, in the order of each
-    /// group's first item; within a group the lookalike group's parent leads (.223 Remington before the
-    /// 5.56 NATO and the GP 90), and the row draws and names its lead (`LookalikeGroup.shownName`).
+    /// group's first item; a group stands in its lookalike group's order, the parent first (.223 Remington
+    /// before the 5.56 NATO and the GP 90). A row of results picks its lead from that order (`TwinGroup`).
     static func groupedByProfile<Item>(_ items: [Item], cartridge: (Item) -> Cartridge,
                                        merged: Bool = groupsSizeGroups) -> [[Item]] {
         guard merged else { return items.map { [$0] } }
@@ -33,27 +33,55 @@ extension CartridgeCatalog {
     }
 }
 
-/// One row of suggestions: a calibre (its lookalike group's parent, if that is among the suggestions), plus the
-/// calibres that look exactly the same from the side; the row draws its lead and opens the group (Raven, 2026-11-11).
+/// One row of suggestions: a calibre, plus the calibres that look exactly the same from the side; the row draws,
+/// names and rates its lead (`LookalikeGroup.shownName`) and opens the group (Raven, 2026-11-11).
 struct TwinGroup<Item: Identifiable>: Identifiable where Item.ID == String {
     let items: [Item]
 
     var id: String { items[0].id }
     var lead: Item { items[0] }
     var others: [Item] { Array(items.dropFirst()) }
+
+    /// The row of `matches`, which stand in their group's order. Its lead is the first of them, so the parent where
+    /// it is listed, unless that one does not fit (`fits`) where another does, or is farther from what was measured
+    /// than the nearest by more than `margin`: then the first that fits and is within the margin. A group's sheets
+    /// are not there to tell its members apart, so less leaves the row its parent's; but measured exactly, a
+    /// .32 S&W Long Wadcutter came up as the .32 S&W Long, 9 mm off, and a 7.62x25 mm Tokarev as the .30 Borchardt,
+    /// which the 1:1 button then left out (review 2026-11-13).
+    init(_ matches: [Item], margin: Double, distance: (Item) -> Double, fits: (Item) -> Bool = { _ in true }) {
+        let fitting = matches.filter(fits)
+        let among = fitting.isEmpty ? matches : fitting
+        let nearest = among.map(distance).min() ?? 0
+        let lead = among.first { distance($0) <= nearest + margin }
+        items = lead.map { lead in [lead] + matches.filter { $0.id != lead.id } } ?? matches
+    }
 }
 
 extension Matcher {
-    /// Ranked matches with identical-looking calibres in one row.
+    /// How much farther from the photo than its group's nearest calibre a row's lead may be (`TwinGroup`), as a
+    /// `distance`: a third of a fit's width. On the catalogue's own outlines the members of a group told apart by
+    /// load are at most 0.11 apart (6 mm BR), a flush wadcutter and its parent 0.5 (2026-11-14). Side views only: no
+    /// group holds a round thing, which is all an end view is compared with.
+    static let groupMargin = 0.1
+
+    /// Ranked matches with identical-looking calibres in one row. The margin alone picks a row's lead: every row
+    /// goes to the 1:1 screen (`MatchesView.toCompare`), so none has a fit to lose there.
     static func grouped(_ matches: [Match]) -> [TwinGroup<Match>] {
         CartridgeCatalog.groupedByProfile(matches, cartridge: \.cartridge)
-            .map { TwinGroup(items: $0) }
+            .map { row in TwinGroup(row, margin: groupMargin, distance: { -$0.score }) }
     }
 }
 
 extension DimensionMatcher {
-    /// Ranked dimension matches with identical calibres in one row (their deviations are equal anyway).
+    /// How much farther off than its group's nearest calibre a row's lead may be (`TwinGroup`), in mm of the deviation
+    /// a row shows (`maxDeviation`). calibre-data calls cases up to 0.5 mm apart in length one size; the 9x19 mm and
+    /// the 9 mm Glisenti are 0.48 mm apart in overall length, the .30 Borchardt and the 7.62x25 mm Tokarev 1.16 mm.
+    static let groupMargin = 0.5
+
+    /// Ranked dimension matches with the calibres of a one-size group in one row, whatever their sheets say. A row
+    /// fits where one of its calibres does, so the 1:1 button takes it (`toCompare`).
     static func grouped(_ matches: [DimensionMatch]) -> [TwinGroup<DimensionMatch>] {
-        CartridgeCatalog.groupedByProfile(matches, cartridge: \.cartridge).map { TwinGroup(items: $0) }
+        CartridgeCatalog.groupedByProfile(matches, cartridge: \.cartridge)
+            .map { row in TwinGroup(row, margin: groupMargin, distance: { $0.maxDeviation }, fits: { $0.fit != .poor }) }
     }
 }

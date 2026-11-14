@@ -108,6 +108,24 @@ final class PRScreensTests: XCTestCase {
         snap("03g-Kaliber-Gruppenzeile")
     }
 
+    /// A group's row goes to a member that is clearly nearer than its parent (review 2026-11-13). 35.2 mm long with a
+    /// 7.9 mm bullet is a 7.62x25 mm Tokarev; with the obsolete and rare calibres switched on, its row was drawn and
+    /// rated as the group's parent, the .30 Borchardt: «Abweichung bis 1.01 mm», and not among the 1:1 button's.
+    func testGroupRowOfANearerMember() {
+        app.terminate()
+        app.launchArguments += ["-screenTourLength", "35.2", "-screenTourBullet", "7.9",
+                                "-includeObsoleteCalibres", "YES", "-includeRareCalibres", "YES"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
+        XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
+        scroll(toRowAbove: "Mögliche Kaliber")
+        XCTAssertTrue(app.staticTexts["7.5 FK"].exists, "No rare calibre is listed: the switches' launch arguments did not arrive")
+        XCTAssertTrue(app.staticTexts["7.63x25 mm"].exists, "The 7.63x25 mm group's row is not on the screen")
+        XCTAssertFalse(app.staticTexts["Abweichung bis 1.01 mm"].exists, "The 7.63x25 mm row is rated as the .30 Borchardt")
+        snap("03h-Masse-Treffer-Gruppe-passt")
+    }
+
     /// Calibres picked long, short, middle stand by length: in the picked list and on the 1:1 screen.
     func testPickAndCompare() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
