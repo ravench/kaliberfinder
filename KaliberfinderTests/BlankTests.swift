@@ -52,4 +52,16 @@ final class BlankTests: XCTestCase {
             }
         }
     }
+
+    /// «Masse eingeben»: a typed bullet diameter was measured on a bullet, so no blank is listed. A blank's
+    /// `dimensions.bullet` only repeats its case's diameter, which the 8 mm Knall used to fit exactly.
+    func testATypedBulletDiameterLeavesTheBlanksOut() throws {
+        let d = try XCTUnwrap(CartridgeCatalog.cartridge(id: "8 mm Knall")).dimensions
+        let byCase = DimensionMatcher.rank(MeasuredDimensions(caseLength: d.caseLength, rim: d.rim), cartridges: CartridgeCatalog.all, limit: .max)
+        XCTAssertEqual(byCase.first { $0.cartridge.id == "8 mm Knall" }?.fit, .good)
+        let withBullet = DimensionMatcher.rank(MeasuredDimensions(caseLength: d.caseLength, rim: d.rim, bullet: d.bullet),
+                                               cartridges: CartridgeCatalog.all, limit: .max)
+        XCTAssertFalse(withBullet.isEmpty)
+        XCTAssertFalse(withBullet.contains { $0.cartridge.blank })
+    }
 }

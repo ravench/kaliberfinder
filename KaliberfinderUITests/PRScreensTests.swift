@@ -152,7 +152,9 @@ final class PRScreensTests: XCTestCase {
             search.typeText("P.A.K.\n") // return hides the keyboard
         }
         guard open(app.staticTexts["9 mm P.A.K."].firstMatch) else { return }
+        scroll(toRowAbove: "Gesamtlänge") // «Masse» whole: the bullet's row was its last but one
         snap("41-Knallpatrone-PAK")
+        scroll(up: false)
         if open(app.buttons["Masszeichnung anzeigen"].firstMatch) {
             snap("41b-Knallpatrone-PAK-Masszeichnung")
         }

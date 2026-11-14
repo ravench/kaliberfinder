@@ -110,15 +110,21 @@ class BlankFlagTests(unittest.TestCase):
         self.assertTrue(all(isinstance(c["blank"], bool) for c in cartridges))
         # Star-crimped ones, and the ones closed inside the case (9 mm P.A.K., 8 mm and .315 Knall): the
         # catalogue's own rule (cartridges.is_blank), not a second one here that knew only the crimp.
-        self.assertEqual({c["name"] for c in cartridges if c["blank"]},
-                         {".22 Blank (6.8/11)", "9 mm P.A.K.", "8 mm Knall", ".315 Knall", "9 mm R Knall",
-                          ".320 Knall", ".45 Knall", ".22 Long Knall", "6 mm Flobert Knall"})
+        # Sorted, not in catalogue order: where the blanks stand in the catalogue is calibre-data's business.
+        self.assertEqual(sorted(c["name"] for c in cartridges if c["blank"]),
+                         sorted([".22 Blank (6.8/11)", "9 mm P.A.K.", "8 mm Knall", ".315 Knall", "9 mm R Knall",
+                                 ".320 Knall", ".45 Knall", ".22 Long Knall", "6 mm Flobert Knall"]))
         # A bullet seated inside the case is still a bullet.
         for name in (".32 S&W Long Wadcutter", "7.62x38 mm R Nagant"):
             self.assertFalse(next(c for c in cartridges if c["name"] == name)["blank"], name)
         for blank in (c for c in cartridges if c["blank"]):
             self.assertNotIn("bullet", blank["outline"])
             self.assertEqual(blank["dimensions"]["caseLength"], blank["dimensions"]["overallLength"])
+        # The rule is for cartridges: a shot shell or a loose ball whose measurements coincide is no blank.
+        shell = {"kind": generate_data.SHOT, "profile": "flat", "rim": 20.0, "base": 20.0, "neck": 20.0, "bullet": 20.0,
+                 "case": 65.0, "oal": 65.0}
+        self.assertFalse(generate_data.blank(shell))
+        self.assertTrue(generate_data.blank({**shell, "kind": "rimless"}))
 
 
 class CalibreDataSubmoduleTests(unittest.TestCase):
