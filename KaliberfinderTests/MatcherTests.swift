@@ -81,12 +81,12 @@ final class MatcherTests: XCTestCase {
         func match(_ id: String) throws -> Match {
             Match(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: id)), score: 1, shapeDistance: 0.1)
         }
-        // All three are 29.7 mm long: the narrower .30 Super Carry (Ø 8.74) comes first, and
-        // 9x21 IMI and 9x19 (both Ø 9.96) keep their rank order.
+        // The narrower .30 Super Carry (Ø 8.74, 29.7 mm) comes first, then the 9x19 (29.69) before the
+        // 9x21 IMI (29.75, the SAAMI sheets), whatever their rank order.
         let ranked = [try match("9x21 mm IMI"), try match("9x19 mm"), try match(".30 Super Carry"), try match(".45 ACP"),
                       try match("9 mm Browning kurz (.380 ACP)")]
         XCTAssertEqual(MatchesView.toCompare(ranked, by: .overallLength).map(\.id),
-                       ["9 mm Browning kurz (.380 ACP)", ".30 Super Carry", "9x21 mm IMI", "9x19 mm", ".45 ACP"])
+                       ["9 mm Browning kurz (.380 ACP)", ".30 Super Carry", "9x19 mm", "9x21 mm IMI", ".45 ACP"])
         XCTAssertEqual(MatchesView.toCompare(Array(ranked.reversed()), by: .overallLength).map(\.id),
                        ["9 mm Browning kurz (.380 ACP)", ".30 Super Carry", "9x19 mm", "9x21 mm IMI", ".45 ACP"])
         // By the case, the standard: 17.3, 19.15, 20.3, 21.15 and 22.8 mm.
@@ -117,15 +117,15 @@ final class MatcherTests: XCTestCase {
             Match(cartridge: try XCTUnwrap(CartridgeCatalog.cartridge(id: id)), score: 1, shapeDistance: 0.1, part: part)
         }
         let ids = ["7.5x55 mm Swiss (GP 11)", ".308 Winchester", "6 mm Creedmoor", "6.5 mm Creedmoor"]
-        // Cases 55.6, 51.2, 48.8 (Ø 12.01) and 48.8 mm (Ø 12.0): the narrower 6.5 mm Creedmoor first.
+        // Cases 55.6, 51.2, 48.77 and 48.8 mm (the SAAMI sheets): the 6 mm Creedmoor's shorter case first.
         XCTAssertEqual(MatchesView.toCompare(try ids.map { try match($0, .emptyCase) }).map(\.id),
-                       ["6.5 mm Creedmoor", "6 mm Creedmoor", ".308 Winchester", "7.5x55 mm Swiss (GP 11)"])
+                       ["6 mm Creedmoor", "6.5 mm Creedmoor", ".308 Winchester", "7.5x55 mm Swiss (GP 11)"])
         // Loaded, by the whole round the same calibres are 77.5, 71.1 (Ø 11.9), 71.1 (Ø 12.01) and 71.8 mm long …
         XCTAssertEqual(MatchesView.toCompare(try ids.map { try match($0, .cartridge) }, by: .overallLength).map(\.id),
                        [".308 Winchester", "6 mm Creedmoor", "6.5 mm Creedmoor", "7.5x55 mm Swiss (GP 11)"])
         // … and by the case, the standard, they stand like the empty cases.
         XCTAssertEqual(MatchesView.toCompare(try ids.map { try match($0, .cartridge) }, by: .caseLength).map(\.id),
-                       ["6.5 mm Creedmoor", "6 mm Creedmoor", ".308 Winchester", "7.5x55 mm Swiss (GP 11)"])
+                       ["6 mm Creedmoor", "6.5 mm Creedmoor", ".308 Winchester", "7.5x55 mm Swiss (GP 11)"])
     }
 
     func testOneToOneKnowsWhichMatchesAreEmptyCases() throws {

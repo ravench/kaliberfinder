@@ -23,7 +23,7 @@ final class PrimerTests: XCTestCase {
 
     func testHeadGeometry() throws {
         let nine = try cartridge("9x19 mm")
-        XCTAssertEqual(nine.headDiameter, 9.96)
+        XCTAssertEqual(nine.headDiameter, 10.01)  // the SAAMI rim
         XCTAssertLessThan(CaseBaseView.faceDiameter(nine), nine.headDiameter)
         let special = try cartridge(".38 Special")
         XCTAssertEqual(special.headDiameter, special.dimensions.rim)
