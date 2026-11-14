@@ -227,10 +227,6 @@ class BulletMaterialTests(unittest.TestCase):
                                                              if "caseMaterial" in c["outline"]})
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class LookalikeTests(unittest.TestCase):
     """The lookalike groups go into the JSON so the app can show a calibre's group."""
 
@@ -331,3 +327,7 @@ class ColourCodeTests(unittest.TestCase):
     def test_a_former_state_is_drawn(self):
         soviet = next(t for t in self.by_name["7.62x54 mm R"]["colourCodes"] if any(c["code"] == "SU" for c in t["countries"]))
         self.assertEqual([c for c in soviet["countries"] if c["code"] == "SU"], [{"code": "SU", "name": "Sowjetunion"}])
+
+
+if __name__ == "__main__":
+    unittest.main()

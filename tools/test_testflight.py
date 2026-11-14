@@ -235,10 +235,6 @@ class WorkflowTests(unittest.TestCase):
         self.assertRegex(self.project, r"INFOPLIST_KEY_ITSAppUsesNonExemptEncryption:\s*NO")
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class VersionTests(unittest.TestCase):
     """The version comes from the newest release tag, else from project.yml."""
 
@@ -270,3 +266,7 @@ class VersionTests(unittest.TestCase):
             git("tag", "v0.2.0")
             git("commit", "-q", "--allow-empty", "-m", "two")
             self.assertEqual(testflight.release_tag(tmp).strip(), "v0.2.0")
+
+
+if __name__ == "__main__":
+    unittest.main()
