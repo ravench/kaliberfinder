@@ -297,6 +297,16 @@ class CatalogueOnlyDataTests(unittest.TestCase):
         groups = generate_data.lookalikes({c["name"] for c in generate_data.build()})
         self.assertIn({"name": "6x47 mm SM", "differs": ["bore"], "calibres": ["6x47 mm SM", "6.5x47 mm Lapua"]}, groups)
 
+    def test_a_belt_wider_than_the_rim_reaches_the_json(self):
+        """calibre-data #150: the .378 Weatherby head's belt is wider than its rim, and the drawing as wide
+        as the belt. The H&H head's belt is as wide as its rim and has no entry."""
+        by_name = {c["name"]: c for c in generate_data.build()}
+        d = by_name[".378 Weatherby Magnum"]["dimensions"]
+        self.assertEqual(d["belt"], 15.33)
+        self.assertGreater(d["belt"], max(d["rim"], d["base"]))
+        self.assertEqual(by_name[".378 Weatherby Magnum"]["outline"]["width"], d["belt"])
+        self.assertNotIn("belt", by_name[".300 H&H Magnum"]["dimensions"])
+
     def test_cip_corrections_reach_the_json(self):
         """calibre-data #68: the PRC rounds from their C.I.P. sheets."""
         by_name = {c["name"]: c["dimensions"] for c in generate_data.build()}
