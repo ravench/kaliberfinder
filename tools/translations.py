@@ -163,7 +163,6 @@ T = {
     "1:1 vergleichen (%lld)": ("Compare 1:1 (%lld)", "Comparer 1:1 (%lld)", "Confronta 1:1 (%lld)"),
     "Abweichung bis %@": ("Off by up to %@", "Écart jusqu'à %@", "Scarto fino a %@"),
     "Alle Kaliber": ("All calibres", "Tous les calibres", "Tutti i calibri"),
-    "Alle Kaliber durchsuchen": ("Search all calibres", "Chercher dans tous les calibres", "Cerca in tutti i calibri"),
     "Andere": ("Other", "Autre", "Altro"),
     "Die besten drei 1:1 vergleichen": ("Compare the best three 1:1", "Comparer les trois meilleurs 1:1", "Confronta i tre migliori 1:1"),
     "Form passt gut": ("Shape fits well", "La forme correspond bien", "La forma corrisponde bene"),

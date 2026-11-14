@@ -48,6 +48,16 @@ def keys():
     return {k: v for k, v in found.items() if not junk.match(k)}
 
 
+# Keys the patterns can't see: CartridgeDetailView.kindTitle's default title.
+EXTRA = {"Andere"}
+
+
+def used_keys():
+    """Every key the app shows: the sources', EXTRA and the country names from Cartridges.json."""
+    from generate_data import COUNTRY_NAMES
+    return set(keys()) | EXTRA | set(COUNTRY_NAMES.values())
+
+
 if __name__ == "__main__":
     for k, f in sorted(keys().items()):
         print(f"{f}\t{k}")

@@ -438,29 +438,6 @@
         }
       }
     },
-    "Alle Kaliber durchsuchen": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Search all calibres"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chercher dans tous les calibres"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cerca in tutti i calibri"
-          }
-        }
-      }
-    },
     "Alle passenden 1:1 vergleichen (%lld)": {
       "extractionState": "manual",
       "localizations": {

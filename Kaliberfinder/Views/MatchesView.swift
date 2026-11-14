@@ -73,7 +73,6 @@ struct MatchesView: View {
                             NavigationLink { MeasureView() } label: {
                                 Label("Masse von Hand eingeben", systemImage: "ruler")
                             }
-                            if matches.isEmpty { NavigationLink("Alle Kaliber durchsuchen") { CatalogView() } }
                         }
                     } else {
                         HStack {
