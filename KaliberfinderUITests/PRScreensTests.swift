@@ -463,6 +463,20 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// A Berdan primer's row: the title without a size, then the calibre's own diameter (8.15x46 mm R: 6.35 mm).
+    func testBerdanPrimer() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("8.15x46\n") // return hides the keyboard
+        }
+        guard open(app.staticTexts["8.15x46 mm R"].firstMatch) else { return }
+        scroll(toRowAbove: "Halsdurchmesser")
+        snap("42-Berdan-Zuendhuetchen")
+    }
+
     /// The calibration screen: the slider and the buttons dock at the bottom (Raven, 2026-11-11, on an iPad).
     func testCalibration() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")

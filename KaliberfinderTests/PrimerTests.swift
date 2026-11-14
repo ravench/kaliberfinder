@@ -21,6 +21,14 @@ final class PrimerTests: XCTestCase {
         }
     }
 
+    /// The row shows the calibre's own diameter after the title. Berdan primers come in several sizes (6.35,
+    /// 6.38 and 6.45 mm), so the title names none (review 2026-11-13: it said «(.254)» on all of them).
+    func testBerdanTitleNamesNoSize() {
+        let berdan = CartridgeCatalog.all.compactMap(\.primer).filter { $0.type == "berdan-nitro" }
+        XCTAssertGreaterThan(Set(berdan.map(\.diameter)).count, 1)
+        XCTAssertEqual(Set(berdan.map(\.title)), ["Berdan Nitro"])
+    }
+
     func testHeadGeometry() throws {
         let nine = try cartridge("9x19 mm")
         XCTAssertEqual(nine.headDiameter, 10.01)  // the SAAMI rim
