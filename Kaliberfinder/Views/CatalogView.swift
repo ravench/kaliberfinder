@@ -91,11 +91,14 @@ struct ResultLink: View {
     var highlighted = false
 
     var body: some View {
-        let row = CartridgeRow(cartridge: cartridge, detail: detail, highlighted: highlighted, groupTag: .group)
-        if let group = CartridgeCatalog.sizeGroup(of: cartridge) {
-            NavigationLink { LookalikeGroupView(group: group) } label: { row }
+        if let group = CartridgeCatalog.groupsSizeGroups ? CartridgeCatalog.sizeGroup(of: cartridge) : nil {
+            NavigationLink { LookalikeGroupView(group: group) } label: {
+                CartridgeRow(cartridge: cartridge, detail: detail, highlighted: highlighted, groupTag: .group)
+            }
         } else {
-            NavigationLink { CartridgeDetailView(cartridge: cartridge) } label: { row }
+            NavigationLink { CartridgeDetailView(cartridge: cartridge) } label: {
+                CartridgeRow(cartridge: cartridge, detail: detail, highlighted: highlighted, groupTag: .name)
+            }
         }
     }
 }

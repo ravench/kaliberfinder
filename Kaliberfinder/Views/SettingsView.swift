@@ -2,7 +2,7 @@ import SwiftUI
 
 /// The settings page's sections, top to bottom. The recognition switches stay on the home screen.
 enum SettingsSection: CaseIterable {
-    case units, compare, photo, info, training
+    case units, compare, results, photo, info, training
 }
 
 /// Settings opened as a sheet by the home screen's gear button (tidied up with Raven, 2026-11-10): units,
@@ -19,6 +19,8 @@ struct SettingsView: View {
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
     /// The photo's outline coloured by detection (`ShapeContour.partColoursKey`); for everyone since 2026-11-08.
     @AppStorage(ShapeContour.partColoursKey) private var partColours = false
+    /// One row and one 1:1 column per one-size group, or every calibre (`CartridgeCatalog.groupSizeGroupsKey`).
+    @AppStorage(CartridgeCatalog.groupSizeGroupsKey) private var groupSizeGroups = true
 
     var body: some View {
         List {
@@ -26,6 +28,7 @@ struct SettingsView: View {
                 switch section {
                 case .units: units
                 case .compare: compare
+                case .results: results
                 case .photo: photo
                 case .info: info
                 case .training: training
@@ -75,6 +78,16 @@ struct SettingsView: View {
             } else {
                 Text("Prüfe die Grösse einmal mit einer Bankkarte.")
             }
+        }
+    }
+
+    private var results: some View {
+        Section {
+            Toggle("Gleich grosse Kaliber als Gruppe zeigen", isOn: $groupSizeGroups)
+        } header: {
+            Text("Treffer")
+        } footer: {
+            Text("Aus: jedes Kaliber der Gruppe als eigener Treffer, auch im 1:1-Vergleich.")
         }
     }
 

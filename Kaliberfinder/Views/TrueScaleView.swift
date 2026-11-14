@@ -174,12 +174,21 @@ struct TrueScaleView: View {
     /// A cartridge's drawing with its labels; a tap opens the calibre's page (`linksToDetails`).
     @ViewBuilder
     private func column<Content: View>(of c: Cartridge, @ViewBuilder content: () -> Content) -> some View {
-        if linksToDetails {
+        if let group = Self.shownGroup(of: c, linking: linksToDetails) {
+            NavigationLink { LookalikeGroupView(group: group) } label: { VStack(spacing: 6, content: content) }
+                .buttonStyle(.plain)
+        } else if linksToDetails {
             NavigationLink { CartridgeDetailView(cartridge: c) } label: { VStack(spacing: 6, content: content) }
                 .buttonStyle(.plain)
         } else {
             VStack(spacing: 6, content: content)
         }
+    }
+
+    /// The one-size group a comparison column stands for, with the groups' setting on (Raven, 2026-11-13: the
+    /// group's name, the «Gruppe» chip, a link to the group page). A calibre's own 1:1 (`linking` false) shows the calibre.
+    static func shownGroup(of c: Cartridge, linking: Bool) -> LookalikeGroup? {
+        linking && CartridgeCatalog.groupsSizeGroups ? CartridgeCatalog.sizeGroup(of: c) : nil
     }
 
     /// Drawn without its bullet: compared as an empty case, with the bullets switched off.
@@ -193,10 +202,12 @@ struct TrueScaleView: View {
 
     private func label(for c: Cartridge) -> some View {
         VStack(spacing: 2) {
-            Text(verbatim: c.name).font(.caption.bold())
-            // The drawing stands for its one-size group: the others look exactly like this one.
-            if CartridgeCatalog.sizeGroup(of: c) != nil {
-                TagChip(tag: .group)
+            let shown = Self.shownGroup(of: c, linking: linksToDetails)
+            Text(verbatim: shown?.id ?? c.name).font(.caption.bold())
+            // A group's column: the others look exactly like this one. With the groups' setting off each
+            // member has its column, named after the group as in the catalogue.
+            if let group = CartridgeCatalog.sizeGroup(of: c) {
+                TagChip(tag: .group, text: shown == nil ? group.id : nil)
             }
             if let why = goodMatches[c.id] {
                 Text(verbatim: why).font(.caption2.weight(.semibold)).foregroundStyle(.green)
