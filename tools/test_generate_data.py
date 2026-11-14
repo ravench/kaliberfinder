@@ -179,9 +179,10 @@ class PatchedBulletTests(unittest.TestCase):
 
     def test_jacketed_bullets_have_no_patch(self):
         for name in ("7.5x55 mm Swiss (GP 11)", "9x19 mm"):
-            o = generate_data.outline(spec(name))
-            self.assertNotIn("patch", o, name)
-            self.assertNotIn("bulletMaterial", o, name)
+            self.assertNotIn("patch", generate_data.outline(spec(name)), name)
+        # A copper jacket names no material; the GP 11's silver cupronickel jacket does (calibre-data #115).
+        self.assertNotIn("bulletMaterial", generate_data.outline(spec("9x19 mm")))
+        self.assertEqual(generate_data.outline(spec("7.5x55 mm Swiss (GP 11)")).get("bulletMaterial"), "cupronickel")
 
 
 class BBTests(unittest.TestCase):

@@ -114,6 +114,7 @@ struct CartridgeDetailView: View {
         switch kind {
         case "rimless": "Randlos"
         case "rimmed": "Mit Rand"
+        case "semi-rimmed": "Halbrand"
         case "belted": "Gürtelhülse"
         case "rimfire": "Randfeuer"
         case "shot": "Schrotpatrone"

@@ -14,7 +14,9 @@ extension CartridgeCatalog {
     /// Puts items whose calibres look the same from the side into one group, in the order of each
     /// group's first item; within a group the lookalike group's parent leads (.223 Remington before the
     /// 5.56 NATO and the GP 90), as the row names it.
-    static func groupedByProfile<Item>(_ items: [Item], cartridge: (Item) -> Cartridge) -> [[Item]] {
+    static func groupedByProfile<Item>(_ items: [Item], cartridge: (Item) -> Cartridge,
+                                       merged: Bool = groupsSizeGroups) -> [[Item]] {
+        guard merged else { return items.map { [$0] } }
         var groups: [[Item]] = []
         for item in items {
             let c = cartridge(item)
