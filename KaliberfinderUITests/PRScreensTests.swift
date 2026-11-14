@@ -81,6 +81,24 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// A group goes by calibre-data's name, and never by a calibre the switches leave out (review 2026-11-13): 34.3 mm
+    /// long with an 8.8 mm bullet lists «7.63x25 mm» (was the obsolete «.30 Borchardt») and «.38 Super» (was «.38 ACP»).
+    func testGroupNames() {
+        app.terminate()
+        app.launchArguments += ["-screenTourLength", "34.3", "-screenTourBullet", "8.8"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
+        XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
+        scroll(toRowAbove: "Mögliche Kaliber")
+        XCTAssertTrue(app.staticTexts[".38 Super"].exists, "The .38 Super's group is not listed under its name")
+        XCTAssertFalse(app.staticTexts[".38 ACP"].exists || app.staticTexts[".30 Borchardt"].exists, "A group is listed as a calibre left out")
+        snap("03d-Masse-Treffer-Gruppennamen")
+        guard open(app.staticTexts["7.63x25 mm"].firstMatch) else { return }
+        XCTAssertTrue(app.navigationBars["Gruppe 7.63x25 mm"].waitForExistence(timeout: 5), "The group page did not open")
+        snap("03e-Gruppe-mit-Familienname")
+    }
+
     /// Calibres picked long, short, middle stand by length: in the picked list and on the 1:1 screen.
     func testPickAndCompare() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")

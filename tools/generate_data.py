@@ -15,7 +15,7 @@ import json, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
-from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, COLOUR_CODES, COUNTRY_NAMES as NAMES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_MM, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
+from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, LOOKALIKE_NAMES, COLOUR_CODES, COUNTRY_NAMES as NAMES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_MM, RIMFIRE, BALL, MINIE, PELLET, CRIMPED  # noqa: E402
 from outline import outline, bullet_profile  # noqa: E402,F401  (bullet_profile re-exported for tests)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -96,9 +96,11 @@ def build():
 
 def lookalikes(names):
     """The lookalike groups (calibre-data LOOKALIKES): calibres of their own that look alike, the parent
-    first, with what tells them apart ("rim", "bore", "length", "seating", "load", "ignition"). Raven,
-    2026-11-08: the app shows every member's group and compares it at 1:1."""
-    groups = [{"differs": list(differs), "calibres": list(members)} for differs, members in LOOKALIKES]
+    first, with what tells them apart ("rim", "bore", "length", "seating", "load", "ignition") and the
+    group's name, the parent's or the family's ("7.63x25 mm"). Raven, 2026-11-08: the app shows every
+    member's group and compares it at 1:1."""
+    groups = [{"name": name, "differs": list(differs), "calibres": list(members)}
+              for name, (differs, members) in zip(LOOKALIKE_NAMES, LOOKALIKES, strict=True)]
     unknown = {n for g in groups for n in g["calibres"]} - set(names)
     assert not unknown, f"lookalikes of unknown calibres: {unknown}"
     return groups

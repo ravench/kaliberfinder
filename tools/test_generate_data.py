@@ -232,7 +232,21 @@ class LookalikeTests(unittest.TestCase):
         self.assertEqual(len(members), len(set(members)), "a calibre in two groups")
         self.assertTrue(all(len(g["calibres"]) >= 2 and g["differs"] for g in groups))
         win = next(g for g in groups if ".308 Winchester" in g["calibres"])
-        self.assertEqual(win, {"differs": ["load"], "calibres": [".308 Winchester", "7.62x51 mm NATO"]})
+        self.assertEqual(win, {"name": ".308 Winchester", "differs": ["load"],
+                               "calibres": [".308 Winchester", "7.62x51 mm NATO"]})
+
+    def test_groups_carry_the_database_s_name(self):
+        # The parent's name or the family's (calibre-data lookalikes.toml); the app showed the parent's for
+        # every group, so the 7.63x25 mm rounds stood under the obsolete .30 Borchardt (review 2026-11-13).
+        by_name = {c["name"]: c for c in generate_data.build()}
+        groups = generate_data.lookalikes(set(by_name))
+        names = [g["name"] for g in groups]
+        self.assertEqual(len(names), len(set(names)), "two groups of one name")
+        mauser = next(g for g in groups if "7.63x25 mm Mauser" in g["calibres"])
+        self.assertEqual((mauser["name"], mauser["calibres"][0]), ("7.63x25 mm", ".30 Borchardt"))
+        self.assertEqual(next(g for g in groups if "8x57 mm IS" in g["calibres"])["name"], "8x57 mm")
+        for g in groups:  # a calibre's name names its own group only
+            self.assertTrue(g["name"] not in by_name or g["name"] in g["calibres"], g["name"])
 
     def test_rimfire_and_centrefire_versions_are_grouped_by_ignition(self):
         by_name = {c["name"]: c for c in generate_data.build()}
@@ -275,7 +289,7 @@ class CatalogueOnlyDataTests(unittest.TestCase):
                          (47.0, 66.0, 6.18))
         self.assertIn("swiss match", sm["aliases"])
         groups = generate_data.lookalikes({c["name"] for c in generate_data.build()})
-        self.assertIn({"differs": ["bore"], "calibres": ["6x47 mm SM", "6.5x47 mm Lapua"]}, groups)
+        self.assertIn({"name": "6x47 mm SM", "differs": ["bore"], "calibres": ["6x47 mm SM", "6.5x47 mm Lapua"]}, groups)
 
     def test_cip_corrections_reach_the_json(self):
         """calibre-data #68: the PRC rounds from their C.I.P. sheets."""

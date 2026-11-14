@@ -31601,6 +31601,7 @@
  ],
  "lookalikes": [
   {
+   "name": ".223 Remington",
    "differs": [
     "load"
    ],
@@ -31611,6 +31612,7 @@
    ]
   },
   {
+   "name": "7.5x53.5 mm Swiss (GP 1890)",
    "differs": [
     "bore",
     "length",
@@ -31623,6 +31625,7 @@
    ]
   },
   {
+   "name": ".308 Winchester",
    "differs": [
     "load"
    ],
@@ -31632,6 +31635,7 @@
    ]
   },
   {
+   "name": ".38 ACP",
    "differs": [
     "load"
    ],
@@ -31641,6 +31645,7 @@
    ]
   },
   {
+   "name": "9x19 mm",
    "differs": [
     "load"
    ],
@@ -31650,6 +31655,7 @@
    ]
   },
   {
+   "name": "9x23 mm Largo",
    "differs": [
     "load",
     "length"
@@ -31662,6 +31668,7 @@
    ]
   },
   {
+   "name": "7.63x25 mm",
    "differs": [
     "load"
    ],
@@ -31672,6 +31679,7 @@
    ]
   },
   {
+   "name": ".32 S&W Long",
    "differs": [
     "seating"
    ],
@@ -31681,6 +31689,7 @@
    ]
   },
   {
+   "name": ".38 Special",
    "differs": [
     "seating",
     "rim"
@@ -31692,6 +31701,7 @@
    ]
   },
   {
+   "name": "7x57 mm",
    "differs": [
     "rim",
     "load"
@@ -31703,6 +31713,7 @@
    ]
   },
   {
+   "name": "6.5x57 mm",
    "differs": [
     "rim",
     "length"
@@ -31714,6 +31725,7 @@
    ]
   },
   {
+   "name": "7x64 mm",
    "differs": [
     "rim",
     "length"
@@ -31724,6 +31736,7 @@
    ]
   },
   {
+   "name": "8x57 mm",
    "differs": [
     "rim",
     "bore"
@@ -31736,6 +31749,7 @@
    ]
   },
   {
+   "name": ".45 ACP",
    "differs": [
     "rim",
     "length",
@@ -31749,6 +31763,7 @@
    ]
   },
   {
+   "name": "5.6x50 mm Magnum",
    "differs": [
     "rim"
    ],
@@ -31758,6 +31773,7 @@
    ]
   },
   {
+   "name": "5.6x57 mm",
    "differs": [
     "rim"
    ],
@@ -31767,6 +31783,7 @@
    ]
   },
   {
+   "name": "6.5x65 mm RWS",
    "differs": [
     "rim"
    ],
@@ -31776,6 +31793,7 @@
    ]
   },
   {
+   "name": "6.5x68 mm",
    "differs": [
     "rim"
    ],
@@ -31785,6 +31803,7 @@
    ]
   },
   {
+   "name": "8x60 mm S",
    "differs": [
     "rim"
    ],
@@ -31794,6 +31813,7 @@
    ]
   },
   {
+   "name": "8x64 mm S",
    "differs": [
     "rim",
     "length"
@@ -31804,6 +31824,7 @@
    ]
   },
   {
+   "name": "9x57 mm",
    "differs": [
     "rim"
    ],
@@ -31813,6 +31834,7 @@
    ]
   },
   {
+   "name": "5.6x61 mm Vom Hofe Super Express",
    "differs": [
     "rim"
    ],
@@ -31822,6 +31844,7 @@
    ]
   },
   {
+   "name": "6x58 mm Forster",
    "differs": [
     "rim",
     "load"
@@ -31833,6 +31856,7 @@
    ]
   },
   {
+   "name": "6x62 mm Frères",
    "differs": [
     "rim"
    ],
@@ -31842,6 +31866,7 @@
    ]
   },
   {
+   "name": "6.5x61 mm Mauser",
    "differs": [
     "rim"
    ],
@@ -31851,6 +31876,7 @@
    ]
   },
   {
+   "name": "8x51 mm Mauser",
    "differs": [
     "rim"
    ],
@@ -31860,6 +31886,7 @@
    ]
   },
   {
+   "name": "9.3x53 mm Swiss",
    "differs": [
     "rim"
    ],
@@ -31869,6 +31896,7 @@
    ]
   },
   {
+   "name": "9x71 mm Peterlongo",
    "differs": [
     "bore"
    ],
@@ -31878,6 +31906,7 @@
    ]
   },
   {
+   "name": ".404 Jeffery",
    "differs": [
     "bore",
     "length"
@@ -31893,6 +31922,7 @@
    ]
   },
   {
+   "name": "9.5x47 mm R",
    "differs": [
     "bore"
    ],
@@ -31902,6 +31932,7 @@
    ]
   },
   {
+   "name": "9.3x72 mm R",
    "differs": [
     "length",
     "bore"
@@ -31915,6 +31946,7 @@
    ]
   },
   {
+   "name": "10.75x63 mm Mauser",
    "differs": [
     "length"
    ],
@@ -31924,6 +31956,7 @@
    ]
   },
   {
+   "name": "11x50 mm R Albini",
    "differs": [
     "bore",
     "length"
@@ -31935,6 +31968,7 @@
    ]
   },
   {
+   "name": "11.3x50 mm R Beaumont M71",
    "differs": [
     "bore",
     "length"
@@ -31946,6 +31980,7 @@
    ]
   },
   {
+   "name": "11.15x58 mm R Spanish Remington",
    "differs": [
     "bore"
    ],
@@ -31955,6 +31990,7 @@
    ]
   },
   {
+   "name": "8x50 mm R Siamese Type 45",
    "differs": [
     "length"
    ],
@@ -31964,6 +32000,7 @@
    ]
   },
   {
+   "name": "7.62x54 mm R",
    "differs": [
     "bore"
    ],
@@ -31973,6 +32010,7 @@
    ]
   },
   {
+   "name": ".450/400 Nitro Express 3 inch",
    "differs": [
     "length"
    ],
@@ -31982,6 +32020,7 @@
    ]
   },
   {
+   "name": "10.4x38 mm R Vetterli",
    "differs": [
     "ignition"
    ],
@@ -31991,6 +32030,7 @@
    ]
   },
   {
+   "name": ".44 Henry",
    "differs": [
     "ignition"
    ],
@@ -32000,6 +32040,7 @@
    ]
   },
   {
+   "name": ".32 Long",
    "differs": [
     "ignition",
     "length"
@@ -32014,6 +32055,7 @@
    ]
   },
   {
+   "name": "10.4 mm Swiss Ordnance 1872 Rimfire",
    "differs": [
     "ignition",
     "length"
@@ -32024,6 +32066,7 @@
    ]
   },
   {
+   "name": "6x47 mm SM",
    "differs": [
     "bore"
    ],
@@ -32033,6 +32076,7 @@
    ]
   },
   {
+   "name": "11x60 mm R Mauser",
    "differs": [
     "rim",
     "bore",
@@ -32045,6 +32089,7 @@
    ]
   },
   {
+   "name": "8x56 mm Mannlicher-Schönauer",
    "differs": [
     "bore"
    ],
@@ -32054,6 +32099,7 @@
    ]
   },
   {
+   "name": "6.5x55 mm Swedish",
    "differs": [
     "bore",
     "length"
@@ -32064,6 +32110,7 @@
    ]
   },
   {
+   "name": ".500/450 Magnum Express",
    "differs": [
     "load"
    ],
@@ -32073,6 +32120,7 @@
    ]
   },
   {
+   "name": ".297/230 Morris",
    "differs": [
     "length"
    ],
@@ -32082,6 +32130,7 @@
    ]
   },
   {
+   "name": ".280 Ross",
    "differs": [
     "rim",
     "length"
@@ -32092,6 +32141,7 @@
    ]
   },
   {
+   "name": ".333 Jeffery Rimless",
    "differs": [
     "bore",
     "length"
@@ -32102,6 +32152,7 @@
    ]
   },
   {
+   "name": ".276 Enfield",
    "differs": [
     "bore",
     "rim"
@@ -32112,6 +32163,7 @@
    ]
   },
   {
+   "name": ".33 BSA",
    "differs": [
     "bore"
    ],
@@ -32121,6 +32173,7 @@
    ]
   },
   {
+   "name": ".300 Rook",
    "differs": [
     "length"
    ],
@@ -32130,6 +32183,7 @@
    ]
   },
   {
+   "name": ".400 Purdey",
    "differs": [
     "bore",
     "length"
@@ -32140,6 +32194,7 @@
    ]
   },
   {
+   "name": ".577/500 Nitro Express",
    "differs": [
     "length"
    ],
@@ -32149,6 +32204,7 @@
    ]
   },
   {
+   "name": "7.5 mm Swiss Ordnance 1882",
    "differs": [
     "bore"
    ],
@@ -32158,6 +32214,7 @@
    ]
   },
   {
+   "name": "8 mm Rast-Gasser",
    "differs": [
     "bore"
    ],
@@ -32167,6 +32224,7 @@
    ]
   },
   {
+   "name": ".45 Mars",
    "differs": [
     "length"
    ],
@@ -32176,6 +32234,7 @@
    ]
   },
   {
+   "name": ".32 Colt",
    "differs": [
     "length"
    ],
@@ -32185,6 +32244,7 @@
    ]
   },
   {
+   "name": "9x25 mm Dillon",
    "differs": [
     "load"
    ],
@@ -32194,6 +32254,7 @@
    ]
   },
   {
+   "name": ".380 Short Revolver",
    "differs": [
     "length"
    ],
@@ -32203,6 +32264,7 @@
    ]
   },
   {
+   "name": ".450 Adams",
    "differs": [
     "length",
     "bore"
@@ -32213,6 +32275,7 @@
    ]
   },
   {
+   "name": ".476 Enfield",
    "differs": [
     "length"
    ],
@@ -32223,6 +32286,7 @@
    ]
   },
   {
+   "name": "10 mm Auto",
    "differs": [
     "length"
    ],
@@ -32232,6 +32296,7 @@
    ]
   },
   {
+   "name": ".41 Magnum",
    "differs": [
     "length"
    ],
@@ -32241,6 +32306,7 @@
    ]
   },
   {
+   "name": ".44 Magnum",
    "differs": [
     "length"
    ],
@@ -32250,6 +32316,7 @@
    ]
   },
   {
+   "name": ".45 Winchester Magnum",
    "differs": [
     "length"
    ],
@@ -32259,6 +32326,7 @@
    ]
   },
   {
+   "name": ".45 Colt",
    "differs": [
     "length"
    ],
@@ -32270,6 +32338,7 @@
    ]
   },
   {
+   "name": "6 mm BR Remington",
    "differs": [
     "load"
    ],
@@ -32279,6 +32348,7 @@
    ]
   },
   {
+   "name": ".30-40 Krag",
    "differs": [
     "rim"
    ],
@@ -32288,6 +32358,7 @@
    ]
   },
   {
+   "name": ".30-03 Springfield",
    "differs": [
     "length"
    ],
@@ -32297,6 +32368,7 @@
    ]
   },
   {
+   "name": ".30 Newton",
    "differs": [
     "bore"
    ],
@@ -32306,6 +32378,7 @@
    ]
   },
   {
+   "name": ".25-25 Stevens",
    "differs": [
     "length"
    ],
@@ -32315,6 +32388,7 @@
    ]
   },
   {
+   "name": ".35-30 Maynard 1882",
    "differs": [
     "length"
    ],
@@ -32324,6 +32398,7 @@
    ]
   },
   {
+   "name": ".38 Long",
    "differs": [
     "ignition",
     "length"
@@ -32337,6 +32412,7 @@
    ]
   },
   {
+   "name": ".35 Winchester Self-Loading",
    "differs": [
     "bore",
     "length"
@@ -32347,6 +32423,7 @@
    ]
   },
   {
+   "name": ".38-56 WCF",
    "differs": [
     "length"
    ],
@@ -32356,6 +32433,7 @@
    ]
   },
   {
+   "name": ".38-40 Remington-Hepburn",
    "differs": [
     "bore",
     "length"
@@ -32366,6 +32444,7 @@
    ]
   },
   {
+   "name": ".40-50 Sharps Necked",
    "differs": [
     "length"
    ],
@@ -32376,6 +32455,7 @@
    ]
   },
   {
+   "name": ".40-70 Sharps Straight",
    "differs": [
     "length"
    ],
@@ -32385,6 +32465,7 @@
    ]
   },
   {
+   "name": ".40-90 Ballard Everlasting",
    "differs": [
     "length"
    ],
@@ -32394,6 +32475,7 @@
    ]
   },
   {
+   "name": ".40-40 Maynard 1882",
    "differs": [
     "length"
    ],
@@ -32404,6 +32486,7 @@
    ]
   },
   {
+   "name": "11.43x55 mm R Turkish Peabody-Martini",
    "differs": [
     "length",
     "bore"
@@ -32416,6 +32499,7 @@
    ]
   },
   {
+   "name": ".40-65 Winchester",
    "differs": [
     "bore"
    ],
@@ -32425,6 +32509,7 @@
    ]
   },
   {
+   "name": ".38-72 Winchester",
    "differs": [
     "bore",
     "length"
@@ -32435,6 +32520,7 @@
    ]
   },
   {
+   "name": ".44 Evans Short",
    "differs": [
     "length"
    ],
@@ -32444,6 +32530,7 @@
    ]
   },
   {
+   "name": ".44 Long",
    "differs": [
     "ignition",
     "bore",
@@ -32458,6 +32545,7 @@
    ]
   },
   {
+   "name": ".44-60 Sharps & Remington Necked",
    "differs": [
     "bore",
     "length"
@@ -32471,6 +32559,7 @@
    ]
   },
   {
+   "name": ".44-75 Ballard Everlasting",
    "differs": [
     "bore",
     "length"
@@ -32482,6 +32571,7 @@
    ]
   },
   {
+   "name": ".45-70 Government",
    "differs": [
     "rim",
     "length"
@@ -32497,6 +32587,7 @@
    ]
   },
   {
+   "name": ".50-90 Sharps",
    "differs": [
     "length"
    ],
@@ -32506,6 +32597,7 @@
    ]
   },
   {
+   "name": ".300 AAC Blackout",
    "differs": [
     "length"
    ],
@@ -32516,6 +32608,7 @@
    ]
   },
   {
+   "name": ".22 LR",
    "differs": [
     "bore"
    ],
@@ -32525,6 +32618,7 @@
    ]
   },
   {
+   "name": ".22 Winchester Automatic",
    "differs": [
     "bore"
    ],
@@ -32534,6 +32628,7 @@
    ]
   },
   {
+   "name": ".22 BB Cap",
    "differs": [
     "length",
     "seating"
@@ -32544,6 +32639,7 @@
    ]
   },
   {
+   "name": ".25 Stevens",
    "differs": [
     "length"
    ],
@@ -32553,6 +32649,7 @@
    ]
   },
   {
+   "name": ".30 Short Rimfire",
    "differs": [
     "bore",
     "length"
@@ -32563,6 +32660,7 @@
    ]
   },
   {
+   "name": ".32 Extra Short Rimfire",
    "differs": [
     "ignition",
     "bore"
@@ -32573,6 +32671,7 @@
    ]
   },
   {
+   "name": ".41 Short",
    "differs": [
     "length"
    ],
@@ -32582,6 +32681,7 @@
    ]
   },
   {
+   "name": ".46 Short Rimfire",
    "differs": [
     "bore",
     "length"
@@ -32593,6 +32693,7 @@
    ]
   },
   {
+   "name": ".56-56 Spencer",
    "differs": [
     "bore",
     "length"
@@ -32606,6 +32707,7 @@
    ]
   },
   {
+   "name": "7.82 Lazzeroni Patriot",
    "differs": [
     "bore"
    ],
@@ -32619,6 +32721,7 @@
    ]
   },
   {
+   "name": "7.82 Lazzeroni Warbird",
    "differs": [
     "bore"
    ],
@@ -32632,6 +32735,7 @@
    ]
   },
   {
+   "name": "6.17 Lazzeroni Spitfire",
    "differs": [
     "bore"
    ],
@@ -32641,6 +32745,7 @@
    ]
   },
   {
+   "name": "6.17 Lazzeroni Flash",
    "differs": [
     "bore"
    ],
@@ -32650,6 +32755,7 @@
    ]
   },
   {
+   "name": "6.71 Lazzeroni Blackbird",
    "differs": [
     "bore"
    ],
@@ -32659,6 +32765,7 @@
    ]
   },
   {
+   "name": "7 mm Canadian Magnum",
    "differs": [
     "bore"
    ],
@@ -32669,6 +32776,7 @@
    ]
   },
   {
+   "name": ".300 Pegasus",
    "differs": [
     "bore"
    ],
@@ -32678,6 +32786,7 @@
    ]
   },
   {
+   "name": ".378 Weatherby Magnum",
    "differs": [
     "bore",
     "length"
@@ -32695,6 +32804,7 @@
    ]
   },
   {
+   "name": ".416 Rimmed",
    "differs": [
     "bore"
    ],
@@ -32704,6 +32814,7 @@
    ]
   },
   {
+   "name": ".375 H&H Magnum",
    "differs": [
     "bore"
    ],
@@ -32715,6 +32826,7 @@
    ]
   },
   {
+   "name": ".338 Lapua Magnum",
    "differs": [
     "length"
    ],
@@ -32724,6 +32836,7 @@
    ]
   },
   {
+   "name": ".416 Rigby",
    "differs": [
     "rim"
    ],

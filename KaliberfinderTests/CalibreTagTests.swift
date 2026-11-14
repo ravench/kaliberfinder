@@ -42,6 +42,39 @@ final class CalibreTagTests: XCTestCase {
         XCTAssertNil(CalibreTag.group.explanation, "the detail page names the group instead")
     }
 
+    /// A result row or 1:1 column that stands for a group carries the group's name, but never one of a calibre the
+    /// switches leave out of matching: with them off the .38 Super came up as the obsolete «.38 ACP» and the 6 mm BR
+    /// Norma as «6 mm BR Remington», each drawn as that parent (review 2026-11-13).
+    func testAGroupIsNotShownAsAMemberTheSwitchesLeaveOut() throws {
+        let off: (Cartridge) -> Bool = { $0.obsolete || $0.rare }, on: (Cartridge) -> Bool = { _ in false }
+        let superAuto = try cartridge(".38 Super"), acp = try cartridge(".38 ACP")
+        let group = try XCTUnwrap(CartridgeCatalog.sizeGroup(of: superAuto))
+        XCTAssertEqual(group.name, ".38 ACP")
+        XCTAssertEqual(group.shownName(drawing: superAuto, leftOut: off), ".38 Super")
+        XCTAssertEqual(group.shownName(drawing: superAuto, leftOut: on), ".38 ACP", "the parent is searched for too: the group's name")
+        XCTAssertEqual(group.shownName(drawing: acp, leftOut: off), ".38 ACP", "shown with «Einblenden», the parent leads and is drawn")
+        let norma = try cartridge("6 mm BR Norma")
+        XCTAssertEqual(try XCTUnwrap(CartridgeCatalog.sizeGroup(of: norma)).shownName(drawing: norma, leftOut: off), "6 mm BR Norma")
+        // A family's name stays, whoever is drawn, and so does the name of a parent the search includes.
+        let tokarev = try cartridge("7.62x25 mm Tokarev"), gp90 = try cartridge("5.6 mm GP 90")
+        XCTAssertEqual(try XCTUnwrap(CartridgeCatalog.sizeGroup(of: tokarev)).shownName(drawing: tokarev, leftOut: off), "7.63x25 mm")
+        XCTAssertEqual(try XCTUnwrap(CartridgeCatalog.sizeGroup(of: gp90)).shownName(drawing: gp90, leftOut: off), ".223 Remington")
+        // The catalogue's tag names the group as the database does.
+        XCTAssertEqual(CartridgeRow.groupName(for: tokarev, groupTag: .name), "7.63x25 mm")
+        XCTAssertEqual(CartridgeRow.groupName(for: superAuto, groupTag: .name), ".38 ACP")
+
+        // The switches as they stand, both off by default.
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: "CalibreTagTests"))
+        defaults.removePersistentDomain(forName: "CalibreTagTests")
+        defer { defaults.removePersistentDomain(forName: "CalibreTagTests") }
+        XCTAssertTrue(CartridgeCatalog.isLeftOut(acp, defaults: defaults))
+        XCTAssertFalse(CartridgeCatalog.isLeftOut(superAuto, defaults: defaults))
+        defaults.set(true, forKey: CartridgeCatalog.includeObsoleteKey)
+        XCTAssertTrue(CartridgeCatalog.isLeftOut(acp, defaults: defaults), "obsolete and rare")
+        defaults.set(true, forKey: CartridgeCatalog.includeRareKey)
+        XCTAssertFalse(CartridgeCatalog.isLeftOut(acp, defaults: defaults))
+    }
+
     func testRowMarksAreTheGlobeThenEachCountryOnce() throws {
         // Raven 2026-11-07: the globe sits left of the flag
         let luger = try cartridge("9x19 mm"), germany = try XCTUnwrap(luger.country)

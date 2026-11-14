@@ -75,6 +75,11 @@ enum CartridgeCatalog {
         cartridges.filter { (includeRare || !$0.rare) && (includeObsolete || !$0.obsolete) }
     }
 
+    /// The «Veraltete» and «Seltene Kaliber berücksichtigen» switches, as they stand, leave `c` out of matching.
+    static func isLeftOut(_ c: Cartridge, defaults: UserDefaults = .standard) -> Bool {
+        matchable(includeObsolete: defaults.bool(forKey: includeObsoleteKey), includeRare: defaults.bool(forKey: includeRareKey), in: [c]).isEmpty
+    }
+
     /// Calibres still in regular production: what matching uses with the switch off (the default).
     static let current: [Cartridge] = matchable(includeObsolete: false)
 
@@ -117,13 +122,27 @@ enum CartridgeCatalog {
 /// Calibres that look alike but are cartridges of their own (calibre-data `LOOKALIKES`): a measurement,
 /// the load or the ignition tells them apart. Every member's page links to the group, which lists them all.
 struct LookalikeGroup: Decodable, Identifiable, Hashable {
+    /// The group's name in calibre-data, since 2026-11-14; the tests' frozen catalogue has none.
+    private let givenName: String?
     /// What tells them apart: "rim", "bore", "length", "seating", "load" or "ignition".
     let differs: [String]
     /// Catalogue ids, the parent first.
     let calibres: [String]
 
+    private enum CodingKeys: String, CodingKey { case givenName = "name", differs, calibres }
+
     var id: String { calibres[0] }
+    /// The parent's name, or the family's where calibre-data gives one: «7.63x25 mm», whose parent is the .30 Borchardt.
+    var name: String { givenName ?? calibres[0] }
     var members: [Cartridge] { calibres.compactMap(CartridgeCatalog.cartridge(id:)) }
+
+    /// What a result row or a 1:1 column that stands for the group and draws `member` is called: the group's name,
+    /// unless that is another member's which the switches leave out of matching (`leftOut`). Then it is the drawn
+    /// member's own, so a .38 Super is not listed as the obsolete .38 ACP (review 2026-11-13).
+    func shownName(drawing member: Cartridge, leftOut: (Cartridge) -> Bool = { CartridgeCatalog.isLeftOut($0) }) -> String {
+        guard name != member.id, let named = CartridgeCatalog.cartridge(id: name), leftOut(named) else { return name }
+        return member.name
+    }
 
     /// The members' cases are of one size, told apart by load, seating or ignition only: the results show
     /// such a group as one row, the tag names it and a member opens the group first (Raven, PR 188). A group

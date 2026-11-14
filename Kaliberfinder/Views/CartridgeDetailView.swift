@@ -30,7 +30,7 @@ struct CartridgeDetailView: View {
                     // lists the members and compares them at 1:1.
                     NavigationLink { LookalikeGroupView(group: group) } label: {
                         Label {
-                            LabeledContent("Gruppe", value: group.id)
+                            LabeledContent("Gruppe", value: group.name)
                         } icon: {
                             Image(systemName: "square.on.square")
                         }
