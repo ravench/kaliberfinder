@@ -112,7 +112,7 @@ final class TrueScaleLayoutTests: XCTestCase {
         XCTAssertEqual(TrueScaleView.caseLengthText(c, unit: .metric), String(format: "Hülse %@".loc, LengthUnit.metric.format(51.2)))
         XCTAssertEqual(TrueScaleView.caseLengthText(c, unit: .imperial), String(format: "Hülse %@".loc, LengthUnit.imperial.format(51.2)))
         // «L» is the length of what is drawn: the whole cartridge, or the case alone without its bullet.
-        XCTAssertEqual(TrueScaleView.lengthText(c, caseOnly: false, unit: .metric), "L " + LengthUnit.metric.format(71.1))
+        XCTAssertEqual(TrueScaleView.lengthText(c, caseOnly: false, unit: .metric), "L " + LengthUnit.metric.format(c.dimensions.overallLength))
         XCTAssertEqual(TrueScaleView.lengthText(c, caseOnly: true, unit: .metric), "L " + LengthUnit.metric.format(51.2))
     }
 
