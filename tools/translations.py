@@ -282,6 +282,7 @@ T = {
         "Enregistre sur l'appareil des séries de photos de cartouches connues avec les mesures de l'app, comme données de test pour la reconnaissance.",
         "Salva sul dispositivo serie di foto di cartucce note con le misure dell'app, come dati di prova per il riconoscimento."),
     "Erkennung farbig zeigen": ("Show detection in colour", "Afficher la détection en couleur", "Mostra il rilevamento a colori"),
+    "Entwickleroptionen": ("Developer options", "Options de développement", "Opzioni per sviluppatori"),
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
     "Kamera": ("Camera", "Caméra", "Fotocamera"),
     "Scharf ab %lld cm": ("In focus from %lld cm", "Net à partir de %lld cm", "A fuoco da %lld cm"),

@@ -1473,6 +1473,29 @@
         }
       }
     },
+    "Entwickleroptionen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Developer options"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Options de développement"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opzioni per sviluppatori"
+          }
+        }
+      }
+    },
     "Erkannt: %@": {
       "extractionState": "manual",
       "localizations": {
