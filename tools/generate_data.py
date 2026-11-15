@@ -12,7 +12,7 @@ dimension table) and a side-view outline as SVG path data (M/L/Z only), tip at
 the top (y = 0), base at the bottom (y = overall length).
 """
 import json, os, re, subprocess, sys
-from urllib.parse import unquote
+from urllib.parse import unquote, urlparse
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
@@ -74,7 +74,7 @@ def work(source):
         b = BOOKS[m["id"]]
         return {"title": b["title"], **({"detail": by} if (by := b.get("authors") or b.get("editors")) else {}),
                 "year": b["year"]}, m["page"]
-    if m := re.fullmatch(r"measured:\S+ (\d{4}-\d\d-\d\d)", source):  # a caliper reading, calibre-data README
+    if m := re.fullmatch(r"measured:\S+ (\d{4}-\d\d-\d\d)", source):  # Raven's caliper reading (calibre-data #164; after the next data bump)
         return {"measured": m[1]}, None
     host = re.match(r"https?://([^/]+)", source)
     assert host, f"unknown source {source!r}"
@@ -83,9 +83,13 @@ def work(source):
         title = "Wikipedia: " + unquote(source.split("/wiki/", 1)[1]).replace("_", " ")
     else:
         title = SITE_TITLES.get(host, host)
-    detail = (f"Tab. {t[1].upper()}" if host.startswith("bobp.") and (t := re.search(r"/tab-([ivx]+)/", source))
-              else host)
-    return {"title": title, **({"detail": detail} if detail != title else {}), "url": source}, None
+    # The page's own name tells two pages of one site apart: a C.I.P. sheet's file, a site's last path part.
+    page = unquote(urlparse(source).path.rstrip("/").rsplit("/", 1)[-1]).removesuffix(".pdf")
+    if host.startswith("bobp.") and (t := re.search(r"/tab-([ivx]+)/", source)):
+        detail = f"Tab. {t[1].upper()} · {page}"
+    else:
+        detail = page if title == host else host
+    return {"title": title, **({"detail": detail} if detail and detail != title else {}), "url": source}, None
 
 
 def source_groups(s, works):

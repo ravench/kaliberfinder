@@ -393,10 +393,13 @@ class SourcesTests(unittest.TestCase):
 
     def test_web_sources_link_and_name_the_publisher(self):
         cip, page = generate_data.work("https://bobp.cip-bobp.org/uploads/tdcc/tab-i/tabical-en-page46.pdf")
-        self.assertEqual(cip, {"title": "C.I.P.", "detail": "Tab. I",
+        self.assertEqual(cip, {"title": "C.I.P.", "detail": "Tab. I · tabical-en-page46",
                                "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-i/tabical-en-page46.pdf"})
         self.assertIsNone(page)
-        self.assertEqual(generate_data.work("https://www.starlinebrass.com/x")[0]["title"], "starlinebrass.com")
+        self.assertEqual(generate_data.work("https://www.starlinebrass.com/x")[0],
+                         {"title": "starlinebrass.com", "detail": "x", "url": "https://www.starlinebrass.com/x"})
+        self.assertEqual(generate_data.work("https://municion.org/producto/22-long-rifle/")[0]["detail"], "22-long-rifle",
+                         "two pages of one site differ")
         self.assertEqual(generate_data.work("https://en.wikipedia.org/wiki/.22_Long_Rifle")[0]["title"], "Wikipedia: .22 Long Rifle")
 
     def test_a_caliper_measurement_carries_its_date(self):
