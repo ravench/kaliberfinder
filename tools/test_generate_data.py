@@ -1,5 +1,5 @@
 """Tests for the cartridge data generator: python3 -m unittest discover -s tools -p 'test_*.py'"""
-import os, re, sys, unittest
+import json, os, re, sys, unittest
 
 sys.path.insert(0, os.path.dirname(__file__))
 import generate_data  # noqa: E402
@@ -292,7 +292,7 @@ class CatalogueOnlyDataTests(unittest.TestCase):
                          {"Randfeuer", "Kurzwaffe", "Langwaffe", "Schwarzpulver", "Flinte", "Luftdruck"})
         self.assertEqual(set().union(*built), {"id", "name", "category", "kind", "aliases", "displayAliases",
                                                "obsolete", "rare", "country", "worldwide", "blank", "wellSourced",
-                                               "dimensions", "outline", "primer", "colourCodes"})
+                                               "dimensions", "outline", "primer", "colourCodes", "sources"})
 
     def test_swiss_match_reaches_the_json(self):
         """calibre-data #77: the 6x47 mm SM (Swiss Match) from its C.I.P. sheet, a Swiss rifle round with
@@ -359,6 +359,63 @@ class ColourCodeTests(unittest.TestCase):
     def test_a_former_state_is_drawn(self):
         soviet = next(t for t in self.by_name["7.62x54 mm R"]["colourCodes"] if any(c["code"] == "SU" for c in t["countries"]))
         self.assertEqual([c for c in soviet["countries"] if c["code"] == "SU"], [{"code": "SU", "name": "Sowjetunion"}])
+
+
+class SourcesTests(unittest.TestCase):
+    """Each calibre's sources page (Raven, 2026-11-15): the works its values come from, grouped by the parts of
+    the calibre page they back, with pages and links."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.works = {}
+        cls.by_name = {c["name"]: c for c in generate_data.build(cls.works)}
+        cls.list = [json.loads(w) for w in cls.works]
+
+    def page(self, name):
+        return [(g["parts"], [(self.list[r["work"]].get("title"), r.get("pages")) for r in g["refs"]])
+                for g in self.by_name[name]["sources"]]
+
+    def test_gp11_groups_follow_the_calibre_page(self):
+        self.assertEqual(self.page("7.5x55 mm Swiss (GP 11)"), [
+            (["mm"], [("Cartridges of the World", ["573"]), ("C.I.P.", None),
+                      ("Hornady Handbook of Cartridge Reloading", ["469"])]),
+            (["shoulder_angle", "case_head"], [("C.I.P.", None)]),
+            (["primer"], [("Wikipedia: 7.5×55mm Swiss", None)]),
+            (["bullet"], [("Cartridges of the World", ["545"]), ("Swiss Magazine Loading Rifles 1869 to 1958", ["50"])]),
+            (["origin"], [("Wikipedia: 7.5×55mm Swiss", None), ("Ammo Encyclopedia", ["513"])]),
+            (["colour_codes"], [("Military Small Arms Ammunition of the World, 1945-1980", ["76", "77", "86"])]),
+        ])
+
+    def test_a_book_is_one_work_with_its_year_and_author(self):
+        cotw = next(w for w in self.list if w.get("title") == "Cartridges of the World" and w["year"] == 2026)
+        self.assertEqual(cotw, {"title": "Cartridges of the World", "detail": "W. Todd Woodard, Corey Graff", "year": 2026})
+        self.assertEqual(len([w for w in self.list if w == cotw]), 1, "pages stay on the refs")
+
+    def test_web_sources_link_and_name_the_publisher(self):
+        cip, page = generate_data.work("https://bobp.cip-bobp.org/uploads/tdcc/tab-i/tabical-en-page46.pdf")
+        self.assertEqual(cip, {"title": "C.I.P.", "detail": "Tab. I",
+                               "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-i/tabical-en-page46.pdf"})
+        self.assertIsNone(page)
+        self.assertEqual(generate_data.work("https://www.starlinebrass.com/x")[0]["title"], "starlinebrass.com")
+        self.assertEqual(generate_data.work("https://en.wikipedia.org/wiki/.22_Long_Rifle")[0]["title"], "Wikipedia: .22 Long Rifle")
+
+    def test_a_caliper_measurement_carries_its_date(self):
+        self.assertEqual(generate_data.work("measured:raven 2026-11-08"), ({"measured": "2026-11-08"}, None))
+
+    def test_parts_the_page_does_not_show_are_left_out(self):
+        parts = {p for c in self.by_name.values() for g in c["sources"] for p in g["parts"]}
+        self.assertLessEqual(parts, set(generate_data.SOURCE_PARTS))
+        self.assertNotIn("introduced", parts)
+        rimfire = self.by_name[".22 LR"]
+        self.assertFalse(any("primer" in g["parts"] for g in rimfire["sources"]), "no primer row, no primer sources")
+
+    def test_almost_every_calibre_cites_its_measurements(self):
+        missing = [n for n, c in self.by_name.items() if not any("mm" in g["parts"] for g in c["sources"])]
+        self.assertLessEqual(len(missing), 5, missing)
+
+    def test_every_ref_points_at_a_work(self):
+        refs = [r["work"] for c in self.by_name.values() for g in c["sources"] for r in g["refs"]]
+        self.assertEqual(set(refs), set(range(len(self.list))))
 
 
 if __name__ == "__main__":

@@ -98,6 +98,11 @@ struct CartridgeDetailView: View {
                 if !cartridge.displayAliases.isEmpty {
                     LabeledContent("Auch bekannt als", value: cartridge.displayAliases.joined(separator: ", "))
                 }
+                if !cartridge.sources.isEmpty {
+                    NavigationLink { SourcesView(cartridge: cartridge) } label: {
+                        Label("Quellen", systemImage: "books.vertical")
+                    }
+                }
             } footer: {
                 Text("Gerundete Richtwerte, keine Wiederladedaten.")
             }

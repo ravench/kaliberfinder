@@ -11,11 +11,12 @@ Each entry carries its dimensions in millimetres (for the 1:1 drawing and the
 dimension table) and a side-view outline as SVG path data (M/L/Z only), tip at
 the top (y = 0), base at the bottom (y = overall length).
 """
-import json, os, subprocess, sys
+import json, os, re, subprocess, sys
+from urllib.parse import unquote
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
-from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, LOOKALIKE_NAMES, COLOUR_CODES, COUNTRY_NAMES as NAMES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_MM, RIMFIRE, SHOT, LOOSE, BALL, MINIE, PELLET, is_blank  # noqa: E402
+from cartridges import CATALOGUE, BOOKS, BOOK_SOURCE, sources as table_sources, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, LOOKALIKE_NAMES, COLOUR_CODES, COUNTRY_NAMES as NAMES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_MM, RIMFIRE, SHOT, LOOSE, BALL, MINIE, PELLET, is_blank  # noqa: E402
 from outline import outline, bullet_profile, well_sourced  # noqa: E402,F401  (bullet_profile re-exported for tests)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -56,6 +57,69 @@ def colour_codes(name):
              "countries": [country_entry(c) for c in t["countries"]]} for t in COLOUR_CODES.get(name, [])]
 
 
+# The parts of a calibre's sources page, in the calibre page's order: calibre-data's table (or "colour_codes",
+# the sources of all its [[colour_codes]]). The app titles each part (SourcesView); parts the calibre page
+# does not show (the year, the firearms, today's case materials) are left out.
+SOURCE_PARTS = ("mm", "shoulder_angle", "case_head", "primer", "bullet", "case", "origin", "colour_codes")
+# Web sources named after their publisher rather than their host.
+SITE_TITLES = {"bobp.cip-bobp.org": "C.I.P.", "bobp.expert-it.com": "C.I.P.", "saami.org": "SAAMI",
+               "commons.wikimedia.org": "Wikimedia Commons", "web.archive.org": "Internet Archive"}
+
+
+def work(source):
+    """(the work a source names, its page or None): a book of books.toml with its page, a web page, or a
+    caliper measurement with its date. A work is {"title", "detail"?, "year"?, "url"?}, or {"measured": date}
+    for a measurement, which the app titles itself."""
+    if m := BOOK_SOURCE.fullmatch(source):
+        b = BOOKS[m["id"]]
+        return {"title": b["title"], **({"detail": by} if (by := b.get("authors") or b.get("editors")) else {}),
+                "year": b["year"]}, m["page"]
+    if m := re.fullmatch(r"measured:\S+ (\d{4}-\d\d-\d\d)", source):  # a caliper reading, calibre-data README
+        return {"measured": m[1]}, None
+    host = re.match(r"https?://([^/]+)", source)
+    assert host, f"unknown source {source!r}"
+    host = host[1].removeprefix("www.")
+    if host == "en.wikipedia.org" and "/wiki/" in source:
+        title = "Wikipedia: " + unquote(source.split("/wiki/", 1)[1]).replace("_", " ")
+    else:
+        title = SITE_TITLES.get(host, host)
+    detail = (f"Tab. {t[1].upper()}" if host.startswith("bobp.") and (t := re.search(r"/tab-([ivx]+)/", source))
+              else host)
+    return {"title": title, **({"detail": detail} if detail != title else {}), "url": source}, None
+
+
+def source_groups(s, works):
+    """A calibre's sources for its sources page: [{"parts": [...], "refs": [{"work": index, "pages"?: [...]}]}],
+    the parts in SOURCE_PARTS order, parts citing the same works on the same pages merged into one group, a
+    book cited on several pages one ref. `works` is the catalogue's list of works, extended in place."""
+    name = s["name"]
+    shown = {"origin": bool(country(name)), "primer": bool(primer(s)), "colour_codes": bool(COLOUR_CODES.get(name))}
+    groups = []
+    for part in SOURCE_PARTS:
+        if not shown.get(part, True):
+            continue
+        cited = ([x for t in COLOUR_CODES.get(name, []) for x in t["sources"]] if part == "colour_codes"
+                 else table_sources(name, part))
+        refs = {}
+        for source in cited:
+            w, page = work(source)
+            key = json.dumps(w, sort_keys=True)
+            if key not in works:
+                works[key] = len(works)
+            pages = refs.setdefault(works[key], [])
+            if page and page not in pages:
+                pages.append(page)
+        refs = [{"work": i, **({"pages": pages} if pages else {})} for i, pages in refs.items()]
+        if not refs:
+            continue
+        same = next((g for g in groups if g["refs"] == refs), None)
+        if same:
+            same["parts"].append(part)
+        else:
+            groups.append({"parts": [part], "refs": refs})
+    return groups
+
+
 def dimensions(s):
     """Dimensions as shown in the app. Shoulder only for bottleneck cases, belt only where it is wider than
     the rim (calibre-data's [mm] belt)."""
@@ -86,7 +150,9 @@ def blank(s):
             and is_blank(s["profile"], s["rim"], s["base"], s["neck"], s["bullet"], s["case"], s["oal"]))
 
 
-def build():
+def build(works=None):
+    """The catalogue's entries; `works` (a dict, filled in place) collects the works their sources name."""
+    works = {} if works is None else works
     cartridges = []
     for category, items in CATALOGUE:
         for s in items:
@@ -98,6 +164,7 @@ def build():
                                "blank": blank(s),
                                "wellSourced": well_sourced(s),
                                "colourCodes": colour_codes(s["name"]),
+                               "sources": source_groups(s, works),
                                "dimensions": dimensions(s), "outline": outline(s),
                                **primer(s)})
     names = {c["name"] for c in cartridges}
@@ -150,10 +217,12 @@ def preview(cartridges, path):
 
 
 if __name__ == "__main__":
-    cartridges = build()
+    works = {}
+    cartridges = build(works)
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w") as f:
         json.dump({"version": 1, "calibreData": calibre_data(), "cartridges": cartridges,
+                   "sources": [json.loads(w) for w in works],
                    "lookalikes": lookalikes({c["name"] for c in cartridges})}, f, ensure_ascii=False, indent=1)
         f.write("\n")
     if "--preview" in sys.argv:

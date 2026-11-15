@@ -26,14 +26,29 @@ def groups_among(catalogue, ids):
     return [g for g in catalogue.get("lookalikes", []) if chosen.issuperset(g["calibres"])]
 
 
+def works_of(catalogue, cartridges):
+    """The works the cartridges' sources name, in first-cited order, with the refs renumbered to that list."""
+    works, index = [], {}
+    for c in cartridges:
+        for g in c.get("sources", []):
+            for r in g["refs"]:
+                if r["work"] not in index:
+                    index[r["work"]] = len(works)
+                    works.append(catalogue["sources"][r["work"]])
+                r["work"] = index[r["work"]]
+    return works
+
+
 def main():
     with open(os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json")) as f:
         catalogue = json.load(f)
     by_id = {c["id"]: c for c in catalogue["cartridges"]}
     missing = [i for i in IDS if i not in by_id]
     assert not missing, f"not in the catalogue: {missing}"
+    cartridges = [by_id[i] for i in IDS]
     fixture = {"version": catalogue["version"], "calibreData": catalogue["calibreData"],
-               "cartridges": [by_id[i] for i in IDS], "lookalikes": groups_among(catalogue, IDS)}
+               "cartridges": cartridges, "sources": works_of(catalogue, cartridges),
+               "lookalikes": groups_among(catalogue, IDS)}
     with open(os.path.join(ROOT, "KaliberfinderTests", "Fixtures", "catalogue.json"), "w") as f:
         json.dump(fixture, f, ensure_ascii=False, indent=1)
         f.write("\n")
