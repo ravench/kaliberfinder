@@ -202,9 +202,9 @@ final class PRScreensTests: XCTestCase {
         let search = app.searchFields.firstMatch
         if search.waitForExistence(timeout: 5) {
             search.tap()
-            search.typeText("P.A.K.\n") // return hides the keyboard
+            search.typeText("PA Blanc\n") // return hides the keyboard
         }
-        guard open(app.staticTexts["9 mm P.A.K."].firstMatch) else { return }
+        guard open(app.staticTexts["9 mm PA Blanc"].firstMatch) else { return }
         scroll(toRowAbove: "Gesamtlänge") // «Masse» whole: the bullet's row was its last but one
         snap("41-Knallpatrone-PAK")
         scroll(up: false)
@@ -459,7 +459,7 @@ final class PRScreensTests: XCTestCase {
         guard open(app.staticTexts[".308 Winchester"].firstMatch),
               app.navigationBars[".308 Winchester"].waitForExistence(timeout: 5),
               open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Gruppe")).firstMatch) else { return }
-        XCTAssertTrue(app.navigationBars["Gruppe .308 Winchester"].waitForExistence(timeout: 5), "The group page did not open")
+        XCTAssertTrue(app.navigationBars["Gruppe 7.62x51 mm"].waitForExistence(timeout: 5), "The group page did not open")
         snap("34-Aehnliche-Kaliber")
         guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "1:1 vergleichen")).firstMatch),
               app.navigationBars["1:1"].waitForExistence(timeout: 5) else { return }
