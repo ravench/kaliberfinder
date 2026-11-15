@@ -116,16 +116,23 @@ final class CatalogTests: XCTestCase {
         XCTAssertEqual(CartridgeCatalog.visible(fixture, showUnsourced: true, showCannon: true), fixture)
     }
 
-    /// The cannon rounds (calibre-data's `cannon` category) are partial entries: listed with their own switch only,
-    /// whatever the well-sourced rule says, and never among the calibres the app matches (`all`).
-    func testCannonCalibresShowWithTheirSwitchOnlyAndAreNeverMatched() throws {
-        let vulcan = try Fixture.cartridge("20x102 mm")
-        XCTAssertTrue(vulcan.isCannon)
-        XCTAssertFalse(vulcan.wellSourced)
+    /// The cannon rounds (calibre-data's `cannon` category) need their own switch, and then follow the same rules as
+    /// every calibre (Raven, 2026-11-15): the well-sourced rule, matching, 1:1 and the drawing. A partial entry (no
+    /// paths) has only a page.
+    func testCannonCalibresFollowTheSameRulesBehindTheirSwitch() throws {
+        let vulcan = try Fixture.cartridge("20x102 mm"), partial = try Fixture.cartridge("57x121 mm R")
+        XCTAssertTrue(vulcan.isCannon && vulcan.wellSourced && vulcan.isDrawn)
+        XCTAssertTrue(partial.isCannon && !partial.wellSourced && !partial.isDrawn)
         XCTAssertFalse(CartridgeCatalog.visible(fixture, showUnsourced: true, showCannon: false).contains(vulcan))
         XCTAssertTrue(CartridgeCatalog.visible(fixture, showUnsourced: false, showCannon: true).contains(vulcan))
-        XCTAssertFalse(CartridgeCatalog.all.contains(where: \.isCannon), "the live catalogue matches against no cannon round")
-        XCTAssertNotNil(CartridgeCatalog.cartridge(id: "57x121 mm R"), "its page is still reachable by id")
+        XCTAssertFalse(CartridgeCatalog.visible(fixture, showUnsourced: false, showCannon: true).contains(partial), "unsourced")
+        XCTAssertTrue(CartridgeCatalog.visible(fixture, showUnsourced: true, showCannon: true).contains(partial))
+        XCTAssertTrue(CartridgeCatalog.all.contains { $0.id == vulcan.id }, "a drawn cannon round is matched like any other")
+        XCTAssertFalse(CartridgeCatalog.all.contains { $0.id == partial.id }, "a partial entry is never matched")
+        XCTAssertNotNil(CartridgeCatalog.cartridge(id: partial.id), "its page is still reachable by id")
+        XCTAssertNotNil(ShapeMatcher.catalogue[vulcan.id])
+        XCTAssertEqual(DimensionMatcher.rank(MeasuredDimensions(overallLength: 168, caseLength: 102, rim: 28.5),
+                                             cartridges: Fixture.catalogue).first?.cartridge.id, vulcan.id)
     }
 
     func testMatchingSkipsObsoleteCalibresUnlessSwitchedOn() {
@@ -270,7 +277,7 @@ final class CatalogTests: XCTestCase {
     }
 
     func testGroupedKeepsCategoryOrder() {
-        let everything = CartridgeCatalog.visible(showUnsourced: true, showCannon: true)  // `all` has no cannon round
+        let everything = CartridgeCatalog.visible(showUnsourced: true, showCannon: true)  // `all` lacks the partial entries
         let groups = CartridgeCatalog.grouped(everything).map(\.category)
         XCTAssertEqual(groups, CartridgeCatalog.Category.allCases.map(\.rawValue))
     }

@@ -17,6 +17,7 @@ IDS = [
     "7.63x25 mm Mauser", "6.5x54 mm Mannlicher-Schönauer", ".577/450 Martini-Henry",
     "10.4x38 mm R Vetterli", "10.4x38 mm R Vetterli Centrefire", "7.5 mm Swiss Ordnance 1882",
     "7.62x39 mm", "11x59 mm R Gras", ".450 No. 2 Nitro Express", ".36 Rundkugel (.375)", "12/70", "12/76", "12/89",
+    "20x102 mm", "57x121 mm R",
 ]
 
 

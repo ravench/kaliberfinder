@@ -33,7 +33,7 @@ struct DeveloperOptionsView: View {
                     Label { Text("Kanonenkaliber zeigen") } icon: { Image(systemName: "arrow.up.left.and.arrow.down.right") }
                 }
             } footer: {
-                Text("Munition von 20 bis 57 mm, in calibre-data erst unvollständig erfasst: ohne Zeichnung, und zu gross für den Bildschirm. Nur in Listen und Suche, nie in den Treffern.")
+                Text("Munition von 20 bis 57 mm, zu gross für den Bildschirm. Eingeschaltet gelten dieselben Regeln wie für alle Kaliber: Listen, Suche, Treffer, 1:1 und Masszeichnung, sofern belegt und gezeichnet.")
             }
         }
         .readableWidth()

@@ -286,10 +286,19 @@ T = {
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
     "Unbelegte Kaliber zeigen": ("Show unsourced calibres", "Afficher les calibres sans source", "Mostra i calibri senza fonte"),
     "Kanonenkaliber zeigen": ("Show cannon calibres", "Afficher les calibres de canon", "Mostra i calibri da cannone"),
-    "Munition von 20 bis 57 mm, in calibre-data erst unvollständig erfasst: ohne Zeichnung, und zu gross für den Bildschirm. Nur in Listen und Suche, nie in den Treffern.":
-        ("Ammunition of 20 to 57 mm, still incomplete in calibre-data: no drawing, and too big for the screen. Only in lists and search, never among the matches.",
-         "Munitions de 20 à 57 mm, encore incomplètes dans calibre-data : sans dessin, et trop grandes pour l'écran. Seulement dans les listes et la recherche, jamais dans les résultats.",
-         "Munizioni da 20 a 57 mm, ancora incomplete in calibre-data: senza disegno, e troppo grandi per lo schermo. Solo negli elenchi e nella ricerca, mai nei risultati."),
+    "Unbelegt": ("Unsourced", "Sans source", "Senza fonte"),
+    "Unbelegt: Masse in calibre-data nicht gut belegt, Teile der Zeichnung geschätzt. Nur mit der Entwickleroption sichtbar.": (
+        "Unsourced: dimensions not well sourced in calibre-data, parts of the drawing are estimated. Shown with the developer option only.",
+        "Sans source : cotes mal documentées dans calibre-data, une partie du dessin est estimée. Visible seulement avec l'option développeur.",
+        "Senza fonte: misure non ben documentate in calibre-data, parti del disegno sono stimate. Visibile solo con l'opzione sviluppatore."),
+    "Kanone: zu gross für den Bildschirm. Nur mit der Entwickleroption sichtbar.": (
+        "Cannon: too big for the screen. Shown with the developer option only.",
+        "Canon : trop grand pour l'écran. Visible seulement avec l'option développeur.",
+        "Cannone: troppo grande per lo schermo. Visibile solo con l'opzione sviluppatore."),
+    "Munition von 20 bis 57 mm, zu gross für den Bildschirm. Eingeschaltet gelten dieselben Regeln wie für alle Kaliber: Listen, Suche, Treffer, 1:1 und Masszeichnung, sofern belegt und gezeichnet.": (
+        "Ammunition of 20 to 57 mm, too big for the screen. Switched on, the same rules apply as to every calibre: lists, search, matches, 1:1 and the dimensioned drawing, where sourced and drawn.",
+        "Munitions de 20 à 57 mm, trop grandes pour l'écran. Activées, les mêmes règles s'appliquent qu'à tout calibre : listes, recherche, résultats, 1:1 et dessin coté, s'ils sont documentés et dessinés.",
+        "Munizioni da 20 a 57 mm, troppo grandi per lo schermo. Attivate, valgono le stesse regole di ogni calibro: elenchi, ricerca, risultati, 1:1 e disegno quotato, se documentati e disegnati."),
     "Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt. Sonst weder in Listen, Suche noch Treffern.":
         ("Calibres whose measurements are not well sourced in calibre-data: parts of their drawing are estimated. Otherwise neither in lists, search nor matches.",
          "Calibres dont les mesures ne sont pas bien documentées dans calibre-data : une partie de leur dessin est estimée. Sinon ni dans les listes, ni dans la recherche, ni dans les résultats.",

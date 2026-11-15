@@ -10,7 +10,8 @@ enum CartridgeCatalog {
         case blackPowder = "Schwarzpulver"
         case shotgun = "Flinte"
         case air = "Luftdruck"
-        /// Partial entries behind the Developer Options switch «Kanonenkaliber zeigen» (Raven, 2026-11-13).
+        /// Behind the Developer Options switch «Kanonenkaliber zeigen» (Raven, 2026-11-13): too big for the screen,
+        /// else treated like every other calibre (Raven, 2026-11-15).
         case cannon = "Kanone"
     }
 
@@ -37,9 +38,9 @@ enum CartridgeCatalog {
     private static let file = Bundle.main.url(forResource: "Cartridges", withExtension: "json")
         .flatMap { try? Data(contentsOf: $0) }.flatMap(decodeFile)
     private static let everything: [Cartridge] = file?.cartridges ?? []
-    /// The catalogue the app matches, draws and tests against. The cannon rounds stay out: partial entries that
-    /// `visible()` lists on request only.
-    static let all: [Cartridge] = everything.filter { !$0.isCannon }
+    /// The catalogue the app matches, draws and tests against: every calibre with a drawing. A partial entry (a cannon
+    /// round whose measurements no source gives) has only a page, which `visible()` lists on request.
+    static let all: [Cartridge] = everything.filter(\.isDrawn)
     static let source: Source? = file?.calibreData
     /// Calibres that look alike but are cartridges of their own (calibre-data), each group's parent first.
     static let lookalikes: [LookalikeGroup] = file?.lookalikes ?? []
@@ -70,13 +71,13 @@ enum CartridgeCatalog {
     static let showUnsourcedKey = "showUnsourcedCalibres"
     static let showCannonKey = "showCannonCalibres"
     /// What the user gets to see in lists, search, matches and group pages: the well-sourced calibres only, unless
-    /// the first developer switch is on, and the cannon rounds only with the second (their entries are partial, so
-    /// the well-sourced rule does not apply to them). `all` and `current` keep every calibre for the tests and the
-    /// evaluation, without the cannon rounds.
+    /// the first developer switch is on, and no cannon round without the second. Both rules apply to a cannon round
+    /// (Raven, 2026-11-15: the same rules as for every calibre). `all` and `current` keep every drawn calibre for
+    /// the tests and the evaluation.
     static func visible(_ cartridges: [Cartridge] = everything,
                         showUnsourced: Bool = UserDefaults.standard.bool(forKey: showUnsourcedKey),
                         showCannon: Bool = UserDefaults.standard.bool(forKey: showCannonKey)) -> [Cartridge] {
-        cartridges.filter { $0.isCannon ? showCannon : showUnsourced || $0.wellSourced }
+        cartridges.filter { (showUnsourced || $0.wellSourced) && (showCannon || !$0.isCannon) }
     }
     /// Settings switch, on by default: the calibres of a one-size lookalike group are one result row and one
     /// 1:1 column; off, each is its own, with the group's name as its tag (Raven, 2026-11-13).
