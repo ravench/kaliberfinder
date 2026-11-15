@@ -96,7 +96,8 @@ final class PRScreensTests: XCTestCase {
         guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
         XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
         scroll(toRowAbove: "Mögliche Kaliber")
-        XCTAssertTrue(app.staticTexts[".38 Super"].exists, "The .38 Super's group is not listed under its name")
+        // The group's row carries the family's name since calibre-data #181 («.38 Auto»), never a member the switches hide.
+        XCTAssertTrue(app.staticTexts[".38 Auto"].exists, "The .38 Super's group is not listed under its family name")
         XCTAssertFalse(app.staticTexts[".38 ACP"].exists || app.staticTexts[".30 Borchardt"].exists, "A row is called after a calibre it does not list")
         snap("03d-Masse-Treffer-Gruppennamen")
         // The 7.63x25 mm group fits roughly: its column at 1:1.
