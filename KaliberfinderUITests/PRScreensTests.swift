@@ -243,6 +243,25 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// The cannon rounds behind «Kanonenkaliber zeigen»: partial entries without a drawing, listed and searchable.
+    func testCannonCalibres() {
+        app.terminate()
+        app.launchArguments += ["-showCannonCalibres", "YES"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch
+        if search.waitForExistence(timeout: 5) {
+            search.tap()
+            search.typeText("57x\n")
+        }
+        XCTAssertTrue(app.staticTexts["57x121 mm R"].waitForExistence(timeout: 5), "the cannon rounds are not listed")
+        snap("45-Kanonen-Suche")
+        if open(app.staticTexts["57x121 mm R"].firstMatch) {
+            snap("45b-Kanone-57x121")
+        }
+    }
+
     /// The Swiss cadet round, found by the name on its box, with its own drawing. Its measurements have no source
     /// yet, so only the developer switch «Unbelegte Kaliber zeigen» lists it.
     func testKadettenpatrone() {

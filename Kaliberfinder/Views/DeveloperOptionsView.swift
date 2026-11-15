@@ -5,6 +5,7 @@ import SwiftUI
 struct DeveloperOptionsView: View {
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
     @AppStorage(CartridgeCatalog.showUnsourcedKey) private var showUnsourced = false
+    @AppStorage(CartridgeCatalog.showCannonKey) private var showCannon = false
 
     var body: some View {
         List {
@@ -26,6 +27,13 @@ struct DeveloperOptionsView: View {
                 }
             } footer: {
                 Text("Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt. Sonst weder in Listen, Suche noch Treffern.")
+            }
+            Section {
+                Toggle(isOn: $showCannon) {
+                    Label { Text("Kanonenkaliber zeigen") } icon: { Image(systemName: "arrow.up.left.and.arrow.down.right") }
+                }
+            } footer: {
+                Text("Munition von 20 bis 57 mm, in calibre-data erst unvollständig erfasst: ohne Zeichnung, und zu gross für den Bildschirm. Nur in Listen und Suche, nie in den Treffern.")
             }
         }
         .readableWidth()

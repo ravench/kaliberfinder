@@ -109,11 +109,23 @@ final class CatalogTests: XCTestCase {
     }
 
     func testUnsourcedCalibresStayHiddenUnlessTheDeveloperSwitchIsOn() {
-        let shown = CartridgeCatalog.visible(fixture, showUnsourced: false)
-        XCTAssertEqual(shown, fixture.filter(\.wellSourced))
+        let shown = CartridgeCatalog.visible(fixture, showUnsourced: false, showCannon: false)
+        XCTAssertEqual(shown, fixture.filter { $0.wellSourced && !$0.isCannon })
         XCTAssertFalse(shown.contains { $0.id == "7.5 mm Kadettenpatrone" }, "its measurements are listed as unsourced")
         XCTAssertTrue(shown.contains { $0.id == "9x19 mm" })
-        XCTAssertEqual(CartridgeCatalog.visible(fixture, showUnsourced: true), fixture)
+        XCTAssertEqual(CartridgeCatalog.visible(fixture, showUnsourced: true, showCannon: true), fixture)
+    }
+
+    /// The cannon rounds (calibre-data's `cannon` category) are partial entries: listed with their own switch only,
+    /// whatever the well-sourced rule says, and never among the calibres the app matches (`all`).
+    func testCannonCalibresShowWithTheirSwitchOnlyAndAreNeverMatched() throws {
+        let vulcan = try Fixture.cartridge("20x102 mm")
+        XCTAssertTrue(vulcan.isCannon)
+        XCTAssertFalse(vulcan.wellSourced)
+        XCTAssertFalse(CartridgeCatalog.visible(fixture, showUnsourced: true, showCannon: false).contains(vulcan))
+        XCTAssertTrue(CartridgeCatalog.visible(fixture, showUnsourced: false, showCannon: true).contains(vulcan))
+        XCTAssertFalse(CartridgeCatalog.all.contains(where: \.isCannon), "the live catalogue matches against no cannon round")
+        XCTAssertNotNil(CartridgeCatalog.cartridge(id: "57x121 mm R"), "its page is still reachable by id")
     }
 
     func testMatchingSkipsObsoleteCalibresUnlessSwitchedOn() {
@@ -258,7 +270,8 @@ final class CatalogTests: XCTestCase {
     }
 
     func testGroupedKeepsCategoryOrder() {
-        let groups = CartridgeCatalog.grouped(CartridgeCatalog.all).map(\.category)
+        let everything = CartridgeCatalog.visible(showUnsourced: true, showCannon: true)  // `all` has no cannon round
+        let groups = CartridgeCatalog.grouped(everything).map(\.category)
         XCTAssertEqual(groups, CartridgeCatalog.Category.allCases.map(\.rawValue))
     }
 
