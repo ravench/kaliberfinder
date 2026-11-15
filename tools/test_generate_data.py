@@ -281,18 +281,34 @@ class LookalikeTests(unittest.TestCase):
 
 
 class CatalogueOnlyDataTests(unittest.TestCase):
-    """calibre-data keeps some data for the catalogue only (fired-by lists and
-    cannon rounds). The app reads none of it: the same six categories and fields as before."""
+    """calibre-data keeps some data for the catalogue only (fired-by lists). The app reads none of it: the
+    same fields as before, and its six categories plus the cannon rounds behind a developer switch."""
 
     def test_catalogue_only_data_stays_out(self):
         from cartridges import FIRED_BY
         built = generate_data.build()
         self.assertTrue(FIRED_BY)
         self.assertEqual({c["category"] for c in built},
-                         {"Randfeuer", "Kurzwaffe", "Langwaffe", "Schwarzpulver", "Flinte", "Luftdruck"})
+                         {"Randfeuer", "Kurzwaffe", "Langwaffe", "Schwarzpulver", "Flinte", "Luftdruck", "Kanone"})
         self.assertEqual(set().union(*built), {"id", "name", "category", "kind", "aliases", "displayAliases",
                                                "obsolete", "rare", "country", "worldwide", "blank", "wellSourced",
                                                "dimensions", "outline", "primer", "colourCodes"})
+
+    def test_cannon_rounds_are_partial_entries(self):
+        """Raven, 2026-11-13: the cannon category behind «Kanonenkaliber zeigen». A measurement no source gives
+        is 0, and such a round gets no drawing, only the box's size; a complete one is drawn as usual."""
+        cannon = [c for c in generate_data.build() if c["category"] == "Kanone"]
+        self.assertGreaterEqual(len(cannon), 24)
+        by_name = {c["name"]: c for c in cannon}
+        partial = by_name["57x121 mm R"]
+        self.assertEqual((partial["dimensions"]["neck"], partial["dimensions"]["overallLength"]), (0, 0))
+        self.assertEqual(set(partial["outline"]), {"width", "height"})
+        self.assertEqual(partial["outline"]["height"], partial["dimensions"]["caseLength"])
+        vulcan = by_name["20x102 mm"]
+        self.assertEqual(vulcan["dimensions"]["overallLength"], 168.0)
+        self.assertIn("case", vulcan["outline"])
+        self.assertTrue(all("primer" not in c or c["primer"]["diameter"] > 0 for c in cannon))
+        self.assertFalse(any(c["wellSourced"] for c in cannon), "every cannon round has gaps today")
 
     def test_swiss_match_reaches_the_json(self):
         """calibre-data #77: the 6x47 mm SM (Swiss Match) from its C.I.P. sheet, a Swiss rifle round with
