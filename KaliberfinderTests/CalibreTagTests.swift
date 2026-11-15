@@ -23,8 +23,8 @@ final class CalibreTagTests: XCTestCase {
         XCTAssertNil(CartridgeCatalog.sizeGroup(of: try cartridge("7x57 mm R")))
         XCTAssertEqual(CalibreTag.group.title, "Gruppe")
         // Catalogue and search (Raven, 2026-11-12): every member, the namesake too, shows the group's name and opens itself.
-        XCTAssertEqual(CartridgeRow.groupName(for: try cartridge(".223 Remington"), groupTag: .name), ".223 Remington")
-        XCTAssertEqual(CartridgeRow.groupName(for: try cartridge("5.6 mm GP 90"), groupTag: .name), ".223 Remington")
+        XCTAssertEqual(CartridgeRow.groupName(for: try cartridge(".223 Remington"), groupTag: .name), "5.56x45 mm")
+        XCTAssertEqual(CartridgeRow.groupName(for: try cartridge("5.6 mm GP 90"), groupTag: .name), "5.56x45 mm")
         XCTAssertEqual(CartridgeRow.tags(for: try cartridge("9x19 mm"), groupTag: .name), [], "no «Gruppe» chip in the catalogue")
         // Results (Raven, 2026-11-13): the row is the group, whichever member leads: «Gruppe» alone, no name tag,
         // none of a member's «Selten» or «Veraltet»; a calibre without a one-size group keeps its own.
@@ -45,12 +45,15 @@ final class CalibreTagTests: XCTestCase {
     /// A result row or 1:1 column that stands for a group is called after the family, else after the member it draws,
     /// so never after a calibre it does not list. It carried the parent's name and drawing: a .38 Super came up as the
     /// obsolete «.38 ACP» the switches leave out, a wadcutter as the «.32 S&W Long» with its bullet out (review 2026-11-13).
+    /// Since calibre-data #181 most groups are named by what the members share («.38 Auto»), so the family name shows.
     func testAGroupRowIsCalledAfterACalibreItLists() throws {
         let superAuto = try cartridge(".38 Super"), acp = try cartridge(".38 ACP")
         let group = try XCTUnwrap(CartridgeCatalog.sizeGroup(of: superAuto))
-        XCTAssertEqual(group.name, ".38 ACP")
-        XCTAssertEqual(group.shownName(drawing: superAuto), ".38 Super")
-        XCTAssertEqual(group.shownName(drawing: acp), ".38 ACP")
+        XCTAssertEqual(group.name, ".38 Auto")
+        XCTAssertEqual(group.shownName(drawing: superAuto), ".38 Auto")
+        XCTAssertEqual(group.shownName(drawing: acp), ".38 Auto")
+        let nine = try XCTUnwrap(CartridgeCatalog.sizeGroup(of: try cartridge("9 mm Glisenti")))
+        XCTAssertEqual(nine.shownName(drawing: try cartridge("9 mm Glisenti")), "9 mm Glisenti", "a group named after its parent")
         // A family's name stays, whoever is drawn.
         let family = try XCTUnwrap(CartridgeCatalog.sizeGroup(of: try cartridge("7.62x25 mm Tokarev")))
         XCTAssertEqual(family.members.map(family.shownName(drawing:)), ["7.63x25 mm", "7.63x25 mm", "7.63x25 mm"])
@@ -63,18 +66,19 @@ final class CalibreTagTests: XCTestCase {
             XCTAssertEqual(rows.count, 1, "\(ids) are not one row")
             return CartridgeRow.title(for: try XCTUnwrap(rows.first).lead.cartridge, groupTag: .group)
         }
-        XCTAssertEqual(try title(".38 Super"), ".38 Super", "the switches leave the .38 ACP out")
-        XCTAssertEqual(try title(".38 Super", ".38 ACP"), ".38 ACP", "the parent is as near as the member, so it leads the row and names it")
+        XCTAssertEqual(try title(".38 Super"), ".38 Auto", "the family's name, whoever leads")
+        XCTAssertEqual(try title(".38 Super", ".38 ACP"), ".38 Auto")
+        XCTAssertEqual(try title("9 mm Glisenti"), "9 mm Glisenti", "the switches leave the 9x19 mm out of this row")
         XCTAssertEqual(try title(".32 S&W Long Wadcutter"), ".32 S&W Long Wadcutter", "the .32 S&W Long, 9 mm longer, is too far off to be listed")
-        XCTAssertEqual(try title("6 mm BR Norma"), "6 mm BR Norma")
+        XCTAssertEqual(try title("6 mm BR Norma"), "6 mm BR")
         XCTAssertEqual(try title("7.62x25 mm Tokarev", "7.63x25 mm Mauser"), "7.63x25 mm")
-        XCTAssertEqual(try title("5.6 mm GP 90", "5.56x45 mm NATO", ".223 Remington"), ".223 Remington")
+        XCTAssertEqual(try title("5.6 mm GP 90", "5.56x45 mm NATO", ".223 Remington"), "5.56x45 mm")
         // A calibre's own row and a calibre without a one-size group keep their names.
         XCTAssertEqual(CartridgeRow.title(for: superAuto, groupTag: .name), ".38 Super")
         XCTAssertEqual(CartridgeRow.title(for: try cartridge("7x57 mm R"), groupTag: .group), "7x57 mm R")
         // The catalogue's tag names the group as the database does.
         XCTAssertEqual(CartridgeRow.groupName(for: try cartridge("7.63x25 mm Mauser"), groupTag: .name), "7.63x25 mm")
-        XCTAssertEqual(CartridgeRow.groupName(for: superAuto, groupTag: .name), ".38 ACP")
+        XCTAssertEqual(CartridgeRow.groupName(for: superAuto, groupTag: .name), ".38 Auto")
     }
 
     func testRowMarksAreTheGlobeThenEachCountryOnce() throws {

@@ -14,7 +14,7 @@ final class ProfileTwinTests: XCTestCase {
     func testCatalogueTwins() throws {
         XCTAssertEqual(twins(of: try c(".308 Winchester")).map(\.id), ["7.62x51 mm NATO"])
         XCTAssertEqual(Set(twins(of: try c("5.6 mm GP 90")).map(\.id)),
-                       [".223 Remington", "5.56x45 mm NATO"])
+                       [".223 Remington", "5.56x45 mm NATO", "5.56 Commercial"])  // calibre-data #181
         XCTAssertEqual(twins(of: try c("10.4x38 mm R Vetterli")).map(\.id), ["10.4x38 mm R Vetterli Centrefire"],
                        "the ignition does not show from the side")
         XCTAssertEqual(twins(of: try c("9x19 mm")).map(\.id), ["9 mm Glisenti"], "one size by calibre-data, 0.5 mm apart in the sheets")
@@ -44,7 +44,7 @@ final class ProfileTwinTests: XCTestCase {
         let groups = CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).filter { $0.count > 1 }
         // The known twin sets are among them; the catalogue may add more (the .500/450 Express pair with #196).
         XCTAssertTrue(Set(groups.map { Set($0.map(\.id)) }).isSuperset(of:
-                       [[".308 Winchester", "7.62x51 mm NATO"], [".223 Remington", "5.56x45 mm NATO", "5.6 mm GP 90"],
+                       [[".308 Winchester", "7.62x51 mm NATO"], [".223 Remington", "5.56x45 mm NATO", "5.56 Commercial", "5.6 mm GP 90"],
                         ["10.4x38 mm R Vetterli", "10.4x38 mm R Vetterli Centrefire"]]), "\(groups.map { $0.map(\.id) })")
         // Every twin pair comes from a one-size lookalike group of calibre-data, never from equal numbers alone,
         // and the group's parent leads the row.

@@ -251,7 +251,7 @@ final class CatalogTests: XCTestCase {
         func group(of id: String) throws -> LookalikeGroup {
             try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)), id)
         }
-        XCTAssertEqual(try group(of: "7.62x51 mm NATO").name, ".308 Winchester")
+        XCTAssertEqual(try group(of: "7.62x51 mm NATO").name, "7.62x51 mm")  // named by what the members share (calibre-data #181)
         let mauser = try group(of: "7.62x25 mm Tokarev")
         XCTAssertEqual([mauser.name, mauser.id], ["7.63x25 mm", ".30 Borchardt"])
         XCTAssertEqual(try group(of: "7x57 mm R").name, "7x57 mm")
