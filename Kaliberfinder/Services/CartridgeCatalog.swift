@@ -61,6 +61,14 @@ enum CartridgeCatalog {
     static let includeObsoleteKey = "includeObsoleteCalibres"
     /// UserDefaults key of the «Seltene Kaliber berücksichtigen» switch. Off by default.
     static let includeRareKey = "includeRareCalibres"
+    /// Developer Options switch «Unbelegte Kaliber zeigen», off by default.
+    static let showUnsourcedKey = "showUnsourcedCalibres"
+    /// What the user gets to see in lists, search, matches and group pages: the well-sourced calibres only, unless
+    /// the developer switch is on. `all` and `current` keep every calibre for the tests and the evaluation.
+    static func visible(_ cartridges: [Cartridge] = all,
+                        showUnsourced: Bool = UserDefaults.standard.bool(forKey: showUnsourcedKey)) -> [Cartridge] {
+        showUnsourced ? cartridges : cartridges.filter(\.wellSourced)
+    }
     /// Settings switch, on by default: the calibres of a one-size lookalike group are one result row and one
     /// 1:1 column; off, each is its own, with the group's name as its tag (Raven, 2026-11-13).
     static let groupSizeGroupsKey = "groupSizeGroups"

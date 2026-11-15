@@ -108,15 +108,23 @@ final class CatalogTests: XCTestCase {
         XCTAssertTrue(finds("Gras", "11x59 mm R Gras"))
     }
 
+    func testUnsourcedCalibresStayHiddenUnlessTheDeveloperSwitchIsOn() {
+        let shown = CartridgeCatalog.visible(fixture, showUnsourced: false)
+        XCTAssertEqual(shown, fixture.filter(\.wellSourced))
+        XCTAssertFalse(shown.contains { $0.id == "7.5 mm Kadettenpatrone" }, "its measurements are listed as unsourced")
+        XCTAssertTrue(shown.contains { $0.id == "9x19 mm" })
+        XCTAssertEqual(CartridgeCatalog.visible(fixture, showUnsourced: true), fixture)
+    }
+
     func testMatchingSkipsObsoleteCalibresUnlessSwitchedOn() {
         let current = CartridgeCatalog.matchable(includeObsolete: false, in: fixture)
         XCTAssertFalse(current.isEmpty)
         XCTAssertFalse(current.contains(where: \.obsolete))
-        XCTAssertFalse(current.contains { $0.id == "7.5x53.5 mm Swiss (GP 1890)" })
+        XCTAssertFalse(current.contains { $0.id == "7.5x53.5 mm Swiss (Patrone Modell 1890)" })
         XCTAssertEqual(CartridgeCatalog.matchable(includeObsolete: true, in: fixture), fixture.filter { !$0.rare })
-        XCTAssertTrue(CartridgeCatalog.matchable(includeObsolete: true, in: fixture).contains { $0.id == "7.5x53.5 mm Swiss (GP 1890)" })
+        XCTAssertTrue(CartridgeCatalog.matchable(includeObsolete: true, in: fixture).contains { $0.id == "7.5x53.5 mm Swiss (Patrone Modell 1890)" })
         // The catalogue list and search still show obsolete calibres.
-        XCTAssertTrue(finds("GP 1890", "7.5x53.5 mm Swiss (GP 1890)"))
+        XCTAssertTrue(finds("GP 1890", "7.5x53.5 mm Swiss (Patrone Modell 1890)"))
         XCTAssertFalse(CartridgeCatalog.current.contains(where: \.obsolete), "the live catalogue's default list")
     }
 
@@ -130,7 +138,7 @@ final class CatalogTests: XCTestCase {
     }
 
     func testGP1890IsSeparateFromGP11AndGP90() throws {
-        let gp1890 = try Fixture.cartridge("7.5x53.5 mm Swiss (GP 1890)")
+        let gp1890 = try Fixture.cartridge("7.5x53.5 mm Swiss (Patrone Modell 1890)")
         // The army's 1892 drawing (calibre-data #106), not the 54.6 misread on Raven's 1906 round.
         XCTAssertEqual(gp1890.dimensions.caseLength, 53.5, accuracy: 0.001)
         XCTAssertEqual(gp1890.dimensions.overallLength, 77.2, accuracy: 0.001)
@@ -155,7 +163,7 @@ final class CatalogTests: XCTestCase {
         XCTAssertTrue(finds("GP 11 K31", "7.5x55 mm Swiss (GP 11)"))
         // Only other names hold the word (search aliases, «Auch bekannt als»).
         XCTAssertTrue(finds("Parabellum", "9x19 mm"))
-        XCTAssertTrue(finds("Schmidt Rubin", "7.5x53.5 mm Swiss (GP 1890)"))
+        XCTAssertTrue(finds("Schmidt Rubin", "7.5x53.5 mm Swiss (Patrone Modell 1890)"))
         XCTAssertTrue(finds("9 mm Para", "9x19 mm"))
         // Hyphens are like spaces, accents don't matter.
         XCTAssertTrue(finds("Martini Henry", ".577/450 Martini-Henry"))
@@ -174,7 +182,7 @@ final class CatalogTests: XCTestCase {
         // The GP 90/23's 1 mm longer case (Raven's calliper: 54.6), longer overall, a jacketed round
         // nose. Not a profile twin of the GP 90/23, nor of the GP 1890 on its shorter case.
         let gp9023 = try Fixture.cartridge("7.5x54.5 mm Swiss (GP 90/23)")
-        let gp1890 = try Fixture.cartridge("7.5x53.5 mm Swiss (GP 1890)")
+        let gp1890 = try Fixture.cartridge("7.5x53.5 mm Swiss (Patrone Modell 1890)")
         XCTAssertEqual(kp.dimensions.caseLength, gp9023.dimensions.caseLength, accuracy: 0.001)
         XCTAssertEqual(kp.dimensions.rim, gp9023.dimensions.rim, accuracy: 0.001)
         XCTAssertEqual(kp.dimensions.overallLength, 77.5, accuracy: 0.001)

@@ -27,6 +27,10 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     /// A blank: no bullet, the case is the whole cartridge. Star-crimped (power-tool load, starter pistol
     /// blank) or closed inside the case (9 mm P.A.K.); calibre-data's `is_blank` decides.
     let blank: Bool
+    /// calibre-data's `outline.well_sourced`: every drawn measurement has a source, the shoulder angle and the
+    /// extractor groove are known. False means parts of the drawing are estimated; such calibres stay out of
+    /// lists, search and matches unless the Developer Options switch shows them (Raven, 2026-11-14).
+    let wellSourced: Bool
     let dimensions: Dimensions
     let outline: Outline
     /// Nil for rimfire and for balls, Minié bullets and pellets.
@@ -156,11 +160,12 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     var hasCase: Bool { dimensions.caseLength > 0 }
 
-    /// A loaded shotshell's length depends on its crimp: a folded (star) crimp ends shorter than the
-    /// catalogue's length, a roll crimp a little longer. Raven's 12/70 (catalogue 64.0 mm) measured
-    /// 57.8 mm (B&P EasyShot Steel), 58.2 mm (Clever Mirage Caccia) and 65.5 mm (Remington), 2026-11-08.
+    /// A loaded shotshell's length depends on its crimp. The catalogue's length is SAAMI's maximum for a folded
+    /// (star) crimp (calibre-data #155: 12/70 61.09 mm, tolerance -6.35), a roll crimp ends well beyond it.
+    /// Raven's 12/70 measured 57.8 mm (B&P EasyShot Steel), 58.2 mm (Clever Mirage Caccia) and 65.5 mm
+    /// (Remington, roll crimp), 2026-11-08.
     static let shellShortest = 0.9
-    static let shellLongest = 1.03
+    static let shellLongest = 1.08
 
     /// The lengths a loaded round of this calibre can have, in mm: the catalogue's overall length, or for
     /// a shotshell the range its crimps give (`shellShortest`, `shellLongest`).

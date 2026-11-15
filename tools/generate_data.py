@@ -16,7 +16,7 @@ import json, os, subprocess, sys
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
 from cartridges import CATALOGUE, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, LOOKALIKE_NAMES, COLOUR_CODES, COUNTRY_NAMES as NAMES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_MM, RIMFIRE, SHOT, LOOSE, BALL, MINIE, PELLET, is_blank  # noqa: E402
-from outline import outline, bullet_profile  # noqa: E402,F401  (bullet_profile re-exported for tests)
+from outline import outline, bullet_profile, well_sourced  # noqa: E402,F401  (bullet_profile re-exported for tests)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json")
@@ -96,6 +96,7 @@ def build():
                                "rare": is_rare(s["name"]), **country(s["name"]),
                                "worldwide": is_worldwide(s["name"]),
                                "blank": blank(s),
+                               "wellSourced": well_sourced(s),
                                "colourCodes": colour_codes(s["name"]),
                                "dimensions": dimensions(s), "outline": outline(s),
                                **primer(s)})
