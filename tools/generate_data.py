@@ -16,7 +16,7 @@ from urllib.parse import unquote, urlparse
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "calibre-data"))
-from cartridges import CATALOGUE, BOOKS, BOOK_SOURCE, sources as table_sources, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, LOOKALIKE_NAMES, COLOUR_CODES, COUNTRY_NAMES as NAMES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_MM, RIMFIRE, SHOT, LOOSE, BALL, MINIE, PELLET, is_blank  # noqa: E402
+from cartridges import ALL_CATALOGUE, CATALOGUE, BOOKS, BOOK_SOURCE, sources as table_sources, COUNTRIES, DISPLAY_ALIASES, LOOKALIKES, LOOKALIKE_NAMES, COLOUR_CODES, COUNTRY_NAMES as NAMES, is_obsolete, is_rare, origin, is_worldwide, PRIMERS, PRIMER_MM, RIMFIRE, SHOT, LOOSE, BALL, MINIE, PELLET, is_blank  # noqa: E402
 from outline import outline, bullet_profile, well_sourced  # noqa: E402,F401  (bullet_profile re-exported for tests)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -97,7 +97,7 @@ def source_groups(s, works):
     the parts in SOURCE_PARTS order, parts citing the same works on the same pages merged into one group, a
     book cited on several pages one ref. `works` is the catalogue's list of works, extended in place."""
     name = s["name"]
-    shown = {"origin": bool(country(name)), "primer": bool(primer(s)), "colour_codes": bool(COLOUR_CODES.get(name))}
+    shown = {"origin": bool(country(name)), "primer": name in PRIMERS, "colour_codes": bool(COLOUR_CODES.get(name))}
     groups = []
     for part in SOURCE_PARTS:
         if not shown.get(part, True):
@@ -126,9 +126,10 @@ def source_groups(s, works):
 
 def dimensions(s):
     """Dimensions as shown in the app. Shoulder only for bottleneck cases, belt only where it is wider than
-    the rim (calibre-data's [mm] belt)."""
-    d = {"rim": s["rim"], "base": s["base"], "neck": s["neck"], "caseLength": s["case"],
-         "overallLength": s["oal"], "bullet": s["bullet"]}
+    the rim (calibre-data's [mm] belt). A cannon round's measurement no source gives is None in calibre-data
+    and 0 here, like the case length of a ball: the app leaves such a row out."""
+    d = {"rim": s["rim"] or 0, "base": s["base"] or 0, "neck": s["neck"] or 0, "caseLength": s["case"] or 0,
+         "overallLength": s["oal"] or 0, "bullet": s["bullet"] or 0}
     if s["shoulder"]:
         d["shoulder"] = s["shoulder"]
     if s["belt"]:
@@ -136,10 +137,10 @@ def dimensions(s):
     return d
 
 
-def primer(s):
+def primer(s, cannon=False):
     """Primer type and diameter (the file's measured one, else the size's nominal one); none for rimfire
-    and for balls, Minié bullets and pellets."""
-    if s["kind"] in (RIMFIRE, BALL, MINIE, PELLET):
+    and for balls, Minié bullets and pellets, and none yet for the cannon rounds (no sizes in calibre-data)."""
+    if s["kind"] in (RIMFIRE, BALL, MINIE, PELLET) or (cannon and s["name"] not in PRIMERS):
         assert s["name"] not in PRIMERS, f"{s['name']} has no primer"
         return {}
     kind = PRIMERS[s["name"]]  # every centrefire calibre needs one
@@ -154,11 +155,21 @@ def blank(s):
             and is_blank(s["profile"], s["rim"], s["base"], s["neck"], s["bullet"], s["case"], s["oal"]))
 
 
+def drawn_outline(s):
+    """calibre-data's outline, or for a partial entry (a cannon round whose measurements no source gives are
+    None) only the box a drawing would fill, no paths: the app draws nothing and its rows still size."""
+    if all(s[k] is not None for k in ("rim", "base", "neck", "case", "oal", "bullet")) and (s["shoulder"] is None or s["sh_at"] is not None):
+        return outline(s)
+    return {"width": round(max(s["rim"], s["base"] or 0, s["bullet"], s["belt"] or 0), 2), "height": s["oal"] or s["case"]}
+
+
 def build(works=None):
-    """The catalogue's entries; `works` (a dict, filled in place) collects the works their sources name."""
+    """Every calibre-data category: the six the apps always had and the cannon rounds (NOT_IN_APPS there,
+    partial entries of 20 to 57 mm), which the app lists only behind its Developer Options switch. `works` (a dict, filled in place)
+    collects the works their sources name."""
     works = {} if works is None else works
     cartridges = []
-    for category, items in CATALOGUE:
+    for category, items in ALL_CATALOGUE:
         for s in items:
             cartridges.append({"id": s["name"], "name": s["name"], "category": category, "kind": s["kind"],
                                "aliases": s["aliases"], "displayAliases": DISPLAY_ALIASES.get(s["name"], []),
@@ -169,8 +180,8 @@ def build(works=None):
                                "wellSourced": well_sourced(s),
                                "colourCodes": colour_codes(s["name"]),
                                "sources": source_groups(s, works),
-                               "dimensions": dimensions(s), "outline": outline(s),
-                               **primer(s)})
+                               "dimensions": dimensions(s), "outline": drawn_outline(s),
+                               **primer(s, cannon=category == "Kanone")})
     names = {c["name"] for c in cartridges}
     unknown = set(DISPLAY_ALIASES) - names
     assert not unknown, f"aliases for unknown calibres: {unknown}"

@@ -3359,6 +3359,52 @@
         }
       }
     },
+    "Kanone": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cannon"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canon"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cannone"
+          }
+        }
+      }
+    },
+    "Kanonenkaliber zeigen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show cannon calibres"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher les calibres de canon"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra i calibri da cannone"
+          }
+        }
+      }
+    },
     "Kategorie": {
       "extractionState": "manual",
       "localizations": {
@@ -4413,6 +4459,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Misurato con il calibro"
+          }
+        }
+      }
+    },
+    "Munition von 20 bis 57 mm, in calibre-data erst unvollständig erfasst: ohne Zeichnung, und zu gross für den Bildschirm. Nur in Listen und Suche, nie in den Treffern.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ammunition of 20 to 57 mm, still incomplete in calibre-data: no drawing, and too big for the screen. Only in lists and search, never among the matches."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Munitions de 20 à 57 mm, encore incomplètes dans calibre-data : sans dessin, et trop grandes pour l'écran. Seulement dans les listes et la recherche, jamais dans les résultats."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Munizioni da 20 a 57 mm, ancora incomplete in calibre-data: senza disegno, e troppo grandi per lo schermo. Solo negli elenchi e nella ricerca, mai nei risultati."
           }
         }
       }

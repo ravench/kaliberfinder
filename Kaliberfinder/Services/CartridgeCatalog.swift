@@ -10,6 +10,8 @@ enum CartridgeCatalog {
         case blackPowder = "Schwarzpulver"
         case shotgun = "Flinte"
         case air = "Luftdruck"
+        /// Partial entries behind the Developer Options switch «Kanonenkaliber zeigen» (Raven, 2026-11-13).
+        case cannon = "Kanone"
     }
 
     /// The calibre-data commit the catalogue was generated from (tools/generate_data.py), shown in Settings.
@@ -49,7 +51,10 @@ enum CartridgeCatalog {
 
     private static let file = Bundle.main.url(forResource: "Cartridges", withExtension: "json")
         .flatMap { try? Data(contentsOf: $0) }.flatMap(decodeFile)
-    static let all: [Cartridge] = file?.cartridges ?? []
+    private static let everything: [Cartridge] = file?.cartridges ?? []
+    /// The catalogue the app matches, draws and tests against. The cannon rounds stay out: partial entries that
+    /// `visible()` lists on request only.
+    static let all: [Cartridge] = everything.filter { !$0.isCannon }
     static let source: Source? = file?.calibreData
     /// Calibres that look alike but are cartridges of their own (calibre-data), each group's parent first.
     static let lookalikes: [LookalikeGroup] = file?.lookalikes ?? []
@@ -69,7 +74,7 @@ enum CartridgeCatalog {
         lookalikeGroup(of: c).flatMap { $0.sameSize ? $0 : nil }
     }
 
-    private static let byID = Dictionary(all.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
+    private static let byID = Dictionary(everything.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
 
     static func cartridge(id: String) -> Cartridge? { byID[id] }
 
@@ -77,13 +82,17 @@ enum CartridgeCatalog {
     static let includeObsoleteKey = "includeObsoleteCalibres"
     /// UserDefaults key of the «Seltene Kaliber berücksichtigen» switch. Off by default.
     static let includeRareKey = "includeRareCalibres"
-    /// Developer Options switch «Unbelegte Kaliber zeigen», off by default.
+    /// Developer Options switches «Unbelegte Kaliber zeigen» and «Kanonenkaliber zeigen», both off by default.
     static let showUnsourcedKey = "showUnsourcedCalibres"
+    static let showCannonKey = "showCannonCalibres"
     /// What the user gets to see in lists, search, matches and group pages: the well-sourced calibres only, unless
-    /// the developer switch is on. `all` and `current` keep every calibre for the tests and the evaluation.
-    static func visible(_ cartridges: [Cartridge] = all,
-                        showUnsourced: Bool = UserDefaults.standard.bool(forKey: showUnsourcedKey)) -> [Cartridge] {
-        showUnsourced ? cartridges : cartridges.filter(\.wellSourced)
+    /// the first developer switch is on, and the cannon rounds only with the second (their entries are partial, so
+    /// the well-sourced rule does not apply to them). `all` and `current` keep every calibre for the tests and the
+    /// evaluation, without the cannon rounds.
+    static func visible(_ cartridges: [Cartridge] = everything,
+                        showUnsourced: Bool = UserDefaults.standard.bool(forKey: showUnsourcedKey),
+                        showCannon: Bool = UserDefaults.standard.bool(forKey: showCannonKey)) -> [Cartridge] {
+        cartridges.filter { $0.isCannon ? showCannon : showUnsourced || $0.wellSourced }
     }
     /// Settings switch, on by default: the calibres of a one-size lookalike group are one result row and one
     /// 1:1 column; off, each is its own, with the group's name as its tag (Raven, 2026-11-13).

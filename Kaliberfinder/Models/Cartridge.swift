@@ -192,6 +192,10 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     var hasCase: Bool { dimensions.caseLength > 0 }
 
+    /// A cannon round (calibre-data's `cannon` category, 20 to 57 mm): a partial entry whose missing measurements are 0
+    /// and whose outline has no paths. Listed only behind the Developer Options switch, never matched or shown at 1:1.
+    var isCannon: Bool { category == CartridgeCatalog.Category.cannon.rawValue }
+
     /// A loaded shotshell's length depends on its crimp. The catalogue's length is SAAMI's maximum for a folded
     /// (star) crimp (calibre-data #155: 12/70 61.09 mm, tolerance -6.35), a roll crimp ends well beyond it.
     /// Raven's 12/70 measured 57.8 mm (B&P EasyShot Steel), 58.2 mm (Clever Mirage Caccia) and 65.5 mm

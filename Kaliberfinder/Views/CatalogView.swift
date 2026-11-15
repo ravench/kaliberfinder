@@ -12,7 +12,8 @@ struct CatalogView: View {
     }
 
     var body: some View {
-        let results = CartridgeCatalog.search(query, in: CartridgeCatalog.visible())
+        // No cannon round in a 1:1 selection: it does not fit the screen and its entry is partial.
+        let results = CartridgeCatalog.search(query, in: CartridgeCatalog.visible().filter { !(selecting && $0.isCannon) })
         List {
             if selecting {
                 Section {

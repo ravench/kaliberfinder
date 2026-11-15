@@ -253,6 +253,7 @@ T = {
         "Appoggia una carta bancaria (o carta d'identità, licenza di condurre) in verticale sul rettangolo, allineata in alto, e sposta il cursore finché il rettangolo è lungo esattamente come la carta."),
     "Lineal in Zentimetern": ("Ruler in centimetres", "Règle en centimètres", "Righello in centimetri"),
     "Luftdruck": ("Air gun", "Air comprimé", "Aria compressa"),
+    "Kanone": ("Cannon", "Canon", "Cannone"),
     "Atypisches Geschoss": ("Atypical bullet", "Projectile atypique", "Proiettile atipico"),
     "Serie": ("Series", "Série", "Serie"),
     "Mit der Schieblehre gemessen": ("Measured with a calliper", "Mesuré au pied à coulisse", "Misurato con il calibro"),
@@ -289,6 +290,11 @@ T = {
     "Entwickleroptionen": ("Developer options", "Options de développement", "Opzioni per sviluppatori"),
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento"),
     "Unbelegte Kaliber zeigen": ("Show unsourced calibres", "Afficher les calibres sans source", "Mostra i calibri senza fonte"),
+    "Kanonenkaliber zeigen": ("Show cannon calibres", "Afficher les calibres de canon", "Mostra i calibri da cannone"),
+    "Munition von 20 bis 57 mm, in calibre-data erst unvollständig erfasst: ohne Zeichnung, und zu gross für den Bildschirm. Nur in Listen und Suche, nie in den Treffern.":
+        ("Ammunition of 20 to 57 mm, still incomplete in calibre-data: no drawing, and too big for the screen. Only in lists and search, never among the matches.",
+         "Munitions de 20 à 57 mm, encore incomplètes dans calibre-data : sans dessin, et trop grandes pour l'écran. Seulement dans les listes et la recherche, jamais dans les résultats.",
+         "Munizioni da 20 a 57 mm, ancora incomplete in calibre-data: senza disegno, e troppo grandi per lo schermo. Solo negli elenchi e nella ricerca, mai nei risultati."),
     "Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt. Sonst weder in Listen, Suche noch Treffern.":
         ("Calibres whose measurements are not well sourced in calibre-data: parts of their drawing are estimated. Otherwise neither in lists, search nor matches.",
          "Calibres dont les mesures ne sont pas bien documentées dans calibre-data : une partie de leur dessin est estimée. Sinon ni dans les listes, ni dans la recherche, ni dans les résultats.",
