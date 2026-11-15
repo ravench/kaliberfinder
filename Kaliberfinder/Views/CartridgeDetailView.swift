@@ -19,11 +19,13 @@ struct CartridgeDetailView: View {
                     Spacer()
                 }
                 .padding(.vertical, 8)
-                NavigationLink { TrueScaleView(cartridges: [cartridge], linksToDetails: false) } label: {
-                    Label { Text("In Originalgrösse anzeigen") } icon: { OneToOneIcon() }
-                }
-                NavigationLink { MeasurementsView(cartridge: cartridge) } label: {
-                    Label("Masszeichnung anzeigen", systemImage: "pencil.and.ruler")
+                if !cartridge.isCannon {  // too big for the screen, and a partial entry draws nothing
+                    NavigationLink { TrueScaleView(cartridges: [cartridge], linksToDetails: false) } label: {
+                        Label { Text("In Originalgrösse anzeigen") } icon: { OneToOneIcon() }
+                    }
+                    NavigationLink { MeasurementsView(cartridge: cartridge) } label: {
+                        Label("Masszeichnung anzeigen", systemImage: "pencil.and.ruler")
+                    }
                 }
                 if let group = CartridgeCatalog.lookalikeGroup(of: cartridge) {
                     // The calibre's lookalike group of calibre-data, by its name (Raven, PR 188): the group page
@@ -43,18 +45,23 @@ struct CartridgeDetailView: View {
                 }
             }
             Section("Masse") {
-                LabeledContent("Gesamtlänge", value: unit.format(d.overallLength))
+                // A cannon round's measurement no source gives is 0: no row.
+                if d.overallLength > 0 {
+                    LabeledContent("Gesamtlänge", value: unit.format(d.overallLength))
+                }
                 if cartridge.hasCase {
                     LabeledContent(cartridge.kind == "shot" ? "Hülsenlänge (offen)".loc : "Hülsenlänge".loc, value: unit.format(d.caseLength))
                     LabeledContent("Randdurchmesser", value: unit.format(d.rim))
                     if let belt = d.belt {
                         LabeledContent("Gürteldurchmesser", value: unit.format(belt))
                     }
-                    LabeledContent("Bodendurchmesser", value: unit.format(d.base))
+                    if d.base > 0 {
+                        LabeledContent("Bodendurchmesser", value: unit.format(d.base))
+                    }
                     if let shoulder = d.shoulder {
                         LabeledContent("Schulterdurchmesser", value: unit.format(shoulder))
                     }
-                    if cartridge.kind != "shot" {
+                    if cartridge.kind != "shot" && d.neck > 0 {
                         LabeledContent("Halsdurchmesser", value: unit.format(d.neck))
                     }
                 }
