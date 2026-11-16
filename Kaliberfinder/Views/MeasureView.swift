@@ -10,6 +10,7 @@ struct MeasureView: View {
     @State private var belt = ""
     @State private var bullet = UserDefaults.standard.string(forKey: "screenTourBullet") ?? ""
     @State private var shape: CaseShape = .any
+    @State private var head: RimKind = .any
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
@@ -22,7 +23,8 @@ struct MeasureView: View {
                            rim: unit.parse(rim),
                            belt: unit.parse(belt),
                            bullet: unit.parse(bullet),
-                           shape: shape)
+                           shape: shape,
+                           head: head)
     }
 
     var body: some View {
@@ -36,11 +38,18 @@ struct MeasureView: View {
                     ForEach(CaseShape.allCases) { Text($0.title.loc).tag($0) }
                 }
                 .pickerStyle(.menu)
-                field("Gesamtlänge", text: $overallLength)
-                field("Hülsenlänge", text: $caseLength)
-                field("Randdurchmesser", text: $rim)
-                field("Gürteldurchmesser", text: $belt)
-                field("Geschossdurchmesser", text: $bullet)
+                Picker("Randform", selection: $head) {
+                    ForEach(RimKind.allCases) { Text($0.title.loc).tag($0) }
+                }
+                .pickerStyle(.menu)
+                // Where each value is taken, as on the training screen, in its order (TestFlight 2026-11-16).
+                MeasuringGuide(letters: Self.letters)
+                    .padding(.vertical, 4)
+                field("Geschossdurchmesser", letter: "D", text: $bullet)
+                field("Randdurchmesser", letter: "R", text: $rim)
+                field("Gürteldurchmesser", letter: nil, text: $belt)  // not on the sketch
+                field("Hülsenlänge", letter: "L", text: $caseLength)
+                field("Gesamtlänge", letter: "OAL", text: $overallLength)
             } header: {
                 if unit == .metric { Text("Gemessen in mm") } else { Text("Gemessen in Zoll") }
             } footer: {
@@ -77,12 +86,25 @@ struct MeasureView: View {
         .onChange(of: measured) { _, _ in revealed = false }
     }
 
-    private func field(_ title: LocalizedStringKey, text: Binding<String>) -> some View {
-        LabeledContent(title) {
+    /// The letters of the form's fields on the sketch.
+    static let letters: Set<String> = ["D", "R", "L", "OAL"]
+
+    private func field(_ title: LocalizedStringKey, letter: String?, text: Binding<String>) -> some View {
+        LabeledContent {
             TextField(unit.symbol, text: text)
                 .keyboardType(.decimalPad)
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: 100)
+        } label: {
+            HStack(spacing: 8) {
+                Text(verbatim: letter ?? "")
+                    .font(.footnote.bold())
+                    .foregroundStyle(Color.accentColor)
+                    .frame(minWidth: 30, alignment: .leading)
+                    .accessibilityHidden(true)
+                // Shrinks rather than cut off «Geschossdurchmesser» beside the letter, as the training rows do.
+                Text(title).lineLimit(1).minimumScaleFactor(0.7)
+            }
         }
     }
 

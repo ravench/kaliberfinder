@@ -829,6 +829,29 @@
         }
       }
     },
+    "Beliebige Randform": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Any head"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout culot"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qualsiasi fondello"
+          }
+        }
+      }
+    },
     "Berdan Nitro": {
       "extractionState": "manual",
       "localizations": {

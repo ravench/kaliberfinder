@@ -10,8 +10,10 @@ struct MeasuredDimensions: Equatable {
     var bullet: Double?
     /// Narrows the list to straight or bottleneck cases.
     var shape: CaseShape = .any
+    /// Narrows the list by the case head.
+    var head: RimKind = .any
 
-    /// No dimension entered (the shape alone doesn't rank anything).
+    /// No dimension entered (the shape and the head alone don't rank anything).
     var isEmpty: Bool { [overallLength, caseLength, rim, belt, bullet].allSatisfy { $0 == nil } }
 }
 
@@ -43,6 +45,40 @@ enum CaseShape: String, CaseIterable, Identifiable {
     }
 }
 
+/// The case head picked on the dimensions screen («Randform», TestFlight 2026-11-16), by calibre-data's kind.
+enum RimKind: String, CaseIterable, Identifiable {
+    case any
+    case rimmed
+    case semiRimmed
+    case rimless
+    case belted
+
+    var id: String { rawValue }
+
+    /// German text, used as localization key.
+    var title: String {
+        switch self {
+        case .any: "Beliebige Randform"
+        case .rimmed: "Mit Rand"
+        case .semiRimmed: "Halbrand"
+        case .rimless: "Randlos"
+        case .belted: "Gürtelhülse"
+        }
+    }
+
+    /// Rimfire rounds and shotshells have a rim. A semi-rim is hard to tell by eye, so it passes as rimmed
+    /// and as rimless too. Balls, Minié bullets and pellets have no head.
+    func fits(_ c: Cartridge) -> Bool {
+        switch self {
+        case .any: true
+        case .rimmed: ["rimmed", "rimfire", "shot", "semi-rimmed"].contains(c.kind)
+        case .semiRimmed: c.kind == "semi-rimmed"
+        case .rimless: ["rimless", "semi-rimmed"].contains(c.kind)
+        case .belted: c.kind == "belted"
+        }
+    }
+}
+
 /// A calibre ranked by how far its catalogue dimensions are from the measured ones.
 struct DimensionMatch: Identifiable, Equatable {
     let cartridge: Cartridge
@@ -66,7 +102,7 @@ enum DimensionMatcher {
                      limit: Int = 15) -> [DimensionMatch] {
         guard !measured.isEmpty else { return [] }
         // A typed bullet diameter was measured on a bullet: a blank has none (its `dimensions.bullet` only repeats the case's diameter).
-        let matches = cartridges.filter { measured.shape.fits($0) && !(measured.bullet != nil && $0.blank) }.map { c -> (DimensionMatch, Double) in
+        let matches = cartridges.filter { measured.shape.fits($0) && measured.head.fits($0) && !(measured.bullet != nil && $0.blank) }.map { c -> (DimensionMatch, Double) in
             let d = c.dimensions
             // A shotshell is as long as its crimp makes it, or opened by firing to its case length, whichever field it was typed in.
             let shell = c.kind == "shot" ? [c.overallLengths, d.caseLength...d.caseLength] : nil

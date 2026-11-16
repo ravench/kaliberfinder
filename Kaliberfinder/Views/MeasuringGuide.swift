@@ -3,8 +3,12 @@ import SwiftUI
 /// Where the calliper values of a training series are taken, as on the «Where to measure» drawing of
 /// the old-ammunition page (Raven 2026-11-10): a rimmed bottleneck round from the side and from its
 /// head, each measurement marked with the letter its field carries. The same sketch for every calibre,
-/// drawn in the units of `box` and scaled to the width it gets.
+/// drawn in the units of `box` and scaled to the width it gets. The dimensions form shows the same sketch
+/// with the letters of its fields only (TestFlight 2026-11-16).
 struct MeasuringGuide: View {
+    /// The letters to draw, with their lines; nil draws them all.
+    var letters: Set<String>?
+
     /// A dimension line from `from` to `to`, its letter centred on `label` (the baseline).
     struct Mark {
         let letter: String
@@ -32,19 +36,25 @@ struct MeasuringGuide: View {
     ]
 
     /// The dimension lines and a slash at each of their ends.
-    static let dimensionLines: [[CGPoint]] = {
+    static func dimensionLines(_ marks: [Mark]) -> [[CGPoint]] {
         let ends: [CGPoint] = marks.flatMap { [$0.from, $0.to] }
         let ticks: [[CGPoint]] = ends.map { end in [pt(end.x - 3, end.y + 3), pt(end.x + 3, end.y - 3)] }
         return marks.map { [$0.from, $0.to] } + ticks
-    }()
+    }
 
-    /// From the drawing to the letters above and to the length lines below.
-    static let extensions: [[CGPoint]] = [
-        [pt(44.8, 52), pt(44.8, 30)], [pt(84, 58), pt(84, 30)], [pt(276, 60), pt(276, 30)],
-        [pt(340, 69), pt(340, 30)], [pt(380, 71), pt(380, 30)], [pt(594, 80), pt(594, 30)],
-        [pt(40, 142), pt(40, 208)], [pt(286, 134), pt(286, 160)],
-        [pt(362.2, 124), pt(362.2, 184)], [pt(503.2, 100), pt(503.2, 208)],
+    /// From the drawing to the letters above and to the length lines below, each with the letters it serves:
+    /// the line down the head is shared by the three lengths.
+    static let extensions: [(letters: [String], line: [CGPoint])] = [
+        (["R"], [pt(44.8, 52), pt(44.8, 30)]), (["B"], [pt(84, 58), pt(84, 30)]), (["S"], [pt(276, 60), pt(276, 30)]),
+        (["N"], [pt(340, 69), pt(340, 30)]), (["D"], [pt(380, 71), pt(380, 30)]), (["P"], [pt(594, 80), pt(594, 30)]),
+        (["H", "L", "OAL"], [pt(40, 142), pt(40, 208)]), (["H"], [pt(286, 134), pt(286, 160)]),
+        (["L"], [pt(362.2, 124), pt(362.2, 184)]), (["OAL"], [pt(503.2, 100), pt(503.2, 208)]),
     ]
+
+    var shownMarks: [Mark] { Self.marks.filter { letters?.contains($0.letter) ?? true } }
+    var shownExtensions: [[CGPoint]] {
+        Self.extensions.filter { ext in letters.map { !$0.isDisjoint(with: ext.letters) } ?? true }.map(\.line)
+    }
 
     static let caseOutline = Path { p in
         p.addLines([pt(40, 52.8), pt(49.6, 52.8), pt(49.6, 58.9), pt(286, 61.2), pt(310, 70.5),
@@ -80,9 +90,9 @@ struct MeasuringGuide: View {
             }
             // The body's edge, behind the rim.
             context.stroke(circle(37.1), with: ink, style: StrokeStyle(lineWidth: 1, dash: [3, 3]))
-            context.stroke(Self.lines(Self.extensions), with: .style(.secondary), lineWidth: 1)
-            context.stroke(Self.lines(Self.dimensionLines), with: ink, lineWidth: 1.3)
-            for mark in Self.marks {
+            context.stroke(Self.lines(shownExtensions), with: .style(.secondary), lineWidth: 1)
+            context.stroke(Self.lines(Self.dimensionLines(shownMarks)), with: ink, lineWidth: 1.3)
+            for mark in shownMarks {
                 // `label` is the letter's baseline, as in the page's SVG.
                 let text: Text = Text(verbatim: mark.letter).font(.system(size: Self.letterSize, weight: .bold)).foregroundStyle(Color.accentColor)
                 let letter: GraphicsContext.ResolvedText = context.resolve(text)

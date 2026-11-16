@@ -20,7 +20,7 @@ final class MeasuringGuideTests: XCTestCase {
     func testLettersAndLinesFitTheBox() {
         let box = MeasuringGuide.box
         func inside(_ r: CGRect) -> Bool { r.minX >= box.minX && r.maxX <= box.maxX && r.minY >= box.minY && r.maxY <= box.maxY }
-        let segments = MeasuringGuide.marks.map { [$0.from, $0.to] } + MeasuringGuide.extensions
+        let segments = MeasuringGuide.marks.map { [$0.from, $0.to] } + MeasuringGuide.extensions.map(\.line)
         let shapes = [MeasuringGuide.caseOutline.boundingRect, MeasuringGuide.bullet.boundingRect]
         for r in shapes + segments.map(Self.bounds) { XCTAssertTrue(inside(r), "\(r)") }
         // A bold capital on its baseline is about ¾ of the font size wide and high (generous for I, tight for W).
@@ -38,6 +38,19 @@ final class MeasuringGuideTests: XCTestCase {
                 XCTAssertFalse(corners.contains { shape.contains($0) }, letter)
             }
         }
+    }
+
+    /// The dimensions form draws the sketch with its own fields' letters: those marks and lines, nothing else
+    /// (TestFlight 2026-11-16); the head's line stays while a length is shown.
+    func testTheFormShowsItsLettersOnly() {
+        XCTAssertTrue(MeasureView.letters.isSubset(of: MeasuringGuide.marks.map(\.letter)))
+        let guide = MeasuringGuide(letters: MeasureView.letters)
+        XCTAssertEqual(Set(guide.shownMarks.map(\.letter)), MeasureView.letters)
+        XCTAssertEqual(guide.shownExtensions.count, MeasuringGuide.extensions.filter { !$0.letters.filter(MeasureView.letters.contains).isEmpty }.count)
+        XCTAssertTrue(guide.shownExtensions.contains { $0 == [CGPoint(x: 40, y: 142), CGPoint(x: 40, y: 208)] }, "the head's line")
+        XCTAssertFalse(guide.shownExtensions.contains { $0 == [CGPoint(x: 286, y: 134), CGPoint(x: 286, y: 160)] }, "H's line")
+        XCTAssertEqual(MeasuringGuide().shownMarks.count, MeasuringGuide.marks.count)
+        XCTAssertEqual(MeasuringGuide.dimensionLines(guide.shownMarks).count, 3 * guide.shownMarks.count)
     }
 
     private static func bounds(_ line: [CGPoint]) -> CGRect {

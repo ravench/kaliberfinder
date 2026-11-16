@@ -25,6 +25,25 @@ final class MeasureShapeTests: XCTestCase {
     func testShapeAloneRanksNothing() {
         XCTAssertTrue(MeasuredDimensions(shape: .bottleneck).isEmpty)
         XCTAssertTrue(rank(MeasuredDimensions(shape: .bottleneck)).isEmpty)
+        XCTAssertTrue(MeasuredDimensions(head: .rimmed).isEmpty)
+    }
+
+    /// The head dropdown (TestFlight 2026-11-16): 32.3 mm long is a .45 ACP (rimless) or a .32 S&W Long (rimmed).
+    /// A semi-rim (the 7.65 mm Browning's) passes as either; the fixture has none.
+    func testHeadNarrowsTheList() {
+        let rimmed = ids(rank(MeasuredDimensions(overallLength: 32.3, head: .rimmed)))
+        XCTAssertTrue(rimmed.contains(".32 S&W Long") && !rimmed.contains(".45 ACP"), "\(rimmed)")
+        let rimless = ids(rank(MeasuredDimensions(overallLength: 32.3, head: .rimless)))
+        XCTAssertTrue(rimless.contains(".45 ACP") && !rimless.contains(".32 S&W Long"), "\(rimless)")
+        XCTAssertTrue(rank(MeasuredDimensions(overallLength: 32.3, head: .semiRimmed)).isEmpty)
+        let semi = CartridgeCatalog.all.filter { $0.kind == "semi-rimmed" }
+        XCTAssertFalse(semi.isEmpty)
+        XCTAssertTrue(semi.allSatisfy { RimKind.semiRimmed.fits($0) && RimKind.rimmed.fits($0) && RimKind.rimless.fits($0) })
+        for c in CartridgeCatalog.all {
+            XCTAssertTrue(RimKind.any.fits(c))
+            XCTAssertEqual(RimKind.belted.fits(c), c.kind == "belted", c.id)
+            XCTAssertEqual(RimKind.rimmed.fits(c) || RimKind.rimless.fits(c) || RimKind.belted.fits(c), c.hasCase, c.id)
+        }
     }
 
     func testShapesOfKnownCalibres() throws {
@@ -65,5 +84,7 @@ final class MeasureShapeTests: XCTestCase {
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
         XCTAssertEqual(CaseShape.allCases.map { en[$0.title] }, ["Any shape", "Straight case", "Bottleneck case"])
         XCTAssertEqual(en["Form"], "Shape")
+        XCTAssertEqual(RimKind.allCases.map { en[$0.title] }, ["Any head", "Rimmed", "Semi-rimmed", "Rimless", "Belted"])
+        XCTAssertEqual(en["Randform"], "Head")
     }
 }
