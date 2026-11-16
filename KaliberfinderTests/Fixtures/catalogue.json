@@ -4892,7 +4892,35 @@
    "outline": {
     "width": 68.4,
     "height": 121.0
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 108,
+       "pages": [
+        "231"
+       ]
+      },
+      {
+       "work": 109
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 109
+      }
+     ]
+    }
+   ]
   }
  ],
  "sources": [
@@ -5434,6 +5462,16 @@
    "detail": "en.wikipedia.org",
    "title": "Wikipedia: M61 Vulcan",
    "url": "https://en.wikipedia.org/wiki/M61_Vulcan"
+  },
+  {
+   "detail": "Anthony G. Williams",
+   "title": "Rapid Fire: The Development of Automatic Cannon, Heavy Machine Guns and Their Ammunition for Armies, Navies and Air Forces",
+   "year": 2000
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Ho-401 cannon",
+   "url": "https://en.wikipedia.org/wiki/Ho-401_cannon"
   }
  ],
  "lookalikes": [
