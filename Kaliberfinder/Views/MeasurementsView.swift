@@ -47,6 +47,16 @@ struct MeasurementsView: View {
         .padding()
         .navigationTitle(Text(verbatim: cartridge.name))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            // The same page as the calibre page's «Quellen» row; its first group is the measurements (Raven, 2026-11-15).
+            if !cartridge.sources.isEmpty {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink { SourcesView(cartridge: cartridge) } label: {
+                        Label("Quellen", systemImage: "books.vertical")
+                    }
+                }
+            }
+        }
     }
 }
 

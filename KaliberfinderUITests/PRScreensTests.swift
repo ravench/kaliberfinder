@@ -154,8 +154,8 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
-    /// The dimensioned drawing of a bottleneck rifle round (with its shoulder), then of a belted magnum
-    /// in inches.
+    /// The dimensioned drawing of a bottleneck rifle round (with its shoulder) and its sources, then of a
+    /// belted magnum in inches.
     func testMeasurementDrawings() {
         for (query, name, unit, shot) in [("GP 11", "7.5x55 mm Swiss (GP 11)", "metric", "34-Masszeichnung-GP11"),
                                           ("300 Win Mag", ".300 Winchester Magnum", "imperial", "35-Masszeichnung-Zoll")] {
@@ -174,10 +174,17 @@ final class PRScreensTests: XCTestCase {
                 // The colour codes of calibre-data (tip and bases) sit under the measurements (Raven, 2026-11-11).
                 scroll(toRowAbove: "Zündhütchen")
                 snap("39-GP11-Farbcodes")
+                scroll()  // the «Quellen» row at the end of the page (Raven, 2026-11-15)
+                snap("39b-GP11-Quellenzeile")
                 scroll(up: false)
             }
             guard open(app.buttons["Masszeichnung anzeigen"].firstMatch) else { return }
             snap(shot)
+            // The drawing's book button opens the calibre's sources, the measurements' first.
+            if query == "GP 11", open(app.navigationBars.buttons["Quellen"].firstMatch) {
+                XCTAssertTrue(app.navigationBars["Quellen"].waitForExistence(timeout: 5), "The sources page did not open")
+                snap("34b-Quellen-GP11")
+            }
         }
     }
 
@@ -251,15 +258,10 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("57x\n")
-        }
+        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("57x\n") }
         XCTAssertTrue(app.staticTexts["57x121 mm R"].waitForExistence(timeout: 5), "the cannon rounds are not listed")
         snap("45-Kanonen-Suche")
-        if open(app.staticTexts["57x121 mm R"].firstMatch) {
-            snap("45b-Kanone-57x121")
-        }
+        if open(app.staticTexts["57x121 mm R"].firstMatch) { snap("45b-Kanone-57x121") }
     }
 
     /// The Swiss cadet round, found by the name on its box, with its own drawing. Its measurements have no source
