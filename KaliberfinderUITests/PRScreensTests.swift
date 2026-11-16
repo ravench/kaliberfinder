@@ -606,15 +606,20 @@ final class PRScreensTests: XCTestCase {
         snap("43b-Guertel-378-Weatherby-Masse")
     }
 
+    /// A round taller than the screen at 1:1 scrolls (tester, 2026-11-14): the base first, the tip after a swipe down.
+    func testTallRoundScrollsAtOneToOne() {
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch; if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("50 BMG\n") }
+        guard open(app.staticTexts[".50 BMG"].firstMatch), open(app.buttons["In Originalgrösse anzeigen"].firstMatch) else { return }
+        snap("14c-1zu1-50-BMG"); app.swipeDown(); snap("14d-1zu1-50-BMG-Spitze")
+    }
+
     /// The silver jacket of an early service round (calibre-data #151): the 8x57 mm IS was drawn with a copper bullet.
     func testSilverJacket() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("8x57\n") // return hides the keyboard
-        }
+        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("8x57\n") }
         guard open(app.staticTexts["8x57 mm IS"].firstMatch) else { return }
         snap("44-Silbermantel-8x57-IS")
     }
