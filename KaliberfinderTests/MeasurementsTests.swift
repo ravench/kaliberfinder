@@ -21,6 +21,8 @@ final class MeasurementsTests: XCTestCase {
         XCTAssertEqual(try layout("7.5x55 mm Swiss (GP 11)").dimensions.map(\.part),
                        [.bullet, .neck, .shoulder, .base, .rim, .caseLength, .overall])
         XCTAssertEqual(try layout("12/70").dimensions.map(\.part), [.base, .rim, .overall])
+        XCTAssertEqual(try layout(".378 Weatherby Magnum").dimensions.map(\.part),
+                       [.bullet, .neck, .shoulder, .base, .belt, .rim, .caseLength, .overall])  // the belt is wider than the rim
         XCTAssertEqual(try layout(".22 SH (5.6/11)").dimensions.map(\.part), [.neck, .base, .rim, .overall])
         XCTAssertEqual(try layout("9 mm PA Blanc").dimensions.map(\.part), [.neck, .base, .rim, .overall])  // closed inside the case
         XCTAssertEqual(try layout(".32 S&W Long Wadcutter").dimensions.map(\.part), [.bullet, .neck, .base, .rim, .overall])
@@ -43,9 +45,24 @@ final class MeasurementsTests: XCTestCase {
 
     /// The base's line is on the body just in front of the extractor groove, rim or belt, not on the
     /// rim of a rimless case or on the ramp up to a belt.
-    func testBaseLineIsInFrontOfTheHead() {
+    func testBaseLineIsInFrontOfTheHead() throws {
         for c in CartridgeCatalog.all where c.hasCase {
             XCTAssertNotNil(DimensionLayout.bodyStart(of: c, in: OutlineGeometry(c.outline, includeBullet: false)), c.id)
+        }
+        // A belt within 0.25 mm of the base (tester, 2026-11-14: «Shouldn't base measure above the belt?»): the
+        // base's line is on the body in front of the belt, the belt's own line on the belt where the data has one.
+        for id in ["7x73 mm Vom Hofe Belted", ".400/375 Belted Nitro Express", ".378 Weatherby Magnum", ".300 Winchester Magnum"] {
+            let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)
+            let empty = OutlineGeometry(c.outline, includeBullet: false), d = c.dimensions, height = c.outline.height
+            let body = try XCTUnwrap(DimensionLayout.bodyStart(of: c, in: empty), id)
+            XCTAssertEqual(empty.width(at: height - body - 0.5), d.base, accuracy: 0.05, "\(id): on the body")
+            XCTAssertGreaterThan(empty.width(at: height - body + 0.3), d.base + 0.1, "\(id): the belt is just below")
+            let marks = DimensionLayout.diameters(of: c)
+            XCTAssertEqual(marks.contains { $0.part == .belt }, d.belt != nil, id)
+            if let belt = marks.first(where: { $0.part == .belt }) {
+                XCTAssertEqual(empty.width(at: belt.y), try XCTUnwrap(d.belt), accuracy: 0.05, id)
+                XCTAssertLessThan(try XCTUnwrap(marks.first { $0.part == .base }).y, belt.y, "\(id): the base's line above the belt's")
+            }
         }
     }
 

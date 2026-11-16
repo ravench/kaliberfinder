@@ -155,8 +155,8 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
-    /// The dimensioned drawing of a bottleneck rifle round (with its shoulder), then of a belted magnum
-    /// in inches.
+    /// The dimensioned drawing of a bottleneck rifle round (with its shoulder) and its sources, then of a
+    /// belted magnum in inches.
     func testMeasurementDrawings() {
         for (query, name, unit, shot) in [("GP 11", "7.5x55 mm Swiss (GP 11)", "metric", "34-Masszeichnung-GP11"),
                                           ("300 Win Mag", ".300 Winchester Magnum", "imperial", "35-Masszeichnung-Zoll")] {
@@ -175,10 +175,17 @@ final class PRScreensTests: XCTestCase {
                 // The colour codes of calibre-data (tip and bases) sit under the measurements (Raven, 2026-11-11).
                 scroll(toRowAbove: "Zündhütchen")
                 snap("39-GP11-Farbcodes")
+                scroll()  // the «Quellen» row at the end of the page (Raven, 2026-11-15)
+                snap("39b-GP11-Quellenzeile")
                 scroll(up: false)
             }
             guard open(app.buttons["Masszeichnung anzeigen"].firstMatch) else { return }
             snap(shot)
+            // The drawing's book button opens the calibre's sources, the measurements' first.
+            if query == "GP 11", open(app.navigationBars.buttons["Quellen"].firstMatch) {
+                XCTAssertTrue(app.navigationBars["Quellen"].waitForExistence(timeout: 5), "The sources page did not open")
+                snap("34b-Quellen-GP11")
+            }
         }
     }
 
@@ -187,10 +194,7 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText(".303 British\n") // return hides the keyboard
-        }
+        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText(".303 British\n") } // return hides the keyboard
         guard open(app.staticTexts[".303 British"].firstMatch) else { return }
         scroll(toRowAbove: "Zündhütchen")
         snap("40-303-Zuendhuetchenringe")
@@ -201,10 +205,7 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("PA Blanc\n") // return hides the keyboard
-        }
+        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("PA Blanc\n") } // return hides the keyboard
         guard open(app.staticTexts["9 mm PA Blanc"].firstMatch) else { return }
         scroll(toRowAbove: "Gesamtlänge") // «Masse» whole: the bullet's row was its last but one
         snap("41-Knallpatrone-PAK")
@@ -219,10 +220,7 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("BB\n") // return hides the keyboard, so all BB rows show
-        }
+        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("BB\n") } // return hides the keyboard, so all BB rows show
         snap("08-BBs")
         if open(app.staticTexts["6 mm Airsoft-BB"].firstMatch) {
             snap("09-Airsoft-BB")
@@ -252,15 +250,10 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("57x\n")
-        }
+        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("57x\n") }
         XCTAssertTrue(app.staticTexts["57x121 mm R"].waitForExistence(timeout: 5), "the cannon rounds are not listed")
         snap("45-Kanonen-Suche")
-        if open(app.staticTexts["57x121 mm R"].firstMatch) {
-            snap("45b-Kanone-57x121")
-        }
+        if open(app.staticTexts["57x121 mm R"].firstMatch) { snap("45b-Kanone-57x121") }
     }
 
     /// The Swiss cadet round, found by the name on its box, with its own drawing. Its measurements have no source
@@ -603,8 +596,18 @@ final class PRScreensTests: XCTestCase {
         }
         guard open(app.staticTexts[".378 Weatherby Magnum"].firstMatch) else { return }
         snap("43-Guertel-378-Weatherby")
+        // Its drawing: the belt's line on the belt, the base's on the body in front of it (tester, 2026-11-14).
+        if open(app.buttons["Masszeichnung anzeigen"].firstMatch) { snap("43c-Guertel-Masszeichnung"); app.navigationBars.buttons.firstMatch.tap() }
         scroll(toRowAbove: "Gesamtlänge")
         snap("43b-Guertel-378-Weatherby-Masse")
+    }
+
+    /// A round taller than the screen at 1:1 scrolls (tester, 2026-11-14): the base first, the tip after a swipe down.
+    func testTallRoundScrollsAtOneToOne() {
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        let search = app.searchFields.firstMatch; if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("50 BMG\n") }
+        guard open(app.staticTexts[".50 BMG"].firstMatch), open(app.buttons["In Originalgrösse anzeigen"].firstMatch) else { return }
+        snap("14c-1zu1-50-BMG"); app.swipeDown(); snap("14d-1zu1-50-BMG-Spitze")
     }
 
     /// The silver jacket of an early service round (calibre-data #151): the 8x57 mm IS was drawn with a copper bullet.
@@ -612,10 +615,7 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("8x57\n") // return hides the keyboard
-        }
+        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("8x57\n") }
         guard open(app.staticTexts["8x57 mm IS"].firstMatch) else { return }
         snap("44-Silbermantel-8x57-IS")
     }

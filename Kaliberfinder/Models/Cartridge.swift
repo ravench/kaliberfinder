@@ -38,6 +38,38 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     /// The painted bullet tips, case bases and primer rings of military loads (calibre-data [[colour_codes]]);
     /// empty for most calibres.
     let colourCodes: [ColourCode]
+    /// Where the calibre page's values come from (calibre-data's sources), for its sources page (Raven, 2026-11-15).
+    let sources: [SourceGroup]
+
+    /// The works one or more parts of the calibre page come from. calibre-data cites a whole table (all of `[mm]`),
+    /// not a single value, so a group names parts, never one measurement.
+    struct SourceGroup: Decodable, Hashable {
+        /// "mm", "shoulder_angle", "case_head", "primer", "bullet", "case", "origin" or "colour_codes";
+        /// several when they cite the same works.
+        let parts: [String]
+        let refs: [Ref]
+
+        /// A work of `CartridgeCatalog.works` and the pages cited in it (books only).
+        struct Ref: Decodable, Hashable {
+            let work: Int
+            let pages: [String]?
+        }
+
+        /// German title of a part, used as localization key.
+        static func title(_ part: String) -> String {
+            switch part {
+            case "mm": "Masse"
+            case "shoulder_angle": "Schulterwinkel"
+            case "case_head": "Hülsenboden"
+            case "primer": "Zündhütchen"
+            case "bullet": "Geschoss"
+            case "case": "Hülse"
+            case "origin": "Herkunft"
+            case "colour_codes": "Farbcodes"
+            default: part
+            }
+        }
+    }
 
     /// One colour code: what a painted tip, base or primer ring means (Raven, 2026-11-11: shown on the calibre page).
     struct ColourCode: Decodable, Hashable {

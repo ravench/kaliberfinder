@@ -62,7 +62,53 @@
    "primer": {
     "type": "small-pistol",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 0
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 2
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "482"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "9x21 mm IMI",
@@ -101,7 +147,44 @@
    "primer": {
     "type": "small-pistol",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 4
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 5
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "484"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "7.65 mm Parabellum",
@@ -145,7 +228,65 @@
    "primer": {
     "type": "small-pistol",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 6
+      },
+      {
+       "work": 3,
+       "pages": [
+        "527"
+       ]
+      },
+      {
+       "work": 7,
+       "pages": [
+        "306"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 6
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 8
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "469"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".30 Super Carry",
@@ -185,7 +326,56 @@
    "primer": {
     "type": "small-pistol",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 9
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "527"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "468"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 10
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "9 mm Browning kurz (.380 ACP)",
@@ -234,7 +424,53 @@
    "primer": {
     "type": "small-pistol",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 11
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 12
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 13
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "487"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".22 LR",
@@ -276,7 +512,76 @@
     "case": "M6.90 25.40 L6.90 24.38 L6.30 24.38 L6.30 9.80 L0.60 9.80 L0.60 24.38 L0.00 24.38 L0.00 25.40 Z",
     "bullet": "M6.30 9.80 L6.30 7.64 L6.29 7.10 L6.27 6.55 L6.23 6.01 L6.18 5.46 L6.11 4.91 L6.02 4.37 L5.92 3.82 L5.79 3.28 L5.63 2.73 L5.44 2.18 L5.21 1.64 L4.92 1.09 L4.51 0.55 L3.91 0.00 L3.45 0.00 L2.99 0.00 L2.39 0.55 L1.98 1.09 L1.69 1.64 L1.46 2.18 L1.27 2.73 L1.11 3.28 L0.98 3.82 L0.88 4.37 L0.79 4.91 L0.72 5.46 L0.67 6.01 L0.63 6.55 L0.61 7.10 L0.60 7.64 L0.60 9.80 Z",
     "bulletMaterial": "lead"
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 14
+      },
+      {
+       "work": 15,
+       "pages": [
+        "681"
+       ]
+      },
+      {
+       "work": 3,
+       "pages": [
+        "670"
+       ]
+      },
+      {
+       "work": 16,
+       "pages": [
+        "3-5"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "670"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 17
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 17
+      },
+      {
+       "work": 18,
+       "pages": [
+        "723"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".17 HMR",
@@ -314,7 +619,62 @@
     "bullet": "M5.95 7.64 L5.95 5.20 L5.93 4.82 L5.89 4.45 L5.82 4.08 L5.74 3.71 L5.64 3.34 L5.52 2.97 L5.39 2.60 L5.24 2.23 L5.07 1.86 L4.88 1.48 L4.67 1.11 L4.43 0.74 L4.15 0.37 L3.86 0.00 L3.75 0.00 L3.64 0.00 L3.35 0.37 L3.07 0.74 L2.83 1.11 L2.62 1.48 L2.43 1.86 L2.26 2.23 L2.11 2.60 L1.98 2.97 L1.86 3.34 L1.76 3.71 L1.68 4.08 L1.61 4.45 L1.57 4.82 L1.55 5.20 L1.55 7.64 Z",
     "tip": "M4.64 1.07 L4.43 0.74 L4.15 0.37 L3.86 0.00 L3.75 0.00 L3.64 0.00 L3.35 0.37 L3.07 0.74 L2.86 1.07 Z",
     "tipMaterial": "polymer"
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 19
+      },
+      {
+       "work": 3,
+       "pages": [
+        "670"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 19
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 20
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 20
+      },
+      {
+       "work": 18,
+       "pages": [
+        "719"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".22 WMR",
@@ -353,7 +713,64 @@
     "height": 34.3,
     "case": "M7.50 34.30 L7.50 33.13 L6.80 33.13 L6.80 7.50 L0.70 7.50 L0.70 33.13 L0.00 33.13 L0.00 34.30 Z",
     "bullet": "M6.60 7.50 L6.60 5.85 L6.59 5.43 L6.57 5.01 L6.53 4.60 L6.48 4.18 L6.41 3.76 L6.32 3.34 L6.22 2.92 L6.09 2.51 L5.93 2.09 L5.74 1.67 L5.51 1.25 L5.22 0.84 L4.81 0.42 L4.21 0.00 L3.75 0.00 L3.29 0.00 L2.69 0.42 L2.28 0.84 L1.99 1.25 L1.76 1.67 L1.57 2.09 L1.41 2.51 L1.28 2.92 L1.18 3.34 L1.09 3.76 L1.02 4.18 L0.97 4.60 L0.93 5.01 L0.91 5.43 L0.90 5.85 L0.90 7.50 Z"
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 15,
+       "pages": [
+        "681"
+       ]
+      },
+      {
+       "work": 3,
+       "pages": [
+        "670"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "670"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "660"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 21
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".45 ACP",
@@ -406,7 +823,53 @@
    "primer": {
     "type": "large-pistol",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 22
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 23
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 24
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "516"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".32 S&W Long",
@@ -449,7 +912,47 @@
    "primer": {
     "type": "small-pistol",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 25
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 26
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 26
+      },
+      {
+       "work": 18,
+       "pages": [
+        "620"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".38 Super",
@@ -489,7 +992,68 @@
    "primer": {
     "type": "small-pistol",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 27
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 28
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 29
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "493"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 29
+      },
+      {
+       "work": 18,
+       "pages": [
+        "627"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "10 mm Auto",
@@ -532,7 +1096,65 @@
    "primer": {
     "type": "large-pistol",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 30
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 31
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 32
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "498"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 18,
+       "pages": [
+        "630"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".38 Special",
@@ -583,7 +1205,47 @@
    "primer": {
     "type": "small-pistol",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 33
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 34
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 34
+      },
+      {
+       "work": 18,
+       "pages": [
+        "626"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".357 Magnum",
@@ -632,7 +1294,47 @@
    "primer": {
     "type": "small-pistol",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 35
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 36
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 36
+      },
+      {
+       "work": 18,
+       "pages": [
+        "626"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".44 Magnum",
@@ -680,7 +1382,57 @@
    "primer": {
     "type": "large-pistol",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 37
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 38
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 39
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 38
+      },
+      {
+       "work": 18,
+       "pages": [
+        "632"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".50 Action Express",
@@ -719,7 +1471,40 @@
    "primer": {
     "type": "large-pistol",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 40
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 41
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 42
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".44 Rundkugel (.454)",
@@ -751,7 +1536,20 @@
     "width": 11.5,
     "height": 11.5,
     "bullet": "M5.75 11.50 L6.39 11.46 L7.03 11.36 L7.65 11.18 L8.24 10.93 L8.81 10.62 L9.34 10.25 L9.82 9.82 L10.25 9.34 L10.62 8.81 L10.93 8.24 L11.18 7.65 L11.36 7.03 L11.46 6.39 L11.50 5.75 L11.46 5.11 L11.36 4.47 L11.18 3.85 L10.93 3.26 L10.62 2.69 L10.25 2.16 L9.82 1.68 L9.34 1.25 L8.81 0.88 L8.24 0.57 L7.65 0.32 L7.03 0.14 L6.39 0.04 L5.75 0.00 L5.11 0.04 L4.47 0.14 L3.85 0.32 L3.26 0.57 L2.69 0.88 L2.16 1.25 L1.68 1.68 L1.25 2.16 L0.88 2.69 L0.57 3.26 L0.32 3.85 L0.14 4.47 L0.04 5.11 L0.00 5.75 L0.04 6.39 L0.14 7.03 L0.32 7.65 L0.57 8.24 L0.88 8.81 L1.25 9.34 L1.68 9.82 L2.16 10.25 L2.69 10.62 L3.26 10.93 L3.85 11.18 L4.47 11.36 L5.11 11.46 Z"
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 43
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "7.5x55 mm Swiss (GP 11)",
@@ -852,7 +1650,102 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "573"
+       ]
+      },
+      {
+       "work": 44
+      },
+      {
+       "work": 45,
+       "pages": [
+        "469"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 44
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 46
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "545"
+       ]
+      },
+      {
+       "work": 47,
+       "pages": [
+        "50"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 46
+      },
+      {
+       "work": 18,
+       "pages": [
+        "513"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "colour_codes"
+     ],
+     "refs": [
+      {
+       "work": 48,
+       "pages": [
+        "76",
+        "77",
+        "86"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "7.5x53.5 mm Swiss (Patrone Modell 1890)",
@@ -914,7 +1807,75 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 4.92
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 49
+      },
+      {
+       "work": 47,
+       "pages": [
+        "50"
+       ]
+      },
+      {
+       "work": 50
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 49
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 49
+      },
+      {
+       "work": 50
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 46
+      },
+      {
+       "work": 49
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 46
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "7.5x54.5 mm Swiss (GP 90/23)",
@@ -964,7 +1925,60 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 47,
+       "pages": [
+        "50"
+       ]
+      },
+      {
+       "work": 51
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 51
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 46
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 47,
+       "pages": [
+        "50"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "7.5 mm Kadettenpatrone",
@@ -1016,7 +2030,47 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 47,
+       "pages": [
+        "50"
+       ]
+      },
+      {
+       "work": 51
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 51
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 46
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "5.6 mm GP 90",
@@ -1063,7 +2117,66 @@
    "primer": {
     "type": "small-rifle",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 52
+      },
+      {
+       "work": 53
+      },
+      {
+       "work": 54
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle"
+     ],
+     "refs": [
+      {
+       "work": 53
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 55
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet",
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 56
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 54
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".223 Remington",
@@ -1107,7 +2220,90 @@
    "primer": {
     "type": "small-rifle",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 45,
+       "pages": [
+        "160"
+       ]
+      },
+      {
+       "work": 7,
+       "pages": [
+        "152"
+       ]
+      },
+      {
+       "work": 3,
+       "pages": [
+        "175"
+       ]
+      },
+      {
+       "work": 53
+      },
+      {
+       "work": 52
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 53
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 55
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "91"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 53
+      },
+      {
+       "work": 18,
+       "pages": [
+        "275"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "5.56x45 mm NATO",
@@ -1253,7 +2449,78 @@
    "primer": {
     "type": "small-rifle",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 45,
+       "pages": [
+        "174"
+       ]
+      },
+      {
+       "work": 3,
+       "pages": [
+        "573"
+       ]
+      },
+      {
+       "work": 53
+      },
+      {
+       "work": 52
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle"
+     ],
+     "refs": [
+      {
+       "work": 53
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 55
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "colour_codes"
+     ],
+     "refs": [
+      {
+       "work": 57
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "534"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".308 Winchester",
@@ -1298,7 +2565,63 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "176"
+       ]
+      },
+      {
+       "work": 58
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 58
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 59
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 59
+      },
+      {
+       "work": 18,
+       "pages": [
+        "327"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "7.62x51 mm NATO",
@@ -1445,7 +2768,91 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "573"
+       ]
+      },
+      {
+       "work": 16,
+       "pages": [
+        "11-17"
+       ]
+      },
+      {
+       "work": 58
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle"
+     ],
+     "refs": [
+      {
+       "work": 60
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 58
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 61
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "546"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "colour_codes"
+     ],
+     "refs": [
+      {
+       "work": 61
+      },
+      {
+       "work": 48,
+       "pages": [
+        "80",
+        "86"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "6 mm Creedmoor",
@@ -1487,7 +2894,72 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 62
+      },
+      {
+       "work": 3,
+       "pages": [
+        "175"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle"
+     ],
+     "refs": [
+      {
+       "work": 63
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 62
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 64
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 65
+      },
+      {
+       "work": 3,
+       "pages": [
+        "96",
+        "97"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "6.5 mm Creedmoor",
@@ -1532,7 +3004,69 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 45,
+       "pages": [
+        "317"
+       ]
+      },
+      {
+       "work": 3,
+       "pages": [
+        "175"
+       ]
+      },
+      {
+       "work": 66
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 66
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 64
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 64
+      },
+      {
+       "work": 18,
+       "pages": [
+        "291"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".30-30 Winchester",
@@ -1576,7 +3110,69 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 45,
+       "pages": [
+        "444"
+       ]
+      },
+      {
+       "work": 3,
+       "pages": [
+        "176"
+       ]
+      },
+      {
+       "work": 67
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 67
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 68
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 68
+      },
+      {
+       "work": 18,
+       "pages": [
+        "324"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "8x57 mm IS",
@@ -1704,7 +3300,86 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 45,
+       "pages": [
+        "631"
+       ]
+      },
+      {
+       "work": 3,
+       "pages": [
+        "176"
+       ]
+      },
+      {
+       "work": 69
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 69
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 70
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "556"
+       ]
+      },
+      {
+       "work": 18,
+       "pages": [
+        "71"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "colour_codes"
+     ],
+     "refs": [
+      {
+       "work": 48,
+       "pages": [
+        "56",
+        "86"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "7x57 mm Mauser",
@@ -1745,7 +3420,93 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 7,
+       "pages": [
+        "828"
+       ]
+      },
+      {
+       "work": 3,
+       "pages": [
+        "573"
+       ]
+      },
+      {
+       "work": 71
+      },
+      {
+       "work": 72
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 71
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 73
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "542"
+       ]
+      },
+      {
+       "work": 74
+      },
+      {
+       "work": 75
+      },
+      {
+       "work": 76
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 73
+      },
+      {
+       "work": 18,
+       "pages": [
+        "509"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "7x57 mm R",
@@ -1786,7 +3547,69 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 77
+      },
+      {
+       "work": 7,
+       "pages": [
+        "829"
+       ]
+      },
+      {
+       "work": 3,
+       "pages": [
+        "651"
+       ]
+      },
+      {
+       "work": 15,
+       "pages": [
+        "681"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 77
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 78
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 79
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "7.63x25 mm Mauser",
@@ -1827,7 +3650,72 @@
    "primer": {
     "type": "small-pistol",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 80
+      },
+      {
+       "work": 81
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 81
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 82
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "469"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 80
+      },
+      {
+       "work": 18,
+       "pages": [
+        "650"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "6.5x54 mm Mannlicher-Schönauer",
@@ -1867,7 +3755,66 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 45,
+       "pages": [
+        "296"
+       ]
+      },
+      {
+       "work": 83
+      },
+      {
+       "work": 84
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 84
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 83
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "537"
+       ]
+      },
+      {
+       "work": 85
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".577/450 Martini-Henry",
@@ -1910,7 +3857,72 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "574"
+       ]
+      },
+      {
+       "work": 86
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 86
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 87
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 88
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 87
+      },
+      {
+       "work": 18,
+       "pages": [
+        "564"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "10.4x38 mm R Vetterli",
@@ -1952,7 +3964,45 @@
     "patch": "M13.31 18.01 L13.31 9.00 L2.39 9.00 L2.39 18.01 Z",
     "bulletMaterial": "lead",
     "caseMaterial": "copper"
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "shoulder_angle"
+     ],
+     "refs": [
+      {
+       "work": 89
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "574"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet",
+      "case",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 90
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "10.4x38 mm R Vetterli Centrefire",
@@ -1997,7 +4047,32 @@
    "primer": {
     "type": "berdan-nitro",
     "diameter": 6.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "shoulder_angle",
+      "primer",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 89
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 91
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "7.5 mm Swiss Ordnance 1882",
@@ -2041,7 +4116,68 @@
    "primer": {
     "type": "small-pistol",
     "diameter": 4.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 92
+      },
+      {
+       "work": 93
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 93
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 92
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 94
+      },
+      {
+       "work": 3,
+       "pages": [
+        "475"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 94
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "7.62x39 mm",
@@ -2154,7 +4290,107 @@
    "primer": {
     "type": "large-rifle",
     "diameter": 5.33
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 95
+      },
+      {
+       "work": 3,
+       "pages": [
+        "176"
+       ]
+      },
+      {
+       "work": 45,
+       "pages": [
+        "618"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 96
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 78
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "551"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 97
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 98
+      },
+      {
+       "work": 18,
+       "pages": [
+        "487"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "colour_codes"
+     ],
+     "refs": [
+      {
+       "work": 48,
+       "pages": [
+        "83"
+       ]
+      },
+      {
+       "work": 98
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "11x59 mm R Gras",
@@ -2197,7 +4433,57 @@
    "primer": {
     "type": "berdan-nitro",
     "diameter": 6.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 99
+      },
+      {
+       "work": 100
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 100
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "574"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 99
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".450 No. 2 Nitro Express",
@@ -2238,7 +4524,45 @@
    "primer": {
     "type": "berdan-nitro",
     "diameter": 6.45
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 101
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 3,
+       "pages": [
+        "608"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "bullet",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 102
+      }
+     ]
+    }
+   ]
   },
   {
    "id": ".36 Rundkugel (.375)",
@@ -2269,7 +4593,20 @@
     "width": 9.5,
     "height": 9.5,
     "bullet": "M4.75 9.50 L5.28 9.47 L5.81 9.38 L6.32 9.23 L6.81 9.03 L7.28 8.77 L7.71 8.46 L8.11 8.11 L8.46 7.71 L8.77 7.28 L9.03 6.81 L9.23 6.32 L9.38 5.81 L9.47 5.28 L9.50 4.75 L9.47 4.22 L9.38 3.69 L9.23 3.18 L9.03 2.69 L8.77 2.22 L8.46 1.79 L8.11 1.39 L7.71 1.04 L7.28 0.73 L6.81 0.47 L6.32 0.27 L5.81 0.12 L5.28 0.03 L4.75 0.00 L4.22 0.03 L3.69 0.12 L3.18 0.27 L2.69 0.47 L2.22 0.73 L1.79 1.04 L1.39 1.39 L1.04 1.79 L0.73 2.22 L0.47 2.69 L0.27 3.18 L0.12 3.69 L0.03 4.22 L0.00 4.75 L0.03 5.28 L0.12 5.81 L0.27 6.32 L0.47 6.81 L0.73 7.28 L1.04 7.71 L1.39 8.11 L1.79 8.46 L2.22 8.77 L2.69 9.03 L3.18 9.23 L3.69 9.38 L4.22 9.47 Z"
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "bullet"
+     ],
+     "refs": [
+      {
+       "work": 103
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "12/70",
@@ -2306,7 +4643,32 @@
    "primer": {
     "type": "shotshell-209",
     "diameter": 6.15
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 104
+      },
+      {
+       "work": 105
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 106
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "12/76",
@@ -2340,7 +4702,32 @@
    "primer": {
     "type": "shotshell-209",
     "diameter": 6.15
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 104
+      },
+      {
+       "work": 105
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 106
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "12/89",
@@ -2374,7 +4761,32 @@
    "primer": {
     "type": "shotshell-209",
     "diameter": 6.15
-   }
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 104
+      },
+      {
+       "work": 105
+      }
+     ]
+    },
+    {
+     "parts": [
+      "primer"
+     ],
+     "refs": [
+      {
+       "work": 106
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "20x102 mm",
@@ -2397,6 +4809,40 @@
    "blank": false,
    "wellSourced": false,
    "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 15,
+       "pages": [
+        "682"
+       ]
+      },
+      {
+       "work": 107
+      },
+      {
+       "work": 16,
+       "pages": [
+        "14-13"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 107
+      }
+     ]
+    }
+   ],
    "dimensions": {
     "rim": 29.49,
     "base": 29.21,
@@ -2411,6 +4857,547 @@
     "case": "M29.49 168.00 L29.49 166.70 L27.57 166.70 L27.57 165.70 L29.35 163.58 L25.05 66.00 L4.44 66.00 L0.14 163.58 L1.92 165.70 L1.92 166.70 L0.00 166.70 L0.00 168.00 Z",
     "bullet": "M24.74 66.00 L24.74 44.88 L24.65 41.67 L24.45 38.47 L24.16 35.26 L23.78 32.06 L23.33 28.85 L22.80 25.65 L22.20 22.44 L21.51 19.23 L20.75 16.03 L19.89 12.82 L18.93 9.62 L17.84 6.41 L16.56 3.21 L15.24 0.00 L14.74 0.00 L14.24 0.00 L12.93 3.21 L11.65 6.41 L10.56 9.62 L9.60 12.82 L8.74 16.03 L7.98 19.23 L7.29 22.44 L6.69 25.65 L6.16 28.85 L5.71 32.06 L5.33 35.26 L5.04 38.47 L4.84 41.67 L4.74 44.88 L4.74 66.00 Z"
    }
+  }
+ ],
+ "sources": [
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2025/05/SAAMI-Z299.3-2022-Centerfire-Pistol-Revolver-Approved-12-13-2022.pdf#page=33"
+  },
+  {
+   "detail": "Tab. IV · tabivcal-en-page28",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-iv/tabivcal-en-page28.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 9×19mm Parabellum",
+   "url": "https://en.wikipedia.org/wiki/9×19mm_Parabellum"
+  },
+  {
+   "detail": "W. Todd Woodard, Corey Graff",
+   "title": "Cartridges of the World",
+   "year": 2026
+  },
+  {
+   "detail": "Tab. IV · tabivcal-en-page20",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-iv/tabivcal-en-page20.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 9×21mm",
+   "url": "https://en.wikipedia.org/wiki/9×21mm"
+  },
+  {
+   "detail": "Tab. IV · tabivcal-en-page14",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-iv/tabivcal-en-page14.pdf"
+  },
+  {
+   "detail": "John J. Donnelly",
+   "title": "The Handloader's Manual of Cartridge Conversions",
+   "year": 1987
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 7.65×21mm Parabellum",
+   "url": "https://en.wikipedia.org/wiki/7.65×21mm_Parabellum"
+  },
+  {
+   "detail": "Tab. IV · 30-super-carry-250223-en",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-iv/30-super-carry-250223-en.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .30 Super Carry",
+   "url": "https://en.wikipedia.org/wiki/.30_Super_Carry"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2025/05/SAAMI-Z299.3-2022-Centerfire-Pistol-Revolver-Approved-12-13-2022.pdf#page=51"
+  },
+  {
+   "detail": "Tab. IV · tabivcal-en-page24",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-iv/tabivcal-en-page24.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .380 ACP",
+   "url": "https://en.wikipedia.org/wiki/.380_ACP"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2026/05/SAAMI-Z299.1-R2026-Rimfire-FINAL-Approved-2026-05-08.pdf#page=22"
+  },
+  {
+   "detail": "Charles Q. Cutshaw and Leland Ness",
+   "title": "Jane's Ammunition Handbook",
+   "year": 2002
+  },
+  {
+   "title": "TM 43-0001-27: Army Ammunition Data Sheets, Small Caliber Ammunition (FSC 1305)",
+   "year": 1994
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .22 Long Rifle",
+   "url": "https://en.wikipedia.org/wiki/.22_Long_Rifle"
+  },
+  {
+   "detail": "Michael Bussard",
+   "title": "Ammo Encyclopedia",
+   "year": 2010
+  },
+  {
+   "detail": "Tab. V · tabvcal-en-page26",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-v/tabvcal-en-page26.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .17 Hornady Magnum Rimfire",
+   "url": "https://en.wikipedia.org/wiki/.17_Hornady_Magnum_Rimfire"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .22 Winchester Magnum Rimfire",
+   "url": "https://en.wikipedia.org/wiki/.22_Winchester_Magnum_Rimfire"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2025/05/SAAMI-Z299.3-2022-Centerfire-Pistol-Revolver-Approved-12-13-2022.pdf#page=57"
+  },
+  {
+   "detail": "Tab. IV · tabivcal-en-page76",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-iv/tabivcal-en-page76.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .45 ACP",
+   "url": "https://en.wikipedia.org/wiki/.45_ACP"
+  },
+  {
+   "detail": "Tab. IV · 32s-w-long-190829-en",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-iv/32s-w-long-190829-en.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .32 S&W Long",
+   "url": "https://en.wikipedia.org/wiki/.32_S%26W_Long"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2025/05/SAAMI-Z299.3-2022-Centerfire-Pistol-Revolver-Approved-12-13-2022.pdf#page=50"
+  },
+  {
+   "detail": "Tab. IV · tabivcal-en-page61",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-iv/tabivcal-en-page61.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .38 Super",
+   "url": "https://en.wikipedia.org/wiki/.38_Super"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2025/05/SAAMI-Z299.3-2022-Centerfire-Pistol-Revolver-Approved-12-13-2022.pdf#page=36"
+  },
+  {
+   "detail": "Tab. IV · tabivcal-en-page31",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-iv/tabivcal-en-page31.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 10mm Auto",
+   "url": "https://en.wikipedia.org/wiki/10mm_Auto"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2025/05/SAAMI-Z299.3-2022-Centerfire-Pistol-Revolver-Approved-12-13-2022.pdf#page=48"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .38 Special",
+   "url": "https://en.wikipedia.org/wiki/.38_Special"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2025/05/SAAMI-Z299.3-2022-Centerfire-Pistol-Revolver-Approved-12-13-2022.pdf#page=45"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .357 Magnum",
+   "url": "https://en.wikipedia.org/wiki/.357_Magnum"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2025/05/SAAMI-Z299.3-2022-Centerfire-Pistol-Revolver-Approved-12-13-2022.pdf#page=55"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .44 Magnum",
+   "url": "https://en.wikipedia.org/wiki/.44_Magnum"
+  },
+  {
+   "detail": "3106",
+   "title": "naboje.org",
+   "url": "https://naboje.org/node/3106"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2025/05/SAAMI-Z299.3-2022-Centerfire-Pistol-Revolver-Approved-12-13-2022.pdf#page=66"
+  },
+  {
+   "detail": "Tab. IV · tabivcal-en-page91",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-iv/tabivcal-en-page91.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .50 Action Express",
+   "url": "https://en.wikipedia.org/wiki/.50_Action_Express"
+  },
+  {
+   "detail": "44-cal-454-lead-balls",
+   "title": "hornady.com",
+   "url": "https://www.hornady.com/muzzleloading/browse/44-cal-454-lead-balls"
+  },
+  {
+   "detail": "Tab. I · tabical-en-page46",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-i/tabical-en-page46.pdf"
+  },
+  {
+   "detail": "Neal Emery",
+   "title": "Hornady Handbook of Cartridge Reloading",
+   "year": 2016
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 7.5×55mm Swiss",
+   "url": "https://en.wikipedia.org/wiki/7.5×55mm_Swiss"
+  },
+  {
+   "detail": "Joe Poyer",
+   "title": "Swiss Magazine Loading Rifles 1869 to 1958",
+   "year": 2010
+  },
+  {
+   "detail": "Peter Labbett",
+   "title": "Military Small Arms Ammunition of the World, 1945-1980",
+   "year": 1980
+  },
+  {
+   "detail": "1445321",
+   "title": "recherche.bar.admin.ch",
+   "url": "https://www.recherche.bar.admin.ch/recherche/link/de/archiv/einheit/1445321"
+  },
+  {
+   "detail": "75-x-535-swiss-schmidt-rubin-m-1890-1903",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/75-x-535-swiss-schmidt-rubin-m-1890-1903/"
+  },
+  {
+   "detail": "75-x-545-swiss-gp-90-23",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/75-x-545-swiss-gp-90-23/"
+  },
+  {
+   "detail": "Tab. I · 223-rem-170406-en",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-i/223-rem-170406-en.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .223 Remington",
+   "url": "https://en.wikipedia.org/wiki/.223_Remington"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: SIG SG 550",
+   "url": "https://en.wikipedia.org/wiki/SIG_SG_550"
+  },
+  {
+   "detail": "Tab. I · 300-aac-blackout-180801-en",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-i/300-aac-blackout-180801-en.pdf"
+  },
+  {
+   "detail": "53_096_d",
+   "title": "vtg.admin.ch",
+   "url": "https://www.vtg.admin.ch/dam/de/sd-web/iZ8NXEwaRRyw/53_096_d.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 5.56×45mm NATO",
+   "url": "https://en.wikipedia.org/wiki/5.56×45mm_NATO"
+  },
+  {
+   "detail": "Tab. I · tabical-en-page125",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-i/tabical-en-page125.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .308 Winchester",
+   "url": "https://en.wikipedia.org/wiki/.308_Winchester"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 7.62×51mm NATO",
+   "url": "https://en.wikipedia.org/wiki/7.62%C3%9751mm_NATO"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 7.62×51mm NATO",
+   "url": "https://en.wikipedia.org/wiki/7.62×51mm_NATO"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2026/10/SAAMI-Z299.4-CFR-2025-Centerfire-Rifle-Approved-2-10-2025-2026-10-21.pdf#page=45"
+  },
+  {
+   "detail": "6mm_Creedmoor.html",
+   "title": "chuckhawks.com",
+   "url": "https://chuckhawks.com/6mm_Creedmoor.html"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 6.5mm Creedmoor",
+   "url": "https://en.wikipedia.org/wiki/6.5mm_Creedmoor"
+  },
+  {
+   "detail": "hornady-announces-new-products-for-2017",
+   "title": "press.hornady.com",
+   "url": "https://press.hornady.com/release/2016/10/28/hornady-announces-new-products-for-2017/"
+  },
+  {
+   "detail": "Tab. I · 6-5-creedmoor-fr",
+   "title": "C.I.P.",
+   "url": "https://bobp.expert-it.com/uploads/tdcc/tab-i/6-5-creedmoor-fr.pdf"
+  },
+  {
+   "detail": "Tab. II · tabiical-en-page70",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-ii/tabiical-en-page70.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .30-30 Winchester",
+   "url": "https://en.wikipedia.org/wiki/.30-30_Winchester"
+  },
+  {
+   "detail": "Tab. I · tabical-en-page57",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-i/tabical-en-page57.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 7.92×57mm Mauser",
+   "url": "https://en.wikipedia.org/wiki/7.92×57mm_Mauser"
+  },
+  {
+   "detail": "Tab. I · tabical-en-page33",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-i/tabical-en-page33.pdf"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2026/10/SAAMI-Z299.4-CFR-2025-Centerfire-Rifle-Approved-2-10-2025-2026-10-21.pdf#page=58"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 7×57mm Mauser",
+   "url": "https://en.wikipedia.org/wiki/7×57mm_Mauser"
+  },
+  {
+   "detail": "ficha-07-057-bgc-080-0146",
+   "title": "municion.org",
+   "url": "https://municion.org/ficha-07-057-bgc-080-0146/"
+  },
+  {
+   "detail": "ficha-07-057-bgc-080-0152",
+   "title": "municion.org",
+   "url": "https://municion.org/ficha-07-057-bgc-080-0152/"
+  },
+  {
+   "detail": "ficha-07-057-bgc-080-0141",
+   "title": "municion.org",
+   "url": "https://municion.org/ficha-07-057-bgc-080-0141/"
+  },
+  {
+   "detail": "Tab. II · tabiical-en-page22",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-ii/tabiical-en-page22.pdf"
+  },
+  {
+   "detail": "reloading-data-tool",
+   "title": "vihtavuori.com",
+   "url": "https://vihtavuori.com/reloading-data/reloading-data-tool/"
+  },
+  {
+   "detail": "7-x-57-r-mauser",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/7-x-57-r-mauser/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 7.63×25mm Mauser",
+   "url": "https://en.wikipedia.org/wiki/7.63×25mm_Mauser"
+  },
+  {
+   "detail": "Tab. IV · tabivcal-en-page11",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-iv/tabivcal-en-page11.pdf"
+  },
+  {
+   "detail": "30-mauser-brass",
+   "title": "starlinebrass.com",
+   "url": "https://www.starlinebrass.com/30-mauser-brass"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 6.5×54mm Mannlicher–Schönauer",
+   "url": "https://en.wikipedia.org/wiki/6.5×54mm_Mannlicher–Schönauer"
+  },
+  {
+   "detail": "Tab. I · tabical-en-page22",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-i/tabical-en-page22.pdf"
+  },
+  {
+   "detail": "ficha-07-054-bgc-030-0009",
+   "title": "municion.org",
+   "url": "https://municion.org/ficha-07-054-bgc-030-0009/"
+  },
+  {
+   "detail": "Tab. II · tabiical-en-page127",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-ii/tabiical-en-page127.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .577/450 Martini–Henry",
+   "url": "https://en.wikipedia.org/wiki/.577/450_Martini–Henry"
+  },
+  {
+   "detail": "commons.wikimedia.org",
+   "title": "Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Snider-Martini-Enfield_Cartridges.JPG"
+  },
+  {
+   "detail": "104-x-38-r-swiss-vetterli-cf-m-1869-81",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/104-x-38-r-swiss-vetterli-cf-m-1869-81/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .41 Swiss",
+   "url": "https://en.wikipedia.org/wiki/.41_Swiss"
+  },
+  {
+   "detail": "ficha-11-038-bbc-011-0001",
+   "title": "municion.org",
+   "url": "https://municion.org/ficha-11-038-bbc-011-0001/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 7.5mm 1882 Ordnance",
+   "url": "https://en.wikipedia.org/wiki/7.5mm_1882_Ordnance"
+  },
+  {
+   "detail": "Tab. IV · tabivcal-en-page8",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-iv/tabivcal-en-page8.pdf"
+  },
+  {
+   "detail": "75-mm-swiss-ordnance-revolver-m-1882-86",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/75-mm-swiss-ordnance-revolver-m-1882-86/"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2026/10/SAAMI-Z299.4-CFR-2025-Centerfire-Rifle-Approved-2-10-2025-2026-10-21.pdf#page=67"
+  },
+  {
+   "detail": "Tab. I · tabical-en-page47",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-i/tabical-en-page47.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 7.62×39mm",
+   "url": "https://en.wikipedia.org/wiki/7.62%C3%9739mm"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 7.62×39mm",
+   "url": "https://en.wikipedia.org/wiki/7.62×39mm"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 11×59mmR Gras",
+   "url": "https://en.wikipedia.org/wiki/11×59mmR_Gras"
+  },
+  {
+   "detail": "11-x-59-r-french-gras-m-1874-79-83",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/11-x-59-r-french-gras-m-1874-79-83/"
+  },
+  {
+   "detail": "Tab. II · tabiical-en-page116",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-ii/tabiical-en-page116.pdf"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: .450 No 2 Nitro Express",
+   "url": "https://en.wikipedia.org/wiki/.450_No_2_Nitro_Express"
+  },
+  {
+   "detail": "36-cal-375-lead-balls",
+   "title": "hornady.com",
+   "url": "https://www.hornady.com/muzzleloading/browse/36-cal-375-lead-balls"
+  },
+  {
+   "detail": "Tab. VII · 12-55-en",
+   "title": "C.I.P.",
+   "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-vii/12-55-en.pdf"
+  },
+  {
+   "detail": "saami.org",
+   "title": "SAAMI",
+   "url": "https://saami.org/wp-content/uploads/2025/09/ANSI-SAAMI-Z299.2-Shotshell-2019-Approved-2025-09-23.pdf"
+  },
+  {
+   "detail": "rldc",
+   "title": "hodgdonreloading.com",
+   "url": "https://hodgdonreloading.com/rldc/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: M61 Vulcan",
+   "url": "https://en.wikipedia.org/wiki/M61_Vulcan"
   }
  ],
  "lookalikes": [

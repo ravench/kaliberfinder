@@ -7,6 +7,7 @@ struct MeasureView: View {
     @State private var overallLength = UserDefaults.standard.string(forKey: "screenTourLength") ?? ""
     @State private var caseLength = ""
     @State private var rim = ""
+    @State private var belt = ""
     @State private var bullet = UserDefaults.standard.string(forKey: "screenTourBullet") ?? ""
     @State private var shape: CaseShape = .any
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
@@ -19,6 +20,7 @@ struct MeasureView: View {
         MeasuredDimensions(overallLength: unit.parse(overallLength),
                            caseLength: unit.parse(caseLength),
                            rim: unit.parse(rim),
+                           belt: unit.parse(belt),
                            bullet: unit.parse(bullet),
                            shape: shape)
     }
@@ -37,6 +39,7 @@ struct MeasureView: View {
                 field("Gesamtlänge", text: $overallLength)
                 field("Hülsenlänge", text: $caseLength)
                 field("Randdurchmesser", text: $rim)
+                field("Gürteldurchmesser", text: $belt)
                 field("Geschossdurchmesser", text: $bullet)
             } header: {
                 if unit == .metric { Text("Gemessen in mm") } else { Text("Gemessen in Zoll") }
@@ -67,7 +70,7 @@ struct MeasureView: View {
             }
         }
         .onChange(of: unit) { old, new in
-            for text in [$overallLength, $caseLength, $rim, $bullet] {
+            for text in [$overallLength, $caseLength, $rim, $belt, $bullet] {
                 text.wrappedValue = LengthUnit.convert(text.wrappedValue, from: old, to: new)
             }
         }

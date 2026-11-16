@@ -1358,6 +1358,29 @@
         }
       }
     },
+    "Eigene Messung": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Own measurement"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mesure personnelle"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Misurazione propria"
+          }
+        }
+      }
+    },
     "Einblenden": {
       "extractionState": "manual",
       "localizations": {
@@ -2642,6 +2665,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verde punta e fondello, viola palla, arancione colletto e spalla, azzurro corpo."
+          }
+        }
+      }
+    },
+    "Gürtel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ceinture"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cintura"
           }
         }
       }
@@ -5199,6 +5245,29 @@
         }
       }
     },
+    "Quellen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sources"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sources"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fonti"
+          }
+        }
+      }
+    },
     "Rand": {
       "extractionState": "manual",
       "localizations": {
@@ -5429,6 +5498,29 @@
         }
       }
     },
+    "S. %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "p. %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "p. %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "p. %@"
+          }
+        }
+      }
+    },
     "Scharf ab %lld cm": {
       "extractionState": "manual",
       "localizations": {
@@ -5586,6 +5678,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lunghezza fino alla spalla"
+          }
+        }
+      }
+    },
+    "Schulterwinkel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulder angle"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Angle d'épaulement"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Angolo della spalla"
           }
         }
       }
@@ -7334,6 +7449,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Egitto"
+          }
+        }
+      }
+    },
+    "Öffnet die Webseite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the web page"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre la page web"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apre la pagina web"
           }
         }
       }

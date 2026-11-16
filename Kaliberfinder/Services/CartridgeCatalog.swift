@@ -32,6 +32,21 @@ enum CartridgeCatalog {
         let cartridges: [Cartridge]
         /// Since 2026-11-08; older files have none.
         let lookalikes: [LookalikeGroup]?
+        /// The works the calibres' sources name (`Cartridge.SourceGroup.Ref.work`); since 2026-11-15.
+        let sources: [Work]?
+    }
+
+    /// A book, a web page or a caliper measurement that a calibre's values come from.
+    struct Work: Decodable, Hashable {
+        /// Nil for a measurement.
+        let title: String?
+        /// A book's authors or editors, a web page's table (C.I.P.) or host.
+        let detail: String?
+        /// A book's year.
+        let year: Int?
+        let url: URL?
+        /// A caliper measurement's day, "2026-11-08".
+        let measured: String?
     }
 
     private static let file = Bundle.main.url(forResource: "Cartridges", withExtension: "json")
@@ -43,6 +58,7 @@ enum CartridgeCatalog {
     static let source: Source? = file?.calibreData
     /// Calibres that look alike but are cartridges of their own (calibre-data), each group's parent first.
     static let lookalikes: [LookalikeGroup] = file?.lookalikes ?? []
+    static let works: [Work] = file?.sources ?? []
 
     static func decode(_ data: Data) -> [Cartridge] { decodeFile(data)?.cartridges ?? [] }
 
