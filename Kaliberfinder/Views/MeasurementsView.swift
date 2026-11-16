@@ -70,7 +70,7 @@ private struct Polylines: Shape {
 struct DimensionLayout {
     /// The measurements the detail screen lists.
     enum Part {
-        case bullet, neck, shoulder, base, rim, overall, caseLength
+        case bullet, neck, shoulder, base, belt, rim, overall, caseLength
 
         /// Short German name over the value, used as localization key.
         var title: String {
@@ -79,6 +79,7 @@ struct DimensionLayout {
             case .neck: "Hals"
             case .shoulder: "Schulter"
             case .base: "Boden"
+            case .belt: "Gürtel"
             case .rim: "Rand"
             case .overall: "Gesamt"
             case .caseLength: "Hülse"
@@ -92,6 +93,7 @@ struct DimensionLayout {
             case .neck: "Halsdurchmesser"
             case .shoulder: "Schulterdurchmesser"
             case .base: "Bodendurchmesser"
+            case .belt: "Gürteldurchmesser"
             case .rim: "Randdurchmesser"
             case .overall: "Gesamtlänge"
             case .caseLength: "Hülsenlänge"
@@ -244,6 +246,9 @@ struct DimensionLayout {
         }
         let body = bodyStart(of: c, in: empty) ?? min(3.3, d.caseLength / 3)
         marks.append(Mark(part: .base, mm: d.base, y: height - body - 1))
+        if let belt = d.belt, let beltY = beltMiddle(of: c, below: body, in: empty) {
+            marks.append(Mark(part: .belt, mm: belt, y: beltY))
+        }
         marks.append(Mark(part: .rim, mm: d.rim, y: height))
         return marks
     }
@@ -262,7 +267,10 @@ struct DimensionLayout {
     /// wider or narrower, and stays there for 1 mm (a belt's ramp only crosses it). Nil if none.
     static func bodyStart(of c: Cartridge, in empty: OutlineGeometry) -> Double? {
         let d = c.dimensions, height = c.outline.height
-        func atBase(_ t: Double) -> Bool { abs(empty.width(at: height - t) - d.base) <= 0.25 }
+        // A belt is often within 0.25 mm of the base (7x73 mm Vom Hofe: 13.54 against 13.39, tester 2026-11-14), so a
+        // belted case's body is where the drawing is at the base diameter exactly, which the sheets give in front of the belt.
+        let tolerance = c.kind == "belted" ? 0.05 : 0.25
+        func atBase(_ t: Double) -> Bool { abs(empty.width(at: height - t) - d.base) <= tolerance }
         var below = atBase(0.01)
         for t in stride(from: step, to: min(d.caseLength, 20), by: step) {
             let here = atBase(t)
@@ -270,6 +278,19 @@ struct DimensionLayout {
             below = here
         }
         return nil
+    }
+
+    /// Height (mm from the top) of the middle of the belt: the stretch below the body start, above the groove, where the
+    /// drawing is at the belt diameter. Nil when the drawing has no such stretch.
+    static func beltMiddle(of c: Cartridge, below body: Double, in empty: OutlineGeometry) -> Double? {
+        guard let belt = c.dimensions.belt else { return nil }
+        let height = c.outline.height
+        let ts = stride(from: step, to: body, by: step).filter { abs(empty.width(at: height - $0) - belt) <= 0.05 }
+        guard let top = ts.max() else { return nil }
+        // The stretch ending at the top: down to the first gap.
+        var bottom = top
+        for t in ts.reversed() where t >= bottom - step * 1.5 { bottom = t }
+        return height - (top + bottom) / 2
     }
 
     /// Height of the middle of the widest stretch of a drawing: the equator of a ball, the band of a

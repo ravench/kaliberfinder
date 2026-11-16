@@ -602,6 +602,8 @@ final class PRScreensTests: XCTestCase {
         }
         guard open(app.staticTexts[".378 Weatherby Magnum"].firstMatch) else { return }
         snap("43-Guertel-378-Weatherby")
+        // Its drawing: the belt's line on the belt, the base's on the body in front of it (tester, 2026-11-14).
+        if open(app.buttons["Masszeichnung anzeigen"].firstMatch) { snap("43c-Guertel-Masszeichnung"); app.navigationBars.buttons.firstMatch.tap() }
         scroll(toRowAbove: "Gesamtlänge")
         snap("43b-Guertel-378-Weatherby-Masse")
     }

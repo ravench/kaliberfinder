@@ -5,12 +5,14 @@ struct MeasuredDimensions: Equatable {
     var overallLength: Double?
     var caseLength: Double?
     var rim: Double?
+    /// The belt of a belted case (tester, 2026-11-14).
+    var belt: Double?
     var bullet: Double?
     /// Narrows the list to straight or bottleneck cases.
     var shape: CaseShape = .any
 
     /// No dimension entered (the shape alone doesn't rank anything).
-    var isEmpty: Bool { [overallLength, caseLength, rim, bullet].allSatisfy { $0 == nil } }
+    var isEmpty: Bool { [overallLength, caseLength, rim, belt, bullet].allSatisfy { $0 == nil } }
 }
 
 /// The case shape picked on the dimensions screen (MEAS-05).
@@ -72,6 +74,9 @@ enum DimensionMatcher {
                 (measured.overallLength, shell ?? [c.overallLengths]),
                 (measured.caseLength, shell ?? [d.caseLength...d.caseLength]),
                 (measured.rim, [d.rim...d.rim]),  // not the base: a rebated rim is narrower than it
+                // A belt as wide as the rim is not in the data (calibre-data gives a belt only where it is wider), and a
+                // calliper on the head of a case without one reads the rim: the rim stands in for a missing belt.
+                (measured.belt, [(d.belt ?? d.rim)...(d.belt ?? d.rim)]),
                 (measured.bullet, [d.bullet...d.bullet]),
             ]
             let deviations = pairs.compactMap { pair in pair.0.map { v in max(0, (pair.1.map { outside(v, $0) }.min() ?? 0) - tolerance) } }
