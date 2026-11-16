@@ -192,9 +192,13 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     var hasCase: Bool { dimensions.caseLength > 0 }
 
-    /// A cannon round (calibre-data's `cannon` category, 20 to 57 mm): a partial entry whose missing measurements are 0
-    /// and whose outline has no paths. Listed only behind the Developer Options switch, never matched or shown at 1:1.
+    /// A cannon round (calibre-data's `cannon` category, 20 to 57 mm): behind the Developer Options switch, since it does
+    /// not fit the screen; with it on, the same rules as for every calibre (Raven, 2026-11-15).
     var isCannon: Bool { category == CartridgeCatalog.Category.cannon.rawValue }
+
+    /// Whether the outline has paths. A partial entry (a cannon round whose measurements no source gives, exported as
+    /// 0) has none: no drawing, no 1:1, no matching, only its page.
+    var isDrawn: Bool { outline.case != nil || outline.bullet != nil }
 
     /// A loaded shotshell's length depends on its crimp. The catalogue's length is SAAMI's maximum for a folded
     /// (star) crimp (calibre-data #155: 12/70 61.09 mm, tolerance -6.35), a roll crimp ends well beyond it.

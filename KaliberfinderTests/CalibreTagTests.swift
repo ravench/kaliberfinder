@@ -22,6 +22,13 @@ final class CalibreTagTests: XCTestCase {
         XCTAssertFalse(try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: try cartridge("6x47 mm SM"))).sameSize, "bore")
         XCTAssertNil(CartridgeCatalog.sizeGroup(of: try cartridge("7x57 mm R")))
         XCTAssertEqual(CalibreTag.group.title, "Gruppe")
+        // What a Developer Options switch hides carries a tag (Raven, 2026-11-15); a cannon round both rules apply to.
+        XCTAssertEqual(CalibreTag.of(try cartridge("57x121 mm R")), [.unsourced, .cannon])
+        XCTAssertEqual(CalibreTag.of(try cartridge("20x102 mm")), [.cannon])
+        XCTAssertTrue(CalibreTag.of(try cartridge("6x57 mm Mauser")).contains(.unsourced))
+        XCTAssertFalse(CalibreTag.of(try cartridge("9x19 mm")).contains(.unsourced))
+        XCTAssertEqual(CalibreTag.unsourced.title, "Unbelegt")
+        XCTAssertNotNil(CalibreTag.cannon.explanation)
         // Catalogue and search (Raven, 2026-11-12): every member, the namesake too, shows the group's name and opens itself.
         XCTAssertEqual(CartridgeRow.groupName(for: try cartridge(".223 Remington"), groupTag: .name), "5.56x45 mm")
         XCTAssertEqual(CartridgeRow.groupName(for: try cartridge("5.6 mm GP 90"), groupTag: .name), "5.56x45 mm")

@@ -1,8 +1,8 @@
 import SwiftUI
 
-/// The «Selten», «Veraltet» and «Gruppe» tags of a calibre, in display order.
+/// The «Selten», «Veraltet», «Unbelegt», «Kanone» and «Gruppe» tags of a calibre, in display order.
 enum CalibreTag: CaseIterable {
-    case rare, obsolete, group
+    case rare, obsolete, unsourced, cannon, group
 
     static func of(_ c: Cartridge) -> [CalibreTag] {
         allCases.filter { $0.applies(to: c) }
@@ -12,6 +12,9 @@ enum CalibreTag: CaseIterable {
         switch self {
         case .rare: c.rare
         case .obsolete: c.obsolete
+        // Hidden unless its Developer Options switch is on (Raven, 2026-11-15: a tag on what a switch hides).
+        case .unsourced: !c.wellSourced
+        case .cannon: c.isCannon
         // In a one-size lookalike group of calibre-data (Raven, 2026-11-11; `LookalikeGroup.sameSize`).
         case .group: CartridgeCatalog.sizeGroup(of: c) != nil
         }
@@ -22,6 +25,8 @@ enum CalibreTag: CaseIterable {
         switch self {
         case .rare: "Selten"
         case .obsolete: "Veraltet"
+        case .unsourced: "Unbelegt"
+        case .cannon: "Kanone"
         case .group: "Gruppe"
         }
     }
@@ -32,6 +37,8 @@ enum CalibreTag: CaseIterable {
         switch self {
         case .rare: "Selten: wird kaum je gefunden. Ein Treffer ist eher eine ähnliche Patrone, also genau nachmessen."
         case .obsolete: "Veraltet: wird nicht mehr regulär hergestellt."
+        case .unsourced: "Unbelegt: Masse in calibre-data nicht gut belegt, Teile der Zeichnung geschätzt. Nur mit der Entwickleroption sichtbar."
+        case .cannon: "Kanone: zu gross für den Bildschirm. Nur mit der Entwickleroption sichtbar."
         case .group: nil
         }
     }
@@ -40,6 +47,8 @@ enum CalibreTag: CaseIterable {
         switch self {
         case .rare: .orange
         case .obsolete: .secondary
+        case .unsourced: .purple
+        case .cannon: .teal
         case .group: .blue
         }
     }
@@ -78,6 +87,9 @@ struct TagIcon: View {
             switch tag {
             case .rare: investigate(s)
             case .obsolete: factoryOff(s)
+            // The icons of their Developer Options switches.
+            case .unsourced: symbol("questionmark.square.dashed", geo.size)
+            case .cannon: symbol("arrow.up.left.and.arrow.down.right", geo.size)
             case .group: equals(s)
             }
         }
@@ -98,6 +110,10 @@ struct TagIcon: View {
             .stroke(style: StrokeStyle(lineWidth: 1.5 * s, lineCap: .round))
             Path { p in p.addEllipse(in: CGRect(x: 5.7 * s, y: 8.7 * s, width: 1.8 * s, height: 1.8 * s)) }
         }
+    }
+
+    private func symbol(_ name: String, _ size: CGSize) -> some View {
+        Image(systemName: name).resizable().scaledToFit().fontWeight(.bold).frame(width: size.width, height: size.height)
     }
 
     private func equals(_ s: CGFloat) -> some View {

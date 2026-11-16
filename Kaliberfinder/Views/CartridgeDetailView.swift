@@ -19,7 +19,7 @@ struct CartridgeDetailView: View {
                     Spacer()
                 }
                 .padding(.vertical, 8)
-                if !cartridge.isCannon {  // too big for the screen, and a partial entry draws nothing
+                if cartridge.isDrawn {  // a partial entry has nothing to show
                     NavigationLink { TrueScaleView(cartridges: [cartridge], linksToDetails: false) } label: {
                         Label { Text("In Originalgrösse anzeigen") } icon: { OneToOneIcon() }
                     }
@@ -45,7 +45,7 @@ struct CartridgeDetailView: View {
                 }
             }
             Section("Masse") {
-                // A cannon round's measurement no source gives is 0: no row.
+                // A partial entry's measurement no source gives is 0: no row.
                 if d.overallLength > 0 {
                     LabeledContent("Gesamtlänge", value: unit.format(d.overallLength))
                 }

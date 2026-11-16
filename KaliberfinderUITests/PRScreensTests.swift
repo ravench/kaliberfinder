@@ -15,6 +15,12 @@ final class PRScreensTests: XCTestCase {
         app.launch()
     }
 
+    /// Types `text` into the search field of the screen, when it has one (a trailing return hides the keyboard).
+    private func search(_ text: String) {
+        let field = app.searchFields.firstMatch
+        if field.waitForExistence(timeout: 5) { field.tap(); field.typeText(text) }
+    }
+
     func testTour() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         snap("01-Start")
@@ -193,8 +199,7 @@ final class PRScreensTests: XCTestCase {
     func testPrimerRingColourCodes() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText(".303 British\n") } // return hides the keyboard
+        search(".303 British\n")
         guard open(app.staticTexts[".303 British"].firstMatch) else { return }
         scroll(toRowAbove: "Zündhütchen")
         snap("40-303-Zuendhuetchenringe")
@@ -204,8 +209,7 @@ final class PRScreensTests: XCTestCase {
     func testClosedBlank() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("PA Blanc\n") } // return hides the keyboard
+        search("PA Blanc\n")
         guard open(app.staticTexts["9 mm PA Blanc"].firstMatch) else { return }
         scroll(toRowAbove: "Gesamtlänge") // «Masse» whole: the bullet's row was its last but one
         snap("41-Knallpatrone-PAK")
@@ -219,8 +223,7 @@ final class PRScreensTests: XCTestCase {
     func testBBs() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("BB\n") } // return hides the keyboard, so all BB rows show
+        search("BB\n")
         snap("08-BBs")
         if open(app.staticTexts["6 mm Airsoft-BB"].firstMatch) {
             snap("09-Airsoft-BB")
@@ -231,58 +234,54 @@ final class PRScreensTests: XCTestCase {
     func testWadcutter() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("32 S&W\n") // return hides the keyboard, so all three rows show
-        }
+        search("32 S&W\n")
         snap("24-32-SW")
         if open(app.staticTexts[".32 S&W Long Wadcutter"].firstMatch) {
             snap("25-32-SW-Long-Wadcutter")
         }
     }
 
-    /// The cannon rounds behind «Kanonenkaliber zeigen»: partial entries without a drawing, listed and searchable.
+    /// The cannon rounds behind «Kanonenkaliber zeigen» (Raven, 2026-11-15: the same rules as every calibre): a complete
+    /// one has its drawing, its tag, its 1:1 and its dimensioned drawing.
     func testCannonCalibres() {
         app.terminate()
         app.launchArguments += ["-showCannonCalibres", "YES"]
         app.launch()
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("57x\n") }
-        XCTAssertTrue(app.staticTexts["57x121 mm R"].waitForExistence(timeout: 5), "the cannon rounds are not listed")
+        search("30x1\n")
+        XCTAssertTrue(app.staticTexts["30x173 mm GAU-8"].waitForExistence(timeout: 5), "the cannon rounds are not listed")
         snap("45-Kanonen-Suche")
-        if open(app.staticTexts["57x121 mm R"].firstMatch) { snap("45b-Kanone-57x121") }
+        guard open(app.staticTexts["30x173 mm GAU-8"].firstMatch), app.navigationBars["30x173 mm GAU-8"].waitForExistence(timeout: 5) else { return }
+        snap("45b-Kanone-GAU-8")
+        if open(app.buttons["In Originalgrösse anzeigen"].firstMatch), app.navigationBars["1:1"].waitForExistence(timeout: 5) {
+            snap("45c-Kanone-1zu1")
+        }
     }
 
-    /// The Swiss cadet round, found by the name on its box, with its own drawing. Its measurements have no source
-    /// yet, so only the developer switch «Unbelegte Kaliber zeigen» lists it.
+    /// The Swiss cadet round, found by the name on its box, with its own drawing; sourced since calibre-data #163,
+    /// the stop keeps the developer switch «Unbelegte Kaliber zeigen» on for the «Unbelegt» tag that follows.
     func testKadettenpatrone() {
         app.terminate()
         app.launchArguments += ["-showUnsourcedCalibres", "YES"]
         app.launch()
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("Kadetten\n")
-        }
+        search("Kadetten\n")
         if open(app.staticTexts["7.5 mm Kadettenpatrone"].firstMatch) {
             snap("26-Kadettenpatrone")
+            app.navigationBars.buttons.firstMatch.tap()
         }
+        // An unsourced calibre's rows carry the «Unbelegt» tag (Raven, 2026-11-15).
+        search(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 10) + "Mars\n")
+        if app.staticTexts[".360 Mars"].waitForExistence(timeout: 5) { snap("26b-Unbelegt-Tag") }
     }
 
     /// A NATO round: the alliance's flag is drawn, as no emoji exists (calibre-data #51).
     func testNatoFlag() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("5.56\n") // return hides the keyboard, so the rows show their flags
-        }
+        search("5.56\n")
         snap("27-NATO")
         if open(app.staticTexts["5.56x45 mm NATO"].firstMatch) {
             scroll()
@@ -301,11 +300,7 @@ final class PRScreensTests: XCTestCase {
               open(app.buttons["Trainingsdaten aufnehmen"].firstMatch),
               open(app.buttons["Neue Aufnahmeserie"].firstMatch),
               open(app.staticTexts["Fotografiertes Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("Schmidt Rubin\n") // return hides the keyboard
-        }
+        search("Schmidt Rubin\n")
         XCTAssertTrue(app.staticTexts["7.5x53.5 mm Swiss (Patrone Modell 1890)"].waitForExistence(timeout: 5), "not found by another name")
         snap("23-Trainingsdaten-Kalibersuche")
     }
@@ -322,11 +317,7 @@ final class PRScreensTests: XCTestCase {
               open(app.buttons["Trainingsdaten aufnehmen"].firstMatch),
               open(app.buttons["Neue Aufnahmeserie"].firstMatch),
               open(app.staticTexts["Fotografiertes Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("Gras court\n") // return hides the keyboard
-        }
+        search("Gras court\n")
         snap("24-Trainingsdaten-nicht-in-Liste")
         guard open(app.buttons["Nicht in der Liste"].firstMatch) else { return }
         XCTAssertEqual(app.textFields.firstMatch.value as? String, "Gras court", "named after the search")
@@ -444,11 +435,7 @@ final class PRScreensTests: XCTestCase {
     /// A calibre's lookalike group (Raven, 2026-11-08): from the .308 Winchester's page to the group, and the group at 1:1.
     func testLookalikeGroup() {
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText(".308 Win")
-        }
+        search(".308 Win")
         // The search opens the calibre; its «Gruppe» row leads to the group (Raven, 2026-11-12).
         guard open(app.staticTexts[".308 Winchester"].firstMatch),
               app.navigationBars[".308 Winchester"].waitForExistence(timeout: 5),
@@ -464,11 +451,7 @@ final class PRScreensTests: XCTestCase {
     /// Vetterli's page and its group with the centrefire version, which differ in ignition.
     func testIgnitionGroup() {
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("Vetterli")
-        }
+        search("Vetterli")
         guard open(app.staticTexts["10.4x38 mm R Vetterli"].firstMatch),
               app.navigationBars["10.4x38 mm R Vetterli"].waitForExistence(timeout: 5),
               open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Gruppe")).firstMatch) else { return }
@@ -482,11 +465,7 @@ final class PRScreensTests: XCTestCase {
     /// A calibre drawn to its C.I.P. sheet (calibre-data #68): the 6.5 PRC is 75.06 mm long, not 84.8.
     func testCIPCorrection() {
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("6.5 PRC")
-        }
+        search("6.5 PRC")
         guard open(app.staticTexts["6.5 PRC"].firstMatch) else { return }
         snap("38-6-5-PRC")
     }
@@ -524,11 +503,7 @@ final class PRScreensTests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("9x19\n")
-        }
+        search("9x19\n")
         guard open(app.staticTexts["9x19 mm"].firstMatch) else { return }
         snap("28-Kaliber-Trainingsdaten")
         guard open(app.buttons["Trainingsdaten aufnehmen"].firstMatch) else { return }
@@ -572,11 +547,7 @@ final class PRScreensTests: XCTestCase {
     func testBerdanPrimer() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("8.15x46\n") // return hides the keyboard
-        }
+        search("8.15x46\n")
         guard open(app.staticTexts["8.15x46 mm R"].firstMatch) else { return }
         scroll()  // the page's end holds the measurements' last row, the primer
         let row = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Berdan Nitro, ")).firstMatch
@@ -589,11 +560,7 @@ final class PRScreensTests: XCTestCase {
     func testBeltWiderThanTheRim() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText(".378 Weatherby\n") // return hides the keyboard
-        }
+        search(".378 Weatherby\n")
         guard open(app.staticTexts[".378 Weatherby Magnum"].firstMatch) else { return }
         snap("43-Guertel-378-Weatherby")
         // Its drawing: the belt's line on the belt, the base's on the body in front of it (tester, 2026-11-14).
@@ -605,7 +572,7 @@ final class PRScreensTests: XCTestCase {
     /// A round taller than the screen at 1:1 scrolls (tester, 2026-11-14): the base first, the tip after a swipe down.
     func testTallRoundScrollsAtOneToOne() {
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch; if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("50 BMG\n") }
+        search("50 BMG\n")
         guard open(app.staticTexts[".50 BMG"].firstMatch), open(app.buttons["In Originalgrösse anzeigen"].firstMatch) else { return }
         snap("14c-1zu1-50-BMG"); app.swipeDown(); snap("14d-1zu1-50-BMG-Spitze")
     }
@@ -614,8 +581,7 @@ final class PRScreensTests: XCTestCase {
     func testSilverJacket() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("8x57\n") }
+        search("8x57\n")
         guard open(app.staticTexts["8x57 mm IS"].firstMatch) else { return }
         snap("44-Silbermantel-8x57-IS")
     }

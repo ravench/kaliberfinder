@@ -40,6 +40,7 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(en["Trainingsdaten aufnehmen"], "Record training data")
         XCTAssertEqual(en["Unbelegte Kaliber zeigen"], "Show unsourced calibres")
         XCTAssertEqual(en["Kanonenkaliber zeigen"], "Show cannon calibres")
+        XCTAssertEqual(en["Unbelegt"], "Unsourced")
         XCTAssertEqual(en["Neue Aufnahmeserie"], "New capture series")
         XCTAssertEqual(en["%lld von %lld Fotos hinzugefügt"], "%lld of %lld photos added")
         XCTAssertEqual(en["Nicht in der Liste"], "Not in the list")

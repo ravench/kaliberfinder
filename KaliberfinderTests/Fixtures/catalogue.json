@@ -4807,7 +4807,7 @@
    },
    "worldwide": false,
    "blank": false,
-   "wellSourced": false,
+   "wellSourced": true,
    "colourCodes": [],
    "sources": [
     {
@@ -4849,14 +4849,78 @@
     "neck": 20.6,
     "caseLength": 102.0,
     "overallLength": 168.0,
-    "bullet": 20.0
+    "bullet": 20.0,
+    "shoulder": 26.54
    },
    "outline": {
     "width": 29.49,
     "height": 168.0,
-    "case": "M29.49 168.00 L29.49 166.70 L27.57 166.70 L27.57 165.70 L29.35 163.58 L25.05 66.00 L4.44 66.00 L0.14 163.58 L1.92 165.70 L1.92 166.70 L0.00 166.70 L0.00 168.00 Z",
+    "case": "M29.49 168.00 L29.49 165.54 L27.43 165.54 L27.43 162.63 L29.35 160.65 L28.02 83.26 L25.05 74.38 L25.05 66.00 L4.44 66.00 L4.44 74.38 L1.47 83.26 L0.14 160.65 L2.05 162.63 L2.05 165.54 L0.00 165.54 L0.00 168.00 Z",
     "bullet": "M24.74 66.00 L24.74 44.88 L24.65 41.67 L24.45 38.47 L24.16 35.26 L23.78 32.06 L23.33 28.85 L22.80 25.65 L22.20 22.44 L21.51 19.23 L20.75 16.03 L19.89 12.82 L18.93 9.62 L17.84 6.41 L16.56 3.21 L15.24 0.00 L14.74 0.00 L14.24 0.00 L12.93 3.21 L11.65 6.41 L10.56 9.62 L9.60 12.82 L8.74 16.03 L7.98 19.23 L7.29 22.44 L6.69 25.65 L6.16 28.85 L5.71 32.06 L5.33 35.26 L5.04 38.47 L4.84 41.67 L4.74 44.88 L4.74 66.00 Z"
    }
+  },
+  {
+   "id": "57x121 mm R",
+   "name": "57x121 mm R",
+   "category": "Kanone",
+   "kind": "rimmed",
+   "aliases": [
+    "57x121r",
+    "57x121",
+    "57 mm ho-401"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "JP",
+    "name": "Japan",
+    "flag": "🇯🇵"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "dimensions": {
+    "rim": 68.4,
+    "base": 60.8,
+    "neck": 0,
+    "caseLength": 121.0,
+    "overallLength": 0,
+    "bullet": 57.0
+   },
+   "outline": {
+    "width": 68.4,
+    "height": 121.0
+   },
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 108,
+       "pages": [
+        "231"
+       ]
+      },
+      {
+       "work": 109
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 109
+      }
+     ]
+    }
+   ]
   }
  ],
  "sources": [
@@ -5398,6 +5462,16 @@
    "detail": "en.wikipedia.org",
    "title": "Wikipedia: M61 Vulcan",
    "url": "https://en.wikipedia.org/wiki/M61_Vulcan"
+  },
+  {
+   "detail": "Anthony G. Williams",
+   "title": "Rapid Fire: The Development of Automatic Cannon, Heavy Machine Guns and Their Ammunition for Armies, Navies and Air Forces",
+   "year": 2000
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Ho-401 cannon",
+   "url": "https://en.wikipedia.org/wiki/Ho-401_cannon"
   }
  ],
  "lookalikes": [

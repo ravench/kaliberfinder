@@ -12,8 +12,8 @@ struct CatalogView: View {
     }
 
     var body: some View {
-        // No cannon round in a 1:1 selection: it does not fit the screen and its entry is partial.
-        let results = CartridgeCatalog.search(query, in: CartridgeCatalog.visible().filter { !(selecting && $0.isCannon) })
+        // A partial entry has nothing to compare at 1:1.
+        let results = CartridgeCatalog.search(query, in: CartridgeCatalog.visible().filter { !selecting || $0.isDrawn })
         List {
             if selecting {
                 Section {
