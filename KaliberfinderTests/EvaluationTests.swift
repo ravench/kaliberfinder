@@ -160,7 +160,7 @@ final class EvaluationTests: XCTestCase {
         let scored = Evaluation.shot("gp90/01", analysis: PhotoAnalysis(shape: caseShape, isBrass: true), depth: nil, package: cases)
         XCTAssertEqual(scored.result.row, 1)
         XCTAssertEqual(scored.result.rowAll, 1)
-        XCTAssertLessThanOrEqual(try XCTUnwrap(scored.result.rank), 3, "its two twins score the same")
+        XCTAssertLessThanOrEqual(try XCTUnwrap(scored.result.rank), 4, "its three twins score the same")
     }
 
     /// The first row is the first calibre the phone shows: an obsolete calibre ranked first among

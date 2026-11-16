@@ -44,8 +44,8 @@ class RareAndCountryTests(unittest.TestCase):
         switch «Unbelegte Kaliber zeigen» hides the others from the user."""
         self.assertTrue(all(isinstance(c["wellSourced"], bool) for c in self.by_name.values()))
         self.assertTrue(self.by_name["9x19 mm"]["wellSourced"])
-        self.assertFalse(self.by_name["7.5 mm Kadettenpatrone"]["wellSourced"], "its measurements are listed as unsourced")
-        self.assertFalse(self.by_name["9x23 mm Winchester"]["wellSourced"], "no extractor groove in [case_head]")
+        self.assertFalse(self.by_name["6x57 mm Mauser"]["wellSourced"], "its measurements are listed as unsourced")
+        self.assertFalse(self.by_name[".45-70 Auto"]["wellSourced"], "no extractor groove in [case_head]")
 
     def test_every_entry_has_the_rare_flag(self):
         self.assertTrue(all(isinstance(c["rare"], bool) for c in self.by_name.values()))
@@ -116,12 +116,14 @@ class BlankFlagTests(unittest.TestCase):
     def test_the_blanks_are_the_ones_calibre_data_calls_blanks(self):
         cartridges = generate_data.build()
         self.assertTrue(all(isinstance(c["blank"], bool) for c in cartridges))
-        # Star-crimped ones, and the ones closed inside the case (9 mm P.A.K., 8 mm and .315 Knall): the
+        # Star-crimped ones, and the ones closed inside the case (9 mm PA Blanc, 8 mm and .315 Blanc): the
         # catalogue's own rule (cartridges.is_blank), not a second one here that knew only the crimp.
         # Sorted, not in catalogue order: where the blanks stand in the catalogue is calibre-data's business.
+        # Named as their C.I.P. sheets since calibre-data #168; the old names stay as display aliases.
         self.assertEqual(sorted(c["name"] for c in cartridges if c["blank"]),
-                         sorted([".22 Blank (6.8/11)", "9 mm P.A.K.", "8 mm Knall", ".315 Knall", "9 mm R Knall",
-                                 ".320 Knall", ".45 Knall", ".22 Long Knall", "6 mm Flobert Knall"]))
+                         sorted([".22 SH (5.6/11)", "9 mm PA Blanc", "8 mm Blanc", ".315 Blanc", "9 mm R Blanc",
+                                 ".320 Court Blanc", ".45 K Blanc", ".22 Long Blanc", "6 mm Flobert Blanc"]))
+        self.assertIn("9 mm P.A.K.", next(c for c in cartridges if c["name"] == "9 mm PA Blanc")["displayAliases"])
         # A bullet seated inside the case is still a bullet.
         for name in (".32 S&W Long Wadcutter", "7.62x38 mm R Nagant"):
             self.assertFalse(next(c for c in cartridges if c["name"] == name)["blank"], name)
@@ -246,7 +248,8 @@ class LookalikeTests(unittest.TestCase):
         self.assertEqual(len(members), len(set(members)), "a calibre in two groups")
         self.assertTrue(all(len(g["calibres"]) >= 2 and g["differs"] for g in groups))
         win = next(g for g in groups if ".308 Winchester" in g["calibres"])
-        self.assertEqual(win, {"name": ".308 Winchester", "differs": ["load"],
+        # Named by what the members share (calibre-data #181), no longer after the parent.
+        self.assertEqual(win, {"name": "7.62x51 mm", "differs": ["load"],
                                "calibres": [".308 Winchester", "7.62x51 mm NATO"]})
 
     def test_groups_carry_the_database_s_name(self):
@@ -298,7 +301,7 @@ class CatalogueOnlyDataTests(unittest.TestCase):
         """Raven, 2026-11-13: the cannon category behind «Kanonenkaliber zeigen». A measurement no source gives
         is 0, and such a round gets no drawing, only the box's size; a complete one is drawn as usual."""
         cannon = [c for c in generate_data.build() if c["category"] == "Kanone"]
-        self.assertGreaterEqual(len(cannon), 24)
+        self.assertGreaterEqual(len(cannon), 27)
         by_name = {c["name"]: c for c in cannon}
         partial = by_name["57x121 mm R"]
         self.assertEqual((partial["dimensions"]["neck"], partial["dimensions"]["overallLength"]), (0, 0))
@@ -308,7 +311,9 @@ class CatalogueOnlyDataTests(unittest.TestCase):
         self.assertEqual(vulcan["dimensions"]["overallLength"], 168.0)
         self.assertIn("case", vulcan["outline"])
         self.assertTrue(all("primer" not in c or c["primer"]["diameter"] > 0 for c in cannon))
-        self.assertFalse(any(c["wellSourced"] for c in cannon), "every cannon round has gaps today")
+        # calibre-data #183/#184 completed 15 of them from specimen drawings; the 57 mm rounds are still partial.
+        self.assertTrue(vulcan["wellSourced"])
+        self.assertFalse(partial["wellSourced"])
 
     def test_swiss_match_reaches_the_json(self):
         """calibre-data #77: the 6x47 mm SM (Swiss Match) from its C.I.P. sheet, a Swiss rifle round with

@@ -96,7 +96,8 @@ final class PRScreensTests: XCTestCase {
         guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
         XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
         scroll(toRowAbove: "Mögliche Kaliber")
-        XCTAssertTrue(app.staticTexts[".38 Super"].exists, "The .38 Super's group is not listed under its name")
+        // The group's row carries the family's name since calibre-data #181 («.38 Auto»), never a member the switches hide.
+        XCTAssertTrue(app.staticTexts[".38 Auto"].exists, "The .38 Super's group is not listed under its family name")
         XCTAssertFalse(app.staticTexts[".38 ACP"].exists || app.staticTexts[".30 Borchardt"].exists, "A row is called after a calibre it does not list")
         snap("03d-Masse-Treffer-Gruppennamen")
         // The 7.63x25 mm group fits roughly: its column at 1:1.
@@ -193,10 +194,7 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText(".303 British\n") // return hides the keyboard
-        }
+        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText(".303 British\n") } // return hides the keyboard
         guard open(app.staticTexts[".303 British"].firstMatch) else { return }
         scroll(toRowAbove: "Zündhütchen")
         snap("40-303-Zuendhuetchenringe")
@@ -207,11 +205,8 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("P.A.K.\n") // return hides the keyboard
-        }
-        guard open(app.staticTexts["9 mm P.A.K."].firstMatch) else { return }
+        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("PA Blanc\n") } // return hides the keyboard
+        guard open(app.staticTexts["9 mm PA Blanc"].firstMatch) else { return }
         scroll(toRowAbove: "Gesamtlänge") // «Masse» whole: the bullet's row was its last but one
         snap("41-Knallpatrone-PAK")
         scroll(up: false)
@@ -225,10 +220,7 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         let search = app.searchFields.firstMatch
-        if search.waitForExistence(timeout: 5) {
-            search.tap()
-            search.typeText("BB\n") // return hides the keyboard, so all BB rows show
-        }
+        if search.waitForExistence(timeout: 5) { search.tap(); search.typeText("BB\n") } // return hides the keyboard, so all BB rows show
         snap("08-BBs")
         if open(app.staticTexts["6 mm Airsoft-BB"].firstMatch) {
             snap("09-Airsoft-BB")
@@ -461,7 +453,7 @@ final class PRScreensTests: XCTestCase {
         guard open(app.staticTexts[".308 Winchester"].firstMatch),
               app.navigationBars[".308 Winchester"].waitForExistence(timeout: 5),
               open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Gruppe")).firstMatch) else { return }
-        XCTAssertTrue(app.navigationBars["Gruppe .308 Winchester"].waitForExistence(timeout: 5), "The group page did not open")
+        XCTAssertTrue(app.navigationBars["Gruppe 7.62x51 mm"].waitForExistence(timeout: 5), "The group page did not open")
         snap("34-Aehnliche-Kaliber")
         guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "1:1 vergleichen")).firstMatch),
               app.navigationBars["1:1"].waitForExistence(timeout: 5) else { return }
