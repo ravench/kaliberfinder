@@ -96,6 +96,7 @@ T = {
     "Jugoslawien": ("Yugoslavia", "Yougoslavie", "Jugoslavia"),
     "Alle passenden 1:1 vergleichen (%lld)": ("Compare all matches 1:1 (%lld)", "Comparer toutes les correspondances 1:1 (%lld)", "Confronta tutte le corrispondenze 1:1 (%lld)"),
     "Beliebige Form": ("Any shape", "Toute forme", "Qualsiasi forma"),
+    "Beliebige Randform": ("Any head", "Tout culot", "Qualsiasi fondello"),
     "Form": ("Shape", "Forme", "Forma"),
     "Gerade Hülse": ("Straight case", "Douille droite", "Bossolo dritto"),
     "Hülse mit Flaschenhals": ("Bottleneck case", "Douille à épaulement", "Bossolo a collo di bottiglia"),
