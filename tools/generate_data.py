@@ -223,6 +223,8 @@ def preview(cartridges, path):
                                        ("bullet", bullet), ("patch", "#f2ede0"),
                                        ("tip", "#cc1a24" if o.get("tipMaterial") == "polymer" else "#8a8c91"))
                         if k in o)
+        if "cavity" in o:  # a hollow point's cavity, a hidden line
+            parts += f'<path d="{o["cavity"]}" fill="none" stroke="#333" stroke-width="0.25" stroke-dasharray="0.8 0.5"/>'
         cells.append(f'<div class=c><svg width="{o["width"] * 3}" height="{o["height"] * 3}" '
                      f'viewBox="0 0 {o["width"]} {o["height"]}">{parts}</svg><span>{c["name"]}</span></div>')
     open(path, "w").write("<!doctype html><meta charset=utf-8><style>body{font:11px sans-serif}"

@@ -15,6 +15,18 @@ final class OutlineGeometryTests: XCTestCase {
         XCTAssertEqual(polys.first?[1], Point(x: 3, y: -4.75))
     }
 
+    /// calibre-data exports a hollow point's cavity as its own closed triangle (its PR 191): the app decodes it and
+    /// keeps it out of the silhouette.
+    func testCavityDecodesButStaysOutOfTheSilhouette() throws {
+        let json = #"{"width": 10, "height": 20, "case": "M0 20 L10 20 L10 8 L0 8 Z", "bullet": "M2 8 L8 8 L5 0 Z", "cavity": "M6 2 L5 4 L4 2 Z"}"#
+        let outline = try JSONDecoder().decode(Cartridge.Outline.self, from: Data(json.utf8))
+        XCTAssertEqual(OutlineGeometry.parse(try XCTUnwrap(outline.cavity)), [[Point(x: 6, y: 2), Point(x: 5, y: 4), Point(x: 4, y: 2)]])
+        XCTAssertEqual(OutlineGeometry(outline).polygons.count, 2)
+        XCTAssertEqual(OutlineGeometry(outline).width(at: 4), 3, accuracy: 0.01, "the nose, not the cavity")
+        let plain = try JSONDecoder().decode(Cartridge.Outline.self, from: Data(#"{"width": 1, "height": 1}"#.utf8))
+        XCTAssertNil(plain.cavity)
+    }
+
     func testWidthOfStraightCase() throws {
         let nine = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
         let g = OutlineGeometry(nine.outline)

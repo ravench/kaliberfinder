@@ -64,6 +64,11 @@ struct CartridgeView: View {
                 part(o.bullet, fill: Self.bulletFill(for: cartridge), lineWidth: lineWidth)
                 part(o.patch, fill: Self.paper, lineWidth: lineWidth)
                 part(o.tip, fill: o.tipMaterial == "polymer" ? Self.polymer : Self.lead, lineWidth: lineWidth)
+                if let cavity = o.cavity {
+                    // A hidden line: dashes about a millimetre long, never shorter than they show.
+                    PolygonShape(polygons: OutlineGeometry.parse(cavity), scale: pointsPerMM)
+                        .stroke(Color.black.opacity(0.7), style: StrokeStyle(lineWidth: lineWidth, dash: [max(2, pointsPerMM * 0.8), max(1.5, pointsPerMM * 0.5)]))
+                }
             }
         }
         .frame(width: o.width * pointsPerMM, height: o.height * pointsPerMM, alignment: .topLeading)
