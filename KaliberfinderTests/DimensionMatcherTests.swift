@@ -76,6 +76,17 @@ final class DimensionMatcherTests: XCTestCase {
         XCTAssertEqual(DimensionMatcher.outside(60, 57.6...65.9), 0)
     }
 
+    /// A typed belt diameter (tester, 2026-11-14): scored against the belt, or the rim where the data has no belt
+    /// (calibre-data gives one only where it is wider than the rim) or the case has none.
+    func testBeltDiameterFindsBeltedMagnums() throws {
+        let weatherby = rank(MeasuredDimensions(caseLength: 73.9, belt: 15.33), cartridges: CartridgeCatalog.all)
+        XCTAssertEqual(weatherby.first?.cartridge.id, ".378 Weatherby Magnum")
+        XCTAssertEqual(weatherby.first?.fit, .good)
+        let hh = rank(MeasuredDimensions(caseLength: 72.4, belt: 13.5), cartridges: CartridgeCatalog.all)
+        XCTAssertTrue(hh.contains { $0.cartridge.id == ".375 H&H Magnum" && $0.fit == .good }, "its belt is as wide as its rim")
+        XCTAssertFalse(MeasuredDimensions(belt: 13.5).isEmpty)
+    }
+
     func testTwoValuesAreEnoughForGP11() {
         let matches = rank(MeasuredDimensions(overallLength: 77.5, rim: 12.6))
         XCTAssertEqual(matches.first?.cartridge.id, "7.5x55 mm Swiss (GP 11)")

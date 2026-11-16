@@ -31,6 +31,7 @@ final class LocalizationTests: XCTestCase {
             XCTAssertNotNil(en[category.rawValue], category.rawValue)
         }
         XCTAssertEqual(en["Gesamtlänge"], "Overall length")
+        XCTAssertEqual(en["Gürtel"], "Belt")
     }
 
     func testDeveloperScreenAndCopyrightAreTranslated() throws {

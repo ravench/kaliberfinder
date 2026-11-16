@@ -25,40 +25,14 @@ struct TrueScaleLayout: Equatable {
         rulerMM = unit.rulerLength(tallestMM: tallest)
         bandHeight = rulerMM * pointsPerMM
     }
-
-    /// Where the drawings (the band with the labels under it, `contentHeight` tall) start in the
-    /// `availableHeight` under the badge. When they fit, they are centred: as much space above the
-    /// bullet tips as below the labels. When they do not, their bottom is on the bottom edge and the
-    /// start is negative: the bullet tips are cut off at the top, not the bases and the labels; the
-    /// screen does not scroll vertically.
-    static func contentTop(contentHeight: Double, availableHeight: Double) -> Double {
-        contentHeight <= availableHeight ? (availableHeight - contentHeight) / 2 : availableHeight - contentHeight
-    }
-}
-
-/// Gives its content the whole space and puts it where `TrueScaleLayout.contentTop` says: centred
-/// when it fits, else flush with the bottom edge, sticking out at the top.
-private struct CentredOrFlushBottom: Layout {
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        proposal.replacingUnspecifiedDimensions()
-    }
-
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        for subview in subviews {
-            let height = subview.sizeThatFits(ProposedViewSize(width: bounds.width, height: nil)).height
-            let top = TrueScaleLayout.contentTop(contentHeight: height, availableHeight: bounds.height)
-            subview.place(at: CGPoint(x: bounds.minX, y: bounds.minY + top), anchor: .topLeading,
-                          proposal: ProposedViewSize(width: bounds.width, height: height))
-        }
-    }
 }
 
 /// Cartridges side by side at real size, standing on a common base line next to a ruler.
 /// The ruler stays put on the left while the cartridges scroll sideways; zooming is
 /// deliberately not possible, since the drawing is at real size (1:1). The band is centred
-/// vertically when it fits under the badge, else it stands on the bottom edge and the bullet
-/// tips are cut off at the top (`TrueScaleLayout.contentTop`); there is no vertical scrolling.
-/// Lay the real cartridge on the screen, base on the line, to compare.
+/// vertically when it fits under the badge; a round taller than the screen scrolls vertically,
+/// starting at the bottom with the bases and labels (tester, 2026-11-14). Lay the real
+/// cartridge on the screen, base on the line, to compare.
 struct TrueScaleView: View {
     let cartridges: [Cartridge]
     /// Calibres a photo was compared with as empty cases: their labels add the case length, and
@@ -105,45 +79,55 @@ struct TrueScaleView: View {
                 }
             }
             .padding([.horizontal, .top])
-            CentredOrFlushBottom {
-                if let single = cartridges.first, cartridges.count == 1 {
-                    singleView(single, layout: layout, ppmm: ppmm)
-                } else {
-                    HStack(alignment: .top, spacing: 0) {
-                        // Outside the horizontal scroll view, so it stays on screen, flush with the
-                        // left edge and with its zero on the cartridges' base line.
-                        RulerView(lengthMM: layout.rulerMM, pointsPerMM: ppmm, unit: unit)
-                            .frame(height: layout.bandHeight, alignment: .bottom)
-                            .padding(.trailing, 4)
-                            .background(Color(.systemBackground))
-                            .zIndex(1)
-                        ScrollView(.horizontal) {
-                            HStack(alignment: .top, spacing: 8 * ppmm) {
-                                ForEach(cartridges) { c in
-                                    column(of: c) {
-                                        drawing(of: c, ppmm: ppmm)
-                                            .frame(height: layout.bandHeight, alignment: .bottom)
-                                        label(for: c)
-                                        CaseBaseView(cartridge: c, pointsPerMM: ppmm)
+            GeometryReader { geo in
+                ScrollViewReader { proxy in
+                ScrollView(.vertical) {
+                    Group {
+                        if let single = cartridges.first, cartridges.count == 1 {
+                            singleView(single, layout: layout, ppmm: ppmm)
+                        } else {
+                            HStack(alignment: .top, spacing: 0) {
+                                // Outside the horizontal scroll view, so it stays on screen, flush with the
+                                // left edge and with its zero on the cartridges' base line.
+                                RulerView(lengthMM: layout.rulerMM, pointsPerMM: ppmm, unit: unit)
+                                    .frame(height: layout.bandHeight, alignment: .bottom)
+                                    .padding(.trailing, 4)
+                                    .background(Color(.systemBackground))
+                                    .zIndex(1)
+                                ScrollView(.horizontal) {
+                                    HStack(alignment: .top, spacing: 8 * ppmm) {
+                                        ForEach(cartridges) { c in
+                                            column(of: c) {
+                                                drawing(of: c, ppmm: ppmm)
+                                                    .frame(height: layout.bandHeight, alignment: .bottom)
+                                                label(for: c)
+                                                CaseBaseView(cartridge: c, pointsPerMM: ppmm)
+                                            }
+                                        }
+                                    }
+                                    .padding(.horizontal, 8 * ppmm)
+                                    .overlay(alignment: .topLeading) {
+                                        // The base line the cartridges stand on, continuing the ruler's zero.
+                                        Rectangle()
+                                            .fill(Color.primary.opacity(0.35))
+                                            .frame(height: 0.5)
+                                            .offset(y: layout.bandHeight)
                                     }
                                 }
+                                .scrollIndicators(.visible)
                             }
-                            .padding(.horizontal, 8 * ppmm)
-                            .overlay(alignment: .topLeading) {
-                                // The base line the cartridges stand on, continuing the ruler's zero.
-                                Rectangle()
-                                    .fill(Color.primary.opacity(0.35))
-                                    .frame(height: 0.5)
-                                    .offset(y: layout.bandHeight)
-                            }
+                            .padding(.leading, TrueScaleLayout.rulerLeadingInset)
                         }
-                        .scrollIndicators(.visible)
                     }
-                    .padding(.leading, TrueScaleLayout.rulerLeadingInset)
+                    // Centred while it fits; taller content starts scrolled to the bottom.
+                    .frame(maxWidth: .infinity, minHeight: geo.size.height, alignment: .center)
+                    .id("band")
+                }
+                .defaultScrollAnchor(.bottom)
+                // The labels take their height after the first layout, so the anchor alone leaves the case bases below the fold.
+                .onAppear { DispatchQueue.main.async { proxy.scrollTo("band", anchor: .bottom) } }
                 }
             }
-            // Cuts off what sticks out at the top when the band does not fit.
-            .clipped()
         }
         .navigationTitle("1:1")
         .navigationBarTitleDisplayMode(.inline)

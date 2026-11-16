@@ -18,7 +18,7 @@ CONTEXTS = [
     r'\bBreakdownChart\(title:\s*' + LIT,
     r'\bcase \.\w+:\s*' + LIT,          # enum titles (titleKey) and error texts
     r'\bcase \w+ = ' + LIT,             # CartridgeCatalog.Category raw values
-    r'\bcase "[a-z0-9-]+":\s*' + LIT,  # titles for catalogue kinds and primers
+    r'\bcase "[a-z0-9_-]+":\s*' + LIT,  # titles for catalogue kinds, primers and source parts
     r'\[' + LIT + r'(?:,\s*' + LIT + r')+\]\s*\n?\s*\.map\(\\\.loc\)',
 ]
 STRINGY = ("formatted", "name", "Name", "Developer", "title", "Description", "joined", ".loc", "text", "Text", "mm(", "format(")
@@ -48,8 +48,8 @@ def keys():
     return {k: v for k, v in found.items() if not junk.match(k)}
 
 
-# Keys the patterns can't see: CartridgeDetailView.kindTitle's default title.
-EXTRA = {"Andere"}
+# Keys the patterns can't see: CartridgeDetailView.kindTitle's default title, SourcesView's page format.
+EXTRA = {"Andere", "S. %@"}
 
 
 def used_keys():

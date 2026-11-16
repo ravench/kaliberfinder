@@ -161,8 +161,8 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
-    /// The dimensioned drawing of a bottleneck rifle round (with its shoulder), then of a belted magnum
-    /// in inches.
+    /// The dimensioned drawing of a bottleneck rifle round (with its shoulder) and its sources, then of a
+    /// belted magnum in inches.
     func testMeasurementDrawings() {
         for (query, name, unit, shot) in [("GP 11", "7.5x55 mm Swiss (GP 11)", "metric", "34-Masszeichnung-GP11"),
                                           ("300 Win Mag", ".300 Winchester Magnum", "imperial", "35-Masszeichnung-Zoll")] {
@@ -181,10 +181,17 @@ final class PRScreensTests: XCTestCase {
                 // The colour codes of calibre-data (tip and bases) sit under the measurements (Raven, 2026-11-11).
                 scroll(toRowAbove: "Zündhütchen")
                 snap("39-GP11-Farbcodes")
+                scroll()  // the «Quellen» row at the end of the page (Raven, 2026-11-15)
+                snap("39b-GP11-Quellenzeile")
                 scroll(up: false)
             }
             guard open(app.buttons["Masszeichnung anzeigen"].firstMatch) else { return }
             snap(shot)
+            // The drawing's book button opens the calibre's sources, the measurements' first.
+            if query == "GP 11", open(app.navigationBars.buttons["Quellen"].firstMatch) {
+                XCTAssertTrue(app.navigationBars["Quellen"].waitForExistence(timeout: 5), "The sources page did not open")
+                snap("34b-Quellen-GP11")
+            }
         }
     }
 
@@ -556,8 +563,18 @@ final class PRScreensTests: XCTestCase {
         search(".378 Weatherby\n")
         guard open(app.staticTexts[".378 Weatherby Magnum"].firstMatch) else { return }
         snap("43-Guertel-378-Weatherby")
+        // Its drawing: the belt's line on the belt, the base's on the body in front of it (tester, 2026-11-14).
+        if open(app.buttons["Masszeichnung anzeigen"].firstMatch) { snap("43c-Guertel-Masszeichnung"); app.navigationBars.buttons.firstMatch.tap() }
         scroll(toRowAbove: "Gesamtlänge")
         snap("43b-Guertel-378-Weatherby-Masse")
+    }
+
+    /// A round taller than the screen at 1:1 scrolls (tester, 2026-11-14): the base first, the tip after a swipe down.
+    func testTallRoundScrollsAtOneToOne() {
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        search("50 BMG\n")
+        guard open(app.staticTexts[".50 BMG"].firstMatch), open(app.buttons["In Originalgrösse anzeigen"].firstMatch) else { return }
+        snap("14c-1zu1-50-BMG"); app.swipeDown(); snap("14d-1zu1-50-BMG-Spitze")
     }
 
     /// The silver jacket of an early service round (calibre-data #151): the 8x57 mm IS was drawn with a copper bullet.
