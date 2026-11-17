@@ -218,8 +218,10 @@ struct DimensionLayout {
             dimensions.append(Dimension(part: mark.part, mm: mark.mm, from: top, to: bottom,
                                         anchor: CGPoint(x: outerX + Self.labelInset, y: lengthYs[i])))
         }
-        // The lengths share the base's extension line, out to the outer one.
-        lines.append([CGPoint(x: cx + whole.width(at: o.height - 0.01) / 2 * s + 2, y: base), CGPoint(x: outerX + 3, y: base)])
+        // The lengths share the base's extension line, out to the outer one. It starts beside the rim, also where the
+        // rim stands on a narrower foot, so it does not cross the rim's extension line.
+        let baseEdge = max(whole.width(at: o.height - 0.01), c.hasCase ? c.dimensions.rim : 0) / 2
+        lines.append([CGPoint(x: cx + baseEdge * s + 2, y: base), CGPoint(x: outerX + 3, y: base)])
 
         scale = s
         origin = CGPoint(x: ox, y: oy)

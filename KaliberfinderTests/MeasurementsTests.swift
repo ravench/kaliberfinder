@@ -105,6 +105,10 @@ final class MeasurementsTests: XCTestCase {
         for line in extensions {
             XCTAssertEqual(Double(line[0].y), base - 1.0 * gras.scale + 2, accuracy: 1e-6)
         }
+        // The lengths' line along the base starts right of the rim's right extension line, not under the rim.
+        let baseLine = try XCTUnwrap(gras.lines.first { $0.count == 2 && $0[0].y == $0[1].y && abs(Double($0[0].y) - base) < 1e-6 })
+        let rightmost = try XCTUnwrap(extensions.map { $0[0].x }.max())
+        XCTAssertGreaterThan(baseLine[0].x, rightmost)
     }
 
     /// On a phone every calibre fits, also with the largest labels (text size xxxLarge): lines and labels
