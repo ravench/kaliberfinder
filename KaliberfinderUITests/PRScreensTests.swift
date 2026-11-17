@@ -205,6 +205,15 @@ final class PRScreensTests: XCTestCase {
         snap("40-303-Zuendhuetchenringe")
     }
 
+    /// A hollow point's cavity as a dashed line inside the full nose: the .357 SIG (TestFlight 2026-11-16).
+    func testHollowPoint() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        search("357 SIG\n")
+        guard open(app.staticTexts[".357 SIG"].firstMatch) else { return }
+        snap("46-357-SIG-Hohlspitze")
+    }
+
     /// A blank closed inside the case (9 mm P.A.K.): no bullet diameter on its page or in its drawing.
     func testClosedBlank() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
