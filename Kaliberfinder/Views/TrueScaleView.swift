@@ -230,13 +230,16 @@ struct OneToOneBadge: View {
 
 /// The «1:1» box of the badge, also the icon of what leads to the 1:1 screen (Raven, 2026-11-13).
 struct OneToOneIcon: View {
+    /// The badge's blue box; a row's icon is the blue text alone, like the row icons around it (TestFlight 2026-11-16).
+    var filled = true
+
     var body: some View {
         Text(verbatim: "1:1")
             .font(.caption.weight(.heavy).monospacedDigit())
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2)
-            .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 4))
-            .foregroundStyle(.white)
+            .padding(.horizontal, filled ? 6 : 0)
+            .padding(.vertical, filled ? 2 : 0)
+            .background(filled ? Color.accentColor : .clear, in: RoundedRectangle(cornerRadius: 4))
+            .foregroundStyle(filled ? Color.white : Color.accentColor)
             // A row's icon slot is narrower than the box: never «…».
             .fixedSize()
     }

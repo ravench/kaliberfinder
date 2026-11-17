@@ -21,7 +21,7 @@ struct CartridgeDetailView: View {
                 .padding(.vertical, 8)
                 if cartridge.isDrawn {  // a partial entry has nothing to show
                     NavigationLink { TrueScaleView(cartridges: [cartridge], linksToDetails: false) } label: {
-                        Label { Text("In Originalgrösse anzeigen") } icon: { OneToOneIcon() }
+                        Label { Text("In Originalgrösse anzeigen") } icon: { OneToOneIcon(filled: false) }
                     }
                     NavigationLink { MeasurementsView(cartridge: cartridge) } label: {
                         Label("Masszeichnung anzeigen", systemImage: "pencil.and.ruler")
