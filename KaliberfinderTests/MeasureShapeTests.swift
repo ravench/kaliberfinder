@@ -8,18 +8,26 @@ final class MeasureShapeTests: XCTestCase {
     private func rank(_ measured: MeasuredDimensions) -> [DimensionMatch] { DimensionMatcher.rank(measured, cartridges: Fixture.current) }
 
     func testShapeNarrowsTheList() {
-        // Raven's case: 32.3 mm long.
-        let any = rank(MeasuredDimensions(overallLength: 32.3))
+        // 34.5 mm long: a .22 WMR (34.3 mm, straight) or a .17 HMR (34.67 mm, bottleneck).
+        let any = rank(MeasuredDimensions(overallLength: 34.5))
         XCTAssertTrue(ids(any).contains(".17 HMR"))
-        XCTAssertTrue(ids(any).contains(".45 ACP"))
-        let straight = rank(MeasuredDimensions(overallLength: 32.3, shape: .straight))
-        XCTAssertFalse(ids(straight).contains(".17 HMR"))
+        XCTAssertTrue(ids(any).contains(".22 WMR"))
+        let straight = rank(MeasuredDimensions(overallLength: 34.5, shape: .straight))
+        XCTAssertTrue(ids(straight).contains(".22 WMR") && !ids(straight).contains(".17 HMR"), "\(ids(straight))")
         XCTAssertTrue(straight.allSatisfy { $0.cartridge.dimensions.shoulder == nil && $0.cartridge.hasCase })
-        let bottleneck = rank(MeasuredDimensions(overallLength: 32.3, shape: .bottleneck))
-        // The nearest bottleneck cases: .17 HMR (34.67 mm since its C.I.P. sheet), then 7.65 mm Parabellum (29.8 mm)
-        // and 7.63x25 mm Mauser (34.8 mm).
+        let bottleneck = rank(MeasuredDimensions(overallLength: 34.5, shape: .bottleneck))
+        // The nearest bottleneck cases: .17 HMR, then 7.63x25 mm Mauser (34.8 mm).
         XCTAssertTrue(ids(bottleneck).prefix(2).contains(".17 HMR"), "\(ids(bottleneck))")
         XCTAssertTrue(bottleneck.allSatisfy { $0.cartridge.dimensions.shoulder != nil })
+    }
+
+    /// The dropdowns show the series screen's outlines (tester, 2026-11-17); «Beliebige …» has none.
+    func testChoicesHaveTheSeriesScreensIcons() {
+        XCTAssertNil(CaseIcon.image(CaseShape.any.rawValue))
+        XCTAssertNil(CaseIcon.image(RimKind.any.token))
+        for shape in CaseShape.allCases.dropFirst() { XCTAssertNotNil(CaseIcon.image(shape.rawValue), shape.rawValue) }
+        for head in RimKind.allCases.dropFirst() { XCTAssertNotNil(CaseIcon.image(head.token), head.token) }
+        XCTAssertEqual(RimKind.semiRimmed.token, "semi")
     }
 
     func testShapeAloneRanksNothing() {
@@ -70,9 +78,12 @@ final class MeasureShapeTests: XCTestCase {
     }
 
     func testCompareFallsBackToTheBestThree() {
-        // 200 mm fits nothing: the best three are still offered.
-        let matches = rank(MeasuredDimensions(overallLength: 200))
-        XCTAssertTrue(matches.allSatisfy { $0.fit == .poor })
+        // 36 mm fits nothing well: the 7.63x25 mm Mauser (34.8 mm) and the .17 HMR (34.67 mm) are listed as poor fits
+        // and offered to compare; 200 mm lists nothing at all (the cut in `DimensionMatcher.rank`).
+        let matches = rank(MeasuredDimensions(overallLength: 36))
+        XCTAssertFalse(matches.isEmpty)
+        XCTAssertTrue(matches.allSatisfy { $0.fit == .poor }, "\(ids(matches))")
+        XCTAssertTrue(rank(MeasuredDimensions(overallLength: 200)).isEmpty)
         XCTAssertEqual(Set(DimensionMatcher.toCompare(matches).map(\.id)), Set(ids(matches).prefix(3)))
         XCTAssertEqual(DimensionMatcher.toCompare(matches).map(\.id), DimensionMatcher.toCompare(matches).byLength().map(\.id), "by length")
         XCTAssertEqual(MeasureView.compareTitle(matches: matches), "Die besten drei 1:1 vergleichen".loc)
