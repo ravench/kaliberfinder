@@ -21,7 +21,7 @@ struct MeasureView: View {
         MeasuredDimensions(overallLength: unit.parse(overallLength),
                            caseLength: unit.parse(caseLength),
                            rim: unit.parse(rim),
-                           belt: unit.parse(belt),
+                           belt: head == .belted ? unit.parse(belt) : nil,  // the field shows for a belted head only
                            bullet: unit.parse(bullet),
                            shape: shape,
                            head: head)
@@ -34,12 +34,13 @@ struct MeasureView: View {
         List {
             Section {
                 UnitPicker(unit: $unit)
+                // The outlines the series screen draws beside the same choices (tester, 2026-11-17).
                 Picker("Form", selection: $shape) {
-                    ForEach(CaseShape.allCases) { Text($0.title.loc).tag($0) }
+                    ForEach(CaseShape.allCases) { choice($0.title, token: $0.rawValue).tag($0) }
                 }
                 .pickerStyle(.menu)
                 Picker("Randform", selection: $head) {
-                    ForEach(RimKind.allCases) { Text($0.title.loc).tag($0) }
+                    ForEach(RimKind.allCases) { choice($0.title, token: $0.token).tag($0) }
                 }
                 .pickerStyle(.menu)
                 // Where each value is taken, as on the training screen, in its order (TestFlight 2026-11-16).
@@ -47,7 +48,7 @@ struct MeasureView: View {
                     .padding(.vertical, 4)
                 field("Geschossdurchmesser", letter: "D", text: $bullet)
                 field("Randdurchmesser", letter: "R", text: $rim)
-                field("Gürteldurchmesser", letter: nil, text: $belt)  // not on the sketch
+                if head == .belted { field("Gürteldurchmesser", letter: nil, text: $belt) }  // not on the sketch (tester, 2026-11-17)
                 field("Hülsenlänge", letter: "L", text: $caseLength)
                 field("Gesamtlänge", letter: "OAL", text: $overallLength)
             } header: {
@@ -67,6 +68,8 @@ struct MeasureView: View {
                 } footer: {
                     Text("Patrone auf dem Bildschirm vergleichen.")
                 }
+            } else if !measured.isEmpty {
+                Section { Text("Keine passenden Kaliber gefunden") }  // nothing within `DimensionMatcher.maxDeviation`
             }
         }
         .scrollDismissesKeyboard(.interactively)
@@ -88,6 +91,11 @@ struct MeasureView: View {
 
     /// The letters of the form's fields on the sketch.
     static let letters: Set<String> = ["D", "R", "L", "OAL"]
+
+    /// A dropdown choice with its outline, where `CaseIcon` has one for the token.
+    private func choice(_ title: String, token: String) -> some View {
+        Label { Text(title.loc) } icon: { CaseIcon.image(token).map { Image(uiImage: $0) } }
+    }
 
     private func field(_ title: LocalizedStringKey, letter: String?, text: Binding<String>) -> some View {
         LabeledContent {

@@ -62,14 +62,18 @@ final class HiddenMatchesTests: XCTestCase {
         XCTAssertTrue(r.hidden.isEmpty)
         XCTAssertNil(r.summary)
         XCTAssertEqual(r.shown.first?.cartridge.id, gp1890ID)
-        XCTAssertEqual(r.shown.count, DimensionMatcher.shownLimit)
+        XCTAssertEqual(r.shown.map(\.id), DimensionMatcher.rank(gp1890, cartridges: Fixture.catalogue).map(\.id))
     }
 
+    /// The ranking is cut behind its best, the hidden GP 1890 here, as a photo's is (`Matcher.maxBehindBest`):
+    /// the shown rows are that list without the hidden ones, in its order.
     func testShownListMatchesRankingWithoutObsoleteCalibres() {
         let r = DimensionMatcher.rankHiding(bothOff, gp1890, cartridges: Fixture.catalogue)
-        let old = DimensionMatcher.rank(gp1890, cartridges: Fixture.current)
-        XCTAssertEqual(r.shown.count, old.count)
-        XCTAssertEqual(Set(r.shown.prefix(5).map(\.id)), Set(old.prefix(5).map(\.id)))
+        let all = DimensionMatcher.rank(gp1890, cartridges: Fixture.catalogue)
+        XCTAssertEqual(all.first?.cartridge.id, gp1890ID)
+        XCTAssertEqual(r.shown.map(\.id), all.filter { !$0.cartridge.obsolete && !$0.cartridge.rare }.map(\.id))
+        // The GP 11's case is 2 mm longer: nothing shown, only the hidden row with the GP 1890 to reveal.
+        XCTAssertTrue(r.shown.isEmpty && r.summary != nil, "\(r.shown.map(\.id))")
     }
 
     func testOnlyHiddenCalibresWithinTheLimitCountAndTextsAgree() throws {

@@ -40,6 +40,9 @@ final class PRScreensTests: XCTestCase {
         }
         if open(app.buttons["Masse eingeben"].firstMatch) {
             snap("03-Masse-eingeben")
+            // The outlines beside the shape and head choices (TestFlight 2026-11-17); «Beliebige …» closes the menu again.
+            menuStop("Form", choice: "Beliebige Form", "03a-Masse-Form")
+            menuStop("Randform", choice: "Beliebige Randform", "03a-Masse-Randform")
             back()
         }
         if open(app.buttons["Alle Kaliber"].firstMatch) {
@@ -92,18 +95,19 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
-    /// A group goes by calibre-data's name, and its row or column by a calibre it lists (review 2026-11-13): 34.3 mm long
-    /// with an 8.8 mm bullet lists «7.63x25 mm» (was the obsolete «.30 Borchardt») and «.38 Super» (was «.38 ACP»).
+    /// A group goes by calibre-data's name, and its row or column by a calibre it lists (review 2026-11-13): 34.6 mm long
+    /// with a 7.85 mm bullet lists «7.63x25 mm» (was the obsolete «.30 Borchardt», hidden but ranked). The .38 Auto
+    /// group of the old values, 34.3 mm and 8.8 mm, is cut since the list goes like a photo's (TestFlight 2026-11-17).
     func testGroupNames() {
         app.terminate()
-        app.launchArguments += ["-screenTourLength", "34.3", "-screenTourBullet", "8.8"]
+        app.launchArguments += ["-screenTourLength", "34.6", "-screenTourBullet", "7.85"]
         app.launch()
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
         XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
         scroll(toRowAbove: "Mögliche Kaliber")
-        // The group's row carries the family's name since calibre-data #181 («.38 Auto»), never a member the switches hide.
-        XCTAssertTrue(app.staticTexts[".38 Auto"].exists, "The .38 Super's group is not listed under its family name")
+        // The group's row carries the family's name since calibre-data #181, never a member the switches hide.
+        XCTAssertTrue(app.staticTexts["7.63x25 mm"].exists, "The Mauser's group is not listed under its family name")
         XCTAssertFalse(app.staticTexts[".38 ACP"].exists || app.staticTexts[".30 Borchardt"].exists, "A row is called after a calibre it does not list")
         snap("03d-Masse-Treffer-Gruppennamen")
         // The 7.63x25 mm group fits roughly: its column at 1:1.
@@ -132,9 +136,9 @@ final class PRScreensTests: XCTestCase {
         guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
         XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
         scroll(toRowAbove: "Mögliche Kaliber")
-        // The 8 mm Rast-Gasser: rare and well sourced, so the developer switch does not hide it (the 7.5 FK is).
-        XCTAssertTrue(app.staticTexts["8 mm Rast-Gasser"].exists, "No rare calibre is listed: the switches' launch arguments did not arrive")
-        // The row's own label: another row (9 mm Mauser, 0.98 mm) rounds to «1.0 mm» too.
+        // The 7.5 FK: rare and well sourced, so the developer switch does not hide it (the 8 mm Rast-Gasser is cut, 0.65 mm behind).
+        XCTAssertTrue(app.staticTexts["7.5 FK"].exists, "No rare calibre is listed: the switches' launch arguments did not arrive")
+        // The row's own label, not the screen's.
         let group = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "7.63x25 mm")).firstMatch
         XCTAssertTrue(group.exists, "The 7.63x25 mm group's row is not on the screen")
         XCTAssertFalse(group.label.contains("Abweichung bis 1.0 mm"), "The 7.63x25 mm row is rated as the .30 Borchardt")

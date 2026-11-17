@@ -66,6 +66,9 @@ enum RimKind: String, CaseIterable, Identifiable {
         }
     }
 
+    /// The token `CaseIcon` draws it by (`RoundFacts.head`).
+    var token: String { self == .semiRimmed ? "semi" : rawValue }
+
     /// Rimfire rounds and shotshells have a rim. A semi-rim is hard to tell by eye, so it passes as rimmed
     /// and as rimless too. Balls, Minié bullets and pellets have no head.
     func fits(_ c: Cartridge) -> Bool {
@@ -96,6 +99,10 @@ struct DimensionMatch: Identifiable, Equatable {
 enum DimensionMatcher {
     /// Catalogue values are rounded and real cartridges vary, so differences up to this many mm count as equal.
     static let tolerance = 0.15
+    /// Calibres this far (mm) behind the best are not listed, nor any beyond `maxDeviation`, as after a photo
+    /// (`Matcher.maxBehindBest`): the list was always full, down to a 7.9 mm bullet for a 9 mm one (tester, 2026-11-17).
+    static let maxBehindBest = 0.5
+    static let maxDeviation = 1.5
 
     static func rank(_ measured: MeasuredDimensions,
                      cartridges: [Cartridge] = CartridgeCatalog.current,
@@ -124,9 +131,11 @@ enum DimensionMatcher {
                                    maxDeviation: deviations.max() ?? 0,
                                    meanDeviation: deviations.reduce(0, +) / Double(deviations.count)), fromCatalogue)
         }
-        return Array(matches.sorted {
+        let ranked = matches.sorted {
             ($0.0.meanDeviation, $0.0.maxDeviation, $0.1) < ($1.0.meanDeviation, $1.0.maxDeviation, $1.1)
-        }.map(\.0).prefix(limit))
+        }.map(\.0)
+        let best = ranked.map(\.maxDeviation).min() ?? 0
+        return Array(ranked.filter { $0.maxDeviation <= min(maxDeviation, best + maxBehindBest) }.prefix(limit))
     }
 
     /// How far `value` lies outside `range` (0 inside it).
