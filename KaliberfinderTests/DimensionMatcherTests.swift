@@ -36,7 +36,7 @@ final class DimensionMatcherTests: XCTestCase {
         XCTAssertEqual(loaded.first?.fit, .good)
         let long = rank(MeasuredDimensions(overallLength: 76, rim: 22.3))
         XCTAssertEqual(long.first?.cartridge.id, "12/76")
-        XCTAssertEqual(long.first { $0.cartridge.id == "12/70" }?.fit, .poor)
+        XCTAssertFalse(long.contains { $0.cartridge.id == "12/70" }, "too long for a 12/70, so not listed")
     }
 
     /// A rebated rim is narrower than the base; the typed rim is scored against the rim (review 2026-11-10).
@@ -134,8 +134,26 @@ final class DimensionMatcherTests: XCTestCase {
     }
 
     func testLimit() {
-        XCTAssertEqual(rank(MeasuredDimensions(overallLength: 30)).count, 15)
+        XCTAssertEqual(rank(MeasuredDimensions(bullet: 9), cartridges: CartridgeCatalog.all).count, 15)
         XCTAssertEqual(rank(MeasuredDimensions(overallLength: 30), limit: 3).count, 3)
+    }
+
+    /// As after a photo (tester, 2026-11-17): nothing far behind the best, nothing far off; the list used to
+    /// stay full of poor fits.
+    func testFarOffCalibresAreNotListed() {
+        // 30 mm: the 29.7 and 29.8 mm rounds, not the 10 mm Auto (32 mm) and nothing shorter than 29.
+        let near = rank(MeasuredDimensions(overallLength: 30))
+        XCTAssertTrue(near.count >= 3 && near.count < 15, "\(near.map(\.id))")
+        XCTAssertTrue(near.allSatisfy { $0.maxDeviation <= DimensionMatcher.maxBehindBest })
+        // 33.6 mm: the .22 WMR (34.3) leads; the .32 S&W Long (32.5) is within half a millimetre behind it,
+        // the 10 mm Auto (32.0) is not, though within 1.5 mm of the measurement.
+        let behind = rank(MeasuredDimensions(overallLength: 33.6))
+        XCTAssertEqual(behind.first?.cartridge.id, ".22 WMR")
+        XCTAssertTrue(behind.contains { $0.cartridge.id == ".32 S&W Long" }, "\(behind.map(\.id))")
+        XCTAssertFalse(behind.contains { $0.cartridge.id == "10 mm Auto" })
+        // A 9 mm bullet: no 7.9 mm one (the .32 S&W Long) in the list any more.
+        let nine = rank(MeasuredDimensions(bullet: 9), cartridges: CartridgeCatalog.all)
+        XCTAssertTrue(nine.allSatisfy { abs($0.cartridge.dimensions.bullet - 9) <= 0.65 }, "\(nine.map(\.id))")
     }
 
     func testDetailText() throws {
