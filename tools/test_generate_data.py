@@ -403,7 +403,8 @@ class SourcesTests(unittest.TestCase):
             (["shoulder_angle", "case_head"], [("C.I.P.", None)]),
             (["primer"], [("Wikipedia: 7.5×55mm Swiss", None)]),
             (["bullet"], [("Cartridges of the World", ["545"]), ("Swiss Magazine Loading Rifles 1869 to 1958", ["50"])]),
-            (["origin"], [("Wikipedia: 7.5×55mm Swiss", None), ("Ammo Encyclopedia", ["513"])]),
+            # C.I.P. backs the origin too, the sheet's country, since calibre-data #190.
+            (["origin"], [("Wikipedia: 7.5×55mm Swiss", None), ("Ammo Encyclopedia", ["513"]), ("C.I.P.", None)]),
             (["colour_codes"], [("Military Small Arms Ammunition of the World, 1945-1980", ["76", "77", "86"])]),
         ])
 
