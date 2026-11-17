@@ -187,13 +187,15 @@ struct DimensionLayout {
 
         let bounds = lh / 2...max(lh / 2, Double(size.height) - lh / 2)
         let ys = diameters.map { $0.part == .rim ? base + Self.rimGap : oy + $0.y * s }
+        // A rim on a foot (the «Mauser base» of the 11x59 mm R Gras): its extension lines start at the rim, not the base.
+        let rimFrom = base - (c.hasCase ? Self.rimUnderside(of: c) : 0) * s
         let labelYs = Self.spread(ys, spacing: lh, within: bounds)
         for (i, mark) in diameters.enumerated() {
             let y = ys[i], xs = [cx - mark.mm / 2 * s, cx + mark.mm / 2 * s]
             let a = CGPoint(x: xs[0], y: y), b = CGPoint(x: xs[1], y: y)
             arrowheads += [Self.arrowhead(at: a, dx: -1, dy: 0), Self.arrowhead(at: b, dx: 1, dy: 0)]
             if mark.part == .rim {
-                lines += xs.map { [CGPoint(x: $0, y: base + 2), CGPoint(x: $0, y: y + 4)] }
+                lines += xs.map { [CGPoint(x: $0, y: rimFrom + 2), CGPoint(x: $0, y: y + 4)] }
             }
             let labelRight = ox - Self.labelGap
             lines.append([CGPoint(x: labelRight + 3, y: labelYs[i]), CGPoint(x: ox - 6, y: y), a])
@@ -270,6 +272,18 @@ struct DimensionLayout {
         let overall = Mark(part: .overall, mm: d.overallLength, y: 0)
         guard c.hasCase, d.caseLength < d.overallLength - 0.05 else { return [overall] }
         return [Mark(part: .caseLength, mm: d.caseLength, y: c.outline.height - d.caseLength), overall]
+    }
+
+    /// Height above the base (mm) of the rim's underside: 0 where the rim stands on the base, the foot's height where
+    /// it stands on a foot (calibre-data's [case_head] foot, drawn narrower than the rim). Read off the outline.
+    static func rimUnderside(of c: Cartridge) -> Double {
+        let empty = OutlineGeometry(c.outline, includeBullet: false), height = c.outline.height
+        // Up to 3 mm (the feet are 0.8 to 1.0 mm); none for a case drawn without a head (cannon rounds without one).
+        guard empty.width(at: height - 0.01) > 0 else { return 0 }
+        for i in 0..<30 where empty.width(at: height - Double(i) * step - 0.01) >= c.dimensions.rim - 0.05 {
+            return Double(i) * step
+        }
+        return 0
     }
 
     /// Height above the base (mm) where the body starts in front of the rim, extractor groove or belt:

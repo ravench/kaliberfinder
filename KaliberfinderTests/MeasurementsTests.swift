@@ -85,6 +85,28 @@ final class MeasurementsTests: XCTestCase {
         XCTAssertEqual(gp11.arrowheads.count, 2 * gp11.dimensions.count)
     }
 
+    /// A rim on a foot («Mauser base», calibre-data #189): the rim's dimension line stays below the base, but its
+    /// extension lines start at the rim's underside, not at the base under the narrower foot. Only the seven
+    /// calibres with a foot have one; every other rim stands on the base.
+    func testARimOnAFootIsDimensionedFromTheRim() throws {
+        let feet = ["11x59 mm R Gras": 1.0, "10.4x38 mm R Vetterli Centrefire": 0.8, "9.5x60 mm R Turkish Mauser": 0.9,
+                    "10.15x61 mm R Jarmann": 0.8, "10.15x63 mm R Serbian Mauser": 0.8, "11.15x58 mm R Werndl M77": 0.8,
+                    "11x60 mm R Japanese Murata": 0.9]
+        for c in CartridgeCatalog.all {
+            XCTAssertEqual(DimensionLayout.rimUnderside(of: c), feet[c.name] ?? 0, accuracy: 1e-6, c.name)
+        }
+        let gras = try layout("11x59 mm R Gras"), height = try XCTUnwrap(CartridgeCatalog.cartridge(id: "11x59 mm R Gras")).outline.height
+        let base = Double(gras.origin.y) + height * gras.scale
+        let rim = try XCTUnwrap(gras.dimensions.first { $0.part == .rim })
+        XCTAssertEqual(Double(rim.from.y), base + DimensionLayout.rimGap, accuracy: 1e-6)
+        // The two vertical lines that end just above the rim's line: they start 1 mm (the foot) above the base, plus 2 pt.
+        let extensions = gras.lines.filter { $0.count == 2 && $0[0].x == $0[1].x && abs(Double($0[1].y) - (Double(rim.from.y) + 4)) < 1e-6 }
+        XCTAssertEqual(extensions.count, 2)
+        for line in extensions {
+            XCTAssertEqual(Double(line[0].y), base - 1.0 * gras.scale + 2, accuracy: 1e-6)
+        }
+    }
+
     /// On a phone every calibre fits, also with the largest labels (text size xxxLarge): lines and labels
     /// stay on screen, the diameter labels keep the order of their lines, and labels do not overlap.
     func testEveryCalibreFitsAPhone() {
