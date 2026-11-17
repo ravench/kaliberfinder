@@ -77,8 +77,10 @@ struct CartridgeView: View {
                 part(o.tip, fill: o.tipMaterial == "polymer" ? Self.polymer : Self.lead, lineWidth: lineWidth)
                 if let cavity = o.cavity {
                     let shape = PolygonShape(polygons: OutlineGeometry.parse(cavity), scale: pointsPerMM)
+                    // Stroked open: the mouth lies on the bullet's front edge, which the outline already draws.
                     shape.fill(Self.cavityShade)
-                        .overlay(shape.stroke(Color.black.opacity(0.7), style: Self.cavityStroke(pointsPerMM: pointsPerMM)))
+                        .overlay(PolygonShape(polygons: shape.polygons, scale: pointsPerMM, closed: false)
+                            .stroke(Color.black.opacity(0.7), style: Self.cavityStroke(pointsPerMM: pointsPerMM)))
                 }
             }
         }
@@ -113,6 +115,8 @@ struct CartridgeThumbnail: View {
 struct PolygonShape: Shape {
     let polygons: [[Point]]
     let scale: Double
+    /// False leaves each polygon open from its last point back to its first (a hollow point's mouth).
+    var closed = true
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
@@ -120,7 +124,7 @@ struct PolygonShape: Shape {
             guard let first = poly.first else { continue }
             path.move(to: CGPoint(x: first.x * scale, y: first.y * scale))
             for p in poly.dropFirst() { path.addLine(to: CGPoint(x: p.x * scale, y: p.y * scale)) }
-            path.closeSubpath()
+            if closed { path.closeSubpath() }
         }
         return path
     }

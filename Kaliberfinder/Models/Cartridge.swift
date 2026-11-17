@@ -181,8 +181,8 @@ struct Cartridge: Decodable, Identifiable, Hashable {
         /// plastic tip when `tipMaterial` is "polymer".
         let tip: String?
         let tipMaterial: String?
-        /// A hollow point's cavity, a hidden line inside the full nose: stroked dashed over the bullet, not part of
-        /// the silhouette (tester, 2026-11-16).
+        /// A hollow point's cavity, a hidden line inside the full nose: shaded and stroked dashed over the bullet, not
+        /// part of the silhouette (tester, 2026-11-16; bolder since Raven, 2026-11-17).
         let cavity: String?
         /// "steel" for a steel-capped nose or a steel BB, "lead" for a bare lead bullet, "plastic"
         /// for an airsoft BB; nil means copper (or lead without a case).

@@ -91,6 +91,11 @@ final class BulletMaterialTests: XCTestCase {
                 XCTAssertGreaterThanOrEqual(2 * pointsPerMM / (style.dash[0] + style.dash[1]), 3, "\(pointsPerMM)")
             }
         }
-        XCTAssertNotEqual(CartridgeView.cavityShade, .clear)
+        XCTAssertEqual(CartridgeView.cavityShade, Color.black.opacity(0.35))
+        // The mouth lies on the bullet's front edge: the cavity's line leaves it to the outline.
+        let open = PolygonShape(polygons: [[Point(x: 0, y: 0), Point(x: 1, y: 2), Point(x: 2, y: 0)]], scale: 1, closed: false)
+        var closes = 0
+        open.path(in: .zero).forEach { if case .closeSubpath = $0 { closes += 1 } }
+        XCTAssertEqual(closes, 0, "no closing segment along the mouth")
     }
 }
