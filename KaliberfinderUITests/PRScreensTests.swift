@@ -166,10 +166,12 @@ final class PRScreensTests: XCTestCase {
     }
 
     /// The dimensioned drawing of a bottleneck rifle round (with its shoulder) and its sources, then of a
-    /// belted magnum in inches.
+    /// belted magnum in inches and of a case whose rim stands on a foot.
     func testMeasurementDrawings() {
         for (query, name, unit, shot) in [("GP 11", "7.5x55 mm Swiss (GP 11)", "metric", "34-Masszeichnung-GP11"),
-                                          ("300 Win Mag", ".300 Winchester Magnum", "imperial", "35-Masszeichnung-Zoll")] {
+                                          ("300 Win Mag", ".300 Winchester Magnum", "imperial", "35-Masszeichnung-Zoll"),
+                                          // A rim on a foot: the rim's extension lines start at the rim (2026-11-17).
+                                          ("11x59", "11x59 mm R Gras", "metric", "35b-Masszeichnung-Gras")] {
             app.terminate()
             app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_CH", "-lengthUnit", unit]
             app.launch()
