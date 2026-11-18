@@ -5866,25 +5866,25 @@
         }
       }
     },
-    "Selten: wird kaum je gefunden. Ein Treffer ist eher eine ähnliche Patrone, also genau nachmessen.": {
+    "Selten: ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rare: hardly ever found. A match is more likely a similar cartridge, so measure carefully."
+            "value": "Rare: a match is often a similar cartridge, measure carefully."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rare : presque jamais trouvé. Une correspondance est plutôt une cartouche semblable, mesurez donc avec soin."
+            "value": "Rare : une correspondance est souvent une cartouche semblable, mesurez avec soin."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Raro: non si trova quasi mai. Una corrispondenza è più probabilmente una cartuccia simile, quindi misura con cura."
+            "value": "Raro: una corrispondenza è spesso una cartuccia simile, misura con cura."
           }
         }
       }

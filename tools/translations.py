@@ -79,10 +79,10 @@ T = {
     "Selten": ("Rare", "Rare", "Raro"),
     "Veraltet": ("Obsolete", "Obsolète", "Obsoleto"),
     "Herkunft": ("Origin", "Origine", "Origine"),
-    "Selten: wird kaum je gefunden. Ein Treffer ist eher eine ähnliche Patrone, also genau nachmessen.": (
-        "Rare: hardly ever found. A match is more likely a similar cartridge, so measure carefully.",
-        "Rare : presque jamais trouvé. Une correspondance est plutôt une cartouche semblable, mesurez donc avec soin.",
-        "Raro: non si trova quasi mai. Una corrispondenza è più probabilmente una cartuccia simile, quindi misura con cura."),
+    "Selten: ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen.": (
+        "Rare: a match is often a similar cartridge, measure carefully.",
+        "Rare : une correspondance est souvent une cartouche semblable, mesurez avec soin.",
+        "Raro: una corrispondenza è spesso una cartuccia simile, misura con cura."),
     "Veraltet: wird nicht mehr regulär hergestellt.": (
         "Obsolete: no longer in regular production.",
         "Obsolète : n'est plus fabriqué en série.",
