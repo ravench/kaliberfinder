@@ -97,14 +97,17 @@ def hand_written(version, text):
 
 
 def write_notes(path, cwd=ROOT, client=None, release_notes=os.path.join(ROOT, "RELEASE_NOTES.md")):
-    """Changelog.json for the bundle: a release's hand-written notes, else the commits summarised;
-    no commits (the same commit again), no notes."""
+    """Changelog.json for the bundle: a release's hand-written notes (it fails without them), else the
+    commits summarised; no commits (the same commit again), no notes."""
     version = release_version(cwd)
-    notes = None
-    if version and os.path.exists(release_notes):
-        with open(release_notes) as f:
-            notes = hand_written(version, f.read())
-    if notes:
+    if version:
+        notes = None
+        if os.path.exists(release_notes):
+            with open(release_notes) as f:
+                notes = hand_written(version, f.read())
+        # Never the summary for a release: a tag v1.0 beside a section «## 1.0.0» went out with it unnoticed (review 2026-11-18).
+        if not notes:
+            sys.exit(f"Release v{version} has no section «## {version}» with bullets in RELEASE_NOTES.md.")
         rng = f"release {version}"
     else:
         text, rng = commits(cwd)

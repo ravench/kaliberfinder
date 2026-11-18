@@ -89,11 +89,13 @@ class ReleaseNotesTests(unittest.TestCase):
             self.assertIsNone(client.request, "no call to the Claude API for a release")
             with open(out) as f:
                 self.assertEqual(json.load(f), {"notes": {"de": ["Neu: A", "Neu: B"], "en": ["New: A", "New: B"]}})
-            # A release without a section still gets the summary.
+            # A release without its section fails, so nothing is uploaded: never the summary instead.
             subprocess.run(["git", "tag", "-d", "v0.2.0"], cwd=tmp, check=True, capture_output=True)
-            subprocess.run(["git", "tag", "v0.9.0"], cwd=tmp, check=True)
-            changelog.write_notes(out, tmp, client, release_notes=notes_path)
-            self.assertIsNotNone(client.request)
+            subprocess.run(["git", "tag", "v0.2"], cwd=tmp, check=True)
+            with self.assertRaises(SystemExit) as failure:
+                changelog.write_notes(out, tmp, client, release_notes=notes_path)
+            self.assertIn("«## 0.2»", str(failure.exception))
+            self.assertIsNone(client.request)
 
     def test_the_repo_has_the_notes_file_with_the_format(self):
         with open(os.path.join(ROOT, "RELEASE_NOTES.md")) as f:
@@ -236,6 +238,17 @@ class WorkflowTests(unittest.TestCase):
         self.assertLess(notes, self.upload.index("xcodebuild archive"))
         # A build without notes still goes out.
         self.assertIn("::warning::Release notes skipped", self.upload)
+
+    def test_a_release_needs_its_notes_and_a_green_build(self):
+        # A tag's notes are hand-written: taken before the key is asked for, and a failure stops the upload.
+        release = self.upload.index('if [ "${{ github.ref_type }}" = tag ]; then')
+        self.assertLess(release, self.upload.index('if [ -z "$ANTHROPIC_API_KEY" ]; then'))
+        self.assertRegex(self.upload[release:], r"\A.*\n(\s+#.*\n)*\s+python3 tools/changelog.py notes Kaliberfinder/Resources/Changelog.json\n")
+        # The tag uploads its commit as it is: only one whose Build passed on main.
+        wait = self.workflow.split("\n  wait:")[1].split("\n  upload:")[0]
+        self.assertIn("if: github.event_name == 'push'", wait)
+        self.assertIn("actions/workflows/build.yml/runs?head_sha=${{ github.sha }}&event=push&status=success", wait)
+        self.assertLess(wait.index("workflows/build.yml/runs"), wait.index('echo "latest=true"'))
 
     def test_upload_tags_the_build(self):
         self.assertIn("contents: write", self.upload)
