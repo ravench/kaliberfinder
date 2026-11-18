@@ -737,25 +737,25 @@
         }
       }
     },
-    "Bankkarte oder Ausweis hochkant und oben bündig auflegen. Regler schieben, bis das Rechteck gleich lang ist.": {
+    "Bankkarte oder Ausweis hochkant auf das Rechteck legen, oben bündig. Regler schieben, bis das Rechteck gleich lang ist.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lay a bank card or ID upright, flush at the top. Move the slider until the rectangle is as long as the card."
+            "value": "Lay a bank card or ID upright on the rectangle, flush at the top. Move the slider until the rectangle is as long as the card."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Posez une carte bancaire ou d'identité verticalement, alignée en haut. Déplacez le curseur jusqu'à ce que le rectangle ait la même longueur."
+            "value": "Posez une carte bancaire ou d'identité verticalement sur le rectangle, alignée en haut. Déplacez le curseur jusqu'à ce que le rectangle ait la même longueur."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appoggia una carta bancaria o d'identità in verticale, allineata in alto. Sposta il cursore finché il rettangolo è lungo uguale."
+            "value": "Appoggia una carta bancaria o d'identità in verticale sul rettangolo, allineata in alto. Sposta il cursore finché il rettangolo è lungo quanto la carta."
           }
         }
       }
@@ -4325,7 +4325,7 @@
         }
       }
     },
-    "Mehrere Patronen erkannt: tippe auf eine.": {
+    "Mehrere Patronen erkannt: Tippe auf eine.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -5843,7 +5843,7 @@
         }
       }
     },
-    "Selten: ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen.": {
+    "Selten: Ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen.": {
       "extractionState": "manual",
       "localizations": {
         "en": {

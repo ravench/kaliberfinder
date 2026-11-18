@@ -241,7 +241,7 @@ struct MatchesView: View {
     }
 
     /// Shown instead of matches when several cartridges compete, until the user picks one.
-    static var severalObjectsText: String { "Mehrere Patronen erkannt: tippe auf eine.".loc }
+    static var severalObjectsText: String { "Mehrere Patronen erkannt: Tippe auf eine.".loc }
 
     /// Every listed row goes to the 1:1 screen; it scrolls sideways. The user holds the cartridge
     /// against all of them anyway, so they stand by length (the setting's, see `comparedLength`), shortest first, then by the Ø shown

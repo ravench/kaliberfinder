@@ -27,7 +27,7 @@ class TranslationTests(unittest.TestCase):
             fr = values[FR]
             self.assertFalse(re.search(r"\b(tu|ton|ta|tes|toi)\b", fr, re.IGNORECASE), f"{key!r}: {fr}")
             self.assertNotIn("mesure donc", fr, key)
-        self.assertIn("mesurez avec soin", T["Selten: ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen."][FR])
+        self.assertIn("mesurez avec soin", T["Selten: Ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen."][FR])
 
     def test_case_types_are_short_attributes(self):
         """«Bauart» values read like «Rimmed» / «Belted», not like a noun phrase."""

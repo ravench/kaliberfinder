@@ -161,12 +161,12 @@ struct ColourCodeRow: View {
         }
     }
 
-    /// German name of where the paint is, used as localization key.
     /// The footer's note on the band order, only with a tip: a base or primer ring has one colour (Raven, 2026-11-18).
     static func explainsTipOrder(_ codes: [Cartridge.ColourCode]) -> Bool {
         codes.contains { $0.part == "tip" }
     }
 
+    /// German name of where the paint is, used as localization key.
     static func partTitle(_ part: String) -> String {
         switch part {
         case "base": "Hülsenboden"

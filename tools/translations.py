@@ -12,9 +12,9 @@ INFO_PLIST = {
 }
 
 T = {
-    "Bankkarte oder Ausweis hochkant und oben bündig auflegen. Regler schieben, bis das Rechteck gleich lang ist.": ("Lay a bank card or ID upright, flush at the top. Move the slider until the rectangle is as long as the card.", "Posez une carte bancaire ou d'identité verticalement, alignée en haut. Déplacez le curseur jusqu'à ce que le rectangle ait la même longueur.", "Appoggia una carta bancaria o d'identità in verticale, allineata in alto. Sposta il cursore finché il rettangolo è lungo uguale."),
+    "Bankkarte oder Ausweis hochkant auf das Rechteck legen, oben bündig. Regler schieben, bis das Rechteck gleich lang ist.": ("Lay a bank card or ID upright on the rectangle, flush at the top. Move the slider until the rectangle is as long as the card.", "Posez une carte bancaire ou d'identité verticalement sur le rectangle, alignée en haut. Déplacez le curseur jusqu'à ce que le rectangle ait la même longueur.", "Appoggia una carta bancaria o d'identità in verticale sul rettangolo, allineata in alto. Sposta il cursore finché il rettangolo è lungo quanto la carta."),
     "Kaliber zum Vergleichen wählen.": ("Pick calibres to compare.", "Choisissez les calibres à comparer.", "Scegli i calibri da confrontare."),
-    "Mehrere Patronen erkannt: tippe auf eine.": ("Several cartridges found: tap one.", "Plusieurs cartouches détectées : touchez-en une.", "Più cartucce trovate: toccane una."),
+    "Mehrere Patronen erkannt: Tippe auf eine.": ("Several cartridges found: tap one.", "Plusieurs cartouches détectées : touchez-en une.", "Più cartucce trovate: toccane una."),
     "Eine Länge und ein Durchmesser reichen oft.": ("A length and a diameter are often enough.", "Une longueur et un diamètre suffisent souvent.", "Una lunghezza e un diametro spesso bastano."),
     "Kein Foto erhalten, bitte noch einmal.": ("No photo received, please try again.", "Aucune photo reçue, veuillez réessayer.", "Nessuna foto ricevuta, riprova."),
     "Kein Zugriff auf die Kamera. Erlaube ihn in den Einstellungen.": ("No access to the camera. Allow it in Settings.", "Pas d'accès à la caméra. Autorisez-le dans les Réglages.", "Nessun accesso alla fotocamera. Consentilo nelle Impostazioni."),
@@ -79,7 +79,7 @@ T = {
     "Selten": ("Rare", "Rare", "Raro"),
     "Veraltet": ("Obsolete", "Obsolète", "Obsoleto"),
     "Herkunft": ("Origin", "Origine", "Origine"),
-    "Selten: ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen.": (
+    "Selten: Ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen.": (
         "Rare: a match is often a similar cartridge, measure carefully.",
         "Rare : une correspondance est souvent une cartouche semblable, mesurez avec soin.",
         "Raro: una corrispondenza è spesso una cartuccia simile, misura con cura."),
