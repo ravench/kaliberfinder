@@ -6142,6 +6142,29 @@
         }
       }
     },
+    "Spitzenlänge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nose length"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longueur de l'ogive"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lunghezza dell'ogiva"
+          }
+        }
+      }
+    },
     "Spreng": {
       "extractionState": "manual",
       "localizations": {
