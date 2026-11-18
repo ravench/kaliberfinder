@@ -68,6 +68,36 @@ final class ScreenScaleTests: XCTestCase {
         XCTAssertGreaterThan(ScreenScale.ppiByModel.keys.filter { $0.hasPrefix("iPad") }.count, 60)
     }
 
+    /// Every iPhone and iPad that runs the app (iOS 17 or later) is in the table, with the density its simulator
+    /// profile gives: read from the device types this Mac's Xcode knows, so a new Xcode with a new device fails
+    /// here instead of the device showing «Bildschirm nicht kalibriert» (Raven, 2026-11-18: the 18 Pro, 18 Pro
+    /// Max, Duo and 17e were missing). Skipped where the device types cannot be read.
+    func testEveryDeviceThatRunsTheAppIsInTheTable() throws {
+        let developer = Bundle(for: XCTestCase.self).bundlePath.components(separatedBy: "/Platforms/")[0]
+        let folders = ["/Library/Developer/CoreSimulator/Profiles/DeviceTypes",
+                       developer + "/Platforms/iPhoneOS.platform/Library/Developer/CoreSimulator/Profiles/DeviceTypes"]
+        let types = folders.flatMap { folder in
+            ((try? FileManager.default.contentsOfDirectory(atPath: folder)) ?? []).map { "\(folder)/\($0)/Contents/Resources" }
+        }
+        try XCTSkipIf(types.isEmpty, "No simulator device types in \(folders)")
+        var checked = 0
+        for resources in types.map({ URL(fileURLWithPath: $0) }) {
+            guard let profile = NSDictionary(contentsOf: resources.appendingPathComponent("profile.plist")),
+                  let model = profile["modelIdentifier"] as? String, model.hasPrefix("iPhone") || model.hasPrefix("iPad") else { continue }
+            // A retired device names the last runtime it runs: "16.99" for an iPhone 8, which the app does not run on.
+            if let last = profile["maxRuntimeVersion"] as? String, last.compare("17", options: .numeric) == .orderedAscending { continue }
+            let capabilities = NSDictionary(contentsOf: resources.appendingPathComponent("capabilities.plist"))?["capabilities"] as? [String: Any]
+            let pitch = (capabilities?["ScreenDimensionsCapability"] as? [String: Any])?["main-screen-pitch"] as? Double
+            for id in Set([model] + (profile["representedModelIdentifiers"] as? [String] ?? [])) {
+                let ppi = ScreenScale.ppiByModel[id]
+                XCTAssertNotNil(ppi, "\(id) (\(profile["modelName"] ?? model)) runs the app but is not in ScreenScale.ppiByModel")
+                if let ppi, let pitch { XCTAssertEqual(ppi, pitch, id) }
+                checked += 1
+            }
+        }
+        XCTAssertGreaterThan(checked, 20, "Too few devices read from \(folders)")
+    }
+
     func testIPadModelsUseTheirDensity() {
         // iPad Pro 11" (M5), the simulator this was checked on: 264 ppi at 2x, so 5.2 pt/mm.
         let pro = ScreenScale.resolve(model: "iPad17,2", nativeScale: 2, calibrated: nil)
