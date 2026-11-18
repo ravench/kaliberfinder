@@ -4,10 +4,13 @@ import SwiftUI
 /// the old-ammunition page (Raven 2026-11-10): a rimmed bottleneck round from the side and from its
 /// head, each measurement marked with the letter its field carries. The same sketch for every calibre,
 /// drawn in the units of `box` and scaled to the width it gets. The dimensions form shows the same sketch
-/// with the letters of its fields only (TestFlight 2026-11-16).
+/// with the letters of its fields only (TestFlight 2026-11-16), and its outline as the form's shape and head
+/// choices say (TestFlight 2026-11-17): the default is the rimmed bottleneck round.
 struct MeasuringGuide: View {
     /// The letters to draw, with their lines; nil draws them all.
     var letters: Set<String>?
+    var shape: CaseShape = .any
+    var head: RimKind = .any
 
     /// A dimension line from `from` to `to`, its letter centred on `label` (the baseline).
     struct Mark {
@@ -57,25 +60,72 @@ struct MeasuringGuide: View {
         (["L"], [pt(362.2, 124), pt(362.2, 184)]), (["OAL"], [pt(503.2, 100), pt(503.2, 208)]),
     ]
 
-    var shownMarks: [Mark] { Self.marks.filter { letters?.contains($0.letter) ?? true } }
+    /// The round's axis.
+    static let axis = 96.0
+    /// A straight case's bullet nearly fills its mouth; a bottleneck's sits in the narrower neck.
+    var bulletRadius: Double { shape == .straight ? 31 : 23.7 }
+    /// A rim stands over the body (37.1 behind it), a semi-rim a little; a rimless or belted case's is the body's.
+    var rimRadius: Double {
+        switch head {
+        case .any, .rimmed: 43.2
+        case .semiRimmed: 39.5
+        case .rimless, .belted: 37.1
+        }
+    }
+    /// The belt behind the extractor groove, with its own mark for the form's belt field.
+    static let belt = (from: 58.0, to: 80.0, radius: 40.0)
+    static let beltMark = Mark(letter: "G", from: pt(69, axis - belt.radius), to: pt(69, axis + belt.radius), label: pt(69, 26))
+
+    /// The marks to draw, the rim's and the bullet's as wide as this round's.
+    var shownMarks: [Mark] {
+        let marks = Self.marks.filter { letters?.contains($0.letter) ?? true }.map { mark in
+            switch mark.letter {
+            case "R": Mark(letter: "R", from: pt(44.8, Self.axis - rimRadius), to: pt(44.8, Self.axis + rimRadius), label: mark.label)
+            case "D": Mark(letter: "D", from: pt(380, Self.axis - bulletRadius), to: pt(380, Self.axis + bulletRadius), label: mark.label)
+            default: mark
+            }
+        }
+        return head == .belted ? marks + [Self.beltMark] : marks
+    }
     var shownExtensions: [[CGPoint]] {
-        Self.extensions.filter { ext in letters.map { !$0.isDisjoint(with: ext.letters) } ?? true }.map(\.line)
+        let tops = ["R": Self.axis - rimRadius - 0.8, "D": Self.axis - bulletRadius - 1.3]
+        let lines = Self.extensions.filter { ext in letters.map { !$0.isDisjoint(with: ext.letters) } ?? true }.map { ext in
+            ext.letters.first.flatMap { tops[$0] }.map { [pt(ext.line[0].x, $0), ext.line[1]] } ?? ext.line
+        }
+        return head == .belted ? lines + [[pt(69, Self.axis - Self.belt.radius - 1), pt(69, 30)]] : lines
     }
 
-    static let caseOutline = Path { p in
-        p.addLines([pt(40, 52.8), pt(49.6, 52.8), pt(49.6, 58.9), pt(286, 61.2), pt(310, 70.5),
-                    pt(362.2, 70.5), pt(362.2, 121.5), pt(310, 121.5), pt(286, 130.8),
-                    pt(49.6, 133.1), pt(49.6, 139.2), pt(40, 139.2)])
-        p.closeSubpath()
+    /// The case from the side: the rim, a groove and belt where the head has them, the body tapering to the
+    /// mouth, over a shoulder for a bottleneck. The upper edge, mirrored below the axis.
+    var caseOutline: Path {
+        var top = [pt(40, Self.axis - rimRadius), pt(49.6, Self.axis - rimRadius)]
+        var body = 49.6
+        if ![.any, .rimmed].contains(head) {  // the extractor groove behind the rim
+            top += [pt(49.6, 65), pt(58, 65)]
+            body = 58
+            if head == .belted {
+                top += [pt(Self.belt.from, Self.axis - Self.belt.radius), pt(Self.belt.to, Self.axis - Self.belt.radius)]
+                body = Self.belt.to
+            }
+        }
+        top.append(pt(body, 58.9))
+        top += shape == .straight ? [pt(362.2, 61.9)] : [pt(286, 61.2), pt(310, 70.5), pt(362.2, 70.5)]
+        return Path { p in
+            p.addLines(top + top.reversed().map { pt($0.x, 2 * Self.axis - $0.y) })
+            p.closeSubpath()
+        }
     }
 
-    static let bullet = Path { p in
-        p.move(to: pt(356, 72.3))
-        p.addLine(to: pt(392, 72.3))
-        p.addCurve(to: pt(503.2, 96), control1: pt(440, 72.3), control2: pt(488, 84))
-        p.addCurve(to: pt(392, 119.7), control1: pt(488, 108), control2: pt(440, 119.7))
-        p.addLine(to: pt(356, 119.7))
-        p.closeSubpath()
+    var bullet: Path {
+        let r = bulletRadius, a = Self.axis
+        return Path { p in
+            p.move(to: pt(356, a - r))
+            p.addLine(to: pt(392, a - r))
+            p.addCurve(to: pt(503.2, a), control1: pt(440, a - r), control2: pt(488, a - r / 2))
+            p.addCurve(to: pt(392, a + r), control1: pt(488, a + r / 2), control2: pt(440, a + r))
+            p.addLine(to: pt(356, a + r))
+            p.closeSubpath()
+        }
     }
 
     var body: some View {
@@ -88,7 +138,7 @@ struct MeasuringGuide: View {
             func circle(_ r: Double) -> Path {
                 Path(ellipseIn: CGRect(x: head.x - r, y: head.y - r, width: 2 * r, height: 2 * r))
             }
-            var fills: [(Path, Color)] = [(Self.bullet, CartridgeView.copper), (Self.caseOutline, CartridgeView.brass)]
+            var fills: [(Path, Color)] = [(bullet, CartridgeView.copper), (caseOutline, CartridgeView.brass)]
             if showsHead { fills += [(circle(43.2), CartridgeView.brass), (circle(16), CartridgeView.copper)] }
             for (shape, fill) in fills {
                 context.fill(shape, with: .color(fill))
