@@ -18,6 +18,12 @@ struct MeasuringGuide: View {
     }
 
     static let box = CGRect(x: 30, y: 4, width: 615, height: 208)
+    /// The box without the head view, up to the OAL line's end.
+    static let sideBox = CGRect(x: 30, y: 4, width: 490, height: 208)
+    /// The head view shows only with a letter on it: the dimensions form has no field there (TestFlight 2026-11-17),
+    /// so its sketch is the side view alone, drawn that much wider.
+    var showsHead: Bool { letters?.contains("P") ?? true }
+    var box: CGRect { showsHead ? Self.box : Self.sideBox }
     /// Height of the letters.
     static let letterSize = 22.0
 
@@ -74,22 +80,22 @@ struct MeasuringGuide: View {
 
     var body: some View {
         Canvas { context, size in
-            let s = size.width / Self.box.width
+            let s = size.width / box.width
             context.scaleBy(x: s, y: s)
-            context.translateBy(x: -Self.box.minX, y: -Self.box.minY)
+            context.translateBy(x: -box.minX, y: -box.minY)
             let ink = GraphicsContext.Shading.style(.primary)
             let head = CGPoint(x: 594, y: 96)
             func circle(_ r: Double) -> Path {
                 Path(ellipseIn: CGRect(x: head.x - r, y: head.y - r, width: 2 * r, height: 2 * r))
             }
-            let fills: [(Path, Color)] = [(Self.bullet, CartridgeView.copper), (Self.caseOutline, CartridgeView.brass),
-                                          (circle(43.2), CartridgeView.brass), (circle(16), CartridgeView.copper)]
+            var fills: [(Path, Color)] = [(Self.bullet, CartridgeView.copper), (Self.caseOutline, CartridgeView.brass)]
+            if showsHead { fills += [(circle(43.2), CartridgeView.brass), (circle(16), CartridgeView.copper)] }
             for (shape, fill) in fills {
                 context.fill(shape, with: .color(fill))
                 context.stroke(shape, with: ink, lineWidth: 1.4)
             }
             // The body's edge, behind the rim.
-            context.stroke(circle(37.1), with: ink, style: StrokeStyle(lineWidth: 1, dash: [3, 3]))
+            if showsHead { context.stroke(circle(37.1), with: ink, style: StrokeStyle(lineWidth: 1, dash: [3, 3])) }
             context.stroke(Self.lines(shownExtensions), with: .style(.secondary), lineWidth: 1)
             context.stroke(Self.lines(Self.dimensionLines(shownMarks)), with: ink, lineWidth: 1.3)
             for mark in shownMarks {
@@ -100,7 +106,7 @@ struct MeasuringGuide: View {
                 context.draw(letter, at: CGPoint(x: mark.label.x, y: mark.label.y - baseline), anchor: .top)
             }
         }
-        .aspectRatio(Self.box.width / Self.box.height, contentMode: .fit)
+        .aspectRatio(box.width / box.height, contentMode: .fit)
         .accessibilityHidden(true)  // the fields carry the names
     }
 

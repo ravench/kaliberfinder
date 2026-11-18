@@ -51,6 +51,16 @@ final class MeasuringGuideTests: XCTestCase {
         XCTAssertFalse(guide.shownExtensions.contains { $0 == [CGPoint(x: 286, y: 134), CGPoint(x: 286, y: 160)] }, "H's line")
         XCTAssertEqual(MeasuringGuide().shownMarks.count, MeasuringGuide.marks.count)
         XCTAssertEqual(MeasuringGuide.dimensionLines(guide.shownMarks).count, 3 * guide.shownMarks.count)
+        // No field on the head view, so none is drawn and the box ends after the side view (TestFlight 2026-11-17).
+        XCTAssertFalse(guide.showsHead)
+        XCTAssertTrue(MeasuringGuide().showsHead)
+        XCTAssertTrue(MeasuringGuide(letters: ["P"]).showsHead)
+        XCTAssertLessThan(guide.box.maxX, 594 - 43.2, "the head view is outside")
+        let drawn = guide.shownMarks.map { [$0.from, $0.to, $0.label] } + guide.shownExtensions
+        for line in drawn + [[CGPoint(x: MeasuringGuide.bullet.boundingRect.maxX, y: 0)]] {
+            XCTAssertTrue(line.allSatisfy { $0.x >= guide.box.minX && $0.x <= guide.box.maxX }, "\(line)")
+        }
+        XCTAssertEqual(MeasuringGuide().box, MeasuringGuide.box)
     }
 
     private static func bounds(_ line: [CGPoint]) -> CGRect {
