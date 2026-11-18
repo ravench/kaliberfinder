@@ -327,9 +327,7 @@ T = {
     "Name": ("Name", "Nom", "Nome"),
     # Colour codes of bullet tips, case bases and primer rings (calibre-data [[colour_codes]]), on the calibre page.
     "Farbcodes": ("Colour codes", "Codes couleur", "Codici colore"),
-    "Militärische Laborierungen. Spitze: die Farben von der Spitze abwärts.":
-        ("Military loads. Tip: the colours from the tip down.", "Chargements militaires. Pointe : les couleurs de la pointe vers le bas.",
-         "Cariche militari. Punta: i colori dalla punta in giù."),
+    "Spitze: Farben von der Spitze abwärts.": ("Tip: colours from the tip down.", "Pointe : couleurs de la pointe vers le bas.", "Punta: colori dalla punta in giù."),
     "Geschossspitze": ("Bullet tip", "Pointe du projectile", "Punta della palla"),
     "Hülsenboden": ("Case base", "Culot de la douille", "Fondello del bossolo"),
     "Zündhütchenring": ("Primer ring", "Anneau d'amorce", "Anello dell'innesco"),

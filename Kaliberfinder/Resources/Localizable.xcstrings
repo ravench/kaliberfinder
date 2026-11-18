@@ -4394,29 +4394,6 @@
         }
       }
     },
-    "Militärische Laborierungen. Spitze: die Farben von der Spitze abwärts.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Military loads. Tip: the colours from the tip down."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chargements militaires. Pointe : les couleurs de la pointe vers le bas."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cariche militari. Punta: i colori dalla punta in giù."
-          }
-        }
-      }
-    },
     "Miniatur": {
       "extractionState": "manual",
       "localizations": {
@@ -6115,6 +6092,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Salva sul dispositivo serie di foto di cartucce note con le misure dell'app, come dati di prova per il riconoscimento."
+          }
+        }
+      }
+    },
+    "Spitze: Farben von der Spitze abwärts.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tip: colours from the tip down."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pointe : couleurs de la pointe vers le bas."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Punta: colori dalla punta in giù."
           }
         }
       }
