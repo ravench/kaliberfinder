@@ -79,6 +79,18 @@ jobs:
       - name: Wait for more merges
         if: github.event_name == 'workflow_run'
         run: sleep 60
+      - name: Check Build passed on the release's commit
+        # A tag uploads its commit as it is, and Build does not run for tags: only a commit whose Build
+        # passed on main becomes a release (review 2026-11-18). A run started by hand stays unchecked.
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PASSED=$(gh api "repos/${{ github.repository }}/actions/workflows/build.yml/runs?head_sha=${{ github.sha }}&event=push&status=success" --jq .total_count)
+          if [ "$PASSED" = 0 ]; then
+            echo "::error::Build has not passed on ${{ github.sha }}: tag a commit on main whose Build is green."
+            exit 1
+          fi
       - name: Check this is still the newest commit on main
         # A newer commit's Build may finish first (Mac runners queue); its own run uploads then.
         id: latest
@@ -156,11 +168,19 @@ jobs:
         # The commits since the last build, summarised by the Claude API into Changelog.json in the
         # bundle (the app shows it the first time the build is opened) and, below, into «What to
         # Test». Without the key, or when the API fails, the build goes out without notes.
+        # A release (a tag) takes the notes of RELEASE_NOTES.md instead and is not uploaded without them.
         id: notes
         if: steps.secrets.outputs.ready == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
+          if [ "${{ github.ref_type }}" = tag ]; then
+            # A release: its hand-written notes, which need neither the key nor the API. Without its
+            # section in RELEASE_NOTES.md the tool fails, and so does the upload (review 2026-11-18).
+            python3 tools/changelog.py notes Kaliberfinder/Resources/Changelog.json
+            echo "notes=$(cat Kaliberfinder/Resources/Changelog.json)" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           if [ -z "$ANTHROPIC_API_KEY" ]; then
             echo "::notice::Release notes skipped: set the ANTHROPIC_API_KEY secret."
             exit 0
