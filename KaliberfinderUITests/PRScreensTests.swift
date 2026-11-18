@@ -172,12 +172,14 @@ final class PRScreensTests: XCTestCase {
     }
 
     /// The dimensioned drawing of a bottleneck rifle round (with its shoulder) and its sources, then of a
-    /// belted magnum in inches and of a case whose rim stands on a foot.
+    /// belted magnum in inches, of a case whose rim stands on a foot and of the GP 90 with its nose-length source.
     func testMeasurementDrawings() {
         for (query, name, unit, shot) in [("GP 11", "7.5x55 mm Swiss (GP 11)", "metric", "34-Masszeichnung-GP11"),
                                           ("300 Win Mag", ".300 Winchester Magnum", "imperial", "35-Masszeichnung-Zoll"),
                                           // A rim on a foot: the rim's extension lines start at the rim (2026-11-17).
-                                          ("11x59", "11x59 mm R Gras", "metric", "35b-Masszeichnung-Gras")] {
+                                          ("11x59", "11x59 mm R Gras", "metric", "35b-Masszeichnung-Gras"),
+                                          // A spitzer whose nose length is measured: its own «Spitzenlänge» source (calibre-data #197).
+                                          ("GP 90", "5.6 mm GP 90", "metric", "35c-Masszeichnung-GP90")] {
             app.terminate()
             app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_CH", "-lengthUnit", unit]
             app.launch()
@@ -203,6 +205,10 @@ final class PRScreensTests: XCTestCase {
             if query == "GP 11", open(app.navigationBars.buttons["Quellen"].firstMatch) {
                 XCTAssertTrue(app.navigationBars["Quellen"].waitForExistence(timeout: 5), "The sources page did not open")
                 snap("34b-Quellen-GP11")
+            }
+            if query == "GP 90", open(app.navigationBars.buttons["Quellen"].firstMatch) {
+                XCTAssertTrue(app.navigationBars["Quellen"].waitForExistence(timeout: 5), "The sources page did not open")
+                snap("35d-Quellen-GP90")
             }
         }
     }

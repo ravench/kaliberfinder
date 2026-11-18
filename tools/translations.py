@@ -249,6 +249,7 @@ T = {
     "Masse eingeben": ("Enter dimensions", "Saisir les dimensions", "Inserisci le dimensioni"),
     "Masse": ("Dimensions", "Dimensions", "Dimensioni"),
     "Schulterwinkel": ("Shoulder angle", "Angle d'épaulement", "Angolo della spalla"),
+    "Spitzenlänge": ("Nose length", "Longueur de l'ogive", "Lunghezza dell'ogiva"),
     "Quellen": ("Sources", "Sources", "Fonti"),
     "Eigene Messung": ("Own measurement", "Mesure personnelle", "Misurazione propria"),
     "S. %@": ("p. %@", "p. %@", "p. %@"),
