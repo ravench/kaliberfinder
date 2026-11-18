@@ -315,7 +315,6 @@ final class ColorSegmenterTests: XCTestCase {
         XCTAssertTrue(analysis.hasSeveralObjects)
         XCTAssertEqual(analysis.objectCount, 2)
         XCTAssertFalse(MatchesView.severalObjectsText.isEmpty)
-        XCTAssertFalse(MatchesView.severalObjectsHint.isEmpty)
     }
 
     // MARK: - Picking one of several cartridges

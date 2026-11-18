@@ -645,29 +645,6 @@
         }
       }
     },
-    "Aus: jedes Kaliber der Gruppe als eigener Treffer, auch im 1:1-Vergleich.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Off: every calibre of the group as its own match, in the 1:1 comparison too."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Désactivé : chaque calibre du groupe comme résultat à part, aussi dans la comparaison 1:1."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Disattivato: ogni calibro del gruppo come risultato a sé, anche nel confronto 1:1."
-          }
-        }
-      }
-    },
     "Ausblenden": {
       "extractionState": "manual",
       "localizations": {
@@ -756,6 +733,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Scegli e confronta"
+          }
+        }
+      }
+    },
+    "Bankkarte oder Ausweis hochkant und oben bündig auflegen. Regler schieben, bis das Rechteck gleich lang ist.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lay a bank card or ID upright, flush at the top. Move the slider until the rectangle is as long as the card."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posez une carte bancaire ou d'identité verticalement, alignée en haut. Déplacez le curseur jusqu'à ce que le rectangle ait la même longueur."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appoggia una carta bancaria o d'identità in verticale, allineata in alto. Sposta il cursore finché il rettangolo è lungo uguale."
           }
         }
       }
@@ -1423,6 +1423,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mostra"
+          }
+        }
+      }
+    },
+    "Eine Länge und ein Durchmesser reichen oft.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A length and a diameter are often enough."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une longueur et un diamètre suffisent souvent."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una lunghezza e un diametro spesso bastano."
           }
         }
       }
@@ -2416,29 +2439,6 @@
         }
       }
     },
-    "Gleich grosse Kaliber als Gruppe zeigen": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show calibres of one size as a group"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Regrouper les calibres de même taille"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Raggruppa i calibri della stessa misura"
-          }
-        }
-      }
-    },
     "Grau": {
       "extractionState": "manual",
       "localizations": {
@@ -3244,6 +3244,52 @@
         }
       }
     },
+    "Kaliber mit identischen Massen gruppieren": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Group calibres with identical dimensions"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regrouper les calibres aux cotes identiques"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raggruppa i calibri con misure identiche"
+          }
+        }
+      }
+    },
+    "Kaliber zum Vergleichen wählen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick calibres to compare."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez les calibres à comparer."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scegli i calibri da confrontare."
+          }
+        }
+      }
+    },
     "Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt. Sonst weder in Listen, Suche noch Treffern.": {
       "extractionState": "manual",
       "localizations": {
@@ -4003,29 +4049,6 @@
         }
       }
     },
-    "Lege eine Bankkarte (oder ID, Führerausweis) hochkant auf das Rechteck, oben bündig, und verschiebe den Regler, bis das Rechteck genau so lang ist wie die Karte.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lay a bank card (or ID card, driving licence) upright on the rectangle, flush at the top, and move the slider until the rectangle is exactly as long as the card."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Posez une carte bancaire (ou carte d'identité, permis de conduire) verticalement sur le rectangle, alignée en haut, et déplacez le curseur jusqu'à ce que le rectangle soit exactement aussi long que la carte."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Appoggia una carta bancaria (o carta d'identità, licenza di condurre) in verticale sul rettangolo, allineata in alto, e sposta il cursore finché il rettangolo è lungo esattamente come la carta."
-          }
-        }
-      }
-    },
     "Leuchtspur": {
       "extractionState": "manual",
       "localizations": {
@@ -4302,25 +4325,25 @@
         }
       }
     },
-    "Mehrere Patronen im Bild erkannt.": {
+    "Mehrere Patronen erkannt: tippe auf eine.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Several cartridges found in the photo."
+            "value": "Several cartridges found: tap one."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plusieurs cartouches détectées sur la photo."
+            "value": "Plusieurs cartouches détectées : touchez-en une."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Più cartucce trovate nella foto."
+            "value": "Più cartucce trovate: toccane una."
           }
         }
       }
@@ -4597,29 +4620,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "NATO"
-          }
-        }
-      }
-    },
-    "Nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "After a photo with a LiDAR size: best match first instead of shortest cartridge."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Après une photo avec taille LiDAR : meilleure correspondance d'abord au lieu de la cartouche la plus courte."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dopo una foto con dimensione LiDAR: prima la corrispondenza migliore invece della cartuccia più corta."
           }
         }
       }
@@ -5080,29 +5080,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cartuccia %lld"
-          }
-        }
-      }
-    },
-    "Patrone auf dem Bildschirm vergleichen.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Compare the cartridge on the screen."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Comparez la cartouche sur l'écran."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Confronta la cartuccia sullo schermo."
           }
         }
       }
@@ -6349,29 +6326,6 @@
         }
       }
     },
-    "Tippe auf die Patrone, die bestimmt werden soll.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tap the cartridge you want to identify."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Touchez la cartouche à identifier."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tocca la cartuccia da identificare."
-          }
-        }
-      }
-    },
     "Trainingsdaten": {
       "extractionState": "manual",
       "localizations": {
@@ -6878,29 +6832,6 @@
         }
       }
     },
-    "Was du messen kannst; eine Länge und ein Durchmesser reichen oft.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What you can measure; a length and a diameter are often enough."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ce que vous pouvez mesurer ; une longueur et un diamètre suffisent souvent."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quello che riesci a misurare; una lunghezza e un diametro spesso bastano."
-          }
-        }
-      }
-    },
     "Was liegt im Bild?": {
       "extractionState": "manual",
       "localizations": {
@@ -7012,29 +6943,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Scegli il calibro che stai fotografando e scatta più foto. Vengono salvati la foto, la profondità LiDAR, i dati della fotocamera e la maschera Vision. Condividi la serie come ZIP: finirà nei test."
-          }
-        }
-      }
-    },
-    "Wähle die Kaliber aus, die du nebeneinander sehen willst.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pick the calibres you want to see side by side."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choisissez les calibres que vous voulez voir côte à côte."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scegli i calibri che vuoi vedere uno accanto all'altro."
           }
         }
       }

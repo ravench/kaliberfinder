@@ -14,7 +14,7 @@ struct CalibrationView: View {
         let card = ScreenScale.cardSize
         ScrollView {
             VStack(spacing: 16) {
-                Text("Lege eine Bankkarte (oder ID, Führerausweis) hochkant auf das Rechteck, oben bündig, und verschiebe den Regler, bis das Rechteck genau so lang ist wie die Karte.")
+                Text("Bankkarte oder Ausweis hochkant und oben bündig auflegen. Regler schieben, bis das Rechteck gleich lang ist.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)

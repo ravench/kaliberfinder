@@ -44,7 +44,6 @@ struct MatchesView: View {
                 if needsPick {
                     Label(Self.severalObjectsText, systemImage: "hand.tap")
                         .foregroundStyle(.orange)
-                    Text(Self.severalObjectsHint).font(.footnote).foregroundStyle(.secondary)
                 } else {
                     if chosen != nil {
                         Button {
@@ -148,8 +147,6 @@ struct MatchesView: View {
                 if !hiddenFirst, let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
             } header: {
                 Text("Mögliche Kaliber")
-            } footer: {
-                Text("Patrone auf dem Bildschirm vergleichen.")
             }
         }
     }
@@ -244,10 +241,7 @@ struct MatchesView: View {
     }
 
     /// Shown instead of matches when several cartridges compete, until the user picks one.
-    static var severalObjectsText: String { "Mehrere Patronen im Bild erkannt.".loc }
-    static var severalObjectsHint: String {
-        "Tippe auf die Patrone, die bestimmt werden soll.".loc
-    }
+    static var severalObjectsText: String { "Mehrere Patronen erkannt: tippe auf eine.".loc }
 
     /// Every listed row goes to the 1:1 screen; it scrolls sideways. The user holds the cartridge
     /// against all of them anyway, so they stand by length (the setting's, see `comparedLength`), shortest first, then by the Ø shown

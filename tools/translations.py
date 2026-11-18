@@ -12,6 +12,10 @@ INFO_PLIST = {
 }
 
 T = {
+    "Bankkarte oder Ausweis hochkant und oben bündig auflegen. Regler schieben, bis das Rechteck gleich lang ist.": ("Lay a bank card or ID upright, flush at the top. Move the slider until the rectangle is as long as the card.", "Posez une carte bancaire ou d'identité verticalement, alignée en haut. Déplacez le curseur jusqu'à ce que le rectangle ait la même longueur.", "Appoggia una carta bancaria o d'identità in verticale, allineata in alto. Sposta il cursore finché il rettangolo è lungo uguale."),
+    "Kaliber zum Vergleichen wählen.": ("Pick calibres to compare.", "Choisissez les calibres à comparer.", "Scegli i calibri da confrontare."),
+    "Mehrere Patronen erkannt: tippe auf eine.": ("Several cartridges found: tap one.", "Plusieurs cartouches détectées : touchez-en une.", "Più cartucce trovate: toccane una."),
+    "Eine Länge und ein Durchmesser reichen oft.": ("A length and a diameter are often enough.", "Une longueur et un diamètre suffisent souvent.", "Una lunghezza e un diametro spesso bastano."),
     "Kein Foto erhalten, bitte noch einmal.": ("No photo received, please try again.", "Aucune photo reçue, veuillez réessayer.", "Nessuna foto ricevuta, riprova."),
     "Kein Zugriff auf die Kamera. Erlaube ihn in den Einstellungen.": ("No access to the camera. Allow it in Settings.", "Pas d'accès à la caméra. Autorisez-le dans les Réglages.", "Nessun accesso alla fotocamera. Consentilo nelle Impostazioni."),
     "Einstellungen öffnen": ("Open Settings", "Ouvrir les Réglages", "Apri Impostazioni"),
@@ -19,8 +23,7 @@ T = {
     "Sortieren nach": ("Sort by", "Trier par", "Ordina per"),
     "Mit LiDAR nach Trefferqualität sortieren": ("Sort by match quality with LiDAR", "Avec LiDAR, trier par qualité de correspondance", "Con LiDAR, ordina per qualità della corrispondenza"),
     "Geschosse bei leeren Hülsen zeigen": ("Show bullets on empty cases", "Afficher les projectiles sur les douilles vides", "Mostra le palle sui bossoli vuoti"),
-    "Gleich grosse Kaliber als Gruppe zeigen": ("Show calibres of one size as a group", "Regrouper les calibres de même taille", "Raggruppa i calibri della stessa misura"),
-    "Aus: jedes Kaliber der Gruppe als eigener Treffer, auch im 1:1-Vergleich.": ("Off: every calibre of the group as its own match, in the 1:1 comparison too.", "Désactivé : chaque calibre du groupe comme résultat à part, aussi dans la comparaison 1:1.", "Disattivato: ogni calibro del gruppo come risultato a sé, anche nel confronto 1:1."),
+    "Kaliber mit identischen Massen gruppieren": ("Group calibres with identical dimensions", "Regrouper les calibres aux cotes identiques", "Raggruppa i calibri con misure identiche"),
     "Fotoerkennung": ("Photo recognition", "Reconnaissance photo", "Riconoscimento foto"),
     "Info": ("About", "À propos", "Info"),
     "Unterscheiden sich in: %@": ("Differ in: %@", "Diffèrent par : %@", "Differiscono per: %@"),
@@ -65,15 +68,11 @@ T = {
     "Aluminium": ("Aluminium", "Aluminium", "Alluminio"),
     "Vernickelt": ("Nickel-plated", "Nickelé", "Nichelato"),
     "Grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Körper.": ("Green tip and base, purple bullet, orange neck and shoulder, light blue body.", "Vert pointe et culot, violet projectile, orange collet et épaulement, bleu clair corps.", "Verde punta e fondello, viola palla, arancione colletto e spalla, azzurro corpo."),
-    "Nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone.": ("After a photo with a LiDAR size: best match first instead of shortest cartridge.", "Après une photo avec taille LiDAR : meilleure correspondance d'abord au lieu de la cartouche la plus courte.", "Dopo una foto con dimensione LiDAR: prima la corrispondenza migliore invece della cartuccia più corta."),
     "Prüfe die Grösse einmal mit einer Bankkarte.": ("Check the size once with a bank card.", "Vérifiez la taille une fois avec une carte bancaire.", "Controlla la dimensione una volta con una carta bancaria."),
     "Seitlich auf hellem Grund, von oben fotografieren.": ("On its side on a light background, photographed from above.", "De côté sur fond clair, photographiée d'en haut.", "Di lato su sfondo chiaro, fotografata dall'alto."),
     "Nur ein Kreis erkannt: Bitte Patrone von der Seite fotografieren.": ("Only a circle detected: please photograph the cartridge from the side.", "Seulement un cercle détecté : veuillez photographier la cartouche de côté.", "Rilevato solo un cerchio: fotografa la cartuccia di lato."),
     "Tipp: seitlich auf einfarbigen hellen Grund legen, senkrecht von oben fotografieren.": ("Tip: lay it on its side on a plain light background and photograph it straight from above.", "Conseil : posez-la de côté sur un fond clair uni et photographiez-la à la verticale.", "Suggerimento: appoggiala di lato su uno sfondo chiaro uniforme e fotografala dall'alto in verticale."),
-    "Patrone auf dem Bildschirm vergleichen.": ("Compare the cartridge on the screen.", "Comparez la cartouche sur l'écran.", "Confronta la cartuccia sullo schermo."),
-    "Was du messen kannst; eine Länge und ein Durchmesser reichen oft.": ("What you can measure; a length and a diameter are often enough.", "Ce que vous pouvez mesurer ; une longueur et un diamètre suffisent souvent.", "Quello che riesci a misurare; una lunghezza e un diametro spesso bastano."),
     "Gerundete Richtwerte, keine Wiederladedaten.": ("Rounded reference values, not reloading data.", "Valeurs indicatives arrondies, pas de données de rechargement.", "Valori indicativi arrotondati, non dati di ricarica."),
-    "Wähle die Kaliber aus, die du nebeneinander sehen willst.": ("Pick the calibres you want to see side by side.", "Choisissez les calibres que vous voulez voir côte à côte.", "Scegli i calibri che vuoi vedere uno accanto all'altro."),
     "Für Patronen, die die App nicht kennt: eigener Name, von der Auswertung ausgenommen.": ("For rounds the app does not know: your own name, left out of the evaluation.", "Pour des cartouches inconnues de l'app : votre propre nom, exclues de l'évaluation.", "Per cartucce che l'app non conosce: nome proprio, escluse dalla valutazione."),
     # Calibre tags and countries (CartridgeRow, CartridgeDetailView). Country names come from
     # generate_data.COUNTRY_NAMES.
@@ -172,14 +171,6 @@ T = {
     "Foto auswählen": ("Choose photo", "Choisir une photo", "Scegli foto"),
     "Foto wird ausgewertet …": ("Analysing photo …", "Analyse de la photo …", "Analisi della foto …"),
     "Foto wird geladen …": ("Loading photo …", "Chargement de la photo …", "Caricamento della foto …"),
-    "Mehrere Patronen im Bild erkannt.": (
-        "Several cartridges found in the photo.",
-        "Plusieurs cartouches détectées sur la photo.",
-        "Più cartucce trovate nella foto."),
-    "Tippe auf die Patrone, die bestimmt werden soll.": (
-        "Tap the cartridge you want to identify.",
-        "Touchez la cartouche à identifier.",
-        "Tocca la cartuccia da identificare."),
     "Andere Patrone wählen": ("Choose another cartridge", "Choisir une autre cartouche", "Scegli un'altra cartuccia"),
     "Patrone %lld": ("Cartridge %lld", "Cartouche %lld", "Cartuccia %lld"),
     "Keine Patrone im Bild erkannt.": ("No cartridge found in the photo.", "Aucune cartouche détectée sur la photo.", "Nessuna cartuccia trovata nella foto."),
@@ -249,10 +240,6 @@ T = {
     "Kleiner": ("Smaller", "Plus petit", "Più piccolo"),
     "Kurzwaffe": ("Handgun", "Arme de poing", "Arma corta"),
     "Langwaffe": ("Rifle", "Arme longue", "Arma lunga"),
-    "Lege eine Bankkarte (oder ID, Führerausweis) hochkant auf das Rechteck, oben bündig, und verschiebe den Regler, bis das Rechteck genau so lang ist wie die Karte.": (
-        "Lay a bank card (or ID card, driving licence) upright on the rectangle, flush at the top, and move the slider until the rectangle is exactly as long as the card.",
-        "Posez une carte bancaire (ou carte d'identité, permis de conduire) verticalement sur le rectangle, alignée en haut, et déplacez le curseur jusqu'à ce que le rectangle soit exactement aussi long que la carte.",
-        "Appoggia una carta bancaria (o carta d'identità, licenza di condurre) in verticale sul rettangolo, allineata in alto, e sposta il cursore finché il rettangolo è lungo esattamente come la carta."),
     "Lineal in Zentimetern": ("Ruler in centimetres", "Règle en centimètres", "Righello in centimetri"),
     "Luftdruck": ("Air gun", "Air comprimé", "Aria compressa"),
     "Kanone": ("Cannon", "Canon", "Cannone"),
