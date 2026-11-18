@@ -23,6 +23,17 @@ final class SourcesTests: XCTestCase {
         XCTAssertNotNil(works[measurements.refs[1].work].url, "a web page opens in the browser")
     }
 
+    /// A shop's or a load data page is named as a source but is no link (Raven, 2026-11-18): its work has no URL,
+    /// and a row without one is plain text, as a book's is.
+    func testShopsAreSourcesWithoutALink() throws {
+        let shops = CartridgeCatalog.works.filter { ["starlinebrass.com", "ammo-one1.com", "loaddata.com"].contains($0.title ?? "") }
+        XCTAssertGreaterThanOrEqual(shops.count, 16)
+        XCTAssertTrue(shops.allSatisfy { $0.url == nil && $0.detail != nil }, "\(shops.filter { $0.url != nil })")
+        let linked = CartridgeCatalog.works.compactMap(\.url?.host)
+        XCTAssertFalse(linked.contains { $0.hasSuffix("starlinebrass.com") || $0.hasSuffix("ammo-one1.com") })
+        XCTAssertGreaterThan(linked.count, 1000)
+    }
+
     func testEveryRefNamesAWork() {
         let refs = Fixture.catalogue.flatMap { $0.sources.flatMap { $0.refs.map(\.work) } }
         XCTAssertFalse(refs.isEmpty)

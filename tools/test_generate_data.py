@@ -420,13 +420,28 @@ class SourcesTests(unittest.TestCase):
         self.assertEqual(cotw, {"title": "Cartridges of the World", "detail": "W. Todd Woodard, Corey Graff", "year": 2026})
         self.assertEqual(len([w for w in self.list if w == cotw]), 1, "pages stay on the refs")
 
+    def test_shops_and_load_data_are_named_but_not_linked(self):
+        # «Quellen» does not send its reader to a page that sells cartridges, brass or reamers, or to load data
+        # (Raven, 2026-11-18): the source is still named, as text.
+        self.assertEqual(generate_data.UNLINKED_HOSTS, {"ammo-one1.com", "starlinebrass.com", "pacifictoolandgauge.com",
+                                                        "xxlreloading.com", "hodgdonreloading.com", "loaddata.com"})
+        for host in generate_data.UNLINKED_HOSTS:
+            for prefix in ("", "www."):
+                self.assertEqual(generate_data.work(f"https://{prefix}{host}/product/x-brass/")[0], {"title": host, "detail": "x-brass"})
+        unlinked = [w for w in self.list if w.get("title") in generate_data.UNLINKED_HOSTS]
+        self.assertGreaterEqual(len(unlinked), 20)
+        self.assertEqual({w["title"] for w in unlinked}, generate_data.UNLINKED_HOSTS, "a host no calibre cites any more: drop it")
+        linked = [w["url"] for w in self.list if "url" in w]
+        self.assertFalse([u for u in linked if any(host in u for host in generate_data.UNLINKED_HOSTS)])
+        self.assertGreater(len(linked), 1000)
+
     def test_web_sources_link_and_name_the_publisher(self):
         cip, page = generate_data.work("https://bobp.cip-bobp.org/uploads/tdcc/tab-i/tabical-en-page46.pdf")
         self.assertEqual(cip, {"title": "C.I.P.", "detail": "Tab. I · tabical-en-page46",
                                "url": "https://bobp.cip-bobp.org/uploads/tdcc/tab-i/tabical-en-page46.pdf"})
         self.assertIsNone(page)
-        self.assertEqual(generate_data.work("https://www.starlinebrass.com/x")[0],
-                         {"title": "starlinebrass.com", "detail": "x", "url": "https://www.starlinebrass.com/x"})
+        self.assertEqual(generate_data.work("https://www.example.com/x")[0],
+                         {"title": "example.com", "detail": "x", "url": "https://www.example.com/x"})
         self.assertEqual(generate_data.work("https://municion.org/producto/22-long-rifle/")[0]["detail"], "22-long-rifle",
                          "two pages of one site differ")
         self.assertEqual(generate_data.work("https://en.wikipedia.org/wiki/.22_Long_Rifle")[0]["title"], "Wikipedia: .22 Long Rifle")
