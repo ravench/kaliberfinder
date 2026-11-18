@@ -408,6 +408,13 @@ class SourcesTests(unittest.TestCase):
             (["colour_codes"], [("Military Small Arms Ammunition of the World, 1945-1980", ["76", "77", "86"])]),
         ])
 
+    def test_a_nose_length_has_its_own_sources(self):
+        # The GP 90's nose comes from the AECC drawing of the 5.56x45 mm (calibre-data #197), its [mm] from C.I.P./SAAMI.
+        nose = [g for g in self.by_name["5.6 mm GP 90"]["sources"] if "nose" in g["parts"]]
+        self.assertEqual([(g["parts"], [self.list[r["work"]]["url"] for r in g["refs"]]) for g in nose],
+                         [(["nose"], ["https://municion.org/producto/556-x-45-otan/"])])
+        self.assertFalse(any("nose" in g["parts"] for g in self.by_name[".308 Winchester"]["sources"]), "no nose, no row")
+
     def test_a_book_is_one_work_with_its_year_and_author(self):
         cotw = next(w for w in self.list if w.get("title") == "Cartridges of the World" and w["year"] == 2026)
         self.assertEqual(cotw, {"title": "Cartridges of the World", "detail": "W. Todd Woodard, Corey Graff", "year": 2026})
