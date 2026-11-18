@@ -369,7 +369,15 @@ class ColourCodeTests(unittest.TestCase):
     def test_every_entry_has_the_list_and_most_are_empty(self):
         self.assertTrue(all(isinstance(c["colourCodes"], list) for c in self.by_name.values()))
         self.assertEqual(self.by_name["9x19 mm"]["colourCodes"], [])
-        self.assertEqual(self.by_name["7.5x55 mm Swiss (GP 11)"]["colourCodes"],
+        gp11 = self.by_name["7.5x55 mm Swiss (GP 11)"]["colourCodes"]
+        # In the app's other languages where calibre-data translates the description (Raven, 2026-11-18); a bare
+        # designation has none, and the key is left out.
+        self.assertEqual(gp11[1]["descriptions"], {"de": "Leuchtspur, ältere Kennzeichnung: ganzer Hülsenboden lackiert",
+                                                   "fr": "Traçant, ancien marquage : tout le culot laqué",
+                                                   "it": "Tracciante, vecchia marcatura: tutto il fondello laccato"})
+        self.assertTrue(all(sorted(c["descriptions"]) == ["de", "fr", "it"] for c in gp11))
+        self.assertNotIn("descriptions", next(c for c in self.by_name[".50 BMG"]["colourCodes"] if c.get("description") == "M2"))
+        self.assertEqual([{k: v for k, v in c.items() if k != "descriptions"} for c in gp11],
                          [{"part": "tip", "colours": ["red"], "meaning": ["tracer"],
                            "description": "Tracer M.1911 (Leuchtspurpatrone)", "countries": [SWISS]},
                           {"part": "base", "colours": ["red"], "meaning": ["tracer"],

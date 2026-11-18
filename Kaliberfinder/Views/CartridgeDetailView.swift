@@ -150,7 +150,8 @@ struct ColourCodeRow: View {
             ColourSwatch(part: code.part, colours: code.colours)
             VStack(alignment: .leading, spacing: 2) {
                 Text(verbatim: code.meaning.map { Cartridge.ColourCode.title($0).loc }.joined(separator: " · "))
-                Text(verbatim: ([Self.partTitle(code.part).loc] + [code.description].compactMap { $0 })
+                Text(verbatim: ([Self.partTitle(code.part).loc]
+                                + [code.description(in: Bundle.main.preferredLocalizations.first ?? "de")].compactMap { $0 })
                     .joined(separator: " · "))
                     .font(.footnote).foregroundStyle(.secondary)
             }

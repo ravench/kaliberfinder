@@ -1589,6 +1589,11 @@
       "tracer"
      ],
      "description": "Tracer M.1911 (Leuchtspurpatrone)",
+     "descriptions": {
+      "de": "Leuchtspurpatrone M.1911",
+      "fr": "Cartouche traçante M.1911 (Leuchtspurpatrone)",
+      "it": "Cartuccia tracciante M.1911 (Leuchtspurpatrone)"
+     },
      "countries": [
       {
        "code": "CH",
@@ -1606,6 +1611,11 @@
       "tracer"
      ],
      "description": "Tracer, the older marking: the whole base lacquered",
+     "descriptions": {
+      "de": "Leuchtspur, ältere Kennzeichnung: ganzer Hülsenboden lackiert",
+      "fr": "Traçant, ancien marquage : tout le culot laqué",
+      "it": "Tracciante, vecchia marcatura: tutto il fondello laccato"
+     },
      "countries": [
       {
        "code": "CH",
@@ -1623,6 +1633,11 @@
       "armour-piercing"
      ],
      "description": "Armour-piercing, no longer in service (1980)",
+     "descriptions": {
+      "de": "Panzerbrechend, nicht mehr im Dienst (1980)",
+      "fr": "Perforant, n'est plus en service (1980)",
+      "it": "Perforante, non più in servizio (1980)"
+     },
      "countries": [
       {
        "code": "CH",
@@ -2336,6 +2351,11 @@
       "ball"
      ],
      "description": "US M855 (with a steel penetrator), German DM11",
+     "descriptions": {
+      "de": "M855 mit Stahlpenetrator (USA), DM11 (Deutschland)",
+      "fr": "M855 à pénétrateur en acier (États-Unis), DM11 (Allemagne)",
+      "it": "M855 con penetratore in acciaio (Stati Uniti), DM11 (Germania)"
+     },
      "countries": [
       {
        "code": "US",
@@ -2358,6 +2378,11 @@
       "tracer"
      ],
      "description": "US M856, German DM21",
+     "descriptions": {
+      "de": "M856 (USA), DM21 (Deutschland)",
+      "fr": "M856 (États-Unis), DM21 (Allemagne)",
+      "it": "M856 (Stati Uniti), DM21 (Germania)"
+     },
      "countries": [
       {
        "code": "US",
@@ -2380,6 +2405,11 @@
       "tracer"
      ],
      "description": "US M856A1, British L1, L16 and L22",
+     "descriptions": {
+      "de": "M856A1 (USA), L1, L16 und L22 (Grossbritannien)",
+      "fr": "M856A1 (États-Unis), L1, L16 et L22 (Royaume-Uni)",
+      "it": "M856A1 (Stati Uniti), L1, L16 e L22 (Regno Unito)"
+     },
      "countries": [
       {
        "code": "US",
@@ -2653,6 +2683,11 @@
       "armour-piercing"
      ],
      "description": "M61 and M993",
+     "descriptions": {
+      "de": "M61 und M993",
+      "fr": "M61 et M993",
+      "it": "M61 e M993"
+     },
      "countries": [
       {
        "code": "US",
@@ -2687,6 +2722,11 @@
       "tracer"
      ],
      "description": "M276 dim tracer",
+     "descriptions": {
+      "de": "M276, lichtschwache Leuchtspur",
+      "fr": "M276, traçant à faible luminosité",
+      "it": "M276, tracciante a bassa luminosità"
+     },
      "countries": [
       {
        "code": "US",
@@ -2704,6 +2744,11 @@
       "ball"
      ],
      "description": "British ball",
+     "descriptions": {
+      "de": "Britisches Standardgeschoss",
+      "fr": "Balle ordinaire britannique",
+      "it": "Palla ordinaria britannica"
+     },
      "countries": [
       {
        "code": "GB",
@@ -2721,6 +2766,11 @@
       "tracer"
      ],
      "description": "British tracer",
+     "descriptions": {
+      "de": "Britische Leuchtspur",
+      "fr": "Traçant britannique",
+      "it": "Tracciante britannico"
+     },
      "countries": [
       {
        "code": "GB",
@@ -2738,6 +2788,11 @@
       "proof"
      ],
      "description": "British proof or standard round",
+     "descriptions": {
+      "de": "Britische Beschuss- oder Referenzpatrone",
+      "fr": "Cartouche britannique d'épreuve ou étalon",
+      "it": "Cartuccia britannica di prova forzata o campione"
+     },
      "countries": [
       {
        "code": "GB",
@@ -3210,6 +3265,11 @@
       "ball"
      ],
      "description": "Light ball, former Czechoslovak code (before the Soviet codes)",
+     "descriptions": {
+      "de": "Leichtes Standardgeschoss, früherer tschechoslowakischer Code (vor den sowjetischen Codes)",
+      "fr": "Balle ordinaire légère, ancien code tchécoslovaque (avant les codes soviétiques)",
+      "it": "Palla ordinaria leggera, vecchio codice cecoslovacco (prima dei codici sovietici)"
+     },
      "countries": [
       {
        "code": "CS",
@@ -3226,6 +3286,11 @@
       "ball"
      ],
      "description": "Heavy ball, former Czechoslovak code (before the Soviet codes)",
+     "descriptions": {
+      "de": "Schweres Standardgeschoss, früherer tschechoslowakischer Code (vor den sowjetischen Codes)",
+      "fr": "Balle ordinaire lourde, ancien code tchécoslovaque (avant les codes soviétiques)",
+      "it": "Palla ordinaria pesante, vecchio codice cecoslovacco (prima dei codici sovietici)"
+     },
      "countries": [
       {
        "code": "CS",
@@ -3242,6 +3307,11 @@
       "ball"
      ],
      "description": "Ball with a mild steel core, former Czechoslovak code (before the Soviet codes)",
+     "descriptions": {
+      "de": "Standardgeschoss mit Weichstahlkern, früherer tschechoslowakischer Code (vor den sowjetischen Codes)",
+      "fr": "Balle ordinaire à noyau en acier doux, ancien code tchécoslovaque (avant les codes soviétiques)",
+      "it": "Palla ordinaria con nucleo in acciaio dolce, vecchio codice cecoslovacco (prima dei codici sovietici)"
+     },
      "countries": [
       {
        "code": "CS",
@@ -3258,6 +3328,11 @@
       "tracer"
      ],
      "description": "Tracer, former Czechoslovak code (before the Soviet codes)",
+     "descriptions": {
+      "de": "Leuchtspur, früherer tschechoslowakischer Code (vor den sowjetischen Codes)",
+      "fr": "Traçant, ancien code tchécoslovaque (avant les codes soviétiques)",
+      "it": "Tracciante, vecchio codice cecoslovacco (prima dei codici sovietici)"
+     },
      "countries": [
       {
        "code": "CS",
@@ -3274,6 +3349,11 @@
       "armour-piercing"
      ],
      "description": "Armour-piercing, former Czechoslovak code (before the Soviet codes)",
+     "descriptions": {
+      "de": "Panzerbrechend, früherer tschechoslowakischer Code (vor den sowjetischen Codes)",
+      "fr": "Perforant, ancien code tchécoslovaque (avant les codes soviétiques)",
+      "it": "Perforante, vecchio codice cecoslovacco (prima dei codici sovietici)"
+     },
      "countries": [
       {
        "code": "CS",
