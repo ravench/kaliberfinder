@@ -40,9 +40,10 @@ final class PRScreensTests: XCTestCase {
         }
         if open(app.buttons["Masse eingeben"].firstMatch) {
             snap("03-Masse-eingeben")
-            // The outlines beside the shape and head choices (TestFlight 2026-11-17); «Beliebige …» closes the menu again.
-            menuStop("Form", choice: "Beliebige Form", "03a-Masse-Form")
-            menuStop("Randform", choice: "Beliebige Randform", "03a-Masse-Randform")
+            // The outlines beside the shape and head choices, and the sketch as the choices say (TestFlight 2026-11-17).
+            menuStop("Form", choice: "Gerade Hülse", "03a-Masse-Form")
+            menuStop("Randform", choice: "Gürtelhülse", "03a-Masse-Randform")
+            snap("03a-Masse-Skizze-gerade-Guertel")
             back()
         }
         if open(app.buttons["Alle Kaliber"].firstMatch) {

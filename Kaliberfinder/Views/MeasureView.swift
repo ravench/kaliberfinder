@@ -44,11 +44,11 @@ struct MeasureView: View {
                 }
                 .pickerStyle(.menu)
                 // Where each value is taken, as on the training screen, in its order (TestFlight 2026-11-16).
-                MeasuringGuide(letters: Self.letters)
+                MeasuringGuide(letters: Self.letters, shape: shape, head: head)
                     .padding(.vertical, 4)
                 field("Geschossdurchmesser", letter: "D", text: $bullet)
                 field("Randdurchmesser", letter: "R", text: $rim)
-                if head == .belted { field("Gürteldurchmesser", letter: nil, text: $belt) }  // not on the sketch (tester, 2026-11-17)
+                if head == .belted { field("Gürteldurchmesser", letter: "G", text: $belt) }  // the sketch draws the belt then
                 field("Hülsenlänge", letter: "L", text: $caseLength)
                 field("Gesamtlänge", letter: "OAL", text: $overallLength)
             } header: {
@@ -89,7 +89,7 @@ struct MeasureView: View {
         .onChange(of: measured) { _, _ in revealed = false }
     }
 
-    /// The letters of the form's fields on the sketch.
+    /// The letters of the form's fields on the sketch; the belt's G comes with a belted head.
     static let letters: Set<String> = ["D", "R", "L", "OAL"]
 
     /// A dropdown choice with its outline, where `CaseIcon` has one for the token.
