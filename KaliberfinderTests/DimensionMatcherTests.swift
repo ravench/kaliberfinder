@@ -163,5 +163,11 @@ final class DimensionMatcherTests: XCTestCase {
         XCTAssertFalse(exact.isEmpty)
         XCTAssertNotEqual(exact, off)
         XCTAssertTrue(off.contains("mm"))
+        // A good fit beyond the tolerance is not «genau»: a bullet 0.38 mm wider (0.23 past the 0.15 mm tolerance)
+        // says so, with the whole difference (review 2026-11-18).
+        let near = DimensionMatch(cartridge: c, maxDeviation: 0.23, meanDeviation: 0.1)
+        XCTAssertEqual(near.fit, .good)
+        XCTAssertNotEqual(MeasureView.detail(for: near), exact)
+        XCTAssertTrue(MeasureView.detail(for: near).contains(LengthUnit.metric.format(0.38)), MeasureView.detail(for: near))
     }
 }
