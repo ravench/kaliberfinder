@@ -289,14 +289,8 @@ T = {
         "Cannon: too big for the screen. Shown with the developer option only.",
         "Canon : trop grand pour l'écran. Visible seulement avec l'option développeur.",
         "Cannone: troppo grande per lo schermo. Visibile solo con l'opzione sviluppatore."),
-    "Munition von 20 bis 57 mm, zu gross für den Bildschirm. Eingeschaltet gelten dieselben Regeln wie für alle Kaliber: Listen, Suche, Treffer, 1:1 und Masszeichnung, sofern belegt und gezeichnet.": (
-        "Ammunition of 20 to 57 mm, too big for the screen. Switched on, the same rules apply as to every calibre: lists, search, matches, 1:1 and the dimensioned drawing, where sourced and drawn.",
-        "Munitions de 20 à 57 mm, trop grandes pour l'écran. Activées, les mêmes règles s'appliquent qu'à tout calibre : listes, recherche, résultats, 1:1 et dessin coté, s'ils sont documentés et dessinés.",
-        "Munizioni da 20 a 57 mm, troppo grandi per lo schermo. Attivate, valgono le stesse regole di ogni calibro: elenchi, ricerca, risultati, 1:1 e disegno quotato, se documentati e disegnati."),
-    "Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt. Sonst weder in Listen, Suche noch Treffern.":
-        ("Calibres whose measurements are not well sourced in calibre-data: parts of their drawing are estimated. Otherwise neither in lists, search nor matches.",
-         "Calibres dont les mesures ne sont pas bien documentées dans calibre-data : une partie de leur dessin est estimée. Sinon ni dans les listes, ni dans la recherche, ni dans les résultats.",
-         "Calibri le cui misure non sono ben documentate in calibre-data: parti del loro disegno sono stimate. Altrimenti né negli elenchi, né nella ricerca, né nei risultati."),
+    "Munition von 20 bis 57 mm, zu gross für den Bildschirm.": ("Ammunition of 20 to 57 mm, too big for the screen.", "Munitions de 20 à 57 mm, trop grandes pour l'écran.", "Munizioni da 20 a 57 mm, troppo grandi per lo schermo."),
+    "Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt.": ("Calibres whose measurements are not well sourced in calibre-data: parts of their drawing are estimated.", "Calibres dont les mesures ne sont pas bien documentées dans calibre-data : une partie de leur dessin est estimée.", "Calibri le cui misure non sono ben documentate in calibre-data: parti del loro disegno sono stimate."),
     "Kamera": ("Camera", "Caméra", "Fotocamera"),
     "Scharf ab %lld cm": ("In focus from %lld cm", "Net à partir de %lld cm", "A fuoco da %lld cm"),
     "Neue Aufnahmeserie": ("New capture series", "Nouvelle série de prises", "Nuova serie di scatti"),

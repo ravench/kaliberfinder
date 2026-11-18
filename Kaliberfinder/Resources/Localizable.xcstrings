@@ -3290,25 +3290,25 @@
         }
       }
     },
-    "Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt. Sonst weder in Listen, Suche noch Treffern.": {
+    "Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calibres whose measurements are not well sourced in calibre-data: parts of their drawing are estimated. Otherwise neither in lists, search nor matches."
+            "value": "Calibres whose measurements are not well sourced in calibre-data: parts of their drawing are estimated."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calibres dont les mesures ne sont pas bien documentées dans calibre-data : une partie de leur dessin est estimée. Sinon ni dans les listes, ni dans la recherche, ni dans les résultats."
+            "value": "Calibres dont les mesures ne sont pas bien documentées dans calibre-data : une partie de leur dessin est estimée."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calibri le cui misure non sono ben documentate in calibre-data: parti del loro disegno sono stimate. Altrimenti né negli elenchi, né nella ricerca, né nei risultati."
+            "value": "Calibri le cui misure non sono ben documentate in calibre-data: parti del loro disegno sono stimate."
           }
         }
       }
@@ -4555,25 +4555,25 @@
         }
       }
     },
-    "Munition von 20 bis 57 mm, zu gross für den Bildschirm. Eingeschaltet gelten dieselben Regeln wie für alle Kaliber: Listen, Suche, Treffer, 1:1 und Masszeichnung, sofern belegt und gezeichnet.": {
+    "Munition von 20 bis 57 mm, zu gross für den Bildschirm.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ammunition of 20 to 57 mm, too big for the screen. Switched on, the same rules apply as to every calibre: lists, search, matches, 1:1 and the dimensioned drawing, where sourced and drawn."
+            "value": "Ammunition of 20 to 57 mm, too big for the screen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Munitions de 20 à 57 mm, trop grandes pour l'écran. Activées, les mêmes règles s'appliquent qu'à tout calibre : listes, recherche, résultats, 1:1 et dessin coté, s'ils sont documentés et dessinés."
+            "value": "Munitions de 20 à 57 mm, trop grandes pour l'écran."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Munizioni da 20 a 57 mm, troppo grandi per lo schermo. Attivate, valgono le stesse regole di ogni calibro: elenchi, ricerca, risultati, 1:1 e disegno quotato, se documentati e disegnati."
+            "value": "Munizioni da 20 a 57 mm, troppo grandi per lo schermo."
           }
         }
       }
