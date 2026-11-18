@@ -36,11 +36,13 @@ final class ShareViewController: UIViewController {
             show(SharedInbox.failedText)
             return
         }
-        if openApp(SharedInbox.openURL) {
-            extensionContext?.completeRequest(returningItems: nil)
-        } else {
-            // The app takes the photos the next time it comes to the front.
-            show(SharedInbox.openAppText)
+        openApp(SharedInbox.openURL) { [weak self] opened in
+            if opened {
+                self?.extensionContext?.completeRequest(returningItems: nil)
+            } else {
+                // The app takes the photos the next time it comes to the front.
+                self?.show(SharedInbox.openAppText)
+            }
         }
     }
 
@@ -54,19 +56,21 @@ final class ShareViewController: UIViewController {
 
     /// Extensions have no API to open their app; the host's UIApplication in the responder chain can.
     /// Called through the runtime because `open(_:options:)` is marked unavailable in extensions.
-    private func openApp(_ url: URL) -> Bool {
+    /// `completion` hears, on the main queue, whether iOS opened the app: unasked, a refused open closed the
+    /// sheet as if it had worked, without the «Öffne Kaliberfinder» text (review 2026-11-18).
+    private func openApp(_ url: URL, completion: @escaping (Bool) -> Void) {
         let selector = NSSelectorFromString("openURL:options:completionHandler:")
         var responder: UIResponder? = self
         while let current = responder {
             if let application = current as? UIApplication, application.responds(to: selector) {
-                typealias Open = @convention(c) (AnyObject, Selector, NSURL, NSDictionary, AnyObject?) -> Void
+                typealias Open = @convention(c) (AnyObject, Selector, NSURL, NSDictionary, @escaping @convention(block) (Bool) -> Void) -> Void
                 let open = unsafeBitCast(application.method(for: selector), to: Open.self)
-                open(application, selector, url as NSURL, NSDictionary(), nil)
-                return true
+                open(application, selector, url as NSURL, NSDictionary()) { opened in DispatchQueue.main.async { completion(opened) } }
+                return
             }
             responder = current.next
         }
-        return false
+        completion(false)
     }
 
     private func show(_ message: String) {

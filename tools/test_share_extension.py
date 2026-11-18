@@ -69,6 +69,15 @@ class ShareExtensionTests(unittest.TestCase):
         self.assertIn('PlugIns/*.appex "$APP"', workflow)
         self.assertIn('"$NAME/$NAME.entitlements"', workflow)
 
+    def test_a_refused_open_is_heard(self):
+        # iOS may refuse to open the app from the extension: the extension asks (a completion block, not nil)
+        # and then says the photo is waiting, instead of closing as if the app had opened (review 2026-11-18).
+        swift = read("KaliberfinderShare", "ShareViewController.swift")
+        self.assertNotIn("NSDictionary(), nil)", swift)
+        self.assertRegex(swift, r"openApp\(SharedInbox\.openURL\) \{ \[weak self\] opened in")
+        self.assertRegex(swift, r"\} else \{\n(\s*//.*\n)?\s*self\?\.show\(SharedInbox\.openAppText\)")
+        self.assertIn("completion(false)", swift)
+
     def test_extension_sources_exist(self):
         for path in re.findall(r"^      - (\S+)$", self.share.split("info:")[0], re.MULTILINE):
             self.assertTrue(os.path.exists(os.path.join(ROOT, path)), path)
