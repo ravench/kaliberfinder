@@ -211,7 +211,7 @@ final class PRScreensTests: XCTestCase {
         snap("40-303-Zuendhuetchenringe")
     }
 
-    /// A hollow point's cavity as a dashed line inside the full nose: the .357 SIG (TestFlight 2026-11-16).
+    /// A hollow point's cavity, shaded with a bold dashed line inside the full nose: the .357 SIG (TestFlight 2026-11-16/17).
     func testHollowPoint() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }

@@ -78,4 +78,24 @@ final class BulletMaterialTests: XCTestCase {
         }
         XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge(".44 Rundkugel (.454)")), CartridgeView.lead)
     }
+
+    /// A hollow point's cavity reads at the detail page's size (Raven, 2026-11-17: the thin dashes were too fine):
+    /// it is shaded, its line is bolder than the outline, and each side of a 2 mm deep cavity shows several dashes.
+    func testHollowPointCavityIsBold() throws {
+        XCTAssertNotNil(try cartridge(".357 SIG").outline.cavity)
+        for pointsPerMM in [1.5, 3.0, 7.0, 12.0] {
+            let style = CartridgeView.cavityStroke(pointsPerMM: pointsPerMM)
+            XCTAssertGreaterThan(style.lineWidth, CartridgeView.lineWidth(pointsPerMM: pointsPerMM), "\(pointsPerMM)")
+            // On the detail page (7 points per mm and up), a 2 mm side shows at least three dashes.
+            if pointsPerMM >= 7 {
+                XCTAssertGreaterThanOrEqual(2 * pointsPerMM / (style.dash[0] + style.dash[1]), 3, "\(pointsPerMM)")
+            }
+        }
+        XCTAssertEqual(CartridgeView.cavityShade, Color.black.opacity(0.35))
+        // The mouth lies on the bullet's front edge: the cavity's line leaves it to the outline.
+        let open = PolygonShape(polygons: [[Point(x: 0, y: 0), Point(x: 1, y: 2), Point(x: 2, y: 0)]], scale: 1, closed: false)
+        var closes = 0
+        open.path(in: .zero).forEach { if case .closeSubpath = $0 { closes += 1 } }
+        XCTAssertEqual(closes, 0, "no closing segment along the mouth")
+    }
 }

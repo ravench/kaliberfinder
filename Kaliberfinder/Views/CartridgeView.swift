@@ -54,9 +54,20 @@ struct CartridgeView: View {
         return cartridge.outline.headMaterial == "steel" ? steel : brass
     }
 
+    /// Width of the outline of every part.
+    static func lineWidth(pointsPerMM: Double) -> Double { max(0.3, min(0.8, pointsPerMM * 0.08)) }
+
+    /// A hollow point's cavity is shaded and its hidden line is bolder than the outline, with short dashes, so that
+    /// a cavity of 2 to 3 mm reads at the size of the detail page (Raven, 2026-11-17: thin dashes were too fine).
+    static let cavityShade = Color.black.opacity(0.35)
+    static func cavityStroke(pointsPerMM: Double) -> StrokeStyle {
+        StrokeStyle(lineWidth: max(0.6, min(1.4, pointsPerMM * 0.15)),
+                    dash: [max(1.5, pointsPerMM * 0.4), max(1, pointsPerMM * 0.25)])
+    }
+
     var body: some View {
         let o = cartridge.outline
-        let lineWidth = max(0.3, min(0.8, pointsPerMM * 0.08))
+        let lineWidth = Self.lineWidth(pointsPerMM: pointsPerMM)
         ZStack(alignment: .topLeading) {
             part(o.case, fill: Self.caseFill(for: cartridge), lineWidth: lineWidth)
             part(o.head, fill: Self.headFill(for: cartridge), lineWidth: lineWidth)
@@ -65,9 +76,11 @@ struct CartridgeView: View {
                 part(o.patch, fill: Self.paper, lineWidth: lineWidth)
                 part(o.tip, fill: o.tipMaterial == "polymer" ? Self.polymer : Self.lead, lineWidth: lineWidth)
                 if let cavity = o.cavity {
-                    // A hidden line: dashes about a millimetre long, never shorter than they show.
-                    PolygonShape(polygons: OutlineGeometry.parse(cavity), scale: pointsPerMM)
-                        .stroke(Color.black.opacity(0.7), style: StrokeStyle(lineWidth: lineWidth, dash: [max(2, pointsPerMM * 0.8), max(1.5, pointsPerMM * 0.5)]))
+                    let shape = PolygonShape(polygons: OutlineGeometry.parse(cavity), scale: pointsPerMM)
+                    // Stroked open: the mouth lies on the bullet's front edge, which the outline already draws.
+                    shape.fill(Self.cavityShade)
+                        .overlay(PolygonShape(polygons: shape.polygons, scale: pointsPerMM, closed: false)
+                            .stroke(Color.black.opacity(0.7), style: Self.cavityStroke(pointsPerMM: pointsPerMM)))
                 }
             }
         }
@@ -102,6 +115,8 @@ struct CartridgeThumbnail: View {
 struct PolygonShape: Shape {
     let polygons: [[Point]]
     let scale: Double
+    /// False leaves each polygon open from its last point back to its first (a hollow point's mouth).
+    var closed = true
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
@@ -109,7 +124,7 @@ struct PolygonShape: Shape {
             guard let first = poly.first else { continue }
             path.move(to: CGPoint(x: first.x * scale, y: first.y * scale))
             for p in poly.dropFirst() { path.addLine(to: CGPoint(x: p.x * scale, y: p.y * scale)) }
-            path.closeSubpath()
+            if closed { path.closeSubpath() }
         }
         return path
     }
