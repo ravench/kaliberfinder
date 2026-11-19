@@ -17168,6 +17168,12 @@
       "ball"
      ],
      "description": "US M855 (with a steel penetrator), German DM11",
+     "descriptions": {
+      "de": "M855 mit Stahl-Penetrator (USA), DM11 (Deutschland)",
+      "fr": "M855 à pénétrateur en acier (États-Unis), DM11 (Allemagne)",
+      "it": "M855 con penetratore in acciaio (Stati Uniti), DM11 (Germania)",
+      "es": "M855 con penetrador de acero (Estados Unidos), DM11 (Alemania)"
+     },
      "countries": [
       {
        "code": "US",
@@ -17190,6 +17196,12 @@
       "tracer"
      ],
      "description": "US M856, German DM21",
+     "descriptions": {
+      "de": "M856 (USA), DM21 (Deutschland)",
+      "fr": "M856 (États-Unis), DM21 (Allemagne)",
+      "it": "M856 (Stati Uniti), DM21 (Germania)",
+      "es": "M856 (Estados Unidos), DM21 (Alemania)"
+     },
      "countries": [
       {
        "code": "US",
@@ -17212,6 +17224,12 @@
       "tracer"
      ],
      "description": "US M856A1, British L1, L16 and L22",
+     "descriptions": {
+      "de": "M856A1 (USA), L1, L16 und L22 (Grossbritannien)",
+      "fr": "M856A1 (États-Unis), L1, L16 et L22 (Royaume-Uni)",
+      "it": "M856A1 (Stati Uniti), L1, L16 e L22 (Regno Unito)",
+      "es": "M856A1 (Estados Unidos), L1, L16 y L22 (Reino Unido)"
+     },
      "countries": [
       {
        "code": "US",
@@ -19493,6 +19511,12 @@
       "reduced-charge"
      ],
      "description": "Half of the case head blackened, the Swedish mark of a reduced charge",
+     "descriptions": {
+      "de": "Halber Hülsenboden geschwärzt, das schwedische Zeichen für eine reduzierte Ladung",
+      "fr": "Moitié du culot noircie, la marque suédoise d'une charge réduite",
+      "it": "Metà del fondello annerita, il contrassegno svedese di una carica ridotta",
+      "es": "Medio culote ennegrecido, la marca sueca de una carga reducida"
+     },
      "countries": [
       {
        "code": "SE",
@@ -20751,6 +20775,12 @@
       "tracer"
      ],
      "description": "Tracer M.1911 (Leuchtspurpatrone)",
+     "descriptions": {
+      "de": "Leuchtspurpatrone M.1911",
+      "fr": "Cartouche traçante M.1911 (Leuchtspurpatrone)",
+      "it": "Cartuccia tracciante M.1911 (Leuchtspurpatrone)",
+      "es": "Cartucho trazador M.1911 (Leuchtspurpatrone)"
+     },
      "countries": [
       {
        "code": "CH",
@@ -20768,6 +20798,12 @@
       "tracer"
      ],
      "description": "Tracer, the older marking: the whole base lacquered",
+     "descriptions": {
+      "de": "Leuchtspur, ältere Kennzeichnung: ganzer Boden lackiert",
+      "fr": "Traçant, ancien marquage : tout le culot laqué",
+      "it": "Tracciante, vecchia marcatura: tutto il fondello laccato",
+      "es": "Trazadora, marca antigua: todo el culote lacado"
+     },
      "countries": [
       {
        "code": "CH",
@@ -20785,6 +20821,12 @@
       "armour-piercing"
      ],
      "description": "Armour-piercing, no longer in service (1980)",
+     "descriptions": {
+      "de": "Panzerbrechend, nicht mehr im Dienst (1980)",
+      "fr": "Perforant, n'est plus en service (1980)",
+      "it": "Perforante, non più in servizio (1980)",
+      "es": "Perforante, fuera de servicio (1980)"
+     },
      "countries": [
       {
        "code": "CH",
@@ -21834,6 +21876,12 @@
       "armour-piercing"
      ],
      "description": "M61 and M993",
+     "descriptions": {
+      "de": "M61 und M993",
+      "fr": "M61 et M993",
+      "it": "M61 e M993",
+      "es": "M61 y M993"
+     },
      "countries": [
       {
        "code": "US",
@@ -21868,6 +21916,12 @@
       "tracer"
      ],
      "description": "M276 dim tracer",
+     "descriptions": {
+      "de": "M276, lichtschwache Leuchtspur",
+      "fr": "M276, traçant à faible luminosité",
+      "it": "M276, tracciante a bassa luminosità",
+      "es": "M276, trazadora de baja luminosidad"
+     },
      "countries": [
       {
        "code": "US",
@@ -21885,6 +21939,12 @@
       "ball"
      ],
      "description": "British ball",
+     "descriptions": {
+      "de": "Britisches Standardgeschoss",
+      "fr": "Balle ordinaire britannique",
+      "it": "Palla ordinaria britannica",
+      "es": "Ordinaria británica"
+     },
      "countries": [
       {
        "code": "GB",
@@ -21902,6 +21962,12 @@
       "tracer"
      ],
      "description": "British tracer",
+     "descriptions": {
+      "de": "Britische Leuchtspur",
+      "fr": "Traçant britannique",
+      "it": "Tracciante britannico",
+      "es": "Trazadora británica"
+     },
      "countries": [
       {
        "code": "GB",
@@ -21919,6 +21985,12 @@
       "proof"
      ],
      "description": "British proof or standard round",
+     "descriptions": {
+      "de": "Britische Beschuss- oder Referenzpatrone",
+      "fr": "Cartouche britannique d'épreuve ou étalon",
+      "it": "Cartuccia britannica di prova forzata o campione",
+      "es": "Cartucho británico de prueba o patrón"
+     },
      "countries": [
       {
        "code": "GB",
@@ -22244,6 +22316,12 @@
       "tracer"
      ],
      "description": "US M1 and M2, British G Mk 2z",
+     "descriptions": {
+      "de": "M1 und M2 (USA), G Mk 2z (Grossbritannien)",
+      "fr": "M1 et M2 (États-Unis), G Mk 2z (Royaume-Uni)",
+      "it": "M1 e M2 (Stati Uniti), G Mk 2z (Regno Unito)",
+      "es": "M1 y M2 (Estados Unidos), G Mk 2z (Reino Unido)"
+     },
      "countries": [
       {
        "code": "US",
@@ -23296,6 +23374,12 @@
       "ball"
      ],
      "description": "Ball, pre-NATO British code",
+     "descriptions": {
+      "de": "Standardgeschoss, britischer Code vor der NATO",
+      "fr": "Balle ordinaire, code britannique d'avant l'OTAN",
+      "it": "Palla ordinaria, codice britannico pre-NATO",
+      "es": "Ordinaria, código británico anterior a la OTAN"
+     },
      "countries": [
       {
        "code": "GB",
@@ -23313,6 +23397,12 @@
       "armour-piercing"
      ],
      "description": "Armour-piercing, pre-NATO British code",
+     "descriptions": {
+      "de": "Panzerbrechend, britischer Code vor der NATO",
+      "fr": "Perforant, code britannique d'avant l'OTAN",
+      "it": "Perforante, codice britannico pre-NATO",
+      "es": "Perforante, código británico anterior a la OTAN"
+     },
      "countries": [
       {
        "code": "GB",
@@ -23330,6 +23420,12 @@
       "spotting"
      ],
      "description": "Observation, with a black tip, pre-NATO British code",
+     "descriptions": {
+      "de": "Beobachtung, mit schwarzer Spitze, britischer Code vor der NATO",
+      "fr": "Observation, avec pointe noire, code britannique d'avant l'OTAN",
+      "it": "Osservazione, con punta nera, codice britannico pre-NATO",
+      "es": "Observación, con punta negra, código británico anterior a la OTAN"
+     },
      "countries": [
       {
        "code": "GB",
@@ -23347,6 +23443,12 @@
       "incendiary"
      ],
      "description": "Incendiary, pre-NATO British code",
+     "descriptions": {
+      "de": "Brand, britischer Code vor der NATO",
+      "fr": "Incendiaire, code britannique d'avant l'OTAN",
+      "it": "Incendiaria, codice britannico pre-NATO",
+      "es": "Incendiaria, código británico anterior a la OTAN"
+     },
      "countries": [
       {
        "code": "GB",
@@ -23364,6 +23466,12 @@
       "tracer"
      ],
      "description": "Tracer, pre-NATO British code",
+     "descriptions": {
+      "de": "Leuchtspur, britischer Code vor der NATO",
+      "fr": "Traçant, code britannique d'avant l'OTAN",
+      "it": "Tracciante, codice britannico pre-NATO",
+      "es": "Trazadora, código británico anterior a la OTAN"
+     },
      "countries": [
       {
        "code": "GB",
@@ -23381,6 +23489,12 @@
       "proof"
      ],
      "description": "Proof or standard round, pre-NATO British code",
+     "descriptions": {
+      "de": "Beschuss- oder Referenzpatrone, britischer Code vor der NATO",
+      "fr": "Cartouche d'épreuve ou étalon, code britannique d'avant l'OTAN",
+      "it": "Cartuccia di prova forzata o campione, codice britannico pre-NATO",
+      "es": "Cartucho de prueba o patrón, código británico anterior a la OTAN"
+     },
      "countries": [
       {
        "code": "GB",
@@ -23541,6 +23655,12 @@
       "ball"
      ],
      "description": "D, heavy ball",
+     "descriptions": {
+      "de": "D, schweres Standardgeschoss",
+      "fr": "D, balle ordinaire lourde",
+      "it": "D, palla ordinaria pesante",
+      "es": "D, ordinaria pesada"
+     },
      "countries": [
       {
        "code": "SU",
@@ -23557,6 +23677,12 @@
       "ball"
      ],
      "description": "LPS, steel core",
+     "descriptions": {
+      "de": "LPS, Stahlkern",
+      "fr": "LPS, noyau en acier",
+      "it": "LPS, nucleo in acciaio",
+      "es": "LPS, núcleo de acero"
+     },
      "countries": [
       {
        "code": "SU",
@@ -23851,6 +23977,12 @@
       "ball"
      ],
      "description": "Light ball, former Czechoslovak code (before the Soviet codes)",
+     "descriptions": {
+      "de": "Leichtes Standardgeschoss, früherer tschechoslowakischer Code (vor den sowjetischen Codes)",
+      "fr": "Balle ordinaire légère, ancien code tchécoslovaque (avant les codes soviétiques)",
+      "it": "Palla ordinaria leggera, vecchio codice cecoslovacco (prima dei codici sovietici)",
+      "es": "Ordinaria ligera, antiguo código checoslovaco (anterior a los códigos soviéticos)"
+     },
      "countries": [
       {
        "code": "CS",
@@ -23867,6 +23999,12 @@
       "ball"
      ],
      "description": "Heavy ball, former Czechoslovak code (before the Soviet codes)",
+     "descriptions": {
+      "de": "Schweres Standardgeschoss, früherer tschechoslowakischer Code (vor den sowjetischen Codes)",
+      "fr": "Balle ordinaire lourde, ancien code tchécoslovaque (avant les codes soviétiques)",
+      "it": "Palla ordinaria pesante, vecchio codice cecoslovacco (prima dei codici sovietici)",
+      "es": "Ordinaria pesada, antiguo código checoslovaco (anterior a los códigos soviéticos)"
+     },
      "countries": [
       {
        "code": "CS",
@@ -23883,6 +24021,12 @@
       "ball"
      ],
      "description": "Ball with a mild steel core, former Czechoslovak code (before the Soviet codes)",
+     "descriptions": {
+      "de": "Standardgeschoss mit Weichstahlkern, früherer tschechoslowakischer Code (vor den sowjetischen Codes)",
+      "fr": "Balle ordinaire à noyau en acier doux, ancien code tchécoslovaque (avant les codes soviétiques)",
+      "it": "Palla ordinaria con nucleo in acciaio dolce, vecchio codice cecoslovacco (prima dei codici sovietici)",
+      "es": "Ordinaria con núcleo de acero dulce, antiguo código checoslovaco (anterior a los códigos soviéticos)"
+     },
      "countries": [
       {
        "code": "CS",
@@ -23899,6 +24043,12 @@
       "tracer"
      ],
      "description": "Tracer, former Czechoslovak code (before the Soviet codes)",
+     "descriptions": {
+      "de": "Leuchtspur, früherer tschechoslowakischer Code (vor den sowjetischen Codes)",
+      "fr": "Traçant, ancien code tchécoslovaque (avant les codes soviétiques)",
+      "it": "Tracciante, vecchio codice cecoslovacco (prima dei codici sovietici)",
+      "es": "Trazadora, antiguo código checoslovaco (anterior a los códigos soviéticos)"
+     },
      "countries": [
       {
        "code": "CS",
@@ -23915,6 +24065,12 @@
       "armour-piercing"
      ],
      "description": "Armour-piercing, former Czechoslovak code (before the Soviet codes)",
+     "descriptions": {
+      "de": "Panzerbrechend, früherer tschechoslowakischer Code (vor den sowjetischen Codes)",
+      "fr": "Perforant, ancien code tchécoslovaque (avant les codes soviétiques)",
+      "it": "Perforante, vecchio codice cecoslovacco (prima dei codici sovietici)",
+      "es": "Perforante, antiguo código checoslovaco (anterior a los códigos soviéticos)"
+     },
      "countries": [
       {
        "code": "CS",
@@ -25935,6 +26091,12 @@
       "incendiary"
      ],
      "description": "US M8, Swiss M.64",
+     "descriptions": {
+      "de": "M8 (USA), M.64 (Schweiz)",
+      "fr": "M8 (États-Unis), M.64 (Suisse)",
+      "it": "M8 (Stati Uniti), M.64 (Svizzera)",
+      "es": "M8 (Estados Unidos), M.64 (Suiza)"
+     },
      "countries": [
       {
        "code": "US",
@@ -25960,6 +26122,12 @@
       "tracer"
      ],
      "description": "US M20, Swiss M.65",
+     "descriptions": {
+      "de": "M20 (USA), M.65 (Schweiz)",
+      "fr": "M20 (États-Unis), M.65 (Suisse)",
+      "it": "M20 (Stati Uniti), M.65 (Svizzera)",
+      "es": "M20 (Estados Unidos), M.65 (Suiza)"
+     },
      "countries": [
       {
        "code": "US",
@@ -25982,6 +26150,12 @@
       "tracer"
      ],
      "description": "M1 and M21",
+     "descriptions": {
+      "de": "M1 und M21",
+      "fr": "M1 et M21",
+      "it": "M1 e M21",
+      "es": "M1 y M21"
+     },
      "countries": [
       {
        "code": "US",
@@ -26033,6 +26207,12 @@
       "incendiary"
      ],
      "description": "M1, a light blue tip",
+     "descriptions": {
+      "de": "M1, hellblaue Spitze",
+      "fr": "M1, pointe bleu clair",
+      "it": "M1, punta azzurra",
+      "es": "M1, punta azul claro"
+     },
      "countries": [
       {
        "code": "US",

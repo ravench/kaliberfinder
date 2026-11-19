@@ -12,17 +12,37 @@ Format: a `## <version>` heading, then `### de`, `### en`, `### fr`, `### it`, e
 ## 1.0.0
 
 ### de
-- Erste Version im App Store. Danke fürs Testen!
-- Die Kaliberdaten und die Erkennung entsprechen der letzten TestFlight-Version.
+- Erste Version im App Store.
+- Patrone oder leere Hülse fotografieren: Kaliberfinder vergleicht den Umriss mit dem Katalog und zeigt die Kaliber, die passen.
+- Treffer in Originalgrösse auf dem Display vergleichen, nebeneinander am Lineal: Patrone auflegen und sehen, welche passt.
+- Auf iPhone Pro und iPad Pro misst die Kamera mit LiDAR auch die Grösse; meist bleiben dann nur wenige Kaliber übrig.
+- Ohne Foto: Masse eingeben oder Kaliber nach Namen wählen und vergleichen.
+- Über 700 Kaliber mit Massen, Masszeichnung, Zündhütchen, Herkunft, Farbcodes und ähnlichen Kalibern.
+- Deutsch, Englisch, Französisch und Italienisch. Funktioniert offline, ohne Konto und ohne Werbung.
 
 ### en
-- First version on the App Store. Thank you for testing!
-- The calibre data and the recognition are the same as in the last TestFlight build.
+- First version on the App Store.
+- Photograph a cartridge or an empty case: Kaliberfinder compares its outline with the catalogue and shows the calibres that fit.
+- Compare the matches at real size on the display, side by side on a ruler: put the cartridge on the screen and see which one fits.
+- On iPhone Pro and iPad Pro the camera also measures the size with LiDAR; usually only a few calibres remain.
+- Without a photo: enter measurements, or pick calibres by name and compare them.
+- Over 700 calibres with dimensions, a drawing, primer, origin, colour codes and lookalike calibres.
+- German, English, French and Italian. Works offline, with no account and no ads.
 
 ### fr
-- Première version sur l'App Store. Merci pour vos tests !
-- Les données de calibres et la reconnaissance sont celles de la dernière version TestFlight.
+- Première version sur l'App Store.
+- Photographiez une cartouche ou une douille vide : Kaliberfinder compare sa silhouette au catalogue et montre les calibres qui correspondent.
+- Comparez les résultats en taille réelle sur l'écran, côte à côte sur une règle : posez la cartouche sur l'écran et voyez laquelle correspond.
+- Sur iPhone Pro et iPad Pro, la caméra mesure aussi la taille avec le LiDAR ; il ne reste alors le plus souvent que quelques calibres.
+- Sans photo : saisissez les mesures, ou choisissez des calibres par leur nom et comparez-les.
+- Plus de 700 calibres avec dimensions, dessin coté, amorce, origine, codes couleur et calibres semblables.
+- Allemand, anglais, français et italien. Fonctionne hors ligne, sans compte et sans publicité.
 
 ### it
-- Prima versione sull'App Store. Grazie per i test!
-- I dati dei calibri e il riconoscimento sono quelli dell'ultima versione TestFlight.
+- Prima versione sull'App Store.
+- Fotografa una cartuccia o un bossolo vuoto: Kaliberfinder confronta la sagoma con il catalogo e mostra i calibri che corrispondono.
+- Confronta i risultati a grandezza naturale sullo schermo, uno accanto all'altro su un righello: appoggia la cartuccia sullo schermo e vedi quale corrisponde.
+- Su iPhone Pro e iPad Pro la fotocamera misura anche le dimensioni con il LiDAR; di solito restano solo pochi calibri.
+- Senza foto: inserisci le misure, oppure scegli i calibri per nome e confrontali.
+- Oltre 700 calibri con misure, disegno quotato, innesco, origine, codici colore e calibri simili.
+- Tedesco, inglese, francese e italiano. Funziona offline, senza account e senza pubblicità.
