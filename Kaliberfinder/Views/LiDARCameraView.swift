@@ -23,7 +23,7 @@ struct LiDARCameraView: View {
     /// möglich» until the camera has said.
     static func distanceHint(minimumFocusDistance: Int?) -> String {
         guard let mm = minimumFocusDistance else {
-            return "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah wie es scharf stellt.".loc
+            return "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah, wie es scharf stellt.".loc
         }
         let cm = Int((Double(mm) / 100).rounded(.up)) * 10
         return String(format: "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, gut %lld cm darüber.".loc, cm)

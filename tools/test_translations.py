@@ -51,6 +51,22 @@ class TranslationTests(unittest.TestCase):
             with open(os.path.join(root, "Kaliberfinder", "Views", view), encoding="utf-8") as f:
                 self.assertRegex(f.read(), r'Text\("Mögliche Kaliber"\)\n\s*\} footer: \{\n\s*SafetyNote\(\)', view)
 
+    def test_the_check_of_2026_11_19_stays_fixed(self):
+        """What the check of all translations found clearly wrong: cut buttons, calques, a vulgar reading, typography."""
+        self.assertEqual(T["Alle passenden 1:1 vergleichen (%lld)"][FR:], ("Tout comparer 1:1 (%lld)", "Confronta tutti 1:1 (%lld)"))
+        self.assertEqual(T["Geschosse bei leeren Hülsen zeigen"][IT], "Mostra la palla sui bossoli vuoti")
+        self.assertEqual(T["Zerfallend"][FR], "Frangible")
+        self.assertEqual(T["%1$@: %2$@"][FR], "%1$@ : %2$@", "French sets a space before the colon")
+        for key, values in T.items():
+            for lang, text in zip(("en", "fr", "it"), values):
+                self.assertNotIn(" …", text, f"{lang}, {key!r}: no space before the ellipsis outside German")
+                self.assertNotRegex(text, r"un bon %lld|un buon %lld", f"{lang}, {key!r}")
+            self.assertNotRegex(values[FR], r"[^\s][:;?!](\s|$)(?<!\d:\d)", f"French, {key!r}: a space before : ; ? !")
+        # «Masse» is dimensions in every language, never measurements, cotes or misure.
+        for key in ("Kaliber mit identischen Massen gruppieren",
+                    "Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt."):
+            self.assertEqual([word in text for word, text in zip(("dimensions", "dimensions", "dimensioni"), T[key])], [True] * 3, key)
+
     def test_share_extension_texts_pair_up(self):
         self.assertEqual(T["Das Foto konnte nicht übernommen werden."][FR], "Impossible de recevoir la photo.")
 
