@@ -7,13 +7,13 @@ REAL SIZE (1:1)
 Compare the matches at real size, side by side next to a millimetre ruler, with the case head and primer seen from below. Lay the cartridge on the display and see which one fits. Kaliberfinder knows the display density of every iPhone since the XS and of the iPads that run iPadOS 17; you can also calibrate the screen once with a bank card.
 
 LIDAR
-On iPhone Pro and iPad Pro models with LiDAR, the app's camera also measures the cartridge's dimensions from the distance. With these measurements the list usually narrows down to one or a few calibres.
+On iPhone Pro and iPad Pro models with LiDAR, the app's camera also measures the distance and works out the cartridge's dimensions from it. With these measurements the list usually narrows down to one or a few calibres.
 
 WITHOUT A PHOTO
 Enter what you measured (overall length, case length, rim or bullet diameter, case shape) and see which calibres fit. Or pick calibres by name and compare them 1:1.
 
 ALL CALIBRES
-Over 400 calibres, from the dawn of cartridge ammunition to today: rimfire, handgun, rifle, black powder, shotgun and air gun, including Swiss service rounds (GP 11, GP 90, GP 1890) and blanks. Each calibre shows its dimensions (overall length, case length, rim, base, shoulder, neck and bullet diameter), the primer, the origin, other names, a dimensioned drawing and similar calibres with what tells them apart. Some military calibres list the bullet tip colour codes. Rare and obsolete calibres are marked and stay out of the matches until you switch them on; when one fits well, the app says so.
+Over 700 calibres, from the dawn of cartridge ammunition to today: rimfire, handgun, rifle, black powder, shotgun and air gun, including Swiss service rounds (GP 11, GP 90, GP 1890) and blanks. Each calibre shows its dimensions (overall length, case length, rim, base, shoulder, neck and bullet diameter), the primer, the origin, other names, a dimensioned drawing and similar calibres with what tells them apart. Some military calibres list the bullet tip colour codes. Rare and obsolete calibres are marked and stay out of the matches until you switch them on; when one fits well, the app says so.
 
 MORE
 • Share a photo from Photos, Files or Messages straight to Kaliberfinder.
