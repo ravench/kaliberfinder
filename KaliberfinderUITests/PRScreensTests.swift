@@ -657,10 +657,11 @@ final class PRScreensTests: XCTestCase {
 
     private func back() { app.navigationBars.buttons.element(boundBy: 0).tap() }
 
-    /// Opens the picker menu of the series row whose label starts with `row`, snaps it as `name` if given, and picks `choice`.
+    /// Opens the picker menu of the row whose label starts with `row`, snaps it as `name` if given, and picks `choice`.
+    /// The row is tapped once hittable: the menu before it may still be fading out over it (tour of #277).
     private func menuStop(_ row: String, choice: String, _ name: String? = nil) {
         let button = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", row)).firstMatch
-        guard button.waitForExistence(timeout: 5) else { return }
+        guard button.waitForExistence(timeout: 5), button.wait(for: \.isHittable, toEqual: true, timeout: 5) else { return }
         button.tap()
         if app.buttons[choice].waitForExistence(timeout: 5), let name { snap(name) }
         app.buttons[choice].tap()
