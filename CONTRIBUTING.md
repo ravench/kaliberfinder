@@ -5,7 +5,7 @@ invites work on it, under a written agreement with Simon Giotta. These notes are
 
 ## Guidelines
 
-- Write UI text in German and add English, French and Italian to
+- Write UI text in German and add English, French, Italian and Spanish to
   `tools/translations.py`, then run `python3 tools/localize.py`.
 - Cartridge data comes from the shared [calibre-data](https://github.com/ravench/calibre-data)
   repository, a git submodule at `calibre-data/` (run `git submodule update --init` after

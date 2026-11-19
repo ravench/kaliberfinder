@@ -13,7 +13,8 @@ import unittest
 import changelog
 
 ROOT = changelog.ROOT
-NOTES = {"de": ["Neu: A", "Neu: B"], "en": ["New: A", "New: B"], "fr": ["Nouveau : A", "Nouveau : B"], "it": ["Nuovo: A", "Nuovo: B"]}
+NOTES = {"de": ["Neu: A", "Neu: B"], "en": ["New: A", "New: B"], "fr": ["Nouveau : A", "Nouveau : B"], "it": ["Nuovo: A", "Nuovo: B"],
+         "es": ["Nuevo: A", "Nuevo: B"]}
 
 
 class FakeClient:
@@ -102,7 +103,7 @@ class ReleaseNotesTests(unittest.TestCase):
             text = f.read()
         self.assertIn("### de", text)
         # The first App Store release has its hand-written notes in every language.
-        self.assertEqual(sorted(changelog.hand_written("1.0.0", text)), ["de", "en", "fr", "it"])
+        self.assertEqual(sorted(changelog.hand_written("1.0.0", text)), ["de", "en", "es", "fr", "it"])
 
 
 class CommitsTests(unittest.TestCase):
@@ -144,7 +145,8 @@ class SummariseTests(unittest.TestCase):
         self.assertIn("Faster photos", request["messages"][0]["content"])
         self.assertIn("Swiss spelling", request["system"])
         schema = request["output_config"]["format"]["schema"]
-        self.assertEqual(schema["required"], ["de", "en", "fr", "it"])
+        self.assertEqual(schema["required"], ["de", "en", "fr", "it", "es"])
+        self.assertIn("Spanish as in Spain", request["system"])
         self.assertFalse(schema["additionalProperties"])
 
     def test_missing_language_or_refusal_fails(self):
@@ -202,7 +204,7 @@ class TokenTests(unittest.TestCase):
 class WhatToTestTests(unittest.TestCase):
     def test_changes_existing_languages_and_adds_the_others(self):
         existing = [{"id": "L1", "attributes": {"locale": "de-DE", "whatsNew": "old"}}]
-        requests = changelog.localization_requests("B1", existing, {**NOTES, "it": []})
+        requests = changelog.localization_requests("B1", existing, {**NOTES, "it": [], "es": []})
         self.assertEqual([(m, p) for m, p, _ in requests],
                          [("PATCH", "/betaBuildLocalizations/L1"), ("POST", "/betaBuildLocalizations"), ("POST", "/betaBuildLocalizations")])
         patch, en, fr = (body["data"] for _, _, body in requests)
@@ -211,6 +213,11 @@ class WhatToTestTests(unittest.TestCase):
         self.assertEqual(en["attributes"]["locale"], "en-US")
         self.assertEqual(en["relationships"]["build"]["data"], {"type": "builds", "id": "B1"})
         self.assertEqual(fr["attributes"]["locale"], "fr-FR")
+
+    def test_spanish_goes_to_testflight_as_es_es(self):
+        requests = changelog.localization_requests("B1", [], NOTES)
+        spanish = [body["data"]["attributes"] for _, _, body in requests if body["data"]["attributes"]["locale"] == "es-ES"]
+        self.assertEqual(spanish, [{"locale": "es-ES", "whatsNew": "• Nuevo: A\n• Nuevo: B"}])
 
     def test_text_within_the_limit(self):
         self.assertEqual(len(changelog.what_to_test_text(["x" * 5000])), 4000)

@@ -1,6 +1,6 @@
 """The App Store screenshot tour (KaliberfinderUITests/AppStoreScreensTests.swift) finds buttons by
 their text in each language. It runs by hand, not in CI, so a renamed or untranslated text would only
-show up halfway through a release: check here that every text it looks up exists in all four."""
+show up halfway through a release: check here that every text it looks up exists in all five."""
 import json
 import os
 import re
@@ -33,7 +33,7 @@ class AppStoreScreensTests(unittest.TestCase):
         for key in keys:
             self.assertIn(key, self.strings, key)
             localizations = self.strings[key].get("localizations", {})
-            for language in ("en", "fr", "it"):
+            for language in ("en", "fr", "it", "es"):
                 value = localizations.get(language, {}).get("stringUnit", {}).get("value")
                 self.assertTrue(value, f"{key} has no {language} text")
 
@@ -47,8 +47,8 @@ class AppStoreScreensTests(unittest.TestCase):
         self.assertEqual(self.swift.count('XCTAssertTrue(app.staticTexts[t("Mögliche Kaliber")]'), 2)
 
     def test_languages_match_the_app(self):
-        # The tour's locales cover exactly the app's four languages.
-        self.assertEqual(sorted(re.findall(r'"(\w\w)": "\w\w_\w\w"', self.swift)), ["de", "en", "fr", "it"])
+        # The tour's locales cover exactly the app's five languages.
+        self.assertEqual(sorted(re.findall(r'"(\w\w)": "\w\w_\w\w"', self.swift)), ["de", "en", "es", "fr", "it"])
 
     def test_stays_out_of_ci(self):
         # Six screens with a 90 s photo analysis: only the PR screens tour runs on CI.

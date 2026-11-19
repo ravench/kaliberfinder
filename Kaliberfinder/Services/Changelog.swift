@@ -3,7 +3,7 @@ import Foundation
 /// The release notes of a TestFlight build, written into the bundle by CI (tools/changelog.py) and
 /// shown the first time the build is opened (`WhatsNewView`). Development builds carry none.
 struct Changelog: Decodable {
-    /// Bullet points by language (de, en, fr, it).
+    /// Bullet points by language (de, en, fr, it, es).
     var notes: [String: [String]]
 
     /// UserDefaults key: the build (CFBundleVersion) whose notes were shown.
