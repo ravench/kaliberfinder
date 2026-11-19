@@ -69,10 +69,17 @@ SITE_TITLES = {"bobp.cip-bobp.org": "C.I.P.", "bobp.expert-it.com": "C.I.P.", "s
                "commons.wikimedia.org": "Wikimedia Commons", "web.archive.org": "Internet Archive"}
 
 
+# Shops and reloading data: named as sources, but not as links. The app neither sells nor advertises ammunition, and
+# a tap on «Quellen» is not to land on a page that sells cartridges, brass or chamber reamers, or on load data
+# (Raven, 2026-11-18: «don't make shop links clickable»; App Store guideline 1.4.3).
+UNLINKED_HOSTS = frozenset({"ammo-one1.com", "starlinebrass.com", "pacifictoolandgauge.com", "xxlreloading.com",
+                            "hodgdonreloading.com", "loaddata.com"})
+
+
 def work(source):
     """(the work a source names, its page or None): a book of books.toml with its page, a web page, or a
     caliper measurement with its date. A work is {"title", "detail"?, "year"?, "url"?}, or {"measured": date}
-    for a measurement, which the app titles itself."""
+    for a measurement, which the app titles itself. A page of UNLINKED_HOSTS has no "url": the app shows it as text."""
     if m := BOOK_SOURCE.fullmatch(source):
         b = BOOKS[m["id"]]
         return {"title": b["title"], **({"detail": by} if (by := b.get("authors") or b.get("editors")) else {}),
@@ -92,7 +99,8 @@ def work(source):
         detail = f"Tab. {t[1].upper()} · {page}"
     else:
         detail = page if title == host else host
-    return {"title": title, **({"detail": detail} if detail and detail != title else {}), "url": source}, None
+    return {"title": title, **({"detail": detail} if detail and detail != title else {}),
+            **({} if host in UNLINKED_HOSTS else {"url": source})}, None
 
 
 def source_groups(s, works):

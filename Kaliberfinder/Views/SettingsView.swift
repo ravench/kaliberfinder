@@ -70,22 +70,15 @@ struct SettingsView: View {
         } header: {
             Text("1:1-Vergleich")
         } footer: {
-            if LiDARCamera.isAvailable {
-                Text("Prüfe die Grösse einmal mit einer Bankkarte.") + Text(verbatim: " ")
-                    + Text("Nach einem Foto mit LiDAR-Grösse: bester Treffer zuerst statt kürzeste Patrone.")
-            } else {
-                Text("Prüfe die Grösse einmal mit einer Bankkarte.")
-            }
+            Text("Prüfe die Grösse einmal mit einer Bankkarte.")
         }
     }
 
     private var results: some View {
         Section {
-            Toggle("Gleich grosse Kaliber als Gruppe zeigen", isOn: $groupSizeGroups)
+            Toggle("Kaliber mit identischen Massen gruppieren", isOn: $groupSizeGroups)
         } header: {
             Text("Treffer")
-        } footer: {
-            Text("Aus: jedes Kaliber der Gruppe als eigener Treffer, auch im 1:1-Vergleich.")
         }
     }
 

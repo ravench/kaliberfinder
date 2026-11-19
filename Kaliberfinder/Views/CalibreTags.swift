@@ -35,7 +35,7 @@ enum CalibreTag: CaseIterable {
     /// page the detail view names instead.
     var explanation: String? {
         switch self {
-        case .rare: "Selten: wird kaum je gefunden. Ein Treffer ist eher eine ähnliche Patrone, also genau nachmessen."
+        case .rare: "Selten: Ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen."
         case .obsolete: "Veraltet: wird nicht mehr regulär hergestellt."
         case .unsourced: "Unbelegt: Masse in calibre-data nicht gut belegt, Teile der Zeichnung geschätzt. Nur mit der Entwickleroption sichtbar."
         case .cannon: "Kanone: zu gross für den Bildschirm. Nur mit der Entwickleroption sichtbar."

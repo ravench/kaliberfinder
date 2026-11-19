@@ -41,7 +41,7 @@ final class AppStoreScreensTests: XCTestCase {
         app.launchArguments += ["-screenTourPhoto", photo.path]
         app.launch()
         XCTAssertTrue(app.navigationBars[t("Treffer")].waitForExistence(timeout: 15), "Matches missing")
-        _ = app.staticTexts[t("Mögliche Kaliber")].waitForExistence(timeout: 90)
+        XCTAssertTrue(app.staticTexts[t("Mögliche Kaliber")].waitForExistence(timeout: 90), "No calibres for the photo")
         save("01-matches")
         let compare = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix("Alle passenden 1:1 vergleichen (%lld)")))
         if open(compare.firstMatch), app.navigationBars["1:1"].waitForExistence(timeout: 5) {
@@ -79,30 +79,15 @@ final class AppStoreScreensTests: XCTestCase {
             }
         }
 
-        // 6: entering measured dimensions, a 9 mm's length and bullet filled in.
+        // 6: entering measured dimensions, a 9 mm's length and bullet filled in. By launch arguments, as the PR
+        // screens tour fills them: typed by position, they went into the wrong fields unnoticed once the form's
+        // order changed (review 2026-11-18).
         app.terminate()
+        let separator = Locale(identifier: Self.locales[language] ?? "de_CH").decimalSeparator ?? "."
+        app.launchArguments += ["-screenTourLength", "29\(separator)7", "-screenTourBullet", "9\(separator)0"]
         app.launch()
         if open(app.buttons[t("Masse eingeben")].firstMatch) {
-            let fields = app.textFields
-            let separator = Locale(identifier: Self.locales[language] ?? "de_CH").decimalSeparator ?? "."
-            for (index, value) in [(0, "29\(separator)7"), (3, "9\(separator)0")] where fields.count > index {
-                // The field fills the row on the iPad but its text sits right: tap there for focus.
-                fields.element(boundBy: index).coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
-                for _ in 0..<6 where !app.keyboards.firstMatch.exists { usleep(500_000) }
-                app.typeText(value)
-            }
-            // .scrollDismissesKeyboard(.interactively): the drag has to reach down into the keyboard.
-            app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45))
-                .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.98)))
-            // On the iPad the number pad floats as a popover that app.keyboards doesn't count: tap beside
-            // the form (the margin, then the title) until its keys are gone.
-            let spots = [CGVector(dx: 0.03, dy: 0.85), CGVector(dx: 0.5, dy: 0.07)]
-            for spot in spots where app.keys["1"].exists || app.keyboards.firstMatch.exists {
-                app.coordinate(withNormalizedOffset: spot).tap()
-                sleep(1)
-            }
-            XCTAssertFalse(app.keys["1"].exists || app.keyboards.firstMatch.exists, "Keyboard still showing")
-            _ = app.staticTexts[t("Mögliche Kaliber")].waitForExistence(timeout: 5)
+            XCTAssertTrue(app.staticTexts[t("Mögliche Kaliber")].waitForExistence(timeout: 5), "No calibres for the 9 mm's dimensions")
             save("06-dimensions")
         }
     }

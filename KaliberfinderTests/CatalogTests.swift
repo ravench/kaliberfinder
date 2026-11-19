@@ -90,6 +90,9 @@ final class CatalogTests: XCTestCase {
         XCTAssertEqual(gp11.colourCodes.first?.countries.map(\.code), ["CH"])
         XCTAssertEqual(Cartridge.ColourCode.title("tracer"), "Leuchtspur")
         XCTAssertTrue(try Fixture.cartridge("9x19 mm").colourCodes.isEmpty)
+        // The note on the tip's band order shows only where there is a tip (Raven, 2026-11-18).
+        XCTAssertTrue(ColourCodeRow.explainsTipOrder(gp11.colourCodes))
+        XCTAssertFalse(ColourCodeRow.explainsTipOrder(try Fixture.cartridge("8x57 mm IS").colourCodes))  // primer rings only
         let codes = CartridgeCatalog.all.flatMap(\.colourCodes)
         for part in Set(codes.map(\.part)) { XCTAssertNotEqual(ColourCodeRow.partTitle(part), part, "\(part) has no title") }
         XCTAssertGreaterThan(codes.count, 30)

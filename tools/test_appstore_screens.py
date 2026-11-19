@@ -37,6 +37,15 @@ class AppStoreScreensTests(unittest.TestCase):
                 value = localizations.get(language, {}).get("stringUnit", {}).get("value")
                 self.assertTrue(value, f"{key} has no {language} text")
 
+    def test_fields_are_filled_by_name_and_the_matches_asserted(self):
+        # Typed by position, the 9 mm's values went into the wrong fields when the form's order changed, and
+        # the tour stayed green: the waits it discarded could not fail (review 2026-11-18).
+        self.assertIn('"-screenTourLength"', self.swift)
+        self.assertIn('"-screenTourBullet"', self.swift)
+        self.assertNotIn("element(boundBy:", self.swift)
+        self.assertNotIn("_ = app.staticTexts", self.swift)
+        self.assertEqual(self.swift.count('XCTAssertTrue(app.staticTexts[t("Mögliche Kaliber")]'), 2)
+
     def test_languages_match_the_app(self):
         # The tour's locales cover exactly the app's four languages.
         self.assertEqual(sorted(re.findall(r'"(\w\w)": "\w\w_\w\w"', self.swift)), ["de", "en", "fr", "it"])

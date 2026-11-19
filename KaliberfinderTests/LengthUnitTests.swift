@@ -60,7 +60,8 @@ final class LengthUnitTests: XCTestCase {
         let c = try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))
         let off = MeasureView.detail(for: DimensionMatch(cartridge: c, maxDeviation: 1.5, meanDeviation: 1), unit: .imperial)
         XCTAssertTrue(off.hasSuffix(" in"), off)
-        XCTAssertTrue(off.contains("059"), off)
+        // 1.5 mm beyond the 0.15 mm tolerance: 1.65 mm.
+        XCTAssertTrue(off.contains("065"), off)
     }
 
     func testMetricRulerTicks() {

@@ -80,7 +80,9 @@ struct CartridgeDetailView: View {
                 } header: {
                     Text("Farbcodes")
                 } footer: {
-                    Text("Militärische Laborierungen. Spitze: die Farben von der Spitze abwärts.")
+                    if ColourCodeRow.explainsTipOrder(cartridge.colourCodes) {
+                        Text("Spitze: Farben von der Spitze abwärts.")
+                    }
                 }
             }
             Section {
@@ -161,6 +163,11 @@ struct ColourCodeRow: View {
             Spacer(minLength: 0)
             HStack(spacing: 4) { ForEach(code.countries, id: \.code) { CountryFlag(country: $0) } }
         }
+    }
+
+    /// The footer's note on the band order, only with a tip: a base or primer ring has one colour (Raven, 2026-11-18).
+    static func explainsTipOrder(_ codes: [Cartridge.ColourCode]) -> Bool {
+        codes.contains { $0.part == "tip" }
     }
 
     /// German name of where the paint is, used as localization key.

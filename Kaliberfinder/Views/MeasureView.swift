@@ -54,7 +54,7 @@ struct MeasureView: View {
             } header: {
                 if unit == .metric { Text("Gemessen in mm") } else { Text("Gemessen in Zoll") }
             } footer: {
-                Text("Was du messen kannst; eine Länge und ein Durchmesser reichen oft.")
+                Text("Eine Länge und ein Durchmesser reichen oft.")
             }
             if !matches.isEmpty || ranked.summary != nil {
                 Section {
@@ -65,8 +65,6 @@ struct MeasureView: View {
                     if let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
                 } header: {
                     Text("Mögliche Kaliber")
-                } footer: {
-                    Text("Patrone auf dem Bildschirm vergleichen.")
                 }
             } else if !measured.isEmpty {
                 Section { Text("Keine passenden Kaliber gefunden") }  // nothing within `DimensionMatcher.maxDeviation`
@@ -122,9 +120,12 @@ struct MeasureView: View {
         return fitting > 0 ? String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, fitting) : "Die besten drei 1:1 vergleichen".loc
     }
 
-    /// E.g. "Abweichung bis 0.2 mm" (or in inches).
+    /// "Passt genau" where every value lies within the tolerance, else the largest difference, tolerance included,
+    /// e.g. "Abweichung bis 0.4 mm" (or in inches). Not by `fit`, which allows 0.3 mm beyond the tolerance: for a
+    /// .30-30's values the .32 Winchester Special read «Passt genau» too, its bullet 0.38 mm wider (review 2026-11-18).
     static func detail(for m: DimensionMatch, unit: LengthUnit = .metric) -> String {
-        m.fit == .good ? "Passt genau".loc : String(format: "Abweichung bis %@".loc, unit.format(m.maxDeviation))
+        m.maxDeviation == 0 ? "Passt genau".loc
+            : String(format: "Abweichung bis %@".loc, unit.format(m.maxDeviation + DimensionMatcher.tolerance))
     }
 }
 
