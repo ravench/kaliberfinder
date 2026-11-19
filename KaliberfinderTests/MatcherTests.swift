@@ -174,6 +174,23 @@ final class MatcherTests: XCTestCase {
         }
     }
 
+    /// A loaded shell is graded by the lengths its crimps give, not by how far it is from its open hull (review
+    /// 2026-11-18): a folded 12/70 read «Form passt ungefähr» with LiDAR, and a 65 mm 12/76 was a green 12/70 with
+    /// the 12/76 «ungefähr» behind it. The hull's nearness still orders the gauges: the 12/70 stays first.
+    func testALoadedShotshellIsNotGradedByItsHull() throws {
+        for (id, length) in [("12/70", 57.9), ("12/76", 65.0)] {
+            let shape = try XCTUnwrap(ShapeMatcher.catalogue[id])
+            let loaded = ShapeMeasurement(aspect: length / 20.6, profile: shape.profile, widths: shape.widths)
+            let size = MeasuredSize(length: length / Matcher.lengthScaleWhole, diameter: 20.6 / Matcher.diameterScale,
+                                    lengthError: 1, diameterError: 0.3)
+            let matches = Matcher.rank(shape: loaded, size: size, limit: .max)
+            let own = try XCTUnwrap(matches.first { $0.cartridge.id == id }, "\(id) is not listed")
+            XCTAssertTrue(own.fitsWell, "\(id) at \(length) mm: distance \(String(describing: own.shapeDistance))")
+            XCTAssertEqual(own.part, .cartridge, id)
+            XCTAssertEqual(matches.first?.cartridge.id, "12/70", "\(length) mm is nearer the 12/70's hull")
+        }
+    }
+
     /// Raven's 8x50 mm R Lebel (TestFlight, 2026-11-08) was listed with the .300 and 7 mm Winchester Short
     /// Magnum: the same bottleneck shape, but rimless (rebated, which the slices cannot tell from rimless).
     /// A rim the photo shows clearly leaves every calibre without one off the list.

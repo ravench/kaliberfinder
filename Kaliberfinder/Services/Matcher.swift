@@ -3,7 +3,7 @@ import Foundation
 /// A catalogue cartridge that may be the one in the photo.
 struct Match: Identifiable, Equatable {
     let cartridge: Cartridge
-    /// Higher is better: minus the distance (`Matcher.distance`).
+    /// Higher is better: minus the distance (`Matcher.distance`) and what only orders the calibres (`Matcher.crimpRangeWeight`).
     let score: Double
     /// `Matcher.distance` to the photo: shape, size and what the photo's colours add; nil for an end view
     /// compared with a round thing.
@@ -104,6 +104,9 @@ enum Matcher {
     /// Inside a shotshell's crimp range (`Cartridge.overallLengths`) the nearness to its hull length still counts,
     /// this much: a folded 12/70 is no outsider, but a 65.5 mm shell, a roll-crimped 12/70 or a short 12/76, is a
     /// 12/70 first. The hull, not the catalogue's length: that is the folded crimp's maximum since calibre-data #155.
+    /// It orders the gauges only (`Match.score`) and stays out of the distance the fit is read from: every folded
+    /// shell is 9 to 13 mm short of its hull, so a 57.9 mm 12/70 read «Form passt ungefähr» with LiDAR, and a 65 mm
+    /// 12/76 was a green 12/70 with the 12/76 «ungefähr» behind it (review 2026-11-18).
     static let crimpRangeWeight = 0.25
     static let diameterWeight = 1.0
     static let diameterTolerance = 0.3
@@ -233,35 +236,36 @@ enum Matcher {
         let decided = mode == .auto && hasBullet ? decidedPart(photo) : nil
         let caseOnly = mode == .emptyCase || decided == .emptyCase
         let neck = shape.neck.flatMap { $0.isClear && c.dimensions.neck / c.dimensions.base > $0.width + neckTolerance ? neckPenalty : 0 } ?? 0
-        var candidates: [(distance: Double, deviation: Double?, part: ShapePart)] = []
+        var candidates: [(distance: Double, deviation: Double?, part: ShapePart, order: Double)] = []
         if !caseOnly || emptyCase == nil, let whole, !whole.isEndView {
-            var (d, deviation) = distance(photo, wholeExpected(c, whole, hasBullet: hasBullet))
+            var (d, deviation, order) = distance(photo, wholeExpected(c, whole, hasBullet: hasBullet))
             // Blanks, shotshells and balls have no bullet to narrow: their end is as it is.
             if mode == .auto, hasBullet, decided == nil { d += partWeight * max(0, end - partMiddle) }
             if hasBullet, let mouth = photo.mouth { d += mouthPenalty(mouth, c, size: photo.size) }
-            candidates.append((d + neck, deviation, .cartridge))
+            candidates.append((d + neck, deviation, .cartridge, order))
         }
         if mode != .cartridge, c.kind == "shot", let whole, !whole.isEndView {
             // A fired hull has opened from its crimp to the case length (a 12/70 to 70 mm): the outline stretched (review 2026-11-10).
             let hull = ShapeMeasurement(aspect: whole.aspect * c.dimensions.caseLength / c.dimensions.overallLength, profile: whole.profile, widths: whole.widths)
-            let (d, deviation) = distance(photo, Expected(shape: hull, length: c.dimensions.caseLength, diameter: c.dimensions.base,
+            let (d, deviation, order) = distance(photo, Expected(shape: hull, length: c.dimensions.caseLength, diameter: c.dimensions.base,
                                                           lengthScale: lengthScaleWhole, front: endWidth(hull) / 2, back: rim(hull) / 2))
-            candidates.append((d + neck, deviation, .emptyCase))
+            candidates.append((d + neck, deviation, .emptyCase, order))
         }
         if mode != .cartridge, decided != .cartridge, let emptyCase, !emptyCase.isEndView {
-            var (d, deviation) = distance(photo, Expected(shape: emptyCase, length: c.dimensions.caseLength, diameter: c.dimensions.base,
+            var (d, deviation, order) = distance(photo, Expected(shape: emptyCase, length: c.dimensions.caseLength, diameter: c.dimensions.base,
                                                           lengthScale: lengthScaleCase, front: endWidth(emptyCase) / 2, back: rim(emptyCase) / 2))
             if mode == .auto, decided == nil { d += partWeight * max(0, partMiddle - end) }
-            candidates.append((d + neck, deviation, .emptyCase))
+            candidates.append((d + neck, deviation, .emptyCase, order))
         }
-        guard let best = candidates.min(by: { $0.distance < $1.distance }) else { return nil }
-        return Match(cartridge: c, score: -best.distance, shapeDistance: best.distance, sizeDeviation: best.deviation, part: best.part)
+        guard let best = candidates.min(by: { $0.distance + $0.order < $1.distance + $1.order }) else { return nil }
+        return Match(cartridge: c, score: -best.distance - best.order, shapeDistance: best.distance, sizeDeviation: best.deviation, part: best.part)
     }
 
-    /// Shape and size against one expected outline, and the size deviation shown for it. With the photo's
+    /// Shape and size against one expected outline, the size deviation shown for it, and what only orders the
+    /// calibres (`crimpRangeWeight`; 0 but for a shotshell with a LiDAR size). With the photo's
     /// perspective, the expected ends' heights say how much longer the outline looks than the cartridge at
     /// its axis's height (`EndRise`).
-    static func distance(_ photo: Photo, _ expected: Expected) -> (Double, Double?) {
+    static func distance(_ photo: Photo, _ expected: Expected) -> (Double, Double?, Double) {
         let shape = photo.shape
         let aspect = aspectWeight * abs(log(shape.aspect / expected.shape.aspect))
         let ways = shape.widths.count == ShapeMatcher.bins ? [shape, shape.reversed()] : [shape]
@@ -273,15 +277,15 @@ enum Matcher {
             if let a = way.features, let b = expected.shape.features, abs(a.rim - b.rim) > rimTolerance { rimPen += rimPenalty }
             d = min(d, aspect + profileWeight * profileDifference(way, expected.shape) + rimPen)
         }
-        guard let size = photo.size, let length = measuredLength(photo, expected) else { return (d, nil) }
+        guard let size = photo.size, let length = measuredLength(photo, expected) else { return (d, nil, 0) }
         let diameter = size.diameter * diameterScale
         let lengths = expected.lengths ?? expected.length...expected.length
         let lengthOff = max(0, DimensionMatcher.outside(length, lengths) - lengthTolerance)
-        // Within the range, the distance to `expected.length` counts `crimpRangeWeight` as much (0 for a single length).
-        let fromCatalogue = max(0, abs(length - expected.length) - lengthTolerance) - lengthOff
+        // Within the range, the distance to `expected.length` counts `crimpRangeWeight` as much (0 for a single length), for the order only.
+        let fromCatalogue = max(0, max(0, abs(length - expected.length) - lengthTolerance) - lengthOff)
         let diameterOff = max(0, abs(diameter - expected.diameter) - diameterTolerance)
-        d += lengthWeight * (lengthOff + crimpRangeWeight * fromCatalogue) / 10 + diameterWeight * diameterOff / 10
-        return (d, (lengthOff + diameterOff) / 2)
+        d += lengthWeight * lengthOff / 10 + diameterWeight * diameterOff / 10
+        return (d, (lengthOff + diameterOff) / 2, lengthWeight * crimpRangeWeight * fromCatalogue / 10)
     }
 
     /// The whole cartridge `c` to compare with, from its catalogue outline `whole`: a bullet's tip lies
