@@ -8,7 +8,7 @@ final class MeasuringGuideTests: XCTestCase {
         let fields = TrainingPackageView.calliperFields, letters = fields.map(\.letter)
         XCTAssertEqual(fields.count, Mirror(reflecting: Measurements()).children.count, "a field for every measurement")
         XCTAssertEqual(Set(letters).count, letters.count)
-        XCTAssertEqual(MeasuringGuide.marks.map(\.letter).sorted(), letters.sorted())
+        XCTAssertEqual((MeasuringGuide.marks + [MeasuringGuide.beltMark]).map(\.letter).sorted(), letters.sorted())
         // Each field writes a value of its own.
         var m = Measurements()
         for (i, field) in fields.enumerated() { m[keyPath: field.value] = Double(i + 1) }
@@ -21,7 +21,32 @@ final class MeasuringGuideTests: XCTestCase {
         let forms = CaseShape.allCases.flatMap { shape in
             RimKind.allCases.map { MeasuringGuide(letters: MeasureView.letters, shape: shape, head: $0) }
         }
-        for guide in [MeasuringGuide()] + forms { assertLettersAndLinesFit(guide) }
+        let series = CaseShape.allCases.flatMap { shape in
+            RimKind.allCases.map { MeasuringGuide(letters: Set(TrainingPackageView.fields(shape: shape, head: $0).map(\.letter)), shape: shape, head: $0) }
+        }
+        for guide in [MeasuringGuide()] + forms + series { assertLettersAndLinesFit(guide) }
+    }
+
+    /// The training screen's fields and sketch follow the series' Randform and Hülsenform like the form's
+    /// (Raven 2026-11-19): a belted head adds the belt field, a straight or tapered case has no shoulder fields,
+    /// and its neck mark spans the body at the mouth.
+    func testTheTrainingSketchFollowsTheSeriesFacts() throws {
+        let all = TrainingPackageView.calliperFields.map(\.letter)
+        XCTAssertEqual(TrainingPackageView.fields(shape: .any, head: .any).map(\.letter), all.filter { $0 != "G" })
+        XCTAssertEqual(TrainingPackageView.fields(shape: .any, head: .belted).map(\.letter), all)
+        XCTAssertEqual(TrainingPackageView.fields(shape: .straight, head: .rimless).map(\.letter), all.filter { !["G", "S", "H"].contains($0) })
+        XCTAssertEqual(TrainingPackageView.shape(of: nil), .any)
+        XCTAssertEqual(TrainingPackageView.shape(of: "tapered"), .straight)
+        XCTAssertEqual(TrainingPackageView.shape(of: "bottleneck"), .bottleneck)
+        XCTAssertEqual(TrainingPackageView.head(of: "rebated"), .rimless)
+        XCTAssertEqual(TrainingPackageView.head(of: "semi"), .semiRimmed)
+        XCTAssertEqual(TrainingPackageView.head(of: "belted"), .belted)
+        XCTAssertEqual(TrainingPackageView.head(of: nil), .any)
+        let straight = MeasuringGuide(letters: nil, shape: .straight, head: .rimless)
+        let n = try XCTUnwrap(straight.shownMarks.first { $0.letter == "N" })
+        XCTAssertTrue(straight.caseOutline.contains(CGPoint(x: 340, y: n.from.y + 1)), "the mark spans the body")
+        XCTAssertFalse(straight.caseOutline.contains(CGPoint(x: 340, y: n.from.y - 1)))
+        XCTAssertEqual(MeasuringGuide().shownMarks.first { $0.letter == "N" }?.from, MeasuringGuide.marks.first { $0.letter == "N" }?.from)
     }
 
     private func assertLettersAndLinesFit(_ guide: MeasuringGuide, file: StaticString = #filePath, line: UInt = #line) {
