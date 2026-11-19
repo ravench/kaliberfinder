@@ -316,7 +316,7 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertTrue(LiDARCameraView.distanceHint(minimumFocusDistance: 1160).contains("120 cm"))
         XCTAssertTrue(LiDARCameraView.distanceHint(minimumFocusDistance: 480).contains("50 cm"))
         XCTAssertEqual(LiDARCameraView.distanceHint(minimumFocusDistance: nil),
-                       "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah wie es scharf stellt.".loc)
+                       "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah, wie es scharf stellt.".loc)
     }
 
     /// Packages from before the cameras were recorded read as before; a telephoto's line says what it can do.

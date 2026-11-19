@@ -74,7 +74,8 @@ struct HiddenMatches<Item: CalibreResult> {
         guard !hidden.isEmpty else { return nil }
         let total = hidden.count == 1 ? "1 weiteres Kaliber".loc : String(format: "%lld weitere Kaliber".loc, hidden.count)
         let parts = counts.map { $0.tag.countText($0.count) }.joined(separator: ", ")
-        return "\(total): \(parts)"
+        // A key of its own: French sets a space before the colon (check of the translations, 2026-11-19).
+        return String(format: "%1$@: %2$@".loc, total, parts)
     }
 }
 

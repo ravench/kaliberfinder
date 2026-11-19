@@ -7,7 +7,7 @@ REAL SIZE (1:1)
 Compare the matches at real size, side by side next to a millimetre ruler, with the case head and primer seen from below. Lay the cartridge on the display and see which one fits. Kaliberfinder knows the display density of every iPhone since the XS and of the iPads that run iPadOS 17; you can also calibrate the screen once with a bank card.
 
 LIDAR
-On iPhone Pro and iPad Pro models with LiDAR, the app's camera also measures the cartridge's dimensions from the distance. With these measurements the list usually narrows down to one or a few calibres.
+On iPhone Pro and iPad Pro models with LiDAR, the app's camera also measures the distance and works out the cartridge's dimensions from it. With these measurements the list usually narrows down to one or a few calibres.
 
 WITHOUT A PHOTO
 Enter what you measured (overall length, case length, rim or bullet diameter, case shape) and see which calibres fit. Or pick calibres by name and compare them 1:1.

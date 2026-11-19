@@ -48,8 +48,9 @@ def keys():
     return {k: v for k, v in found.items() if not junk.match(k)}
 
 
-# Keys the patterns can't see: CartridgeDetailView.kindTitle's default title, SourcesView's page format.
-EXTRA = {"Andere", "S. %@"}
+# Keys the patterns can't see: CartridgeDetailView.kindTitle's default title, SourcesView's page format, and the
+# hidden matches' «3 weitere Kaliber: 2 veraltete» (HiddenMatches.summary), which holds no word.
+EXTRA = {"Andere", "S. %@", "%1$@: %2$@"}
 
 
 def used_keys():

@@ -1,6 +1,29 @@
 {
   "sourceLanguage": "de",
   "strings": {
+    "%1$@: %2$@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ : %2$@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$@"
+          }
+        }
+      }
+    },
     "%@ · %lld Fotos · %@ · %@": {
       "extractionState": "manual",
       "localizations": {
@@ -450,13 +473,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Comparer toutes les correspondances 1:1 (%lld)"
+            "value": "Tout comparer 1:1 (%lld)"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Confronta tutte le corrispondenze 1:1 (%lld)"
+            "value": "Confronta tutti 1:1 (%lld)"
           }
         }
       }
@@ -1387,7 +1410,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Own measurement"
+            "value": "Our own measurement"
           }
         },
         "fr": {
@@ -1893,19 +1916,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Analysing photo …"
+            "value": "Analysing photo…"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Analyse de la photo …"
+            "value": "Analyse de la photo…"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Analisi della foto …"
+            "value": "Analisi della foto…"
           }
         }
       }
@@ -1916,19 +1939,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Loading photo …"
+            "value": "Loading photo…"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chargement de la photo …"
+            "value": "Chargement de la photo…"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Caricamento della foto …"
+            "value": "Caricamento della foto…"
           }
         }
       }
@@ -2077,19 +2100,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "For rounds the app does not know: your own name, left out of the evaluation."
+            "value": "For cartridges the app does not know: a name of your own, left out of the evaluation."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pour des cartouches inconnues de l'app : votre propre nom, exclues de l'évaluation."
+            "value": "Pour des cartouches inconnues de l'app : un nom de votre choix, exclues de l'évaluation."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Per cartucce che l'app non conosce: nome proprio, escluse dalla valutazione."
+            "value": "Per cartucce che l'app non conosce: nome a scelta, escluse dalla valutazione."
           }
         }
       }
@@ -2365,7 +2388,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mostra le palle sui bossoli vuoti"
+            "value": "Mostra la palla sui bossoli vuoti"
           }
         }
       }
@@ -3095,7 +3118,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Impérial (po)"
+            "value": "Impérial (pouces)"
           }
         },
         "it": {
@@ -3256,13 +3279,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Regrouper les calibres aux cotes identiques"
+            "value": "Regrouper les calibres aux dimensions identiques"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Raggruppa i calibri con misure identiche"
+            "value": "Raggruppa i calibri con dimensioni identiche"
           }
         }
       }
@@ -3296,19 +3319,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calibres whose measurements are not well sourced in calibre-data: parts of their drawing are estimated."
+            "value": "Calibres whose dimensions are not well sourced in calibre-data: parts of their drawing are estimated."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calibres dont les mesures ne sont pas bien documentées dans calibre-data : une partie de leur dessin est estimée."
+            "value": "Calibres dont les dimensions ne sont pas bien documentées dans calibre-data : une partie de leur dessin est estimée."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calibri le cui misure non sono ben documentate in calibre-data: parti del loro disegno sono stimate."
+            "value": "Calibri le cui dimensioni non sono ben documentate in calibre-data: parti del loro disegno sono stimate."
           }
         }
       }
@@ -3986,7 +4009,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lay the cartridge flat on a light surface and hold the device parallel, 20–30 cm above it."
+            "value": "Lay the cartridge flat on a light background and hold the device parallel, 20–30 cm above it."
           }
         },
         "fr": {
@@ -3998,7 +4021,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appoggia la cartuccia piatta su un fondo chiaro e tieni il dispositivo parallelo, 20–30 cm sopra."
+            "value": "Appoggia la cartuccia di lato su uno sfondo chiaro e tieni il dispositivo parallelo, a 20–30 cm di altezza."
           }
         }
       }
@@ -4015,36 +4038,36 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à un bon %lld cm au-dessus."
+            "value": "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, à un peu plus de %lld cm au-dessus."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, a un buon %lld cm sopra."
+            "value": "Appoggia la cartuccia di lato su uno sfondo chiaro e tieni il dispositivo parallelo, a poco più di %lld cm di altezza."
           }
         }
       }
     },
-    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah wie es scharf stellt.": {
+    "Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, so nah, wie es scharf stellt.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lay the cartridge flat on a light background and hold the device parallel, as close as it focuses."
+            "value": "Lay the cartridge flat on a light background and hold the device parallel, as close as it will focus."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, aussi près qu'il fait la mise au point."
+            "value": "Posez la cartouche à plat sur un fond clair et tenez l'appareil parallèle, aussi près que la mise au point le permet."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appoggia la cartuccia su uno sfondo chiaro e tieni il dispositivo parallelo, vicino quanto mette a fuoco."
+            "value": "Appoggia la cartuccia di lato su uno sfondo chiaro e tieni il dispositivo parallelo, il più vicino possibile senza perdere la messa a fuoco."
           }
         }
       }
@@ -4527,7 +4550,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Misurato con il calibro"
+            "value": "Misurato con il calibro a corsoio"
           }
         }
       }
@@ -6102,7 +6125,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tip: colours from the tip down."
+            "value": "Bullet tip: colours from the tip down."
           }
         },
         "fr": {
@@ -7051,7 +7074,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fragmentable"
+            "value": "Frangible"
           }
         },
         "it": {
