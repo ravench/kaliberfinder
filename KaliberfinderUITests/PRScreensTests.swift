@@ -440,6 +440,8 @@ final class PRScreensTests: XCTestCase {
         // With the measurements in the top block (Raven, 2026-11-08), so no scrolling.
         XCTAssertTrue(app.buttons["Masse von Hand eingeben"].waitForExistence(timeout: 5), "The link to measure by hand is not shown")
         snap("31-Foto-unsicher")
+        scroll()  // the list's end: under «Mögliche Kaliber», that a match is no clearance to fire
+        snap("31b-Foto-Treffer-unten")
     }
 
     /// A photo with no cartridge on it, so no matches: the way on is measuring by hand, with no link to
