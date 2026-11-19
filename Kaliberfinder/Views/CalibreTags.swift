@@ -124,8 +124,8 @@ struct TagIcon: View {
             p.move(to: pt(4.8, 7))
             p.addCurve(to: pt(8, 1), control1: pt(4.8, 3.6), control2: pt(6.6, 1.7))
             p.addCurve(to: pt(11.2, 7), control1: pt(9.4, 1.7), control2: pt(11.2, 3.6))
-            for q in [pt(11.2, 14.6), pt(4.8, 14.6), pt(4.8, 7), pt(11.2, 7)] { p.addLine(to: q) }
-            // Driving band and rim.
+            for q in [pt(11.2, 14.6), pt(4.8, 14.6), pt(4.8, 7)] { p.addLine(to: q) }
+            // Driving band (no line at the ogive base, which would merge with it) and rim.
             p.move(to: pt(4.8, 8.6)); p.addLine(to: pt(11.2, 8.6))
             p.move(to: pt(3.6, 14.6)); p.addLine(to: pt(12.4, 14.6))
         }
