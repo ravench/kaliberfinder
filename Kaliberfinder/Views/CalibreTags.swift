@@ -77,7 +77,8 @@ struct TagChip: View {
 }
 
 /// Magnifier with a question mark for rare (check it again), crossed-out factory for obsolete
-/// (no longer made). Drawn on a 16 × 16 grid in the current foreground colour.
+/// (no longer made), one big shell for cannon (too big for the screen; also the icon
+/// of its Developer Options switch, Raven 2026-11-19). Drawn on a 16 × 16 grid in the current foreground colour.
 struct TagIcon: View {
     let tag: CalibreTag
 
@@ -87,9 +88,9 @@ struct TagIcon: View {
             switch tag {
             case .rare: investigate(s)
             case .obsolete: factoryOff(s)
-            // The icons of their Developer Options switches.
+            // The icon of its Developer Options switch.
             case .unsourced: symbol("questionmark.square.dashed", geo.size)
-            case .cannon: symbol("arrow.up.left.and.arrow.down.right", geo.size)
+            case .cannon: shell(s)
             case .group: equals(s)
             }
         }
@@ -114,6 +115,21 @@ struct TagIcon: View {
 
     private func symbol(_ name: String, _ size: CGSize) -> some View {
         Image(systemName: name).resizable().scaledToFit().fontWeight(.bold).frame(width: size.width, height: size.height)
+    }
+
+    private func shell(_ s: CGFloat) -> some View {
+        Path { p in
+            func pt(_ x: CGFloat, _ y: CGFloat) -> CGPoint { CGPoint(x: x * s, y: y * s) }
+            // Ogive, then the case walls; addLine, not addLines, which would start a new subpath.
+            p.move(to: pt(4.8, 7))
+            p.addCurve(to: pt(8, 1), control1: pt(4.8, 3.6), control2: pt(6.6, 1.7))
+            p.addCurve(to: pt(11.2, 7), control1: pt(9.4, 1.7), control2: pt(11.2, 3.6))
+            for q in [pt(11.2, 14.6), pt(4.8, 14.6), pt(4.8, 7)] { p.addLine(to: q) }
+            // Driving band (no line at the ogive base, which would merge with it) and rim.
+            p.move(to: pt(4.8, 8.6)); p.addLine(to: pt(11.2, 8.6))
+            p.move(to: pt(3.6, 14.6)); p.addLine(to: pt(12.4, 14.6))
+        }
+        .stroke(style: StrokeStyle(lineWidth: 1.5 * s, lineCap: .round, lineJoin: .round))
     }
 
     private func equals(_ s: CGFloat) -> some View {
