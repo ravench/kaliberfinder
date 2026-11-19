@@ -72,7 +72,7 @@ class TranslationTests(unittest.TestCase):
                    "Halbrand": "Con semipestaña", "Zentralfeuer": "Fuego central", "Randfeuer": "Fuego anular",
                    "Stiftfeuer": "De espiga", "Vollmantel": "Blindada", "Teilmantel": "Semiblindada",
                    "Hohlspitz": "Punta hueca", "Mit Papierpflaster": "Calepinada", "Rundkugel": "Bala esférica",
-                   "Schrot": "Perdigones", "Keines: Platzpatrone": "Ninguno: cartucho de fogueo",
+                   "Schrot": "Perdigones", "Keines: Platzpatrone": "Ninguna: cartucho de fogueo",
                    "Schwarzpulver": "Pólvora negra", "Kurzwaffe": "Arma corta", "Langwaffe": "Arma larga",
                    "Standardgeschoss": "Ordinaria", "Panzerbrechend": "Perforante", "Brand": "Incendiaria",
                    "Leuchtspur": "Trazadora", "Reduzierte Ladung": "Carga reducida", "Zerfallend": "Frangible"}
