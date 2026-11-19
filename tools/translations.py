@@ -201,10 +201,10 @@ T = {
     "Bauart": ("Type", "Type", "Tipo", "Tipo"),
     "Bildschirm": ("Screen", "Écran", "Schermo", "Pantalla"),
     "Bildschirm kalibrieren": ("Calibrate screen", "Calibrer l'écran", "Calibra lo schermo", "Calibrar la pantalla"),
-    "Bildschirm nicht kalibriert: Grösse kann leicht abweichen.": (
-        "Screen not calibrated: the size may be slightly off.",
-        "Écran non calibré : la taille peut légèrement différer.",
-        "Schermo non calibrato: la dimensione può differire leggermente.", "Pantalla sin calibrar: el tamaño puede variar ligeramente."),
+    "Bildschirm nicht kalibriert: Grösse kann abweichen.": (
+        "Screen not calibrated: the size may be off.",
+        "Écran non calibré : la taille peut différer.",
+        "Schermo non calibrato: la dimensione può differire.", "Pantalla sin calibrar: el tamaño puede variar."),
     "Bodendurchmesser": ("Base diameter", "Diamètre au culot", "Diametro alla base", "Diámetro del culote"),
     "Diabolo": ("Diabolo pellet", "Plomb diabolo", "Piombino diabolo", "Balín diábolo"),
     "Fertig": ("Done", "Terminé", "Fine", "OK"),
