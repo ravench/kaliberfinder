@@ -77,7 +77,7 @@ struct TagChip: View {
 }
 
 /// Magnifier with a question mark for rare (check it again), crossed-out factory for obsolete
-/// (no longer made), a big shell beside a small cartridge for cannon (too big for the screen; also the icon
+/// (no longer made), one big shell for cannon (too big for the screen; also the icon
 /// of its Developer Options switch, Raven 2026-11-19). Drawn on a 16 × 16 grid in the current foreground colour.
 struct TagIcon: View {
     let tag: CalibreTag
@@ -90,7 +90,7 @@ struct TagIcon: View {
             case .obsolete: factoryOff(s)
             // The icon of its Developer Options switch.
             case .unsourced: symbol("questionmark.square.dashed", geo.size)
-            case .cannon: shells(s)
+            case .cannon: shell(s)
             case .group: equals(s)
             }
         }
@@ -117,22 +117,17 @@ struct TagIcon: View {
         Image(systemName: name).resizable().scaledToFit().fontWeight(.bold).frame(width: size.width, height: size.height)
     }
 
-    private func shells(_ s: CGFloat) -> some View {
+    private func shell(_ s: CGFloat) -> some View {
         Path { p in
-            func pt(_ x: CGFloat, _ y: CGFloat) -> CGPoint { CGPoint(x: (x + 1.75) * s, y: y * s) }
-            // The shell: ogive, driving band, straight case.
-            p.move(to: pt(6, 7))
-            p.addCurve(to: pt(8.5, 1), control1: pt(6, 3.8), control2: pt(7.5, 1.8))
-            p.addCurve(to: pt(11, 7), control1: pt(9.5, 1.8), control2: pt(11, 3.8))
-            // addLine, not addLines: addLines starts a new subpath, dropping the wall to its first point.
-            for q in [pt(11, 15), pt(6, 15), pt(6, 7), pt(11, 7)] { p.addLine(to: q) }
-            p.move(to: pt(6, 8.4)); p.addLine(to: pt(11, 8.4))
-            // A rifle cartridge beside it, for scale.
-            p.move(to: pt(1.5, 11.5))
-            p.addCurve(to: pt(2.75, 9), control1: pt(1.5, 10.2), control2: pt(2.2, 9.3))
-            p.addCurve(to: pt(4, 11.5), control1: pt(3.3, 9.3), control2: pt(4, 10.2))
-            for q in [pt(4, 15), pt(1.5, 15)] { p.addLine(to: q) }
-            p.closeSubpath()
+            func pt(_ x: CGFloat, _ y: CGFloat) -> CGPoint { CGPoint(x: x * s, y: y * s) }
+            // Ogive, then the case walls; addLine, not addLines, which would start a new subpath.
+            p.move(to: pt(4.8, 7))
+            p.addCurve(to: pt(8, 1), control1: pt(4.8, 3.6), control2: pt(6.6, 1.7))
+            p.addCurve(to: pt(11.2, 7), control1: pt(9.4, 1.7), control2: pt(11.2, 3.6))
+            for q in [pt(11.2, 14.6), pt(4.8, 14.6), pt(4.8, 7), pt(11.2, 7)] { p.addLine(to: q) }
+            // Driving band and rim.
+            p.move(to: pt(4.8, 8.6)); p.addLine(to: pt(11.2, 8.6))
+            p.move(to: pt(3.6, 14.6)); p.addLine(to: pt(12.4, 14.6))
         }
         .stroke(style: StrokeStyle(lineWidth: 1.5 * s, lineCap: .round, lineJoin: .round))
     }

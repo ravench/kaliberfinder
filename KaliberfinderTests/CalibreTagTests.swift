@@ -111,9 +111,9 @@ final class CalibreTagTests: XCTestCase {
         }
     }
 
-    /// The cannon icon (Raven, 2026-11-19): a big shell with a small cartridge beside it, for scale, not the arrows of before.
+    /// The cannon icon (Raven, 2026-11-19): one big shell, not the arrows of before.
     @MainActor
-    func testCannonIconIsABigShellBesideASmallCartridge() throws {
+    func testCannonIconIsABigShell() throws {
         let renderer = ImageRenderer(content: TagIcon(tag: .cannon).frame(width: 16, height: 16).foregroundStyle(.black))
         renderer.scale = 4
         let image = try XCTUnwrap(renderer.cgImage)
@@ -127,11 +127,12 @@ final class CalibreTagTests: XCTestCase {
             }
             return pixel[3] > 128
         }
-        XCTAssertTrue(ink(7.75, 12), "shell's left wall")
-        XCTAssertTrue(ink(12.75, 12), "shell's right wall")
-        XCTAssertTrue(ink(10.25, 1.2), "shell's tip")
-        XCTAssertFalse(ink(10.25, 12), "shell is hollow")
-        XCTAssertTrue(ink(3.25, 13), "cartridge's left wall")
-        XCTAssertFalse(ink(4.5, 5), "cartridge is short")
+        XCTAssertTrue(ink(4.8, 12), "left wall")
+        XCTAssertTrue(ink(11.2, 12), "right wall")
+        XCTAssertTrue(ink(8, 1.2), "tip")
+        XCTAssertTrue(ink(8, 8.6), "driving band")
+        XCTAssertTrue(ink(8, 14.6), "rim")
+        XCTAssertFalse(ink(8, 12), "hollow")
+        XCTAssertFalse(ink(2, 12), "nothing beside it")
     }
 }
