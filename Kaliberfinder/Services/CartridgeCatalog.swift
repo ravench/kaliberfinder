@@ -124,15 +124,30 @@ enum CartridgeCatalog {
             .replacingOccurrences(of: ".", with: "")
     }
 
+    /// The words of a group of rounds (`Cartridge.groupWordsKey`) in every language of the app, whatever language it
+    /// runs in: the German key and its English, French, Italian and Spanish texts, each split at its commas. So
+    /// «Platzpatrone», «blank», «à blanc», «a salve» and «de fogueo» each find all the blanks.
+    static func groupWords(_ key: String, bundle: Bundle = .main) -> [String] {
+        let texts = [key] + ["en", "fr", "it", "es"].compactMap { language in
+            bundle.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))?
+                .localizedString(forKey: key, value: nil, table: nil)
+        }
+        return texts.flatMap { $0.split(separator: ",") }.map { $0.trimmingCharacters(in: .whitespaces) }
+    }
+
+    /// Read once: the search asks for them on every keystroke.
+    private static let wordsByGroup = Dictionary(uniqueKeysWithValues: ["blank", "shot", "ball", "pellet", "minie"]
+        .compactMap(Cartridge.groupWordsKey).map { ($0, groupWords($0)) })
+
     /// Catalogue entries known by `query`, in catalogue order: one of their names (`Cartridge.allNames`:
-    /// the name, the other names, search aliases and headstamps) contains it, or their names hold
+    /// the name, the other names, search aliases and headstamps) or of their group's words contains it, or these hold
     /// each of its words in any order, so «Vetterli 10.4» finds «10.4x38 mm R Vetterli».
     static func search(_ query: String, in cartridges: [Cartridge] = all) -> [Cartridge] {
         let whole = normalized(query)
         guard !whole.isEmpty else { return cartridges }
         let words = query.split { $0.isWhitespace || $0 == "-" || $0 == "/" }.map { normalized(String($0)) }.filter { !$0.isEmpty }
         return cartridges.filter { c in
-            let names = c.allNames.map(normalized)
+            let names = (c.allNames + (c.groupWordsKey.flatMap { wordsByGroup[$0] } ?? [])).map(normalized)
             // The whole query too: dropping "mm" can join its words («357 REM MAG» → "357reag").
             return names.contains { $0.contains(whole) } || words.allSatisfy { word in names.contains { $0.contains(word) } }
         }
