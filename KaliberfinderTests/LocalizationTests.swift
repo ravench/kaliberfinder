@@ -47,6 +47,15 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(en["© 2026 Simon Giotta"], "© 2026 Simon Giotta")
     }
 
+    /// The line under «Mögliche Kaliber» on both result screens (review 2026-11-18), in every language.
+    func testTheSafetyNoteIsTranslated() throws {
+        let key = "Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe."
+        let expected = ["en": "safe to fire", "fr": "n'autorise pas le tir", "it": "non autorizza a sparare", "es": "no autoriza a disparar"]
+        for (lang, words) in expected {
+            XCTAssertTrue(try XCTUnwrap(try table(lang)[key], lang).contains(words), lang)
+        }
+    }
+
     func testPickAndCompareHasShortTitle() throws {
         let expected = ["en": "Pick and compare", "fr": "Choisir et comparer", "it": "Scegli e confronta", "es": "Elegir y comparar"]
         for (lang, title) in expected {

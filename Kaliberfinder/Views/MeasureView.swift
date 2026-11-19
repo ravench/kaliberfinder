@@ -65,6 +65,8 @@ struct MeasureView: View {
                     if let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
                 } header: {
                     Text("Mögliche Kaliber")
+                } footer: {
+                    SafetyNote()
                 }
             } else if !measured.isEmpty {
                 Section { Text("Keine passenden Kaliber gefunden") }  // nothing within `DimensionMatcher.maxDeviation`
