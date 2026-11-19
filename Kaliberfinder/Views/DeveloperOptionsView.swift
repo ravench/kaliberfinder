@@ -26,14 +26,14 @@ struct DeveloperOptionsView: View {
                     Label { Text("Unbelegte Kaliber zeigen") } icon: { Image(systemName: "questionmark.square.dashed") }
                 }
             } footer: {
-                Text("Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt. Sonst weder in Listen, Suche noch Treffern.")
+                Text("Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt.")
             }
             Section {
                 Toggle(isOn: $showCannon) {
                     Label { Text("Kanonenkaliber zeigen") } icon: { Image(systemName: "arrow.up.left.and.arrow.down.right") }
                 }
             } footer: {
-                Text("Munition von 20 bis 57 mm, zu gross für den Bildschirm. Eingeschaltet gelten dieselben Regeln wie für alle Kaliber: Listen, Suche, Treffer, 1:1 und Masszeichnung, sofern belegt und gezeichnet.")
+                Text("Munition von 20 bis 57 mm, zu gross für den Bildschirm.")
             }
         }
         .readableWidth()

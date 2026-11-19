@@ -30,6 +30,10 @@ final class PRScreensTests: XCTestCase {
 
         if open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]) {
             snap("06-Einstellungen")
+            if open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Bildschirm")).firstMatch) {
+                snap("06d-Bildschirm-kalibrieren")
+                app.navigationBars["Bildschirm kalibrieren"].buttons.firstMatch.tap()
+            }
             scroll()
             snap("06b-Einstellungen-unten")  // version and calibre-data commit
             if open(app.buttons["Entwickleroptionen"].firstMatch) {
@@ -150,6 +154,7 @@ final class PRScreensTests: XCTestCase {
     func testPickAndCompare() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Auswählen und vergleichen"].firstMatch) else { return }
+        snap("19a-Auswahl-leer")  // the hint above the list, before anything is picked
         for (query, name) in [("GP 11", "7.5x55 mm Swiss (GP 11)"), ("9x19", "9x19 mm"), (".45 ACP", ".45 ACP")] {
             let search = app.searchFields.firstMatch
             if search.waitForExistence(timeout: 5) {

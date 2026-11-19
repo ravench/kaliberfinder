@@ -54,7 +54,7 @@ struct MeasureView: View {
             } header: {
                 if unit == .metric { Text("Gemessen in mm") } else { Text("Gemessen in Zoll") }
             } footer: {
-                Text("Was du messen kannst; eine Länge und ein Durchmesser reichen oft.")
+                Text("Eine Länge und ein Durchmesser reichen oft.")
             }
             if !matches.isEmpty || ranked.summary != nil {
                 Section {
@@ -65,8 +65,6 @@ struct MeasureView: View {
                     if let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
                 } header: {
                     Text("Mögliche Kaliber")
-                } footer: {
-                    Text("Patrone auf dem Bildschirm vergleichen.")
                 }
             } else if !measured.isEmpty {
                 Section { Text("Keine passenden Kaliber gefunden") }  // nothing within `DimensionMatcher.maxDeviation`
