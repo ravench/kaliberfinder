@@ -1,8 +1,8 @@
 {
  "version": 1,
  "calibreData": {
-  "commit": "0ed425b4a66478af9c44bfbe42c82d0c7aa04d92",
-  "date": "2026-11-19T08:15:56+00:00"
+  "commit": "c3e4ced01184c37a3174dc3295b126a8ff097675",
+  "date": "2026-11-19T09:25:23+01:00"
  },
  "cartridges": [
   {
@@ -4475,7 +4475,10 @@
     "380auto",
     "9kurz",
     "9mmkurz",
-    "9mm k"
+    "9mm k",
+    "9mm short",
+    "9 corto",
+    "9mm court"
    ],
    "displayAliases": [
     ".380 ACP",
@@ -7968,7 +7971,8 @@
    "aliases": [
     "7.65longue",
     "7.65mas",
-    "30pedersen"
+    "30pedersen",
+    "7.65 french long"
    ],
    "displayAliases": [],
    "obsolete": true,
@@ -17458,7 +17462,9 @@
     "5.6gp90",
     "stgw90",
     "gewehrpatrone 90",
-    "gwpat90"
+    "gwpat90",
+    "cart 5.6 mm 90 f",
+    "fass 90"
    ],
    "displayAliases": [],
    "obsolete": false,
@@ -71459,7 +71465,11 @@
     "12",
     "12/70",
     "12ga",
-    "12gauge"
+    "12gauge",
+    "12 bore",
+    "calibre 12",
+    "calibro 12",
+    "kaliber 12"
    ],
    "displayAliases": [],
    "obsolete": false,
@@ -71667,7 +71677,11 @@
    "kind": "shot",
    "aliases": [
     "16",
-    "16/70"
+    "16/70",
+    "16 bore",
+    "calibre 16",
+    "calibro 16",
+    "kaliber 16"
    ],
    "displayAliases": [],
    "obsolete": false,
@@ -71737,7 +71751,11 @@
    "kind": "shot",
    "aliases": [
     "20",
-    "20/70"
+    "20/70",
+    "20 bore",
+    "calibre 20",
+    "calibro 20",
+    "kaliber 20"
    ],
    "displayAliases": [],
    "obsolete": false,
@@ -71876,7 +71894,11 @@
    "kind": "shot",
    "aliases": [
     "28",
-    "28/70"
+    "28/70",
+    "28 bore",
+    "calibre 28",
+    "calibro 28",
+    "kaliber 28"
    ],
    "displayAliases": [],
    "obsolete": false,
@@ -71946,7 +71968,9 @@
    "kind": "shot",
    "aliases": [
     ".410",
-    "410"
+    "410",
+    "410 bore",
+    "calibro 36"
    ],
    "displayAliases": [],
    "obsolete": false,
