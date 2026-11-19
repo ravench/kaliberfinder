@@ -77,6 +77,8 @@ T = {
     "Schrot": ("Shot", "Plombs", "Pallini", "Perdigones"),
     "Keines: Platzpatrone": ("None: blank", "Aucun : cartouche à blanc", "Nessuna: cartuccia a salve", "Ninguna: cartucho de fogueo"),
     "Keines: leere Hülse": ("None: empty case", "Aucun : douille vide", "Nessuna: bossolo vuoto", "Ninguna: vaina vacía"),
+    "Randdicke": ("Rim thickness", "Épaisseur du bourrelet", "Spessore dell'orlo", "Espesor de la pestaña"),
+    "Papierpflaster ab Hülsenmund": ("Paper patch from case mouth", "Calepin depuis le collet", "Camiciatura in carta dalla bocca", "Calepinado desde la boca"),
     "Schulterlänge": ("Shoulder length", "Longueur jusqu'à l'épaulement", "Lunghezza fino alla spalla", "Longitud hasta el hombro"),
     "Vollmantel": ("Full metal jacket", "Blindé", "Blindata", "Blindada"),
     "Blei": ("Lead", "Plomb", "Piombo", "Plomo"),
@@ -324,7 +326,7 @@ T = {
     "Wählen": ("Choose", "Choisir", "Scegli", "Elegir"),
     "Im Bild": ("In the photo", "Sur la photo", "Nella foto", "En la foto"),
     "Notiz": ("Note", "Remarque", "Nota", "Nota"),
-    "z. B. Holztisch, Tageslicht": ("e.g. wooden table, daylight", "p. ex. table en bois, lumière du jour", "p. es. tavolo di legno, luce diurna", "p. ej. mesa de madera, luz de día"),
+    "Kommentar, z. B. Holztisch, Tageslicht": ("Comment, e.g. wooden table, daylight", "Commentaire, p. ex. table en bois, lumière du jour", "Commento, p. es. tavolo di legno, luce diurna", "Comentario, p. ej. mesa de madera, luz de día"),
     "Alle Fotos dieser Serie zeigen dieses Kaliber.": (
         "All photos in this series show this calibre.",
         "Toutes les photos de cette série montrent ce calibre.",

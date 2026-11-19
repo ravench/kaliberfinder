@@ -523,6 +523,24 @@ final class PRScreensTests: XCTestCase {
         // The calliper fields at the end, with the sketch of where to measure over them.
         scroll()
         snap("22b-Trainingsdaten-Schieblehre")
+        // A rimfire round has no primer field or head view, a paper-patched bullet adds the patch's length (Raven 2026-11-19).
+        // The fixture's own choices come back after, as the tour writes its package.json.
+        scroll(up: false)
+        pick("Zündart", "Randfeuer")
+        pick("Geschoss", "Mit Papierpflaster")
+        scroll()
+        snap("22f-Trainingsdaten-Randfeuer-Papierpflaster")
+        scroll(up: false)
+        pick("Zündart", "Zentralfeuer")
+        pick("Geschoss", "Vollmantel")
+    }
+
+    /// Picks `choice` in the menu of the row `row`, without a stop.
+    private func pick(_ row: String, _ choice: String) {
+        let button = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", row)).firstMatch
+        guard button.waitForExistence(timeout: 5) else { return }
+        button.tap()
+        if app.buttons[choice].waitForExistence(timeout: 5) { app.buttons[choice].tap() }
     }
 
     /// With the training capture on, a calibre's detail page starts a series of that calibre.

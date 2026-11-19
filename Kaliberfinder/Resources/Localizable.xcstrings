@@ -4786,6 +4786,35 @@
         }
       }
     },
+    "Kommentar, z. B. Holztisch, Tageslicht": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment, e.g. wooden table, daylight"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comentario, p. ej. mesa de madera, luz de día"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commentaire, p. ex. table en bois, lumière du jour"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commento, p. es. tavolo di legno, luce diurna"
+          }
+        }
+      }
+    },
     "Konische Hülse": {
       "extractionState": "manual",
       "localizations": {
@@ -6381,6 +6410,35 @@
         }
       }
     },
+    "Papierpflaster ab Hülsenmund": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paper patch from case mouth"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calepinado desde la boca"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calepin depuis le collet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camiciatura in carta dalla bocca"
+          }
+        }
+      }
+    },
     "Passt genau": {
       "extractionState": "manual",
       "localizations": {
@@ -6783,6 +6841,35 @@
           "stringUnit": {
             "state": "translated",
             "value": "Orlo"
+          }
+        }
+      }
+    },
+    "Randdicke": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rim thickness"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espesor de la pestaña"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Épaisseur du bourrelet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spessore dell'orlo"
           }
         }
       }
@@ -9509,35 +9596,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "p. es. punzonatura del fondello o un nome a scelta"
-          }
-        }
-      }
-    },
-    "z. B. Holztisch, Tageslicht": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "e.g. wooden table, daylight"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "p. ej. mesa de madera, luz de día"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "p. ex. table en bois, lumière du jour"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "p. es. tavolo di legno, luce diurna"
           }
         }
       }

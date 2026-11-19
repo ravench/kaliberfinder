@@ -232,7 +232,7 @@ final class TrainingCaptureTests: XCTestCase {
             XCTAssertEqual(Set(options.map(\.title)).count, options.count, "\(options)")
         }
         // The calliper fields by type, each in the order taken: diameters from rim to tip, then lengths (Raven 2026-11-19).
-        XCTAssertEqual(TrainingPackageView.calliperFields.map(\.letter), ["R", "P", "G", "B", "S", "N", "D", "H", "L", "OAL"])
+        XCTAssertEqual(TrainingPackageView.calliperFields.map(\.letter), ["R", "P", "G", "B", "S", "N", "D", "E", "H", "L", "PP", "OAL"])
     }
 
     func testEveryHeadAndShapeChoiceHasItsOutline() {
