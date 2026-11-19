@@ -363,15 +363,16 @@ struct TrainingPackageView: View {
         let value: WritableKeyPath<Measurements, Double?>
     }
 
-    /// In the order of the old-ammunition table's legend.
+    /// By type, each in the order taken (Raven 2026-11-19): the diameters from the rim to the tip, the primer's
+    /// beside the rim on the head, then the lengths from the head out.
     static let calliperFields = [
-        CalliperField(letter: "D", title: "Geschossdurchmesser", value: \.bullet),
-        CalliperField(letter: "N", title: "Halsdurchmesser", value: \.neck),
-        CalliperField(letter: "S", title: "Schulterdurchmesser", value: \.shoulder),
-        CalliperField(letter: "B", title: "Bodendurchmesser", value: \.base),
         CalliperField(letter: "R", title: "Randdurchmesser", value: \.rim),
-        CalliperField(letter: "G", title: "Gürteldurchmesser", value: \.belt),
         CalliperField(letter: "P", title: "Zündhütchen-Durchmesser", value: \.primerDiameter),
+        CalliperField(letter: "G", title: "Gürteldurchmesser", value: \.belt),
+        CalliperField(letter: "B", title: "Bodendurchmesser", value: \.base),
+        CalliperField(letter: "S", title: "Schulterdurchmesser", value: \.shoulder),
+        CalliperField(letter: "N", title: "Halsdurchmesser", value: \.neck),
+        CalliperField(letter: "D", title: "Geschossdurchmesser", value: \.bullet),
         CalliperField(letter: "H", title: "Schulterlänge", value: \.shoulderLength),
         CalliperField(letter: "L", title: "Hülsenlänge", value: \.caseLength),
         CalliperField(letter: "OAL", title: "Gesamtlänge", value: \.overallLength),

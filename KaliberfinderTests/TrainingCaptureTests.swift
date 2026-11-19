@@ -231,8 +231,8 @@ final class TrainingCaptureTests: XCTestCase {
         for options in [RoundFacts.ignition, RoundFacts.head, RoundFacts.shape, RoundFacts.caseMaterial, RoundFacts.bullet] {
             XCTAssertEqual(Set(options.map(\.title)).count, options.count, "\(options)")
         }
-        // The calliper fields follow the table's legend.
-        XCTAssertEqual(TrainingPackageView.calliperFields.map(\.letter), ["D", "N", "S", "B", "R", "G", "P", "H", "L", "OAL"])
+        // The calliper fields by type, each in the order taken: diameters from rim to tip, then lengths (Raven 2026-11-19).
+        XCTAssertEqual(TrainingPackageView.calliperFields.map(\.letter), ["R", "P", "G", "B", "S", "N", "D", "H", "L", "OAL"])
     }
 
     func testEveryHeadAndShapeChoiceHasItsOutline() {
