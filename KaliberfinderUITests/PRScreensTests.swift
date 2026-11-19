@@ -565,9 +565,14 @@ final class PRScreensTests: XCTestCase {
             // The colour cut-out on the simulator can take a while on a busy runner.
             _ = app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90)
             snap(shot)
-            if let compareShot, open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden 1:1")).firstMatch),
-               app.navigationBars["1:1"].waitForExistence(timeout: 5) {
-                snap(compareShot)
+            // A busy runner can take well over 5 s to lay out the 1:1 row; a stop it misses fails the tour
+            // rather than vanish from the screens comment (Raven, 2026-11-19).
+            if let compareShot, open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden 1:1")).firstMatch) {
+                if app.navigationBars["1:1"].waitForExistence(timeout: 30) {
+                    snap(compareShot)
+                } else {
+                    XCTFail("The 1:1 screen for \(compareShot) did not open within 30 s")
+                }
             }
         }
     }

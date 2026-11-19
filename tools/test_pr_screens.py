@@ -63,6 +63,10 @@ class ChangesTests(unittest.TestCase):
         self.assertEqual(pr_screens.changes(self.before, self.after),
                          [("02-Eintrag.png", "changed"), ("03-Weg.png", "gone"), ("04-Neu.png", "new")])
 
+    def test_a_stop_the_tour_still_has_is_missed_not_gone(self):
+        self.assertIn(("03-Weg.png", "missed"), pr_screens.changes(self.before, self.after, 'snap("03-Weg")'))
+        self.assertIn(("03-Weg.png", "gone"), pr_screens.changes(self.before, self.after, 'snap("03-Weg-neu")'))
+
     def test_missing_base_shows_everything_as_new(self):
         missing = os.path.join(self.tmp.name, "nothing")
         self.assertEqual([s for _, s in pr_screens.changes(missing, self.after)], ["new"] * 3)
@@ -151,6 +155,13 @@ class CommentTests(unittest.TestCase):
         self.assertIn('| 04-Neu (new) | — | <img src="https://raw/x/12/after/04-Neu.png"', body)
         self.assertIn("| 03-Weg (gone) | <img", body)
         self.assertIn("(https://run/1)", body)
+
+    def test_missed_screen_says_so(self):
+        summary = {"changes": [["14-Foto-1zu1.png", "missed"]], "total": 8, "base": 9}
+        body = pr_screens.comment(summary, "https://raw/x/12", "https://run/1")
+        self.assertIn('| 14-Foto-1zu1 (not taken in this run) | <img src="https://raw/x/12/before/14-Foto-1zu1.png"'
+                      ' width="250"> | — |', body)
+        self.assertNotIn("(missed)", body)
 
     def test_no_change_points_to_the_tour(self):
         body = pr_screens.comment({"changes": [], "total": 9, "base": 9}, "u", "r")
