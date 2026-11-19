@@ -2,7 +2,7 @@
 
     xcrun simctl list devices available -j | python3 tools/pr_screens.py pick-iphone
     python3 tools/pr_screens.py rename <xcresulttool export dir> <out dir>
-    python3 tools/pr_screens.py changes <before dir> <after dir> <out dir>
+    python3 tools/pr_screens.py changes <before dir> <after dir> <out dir> [<tour file>]
     python3 tools/pr_screens.py comment <out dir> <image base url> <run url>
 """
 import filecmp
@@ -101,11 +101,13 @@ def same(a, b, tolerance=48, max_pixels=20, blur=2):
     return sum(worst.histogram()[tolerance + 1:]) <= max_pixels
 
 
-def changes(before_dir, after_dir):
-    """[(name, status)] for screens that are new, changed or gone, by name.
+def changes(before_dir, after_dir, tour=None):
+    """[(name, status)] for screens that are new, changed, gone or missed, by name.
 
     Both runs use the same simulator and status bar minutes apart, so an unchanged
-    screen gives (almost) the same image.
+    screen gives (almost) the same image. A screen of the base that this run lacks is
+    "gone" only if the tour (the text of its Swift file) no longer names it; while the
+    tour still has the stop, this run just did not take it: "missed" (Raven, 2026-11-19).
     """
     before, after = _pngs(before_dir), _pngs(after_dir)
     result = []
@@ -113,15 +115,16 @@ def changes(before_dir, after_dir):
         if name not in before:
             result.append((name, "new"))
         elif name not in after:
-            result.append((name, "gone"))
+            stem = os.path.splitext(name)[0]
+            result.append((name, "missed" if tour is not None and f'"{stem}"' in tour else "gone"))
         elif not same(os.path.join(before_dir, name), os.path.join(after_dir, name)):
             result.append((name, "changed"))
     return result
 
 
-def collect(before_dir, after_dir, out_dir):
+def collect(before_dir, after_dir, out_dir, tour=None):
     """Copies the changed screens to out_dir/before and out_dir/after and writes out_dir/changes.json."""
-    found = changes(before_dir, after_dir)
+    found = changes(before_dir, after_dir, tour)
     for side, folder in (("before", before_dir), ("after", after_dir)):
         os.makedirs(os.path.join(out_dir, side), exist_ok=True)
         for name, _ in found:
@@ -152,8 +155,9 @@ def comment(summary, base_url, run_url):
                   "| Screen | Before | After |", "| --- | --- | --- |"]
         for name, status in found:
             before = "—" if status == "new" else _img(f"{base_url}/before/{name}")
-            after = "—" if status == "gone" else _img(f"{base_url}/after/{name}")
-            label = os.path.splitext(name)[0] + ("" if status == "changed" else f" ({status})")
+            after = "—" if status in ("gone", "missed") else _img(f"{base_url}/after/{name}")
+            note = {"changed": "", "missed": " (not taken in this run)"}.get(status, f" ({status})")
+            label = os.path.splitext(name)[0] + note
             lines.append(f"| {label} | {before} | {after} |")
     lines += ["", f"All screens of this run: [workflow artifacts]({run_url})."]
     return "\n".join(lines) + "\n"
@@ -165,8 +169,12 @@ def main(argv):
     elif argv[1:2] == ["rename"] and len(argv) == 4:
         for name in rename(argv[2], argv[3]):
             print(name)
-    elif argv[1:2] == ["changes"] and len(argv) == 5:
-        summary = collect(argv[2], argv[3], argv[4])
+    elif argv[1:2] == ["changes"] and len(argv) in (5, 6):
+        tour = None
+        if len(argv) == 6:
+            with open(argv[5]) as f:
+                tour = f.read()
+        summary = collect(argv[2], argv[3], argv[4], tour)
         for name, status in summary["changes"]:
             print(f"{status}: {name}")
     elif argv[1:2] == ["comment"] and len(argv) == 5:
