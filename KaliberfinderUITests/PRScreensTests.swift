@@ -520,27 +520,12 @@ final class PRScreensTests: XCTestCase {
         menuStop("Randform", choice: "Randlos", "22c-Trainingsdaten-Randform")
         menuStop("Hülsenform", choice: "Konische Hülse", "22d-Trainingsdaten-Huelsenform")
         menuStop("Hülsenmaterial", choice: "Messing", "22e-Trainingsdaten-Huelsenmaterial")
+        // A rimfire round, paper-patched (Raven 2026-11-19): no primer field or head view, the patch's length; reset after.
+        menuStop("Zündart", choice: "Randfeuer"); menuStop("Geschoss", choice: "Mit Papierpflaster")
         // The calliper fields at the end, with the sketch of where to measure over them.
         scroll()
         snap("22b-Trainingsdaten-Schieblehre")
-        // A rimfire round has no primer field or head view, a paper-patched bullet adds the patch's length (Raven 2026-11-19).
-        // The fixture's own choices come back after, as the tour writes its package.json.
-        scroll(up: false)
-        pick("Zündart", "Randfeuer")
-        pick("Geschoss", "Mit Papierpflaster")
-        scroll()
-        snap("22f-Trainingsdaten-Randfeuer-Papierpflaster")
-        scroll(up: false)
-        pick("Zündart", "Zentralfeuer")
-        pick("Geschoss", "Vollmantel")
-    }
-
-    /// Picks `choice` in the menu of the row `row`, without a stop.
-    private func pick(_ row: String, _ choice: String) {
-        let button = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", row)).firstMatch
-        guard button.waitForExistence(timeout: 5) else { return }
-        button.tap()
-        if app.buttons[choice].waitForExistence(timeout: 5) { app.buttons[choice].tap() }
+        scroll(up: false); menuStop("Zündart", choice: "Zentralfeuer"); menuStop("Geschoss", choice: "Vollmantel")
     }
 
     /// With the training capture on, a calibre's detail page starts a series of that calibre.
@@ -670,19 +655,17 @@ final class PRScreensTests: XCTestCase {
         return open(app.buttons["Entwickleroptionen"].firstMatch)
     }
 
-    private func back() {
-        app.navigationBars.buttons.element(boundBy: 0).tap()
-    }
+    private func back() { app.navigationBars.buttons.element(boundBy: 0).tap() }
 
     /// Swipes to the very end (or start): a single swipe or drag stops at a different place on
     /// each run, the end of the content does not.
     /// Opens the picker menu of the series row whose label starts with `row`, takes the screen while the menu
-    /// is up, and taps `choice`, the fixture's own value, so the menu closes and nothing changes.
-    private func menuStop(_ row: String, choice: String, _ name: String) {
+    /// is up (with a `name`), and taps `choice`: the fixture's own value closes the menu and changes nothing.
+    private func menuStop(_ row: String, choice: String, _ name: String? = nil) {
         let button = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", row)).firstMatch
         guard button.waitForExistence(timeout: 5) else { return }
         button.tap()
-        if app.buttons[choice].waitForExistence(timeout: 5) { snap(name) }
+        if app.buttons[choice].waitForExistence(timeout: 5), let name { snap(name) }
         app.buttons[choice].tap()
     }
 
