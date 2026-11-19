@@ -377,7 +377,7 @@ struct TrainingPackageView: View {
         CalliperField(letter: "E", title: "Randdicke", value: \.rimThickness),
         CalliperField(letter: "H", title: "Schulterlänge", value: \.shoulderLength),
         CalliperField(letter: "L", title: "Hülsenlänge", value: \.caseLength),
-        CalliperField(letter: "PP", title: "Papierpflaster ab Hülsenmund", value: \.patchLength),
+        CalliperField(letter: "PP", title: "Papierpflasterlänge", value: \.patchLength),
         CalliperField(letter: "OAL", title: "Gesamtlänge", value: \.overallLength),
     ]
 

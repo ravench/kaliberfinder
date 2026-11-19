@@ -78,7 +78,7 @@ T = {
     "Keines: Platzpatrone": ("None: blank", "Aucun : cartouche à blanc", "Nessuna: cartuccia a salve", "Ninguna: cartucho de fogueo"),
     "Keines: leere Hülse": ("None: empty case", "Aucun : douille vide", "Nessuna: bossolo vuoto", "Ninguna: vaina vacía"),
     "Randdicke": ("Rim thickness", "Épaisseur du bourrelet", "Spessore dell'orlo", "Espesor de la pestaña"),
-    "Papierpflaster ab Hülsenmund": ("Paper patch from case mouth", "Calepin depuis le collet", "Camiciatura in carta dalla bocca", "Calepinado desde la boca"),
+    "Papierpflasterlänge": ("Paper patch length", "Longueur du calepin", "Lunghezza della camiciatura", "Longitud del calepinado"),
     "Schulterlänge": ("Shoulder length", "Longueur jusqu'à l'épaulement", "Lunghezza fino alla spalla", "Longitud hasta el hombro"),
     "Vollmantel": ("Full metal jacket", "Blindé", "Blindata", "Blindada"),
     "Blei": ("Lead", "Plomb", "Piombo", "Plomo"),

@@ -6410,31 +6410,31 @@
         }
       }
     },
-    "Papierpflaster ab Hülsenmund": {
+    "Papierpflasterlänge": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paper patch from case mouth"
+            "value": "Paper patch length"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calepinado desde la boca"
+            "value": "Longitud del calepinado"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calepin depuis le collet"
+            "value": "Longueur du calepin"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Camiciatura in carta dalla bocca"
+            "value": "Lunghezza della camiciatura"
           }
         }
       }
