@@ -95,7 +95,7 @@ class RareAndCountryTests(unittest.TestCase):
         self.assertEqual(set(COUNTRIES), set(generate_data.COUNTRY_NAMES))
         self.assertEqual(generate_data.COUNTRY_NAMES["GB"], "Grossbritannien")
         for code, name in generate_data.COUNTRY_NAMES.items():
-            self.assertEqual(set(COUNTRY_NAMES[code]), {"en", "de", "fr", "it"}, code)
+            self.assertEqual(set(COUNTRY_NAMES[code]), {"en", "de", "fr", "it", "es"}, code)
             self.assertNotIn(name, T, name)
 
     def test_a_miniature_primer_carries_its_measured_diameter(self):
