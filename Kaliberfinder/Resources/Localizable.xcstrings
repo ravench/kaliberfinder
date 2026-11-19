@@ -4831,6 +4831,29 @@
         }
       }
     },
+    "Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For identification only: a match is no clearance to fire. Check the headstamp and the calibre marked on the firearm."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour l'identification seulement : une correspondance n'autorise pas le tir. Vérifiez le marquage du culot et le calibre indiqué sur l'arme."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo per l'identificazione: una corrispondenza non autorizza a sparare. Controlla il fondello e il calibro indicato sull'arma."
+          }
+        }
+      }
+    },
     "Näher heran": {
       "extractionState": "manual",
       "localizations": {

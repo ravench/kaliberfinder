@@ -20,6 +20,13 @@ class StoreTextTests(unittest.TestCase):
             with self.subTest(lang=lang):
                 self.assertEqual(sl.problems(sl.texts(lang)), [])
 
+    def test_every_description_says_a_match_is_no_clearance_to_fire(self):
+        """The app tells lookalike calibres apart by outline: the listing says what a match is not (review 2026-11-18)."""
+        words = {"de": "keine Freigabe zum Schiessen", "en": "no clearance to fire", "fr": "n'autorise pas le tir",
+                 "it": "non autorizza a sparare"}
+        for lang, sentence in words.items():
+            self.assertIn(sentence, sl.texts(lang)["description"], lang)
+
     def test_the_apps_four_languages(self):
         self.assertEqual(set(sl.LOCALES.values()), {"de", "en", "fr", "it"})
         self.assertEqual(sorted(os.listdir(sl.STORE)), ["de", "en", "fr", "it"])

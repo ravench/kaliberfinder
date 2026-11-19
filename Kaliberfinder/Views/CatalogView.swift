@@ -83,6 +83,14 @@ struct CatalogView: View {
     }
 }
 
+/// Under «Mögliche Kaliber» on both result screens (review 2026-11-18): the app tells calibres apart by an outline
+/// or a few typed dimensions, lookalikes included, and a match must not decide what is loaded into a firearm.
+struct SafetyNote: View {
+    var body: some View {
+        Text("Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe.")
+    }
+}
+
 /// A row of the photo or measurement results: a one-size group's row opens the group page, a calibre's row the
 /// calibre's page, as «Alle Kaliber» shows it, whose 1:1 link draws this calibre alone (Raven, 2026-11-08) and
 /// which links the group (Raven, 2026-11-13).

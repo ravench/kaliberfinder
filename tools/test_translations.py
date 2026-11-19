@@ -41,6 +41,16 @@ class TranslationTests(unittest.TestCase):
         self.assertEqual(T["Flaschenhals"][FR], "à épaulement")
         self.assertEqual(T["Schrot (209)"][FR], "Cartouche à plombs (209)")
 
+    def test_a_match_is_no_clearance_to_fire(self):
+        """Both result screens say under «Mögliche Kaliber» that a match must not decide what is fired (review 2026-11-18)."""
+        note = T["Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe."]
+        for lang, words in ((EN, "no clearance to fire"), (FR, "n'autorise pas le tir"), (IT, "non autorizza a sparare")):
+            self.assertIn(words, note[lang])
+        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        for view in ("MatchesView.swift", "MeasureView.swift"):
+            with open(os.path.join(root, "Kaliberfinder", "Views", view), encoding="utf-8") as f:
+                self.assertRegex(f.read(), r'Text\("Mögliche Kaliber"\)\n\s*\} footer: \{\n\s*SafetyNote\(\)', view)
+
     def test_share_extension_texts_pair_up(self):
         self.assertEqual(T["Das Foto konnte nicht übernommen werden."][FR], "Impossible de recevoir la photo.")
 
