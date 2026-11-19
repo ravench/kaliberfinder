@@ -112,6 +112,8 @@ struct Measurements: Codable, Equatable {
     var overallLength: Double?
     var caseLength: Double?
     var rim: Double?
+    /// The belt's diameter on a belted case (Raven 2026-11-19).
+    var belt: Double?
     /// The case just above the rim or extractor groove (Raven 2026-11-09).
     var base: Double?
     var bullet: Double?
@@ -124,7 +126,7 @@ struct Measurements: Codable, Equatable {
     var primerDiameter: Double?
 
     var isEmpty: Bool {
-        [overallLength, caseLength, rim, base, bullet, shoulderLength, shoulder, neck, primerDiameter].allSatisfy { $0 == nil }
+        [overallLength, caseLength, rim, belt, base, bullet, shoulderLength, shoulder, neck, primerDiameter].allSatisfy { $0 == nil }
     }
 }
 

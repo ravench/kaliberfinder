@@ -64,6 +64,8 @@ struct MeasuringGuide: View {
     static let axis = 96.0
     /// A straight case's bullet nearly fills its mouth; a bottleneck's sits in the narrower neck.
     var bulletRadius: Double { shape == .straight ? 31 : 23.7 }
+    /// The neck is the mouth of a straight case, nearly the body; a bottleneck's is narrower.
+    var neckRadius: Double { shape == .straight ? 34.3 : 25.5 }
     /// A rim stands over the body (37.1 behind it), a semi-rim a little; a rimless or belted case's is the body's.
     var rimRadius: Double {
         switch head {
@@ -74,7 +76,8 @@ struct MeasuringGuide: View {
     }
     /// The belt behind the extractor groove, with its own mark for the form's belt field.
     static let belt = (from: 58.0, to: 80.0, radius: 40.0)
-    static let beltMark = Mark(letter: "G", from: pt(69, axis - belt.radius), to: pt(69, axis + belt.radius), label: pt(69, 26))
+    /// Its mark sits left of centre, clear of the training sketch's B beside it.
+    static let beltMark = Mark(letter: "G", from: pt(66, axis - belt.radius), to: pt(66, axis + belt.radius), label: pt(66, 26))
 
     /// The marks to draw, the rim's and the bullet's as wide as this round's.
     var shownMarks: [Mark] {
@@ -82,17 +85,18 @@ struct MeasuringGuide: View {
             switch mark.letter {
             case "R": Mark(letter: "R", from: pt(44.8, Self.axis - rimRadius), to: pt(44.8, Self.axis + rimRadius), label: mark.label)
             case "D": Mark(letter: "D", from: pt(380, Self.axis - bulletRadius), to: pt(380, Self.axis + bulletRadius), label: mark.label)
+            case "N": Mark(letter: "N", from: pt(340, Self.axis - neckRadius), to: pt(340, Self.axis + neckRadius), label: mark.label)
             default: mark
             }
         }
         return head == .belted ? marks + [Self.beltMark] : marks
     }
     var shownExtensions: [[CGPoint]] {
-        let tops = ["R": Self.axis - rimRadius - 0.8, "D": Self.axis - bulletRadius - 1.3]
+        let tops = ["R": Self.axis - rimRadius - 0.8, "D": Self.axis - bulletRadius - 1.3, "N": Self.axis - neckRadius - 1.5]
         let lines = Self.extensions.filter { ext in letters.map { !$0.isDisjoint(with: ext.letters) } ?? true }.map { ext in
             ext.letters.first.flatMap { tops[$0] }.map { [pt(ext.line[0].x, $0), ext.line[1]] } ?? ext.line
         }
-        return head == .belted ? lines + [[pt(69, Self.axis - Self.belt.radius - 1), pt(69, 30)]] : lines
+        return head == .belted ? lines + [[pt(66, Self.axis - Self.belt.radius - 1), pt(66, 30)]] : lines
     }
 
     /// The case from the side: the rim, a groove and belt where the head has them, the body tapering to the

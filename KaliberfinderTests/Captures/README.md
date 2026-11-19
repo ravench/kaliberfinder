@@ -12,7 +12,7 @@ their photos in `../Golden` (see its README).
   package.json            calibre (catalogue id), part (cartridge | emptyCase), note, device, iOS, app version;
                           unlisted: true when calibre is the name of a round the catalogue lacks;
                           measurements: what the calliper says about the round, in mm (bullet, neck,
-                          shoulder, base, rim, primerDiameter, shoulderLength, caseLength,
+                          shoulder, base, rim, belt, primerDiameter, shoulderLength, caseLength,
                           overallLength; each only when measured);
                           atypicalBullet: true when the round carries a bullet its calibre does not
                           usually have, so tuning against the series takes care;

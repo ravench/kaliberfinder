@@ -232,7 +232,7 @@ final class TrainingCaptureTests: XCTestCase {
             XCTAssertEqual(Set(options.map(\.title)).count, options.count, "\(options)")
         }
         // The calliper fields follow the table's legend.
-        XCTAssertEqual(TrainingPackageView.calliperFields.map(\.letter), ["D", "N", "S", "B", "R", "P", "H", "L", "OAL"])
+        XCTAssertEqual(TrainingPackageView.calliperFields.map(\.letter), ["D", "N", "S", "B", "R", "G", "P", "H", "L", "OAL"])
     }
 
     func testEveryHeadAndShapeChoiceHasItsOutline() {

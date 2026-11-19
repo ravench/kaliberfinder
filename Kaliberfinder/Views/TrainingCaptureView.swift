@@ -283,9 +283,12 @@ struct TrainingPackageView: View {
             }
             Section {
                 // Where each value is taken, as on the old-ammunition page (Raven 2026-11-10).
-                MeasuringGuide()
+                // The sketch and the fields as the series' Randform and Hülsenform say, like the dimensions form (Raven 2026-11-19).
+                let shape = Self.shape(of: package.shape), head = Self.head(of: package.head)
+                let fields = Self.fields(shape: shape, head: head)
+                MeasuringGuide(letters: Set(fields.map(\.letter)), shape: shape, head: head)
                     .padding(.vertical, 4)
-                ForEach(Self.calliperFields, id: \.letter) { measured($0) }
+                ForEach(fields, id: \.letter) { measured($0) }
             } header: {
                 Text("Mit der Schieblehre gemessen")
             }
@@ -367,11 +370,43 @@ struct TrainingPackageView: View {
         CalliperField(letter: "S", title: "Schulterdurchmesser", value: \.shoulder),
         CalliperField(letter: "B", title: "Bodendurchmesser", value: \.base),
         CalliperField(letter: "R", title: "Randdurchmesser", value: \.rim),
+        CalliperField(letter: "G", title: "Gürteldurchmesser", value: \.belt),
         CalliperField(letter: "P", title: "Zündhütchen-Durchmesser", value: \.primerDiameter),
         CalliperField(letter: "H", title: "Schulterlänge", value: \.shoulderLength),
         CalliperField(letter: "L", title: "Hülsenlänge", value: \.caseLength),
         CalliperField(letter: "OAL", title: "Gesamtlänge", value: \.overallLength),
     ]
+
+    /// The sketch's shape for the series' Hülsenform: a tapered case has no shoulder either.
+    static func shape(of token: String?) -> CaseShape {
+        switch token {
+        case nil: .any
+        case "bottleneck": .bottleneck
+        default: .straight
+        }
+    }
+
+    /// The sketch's head for the series' Randform: a rebated rim sits within the body like a rimless one.
+    static func head(of token: String?) -> RimKind {
+        switch token {
+        case "rimmed": .rimmed
+        case "semi": .semiRimmed
+        case "rimless", "rebated": .rimless
+        case "belted": .belted
+        default: .any
+        }
+    }
+
+    /// The fields of this round: the belt's with a belted head, none for the shoulder of a straight case.
+    static func fields(shape: CaseShape, head: RimKind) -> [CalliperField] {
+        calliperFields.filter { field in
+            switch field.letter {
+            case "G": head == .belted
+            case "S", "H": shape != .straight
+            default: true
+            }
+        }
+    }
 
     /// A calliper value with its unit, «9.95 mm»; a dash until measured.
     private func measured(_ field: CalliperField) -> some View {
