@@ -24,9 +24,22 @@ final class HomeSectionTests: XCTestCase {
         // A second pick while the first photo loads must not start another load.
         XCTAssertFalse(loading.start())
         XCTAssertTrue(loading.isLoading)
-        // Matches opened or load failed: the screen is free again.
-        loading.finish()
+        // Matches opened: the screen is free again, with nothing to report.
+        loading.finish(loaded: true)
         XCTAssertFalse(loading.isLoading)
+        XCTAssertFalse(loading.failed)
         XCTAssertTrue(loading.start())
+    }
+
+    /// A photo that could not be loaded (iCloud without reception) is said, not passed over (review 2026-11-18);
+    /// the next pick clears it.
+    func testAFailedLoadIsReported() {
+        var loading = PhotoLoading()
+        XCTAssertTrue(loading.start())
+        loading.finish(loaded: false)
+        XCTAssertFalse(loading.isLoading)
+        XCTAssertTrue(loading.failed)
+        XCTAssertTrue(loading.start())
+        XCTAssertFalse(loading.failed)
     }
 }

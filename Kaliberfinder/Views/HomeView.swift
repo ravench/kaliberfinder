@@ -108,6 +108,9 @@ struct HomeView: View {
             WhatsNewView(bullets: whatsNew)
                 .pageSized()
         }
+        // A photo that did not load (iCloud without reception) or was shared as something the app cannot read: said,
+        // where the home screen used to come back without a word (review 2026-11-18).
+        .alert(SharedInbox.failedText, isPresented: $loading.failed) {}
         .navigationDestination(item: $photo) {
             // New identity per photo, so a photo shared while the matches are open is analysed afresh.
             MatchesView(photo: $0.image, depth: $0.depth).id($0.id)
@@ -128,18 +131,21 @@ struct HomeView: View {
             Task {
                 // The data loads off the main thread (from iCloud, perhaps: seconds for a 48 MP photo); `UIImage(data:)`
                 // only reads the header, the pixels decode later in `PhotoAnalyzer`, behind the matches' own progress view.
-                if let data = try? await item.loadTransferable(type: Data.self), let image = UIImage(data: data) {
-                    photo = PickedPhoto(image: image)
-                }
+                let image = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init(data:))
+                if let image { photo = PickedPhoto(image: image) }
                 libraryItem = nil
-                loading.finish()
+                loading.finish(loaded: image != nil)
             }
         }
     }
 
     /// Opens the matches for a photo shared from another app.
     private func takeSharedPhoto() {
-        guard let image = (SharedInbox.shared?.take() ?? []).lazy.compactMap(UIImage.init(data:)).first ?? Self.takeTourPhoto() else { return }
+        let shared = SharedInbox.shared?.take() ?? []
+        guard let image = shared.lazy.compactMap(UIImage.init(data:)).first ?? Self.takeTourPhoto() else {
+            if !shared.isEmpty { loading.failed = true }
+            return
+        }
         showCamera = false
         photo = PickedPhoto(image: image)
     }
@@ -165,16 +171,22 @@ struct HomeView: View {
 /// picked photo's data loads meanwhile. The screen shows it is busy and takes no second pick.
 struct PhotoLoading: Equatable {
     private(set) var isLoading = false
+    /// The last photo could not be read: the home screen says so until the user dismisses that or picks again.
+    var failed = false
 
     /// Starts a load; false while one is running, so a second pick does not start another.
     mutating func start() -> Bool {
         if isLoading { return false }
         isLoading = true
+        failed = false
         return true
     }
 
-    /// The load is over: the matches are opening, or it failed.
-    mutating func finish() { isLoading = false }
+    /// The load is over: the matches are opening (`loaded`), or it failed.
+    mutating func finish(loaded: Bool) {
+        isLoading = false
+        failed = !loaded
+    }
 }
 
 /// Whether a list fits under its large title, read only while the title is large (the largest top inset
