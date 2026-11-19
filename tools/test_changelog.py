@@ -103,7 +103,7 @@ class ReleaseNotesTests(unittest.TestCase):
             text = f.read()
         self.assertIn("### de", text)
         # The first App Store release has its hand-written notes in every language.
-        self.assertEqual(sorted(changelog.hand_written("1.0.0", text)), ["de", "en", "fr", "it"])
+        self.assertEqual(sorted(changelog.hand_written("1.0.0", text)), ["de", "en", "es", "fr", "it"])
 
 
 class CommitsTests(unittest.TestCase):
@@ -213,6 +213,11 @@ class WhatToTestTests(unittest.TestCase):
         self.assertEqual(en["attributes"]["locale"], "en-US")
         self.assertEqual(en["relationships"]["build"]["data"], {"type": "builds", "id": "B1"})
         self.assertEqual(fr["attributes"]["locale"], "fr-FR")
+
+    def test_spanish_goes_to_testflight_as_es_es(self):
+        requests = changelog.localization_requests("B1", [], NOTES)
+        spanish = [body["data"]["attributes"] for _, _, body in requests if body["data"]["attributes"]["locale"] == "es-ES"]
+        self.assertEqual(spanish, [{"locale": "es-ES", "whatsNew": "• Nuevo: A\n• Nuevo: B"}])
 
     def test_text_within_the_limit(self):
         self.assertEqual(len(changelog.what_to_test_text(["x" * 5000])), 4000)

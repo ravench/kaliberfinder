@@ -67,6 +67,12 @@ class RequestTests(unittest.TestCase):
         self.assertEqual(body["data"]["attributes"], {"locale": "it", "description": "nuovo"})
         self.assertEqual(body["data"]["relationships"], {"appStoreVersion": {"data": {"type": "appStoreVersions", "id": "V1"}}})
 
+    def test_promo_only_adds_no_language_to_a_live_version(self):
+        existing = [loc("de-DE", "L1", promotionalText="alt")]
+        wanted = {"de-DE": {"promotionalText": "neu"}, "es-ES": {"promotionalText": "nuevo"}}
+        out = sl.requests("appStoreVersionLocalizations", "appStoreVersions", "V1", existing, wanted, add_missing=False)
+        self.assertEqual([(m, p) for m, p, _ in out], [("PATCH", "/appStoreVersionLocalizations/L1")])
+
     def test_nothing_to_do_when_everything_matches(self):
         existing = [loc("fr-FR", "L1", name="Kaliberfinder")]
         self.assertEqual(sl.requests("appInfoLocalizations", "appInfos", "I1", existing, {"fr-FR": {"name": "Kaliberfinder"}}), [])

@@ -6,7 +6,7 @@ with that version, and the build takes the section below for that version as its
 app («Neu in dieser Version») and in TestFlight's «What to Test», instead of the summary the
 Claude API writes for ordinary builds. Languages left out fall back to German in the app.
 
-Format: a `## <version>` heading, then `### de`, `### en`, `### fr`, `### it`, each with
+Format: a `## <version>` heading, then `### de`, `### en`, `### fr`, `### it`, `### es`, each with
 `- ` bullets. Newest version first.
 
 ## 1.0.0
@@ -18,7 +18,7 @@ Format: a `## <version>` heading, then `### de`, `### en`, `### fr`, `### it`, e
 - Auf iPhone Pro und iPad Pro misst die Kamera mit LiDAR auch die Grösse; meist bleiben dann nur wenige Kaliber übrig.
 - Ohne Foto: Masse eingeben oder Kaliber nach Namen wählen und vergleichen.
 - Über 700 Kaliber mit Massen, Masszeichnung, Zündhütchen, Herkunft, Farbcodes und ähnlichen Kalibern.
-- Deutsch, Englisch, Französisch und Italienisch. Funktioniert offline, ohne Konto und ohne Werbung.
+- Deutsch, Englisch, Französisch, Italienisch und Spanisch. Funktioniert offline, ohne Konto und ohne Werbung.
 
 ### en
 - First version on the App Store.
@@ -27,7 +27,7 @@ Format: a `## <version>` heading, then `### de`, `### en`, `### fr`, `### it`, e
 - On iPhone Pro and iPad Pro the camera also measures the size with LiDAR; usually only a few calibres remain.
 - Without a photo: enter measurements, or pick calibres by name and compare them.
 - Over 700 calibres with dimensions, a drawing, primer, origin, colour codes and lookalike calibres.
-- German, English, French and Italian. Works offline, with no account and no ads.
+- German, English, French, Italian and Spanish. Works offline, with no account and no ads.
 
 ### fr
 - Première version sur l'App Store.
@@ -36,7 +36,7 @@ Format: a `## <version>` heading, then `### de`, `### en`, `### fr`, `### it`, e
 - Sur iPhone Pro et iPad Pro, la caméra mesure aussi la taille avec le LiDAR ; il ne reste alors le plus souvent que quelques calibres.
 - Sans photo : saisissez les mesures, ou choisissez des calibres par leur nom et comparez-les.
 - Plus de 700 calibres avec dimensions, dessin coté, amorce, origine, codes couleur et calibres semblables.
-- Allemand, anglais, français et italien. Fonctionne hors ligne, sans compte et sans publicité.
+- Allemand, anglais, français, italien et espagnol. Fonctionne hors ligne, sans compte et sans publicité.
 
 ### it
 - Prima versione sull'App Store.
@@ -45,4 +45,13 @@ Format: a `## <version>` heading, then `### de`, `### en`, `### fr`, `### it`, e
 - Su iPhone Pro e iPad Pro la fotocamera misura anche le dimensioni con il LiDAR; di solito restano solo pochi calibri.
 - Senza foto: inserisci le misure, oppure scegli i calibri per nome e confrontali.
 - Oltre 700 calibri con misure, disegno quotato, innesco, origine, codici colore e calibri simili.
-- Tedesco, inglese, francese e italiano. Funziona offline, senza account e senza pubblicità.
+- Tedesco, inglese, francese, italiano e spagnolo. Funziona offline, senza account e senza pubblicità.
+
+### es
+- Primera versión en la App Store.
+- Fotografía un cartucho o una vaina vacía: Kaliberfinder compara su contorno con el catálogo y muestra los calibres que encajan.
+- Compara las coincidencias a tamaño real en la pantalla, una junto a otra sobre una regla: coloca el cartucho sobre la pantalla y mira cuál encaja.
+- En el iPhone Pro y el iPad Pro, la cámara mide además el tamaño con LiDAR; normalmente solo quedan unos pocos calibres.
+- Sin foto: introduce las medidas, o elige calibres por su nombre y compáralos.
+- Más de 700 calibres con dimensiones, plano acotado, pistón, origen, códigos de color y calibres parecidos.
+- Alemán, inglés, francés, italiano y español. Funciona sin conexión, sin cuenta y sin publicidad.
