@@ -1,0 +1,1 @@
+calibre,munición,bala,vaina,casquillo,proyectil,rifle,pistola,escopeta,9mm,22LR,GP11,regla,LiDAR

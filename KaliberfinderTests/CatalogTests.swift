@@ -64,6 +64,34 @@ final class CatalogTests: XCTestCase {
         XCTAssertEqual(CompareLength.caseLength.title, "Hülsenlänge")
     }
 
+    /// A group's everyday word finds every round of the group, in each of the app's languages, whatever language it
+    /// runs in (Raven, 2026-11-19): the word is translated once, not put on every calibre as an alias.
+    func testAGroupsWordsFindItInEveryLanguage() throws {
+        let all = CartridgeCatalog.all
+        func found(_ words: String) -> Set<String> { Set(CartridgeCatalog.search(words, in: all).map(\.id)) }
+        func group(_ belongs: (Cartridge) -> Bool) -> Set<String> { Set(all.filter(belongs).map(\.id)) }
+        let groups: [(members: Set<String>, words: [String])] = [
+            (group(\.blank), ["Platzpatrone", "Knall", "blank", "blank cartridge", "à blanc", "cartouche à blanc", "a salve", "cartuccia a salve",
+                               "de fogueo", "cartucho de fogueo"]),
+            (group { $0.kind == "shot" }, ["Schrotpatrone", "Schrot", "shotshell", "shotgun shell", "cartouche de chasse", "cartouche à plombs",
+                                           "cartuccia da caccia", "cartuccia a pallini", "cartucho de caza", "cartucho de escopeta"]),
+            (group { $0.kind == "ball" && !$0.blank }, ["Rundkugel", "round ball", "balle ronde", "palla tonda", "palla sferica", "bala esférica"]),
+            (group { $0.kind == "pellet" }, ["Diabolo", "Luftgewehr", "pellet", "air rifle", "air gun", "plomb", "air comprimé",
+                                             "piombino", "pallino", "aria compressa", "balín", "aire comprimido"]),
+            (group { $0.kind == "minie" }, ["Minié-Geschoss", "minie ball", "balle minié", "palla minié", "bala minié"]),
+        ]
+        XCTAssertEqual(groups.map(\.members.count), [9, 8, 8, 2, 2])
+        for (members, words) in groups {
+            for word in words { XCTAssertTrue(members.isSubset(of: found(word)), "«\(word)» misses \(members.subtracting(found(word)).sorted())") }
+        }
+        // The blanks' words find the blanks and nothing else; a round with a bullet has no group.
+        for word in ["Platzpatrone", "blank", "à blanc", "a salve", "de fogueo"] { XCTAssertEqual(found(word), groups[0].members, word) }
+        XCTAssertNil(try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm")).groupWordsKey)
+        XCTAssertEqual(CartridgeCatalog.groupWords("Rundkugel, Bleikugel"),
+                       ["Rundkugel", "Bleikugel", "round ball", "lead ball", "balle ronde", "palla tonda", "palla sferica",
+                        "bala esférica", "bala redonda"])
+    }
+
     /// A colour code's description is read in the app's language, in English where calibre-data has no other: a
     /// bare designation is the same everywhere (Raven, 2026-11-18).
     func testColourCodeDescriptionsFollowTheLanguage() throws {

@@ -1712,6 +1712,35 @@
         }
       }
     },
+    "Diabolo, Luftgewehrkugel, Luftgewehr": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pellet, air rifle, air gun"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "balín, balines, aire comprimido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "plomb, air comprimé"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "piombino, pallino, aria compressa"
+          }
+        }
+      }
+    },
     "Die besten drei 1:1 vergleichen": {
       "extractionState": "manual",
       "localizations": {
@@ -6584,6 +6613,35 @@
         }
       }
     },
+    "Platzpatrone, Knallpatrone, Knall": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "blank, blank cartridge"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "de fogueo, cartucho de fogueo, de salvas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "à blanc, cartouche à blanc"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a salve, cartuccia a salve"
+          }
+        }
+      }
+    },
     "Polen": {
       "extractionState": "manual",
       "localizations": {
@@ -6961,6 +7019,35 @@
         }
       }
     },
+    "Rundkugel, Bleikugel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "round ball, lead ball"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bala esférica, bala redonda"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "balle ronde"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "palla tonda, palla sferica"
+          }
+        }
+      }
+    },
     "Russisches Kaiserreich": {
       "extractionState": "manual",
       "localizations": {
@@ -7131,6 +7218,35 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cartuccia a pallini"
+          }
+        }
+      }
+    },
+    "Schrotpatrone, Schrot, Flintenpatrone": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "shotshell, shotgun shell, shotgun cartridge"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cartucho de caza, cartucho de escopeta, cartucho de perdigones"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cartouche de chasse, cartouche à plombs"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cartuccia da caccia, cartuccia a pallini"
           }
         }
       }

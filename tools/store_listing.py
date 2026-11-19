@@ -21,7 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STORE = os.path.join(ROOT, "store")
 SITE = "https://ravench.github.io/kaliberfinder/"
 # The store's languages: German is the primary one; English for the UK and the US storefronts.
-LOCALES = {"de-DE": "de", "en-GB": "en", "en-US": "en", "fr-FR": "fr", "it": "it"}
+LOCALES = {"de-DE": "de", "en-GB": "en", "en-US": "en", "fr-FR": "fr", "it": "it", "es-ES": "es"}
 # Apple's limits, in characters.
 LIMITS = {"name": 30, "subtitle": 30, "promotional_text": 170, "keywords": 100, "description": 4000}
 INFO_FIELDS = {"name": "name", "subtitle": "subtitle"}
@@ -65,14 +65,19 @@ def changes(existing, wanted):
     return {k: v for k, v in wanted.items() if have.get(k) != v}
 
 
-def requests(kind, parent_kind, parent_id, existing, wanted_by_locale):
-    """PATCH or POST requests that bring each locale's localization to `wanted_by_locale`."""
+def requests(kind, parent_kind, parent_id, existing, wanted_by_locale, add_missing=True):
+    """PATCH or POST requests that bring each locale's localization to `wanted_by_locale`. Without
+    `add_missing` (--promo-only) a locale the version lacks is left out: a live version takes a new
+    promotional text but no new language (Spanish came 2026-11-19, possibly after 1.0.0 went live)."""
     by_locale = {loc["attributes"]["locale"]: loc for loc in existing}
     out = []
     for locale, wanted in wanted_by_locale.items():
         loc = by_locale.get(locale)
         diff = changes(loc, wanted)
         if not diff:
+            continue
+        if not loc and not add_missing:
+            print(f"{locale}: not on this version, left out")
             continue
         if loc:
             out.append(("PATCH", f"/{kind}/{loc['id']}", {"data": {"type": kind, "id": loc["id"], "attributes": diff}}))
@@ -166,7 +171,8 @@ def main(argv):
             run([r for r in [rename(version, args.create_version)] if r])
         existing = call("GET", f"/appStoreVersions/{version['id']}/appStoreVersionLocalizations?limit=50")["data"]
         wanted = {locale: version_attributes(lang, listings[lang], args.promo_only) for locale, lang in LOCALES.items()}
-        run(requests("appStoreVersionLocalizations", "appStoreVersions", version["id"], existing, wanted))
+        run(requests("appStoreVersionLocalizations", "appStoreVersions", version["id"], existing, wanted,
+                     add_missing=not args.promo_only))
 
     if not args.promo_only:
         info = pick_info(call("GET", f"/apps/{app}/appInfos")["data"])

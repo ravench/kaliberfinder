@@ -9,15 +9,15 @@ import XCTest
 ///       -only-testing:KaliberfinderUITests/AppStoreScreensTests
 ///
 /// Buttons are found by their text in the chosen language, read from the app's Localizable.xcstrings;
-/// tools/test_appstore_screens.py checks in CI that every text the tour looks up exists in all four.
+/// tools/test_appstore_screens.py checks in CI that every text the tour looks up exists in all five.
 final class AppStoreScreensTests: XCTestCase {
     private var app: XCUIApplication!
     private let env = ProcessInfo.processInfo.environment
     private var language: String { env["SCREENS_LANG"] ?? "de" }
     private static let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
 
-    /// Region by language: Swiss formats, British English (the app's English).
-    static let locales = ["de": "de_CH", "en": "en_GB", "fr": "fr_CH", "it": "it_CH"]
+    /// Region by language: Swiss formats, British English (the app's English), Spain's Spanish.
+    static let locales = ["de": "de_CH", "en": "en_GB", "fr": "fr_CH", "it": "it_CH", "es": "es_ES"]
 
     override func setUp() {
         continueAfterFailure = true

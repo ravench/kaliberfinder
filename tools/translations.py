@@ -21,6 +21,17 @@ T = {
         "Pour l'identification seulement : une correspondance n'autorise pas le tir. Vérifiez le marquage du culot et le calibre indiqué sur l'arme.",
         "Solo per l'identificazione: una corrispondenza non autorizza a sparare. Controlla il fondello e il calibro indicato sull'arma.",
         "Solo para identificar: una coincidencia no autoriza a disparar. Comprueba el marcaje del culote y el calibre indicado en el arma."),
+    # Search words of a group of rounds (Cartridge.groupWordsKey), never shown: the everyday words for it in each
+    # language, comma-separated. The catalogue search matches the words of every language. «Minié-Geschoss», the
+    # kind's title below, serves the Minié bullets.
+    "Platzpatrone, Knallpatrone, Knall": ("blank, blank cartridge", "à blanc, cartouche à blanc", "a salve, cartuccia a salve",
+                                          "de fogueo, cartucho de fogueo, de salvas"),
+    "Schrotpatrone, Schrot, Flintenpatrone": ("shotshell, shotgun shell, shotgun cartridge", "cartouche de chasse, cartouche à plombs",
+                                              "cartuccia da caccia, cartuccia a pallini",
+                                              "cartucho de caza, cartucho de escopeta, cartucho de perdigones"),
+    "Rundkugel, Bleikugel": ("round ball, lead ball", "balle ronde", "palla tonda, palla sferica", "bala esférica, bala redonda"),
+    "Diabolo, Luftgewehrkugel, Luftgewehr": ("pellet, air rifle, air gun", "plomb, air comprimé", "piombino, pallino, aria compressa",
+                                             "balín, balines, aire comprimido"),
     "Eine Länge und ein Durchmesser reichen oft.": ("A length and a diameter are often enough.", "Une longueur et un diamètre suffisent souvent.", "Una lunghezza e un diametro spesso bastano.", "Una longitud y un diámetro suelen bastar."),
     "Kein Foto erhalten, bitte noch einmal.": ("No photo received, please try again.", "Aucune photo reçue, veuillez réessayer.", "Nessuna foto ricevuta, riprova.", "No se ha recibido ninguna foto, inténtalo de nuevo."),
     "Kein Zugriff auf die Kamera. Erlaube ihn in den Einstellungen.": ("No access to the camera. Allow it in Settings.", "Pas d'accès à la caméra. Autorisez-le dans les Réglages.", "Nessun accesso alla fotocamera. Consentilo nelle Impostazioni.", "Sin acceso a la cámara. Permítelo en Ajustes."),

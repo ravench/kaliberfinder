@@ -40,7 +40,7 @@ final class ChangelogTests: XCTestCase {
     func testTheTourFixtureHasAllLanguages() throws {
         let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "changelog", withExtension: "json"))
         let fixture = try JSONDecoder().decode(Changelog.self, from: Data(contentsOf: url))
-        for language in ["de", "en", "fr", "it"] {
+        for language in ["de", "en", "fr", "it", "es"] {
             XCTAssertEqual(fixture.bullets(language: language)?.count, 5, language)
         }
     }

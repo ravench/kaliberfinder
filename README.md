@@ -2,7 +2,7 @@
 
 Small iOS app (SwiftUI, iOS 17+, iPhone and iPad) that shows cartridges at **real size**
 on the screen, so you can lay a cartridge on the display and see which calibre
-it is, after taking a photo of it. In German, English, French and Italian.
+it is, after taking a photo of it. In German, English, French, Italian and Spanish.
 
 This README uses the app's English names and gives the German ones in
 parentheses.
