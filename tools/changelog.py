@@ -2,14 +2,14 @@
 
     python3 tools/changelog.py notes Kaliberfinder/Resources/Changelog.json
         The commits since the last TestFlight build (tag testflight/<build>), summarised by the
-        Claude API (ANTHROPIC_API_KEY) into short bullet points in the app's four languages and
+        Claude API (ANTHROPIC_API_KEY) into short bullet points in the app's five languages and
         written into the bundle: the app shows them the first time a build is opened (Changelog.swift).
     python3 tools/changelog.py what-to-test AuthKey.p8 1042 < Changelog.json
         Puts them into that build's «What to Test» on TestFlight once App Store Connect has
         processed it (ASC_KEY_ID, ASC_ISSUER_ID; waits up to an hour).
 
 A release (a commit tagged v<version>) takes its notes from RELEASE_NOTES.md instead, written by
-hand (Raven, 2026-11-09): the section «## <version>» with «### de», «### en», «### fr», «### it»
+hand (Raven, 2026-11-09): the section «## <version>» with «### de», «### en», «### fr», «### it», «### es»
 and their bullets; languages left out fall back to German in the app and are not sent to TestFlight.
 """
 import base64
@@ -25,14 +25,14 @@ import urllib.request
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODEL = "claude-opus-5-5"
 # App Store Connect's names for the app's languages (CFBundleLocalizations in project.yml).
-LOCALES = {"de": "de-DE", "en": "en-US", "fr": "fr-FR", "it": "it"}
+LOCALES = {"de": "de-DE", "en": "en-US", "fr": "fr-FR", "it": "it", "es": "es-ES"}
 # With no earlier TestFlight build to compare with, the newest commits.
 FIRST_BUILD_COMMITS = 20
 ASC = "https://api.appstoreconnect.apple.com/v1"
 
 SYSTEM = """You write the release notes of Kaliberfinder, an iOS app that recognises the calibre of a cartridge from a photo, from its measurements or from a list of calibres, and shows cartridges at their real size.
 From the commit messages you are given, write what changed for the people who use the app: short, descriptive bullet points, one per change, the most visible first, at most eight. Merge commits that belong to one change. Leave out what users cannot notice: CI, tests, tooling, research, refactoring, pull request numbers, file and type names. No bullet markers in the text.
-The same bullets in German, English, French and Italian. German in Swiss spelling (ss, never ß), as the app writes it."""
+The same bullets in German, English, French, Italian and Spanish. German in Swiss spelling (ss, never ß), as the app writes it; Spanish as in Spain, addressing the reader as «tú»."""
 
 SCHEMA = {"type": "object", "additionalProperties": False, "required": list(LOCALES),
           "properties": {lang: {"type": "array", "items": {"type": "string"}} for lang in LOCALES}}

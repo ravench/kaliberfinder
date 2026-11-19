@@ -21,7 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STORE = os.path.join(ROOT, "store")
 SITE = "https://ravench.github.io/kaliberfinder/"
 # The store's languages: German is the primary one; English for the UK and the US storefronts.
-LOCALES = {"de-DE": "de", "en-GB": "en", "en-US": "en", "fr-FR": "fr", "it": "it"}
+LOCALES = {"de-DE": "de", "en-GB": "en", "en-US": "en", "fr-FR": "fr", "it": "it", "es-ES": "es"}
 # Apple's limits, in characters.
 LIMITS = {"name": 30, "subtitle": 30, "promotional_text": 170, "keywords": 100, "description": 4000}
 INFO_FIELDS = {"name": "name", "subtitle": "subtitle"}

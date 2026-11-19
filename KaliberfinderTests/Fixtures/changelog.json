@@ -18,5 +18,10 @@
          "Foto alla piena risoluzione del sensore",
          "Riprese di addestramento anche con il teleobiettivo e l'ultra grandangolo",
          "I calibri si cercano anche con gli altri nomi nelle liste",
-         "La schermata iniziale scorre sugli iPhone piccoli solo se non ci sta tutta"]
+         "La schermata iniziale scorre sugli iPhone piccoli solo se non ci sta tutta"],
+  "es": ["El reconocimiento encuentra el cartucho aunque salga pequeño en la imagen",
+         "Fotos con la resolución completa del sensor",
+         "Grabaciones de entrenamiento también con el teleobjetivo y el ultra gran angular",
+         "Los calibres se pueden buscar en las listas por sus otros nombres",
+         "En los iPhone pequeños, la pantalla de inicio solo se desplaza si no cabe entera"]
 }}

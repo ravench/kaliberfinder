@@ -26,18 +26,26 @@ class StoreTextTests(unittest.TestCase):
         import json
         with open(os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json"), encoding="utf-8") as f:
             shown = [c for c in json.load(f)["cartridges"] if c["wellSourced"] and c["category"] != "Kanone"]
-        words = {"de": "Über 700 Kaliber", "en": "Over 700 calibres", "fr": "Plus de 700 calibres", "it": "Oltre 700 calibri"}
+        words = {"de": "Über 700 Kaliber", "en": "Over 700 calibres", "fr": "Plus de 700 calibres", "it": "Oltre 700 calibri",
+                 "es": "Más de 700 calibres"}
         for lang, claim in words.items():
             self.assertIn(claim, sl.texts(lang)["description"], lang)
         self.assertGreater(len(shown), 700)
 
-    def test_the_apps_four_languages(self):
-        self.assertEqual(set(sl.LOCALES.values()), {"de", "en", "fr", "it"})
-        self.assertEqual(sorted(os.listdir(sl.STORE)), ["de", "en", "fr", "it"])
+    def test_the_apps_five_languages(self):
+        self.assertEqual(set(sl.LOCALES.values()), {"de", "en", "fr", "it", "es"})
+        self.assertEqual(sl.LOCALES["es-ES"], "es")
+        self.assertEqual(sorted(os.listdir(sl.STORE)), ["de", "en", "es", "fr", "it"])
+
+    def test_every_description_names_all_five_languages(self):
+        """Spanish since 2026-11-19: each listing's «more» list names it in its own words."""
+        named = {"de": "Spanisch", "en": "Spanish", "fr": "espagnol", "it": "spagnolo", "es": "Español"}
+        for lang, word in named.items():
+            self.assertIn(word, sl.texts(lang)["description"], lang)
 
     def test_texts_name_no_single_standard_as_the_source(self):
         """Many calibres have no C.I.P. or SAAMI sheet (Raven, 2026-11-11)."""
-        for lang in ("de", "en", "fr", "it"):
+        for lang in ("de", "en", "fr", "it", "es"):
             self.assertNotIn("SAAMI", sl.texts(lang)["description"])
 
     def test_problems_catches_long_fields_and_padded_keywords(self):

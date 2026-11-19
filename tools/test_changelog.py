@@ -13,7 +13,8 @@ import unittest
 import changelog
 
 ROOT = changelog.ROOT
-NOTES = {"de": ["Neu: A", "Neu: B"], "en": ["New: A", "New: B"], "fr": ["Nouveau : A", "Nouveau : B"], "it": ["Nuovo: A", "Nuovo: B"]}
+NOTES = {"de": ["Neu: A", "Neu: B"], "en": ["New: A", "New: B"], "fr": ["Nouveau : A", "Nouveau : B"], "it": ["Nuovo: A", "Nuovo: B"],
+         "es": ["Nuevo: A", "Nuevo: B"]}
 
 
 class FakeClient:
@@ -144,7 +145,8 @@ class SummariseTests(unittest.TestCase):
         self.assertIn("Faster photos", request["messages"][0]["content"])
         self.assertIn("Swiss spelling", request["system"])
         schema = request["output_config"]["format"]["schema"]
-        self.assertEqual(schema["required"], ["de", "en", "fr", "it"])
+        self.assertEqual(schema["required"], ["de", "en", "fr", "it", "es"])
+        self.assertIn("Spanish as in Spain", request["system"])
         self.assertFalse(schema["additionalProperties"])
 
     def test_missing_language_or_refusal_fails(self):
@@ -202,7 +204,7 @@ class TokenTests(unittest.TestCase):
 class WhatToTestTests(unittest.TestCase):
     def test_changes_existing_languages_and_adds_the_others(self):
         existing = [{"id": "L1", "attributes": {"locale": "de-DE", "whatsNew": "old"}}]
-        requests = changelog.localization_requests("B1", existing, {**NOTES, "it": []})
+        requests = changelog.localization_requests("B1", existing, {**NOTES, "it": [], "es": []})
         self.assertEqual([(m, p) for m, p, _ in requests],
                          [("PATCH", "/betaBuildLocalizations/L1"), ("POST", "/betaBuildLocalizations"), ("POST", "/betaBuildLocalizations")])
         patch, en, fr = (body["data"] for _, _, body in requests)
