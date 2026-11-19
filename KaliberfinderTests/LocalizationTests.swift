@@ -15,7 +15,7 @@ final class LocalizationTests: XCTestCase {
     func testEveryLanguageHasAllKeysWithPlaceholders() throws {
         let en = try table("en")
         XCTAssertFalse(en.isEmpty)
-        for lang in ["en", "fr", "it"] {
+        for lang in ["en", "fr", "it", "es"] {
             let t = try table(lang)
             if lang != "en" { XCTAssertEqual(Set(t.keys), Set(en.keys), "\(lang) has different keys") }
             for (key, value) in t {
@@ -50,17 +50,26 @@ final class LocalizationTests: XCTestCase {
     /// The line under «Mögliche Kaliber» on both result screens (review 2026-11-18), in every language.
     func testTheSafetyNoteIsTranslated() throws {
         let key = "Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe."
-        let expected = ["en": "safe to fire", "fr": "n'autorise pas le tir", "it": "non autorizza a sparare"]
+        let expected = ["en": "safe to fire", "fr": "n'autorise pas le tir", "it": "non autorizza a sparare", "es": "no autoriza a disparar"]
         for (lang, words) in expected {
             XCTAssertTrue(try XCTUnwrap(try table(lang)[key], lang).contains(words), lang)
         }
     }
 
     func testPickAndCompareHasShortTitle() throws {
-        let expected = ["en": "Pick and compare", "fr": "Choisir et comparer", "it": "Scegli e confronta"]
+        let expected = ["en": "Pick and compare", "fr": "Choisir et comparer", "it": "Scegli e confronta", "es": "Elegir y comparar"]
         for (lang, title) in expected {
             XCTAssertEqual(try table(lang)["Auswählen und vergleichen"], title, lang)
             XCTAssertNil(try table(lang)["Kaliber auswählen und vergleichen"], lang)
         }
+    }
+
+    func testSpanishUsesTheCartridgeTermsOfMunicionOrg() throws {
+        let es = try table("es")
+        XCTAssertEqual(es["Hülse"], "Vaina")
+        XCTAssertEqual(es["Rand"], "Pestaña")
+        XCTAssertEqual(es["Boden"], "Culote")
+        XCTAssertEqual(es["Zündhütchen"], "Pistón")
+        XCTAssertEqual(es["Schweiz"], "Suiza")
     }
 }

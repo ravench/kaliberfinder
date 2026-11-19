@@ -16,6 +16,12 @@
             "value": "Take photos of cartridges to recognise the calibre."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografiar cartuchos para reconocer el calibre."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",

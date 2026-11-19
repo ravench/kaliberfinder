@@ -80,8 +80,15 @@ struct Cartridge: Decodable, Identifiable, Hashable {
         let colours: [String]
         /// What the code means, combined: ["armour-piercing", "incendiary"] is an API load.
         let meaning: [String]
-        /// The loads that carry it, e.g. "US M20, Swiss M.65".
+        /// The loads that carry it, in English, e.g. "US M20, Swiss M.65".
         let description: String?
+        /// The description in German, French and Italian ("de", "fr", "it") where calibre-data translates it; a bare
+        /// designation ("M62") is the same in every language and has none.
+        var descriptions: [String: String]?
+
+        /// The description in the language `language` (the app's), in English where it has no other (Raven,
+        /// 2026-11-18: the German page read «Tracer, the older marking: the whole base lacquered»).
+        func description(in language: String) -> String? { descriptions?[language] ?? description }
         let countries: [Country]
 
         /// German title of a meaning, used as localization key.
