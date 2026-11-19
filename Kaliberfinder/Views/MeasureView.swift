@@ -34,8 +34,9 @@ struct MeasureView: View {
         List {
             Section {
                 UnitPicker(unit: $unit)
-                // The outlines the series screen draws beside the same choices (tester, 2026-11-17).
-                Picker("Form", selection: $shape) {
+                // The outlines the series screen draws beside the same choices (tester, 2026-11-17); the row names the
+                // Hülse, the choices do not repeat it (Raven 2026-11-19).
+                Picker("Hülsenform", selection: $shape) {
                     ForEach(CaseShape.allCases) { choice($0.title, token: $0.rawValue).tag($0) }
                 }
                 .pickerStyle(.menu)

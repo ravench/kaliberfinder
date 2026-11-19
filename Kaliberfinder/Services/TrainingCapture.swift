@@ -150,8 +150,8 @@ enum RoundFacts {
         Option(token: "belted", title: "Gürtelhülse"),
     ]
     static let shape = [
-        Option(token: "straight", title: "Gerade Hülse"), Option(token: "tapered", title: "Konische Hülse"),
-        Option(token: "bottleneck", title: "Hülse mit Flaschenhals"),
+        Option(token: "straight", title: "Gerade"), Option(token: "tapered", title: "Konisch"),
+        Option(token: "bottleneck", title: "Flaschenhals"),
     ]
     static let caseMaterial = [
         Option(token: "brass", title: "Messing"), Option(token: "nickel", title: "Vernickelt"),

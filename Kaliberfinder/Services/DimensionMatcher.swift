@@ -28,9 +28,9 @@ enum CaseShape: String, CaseIterable, Identifiable {
     /// German text, used as localization key.
     var title: String {
         switch self {
-        case .any: "Beliebige Form"
-        case .straight: "Gerade Hülse"
-        case .bottleneck: "Hülse mit Flaschenhals"
+        case .any: "Beliebig"
+        case .straight: "Gerade"
+        case .bottleneck: "Flaschenhals"
         }
     }
 

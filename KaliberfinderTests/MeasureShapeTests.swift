@@ -93,8 +93,8 @@ final class MeasureShapeTests: XCTestCase {
     func testShapeTitlesAreTranslated() throws {
         let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "en"))
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
-        XCTAssertEqual(CaseShape.allCases.map { en[$0.title] }, ["Any shape", "Straight case", "Bottleneck case"])
-        XCTAssertEqual(en["Form"], "Shape")
+        XCTAssertEqual(CaseShape.allCases.map { en[$0.title] }, ["Any", "Straight", "Bottleneck"])
+        XCTAssertEqual(en["Hülsenform"], "Case shape")
         XCTAssertEqual(RimKind.allCases.map { en[$0.title] }, ["Any head", "Rimmed", "Semi-rimmed", "Rimless", "Belted"])
         XCTAssertEqual(en["Randform"], "Head")
     }

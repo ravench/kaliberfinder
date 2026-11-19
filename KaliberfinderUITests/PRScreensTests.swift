@@ -45,7 +45,7 @@ final class PRScreensTests: XCTestCase {
         if open(app.buttons["Masse eingeben"].firstMatch) {
             snap("03-Masse-eingeben")
             // The outlines beside the shape and head choices, and the sketch as the choices say (TestFlight 2026-11-17).
-            menuStop("Form", choice: "Gerade Hülse", "03a-Masse-Form")
+            menuStop("Hülsenform", choice: "Gerade", "03a-Masse-Form")
             menuStop("Randform", choice: "Gürtelhülse", "03a-Masse-Randform")
             snap("03a-Masse-Skizze-gerade-Guertel")
             back()
@@ -516,7 +516,7 @@ final class PRScreensTests: XCTestCase {
         // The outlines next to the Randform and Hülsenform choices (TestFlight 1174 and 1175), paper and plastic
         // hulls as two choices (TestFlight 1175); the fixture's own choice closes each menu again.
         menuStop("Randform", choice: "Randlos", "22c-Trainingsdaten-Randform")
-        menuStop("Hülsenform", choice: "Konische Hülse", "22d-Trainingsdaten-Huelsenform")
+        menuStop("Hülsenform", choice: "Konisch", "22d-Trainingsdaten-Huelsenform")
         menuStop("Hülsenmaterial", choice: "Messing", "22e-Trainingsdaten-Huelsenmaterial")
         // The calliper fields at the end, with the sketch of where to measure over them.
         scroll()
