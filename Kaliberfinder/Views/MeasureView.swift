@@ -47,9 +47,10 @@ struct MeasureView: View {
                 // Where each value is taken, as on the training screen, in its order (TestFlight 2026-11-16).
                 MeasuringGuide(letters: Self.letters, shape: shape, head: head)
                     .padding(.vertical, 4)
-                field("Geschossdurchmesser", letter: "D", text: $bullet)
+                // Diameters from the rim to the tip, then lengths, as on the training screen (Raven 2026-11-19).
                 field("Randdurchmesser", letter: "R", text: $rim)
                 if head == .belted { field("Gürteldurchmesser", letter: "G", text: $belt) }  // the sketch draws the belt then
+                field("Geschossdurchmesser", letter: "D", text: $bullet)
                 field("Hülsenlänge", letter: "L", text: $caseLength)
                 field("Gesamtlänge", letter: "OAL", text: $overallLength)
             } header: {
@@ -66,6 +67,8 @@ struct MeasureView: View {
                     if let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
                 } header: {
                     Text("Mögliche Kaliber")
+                } footer: {
+                    SafetyNote()
                 }
             } else if !measured.isEmpty {
                 Section { Text("Keine passenden Kaliber gefunden") }  // nothing within `DimensionMatcher.maxDeviation`

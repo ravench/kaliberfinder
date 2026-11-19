@@ -220,7 +220,8 @@ jobs:
             xcrun xcresulttool export attachments --path "$side.xcresult" --output-path "raw-$side" || continue
             python3 pr_screens.py rename "raw-$side" "$side"
           done
-          venv/bin/python pr_screens.py changes before after changed
+          # A screen the tour still names but this run lacks is "missed", not "gone".
+          venv/bin/python pr_screens.py changes before after changed PRScreensTests.swift
           # Smaller copies for the comment; the artifact keeps the full size.
           find changed -name '*.png' -exec sips -Z 1200 {} \; >/dev/null
       - uses: actions/upload-artifact@v5

@@ -46,6 +46,17 @@ class TranslationTests(unittest.TestCase):
         self.assertEqual(T["Beliebig"][FR], "Peu importe")
         self.assertNotIn("Beliebige Randform", T)
 
+    def test_a_match_is_no_clearance_to_fire(self):
+        """Both result screens say under «Mögliche Kaliber» that a match must not decide what is fired (review 2026-11-18)."""
+        note = T["Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe."]
+        for lang, words in ((EN, "safe to fire"), (FR, "n'autorise pas le tir"), (IT, "non autorizza a sparare"),
+                            (ES, "no autoriza a disparar")):
+            self.assertIn(words, note[lang])
+        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        for view in ("MatchesView.swift", "MeasureView.swift"):
+            with open(os.path.join(root, "Kaliberfinder", "Views", view), encoding="utf-8") as f:
+                self.assertRegex(f.read(), r'Text\("Mögliche Kaliber"\)\n\s*\} footer: \{\n\s*SafetyNote\(\)', view)
+
     def test_the_check_of_2026_11_19_stays_fixed(self):
         """What the check of all translations found clearly wrong: cut buttons, calques, a vulgar reading, typography."""
         self.assertEqual(T["Alle passenden 1:1 vergleichen (%lld)"][FR:ES], ("Tout comparer 1:1 (%lld)", "Confronta tutti 1:1 (%lld)"))

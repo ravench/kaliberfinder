@@ -16,6 +16,11 @@ T = {
     "Bankkarte oder Ausweis hochkant auf das Rechteck legen, oben bündig. Regler schieben, bis das Rechteck gleich lang ist.": ("Lay a bank card or ID upright on the rectangle, flush at the top. Move the slider until the rectangle is as long as the card.", "Posez une carte bancaire ou d'identité verticalement sur le rectangle, alignée en haut. Déplacez le curseur jusqu'à ce que le rectangle ait la même longueur.", "Appoggia una carta bancaria o d'identità in verticale sul rettangolo, allineata in alto. Sposta il cursore finché il rettangolo è lungo quanto la carta.", "Coloca una tarjeta bancaria o un documento de identidad en vertical sobre el rectángulo, con el borde superior alineado. Arrastra el regulador hasta que el rectángulo sea tan largo como la tarjeta."),
     "Kaliber zum Vergleichen wählen.": ("Pick calibres to compare.", "Choisissez les calibres à comparer.", "Scegli i calibri da confrontare.", "Elige los calibres que quieres comparar."),
     "Mehrere Patronen erkannt: Tippe auf eine.": ("Several cartridges found: tap one.", "Plusieurs cartouches détectées : touchez-en une.", "Più cartucce trovate: toccane una.", "Se han detectado varios cartuchos: toca uno."),
+    "Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe.": (
+        "For identification only: a match does not mean a cartridge is safe to fire. Check the headstamp and the calibre marked on the firearm.",
+        "Pour l'identification seulement : une correspondance n'autorise pas le tir. Vérifiez le marquage du culot et le calibre indiqué sur l'arme.",
+        "Solo per l'identificazione: una corrispondenza non autorizza a sparare. Controlla il fondello e il calibro indicato sull'arma.",
+        "Solo para identificar: una coincidencia no autoriza a disparar. Comprueba el marcaje del culote y el calibre indicado en el arma."),
     # Search words of a group of rounds (Cartridge.groupWordsKey), never shown: the everyday words for it in each
     # language, comma-separated. The catalogue search matches the words of every language. «Minié-Geschoss», the
     # kind's title below, serves the Minié bullets.
@@ -72,6 +77,8 @@ T = {
     "Schrot": ("Shot", "Plombs", "Pallini", "Perdigones"),
     "Keines: Platzpatrone": ("None: blank", "Aucun : cartouche à blanc", "Nessuna: cartuccia a salve", "Ninguna: cartucho de fogueo"),
     "Keines: leere Hülse": ("None: empty case", "Aucun : douille vide", "Nessuna: bossolo vuoto", "Ninguna: vaina vacía"),
+    "Randdicke": ("Rim thickness", "Épaisseur du bourrelet", "Spessore dell'orlo", "Espesor de la pestaña"),
+    "Papierpflasterlänge": ("Paper patch length", "Longueur du calepin", "Lunghezza della camiciatura", "Longitud del calepinado"),
     "Schulterlänge": ("Shoulder length", "Longueur jusqu'à l'épaulement", "Lunghezza fino alla spalla", "Longitud hasta el hombro"),
     "Vollmantel": ("Full metal jacket", "Blindé", "Blindata", "Blindada"),
     "Blei": ("Lead", "Plomb", "Piombo", "Plomo"),
@@ -199,10 +206,10 @@ T = {
     "Bauart": ("Type", "Type", "Tipo", "Tipo"),
     "Bildschirm": ("Screen", "Écran", "Schermo", "Pantalla"),
     "Bildschirm kalibrieren": ("Calibrate screen", "Calibrer l'écran", "Calibra lo schermo", "Calibrar la pantalla"),
-    "Bildschirm nicht kalibriert: Grösse kann leicht abweichen.": (
-        "Screen not calibrated: the size may be slightly off.",
-        "Écran non calibré : la taille peut légèrement différer.",
-        "Schermo non calibrato: la dimensione può differire leggermente.", "Pantalla sin calibrar: el tamaño puede variar ligeramente."),
+    "Bildschirm nicht kalibriert: Grösse kann abweichen.": (
+        "Screen not calibrated: the size may be off.",
+        "Écran non calibré : la taille peut différer.",
+        "Schermo non calibrato: la dimensione può differire.", "Pantalla sin calibrar: el tamaño puede variar."),
     "Bodendurchmesser": ("Base diameter", "Diamètre au culot", "Diametro alla base", "Diámetro del culote"),
     "Diabolo": ("Diabolo pellet", "Plomb diabolo", "Piombino diabolo", "Balín diábolo"),
     "Fertig": ("Done", "Terminé", "Fine", "OK"),
@@ -317,7 +324,7 @@ T = {
     "Wählen": ("Choose", "Choisir", "Scegli", "Elegir"),
     "Im Bild": ("In the photo", "Sur la photo", "Nella foto", "En la foto"),
     "Notiz": ("Note", "Remarque", "Nota", "Nota"),
-    "z. B. Holztisch, Tageslicht": ("e.g. wooden table, daylight", "p. ex. table en bois, lumière du jour", "p. es. tavolo di legno, luce diurna", "p. ej. mesa de madera, luz de día"),
+    "Kommentar, z. B. Holztisch, Tageslicht": ("Comment, e.g. wooden table, daylight", "Commentaire, p. ex. table en bois, lumière du jour", "Commento, p. es. tavolo di legno, luce diurna", "Comentario, p. ej. mesa de madera, luz de día"),
     "Alle Fotos dieser Serie zeigen dieses Kaliber.": (
         "All photos in this series show this calibre.",
         "Toutes les photos de cette série montrent ce calibre.",

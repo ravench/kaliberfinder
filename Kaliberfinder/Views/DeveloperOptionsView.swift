@@ -6,6 +6,7 @@ struct DeveloperOptionsView: View {
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
     @AppStorage(CartridgeCatalog.showUnsourcedKey) private var showUnsourced = false
     @AppStorage(CartridgeCatalog.showCannonKey) private var showCannon = false
+    @ScaledMetric(relativeTo: .body) private var iconSize: CGFloat = 20
 
     var body: some View {
         List {
@@ -30,7 +31,7 @@ struct DeveloperOptionsView: View {
             }
             Section {
                 Toggle(isOn: $showCannon) {
-                    Label { Text("Kanonenkaliber zeigen") } icon: { Image(systemName: "arrow.up.left.and.arrow.down.right") }
+                    Label { Text("Kanonenkaliber zeigen") } icon: { TagIcon(tag: .cannon).frame(width: iconSize, height: iconSize).foregroundStyle(.tint) }
                 }
             } footer: {
                 Text("Munition von 20 bis 57 mm, zu gross für den Bildschirm.")

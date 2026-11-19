@@ -20,9 +20,9 @@ struct MeasuringGuide: View {
         let label: CGPoint
     }
 
-    static let box = CGRect(x: 30, y: 4, width: 615, height: 208)
+    static let box = CGRect(x: 30, y: 4, width: 615, height: 232)
     /// The box without the head view, up to the OAL line's end.
-    static let sideBox = CGRect(x: 30, y: 4, width: 490, height: 208)
+    static let sideBox = CGRect(x: 30, y: 4, width: 490, height: 232)
     /// The head view shows only with a letter on it: the dimensions form has no field there (TestFlight 2026-11-17),
     /// so its sketch is the side view alone, drawn that much wider.
     var showsHead: Bool { letters?.contains("P") ?? true }
@@ -38,10 +38,14 @@ struct MeasuringGuide: View {
         Mark(letter: "N", from: pt(340, 70.5), to: pt(340, 121.5), label: pt(340, 26)),
         Mark(letter: "D", from: pt(380, 72.3), to: pt(380, 119.7), label: pt(380, 26)),
         Mark(letter: "P", from: pt(578, 96), to: pt(610, 96), label: pt(594, 26)),
-        // Lengths from the head, below; H ends where the shoulder starts.
-        Mark(letter: "H", from: pt(40, 156), to: pt(286, 156), label: pt(163, 151)),
-        Mark(letter: "L", from: pt(40, 180), to: pt(362.2, 180), label: pt(201, 175)),
-        Mark(letter: "OAL", from: pt(40, 204), to: pt(503.2, 204), label: pt(272, 199)),
+        // Lengths from the head, below, in the order taken (Raven 2026-11-19): the rim's thickness first, its letter
+        // beside the short line; H ends where the shoulder starts.
+        Mark(letter: "E", from: pt(40, 156), to: pt(49.6, 156), label: pt(66, 161)),
+        Mark(letter: "H", from: pt(40, 180), to: pt(286, 180), label: pt(163, 175)),
+        Mark(letter: "L", from: pt(40, 204), to: pt(362.2, 204), label: pt(201, 199)),
+        Mark(letter: "OAL", from: pt(40, 228), to: pt(503.2, 228), label: pt(272, 223)),
+        // The paper patch in front of the case mouth, above the bullet, its letter beyond the line's end.
+        Mark(letter: "PP", from: pt(362.2, 40), to: pt(430, 40), label: pt(458, 45)),
     ]
 
     /// The dimension lines and a slash at each of their ends.
@@ -52,12 +56,14 @@ struct MeasuringGuide: View {
     }
 
     /// From the drawing to the letters above and to the length lines below, each with the letters it serves:
-    /// the line down the head is shared by the three lengths.
+    /// the line down the head is shared by the lengths (the first letter, if any, says where a line leaves the drawing).
     static let extensions: [(letters: [String], line: [CGPoint])] = [
         (["R"], [pt(44.8, 52), pt(44.8, 30)]), (["B"], [pt(84, 58), pt(84, 30)]), (["S"], [pt(276, 60), pt(276, 30)]),
         (["N"], [pt(340, 69), pt(340, 30)]), (["D"], [pt(380, 71), pt(380, 30)]), (["P"], [pt(594, 80), pt(594, 30)]),
-        (["H", "L", "OAL"], [pt(40, 142), pt(40, 208)]), (["H"], [pt(286, 134), pt(286, 160)]),
-        (["L"], [pt(362.2, 124), pt(362.2, 184)]), (["OAL"], [pt(503.2, 100), pt(503.2, 208)]),
+        (["H", "L", "OAL", "E"], [pt(40, 142), pt(40, 232)]), (["E"], [pt(49.6, 140), pt(49.6, 160)]),
+        (["H"], [pt(286, 134), pt(286, 184)]), (["L"], [pt(362.2, 124), pt(362.2, 208)]),
+        (["OAL"], [pt(503.2, 100), pt(503.2, 232)]),
+        (["PP"], [pt(362.2, 69), pt(362.2, 36)]), (["PP"], [pt(430, 71), pt(430, 36)]),
     ]
 
     /// The round's axis.
@@ -92,9 +98,13 @@ struct MeasuringGuide: View {
         return head == .belted ? marks + [Self.beltMark] : marks
     }
     var shownExtensions: [[CGPoint]] {
-        let tops = ["R": Self.axis - rimRadius - 0.8, "D": Self.axis - bulletRadius - 1.3, "N": Self.axis - neckRadius - 1.5]
-        let lines = Self.extensions.filter { ext in letters.map { !$0.isDisjoint(with: ext.letters) } ?? true }.map { ext in
-            ext.letters.first.flatMap { tops[$0] }.map { [pt(ext.line[0].x, $0), ext.line[1]] } ?? ext.line
+        // Where a line leaves the drawing, as wide as this round: above the rim, bullet and neck, below the rim for
+        // its thickness; the patch's from the mouth and from the bullet.
+        let neckTop = Self.axis - neckRadius - 1.5, bulletTop = Self.axis - bulletRadius - 1.3
+        let starts: [String: Double] = ["R": Self.axis - rimRadius - 0.8, "D": bulletTop, "N": neckTop, "E": Self.axis + rimRadius + 0.8]
+        let lines: [[CGPoint]] = Self.extensions.filter { ext in letters.map { !$0.isDisjoint(with: ext.letters) } ?? true }.map { ext -> [CGPoint] in
+            let start: Double? = ext.letters == ["PP"] ? (ext.line[0].x < 400 ? neckTop : bulletTop) : ext.letters.first.flatMap { starts[$0] }
+            return start.map { [pt(ext.line[0].x, $0), ext.line[1]] } ?? ext.line
         }
         return head == .belted ? lines + [[pt(66, Self.axis - Self.belt.radius - 1), pt(66, 30)]] : lines
     }

@@ -73,7 +73,7 @@ struct TrueScaleView: View {
             VStack(alignment: .leading, spacing: 12) {
                 OneToOneBadge()
                 if scale.resolution.source == .estimate {
-                    Label("Bildschirm nicht kalibriert: Grösse kann leicht abweichen.", systemImage: "exclamationmark.triangle")
+                    Label("Bildschirm nicht kalibriert: Grösse kann abweichen.", systemImage: "exclamationmark.triangle")
                         .font(.footnote)
                         .foregroundStyle(.orange)
                 }

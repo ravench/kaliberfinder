@@ -64,7 +64,9 @@ struct Cartridge: Decodable, Identifiable, Hashable {
             case "case_head": "Hülsenboden"
             case "primer": "Zündhütchen"
             case "bullet": "Geschoss"
-            case "case": "Hülse"
+            // «Hülsenmaterial», not «Hülse»: the calibre page shows no «Hülse» row, the material only colours the
+            // drawing (Raven, 2026-11-19: «Hülse · Herkunft» on .277 Fury read unclear).
+            case "case": "Hülsenmaterial"
             case "origin": "Herkunft"
             case "colour_codes": "Farbcodes"
             default: part

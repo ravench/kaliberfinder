@@ -21,7 +21,7 @@ final class MeasureShapeTests: XCTestCase {
         XCTAssertTrue(bottleneck.allSatisfy { $0.cartridge.dimensions.shoulder != nil })
     }
 
-    /// The dropdowns show the series screen's outlines (tester, 2026-11-17); «Beliebige …» has none.
+    /// The dropdowns show the series screen's outlines (tester, 2026-11-17); «Beliebig» has none.
     func testChoicesHaveTheSeriesScreensIcons() {
         XCTAssertNil(CaseIcon.image(CaseShape.any.rawValue))
         XCTAssertNil(CaseIcon.image(RimKind.any.token))

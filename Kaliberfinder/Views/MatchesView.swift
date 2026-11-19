@@ -147,6 +147,8 @@ struct MatchesView: View {
                 if !hiddenFirst, let summary = ranked.summary { HiddenMatchesRow(summary: summary, revealed: $revealed) }
             } header: {
                 Text("Mögliche Kaliber")
+            } footer: {
+                SafetyNote()
             }
         }
     }

@@ -1190,31 +1190,31 @@
         }
       }
     },
-    "Bildschirm nicht kalibriert: Grösse kann leicht abweichen.": {
+    "Bildschirm nicht kalibriert: Grösse kann abweichen.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Screen not calibrated: the size may be slightly off."
+            "value": "Screen not calibrated: the size may be off."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pantalla sin calibrar: el tamaño puede variar ligeramente."
+            "value": "Pantalla sin calibrar: el tamaño puede variar."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Écran non calibré : la taille peut légèrement différer."
+            "value": "Écran non calibré : la taille peut différer."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Schermo non calibrato: la dimensione può differire leggermente."
+            "value": "Schermo non calibrato: la dimensione può differire."
           }
         }
       }
@@ -4699,6 +4699,35 @@
         }
       }
     },
+    "Kommentar, z. B. Holztisch, Tageslicht": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment, e.g. wooden table, daylight"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comentario, p. ej. mesa de madera, luz de día"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commentaire, p. ex. table en bois, lumière du jour"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commento, p. es. tavolo di legno, luce diurna"
+          }
+        }
+      }
+    },
     "Konisch": {
       "extractionState": "manual",
       "localizations": {
@@ -6062,6 +6091,35 @@
         }
       }
     },
+    "Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For identification only: a match does not mean a cartridge is safe to fire. Check the headstamp and the calibre marked on the firearm."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo para identificar: una coincidencia no autoriza a disparar. Comprueba el marcaje del culote y el calibre indicado en el arma."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour l'identification seulement : une correspondance n'autorise pas le tir. Vérifiez le marquage du culot et le calibre indiqué sur l'arme."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo per l'identificazione: una corrispondenza non autorizza a sparare. Controlla il fondello e il calibro indicato sull'arma."
+          }
+        }
+      }
+    },
     "Näher heran": {
       "extractionState": "manual",
       "localizations": {
@@ -6261,6 +6319,35 @@
           "stringUnit": {
             "state": "translated",
             "value": "Carta"
+          }
+        }
+      }
+    },
+    "Papierpflasterlänge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paper patch length"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longitud del calepinado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longueur du calepin"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lunghezza della camiciatura"
           }
         }
       }
@@ -6667,6 +6754,35 @@
           "stringUnit": {
             "state": "translated",
             "value": "Orlo"
+          }
+        }
+      }
+    },
+    "Randdicke": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rim thickness"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espesor de la pestaña"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Épaisseur du bourrelet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spessore dell'orlo"
           }
         }
       }
@@ -9422,35 +9538,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "p. es. punzonatura del fondello o un nome a scelta"
-          }
-        }
-      }
-    },
-    "z. B. Holztisch, Tageslicht": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "e.g. wooden table, daylight"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "p. ej. mesa de madera, luz de día"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "p. ex. table en bois, lumière du jour"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "p. es. tavolo di legno, luce diurna"
           }
         }
       }

@@ -124,9 +124,14 @@ struct Measurements: Codable, Equatable {
     var neck: Double?
     /// The primer's diameter (Raven 2026-11-09); nil for rimfire.
     var primerDiameter: Double?
+    /// The rim's thickness, from the head (Raven 2026-11-19).
+    var rimThickness: Double?
+    /// The paper patch seen in front of the case mouth, mouth to the patch's front end; nil without one (Raven 2026-11-19).
+    var patchLength: Double?
 
     var isEmpty: Bool {
-        [overallLength, caseLength, rim, belt, base, bullet, shoulderLength, shoulder, neck, primerDiameter].allSatisfy { $0 == nil }
+        [overallLength, caseLength, rim, belt, base, bullet, shoulderLength, shoulder, neck, primerDiameter, rimThickness, patchLength]
+            .allSatisfy { $0 == nil }
     }
 }
 

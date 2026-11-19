@@ -440,6 +440,8 @@ final class PRScreensTests: XCTestCase {
         // With the measurements in the top block (Raven, 2026-11-08), so no scrolling.
         XCTAssertTrue(app.buttons["Masse von Hand eingeben"].waitForExistence(timeout: 5), "The link to measure by hand is not shown")
         snap("31-Foto-unsicher")
+        scroll()  // the list's end: under «Mögliche Kaliber», that a match is no clearance to fire
+        snap("31b-Foto-Treffer-unten")
     }
 
     /// A photo with no cartridge on it, so no matches: the way on is measuring by hand, with no link to
@@ -518,9 +520,12 @@ final class PRScreensTests: XCTestCase {
         menuStop("Randform", choice: "Randlos", "22c-Trainingsdaten-Randform")
         menuStop("Hülsenform", choice: "Konisch", "22d-Trainingsdaten-Huelsenform")
         menuStop("Hülsenmaterial", choice: "Messing", "22e-Trainingsdaten-Huelsenmaterial")
+        // A rimfire round, paper-patched (Raven 2026-11-19): no primer field or head view, the patch's length; reset after.
+        menuStop("Zündart", choice: "Randfeuer"); menuStop("Geschoss", choice: "Mit Papierpflaster")
         // The calliper fields at the end, with the sketch of where to measure over them.
         scroll()
         snap("22b-Trainingsdaten-Schieblehre")
+        scroll(up: false); menuStop("Zündart", choice: "Zentralfeuer"); menuStop("Geschoss", choice: "Vollmantel")
     }
 
     /// With the training capture on, a calibre's detail page starts a series of that calibre.
@@ -563,8 +568,9 @@ final class PRScreensTests: XCTestCase {
             // The colour cut-out on the simulator can take a while on a busy runner.
             _ = app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90)
             snap(shot)
-            if let compareShot, open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden 1:1")).firstMatch),
-               app.navigationBars["1:1"].waitForExistence(timeout: 5) {
+            // A busy runner can take over 5 s for the 1:1 row; a missed stop fails, not vanishes (Raven, 2026-11-19).
+            if let compareShot, open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden 1:1")).firstMatch) {
+                guard app.navigationBars["1:1"].waitForExistence(timeout: 30) else { return XCTFail("No 1:1 screen for \(compareShot)") }
                 snap(compareShot)
             }
         }
@@ -650,19 +656,17 @@ final class PRScreensTests: XCTestCase {
         return open(app.buttons["Entwickleroptionen"].firstMatch)
     }
 
-    private func back() {
-        app.navigationBars.buttons.element(boundBy: 0).tap()
-    }
+    private func back() { app.navigationBars.buttons.element(boundBy: 0).tap() }
 
     /// Swipes to the very end (or start): a single swipe or drag stops at a different place on
     /// each run, the end of the content does not.
     /// Opens the picker menu of the series row whose label starts with `row`, takes the screen while the menu
-    /// is up, and taps `choice`, the fixture's own value, so the menu closes and nothing changes.
-    private func menuStop(_ row: String, choice: String, _ name: String) {
+    /// is up (with a `name`), and taps `choice`: the fixture's own value closes the menu and changes nothing.
+    private func menuStop(_ row: String, choice: String, _ name: String? = nil) {
         let button = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", row)).firstMatch
         guard button.waitForExistence(timeout: 5) else { return }
         button.tap()
-        if app.buttons[choice].waitForExistence(timeout: 5) { snap(name) }
+        if app.buttons[choice].waitForExistence(timeout: 5), let name { snap(name) }
         app.buttons[choice].tap()
     }
 

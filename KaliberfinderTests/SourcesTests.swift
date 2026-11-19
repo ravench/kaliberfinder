@@ -68,6 +68,11 @@ final class SourcesTests: XCTestCase {
         XCTAssertEqual(SourcesView.header(group), "Schulterwinkel".loc + " · " + "Hülsenboden".loc)
     }
 
+    func testCasePartNamesTheMaterial() {
+        let group = Cartridge.SourceGroup(parts: ["case", "origin"], refs: [])
+        XCTAssertEqual(SourcesView.header(group), "Hülsenmaterial".loc + " · " + "Herkunft".loc)
+    }
+
     func testEveryPartHasATitle() {
         for part in ["mm", "shoulder_angle", "nose", "case_head", "primer", "bullet", "case", "origin", "colour_codes"] {
             XCTAssertNotEqual(Cartridge.SourceGroup.title(part), part, part)

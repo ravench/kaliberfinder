@@ -1,3 +1,4 @@
+import SwiftUI
 import XCTest
 @testable import Kaliberfinder
 
@@ -108,5 +109,30 @@ final class CalibreTagTests: XCTestCase {
             XCTAssertTrue(country.flag != nil || DrawnFlag.codes.contains(country.code),
                           "\(c.name): \(country.code) has neither an emoji nor a drawn flag")
         }
+    }
+
+    /// The cannon icon (Raven, 2026-11-19): one big shell, not the arrows of before.
+    @MainActor
+    func testCannonIconIsABigShell() throws {
+        let renderer = ImageRenderer(content: TagIcon(tag: .cannon).frame(width: 16, height: 16).foregroundStyle(.black))
+        renderer.scale = 4
+        let image = try XCTUnwrap(renderer.cgImage)
+        // Alpha of grid point (x, y), counted from the top left of the 16 × 16 grid.
+        func ink(_ x: CGFloat, _ y: CGFloat) -> Bool {
+            var pixel = [UInt8](repeating: 0, count: 4)
+            pixel.withUnsafeMutableBytes { buffer in
+                let context = CGContext(data: buffer.baseAddress, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
+                                        space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+                context?.draw(image, in: CGRect(x: -Int(x * 4), y: Int(y * 4) + 1 - image.height, width: image.width, height: image.height))
+            }
+            return pixel[3] > 128
+        }
+        XCTAssertTrue(ink(4.8, 12), "left wall")
+        XCTAssertTrue(ink(11.2, 12), "right wall")
+        XCTAssertTrue(ink(8, 1.2), "tip")
+        XCTAssertTrue(ink(8, 8.6), "driving band")
+        XCTAssertTrue(ink(8, 14.6), "rim")
+        XCTAssertFalse(ink(8, 12), "hollow")
+        XCTAssertFalse(ink(2, 12), "nothing beside it")
     }
 }
