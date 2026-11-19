@@ -26,6 +26,6 @@ final class LiDARCameraRotationTests: XCTestCase {
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
         XCTAssertEqual(en["Gerät parallel zum Tisch halten"], "Hold the device parallel to the table")
         XCTAssertEqual(en["Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, 20–30 cm darüber."],
-                       "Lay the cartridge flat on a light surface and hold the device parallel, 20–30 cm above it.")
+                       "Lay the cartridge flat on a light background and hold the device parallel, 20–30 cm above it.")
     }
 }

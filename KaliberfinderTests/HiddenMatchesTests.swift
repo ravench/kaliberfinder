@@ -38,7 +38,7 @@ final class HiddenMatchesTests: XCTestCase {
         XCTAssertEqual(HiddenMatches([match(gras, 0)], hiding: bothOff, limit: 5).counts.map(\.tag), [.obsolete])
         XCTAssertEqual(HiddenMatches([match(gras, 0)], hiding: [.rare], limit: 5).counts.map(\.tag), [.rare])
         XCTAssertEqual(HiddenMatches([match(gras, 0)], hiding: [.rare], limit: 5).summary,
-                       "1 weiteres Kaliber".loc + ": " + "1 seltenes".loc)
+                       String(format: "%1$@: %2$@".loc, "1 weiteres Kaliber".loc, "1 seltenes".loc))
     }
 
     func testHiddenObsoleteMatchIsCountedAndRevealedInRankOrder() throws {

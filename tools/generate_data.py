@@ -50,10 +50,13 @@ def country_entry(code):
 def colour_codes(name):
     """What the painted bullet tips, cartridge bases and primer annuli of a calibre's military loads mean
     (calibre-data COLOUR_CODES): the part ("tip", "base" or "annulus"), the colours (a tip's from the tip
-    down), the meanings, the loads and the countries, as the calibre page lists them (Raven, 2026-11-11).
+    down), the meanings, the loads (English, and translated where calibre-data translates them) and the countries,
+    as the calibre page lists them (Raven, 2026-11-11).
     The sources stay in calibre-data."""
     return [{"part": t["part"], "colours": list(t["colours"]), "meaning": list(t["meaning"]),
              **({"description": t["description"]} if t["description"] else {}),
+             # In German, French and Italian where calibre-data translates it (a designation like "M62" has none).
+             **({"descriptions": t["descriptions"]} if t.get("descriptions") else {}),
              "countries": [country_entry(c) for c in t["countries"]]} for t in COLOUR_CODES.get(name, [])]
 
 

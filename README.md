@@ -28,7 +28,7 @@ parentheses.
 - **Sharing**: share a photo from Photos, Files, Messages or any other app to
   «Kaliberfinder» in the share sheet; the app opens on the matches for it. The share extension only hands the photo over through
   the App Group `group.ch.giotta.kaliberfinder`; the analysis runs in the app.
-- **Calibres** (Alle Kaliber): catalogue of about 100 calibres (rimfire, handgun, rifle
+- **Calibres** (Alle Kaliber): catalogue of more than 700 calibres (rimfire, handgun, rifle
   incl. GP 90, GP 11 and GP 1890, black powder, shotgun, air), with search across names,
   aliases and headstamp spellings. Each calibre shows its dimensions: overall length, case
   length, rim, base, shoulder, neck and bullet diameter, and the primer (Boxer size of
