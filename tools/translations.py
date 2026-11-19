@@ -15,6 +15,14 @@ T = {
     "Bankkarte oder Ausweis hochkant auf das Rechteck legen, oben bündig. Regler schieben, bis das Rechteck gleich lang ist.": ("Lay a bank card or ID upright on the rectangle, flush at the top. Move the slider until the rectangle is as long as the card.", "Posez une carte bancaire ou d'identité verticalement sur le rectangle, alignée en haut. Déplacez le curseur jusqu'à ce que le rectangle ait la même longueur.", "Appoggia una carta bancaria o d'identità in verticale sul rettangolo, allineata in alto. Sposta il cursore finché il rettangolo è lungo quanto la carta."),
     "Kaliber zum Vergleichen wählen.": ("Pick calibres to compare.", "Choisissez les calibres à comparer.", "Scegli i calibri da confrontare."),
     "Mehrere Patronen erkannt: Tippe auf eine.": ("Several cartridges found: tap one.", "Plusieurs cartouches détectées : touchez-en une.", "Più cartucce trovate: toccane una."),
+    # Search words of a group of rounds (Cartridge.groupWordsKey), never shown: the everyday words for it in each
+    # language, comma-separated. The catalogue search matches all four languages' words. «Minié-Geschoss», the
+    # kind's title below, serves the Minié bullets.
+    "Platzpatrone, Knallpatrone, Knall": ("blank, blank cartridge", "à blanc, cartouche à blanc", "a salve, cartuccia a salve"),
+    "Schrotpatrone, Schrot, Flintenpatrone": ("shotshell, shotgun shell, shotgun cartridge", "cartouche de chasse, cartouche à plombs",
+                                              "cartuccia da caccia, cartuccia a pallini"),
+    "Rundkugel, Bleikugel": ("round ball, lead ball", "balle ronde", "palla tonda, palla sferica"),
+    "Diabolo, Luftgewehrkugel, Luftgewehr": ("pellet, air rifle, air gun", "plomb, air comprimé", "piombino, pallino, aria compressa"),
     "Eine Länge und ein Durchmesser reichen oft.": ("A length and a diameter are often enough.", "Une longueur et un diamètre suffisent souvent.", "Una lunghezza e un diametro spesso bastano."),
     "Kein Foto erhalten, bitte noch einmal.": ("No photo received, please try again.", "Aucune photo reçue, veuillez réessayer.", "Nessuna foto ricevuta, riprova."),
     "Kein Zugriff auf die Kamera. Erlaube ihn in den Einstellungen.": ("No access to the camera. Allow it in Settings.", "Pas d'accès à la caméra. Autorisez-le dans les Réglages.", "Nessun accesso alla fotocamera. Consentilo nelle Impostazioni."),

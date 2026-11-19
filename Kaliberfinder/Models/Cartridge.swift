@@ -223,6 +223,24 @@ struct Cartridge: Decodable, Identifiable, Hashable {
 
     /// All names the cartridge is known by, for search.
     var allNames: [String] { [name] + displayAliases + aliases }
+
+    /// The everyday words of the group this round belongs to: a blank is a «Platzpatrone», a 12/70 a
+    /// «Schrotpatrone». German, comma-separated, used as localization key: translated once in
+    /// tools/translations.py and searched in each of the app's languages (`CartridgeCatalog.groupWords`), instead
+    /// of an alias on every calibre (Raven, 2026-11-19). Nil for a cartridge with a bullet.
+    var groupWordsKey: String? { Self.groupWordsKey(blank ? "blank" : kind) }
+
+    /// By calibre-data's kind, or "blank" for a blank of any kind.
+    static func groupWordsKey(_ group: String) -> String? {
+        switch group {
+        case "blank": "Platzpatrone, Knallpatrone, Knall"
+        case "shot": "Schrotpatrone, Schrot, Flintenpatrone"
+        case "ball": "Rundkugel, Bleikugel"
+        case "pellet": "Diabolo, Luftgewehrkugel, Luftgewehr"
+        case "minie": "Minié-Geschoss"
+        default: nil
+        }
+    }
 }
 
 /// What the 1:1 comparison sorts its cartridges by (Einstellungen, Raven 2026-11-08): the case, as the
