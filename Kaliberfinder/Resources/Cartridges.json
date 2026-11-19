@@ -1,8 +1,8 @@
 {
  "version": 1,
  "calibreData": {
-  "commit": "2d402628e89a1f44780e055110e67980db74934d",
-  "date": "2026-11-18T21:41:29+01:00"
+  "commit": "c0a49c75ea96d3a6268ef2b6dadff0aa97cd8964",
+  "date": "2026-11-19T01:17:18+01:00"
  },
  "cartridges": [
   {
@@ -17165,7 +17165,7 @@
      ],
      "description": "US M855 (with a steel penetrator), German DM11",
      "descriptions": {
-      "de": "M855 mit Stahlpenetrator (USA), DM11 (Deutschland)",
+      "de": "M855 mit Stahl-Penetrator (USA), DM11 (Deutschland)",
       "fr": "M855 à pénétrateur en acier (États-Unis), DM11 (Allemagne)",
       "it": "M855 con penetratore in acciaio (Stati Uniti), DM11 (Germania)"
      },
@@ -20788,7 +20788,7 @@
      ],
      "description": "Tracer, the older marking: the whole base lacquered",
      "descriptions": {
-      "de": "Leuchtspur, ältere Kennzeichnung: ganzer Hülsenboden lackiert",
+      "de": "Leuchtspur, ältere Kennzeichnung: ganzer Boden lackiert",
       "fr": "Traçant, ancien marquage : tout le culot laqué",
       "it": "Tracciante, vecchia marcatura: tutto il fondello laccato"
      },
@@ -23356,9 +23356,9 @@
      ],
      "description": "Ball, pre-NATO British code",
      "descriptions": {
-      "de": "Standardgeschoss, britischer Code aus der Zeit vor der NATO",
+      "de": "Standardgeschoss, britischer Code vor der NATO",
       "fr": "Balle ordinaire, code britannique d'avant l'OTAN",
-      "it": "Palla ordinaria, codice britannico precedente alla NATO"
+      "it": "Palla ordinaria, codice britannico pre-NATO"
      },
      "countries": [
       {
@@ -23378,9 +23378,9 @@
      ],
      "description": "Armour-piercing, pre-NATO British code",
      "descriptions": {
-      "de": "Panzerbrechend, britischer Code aus der Zeit vor der NATO",
+      "de": "Panzerbrechend, britischer Code vor der NATO",
       "fr": "Perforant, code britannique d'avant l'OTAN",
-      "it": "Perforante, codice britannico precedente alla NATO"
+      "it": "Perforante, codice britannico pre-NATO"
      },
      "countries": [
       {
@@ -23400,9 +23400,9 @@
      ],
      "description": "Observation, with a black tip, pre-NATO British code",
      "descriptions": {
-      "de": "Beobachtung, mit schwarzer Spitze, britischer Code aus der Zeit vor der NATO",
+      "de": "Beobachtung, mit schwarzer Spitze, britischer Code vor der NATO",
       "fr": "Observation, avec pointe noire, code britannique d'avant l'OTAN",
-      "it": "Osservazione, con punta nera, codice britannico precedente alla NATO"
+      "it": "Osservazione, con punta nera, codice britannico pre-NATO"
      },
      "countries": [
       {
@@ -23422,9 +23422,9 @@
      ],
      "description": "Incendiary, pre-NATO British code",
      "descriptions": {
-      "de": "Brand, britischer Code aus der Zeit vor der NATO",
+      "de": "Brand, britischer Code vor der NATO",
       "fr": "Incendiaire, code britannique d'avant l'OTAN",
-      "it": "Incendiaria, codice britannico precedente alla NATO"
+      "it": "Incendiaria, codice britannico pre-NATO"
      },
      "countries": [
       {
@@ -23444,9 +23444,9 @@
      ],
      "description": "Tracer, pre-NATO British code",
      "descriptions": {
-      "de": "Leuchtspur, britischer Code aus der Zeit vor der NATO",
+      "de": "Leuchtspur, britischer Code vor der NATO",
       "fr": "Traçant, code britannique d'avant l'OTAN",
-      "it": "Tracciante, codice britannico precedente alla NATO"
+      "it": "Tracciante, codice britannico pre-NATO"
      },
      "countries": [
       {
@@ -23466,9 +23466,9 @@
      ],
      "description": "Proof or standard round, pre-NATO British code",
      "descriptions": {
-      "de": "Beschuss- oder Referenzpatrone, britischer Code aus der Zeit vor der NATO",
+      "de": "Beschuss- oder Referenzpatrone, britischer Code vor der NATO",
       "fr": "Cartouche d'épreuve ou étalon, code britannique d'avant l'OTAN",
-      "it": "Cartuccia di prova forzata o campione, codice britannico precedente alla NATO"
+      "it": "Cartuccia di prova forzata o campione, codice britannico pre-NATO"
      },
      "countries": [
       {

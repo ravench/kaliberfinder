@@ -154,6 +154,9 @@ struct ColourCodeRow: View {
                                 + [code.description(in: Bundle.main.preferredLocalizations.first ?? "de")].compactMap { $0 })
                     .joined(separator: " · "))
                     .font(.footnote).foregroundStyle(.secondary)
+                    // Takes the lines it needs: beside the flags, a text that just fitted two lines was cut with «…»
+                    // instead of wrapping to a third (the GP 11's German description, PR screens 2026-11-19).
+                    .fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: 0)
             HStack(spacing: 4) { ForEach(code.countries, id: \.code) { CountryFlag(country: $0) } }

@@ -372,7 +372,7 @@ class ColourCodeTests(unittest.TestCase):
         gp11 = self.by_name["7.5x55 mm Swiss (GP 11)"]["colourCodes"]
         # In the app's other languages where calibre-data translates the description (Raven, 2026-11-18); a bare
         # designation has none, and the key is left out.
-        self.assertEqual(gp11[1]["descriptions"], {"de": "Leuchtspur, ältere Kennzeichnung: ganzer Hülsenboden lackiert",
+        self.assertEqual(gp11[1]["descriptions"], {"de": "Leuchtspur, ältere Kennzeichnung: ganzer Boden lackiert",
                                                    "fr": "Traçant, ancien marquage : tout le culot laqué",
                                                    "it": "Tracciante, vecchia marcatura: tutto il fondello laccato"})
         self.assertTrue(all(sorted(c["descriptions"]) == ["de", "fr", "it"] for c in gp11))

@@ -1612,7 +1612,7 @@
      ],
      "description": "Tracer, the older marking: the whole base lacquered",
      "descriptions": {
-      "de": "Leuchtspur, ältere Kennzeichnung: ganzer Hülsenboden lackiert",
+      "de": "Leuchtspur, ältere Kennzeichnung: ganzer Boden lackiert",
       "fr": "Traçant, ancien marquage : tout le culot laqué",
       "it": "Tracciante, vecchia marcatura: tutto il fondello laccato"
      },
@@ -2352,7 +2352,7 @@
      ],
      "description": "US M855 (with a steel penetrator), German DM11",
      "descriptions": {
-      "de": "M855 mit Stahlpenetrator (USA), DM11 (Deutschland)",
+      "de": "M855 mit Stahl-Penetrator (USA), DM11 (Deutschland)",
       "fr": "M855 à pénétrateur en acier (États-Unis), DM11 (Allemagne)",
       "it": "M855 con penetratore in acciaio (Stati Uniti), DM11 (Germania)"
      },

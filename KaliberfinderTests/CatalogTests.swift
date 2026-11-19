@@ -68,7 +68,7 @@ final class CatalogTests: XCTestCase {
     /// bare designation is the same everywhere (Raven, 2026-11-18).
     func testColourCodeDescriptionsFollowTheLanguage() throws {
         let base = try XCTUnwrap(Fixture.cartridge("7.5x55 mm Swiss (GP 11)").colourCodes.first { $0.part == "base" })
-        XCTAssertEqual(base.description(in: "de"), "Leuchtspur, ältere Kennzeichnung: ganzer Hülsenboden lackiert")
+        XCTAssertEqual(base.description(in: "de"), "Leuchtspur, ältere Kennzeichnung: ganzer Boden lackiert")
         XCTAssertEqual(base.description(in: "en"), "Tracer, the older marking: the whole base lacquered")
         XCTAssertEqual(base.description(in: "es"), base.description, "English for a language the data does not have")
         func code(_ json: String) throws -> Cartridge.ColourCode { try JSONDecoder().decode(Cartridge.ColourCode.self, from: Data(json.utf8)) }
