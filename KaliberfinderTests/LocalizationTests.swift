@@ -15,7 +15,7 @@ final class LocalizationTests: XCTestCase {
     func testEveryLanguageHasAllKeysWithPlaceholders() throws {
         let en = try table("en")
         XCTAssertFalse(en.isEmpty)
-        for lang in ["en", "fr", "it"] {
+        for lang in ["en", "fr", "it", "es"] {
             let t = try table(lang)
             if lang != "en" { XCTAssertEqual(Set(t.keys), Set(en.keys), "\(lang) has different keys") }
             for (key, value) in t {
@@ -48,10 +48,19 @@ final class LocalizationTests: XCTestCase {
     }
 
     func testPickAndCompareHasShortTitle() throws {
-        let expected = ["en": "Pick and compare", "fr": "Choisir et comparer", "it": "Scegli e confronta"]
+        let expected = ["en": "Pick and compare", "fr": "Choisir et comparer", "it": "Scegli e confronta", "es": "Elegir y comparar"]
         for (lang, title) in expected {
             XCTAssertEqual(try table(lang)["Auswählen und vergleichen"], title, lang)
             XCTAssertNil(try table(lang)["Kaliber auswählen und vergleichen"], lang)
         }
+    }
+
+    func testSpanishUsesTheCartridgeTermsOfMunicionOrg() throws {
+        let es = try table("es")
+        XCTAssertEqual(es["Hülse"], "Vaina")
+        XCTAssertEqual(es["Rand"], "Pestaña")
+        XCTAssertEqual(es["Boden"], "Culote")
+        XCTAssertEqual(es["Zündhütchen"], "Pistón")
+        XCTAssertEqual(es["Schweiz"], "Suiza")
     }
 }

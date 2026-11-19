@@ -95,7 +95,7 @@ class RareAndCountryTests(unittest.TestCase):
         self.assertEqual(set(COUNTRIES), set(generate_data.COUNTRY_NAMES))
         self.assertEqual(generate_data.COUNTRY_NAMES["GB"], "Grossbritannien")
         for code, name in generate_data.COUNTRY_NAMES.items():
-            self.assertEqual(set(COUNTRY_NAMES[code]), {"en", "de", "fr", "it"}, code)
+            self.assertEqual(set(COUNTRY_NAMES[code]), {"en", "de", "fr", "it", "es"}, code)
             self.assertNotIn(name, T, name)
 
     def test_a_miniature_primer_carries_its_measured_diameter(self):
@@ -374,8 +374,9 @@ class ColourCodeTests(unittest.TestCase):
         # designation has none, and the key is left out.
         self.assertEqual(gp11[1]["descriptions"], {"de": "Leuchtspur, ältere Kennzeichnung: ganzer Boden lackiert",
                                                    "fr": "Traçant, ancien marquage : tout le culot laqué",
-                                                   "it": "Tracciante, vecchia marcatura: tutto il fondello laccato"})
-        self.assertTrue(all(sorted(c["descriptions"]) == ["de", "fr", "it"] for c in gp11))
+                                                   "it": "Tracciante, vecchia marcatura: tutto il fondello laccato",
+                                                   "es": "Trazadora, marca antigua: todo el culote lacado"})
+        self.assertTrue(all(sorted(c["descriptions"]) == ["de", "es", "fr", "it"] for c in gp11))
         self.assertNotIn("descriptions", next(c for c in self.by_name[".50 BMG"]["colourCodes"] if c.get("description") == "M2"))
         self.assertEqual([{k: v for k, v in c.items() if k != "descriptions"} for c in gp11],
                          [{"part": "tip", "colours": ["red"], "meaning": ["tracer"],

@@ -70,14 +70,15 @@ final class CatalogTests: XCTestCase {
         let base = try XCTUnwrap(Fixture.cartridge("7.5x55 mm Swiss (GP 11)").colourCodes.first { $0.part == "base" })
         XCTAssertEqual(base.description(in: "de"), "Leuchtspur, ältere Kennzeichnung: ganzer Boden lackiert")
         XCTAssertEqual(base.description(in: "en"), "Tracer, the older marking: the whole base lacquered")
-        XCTAssertEqual(base.description(in: "es"), base.description, "English for a language the data does not have")
+        XCTAssertEqual(base.description(in: "es"), "Trazadora, marca antigua: todo el culote lacado")
+        XCTAssertEqual(base.description(in: "ja"), base.description, "English for a language the data does not have")
         func code(_ json: String) throws -> Cartridge.ColourCode { try JSONDecoder().decode(Cartridge.ColourCode.self, from: Data(json.utf8)) }
         XCTAssertEqual(try code(#"{"part":"tip","colours":["black"],"meaning":["armour-piercing"],"description":"M61","countries":[]}"#).description(in: "de"), "M61")
         XCTAssertNil(try code(#"{"part":"tip","colours":["red"],"meaning":["tracer"],"countries":[]}"#).description(in: "de"))
-        // The catalogue in the app carries them, each in all three languages.
+        // The catalogue in the app carries them, each in all four languages (Spanish since 2026-11-19).
         let translated = CartridgeCatalog.all.flatMap(\.colourCodes).compactMap(\.descriptions)
         XCTAssertFalse(translated.isEmpty)
-        for descriptions in translated { XCTAssertEqual(descriptions.keys.sorted(), ["de", "fr", "it"]) }
+        for descriptions in translated { XCTAssertEqual(descriptions.keys.sorted(), ["de", "es", "fr", "it"]) }
     }
 
     func testColourCodesComeFromCalibreData() throws {
