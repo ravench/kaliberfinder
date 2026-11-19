@@ -1,3 +1,4 @@
+import SwiftUI
 import XCTest
 @testable import Kaliberfinder
 
@@ -108,5 +109,29 @@ final class CalibreTagTests: XCTestCase {
             XCTAssertTrue(country.flag != nil || DrawnFlag.codes.contains(country.code),
                           "\(c.name): \(country.code) has neither an emoji nor a drawn flag")
         }
+    }
+
+    /// The cannon icon (Raven, 2026-11-19): a big shell with a small cartridge beside it, for scale, not the arrows of before.
+    @MainActor
+    func testCannonIconIsABigShellBesideASmallCartridge() throws {
+        let renderer = ImageRenderer(content: TagIcon(tag: .cannon).frame(width: 16, height: 16).foregroundStyle(.black))
+        renderer.scale = 4
+        let image = try XCTUnwrap(renderer.cgImage)
+        // Alpha of grid point (x, y), counted from the top left of the 16 × 16 grid.
+        func ink(_ x: CGFloat, _ y: CGFloat) -> Bool {
+            var pixel = [UInt8](repeating: 0, count: 4)
+            pixel.withUnsafeMutableBytes { buffer in
+                let context = CGContext(data: buffer.baseAddress, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
+                                        space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+                context?.draw(image, in: CGRect(x: -Int(x * 4), y: Int(y * 4) + 1 - image.height, width: image.width, height: image.height))
+            }
+            return pixel[3] > 128
+        }
+        XCTAssertTrue(ink(7.75, 12), "shell's left wall")
+        XCTAssertTrue(ink(12.75, 12), "shell's right wall")
+        XCTAssertTrue(ink(10.25, 1.2), "shell's tip")
+        XCTAssertFalse(ink(10.25, 12), "shell is hollow")
+        XCTAssertTrue(ink(3.25, 13), "cartridge's left wall")
+        XCTAssertFalse(ink(4.5, 5), "cartridge is short")
     }
 }

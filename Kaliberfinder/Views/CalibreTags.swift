@@ -77,7 +77,8 @@ struct TagChip: View {
 }
 
 /// Magnifier with a question mark for rare (check it again), crossed-out factory for obsolete
-/// (no longer made). Drawn on a 16 × 16 grid in the current foreground colour.
+/// (no longer made), a big shell beside a small cartridge for cannon (too big for the screen; also the icon
+/// of its Developer Options switch, Raven 2026-11-19). Drawn on a 16 × 16 grid in the current foreground colour.
 struct TagIcon: View {
     let tag: CalibreTag
 
@@ -87,9 +88,9 @@ struct TagIcon: View {
             switch tag {
             case .rare: investigate(s)
             case .obsolete: factoryOff(s)
-            // The icons of their Developer Options switches.
+            // The icon of its Developer Options switch.
             case .unsourced: symbol("questionmark.square.dashed", geo.size)
-            case .cannon: symbol("arrow.up.left.and.arrow.down.right", geo.size)
+            case .cannon: shells(s)
             case .group: equals(s)
             }
         }
@@ -114,6 +115,25 @@ struct TagIcon: View {
 
     private func symbol(_ name: String, _ size: CGSize) -> some View {
         Image(systemName: name).resizable().scaledToFit().fontWeight(.bold).frame(width: size.width, height: size.height)
+    }
+
+    private func shells(_ s: CGFloat) -> some View {
+        Path { p in
+            func pt(_ x: CGFloat, _ y: CGFloat) -> CGPoint { CGPoint(x: (x + 1.75) * s, y: y * s) }
+            // The shell: ogive, driving band, straight case.
+            p.move(to: pt(6, 7))
+            p.addCurve(to: pt(8.5, 1), control1: pt(6, 3.8), control2: pt(7.5, 1.8))
+            p.addCurve(to: pt(11, 7), control1: pt(9.5, 1.8), control2: pt(11, 3.8))
+            p.addLines([pt(11, 15), pt(6, 15), pt(6, 7), pt(11, 7)])
+            p.move(to: pt(6, 8.4)); p.addLine(to: pt(11, 8.4))
+            // A rifle cartridge beside it, for scale.
+            p.move(to: pt(1.5, 11.5))
+            p.addCurve(to: pt(2.75, 9), control1: pt(1.5, 10.2), control2: pt(2.2, 9.3))
+            p.addCurve(to: pt(4, 11.5), control1: pt(3.3, 9.3), control2: pt(4, 10.2))
+            p.addLines([pt(4, 15), pt(1.5, 15)])
+            p.closeSubpath()
+        }
+        .stroke(style: StrokeStyle(lineWidth: 1.5 * s, lineCap: .round, lineJoin: .round))
     }
 
     private func equals(_ s: CGFloat) -> some View {
