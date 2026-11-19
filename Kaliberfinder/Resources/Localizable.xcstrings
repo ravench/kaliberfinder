@@ -10,6 +10,12 @@
             "value": "%1$@: %2$@"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -31,6 +37,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ · %lld photos · %@ · %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld fotos · %@ · %@"
           }
         },
         "fr": {
@@ -56,6 +68,12 @@
             "value": "%@ · %lld new photos"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld fotos nuevas"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -77,6 +95,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld photos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld fotos"
           }
         },
         "fr": {
@@ -102,6 +126,12 @@
             "value": "%lld rare"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld raros"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -123,6 +153,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld obsolete"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld obsoletos"
           }
         },
         "fr": {
@@ -148,6 +184,12 @@
             "value": "%lld of %lld photos added"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de %lld fotos añadidas"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -171,6 +213,12 @@
             "value": "%lld more calibres"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld calibres más"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -189,6 +237,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ".50 BMG (#35)"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": ".50 BMG (#35)"
@@ -217,6 +271,12 @@
             "value": "1 rare"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 raro"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -238,6 +298,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "1 obsolete"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 obsoleto"
           }
         },
         "fr": {
@@ -263,6 +329,12 @@
             "value": "1 more calibre"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 calibre más"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -284,6 +356,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Compare 1:1 (%lld)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparar 1:1 (%lld)"
           }
         },
         "fr": {
@@ -309,6 +387,12 @@
             "value": "1:1 comparison"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparación 1:1"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -330,6 +414,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cancel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
           }
         },
         "fr": {
@@ -355,6 +445,12 @@
             "value": "Distance outside 12–45 cm: size not measured, matches by shape only."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distancia fuera de 12–45 cm: tamaño no medido, coincidencias solo por la forma."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -376,6 +472,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Distance is good"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buena distancia"
           }
         },
         "fr": {
@@ -401,6 +503,12 @@
             "value": "Off by up to %@"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desviación de hasta %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -422,6 +530,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "All photos in this series show this calibre."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todas las fotos de esta serie muestran este calibre."
           }
         },
         "fr": {
@@ -447,6 +561,12 @@
             "value": "All calibres"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todos los calibres"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -468,6 +588,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Compare all matches 1:1 (%lld)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparar todos 1:1 (%lld)"
           }
         },
         "fr": {
@@ -493,6 +619,12 @@
             "value": "Share as ZIP"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir como ZIP"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -514,6 +646,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aluminium"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aluminio"
           }
         },
         "fr": {
@@ -539,6 +677,12 @@
             "value": "Other"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otro"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -562,6 +706,12 @@
             "value": "Choose another cartridge"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegir otro cartucho"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -580,6 +730,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Argentina"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Argentina"
@@ -608,6 +764,12 @@
             "value": "Atypical bullet"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bala atípica"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -629,6 +791,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Also known as"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "También conocido como"
           }
         },
         "fr": {
@@ -654,6 +822,12 @@
             "value": "Add from Photos (no depth)"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir desde Fotos (sin profundidad)"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -675,6 +849,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hide"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ocultar"
           }
         },
         "fr": {
@@ -700,6 +880,12 @@
             "value": "Selected"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionados"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -721,6 +907,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Select"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionar"
           }
         },
         "fr": {
@@ -746,6 +938,12 @@
             "value": "Pick and compare"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegir y comparar"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -767,6 +965,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lay a bank card or ID upright on the rectangle, flush at the top. Move the slider until the rectangle is as long as the card."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coloca una tarjeta bancaria o un documento de identidad en vertical sobre el rectángulo, con el borde superior alineado. Arrastra el regulador hasta que el rectángulo sea tan largo como la tarjeta."
           }
         },
         "fr": {
@@ -792,6 +996,12 @@
             "value": "Type"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -813,6 +1023,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Belgium"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bélgica"
           }
         },
         "fr": {
@@ -838,6 +1054,12 @@
             "value": "Any shape"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cualquier forma"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -861,6 +1083,12 @@
             "value": "Any head"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cualquier culote"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -879,6 +1107,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berdan Nitro"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Berdan Nitro"
@@ -907,6 +1141,12 @@
             "value": "Proof"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prueba"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -928,6 +1168,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Screen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pantalla"
           }
         },
         "fr": {
@@ -953,6 +1199,12 @@
             "value": "Calibrate screen"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibrar la pantalla"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -974,6 +1226,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Screen not calibrated: the size may be slightly off."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pantalla sin calibrar: el tamaño puede variar ligeramente."
           }
         },
         "fr": {
@@ -999,6 +1257,12 @@
             "value": "blue"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "azul"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1020,6 +1284,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lead"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plomo"
           }
         },
         "fr": {
@@ -1045,6 +1315,12 @@
             "value": "Base"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Culote"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1066,6 +1342,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Case head with %@ primer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Culote con pistón %@"
           }
         },
         "fr": {
@@ -1091,6 +1373,12 @@
             "value": "Base diameter"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diámetro del culote"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1112,6 +1400,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Headstamp"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcaje del culote"
           }
         },
         "fr": {
@@ -1137,6 +1431,12 @@
             "value": "Incendiary"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incendiaria"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1158,6 +1458,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Brazil"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brasil"
           }
         },
         "fr": {
@@ -1183,6 +1489,12 @@
             "value": "brown"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "marrón"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1204,6 +1516,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Large rifle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rifle grande"
           }
         },
         "fr": {
@@ -1229,6 +1547,12 @@
             "value": "Small rifle"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rifle pequeño"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1247,6 +1571,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "China"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "China"
@@ -1275,6 +1605,12 @@
             "value": "East Germany"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RDA"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1296,6 +1632,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "The photo could not be received."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido recibir la foto."
           }
         },
         "fr": {
@@ -1321,6 +1663,12 @@
             "value": "Germany"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alemania"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1342,6 +1690,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diabolo pellet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Balín diábolo"
           }
         },
         "fr": {
@@ -1367,6 +1721,12 @@
             "value": "pellet, air rifle, air gun"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "balín, balines, aire comprimido"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1388,6 +1748,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Compare the best three 1:1"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparar los tres mejores 1:1"
           }
         },
         "fr": {
@@ -1413,6 +1779,12 @@
             "value": "Denmark"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dinamarca"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1434,6 +1806,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Our own measurement"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medición propia"
           }
         },
         "fr": {
@@ -1459,6 +1837,12 @@
             "value": "Show"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1480,6 +1864,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "A length and a diameter are often enough."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una longitud y un diámetro suelen bastar."
           }
         },
         "fr": {
@@ -1505,6 +1895,12 @@
             "value": "Units"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unidades"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1526,6 +1922,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Settings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
           }
         },
         "fr": {
@@ -1551,6 +1953,12 @@
             "value": "Open Settings"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Ajustes"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1572,6 +1980,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Developer options"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opciones de desarrollador"
           }
         },
         "fr": {
@@ -1597,6 +2011,12 @@
             "value": "Detected: %@"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detectado: %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1618,6 +2038,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Recognition"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconocimiento"
           }
         },
         "fr": {
@@ -1643,6 +2069,12 @@
             "value": "Show detection in colour"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar la detección en color"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1664,6 +2096,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Move a bit further away"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aléjate un poco"
           }
         },
         "fr": {
@@ -1689,6 +2127,12 @@
             "value": "Colour codes"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Códigos de color"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1710,6 +2154,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Done"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         },
         "fr": {
@@ -1735,6 +2185,12 @@
             "value": "Finland"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finlandia"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1756,6 +2212,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "bottleneck"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vaina abotellada"
           }
         },
         "fr": {
@@ -1781,6 +2243,12 @@
             "value": "Shotgun"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escopeta"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1802,6 +2270,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Shape"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forma"
           }
         },
         "fr": {
@@ -1827,6 +2301,12 @@
             "value": "Shape fits well"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La forma encaja bien"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1848,6 +2328,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Shape fits roughly"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La forma encaja más o menos"
           }
         },
         "fr": {
@@ -1873,6 +2359,12 @@
             "value": "Shape fits poorly"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La forma encaja poco"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1894,6 +2386,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Take photo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hacer la foto"
           }
         },
         "fr": {
@@ -1919,6 +2417,12 @@
             "value": "Choose photo"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegir foto"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1940,6 +2444,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Analysing photo…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analizando la foto…"
           }
         },
         "fr": {
@@ -1965,6 +2475,12 @@
             "value": "Loading photo…"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando la foto…"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -1986,6 +2502,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Photo received. Open Kaliberfinder to see the matches."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto recibida. Abre Kaliberfinder para ver las coincidencias."
           }
         },
         "fr": {
@@ -2011,6 +2533,12 @@
             "value": "Photo recognition"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconocimiento por foto"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2032,6 +2560,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Take photos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hacer fotos"
           }
         },
         "fr": {
@@ -2057,6 +2591,12 @@
             "value": "Take photos (no depth)"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hacer fotos (sin profundidad)"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2078,6 +2618,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Photographed calibre"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibre fotografiado"
           }
         },
         "fr": {
@@ -2103,6 +2649,12 @@
             "value": "France"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Francia"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2124,6 +2676,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "For cartridges the app does not know: a name of your own, left out of the evaluation."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para cartuchos que la app no conoce: un nombre a tu elección; quedan excluidos de la evaluación."
           }
         },
         "fr": {
@@ -2149,6 +2707,12 @@
             "value": "yellow"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "amarillo"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2170,6 +2734,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Measured in inches"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medido en pulgadas"
           }
         },
         "fr": {
@@ -2195,6 +2765,12 @@
             "value": "Measured in mm"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medido en mm"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2216,6 +2792,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Measured: L ≈ %1$@, Ø ≈ %2$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medido: L ≈ %1$@, Ø ≈ %2$@"
           }
         },
         "fr": {
@@ -2241,6 +2823,12 @@
             "value": "Straight case"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaina recta"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2262,6 +2850,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rounded reference values, not reloading data."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valores orientativos redondeados, no son datos de recarga."
           }
         },
         "fr": {
@@ -2287,6 +2881,12 @@
             "value": "Hold the device parallel to the table"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sostén el dispositivo paralelo a la mesa"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2308,6 +2908,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Overall"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total"
           }
         },
         "fr": {
@@ -2333,6 +2939,12 @@
             "value": "Overall length"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longitud total"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2354,6 +2966,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bullet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bala"
           }
         },
         "fr": {
@@ -2379,6 +2997,12 @@
             "value": "Bullet diameter"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diámetro de la bala"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2400,6 +3024,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Show bullets on empty cases"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar la bala en las vainas vacías"
           }
         },
         "fr": {
@@ -2425,6 +3055,12 @@
             "value": "Bullet tip"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Punta de la bala"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2446,6 +3082,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Estimated, please calibrate"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estimada, calibra la pantalla"
           }
         },
         "fr": {
@@ -2471,6 +3113,12 @@
             "value": "Saved"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardadas"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2492,6 +3140,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "grey"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gris"
           }
         },
         "fr": {
@@ -2517,6 +3171,12 @@
             "value": "United Kingdom"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reino Unido"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2538,6 +3198,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Group"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grupo"
           }
         },
         "fr": {
@@ -2563,6 +3229,12 @@
             "value": "Group %@"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grupo %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2584,6 +3256,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Size could not be measured: matches by shape only."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamaño no medible: coincidencias solo por la forma."
           }
         },
         "fr": {
@@ -2609,6 +3287,12 @@
             "value": "Size fits well"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El tamaño encaja bien"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2630,6 +3314,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Size fits roughly"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El tamaño encaja más o menos"
           }
         },
         "fr": {
@@ -2655,6 +3345,12 @@
             "value": "Size fits poorly"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El tamaño encaja poco"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2676,6 +3372,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Larger"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Más grande"
           }
         },
         "fr": {
@@ -2701,6 +3403,12 @@
             "value": "green"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "verde"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2722,6 +3430,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Green tip and base, purple bullet, orange neck and shoulder, light blue body."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verde punta y culote, violeta bala, naranja cuello y hombro, azul claro cuerpo."
           }
         },
         "fr": {
@@ -2747,6 +3461,12 @@
             "value": "Belt"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cinturón"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2768,6 +3488,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Belt diameter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diámetro del cinturón"
           }
         },
         "fr": {
@@ -2793,6 +3519,12 @@
             "value": "Belted"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con cinturón"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2814,6 +3546,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Semi-rimmed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con semipestaña"
           }
         },
         "fr": {
@@ -2839,6 +3577,12 @@
             "value": "Neck"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuello"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2860,6 +3604,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neck diameter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diámetro del cuello"
           }
         },
         "fr": {
@@ -2885,6 +3635,12 @@
             "value": "Origin"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Origen"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2906,6 +3662,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hollow point"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Punta hueca"
           }
         },
         "fr": {
@@ -2931,6 +3693,12 @@
             "value": "Case"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaina"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2952,6 +3720,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Case %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaina %@"
           }
         },
         "fr": {
@@ -2977,6 +3751,12 @@
             "value": "Bottleneck case"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaina abotellada"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -2998,6 +3778,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Case base"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Culote de la vaina"
           }
         },
         "fr": {
@@ -3023,6 +3809,12 @@
             "value": "Case shape"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forma de la vaina"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3044,6 +3836,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Case length"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longitud de la vaina"
           }
         },
         "fr": {
@@ -3069,6 +3867,12 @@
             "value": "Shell length (open)"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longitud de la vaina (abierta)"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3090,6 +3894,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Case material"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Material de la vaina"
           }
         },
         "fr": {
@@ -3115,6 +3925,12 @@
             "value": "In the photo"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En la foto"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3136,6 +3952,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Imperial (in)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imperial (pulgadas)"
           }
         },
         "fr": {
@@ -3161,6 +3983,12 @@
             "value": "Show at real size"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar a tamaño real"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3182,6 +4010,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "About"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Información"
           }
         },
         "fr": {
@@ -3207,6 +4041,12 @@
             "value": "Italy"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Italia"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3230,6 +4070,12 @@
             "value": "Japan"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Japón"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3248,6 +4094,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yugoslavia"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Yugoslavia"
@@ -3276,6 +4128,12 @@
             "value": "Calibres"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibres"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3297,6 +4155,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Group calibres with identical dimensions"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agrupar calibres con dimensiones idénticas"
           }
         },
         "fr": {
@@ -3322,6 +4186,12 @@
             "value": "Pick calibres to compare."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige los calibres que quieres comparar."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3343,6 +4213,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Calibres whose dimensions are not well sourced in calibre-data: parts of their drawing are estimated."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibres cuyas dimensiones no están bien documentadas en calibre-data: partes de su plano son estimadas."
           }
         },
         "fr": {
@@ -3368,6 +4244,12 @@
             "value": "Calibre, e.g. 9 mm Luger"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibre, p. ej. 9 mm Luger"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3391,6 +4273,12 @@
             "value": "Calibre data"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datos de calibres"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3409,6 +4297,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaliberfinder"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Kaliberfinder"
@@ -3437,6 +4331,12 @@
             "value": "Calibrated"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibrada"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3458,6 +4358,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Camera"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cámara"
           }
         },
         "fr": {
@@ -3483,6 +4389,12 @@
             "value": "Canada"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canadá"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3504,6 +4416,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cannon"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cañón"
           }
         },
         "fr": {
@@ -3529,6 +4447,12 @@
             "value": "Cannon: too big for the screen. Shown with the developer option only."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cañón: demasiado grande para la pantalla. Solo visible con la opción de desarrollador."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3550,6 +4474,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Show cannon calibres"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar calibres de cañón"
           }
         },
         "fr": {
@@ -3575,6 +4505,12 @@
             "value": "Category"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Categoría"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3596,6 +4532,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "No photo received, please try again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha recibido ninguna foto, inténtalo de nuevo."
           }
         },
         "fr": {
@@ -3621,6 +4563,12 @@
             "value": "No access to the camera. Allow it in Settings."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin acceso a la cámara. Permítelo en Ajustes."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3642,6 +4590,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "No sure match"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ninguna coincidencia segura"
           }
         },
         "fr": {
@@ -3667,6 +4621,12 @@
             "value": "No cartridge found in the photo."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha detectado ningún cartucho en la foto."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3688,6 +4648,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "No depth measured"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin profundidad medida"
           }
         },
         "fr": {
@@ -3713,6 +4679,12 @@
             "value": "No matching calibres found"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se han encontrado calibres que encajen"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3734,6 +4706,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "None: blank"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ninguna: cartucho de fogueo"
           }
         },
         "fr": {
@@ -3759,6 +4737,12 @@
             "value": "None: empty case"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ninguna: vaina vacía"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3780,6 +4764,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Smaller"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Más pequeño"
           }
         },
         "fr": {
@@ -3805,6 +4795,12 @@
             "value": "Tapered case"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaina cónica"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3826,6 +4822,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Plastic"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plástico"
           }
         },
         "fr": {
@@ -3851,6 +4853,12 @@
             "value": "Copper"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cobre"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3872,6 +4880,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Handgun"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arma corta"
           }
         },
         "fr": {
@@ -3897,6 +4911,12 @@
             "value": "load"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "carga"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3918,6 +4938,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Country"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "País"
           }
         },
         "fr": {
@@ -3943,6 +4969,12 @@
             "value": "Search countries"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscar país"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -3964,6 +4996,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rifle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arma larga"
           }
         },
         "fr": {
@@ -3989,6 +5027,12 @@
             "value": "bore"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "diámetro del ánima"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4010,6 +5054,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Empty case"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaina vacía"
           }
         },
         "fr": {
@@ -4035,6 +5085,12 @@
             "value": "Lay the cartridge flat on a light background and hold the device parallel, 20–30 cm above it."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coloca el cartucho tumbado sobre un fondo claro y sostén el dispositivo en paralelo, a 20–30 cm por encima."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4056,6 +5112,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lay the cartridge flat on a light background and hold the device parallel, a good %lld cm above it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coloca el cartucho tumbado sobre un fondo claro y sostén el dispositivo en paralelo, a algo más de %lld cm por encima."
           }
         },
         "fr": {
@@ -4081,6 +5143,12 @@
             "value": "Lay the cartridge flat on a light background and hold the device parallel, as close as it will focus."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coloca el cartucho tumbado sobre un fondo claro y sostén el dispositivo en paralelo, tan cerca como permita el enfoque."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4104,6 +5172,12 @@
             "value": "Tracer"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trazadora"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4122,6 +5196,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LiDAR"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "LiDAR"
@@ -4150,6 +5230,12 @@
             "value": "LiDAR %.0f mm"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LiDAR %.0f mm"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4171,6 +5257,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ruler in centimetres"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regla en centímetros"
           }
         },
         "fr": {
@@ -4196,6 +5288,12 @@
             "value": "Ruler in inches"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regla en pulgadas"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4217,6 +5315,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Air gun"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aire comprimido"
           }
         },
         "fr": {
@@ -4242,6 +5346,12 @@
             "value": "length"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "longitud"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4263,6 +5373,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Spotting"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Señaladora"
           }
         },
         "fr": {
@@ -4288,6 +5404,12 @@
             "value": "Dimensions"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dimensiones"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4309,6 +5431,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Enter dimensions"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Introducir dimensiones"
           }
         },
         "fr": {
@@ -4334,6 +5462,12 @@
             "value": "Enter dimensions by hand"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Introducir las dimensiones a mano"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4355,6 +5489,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Show dimensioned drawing"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar el plano acotado"
           }
         },
         "fr": {
@@ -4380,6 +5520,12 @@
             "value": "Several cartridges found: tap one."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se han detectado varios cartuchos: toca uno."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4401,6 +5547,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Brass"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latón"
           }
         },
         "fr": {
@@ -4426,6 +5578,12 @@
             "value": "Metric (mm)"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Métrico (mm)"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4447,6 +5605,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Miniature"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miniatura"
           }
         },
         "fr": {
@@ -4472,6 +5636,12 @@
             "value": "Minié ball"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bala Minié"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4493,6 +5663,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sort by match quality with LiDAR"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con LiDAR, ordenar por calidad de coincidencia"
           }
         },
         "fr": {
@@ -4518,6 +5694,12 @@
             "value": "Paper patched"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calepinada"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4539,6 +5721,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rimmed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con pestaña"
           }
         },
         "fr": {
@@ -4564,6 +5752,12 @@
             "value": "Measured with a calliper"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medido con pie de rey"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4585,6 +5779,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ammunition of 20 to 57 mm, too big for the screen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Munición de 20 a 57 mm, demasiado grande para la pantalla."
           }
         },
         "fr": {
@@ -4610,6 +5810,12 @@
             "value": "Possible calibres"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibres posibles"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4631,6 +5837,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "NATO"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OTAN"
           }
         },
         "fr": {
@@ -4656,6 +5868,12 @@
             "value": "Name"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4677,6 +5895,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "New in this version"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Novedades de esta versión"
           }
         },
         "fr": {
@@ -4702,6 +5926,12 @@
             "value": "New capture series"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva serie de fotos"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4723,6 +5953,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "New series"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva serie"
           }
         },
         "fr": {
@@ -4748,6 +5984,12 @@
             "value": "Not saved: %@"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No guardada: %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4769,6 +6011,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Not in the list"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No está en la lista"
           }
         },
         "fr": {
@@ -4794,6 +6042,12 @@
             "value": "Netherlands"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Países Bajos"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4815,6 +6069,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Norway"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noruega"
           }
         },
         "fr": {
@@ -4840,6 +6100,12 @@
             "value": "Note"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nota"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4861,6 +6127,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Only a circle detected: please photograph the cartridge from the side."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo se ha detectado un círculo: fotografía el cartucho de lado."
           }
         },
         "fr": {
@@ -4886,6 +6158,12 @@
             "value": "Move closer"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acércate más"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4907,6 +6185,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Without a photo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin foto"
           }
         },
         "fr": {
@@ -4932,6 +6216,12 @@
             "value": "orange"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "naranja"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4953,6 +6243,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Real size"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamaño real"
           }
         },
         "fr": {
@@ -4978,6 +6274,12 @@
             "value": "Ottoman Empire"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imperio otomano"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -4999,6 +6301,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Armour-piercing"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perforante"
           }
         },
         "fr": {
@@ -5024,6 +6332,12 @@
             "value": "Paper"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Papel"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5045,6 +6359,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Exact fit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encaja exactamente"
           }
         },
         "fr": {
@@ -5070,6 +6390,12 @@
             "value": "Cartridge"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartucho"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5091,6 +6417,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cartridge %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartucho %lld"
           }
         },
         "fr": {
@@ -5116,6 +6448,12 @@
             "value": "Identify a cartridge"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identificar un cartucho"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5137,6 +6475,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Photograph cartridge"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografiar el cartucho"
           }
         },
         "fr": {
@@ -5162,6 +6506,12 @@
             "value": "Philippines"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filipinas"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5183,6 +6533,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Large pistol"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pistola grande"
           }
         },
         "fr": {
@@ -5208,6 +6564,12 @@
             "value": "Small pistol"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pistola pequeña"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5229,6 +6591,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "blank, blank cartridge"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "de fogueo, cartucho de fogueo, de salvas"
           }
         },
         "fr": {
@@ -5254,6 +6622,12 @@
             "value": "Poland"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Polonia"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5272,6 +6646,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portugal"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Portugal"
@@ -5300,6 +6680,12 @@
             "value": "Check the size once with a bank card."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprueba el tamaño una vez con una tarjeta bancaria."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5321,6 +6707,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sources"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuentes"
           }
         },
         "fr": {
@@ -5346,6 +6738,12 @@
             "value": "Rim"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pestaña"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5367,6 +6765,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rim diameter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diámetro de la pestaña"
           }
         },
         "fr": {
@@ -5392,6 +6796,12 @@
             "value": "Rimfire"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuego anular"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5413,6 +6823,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rimfire, no primer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuego anular, sin pistón"
           }
         },
         "fr": {
@@ -5438,6 +6854,12 @@
             "value": "Head"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Culote"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5459,6 +6881,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rimless"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin pestaña"
           }
         },
         "fr": {
@@ -5484,6 +6912,12 @@
             "value": "Reduced charge"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carga reducida"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5505,6 +6939,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "red"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rojo"
           }
         },
         "fr": {
@@ -5530,6 +6970,12 @@
             "value": "Round ball"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bala esférica"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5551,6 +6997,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "round ball, lead ball"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bala esférica, bala redonda"
           }
         },
         "fr": {
@@ -5576,6 +7028,12 @@
             "value": "Russian Empire"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imperio ruso"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5594,6 +7052,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "p. %@"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "p. %@"
@@ -5622,6 +7086,12 @@
             "value": "In focus from %lld cm"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enfoca desde %lld cm"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5643,6 +7113,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Shot"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perdigones"
           }
         },
         "fr": {
@@ -5668,6 +7144,12 @@
             "value": "Shotshell (209)"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartucho de escopeta (209)"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5689,6 +7171,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Shotshell"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartucho de escopeta"
           }
         },
         "fr": {
@@ -5714,6 +7202,12 @@
             "value": "shotshell, shotgun shell, shotgun cartridge"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cartucho de caza, cartucho de escopeta, cartucho de perdigones"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5735,6 +7229,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Shoulder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hombro"
           }
         },
         "fr": {
@@ -5760,6 +7260,12 @@
             "value": "Shoulder diameter"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diámetro del hombro"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5781,6 +7287,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Shoulder length"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longitud hasta el hombro"
           }
         },
         "fr": {
@@ -5806,6 +7318,12 @@
             "value": "Shoulder angle"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ángulo del hombro"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5827,6 +7345,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "black"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "negro"
           }
         },
         "fr": {
@@ -5852,6 +7376,12 @@
             "value": "Black powder"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pólvora negra"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5873,6 +7403,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sweden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suecia"
           }
         },
         "fr": {
@@ -5898,6 +7434,12 @@
             "value": "Switzerland"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suiza"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5919,6 +7461,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "On its side on a light background, photographed from above."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De lado sobre un fondo claro, fotografiado desde arriba."
           }
         },
         "fr": {
@@ -5944,6 +7492,12 @@
             "value": "Rare"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raro"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -5965,6 +7519,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rare: a match is often a similar cartridge, measure carefully."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raro: una coincidencia suele ser un cartucho parecido, mide con cuidado."
           }
         },
         "fr": {
@@ -5990,6 +7550,12 @@
             "value": "Include rare calibres"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incluir calibres raros"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6008,6 +7574,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serbia"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Serbia"
@@ -6036,6 +7608,12 @@
             "value": "Series"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serie"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6057,6 +7635,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "bullet seating"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "profundidad de asiento de la bala"
           }
         },
         "fr": {
@@ -6082,6 +7666,12 @@
             "value": "silver"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "plata"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6103,6 +7693,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sort by"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordenar por"
           }
         },
         "fr": {
@@ -6128,6 +7724,12 @@
             "value": "Soviet Union"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unión Soviética"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6149,6 +7751,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Spain"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "España"
           }
         },
         "fr": {
@@ -6174,6 +7782,12 @@
             "value": "Save"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6195,6 +7809,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Saves photo series of known cartridges with the app's measurements on the device, as test data for recognition."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda en el dispositivo series de fotos de cartuchos conocidos con las mediciones de la app, como datos de prueba para el reconocimiento."
           }
         },
         "fr": {
@@ -6220,6 +7840,12 @@
             "value": "Bullet tip: colours from the tip down."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Punta de la bala: colores desde la punta hacia abajo."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6241,6 +7867,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nose length"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longitud de la ojiva"
           }
         },
         "fr": {
@@ -6266,6 +7898,12 @@
             "value": "Explosive"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Explosiva"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6287,6 +7925,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Steel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acero"
           }
         },
         "fr": {
@@ -6312,6 +7956,12 @@
             "value": "Ball"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordinaria"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6333,6 +7983,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Start"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empezar"
           }
         },
         "fr": {
@@ -6358,6 +8014,12 @@
             "value": "Pinfire"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De espiga"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6379,6 +8041,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Soft point"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semiblindada"
           }
         },
         "fr": {
@@ -6404,6 +8072,12 @@
             "value": "Thailand"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tailandia"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6425,6 +8099,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "relative depth"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "profundidad relativa"
           }
         },
         "fr": {
@@ -6450,6 +8130,12 @@
             "value": "Tip: lay it on its side on a plain light background and photograph it straight from above."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consejo: colócalo de lado sobre un fondo claro liso y fotografíalo desde arriba en vertical."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6471,6 +8157,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Training data"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datos de entrenamiento"
           }
         },
         "fr": {
@@ -6496,6 +8188,12 @@
             "value": "Record training data"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grabar datos de entrenamiento"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6517,6 +8215,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Matches"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coincidencias"
           }
         },
         "fr": {
@@ -6542,6 +8246,12 @@
             "value": "Czechia"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chequia"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6563,6 +8273,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Czechoslovakia"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checoslovaquia"
           }
         },
         "fr": {
@@ -6588,6 +8304,12 @@
             "value": "United States"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estados Unidos"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6609,6 +8331,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Unsourced"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin fuentes"
           }
         },
         "fr": {
@@ -6634,6 +8362,12 @@
             "value": "Unsourced: dimensions not well sourced in calibre-data, parts of the drawing are estimated. Shown with the developer option only."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin fuentes: dimensiones poco documentadas en calibre-data, partes del plano estimadas. Solo visible con la opción de desarrollador."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6655,6 +8389,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Show unsourced calibres"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar calibres sin fuentes"
           }
         },
         "fr": {
@@ -6680,6 +8420,12 @@
             "value": "Subsonic"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subsónica"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6701,6 +8447,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Differ in: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se diferencian en: %@"
           }
         },
         "fr": {
@@ -6726,6 +8478,12 @@
             "value": "Obsolete"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsoleto"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6747,6 +8505,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Obsolete: no longer in regular production."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsoleto: ya no se fabrica de forma regular."
           }
         },
         "fr": {
@@ -6772,6 +8536,12 @@
             "value": "Include obsolete calibres"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incluir calibres obsoletos"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6793,6 +8563,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prevalence"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Difusión"
           }
         },
         "fr": {
@@ -6818,6 +8594,12 @@
             "value": "Nickel-plated"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niquelada"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6839,6 +8621,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Version"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versión"
           }
         },
         "fr": {
@@ -6864,6 +8652,12 @@
             "value": "Version %@"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versión %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6885,6 +8679,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "purple"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "violeta"
           }
         },
         "fr": {
@@ -6910,6 +8710,12 @@
             "value": "Full metal jacket"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blindada"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6933,6 +8739,12 @@
             "value": "From the device model"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Según el modelo de dispositivo"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -6951,6 +8763,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wadcutter"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Wadcutter"
@@ -6979,6 +8797,12 @@
             "value": "What is in the photo?"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Qué hay en la foto?"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7000,6 +8824,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "white"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "blanco"
           }
         },
         "fr": {
@@ -7025,6 +8855,12 @@
             "value": "Wide"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gran angular"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7046,6 +8882,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Used worldwide"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Difundido en todo el mundo"
           }
         },
         "fr": {
@@ -7071,6 +8913,12 @@
             "value": "Choose the calibre you are photographing and take several photos of it. The photo, the LiDAR depth, the camera data and the Vision mask are saved. Share the series as a ZIP; it goes into the tests."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige el calibre que vas a fotografiar y hazle varias fotos. Se guardan la foto, la profundidad LiDAR, los datos de la cámara y la máscara de Vision. Comparte la serie como ZIP; se añadirá a las pruebas."
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7092,6 +8940,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Choose"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegir"
           }
         },
         "fr": {
@@ -7117,6 +8971,12 @@
             "value": "ZIP failed: %@"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error al crear el ZIP: %@"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7140,6 +9000,12 @@
             "value": "Centrefire"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuego central"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7158,6 +9024,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frangible"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Frangible"
@@ -7186,6 +9058,12 @@
             "value": "Rebated"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con pestaña rebajada"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7207,6 +9085,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Reset"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restablecer"
           }
         },
         "fr": {
@@ -7232,6 +9116,12 @@
             "value": "Ignition"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo de ignición"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7253,6 +9143,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Primer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pistón"
           }
         },
         "fr": {
@@ -7278,6 +9174,12 @@
             "value": "Primer diameter"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diámetro del pistón"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7299,6 +9201,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Primer ring"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anillo del pistón"
           }
         },
         "fr": {
@@ -7324,6 +9232,12 @@
             "value": "ignition"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ignición"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7345,6 +9259,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "as an empty case"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "como vaina vacía"
           }
         },
         "fr": {
@@ -7370,6 +9290,12 @@
             "value": "straight case"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vaina recta"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7391,6 +9317,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "no match"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ninguna coincidencia"
           }
         },
         "fr": {
@@ -7416,6 +9348,12 @@
             "value": "empty case"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vaina vacía"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7437,6 +9375,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "rimmed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "con pestaña"
           }
         },
         "fr": {
@@ -7462,6 +9406,12 @@
             "value": "rimless"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sin pestaña"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7483,6 +9433,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "no depth"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sin profundidad"
           }
         },
         "fr": {
@@ -7508,6 +9464,12 @@
             "value": "e.g. headstamp or a name of your own"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "p. ej. marcaje del culote o un nombre a tu elección"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7531,6 +9493,12 @@
             "value": "e.g. wooden table, daylight"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "p. ej. mesa de madera, luz de día"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7549,6 +9517,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "© 2026 Simon Giotta"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "© 2026 Simon Giotta"
@@ -7577,6 +9551,12 @@
             "value": "Egypt"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egipto"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7600,6 +9580,12 @@
             "value": "Opens the web page"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre la página web"
+          }
+        },
         "fr": {
           "stringUnit": {
             "state": "translated",
@@ -7618,6 +9604,12 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Austria"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Austria"
@@ -7644,6 +9636,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Austria-Hungary"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Austria-Hungría"
           }
         },
         "fr": {

@@ -125,10 +125,10 @@ enum CartridgeCatalog {
     }
 
     /// The words of a group of rounds (`Cartridge.groupWordsKey`) in every language of the app, whatever language it
-    /// runs in: the German key and its English, French and Italian texts, each split at its commas. So «Platzpatrone»,
-    /// «blank», «à blanc» and «a salve» each find all the blanks.
+    /// runs in: the German key and its English, French, Italian and Spanish texts, each split at its commas. So
+    /// «Platzpatrone», «blank», «à blanc», «a salve» and «de fogueo» each find all the blanks.
     static func groupWords(_ key: String, bundle: Bundle = .main) -> [String] {
-        let texts = [key] + ["en", "fr", "it"].compactMap { language in
+        let texts = [key] + ["en", "fr", "it", "es"].compactMap { language in
             bundle.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))?
                 .localizedString(forKey: key, value: nil, table: nil)
         }

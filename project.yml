@@ -13,7 +13,7 @@ targets:
       path: Kaliberfinder/Info.plist
       properties:
         CFBundleDevelopmentRegion: de
-        CFBundleLocalizations: [de, en, fr, it]
+        CFBundleLocalizations: [de, en, fr, it, es]
         # Opened by the share extension once it has put a shared photo into the App Group inbox.
         CFBundleURLTypes:
           - CFBundleURLName: ch.giotta.kaliberfinder
@@ -62,7 +62,7 @@ targets:
       path: KaliberfinderShare/Info.plist
       properties:
         CFBundleDevelopmentRegion: de
-        CFBundleLocalizations: [de, en, fr, it]
+        CFBundleLocalizations: [de, en, fr, it, es]
         NSExtension:
           NSExtensionPointIdentifier: com.apple.share-services
           NSExtensionPrincipalClass: ShareViewController

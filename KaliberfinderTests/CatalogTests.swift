@@ -71,23 +71,25 @@ final class CatalogTests: XCTestCase {
         func found(_ words: String) -> Set<String> { Set(CartridgeCatalog.search(words, in: all).map(\.id)) }
         func group(_ belongs: (Cartridge) -> Bool) -> Set<String> { Set(all.filter(belongs).map(\.id)) }
         let groups: [(members: Set<String>, words: [String])] = [
-            (group(\.blank), ["Platzpatrone", "Knall", "blank", "blank cartridge", "à blanc", "cartouche à blanc", "a salve", "cartuccia a salve"]),
+            (group(\.blank), ["Platzpatrone", "Knall", "blank", "blank cartridge", "à blanc", "cartouche à blanc", "a salve", "cartuccia a salve",
+                               "de fogueo", "cartucho de fogueo"]),
             (group { $0.kind == "shot" }, ["Schrotpatrone", "Schrot", "shotshell", "shotgun shell", "cartouche de chasse", "cartouche à plombs",
-                                           "cartuccia da caccia", "cartuccia a pallini"]),
-            (group { $0.kind == "ball" && !$0.blank }, ["Rundkugel", "round ball", "balle ronde", "palla tonda", "palla sferica"]),
+                                           "cartuccia da caccia", "cartuccia a pallini", "cartucho de caza", "cartucho de escopeta"]),
+            (group { $0.kind == "ball" && !$0.blank }, ["Rundkugel", "round ball", "balle ronde", "palla tonda", "palla sferica", "bala esférica"]),
             (group { $0.kind == "pellet" }, ["Diabolo", "Luftgewehr", "pellet", "air rifle", "air gun", "plomb", "air comprimé",
-                                             "piombino", "pallino", "aria compressa"]),
-            (group { $0.kind == "minie" }, ["Minié-Geschoss", "minie ball", "balle minié", "palla minié"]),
+                                             "piombino", "pallino", "aria compressa", "balín", "aire comprimido"]),
+            (group { $0.kind == "minie" }, ["Minié-Geschoss", "minie ball", "balle minié", "palla minié", "bala minié"]),
         ]
         XCTAssertEqual(groups.map(\.members.count), [9, 8, 8, 2, 2])
         for (members, words) in groups {
             for word in words { XCTAssertTrue(members.isSubset(of: found(word)), "«\(word)» misses \(members.subtracting(found(word)).sorted())") }
         }
         // The blanks' words find the blanks and nothing else; a round with a bullet has no group.
-        for word in ["Platzpatrone", "blank", "à blanc", "a salve"] { XCTAssertEqual(found(word), groups[0].members, word) }
+        for word in ["Platzpatrone", "blank", "à blanc", "a salve", "de fogueo"] { XCTAssertEqual(found(word), groups[0].members, word) }
         XCTAssertNil(try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm")).groupWordsKey)
         XCTAssertEqual(CartridgeCatalog.groupWords("Rundkugel, Bleikugel"),
-                       ["Rundkugel", "Bleikugel", "round ball", "lead ball", "balle ronde", "palla tonda", "palla sferica"])
+                       ["Rundkugel", "Bleikugel", "round ball", "lead ball", "balle ronde", "palla tonda", "palla sferica",
+                        "bala esférica", "bala redonda"])
     }
 
     /// A colour code's description is read in the app's language, in English where calibre-data has no other: a
@@ -96,14 +98,15 @@ final class CatalogTests: XCTestCase {
         let base = try XCTUnwrap(Fixture.cartridge("7.5x55 mm Swiss (GP 11)").colourCodes.first { $0.part == "base" })
         XCTAssertEqual(base.description(in: "de"), "Leuchtspur, ältere Kennzeichnung: ganzer Boden lackiert")
         XCTAssertEqual(base.description(in: "en"), "Tracer, the older marking: the whole base lacquered")
-        XCTAssertEqual(base.description(in: "es"), base.description, "English for a language the data does not have")
+        XCTAssertEqual(base.description(in: "es"), "Trazadora, marca antigua: todo el culote lacado")
+        XCTAssertEqual(base.description(in: "ja"), base.description, "English for a language the data does not have")
         func code(_ json: String) throws -> Cartridge.ColourCode { try JSONDecoder().decode(Cartridge.ColourCode.self, from: Data(json.utf8)) }
         XCTAssertEqual(try code(#"{"part":"tip","colours":["black"],"meaning":["armour-piercing"],"description":"M61","countries":[]}"#).description(in: "de"), "M61")
         XCTAssertNil(try code(#"{"part":"tip","colours":["red"],"meaning":["tracer"],"countries":[]}"#).description(in: "de"))
-        // The catalogue in the app carries them, each in all three languages.
+        // The catalogue in the app carries them, each in all four languages (Spanish since 2026-11-19).
         let translated = CartridgeCatalog.all.flatMap(\.colourCodes).compactMap(\.descriptions)
         XCTAssertFalse(translated.isEmpty)
-        for descriptions in translated { XCTAssertEqual(descriptions.keys.sorted(), ["de", "fr", "it"]) }
+        for descriptions in translated { XCTAssertEqual(descriptions.keys.sorted(), ["de", "es", "fr", "it"]) }
     }
 
     func testColourCodesComeFromCalibreData() throws {

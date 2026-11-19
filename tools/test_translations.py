@@ -1,4 +1,4 @@
-"""Consistency checks on tools/translations.py (English, French, Italian)."""
+"""Consistency checks on tools/translations.py (English, French, Italian, Spanish)."""
 import os
 import re
 import sys
@@ -7,7 +7,7 @@ import unittest
 sys.path.insert(0, os.path.dirname(__file__))
 from translations import T  # noqa: E402
 
-EN, FR, IT = 0, 1, 2
+EN, FR, IT, ES = 0, 1, 2, 3
 
 
 class TranslationTests(unittest.TestCase):
@@ -43,12 +43,12 @@ class TranslationTests(unittest.TestCase):
 
     def test_the_check_of_2026_11_19_stays_fixed(self):
         """What the check of all translations found clearly wrong: cut buttons, calques, a vulgar reading, typography."""
-        self.assertEqual(T["Alle passenden 1:1 vergleichen (%lld)"][FR:], ("Tout comparer 1:1 (%lld)", "Confronta tutti 1:1 (%lld)"))
+        self.assertEqual(T["Alle passenden 1:1 vergleichen (%lld)"][FR:ES], ("Tout comparer 1:1 (%lld)", "Confronta tutti 1:1 (%lld)"))
         self.assertEqual(T["Geschosse bei leeren Hülsen zeigen"][IT], "Mostra la palla sui bossoli vuoti")
         self.assertEqual(T["Zerfallend"][FR], "Frangible")
         self.assertEqual(T["%1$@: %2$@"][FR], "%1$@ : %2$@", "French sets a space before the colon")
         for key, values in T.items():
-            for lang, text in zip(("en", "fr", "it"), values):
+            for lang, text in zip(("en", "fr", "it", "es"), values):
                 self.assertNotIn(" …", text, f"{lang}, {key!r}: no space before the ellipsis outside German")
                 self.assertNotRegex(text, r"un bon %lld|un buon %lld", f"{lang}, {key!r}")
             self.assertNotRegex(values[FR], r"[^\s][:;?!](\s|$)(?<!\d:\d)", f"French, {key!r}: a space before : ; ? !")
@@ -56,6 +56,41 @@ class TranslationTests(unittest.TestCase):
         for key in ("Kaliber mit identischen Massen gruppieren",
                     "Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt."):
             self.assertEqual([word in text for word, text in zip(("dimensions", "dimensions", "dimensioni"), T[key])], [True] * 3, key)
+
+    def test_spanish_takes_its_cartridge_terms_from_municion_org(self):
+        """The Spanish names of a cartridge's parts are those of municion.org (AECC), the Spanish source
+        calibre-data cites most: its glossary («vaina», «culote», «pistón», «marcaje») and its specimen
+        texts (phrase counts there, 2026-11-19: «diámetro de la pestaña» 10, «longitud de la vaina» 51,
+        «ángulo del hombro» 18, «vaina abotellada» 22 against «agolletada» 8, «vaina recta» 19 against
+        «cilíndrica» 9, «bala esférica» 20 against «redonda» 9)."""
+        sourced = {"Hülse": "Vaina", "Boden": "Culote", "Rand": "Pestaña", "Hals": "Cuello", "Schulter": "Hombro",
+                   "Geschoss": "Bala", "Gürtel": "Cinturón", "Zündhütchen": "Pistón", "Bodenstempel": "Marcaje del culote",
+                   "Randdurchmesser": "Diámetro de la pestaña", "Hülsenlänge": "Longitud de la vaina",
+                   "Gesamtlänge": "Longitud total", "Schulterwinkel": "Ángulo del hombro",
+                   "Hülse mit Flaschenhals": "Vaina abotellada", "Gerade Hülse": "Vaina recta",
+                   "Konische Hülse": "Vaina cónica", "Mit Rand": "Con pestaña", "Randlos": "Sin pestaña",
+                   "Halbrand": "Con semipestaña", "Zentralfeuer": "Fuego central", "Randfeuer": "Fuego anular",
+                   "Stiftfeuer": "De espiga", "Vollmantel": "Blindada", "Teilmantel": "Semiblindada",
+                   "Hohlspitz": "Punta hueca", "Mit Papierpflaster": "Calepinada", "Rundkugel": "Bala esférica",
+                   "Schrot": "Perdigones", "Keines: Platzpatrone": "Ninguna: cartucho de fogueo",
+                   "Schwarzpulver": "Pólvora negra", "Kurzwaffe": "Arma corta", "Langwaffe": "Arma larga",
+                   "Standardgeschoss": "Ordinaria", "Panzerbrechend": "Perforante", "Brand": "Incendiaria",
+                   "Leuchtspur": "Trazadora", "Reduzierte Ladung": "Carga reducida", "Zerfallend": "Frangible"}
+        for key, word in sourced.items():
+            self.assertEqual(T[key][ES], word, key)
+        # One word per part: no «casquillo» or «proyectil» beside «vaina» and «bala».
+        for key, values in T.items():
+            self.assertNotRegex(values[ES], r"(?i)casquillo|proyectil|gollete|agolletad", key)
+
+    def test_spanish_addresses_the_reader_as_tu(self):
+        """Like the German «du» and the Italian «tu»: no «usted» forms slip into the Spanish texts."""
+        for key, values in T.items():
+            self.assertNotRegex(values[ES], r"(?i)\b(usted|ustedes|coloque|elija|mida|compruebe|toque)\b", key)
+        self.assertIn("mide con cuidado", T["Selten: Ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen."][ES])
+
+    def test_spanish_questions_open_with_their_mark(self):
+        for key, values in T.items():
+            self.assertEqual(values[ES].count("¿"), values[ES].count("?"), key)
 
     def test_share_extension_texts_pair_up(self):
         self.assertEqual(T["Das Foto konnte nicht übernommen werden."][FR], "Impossible de recevoir la photo.")
