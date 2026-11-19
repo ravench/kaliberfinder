@@ -570,11 +570,11 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
-    /// A group's word finds its rounds, in any language (Raven, 2026-11-19): «à blanc» lists the blanks.
+    /// A group's word finds its rounds, in any language (Raven, 2026-11-19): the Italian «a salve» lists the blanks.
     func testGroupWordFindsTheBlanks() {
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-        search("à blanc\n")
-        XCTAssertTrue(app.staticTexts["9 mm PA Blanc"].waitForExistence(timeout: 5), "«à blanc» does not find the blanks")
+        search("a salve\n")
+        XCTAssertTrue(app.staticTexts["9 mm PA Blanc"].waitForExistence(timeout: 5), "«a salve» does not find the blanks")
         snap("08c-Suche-Gruppenwort")
     }
 
