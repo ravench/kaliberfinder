@@ -131,7 +131,7 @@ private struct NewTrainingSeriesView: View {
                     Text("Im Bild")
                 }
                 .pickerStyle(.segmented)
-                TextField("Notiz", text: $note, prompt: Text("z. B. Holztisch, Tageslicht"))
+                TextField("Notiz", text: $note, prompt: Text("Kommentar, z. B. Holztisch, Tageslicht"))
             } footer: {
                 Text("Alle Fotos dieser Serie zeigen dieses Kaliber.")
             }
@@ -260,17 +260,18 @@ struct TrainingPackageView: View {
                 }
             }
             Section {
-                TextField("Notiz", text: $package.note, prompt: Text("z. B. Holztisch, Tageslicht"), axis: .vertical)
+                // Comment, headstamp, country, then the round's facts (Raven 2026-11-19).
+                TextField("Notiz", text: $package.note, prompt: Text("Kommentar, z. B. Holztisch, Tageslicht"), axis: .vertical)
+                // What the round is, as the old-ammunition table records it (Raven 2026-11-11).
+                TextField("Bodenstempel", text: headstamp)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.characters)
                 // Every present-day country and the former states, searchable (Raven, 2026-11-09 and 2026-11-11).
                 NavigationLink {
                     CountryPickerView(selection: $package.country)
                 } label: {
                     LabeledContent("Land", value: package.country.map { Countries.title(of: $0) } ?? "–")
                 }
-                // What the round is, as the old-ammunition table records it (Raven 2026-11-11).
-                TextField("Bodenstempel", text: headstamp)
-                    .autocorrectionDisabled()
-                    .textInputAutocapitalization(.characters)
                 choice("Zündart", selection: $package.ignition, options: RoundFacts.ignition)
                 choice("Randform", selection: $package.head, options: RoundFacts.head, icon: CaseIcon.image)
                 choice("Hülsenform", selection: $package.shape, options: RoundFacts.shape, icon: CaseIcon.image)
@@ -285,7 +286,7 @@ struct TrainingPackageView: View {
                 // Where each value is taken, as on the old-ammunition page (Raven 2026-11-10).
                 // The sketch and the fields as the series' Randform and Hülsenform say, like the dimensions form (Raven 2026-11-19).
                 let shape = Self.shape(of: package.shape), head = Self.head(of: package.head)
-                let fields = Self.fields(shape: shape, head: head)
+                let fields = Self.fields(shape: shape, head: head, ignition: package.ignition, bullet: package.bullet)
                 MeasuringGuide(letters: Set(fields.map(\.letter)), shape: shape, head: head)
                     .padding(.vertical, 4)
                 ForEach(fields, id: \.letter) { measured($0) }
@@ -363,17 +364,20 @@ struct TrainingPackageView: View {
         let value: WritableKeyPath<Measurements, Double?>
     }
 
-    /// In the order of the old-ammunition table's legend.
+    /// By type, each in the order taken (Raven 2026-11-19): the diameters from the rim to the tip, the primer's
+    /// beside the rim on the head, then the lengths from the head out. E is the rim's thickness, as on C.I.P. sheets.
     static let calliperFields = [
-        CalliperField(letter: "D", title: "Geschossdurchmesser", value: \.bullet),
-        CalliperField(letter: "N", title: "Halsdurchmesser", value: \.neck),
-        CalliperField(letter: "S", title: "Schulterdurchmesser", value: \.shoulder),
-        CalliperField(letter: "B", title: "Bodendurchmesser", value: \.base),
         CalliperField(letter: "R", title: "Randdurchmesser", value: \.rim),
-        CalliperField(letter: "G", title: "Gürteldurchmesser", value: \.belt),
         CalliperField(letter: "P", title: "Zündhütchen-Durchmesser", value: \.primerDiameter),
+        CalliperField(letter: "G", title: "Gürteldurchmesser", value: \.belt),
+        CalliperField(letter: "B", title: "Bodendurchmesser", value: \.base),
+        CalliperField(letter: "S", title: "Schulterdurchmesser", value: \.shoulder),
+        CalliperField(letter: "N", title: "Halsdurchmesser", value: \.neck),
+        CalliperField(letter: "D", title: "Geschossdurchmesser", value: \.bullet),
+        CalliperField(letter: "E", title: "Randdicke", value: \.rimThickness),
         CalliperField(letter: "H", title: "Schulterlänge", value: \.shoulderLength),
         CalliperField(letter: "L", title: "Hülsenlänge", value: \.caseLength),
+        CalliperField(letter: "PP", title: "Papierpflasterlänge", value: \.patchLength),
         CalliperField(letter: "OAL", title: "Gesamtlänge", value: \.overallLength),
     ]
 
@@ -397,12 +401,15 @@ struct TrainingPackageView: View {
         }
     }
 
-    /// The fields of this round: the belt's with a belted head, none for the shoulder of a straight case.
-    static func fields(shape: CaseShape, head: RimKind) -> [CalliperField] {
+    /// The fields of this round: the belt's with a belted head, none for the shoulder of a straight case,
+    /// no primer on a rimfire round, the patch's length with a paper-patched bullet (Raven 2026-11-19).
+    static func fields(shape: CaseShape, head: RimKind, ignition: String? = nil, bullet: String? = nil) -> [CalliperField] {
         calliperFields.filter { field in
             switch field.letter {
             case "G": head == .belted
             case "S", "H": shape != .straight
+            case "P": ignition != "rimfire"
+            case "PP": bullet == "paper"
             default: true
             }
         }

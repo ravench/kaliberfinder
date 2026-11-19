@@ -12,8 +12,8 @@ their photos in `../Golden` (see its README).
   package.json            calibre (catalogue id), part (cartridge | emptyCase), note, device, iOS, app version;
                           unlisted: true when calibre is the name of a round the catalogue lacks;
                           measurements: what the calliper says about the round, in mm (bullet, neck,
-                          shoulder, base, rim, belt, primerDiameter, shoulderLength, caseLength,
-                          overallLength; each only when measured);
+                          shoulder, base, rim, belt, primerDiameter, rimThickness, shoulderLength, caseLength,
+                          patchLength (mouth to the paper patch's front end), overallLength; each only when measured);
                           atypicalBullet: true when the round carries a bullet its calibre does not
                           usually have, so tuning against the series takes care;
                           country: ISO code of the country the photos were taken in (one the catalogue knows, e.g. "CH");

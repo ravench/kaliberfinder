@@ -22,7 +22,7 @@ final class MeasuringGuideTests: XCTestCase {
             RimKind.allCases.map { MeasuringGuide(letters: MeasureView.letters, shape: shape, head: $0) }
         }
         let series = CaseShape.allCases.flatMap { shape in
-            RimKind.allCases.map { MeasuringGuide(letters: Set(TrainingPackageView.fields(shape: shape, head: $0).map(\.letter)), shape: shape, head: $0) }
+            RimKind.allCases.map { MeasuringGuide(letters: Set(TrainingPackageView.fields(shape: shape, head: $0, bullet: "paper").map(\.letter)), shape: shape, head: $0) }
         }
         for guide in [MeasuringGuide()] + forms + series { assertLettersAndLinesFit(guide) }
     }
@@ -32,9 +32,16 @@ final class MeasuringGuideTests: XCTestCase {
     /// and its neck mark spans the body at the mouth.
     func testTheTrainingSketchFollowsTheSeriesFacts() throws {
         let all = TrainingPackageView.calliperFields.map(\.letter)
-        XCTAssertEqual(TrainingPackageView.fields(shape: .any, head: .any).map(\.letter), all.filter { $0 != "G" })
-        XCTAssertEqual(TrainingPackageView.fields(shape: .any, head: .belted).map(\.letter), all)
-        XCTAssertEqual(TrainingPackageView.fields(shape: .straight, head: .rimless).map(\.letter), all.filter { !["G", "S", "H"].contains($0) })
+        XCTAssertEqual(TrainingPackageView.fields(shape: .any, head: .any).map(\.letter), all.filter { !["G", "PP"].contains($0) })
+        XCTAssertEqual(TrainingPackageView.fields(shape: .any, head: .belted, bullet: "paper").map(\.letter), all)
+        XCTAssertEqual(TrainingPackageView.fields(shape: .straight, head: .rimless).map(\.letter), all.filter { !["G", "S", "H", "PP"].contains($0) })
+        // Rimfire rounds have no primer, so no field and no head view (Raven 2026-11-19); a paper patch has its length.
+        let rimfire = TrainingPackageView.fields(shape: .straight, head: .rimmed, ignition: "rimfire").map(\.letter)
+        XCTAssertEqual(rimfire, ["R", "B", "N", "D", "E", "L", "OAL"])
+        XCTAssertFalse(MeasuringGuide(letters: Set(rimfire), shape: .straight, head: .rimmed).showsHead)
+        XCTAssertEqual(TrainingPackageView.fields(shape: .straight, head: .rimmed, ignition: "centrefire", bullet: "paper").map(\.letter),
+                       ["R", "P", "B", "N", "D", "E", "L", "PP", "OAL"])
+        XCTAssertFalse(TrainingPackageView.fields(shape: .any, head: .any, bullet: "lead").contains { $0.letter == "PP" })
         XCTAssertEqual(TrainingPackageView.shape(of: nil), .any)
         XCTAssertEqual(TrainingPackageView.shape(of: "tapered"), .straight)
         XCTAssertEqual(TrainingPackageView.shape(of: "bottleneck"), .bottleneck)
@@ -124,8 +131,8 @@ final class MeasuringGuideTests: XCTestCase {
         let guide = MeasuringGuide(letters: MeasureView.letters)
         XCTAssertEqual(Set(guide.shownMarks.map(\.letter)), MeasureView.letters)
         XCTAssertEqual(guide.shownExtensions.count, MeasuringGuide.extensions.filter { !$0.letters.filter(MeasureView.letters.contains).isEmpty }.count)
-        XCTAssertTrue(guide.shownExtensions.contains { $0 == [CGPoint(x: 40, y: 142), CGPoint(x: 40, y: 208)] }, "the head's line")
-        XCTAssertFalse(guide.shownExtensions.contains { $0 == [CGPoint(x: 286, y: 134), CGPoint(x: 286, y: 160)] }, "H's line")
+        XCTAssertTrue(guide.shownExtensions.contains { $0 == [CGPoint(x: 40, y: 142), CGPoint(x: 40, y: 232)] }, "the head's line")
+        XCTAssertFalse(guide.shownExtensions.contains { $0 == [CGPoint(x: 286, y: 134), CGPoint(x: 286, y: 184)] }, "H's line")
         XCTAssertEqual(MeasuringGuide().shownMarks.count, MeasuringGuide.marks.count)
         XCTAssertEqual(MeasuringGuide.dimensionLines(guide.shownMarks).count, 3 * guide.shownMarks.count)
         // No field on the head view, so none is drawn and the box ends after the side view (TestFlight 2026-11-17).
