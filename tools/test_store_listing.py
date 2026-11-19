@@ -20,6 +20,17 @@ class StoreTextTests(unittest.TestCase):
             with self.subTest(lang=lang):
                 self.assertEqual(sl.problems(sl.texts(lang)), [])
 
+    def test_the_number_of_calibres_holds(self):
+        """«Über 700 Kaliber» (Raven, 2026-11-19): every description names the same number, and the lists show at
+        least that many by default (well sourced, no cannon rounds: `CartridgeCatalog.visible`)."""
+        import json
+        with open(os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json"), encoding="utf-8") as f:
+            shown = [c for c in json.load(f)["cartridges"] if c["wellSourced"] and c["category"] != "Kanone"]
+        words = {"de": "Über 700 Kaliber", "en": "Over 700 calibres", "fr": "Plus de 700 calibres", "it": "Oltre 700 calibri"}
+        for lang, claim in words.items():
+            self.assertIn(claim, sl.texts(lang)["description"], lang)
+        self.assertGreater(len(shown), 700)
+
     def test_the_apps_four_languages(self):
         self.assertEqual(set(sl.LOCALES.values()), {"de", "en", "fr", "it"})
         self.assertEqual(sorted(os.listdir(sl.STORE)), ["de", "en", "fr", "it"])
