@@ -1219,31 +1219,31 @@
         }
       }
     },
-    "Bildschirm nicht kalibriert: Grösse kann leicht abweichen.": {
+    "Bildschirm nicht kalibriert: Grösse kann abweichen.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Screen not calibrated: the size may be slightly off."
+            "value": "Screen not calibrated: the size may be off."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pantalla sin calibrar: el tamaño puede variar ligeramente."
+            "value": "Pantalla sin calibrar: el tamaño puede variar."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Écran non calibré : la taille peut légèrement différer."
+            "value": "Écran non calibré : la taille peut différer."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Schermo non calibrato: la dimensione può differire leggermente."
+            "value": "Schermo non calibrato: la dimensione può differire."
           }
         }
       }
