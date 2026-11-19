@@ -58,7 +58,7 @@ enum RimKind: String, CaseIterable, Identifiable {
     /// German text, used as localization key.
     var title: String {
         switch self {
-        case .any: "Beliebige Randform"
+        case .any: "Beliebig"
         case .rimmed: "Mit Rand"
         case .semiRimmed: "Halbrand"
         case .rimless: "Randlos"

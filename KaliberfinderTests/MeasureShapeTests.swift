@@ -95,7 +95,7 @@ final class MeasureShapeTests: XCTestCase {
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
         XCTAssertEqual(CaseShape.allCases.map { en[$0.title] }, ["Any", "Straight", "Bottleneck"])
         XCTAssertEqual(en["Hülsenform"], "Case shape")
-        XCTAssertEqual(RimKind.allCases.map { en[$0.title] }, ["Any head", "Rimmed", "Semi-rimmed", "Rimless", "Belted"])
+        XCTAssertEqual(RimKind.allCases.map { en[$0.title] }, ["Any", "Rimmed", "Semi-rimmed", "Rimless", "Belted"])
         XCTAssertEqual(en["Randform"], "Head")
     }
 }

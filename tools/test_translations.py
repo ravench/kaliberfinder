@@ -41,6 +41,11 @@ class TranslationTests(unittest.TestCase):
         self.assertEqual(T["mit Flaschenhals"][FR], "à épaulement")
         self.assertEqual(T["Schrot (209)"][FR], "Cartouche à plombs (209)")
 
+    def test_any_fits_both_rows(self):
+        """«Beliebig» is the unset choice of Hülsenform (la douille) and Randform (le culot): no gender in French."""
+        self.assertEqual(T["Beliebig"][FR], "Peu importe")
+        self.assertNotIn("Beliebige Randform", T)
+
     def test_the_check_of_2026_11_19_stays_fixed(self):
         """What the check of all translations found clearly wrong: cut buttons, calques, a vulgar reading, typography."""
         self.assertEqual(T["Alle passenden 1:1 vergleichen (%lld)"][FR:ES], ("Tout comparer 1:1 (%lld)", "Confronta tutti 1:1 (%lld)"))

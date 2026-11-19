@@ -106,8 +106,7 @@ T = {
     "DDR": ("East Germany", "RDA", "DDR", "RDA"),
     "Jugoslawien": ("Yugoslavia", "Yougoslavie", "Jugoslavia", "Yugoslavia"),
     "Alle passenden 1:1 vergleichen (%lld)": ("Compare all matches 1:1 (%lld)", "Tout comparer 1:1 (%lld)", "Confronta tutti 1:1 (%lld)", "Comparar todos 1:1 (%lld)"),
-    "Beliebig": ("Any", "Toutes", "Qualsiasi", "Cualquiera"),
-    "Beliebige Randform": ("Any head", "Tout culot", "Qualsiasi fondello", "Cualquier culote"),
+    "Beliebig": ("Any", "Peu importe", "Qualsiasi", "Cualquiera"),  # for Hülsenform and Randform alike: no gender
     "Gerade": ("Straight", "Droite", "Dritto", "Recta"),
     "Flaschenhals": ("Bottleneck", "À épaulement", "A collo di bottiglia", "Abotellada"),
     "Erkannt: %@": ("Detected: %@", "Détecté : %@", "Riconosciuto: %@", "Detectado: %@"),

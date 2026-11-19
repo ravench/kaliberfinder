@@ -1063,42 +1063,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Toutes"
+            "value": "Peu importe"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
             "value": "Qualsiasi"
-          }
-        }
-      }
-    },
-    "Beliebige Randform": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Any head"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cualquier culote"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tout culot"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Qualsiasi fondello"
           }
         }
       }
