@@ -23,7 +23,8 @@ enum ScreenScale {
     /// Width and height of an ID-1 card (bank card, ID card, driving licence) in millimetres.
     static let cardSize = (width: 85.60, height: 53.98)
 
-    /// Pixels per inch by model identifier (Apple's published values).
+    /// Pixels per inch by model identifier (Apple's published values): every iPhone and iPad that runs iOS 17 or
+    /// later. `ScreenScaleTests.testEveryDeviceThatRunsTheAppIsInTheTable` checks it against the devices Xcode knows.
     static let ppiByModel: [String: Double] = [
         // iPhone SE (2nd/3rd gen), 11, XR
         "iPhone12,8": 326, "iPhone14,6": 326, "iPhone12,1": 326, "iPhone11,8": 326,
@@ -41,6 +42,8 @@ enum ScreenScale {
         "iPhone17,3": 460, "iPhone17,4": 460, "iPhone17,1": 460, "iPhone17,2": 460, "iPhone17,5": 460,
         // 17 Pro, 17 Pro Max, 17, Air
         "iPhone18,1": 460, "iPhone18,2": 460, "iPhone18,3": 460, "iPhone18,4": 460,
+        // 17e, 18 Pro, 18 Pro Max (two identifiers), Duo: its inner screen (the outer one's density is not confirmed)
+        "iPhone18,5": 460, "iPhone19,2": 460, "iPhone19,3": 460, "iPhone19,7": 460, "iPhone19,4": 460,
         // iPads that run iPadOS 17 (Apple's published densities: 264 ppi, iPad mini 326 ppi).
         // iPad Pro 12.9" (2nd gen), 10.5", iPad 6, iPad 7
         "iPad7,1": 264, "iPad7,2": 264, "iPad7,3": 264, "iPad7,4": 264, "iPad7,5": 264, "iPad7,6": 264, "iPad7,11": 264, "iPad7,12": 264,
