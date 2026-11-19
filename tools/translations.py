@@ -16,7 +16,7 @@ T = {
     "Kaliber zum Vergleichen wählen.": ("Pick calibres to compare.", "Choisissez les calibres à comparer.", "Scegli i calibri da confrontare."),
     "Mehrere Patronen erkannt: Tippe auf eine.": ("Several cartridges found: tap one.", "Plusieurs cartouches détectées : touchez-en une.", "Più cartucce trovate: toccane una."),
     "Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe.": (
-        "For identification only: a match is no clearance to fire. Check the headstamp and the calibre marked on the firearm.",
+        "For identification only: a match does not mean a cartridge is safe to fire. Check the headstamp and the calibre marked on the firearm.",
         "Pour l'identification seulement : une correspondance n'autorise pas le tir. Vérifiez le marquage du culot et le calibre indiqué sur l'arme.",
         "Solo per l'identificazione: una corrispondenza non autorizza a sparare. Controlla il fondello e il calibro indicato sull'arma."),
     "Eine Länge und ein Durchmesser reichen oft.": ("A length and a diameter are often enough.", "Une longueur et un diamètre suffisent souvent.", "Una lunghezza e un diametro spesso bastano."),

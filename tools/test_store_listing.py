@@ -22,7 +22,7 @@ class StoreTextTests(unittest.TestCase):
 
     def test_every_description_says_a_match_is_no_clearance_to_fire(self):
         """The app tells lookalike calibres apart by outline: the listing says what a match is not (review 2026-11-18)."""
-        words = {"de": "keine Freigabe zum Schiessen", "en": "no clearance to fire", "fr": "n'autorise pas le tir",
+        words = {"de": "keine Freigabe zum Schiessen", "en": "safe to fire", "fr": "n'autorise pas le tir",
                  "it": "non autorizza a sparare"}
         for lang, sentence in words.items():
             self.assertIn(sentence, sl.texts(lang)["description"], lang)

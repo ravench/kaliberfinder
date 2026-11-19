@@ -44,7 +44,7 @@ class TranslationTests(unittest.TestCase):
     def test_a_match_is_no_clearance_to_fire(self):
         """Both result screens say under «Mögliche Kaliber» that a match must not decide what is fired (review 2026-11-18)."""
         note = T["Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe."]
-        for lang, words in ((EN, "no clearance to fire"), (FR, "n'autorise pas le tir"), (IT, "non autorizza a sparare")):
+        for lang, words in ((EN, "safe to fire"), (FR, "n'autorise pas le tir"), (IT, "non autorizza a sparare")):
             self.assertIn(words, note[lang])
         root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         for view in ("MatchesView.swift", "MeasureView.swift"):

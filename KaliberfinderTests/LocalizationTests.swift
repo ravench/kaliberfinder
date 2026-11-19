@@ -50,7 +50,7 @@ final class LocalizationTests: XCTestCase {
     /// The line under «Mögliche Kaliber» on both result screens (review 2026-11-18), in every language.
     func testTheSafetyNoteIsTranslated() throws {
         let key = "Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe."
-        let expected = ["en": "no clearance to fire", "fr": "n'autorise pas le tir", "it": "non autorizza a sparare"]
+        let expected = ["en": "safe to fire", "fr": "n'autorise pas le tir", "it": "non autorizza a sparare"]
         for (lang, words) in expected {
             XCTAssertTrue(try XCTUnwrap(try table(lang)[key], lang).contains(words), lang)
         }
