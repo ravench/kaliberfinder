@@ -970,7 +970,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Coloca una tarjeta bancaria o un documento de identidad en vertical sobre el rectángulo, con el borde superior alineado. Mueve el control hasta que el rectángulo sea igual de largo."
+            "value": "Coloca una tarjeta bancaria o un documento de identidad en vertical sobre el rectángulo, con el borde superior alineado. Arrastra el regulador hasta que el rectángulo sea tan largo como la tarjeta."
           }
         },
         "fr": {
@@ -2188,7 +2188,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "abotellada"
+            "value": "vaina abotellada"
           }
         },
         "fr": {
@@ -2652,7 +2652,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Para cartuchos que la app no conoce: un nombre a tu elección, excluido de la evaluación."
+            "value": "Para cartuchos que la app no conoce: un nombre a tu elección; quedan excluidos de la evaluación."
           }
         },
         "fr": {
@@ -3058,7 +3058,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estimado, calibra la pantalla"
+            "value": "Estimada, calibra la pantalla"
           }
         },
         "fr": {
@@ -4189,7 +4189,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calibres cuyas dimensiones no están bien documentadas en calibre-data: partes de su dibujo son estimadas."
+            "value": "Calibres cuyas dimensiones no están bien documentadas en calibre-data: partes de su plano son estimadas."
           }
         },
         "fr": {
@@ -4682,7 +4682,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ninguno: cartucho de fogueo"
+            "value": "Ninguna: cartucho de fogueo"
           }
         },
         "fr": {
@@ -4711,7 +4711,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ninguno: vaina vacía"
+            "value": "Ninguna: vaina vacía"
           }
         },
         "fr": {
@@ -5726,7 +5726,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Medido con el calibre (pie de rey)"
+            "value": "Medido con pie de rey"
           }
         },
         "fr": {
@@ -5958,7 +5958,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No guardado: %@"
+            "value": "No guardada: %@"
           }
         },
         "fr": {
@@ -7524,7 +7524,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "asiento de la bala"
+            "value": "profundidad de asiento de la bala"
           }
         },
         "fr": {
@@ -8249,7 +8249,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sin fuentes: dimensiones poco documentadas en calibre-data, partes del dibujo estimadas. Solo visible con la opción de desarrollador."
+            "value": "Sin fuentes: dimensiones poco documentadas en calibre-data, partes del plano estimadas. Solo visible con la opción de desarrollador."
           }
         },
         "fr": {
@@ -8800,7 +8800,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Elige el calibre que fotografías y hazle varias fotos. Se guardan la foto, la profundidad LiDAR, los datos de la cámara y la máscara de Vision. Comparte la serie como ZIP; se añadirá a las pruebas."
+            "value": "Elige el calibre que vas a fotografiar y hazle varias fotos. Se guardan la foto, la profundidad LiDAR, los datos de la cámara y la máscara de Vision. Comparte la serie como ZIP; se añadirá a las pruebas."
           }
         },
         "fr": {

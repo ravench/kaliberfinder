@@ -152,9 +152,13 @@ struct ColourCodeRow: View {
             ColourSwatch(part: code.part, colours: code.colours)
             VStack(alignment: .leading, spacing: 2) {
                 Text(verbatim: code.meaning.map { Cartridge.ColourCode.title($0).loc }.joined(separator: " · "))
-                Text(verbatim: ([Self.partTitle(code.part).loc] + [code.description].compactMap { $0 })
+                Text(verbatim: ([Self.partTitle(code.part).loc]
+                                + [code.description(in: Bundle.main.preferredLocalizations.first ?? "de")].compactMap { $0 })
                     .joined(separator: " · "))
                     .font(.footnote).foregroundStyle(.secondary)
+                    // Takes the lines it needs: beside the flags, a text that just fitted two lines was cut with «…»
+                    // instead of wrapping to a third (the GP 11's German description, PR screens 2026-11-19).
+                    .fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: 0)
             HStack(spacing: 4) { ForEach(code.countries, id: \.code) { CountryFlag(country: $0) } }
