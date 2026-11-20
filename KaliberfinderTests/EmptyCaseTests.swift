@@ -88,7 +88,6 @@ final class EmptyCaseTests: XCTestCase {
         let flatWide: Set = [".25-36 Marlin", ".32-35 Stevens & Maynard", "8x42 mm R M88", "8x48 mm R Sauer"]
         let rounds = CartridgeCatalog.all.filter {
             $0.hasCase && $0.kind != "shot" && $0.dimensions.overallLength > $0.dimensions.caseLength && !neckWide.contains($0.id)
-                && !flatWide.contains($0.id)
         }
         // Two silhouettes per calibre, on every core; the detection reads only static tables.
         var parts = [(loaded: ShapePart?, empty: ShapePart?)?](repeating: nil, count: rounds.count)
@@ -96,7 +95,8 @@ final class EmptyCaseTests: XCTestCase {
         DispatchQueue.concurrentPerform(iterations: rounds.count) { i in
             guard let loaded = try? photo(rounds[i], part: .cartridge), let empty = try? photo(rounds[i], part: .emptyCase) else { return }
             // A flat-nosed bullet nearly as wide as the case ends like a mouth: that end is no evidence.
-            let judged = Matcher.endWidth(loaded) < Matcher.partMiddle ? ScanMode.auto.part(for: loaded) : nil
+            let judged = Matcher.endWidth(loaded) < Matcher.partMiddle && !flatWide.contains(rounds[i].id)
+                ? ScanMode.auto.part(for: loaded) : nil
             lock.lock(); parts[i] = (judged, ScanMode.auto.part(for: empty)); lock.unlock()
         }
         for (c, part) in zip(rounds, parts) {

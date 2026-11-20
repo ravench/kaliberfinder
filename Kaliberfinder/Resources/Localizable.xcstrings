@@ -5772,35 +5772,6 @@
         }
       }
     },
-    "Mündungsdurchmesser": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mouth diameter"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diámetro de la boca"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diamètre de l'embouchure"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diametro della bocca"
-          }
-        }
-      }
-    },
     "NATO": {
       "extractionState": "manual",
       "localizations": {
