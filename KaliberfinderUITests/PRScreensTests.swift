@@ -180,8 +180,7 @@ final class PRScreensTests: XCTestCase {
                                           ("11x59", "11x59 mm R Gras", "metric", "35b-Masszeichnung-Gras"),
                                           // A spitzer whose nose length is measured: its own «Kopflänge» source (calibre-data #197).
                                           ("GP 90", "5.6 mm GP 90", "metric", "35c-Masszeichnung-GP90"),
-                                          // A flat nose with its AECC flat width, and a crimped blank with the mouth
-                                          // and crimp from Raven's photos: their own source rows (calibre-data #204, #205).
+                                          // A flat nose (AECC flat width) and a crimped blank: their own source rows (calibre-data #204, #205).
                                           ("45 Colt", ".45 Colt", "metric", "35e-Masszeichnung-45Colt"),
                                           ("6.8/11", "6.8/11", "metric", "35g-Masszeichnung-6.8-11")] {
             app.terminate()
@@ -206,11 +205,7 @@ final class PRScreensTests: XCTestCase {
             guard open(app.buttons["Masszeichnung anzeigen"].firstMatch) else { return }
             snap(shot)
             // The drawing's book button opens the calibre's sources, the measurements' first.
-            if query == "GP 11", open(app.navigationBars.buttons["Quellen"].firstMatch) {
-                XCTAssertTrue(app.navigationBars["Quellen"].waitForExistence(timeout: 5), "The sources page did not open")
-                snap("34b-Quellen-GP11")
-            }
-            let sourcesShot = ["GP 90": "35d-Quellen-GP90", "45 Colt": "35f-Quellen-45Colt", "6.8/11": "35h-Quellen-6.8-11"][query]
+            let sourcesShot = ["GP 11": "34b-Quellen-GP11", "GP 90": "35d-Quellen-GP90", "45 Colt": "35f-Quellen-45Colt", "6.8/11": "35h-Quellen-6.8-11"][query]
             if let sourcesShot, open(app.navigationBars.buttons["Quellen"].firstMatch) {
                 XCTAssertTrue(app.navigationBars["Quellen"].waitForExistence(timeout: 5), "The sources page did not open")
                 snap(sourcesShot)
