@@ -51,11 +51,7 @@ final class PRScreensTests: XCTestCase {
         }
         if open(app.buttons["Alle Kaliber"].firstMatch) {
             snap("04-Alle-Kaliber")
-            let search = app.searchFields.firstMatch
-            if search.waitForExistence(timeout: 5) {
-                search.tap()
-                search.typeText("9x19")
-            }
+            search("9x19")
             // A row opens its calibre's page; the group is a row on that page (Raven, 2026-11-13).
             if open(app.staticTexts["9x19 mm"].firstMatch) {
                 snap("05-Kaliber")
@@ -154,13 +150,13 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch), open(app.buttons["Auswählen"].firstMatch) else { return }
         snap("19a-Auswahl-leer")  // the same list as «Alle Kaliber», with a circle per row, before anything is picked
+        search("9x")
+        // While typing, «Abbrechen» stays in the navigation bar (Raven, 2026-11-20: it went away).
+        XCTAssertTrue(app.navigationBars.buttons["selectButton"].exists, "The selection button is gone while searching")
+        snap("19b-Auswahl-Suche")
         for (query, name) in [("GP 11", "7.5x55 mm Swiss (GP 11)"), ("9x19", "9x19 mm"), (".45 ACP", ".45 ACP")] {
-            let search = app.searchFields.firstMatch
-            if search.waitForExistence(timeout: 5) {
-                search.tap()
-                // Clears the previous query; return hides the keyboard, so the rows can be tapped.
-                search.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 10) + query + "\n")
-            }
+            // Clears the previous query; return hides the keyboard, so the rows can be tapped.
+            search(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 10) + query + "\n")
             _ = open(app.staticTexts[name].firstMatch)
         }
         snap("19-Auswahl")  // the last pick ticked, the count of all three on the button
@@ -184,11 +180,7 @@ final class PRScreensTests: XCTestCase {
             app.launch()
             XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
             guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
-            let search = app.searchFields.firstMatch
-            if search.waitForExistence(timeout: 5) {
-                search.tap()
-                search.typeText(query + "\n") // return hides the keyboard
-            }
+            search(query + "\n")
             guard open(app.staticTexts[name].firstMatch) else { return }
             if query == "GP 11" {
                 // The colour codes of calibre-data (tip and bases) sit under the measurements (Raven, 2026-11-11).
@@ -357,12 +349,8 @@ final class PRScreensTests: XCTestCase {
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         for (query, name, shot) in [("5.45", "5.45x39 mm", "10-Stahlhuelse"), ("Fury", ".277 SIG Fury", "11-Hybridhuelse"),
                                     ("Snider", ".577 Snider", "12-Papierhuelse")] {
-            let search = app.searchFields.firstMatch
-            if search.waitForExistence(timeout: 5) {
-                search.tap()
-                // Clears the previous query first.
-                search.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 8) + query)
-            }
+            // Clears the previous query; return hides the keyboard, whose search field would cover the row (the bar stays since #281).
+            search(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 8) + query + "\n")
             if open(app.staticTexts[name].firstMatch) {
                 snap(shot)
                 back()
