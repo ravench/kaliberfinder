@@ -63,7 +63,9 @@ def colour_codes(name):
 # The parts of a calibre's sources page, in the calibre page's order: calibre-data's table (or "colour_codes",
 # the sources of all its [[colour_codes]]). The app titles each part (SourcesView); parts the calibre page
 # does not show (the year, the firearms, today's case materials) are left out.
-SOURCE_PARTS = ("mm", "shoulder_angle", "nose", "case_head", "primer", "bullet", "case", "origin", "colour_codes")
+# flat, mouth and crimp_length: values with their own sources (cite.<key>), e.g. a flat read off an AECC drawing or a
+# blank's crimp measured on Raven's photos (calibre-data #204, #205), so the page does not credit them to the [mm] sheets.
+SOURCE_PARTS = ("mm", "shoulder_angle", "nose", "flat", "mouth", "crimp_length", "case_head", "primer", "bullet", "case", "origin", "colour_codes")
 # Web sources named after their publisher rather than their host.
 SITE_TITLES = {"bobp.cip-bobp.org": "C.I.P.", "bobp.expert-it.com": "C.I.P.", "saami.org": "SAAMI",
                "commons.wikimedia.org": "Wikimedia Commons", "web.archive.org": "Internet Archive"}
