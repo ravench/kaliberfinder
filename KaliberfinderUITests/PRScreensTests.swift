@@ -464,6 +464,16 @@ final class PRScreensTests: XCTestCase {
         snap("35-Aehnliche-Kaliber-1zu1")
     }
 
+    /// A group told apart by the rim: «Unterscheiden sich in: Setztiefe des Geschosses, Hülsenrand» (review 2026-11-20).
+    func testRimGroup() {
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        search(".38 Special")
+        guard open(app.staticTexts[".38 Special"].firstMatch), app.navigationBars[".38 Special"].waitForExistence(timeout: 5),
+              open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Gruppe")).firstMatch) else { return }
+        XCTAssertTrue(app.navigationBars["Gruppe .38 Special"].waitForExistence(timeout: 5), "The group page did not open")
+        snap("34b-Gruppe-Huelsenrand")
+    }
+
     /// A cartridge made both as rimfire and centrefire (calibre-data, Raven 2026-11-09): the rimfire
     /// Vetterli's page and its group with the centrefire version, which differ in ignition.
     func testIgnitionGroup() {
