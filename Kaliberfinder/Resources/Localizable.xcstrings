@@ -3858,6 +3858,35 @@
         }
       }
     },
+    "Hülsenrand": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rim"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pestaña"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bourrelet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "collarino"
+          }
+        }
+      }
+    },
     "Im Bild": {
       "extractionState": "manual",
       "localizations": {
@@ -7704,13 +7733,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "enfoncement du projectile"
+            "value": "profondeur d'enfoncement du projectile"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "inserimento della palla"
+            "value": "profondità di inserimento della palla"
           }
         }
       }

@@ -89,19 +89,33 @@ class TranslationTests(unittest.TestCase):
         self.assertEqual(T["Rand"][IT], "Collarino")
         self.assertEqual(T["Randdurchmesser"][IT], "Diametro del collarino")
         root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        with open(os.path.join(root, "store", "it", "description.txt"), encoding="utf-8") as f:
-            store = f.read()
+
+        def read(*path):
+            with open(os.path.join(root, *path), encoding="utf-8") as f:
+                return f.read()
         for key, values in T.items():
-            self.assertNotRegex(values[IT], r"(?i)\borl[oi]\b|semi-orlo", key)
+            self.assertNotRegex(values[IT], r"(?i)\borl[oi]\b", key)
             self.assertNotRegex(values[IT], r"(?i)proiettil", f"{key}: the bullet is «palla»")
             self.assertNotIn("caméra", values[FR].lower(), key)
-        self.assertNotRegex(store, r"(?i)\borl[oi]\b")
-        self.assertEqual(T["Setztiefe des Geschosses"][EN], "seating depth")
-        self.assertNotIn("z. B. Bodenprägung oder eigener Name", T)  # «Bodenstempel», as everywhere else
-        # After «Detected:» the part starts lower-case like the features that follow it.
+            self.assertNotIn("Bodenprägung", key)  # «Bodenstempel», as everywhere else
+        self.assertNotRegex(read("store", "it", "description.txt"), r"(?i)\borl[oi]\b")
+        # The store text and the release notes, which the app shows too, say what the app says.
+        self.assertNotIn("caméra", read("store", "fr", "description.txt").lower())
+        french_notes = re.findall(r"### fr\n(.*?)(?=\n### |\n## |\Z)", read("RELEASE_NOTES.md"), re.S)
+        self.assertTrue(french_notes)
+        for notes in french_notes:
+            self.assertNotIn("caméra", notes.lower())
+        # The depth, not the act of seating.
+        self.assertEqual(T["Setztiefe des Geschosses"], ("seating depth", "profondeur d'enfoncement du projectile",
+                                                         "profondità di inserimento della palla", "profundidad de asiento de la bala"))
+        # After «Detected:» and «Differ in:» a part starts lower-case like the words that follow it; «Rand» is the
+        # drawing's capitalised label, so the rim difference has a key of its own.
         for key in ("Erkannt: Patrone · %@", "Erkannt: leere Hülse · %@"):
             for text in T[key]:
                 self.assertRegex(text, r"^[^:]+ ?: [a-zà-ÿ]", key)
+        for key in ("Hülsenrand", "Laufdurchmesser", "Länge", "Setztiefe des Geschosses", "Ladung", "Zündung"):
+            for text in T[key]:
+                self.assertRegex(text, r"^[a-zà-ÿ]", key)
 
     def test_spanish_takes_its_cartridge_terms_from_municion_org(self):
         """The Spanish names of a cartridge's parts are those of municion.org (AECC), the Spanish source
