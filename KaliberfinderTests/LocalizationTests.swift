@@ -56,6 +56,15 @@ final class LocalizationTests: XCTestCase {
         }
     }
 
+    /// The nose's source part (Raven, 2026-11-20): the curved part, round or pointed; «ogive» means just that.
+    func testHeadLengthIsTheNoseOfRoundAndPointedBullets() throws {
+        let expected = ["en": "Nose length", "fr": "Longueur de l'ogive", "it": "Lunghezza dell'ogiva", "es": "Longitud de la ojiva"]
+        for (lang, title) in expected {
+            XCTAssertEqual(try table(lang)["Kopflänge"], title, lang)
+            XCTAssertNil(try table(lang)["Spitzenlänge"], lang)
+        }
+    }
+
     func testSpanishUsesTheCartridgeTermsOfMunicionOrg() throws {
         let es = try table("es")
         XCTAssertEqual(es["Hülse"], "Vaina")

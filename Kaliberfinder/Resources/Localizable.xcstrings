@@ -4670,6 +4670,35 @@
         }
       }
     },
+    "Kopflänge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nose length"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longitud de la ojiva"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Longueur de l'ogive"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lunghezza dell'ogiva"
+          }
+        }
+      }
+    },
     "Kunststoff": {
       "extractionState": "manual",
       "localizations": {
@@ -7798,35 +7827,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Punta: colori dalla punta in giù."
-          }
-        }
-      }
-    },
-    "Spitzenlänge": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nose length"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Longitud de la ojiva"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Longueur de l'ogive"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lunghezza dell'ogiva"
           }
         }
       }
