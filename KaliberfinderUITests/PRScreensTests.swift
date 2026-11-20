@@ -498,11 +498,12 @@ final class PRScreensTests: XCTestCase {
         snap("38-6-5-PRC")
     }
 
-    /// The «Trainingsdaten» screen, on the example package of KaliberfinderTests/Captures so
-    /// it shows the same series on every run: the saved series, and one of them opened from the list.
+    /// The «Trainingsdaten» screen, on a copy of the example package of KaliberfinderTests/Captures so it shows the
+    /// same series on every run and the checked-in one stays as it is: changing a choice writes its package.json.
     func testTrainingCapture() {
-        let captures = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
-            .appendingPathComponent("KaliberfinderTests/Captures")
+        let captures = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        XCTAssertNoThrow(try FileManager.default.copyItem(at: URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+            .deletingLastPathComponent().appendingPathComponent("KaliberfinderTests/Captures"), to: captures))
         app.terminate()
         app.launchArguments += ["-trainingCaptureEnabled", "YES", "-screenTourCaptures", captures.path]
         app.launch()
@@ -519,12 +520,10 @@ final class PRScreensTests: XCTestCase {
         menuStop("Randform", choice: "Randlos", "22c-Trainingsdaten-Randform")
         menuStop("Hülsenform", choice: "Konisch", "22d-Trainingsdaten-Huelsenform")
         menuStop("Hülsenmaterial", choice: "Messing", "22e-Trainingsdaten-Huelsenmaterial")
-        // A rimfire round, paper-patched (Raven 2026-11-19): no primer field or head view, the patch's length; reset after.
+        // A rimfire round, paper-patched (Raven 2026-11-19): no primer field or head view, the patch's length.
         menuStop("Zündart", choice: "Randfeuer"); menuStop("Geschoss", choice: "Mit Papierpflaster")
         // The calliper fields at the end, with the sketch of where to measure over them.
-        scroll()
-        snap("22b-Trainingsdaten-Schieblehre")
-        scroll(up: false); menuStop("Zündart", choice: "Zentralfeuer"); menuStop("Geschoss", choice: "Vollmantel")
+        scroll(); snap("22b-Trainingsdaten-Schieblehre")
     }
 
     /// With the training capture on, a calibre's detail page starts a series of that calibre.
@@ -657,18 +656,18 @@ final class PRScreensTests: XCTestCase {
 
     private func back() { app.navigationBars.buttons.element(boundBy: 0).tap() }
 
-    /// Swipes to the very end (or start): a single swipe or drag stops at a different place on
-    /// each run, the end of the content does not.
-    /// Opens the picker menu of the series row whose label starts with `row`, takes the screen while the menu
-    /// is up (with a `name`), and taps `choice`: the fixture's own value closes the menu and changes nothing.
+    /// Opens the picker menu of the row whose label starts with `row`, snaps it as `name` if given, and picks `choice`.
+    /// The row is tapped once hittable: the menu before it may still be fading out over it (tour of #277).
     private func menuStop(_ row: String, choice: String, _ name: String? = nil) {
         let button = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", row)).firstMatch
-        guard button.waitForExistence(timeout: 5) else { return }
+        guard button.waitForExistence(timeout: 5), button.wait(for: \.isHittable, toEqual: true, timeout: 5) else { return XCTFail("\(row) not tappable") }
         button.tap()
         if app.buttons[choice].waitForExistence(timeout: 5), let name { snap(name) }
         app.buttons[choice].tap()
     }
 
+    /// Swipes to the very end (or start): a single swipe or drag stops at a different place on
+    /// each run, the end of the content does not.
     private func scroll(up: Bool = true) {
         for _ in 0..<6 {
             if up { app.swipeUp(velocity: .fast) } else { app.swipeDown(velocity: .fast) }

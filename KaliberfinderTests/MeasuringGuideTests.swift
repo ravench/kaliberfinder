@@ -131,8 +131,8 @@ final class MeasuringGuideTests: XCTestCase {
         let guide = MeasuringGuide(letters: MeasureView.letters)
         XCTAssertEqual(Set(guide.shownMarks.map(\.letter)), MeasureView.letters)
         XCTAssertEqual(guide.shownExtensions.count, MeasuringGuide.extensions.filter { !$0.letters.filter(MeasureView.letters.contains).isEmpty }.count)
-        XCTAssertTrue(guide.shownExtensions.contains { $0 == [CGPoint(x: 40, y: 142), CGPoint(x: 40, y: 232)] }, "the head's line")
-        XCTAssertFalse(guide.shownExtensions.contains { $0 == [CGPoint(x: 286, y: 134), CGPoint(x: 286, y: 184)] }, "H's line")
+        XCTAssertTrue(guide.shownExtensions.contains { $0 == [CGPoint(x: 40, y: 140), CGPoint(x: 40, y: 184)] }, "the head's line, down to OAL")
+        XCTAssertFalse(guide.shownExtensions.contains { $0.first?.x == 286 }, "H's line")
         XCTAssertEqual(MeasuringGuide().shownMarks.count, MeasuringGuide.marks.count)
         XCTAssertEqual(MeasuringGuide.dimensionLines(guide.shownMarks).count, 3 * guide.shownMarks.count)
         // No field on the head view, so none is drawn and the box ends after the side view (TestFlight 2026-11-17).
@@ -145,6 +145,33 @@ final class MeasuringGuideTests: XCTestCase {
             XCTAssertTrue(line.allSatisfy { $0.x >= guide.box.minX && $0.x <= guide.box.maxX }, "\(line)")
         }
         XCTAssertEqual(MeasuringGuide().box, MeasuringGuide.box)
+    }
+
+    /// The lengths stand on rows from the first down without a gap for a hidden one, and the box ends below the last
+    /// (review 2026-11-19): the form's L and OAL take the first two rows, a straight case's E, L, OAL three.
+    /// The head's line starts under the rim like E's own; the patch's lines start under the mouth and the nose.
+    func testLengthRowsCloseUp() throws {
+        let form = MeasuringGuide(letters: MeasureView.letters)
+        XCTAssertEqual(form.rows, ["L": 156, "OAL": 180])
+        XCTAssertEqual(form.box.maxY, 188)
+        XCTAssertEqual(form.shownMarks.first { $0.letter == "OAL" }?.label.y, 175)
+        let straight = MeasuringGuide(letters: Set(TrainingPackageView.fields(shape: .straight, head: .rimless, bullet: "paper").map(\.letter)),
+                                      shape: .straight, head: .rimless)
+        XCTAssertEqual(straight.rows, ["E": 156, "L": 180, "OAL": 204])
+        XCTAssertEqual(MeasuringGuide().rows, ["E": 156, "H": 180, "L": 204, "OAL": 228])
+        XCTAssertEqual(MeasuringGuide().box, MeasuringGuide.box)
+        let lines = straight.shownExtensions
+        let rimBottom = MeasuringGuide.axis + straight.rimRadius + 0.8
+        XCTAssertTrue(lines.contains([CGPoint(x: 40, y: rimBottom), CGPoint(x: 40, y: 208)]), "the head's line")
+        XCTAssertTrue(lines.contains([CGPoint(x: 49.6, y: rimBottom), CGPoint(x: 49.6, y: 160)]), "E's line")
+        let mouth = try XCTUnwrap(lines.first { $0[0].x == 362.2 })
+        XCTAssertGreaterThan(mouth[0].y, MeasuringGuide.axis + straight.neckRadius, "below the straight case's mouth")
+        let patchEnd = try XCTUnwrap(lines.first { $0[0].x == 430 })
+        XCTAssertFalse(straight.bullet.contains(CGPoint(x: 430, y: patchEnd[0].y - 0.5)), "just under the nose")
+        XCTAssertTrue(straight.bullet.contains(CGPoint(x: 430, y: patchEnd[0].y - 2)))
+        // PP under the bullet, clear of D's letter and line above it.
+        let pp = try XCTUnwrap(straight.shownMarks.first { $0.letter == "PP" })
+        XCTAssertGreaterThan(pp.from.y, MeasuringGuide.axis + straight.bulletRadius)
     }
 
     private static func bounds(_ line: [CGPoint]) -> CGRect {

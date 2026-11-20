@@ -235,6 +235,33 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(TrainingPackageView.calliperFields.map(\.letter), ["R", "P", "G", "B", "S", "N", "D", "E", "H", "L", "PP", "OAL"])
     }
 
+    /// package.json keeps no value of a field the series' choices hide (review 2026-11-19): a patch length after the
+    /// bullet changed to lead, a primer on a rimfire round (also an older series' rimfire primer), a belt on no belt.
+    /// The new lengths go out under their own keys.
+    func testHiddenFieldsAreNotSaved() throws {
+        var p = package()
+        p.bullet = "paper"
+        p.measurements = Measurements(overallLength: 30.1, primerDiameter: 4.4, rimThickness: 1.1, patchLength: 9.4)
+        let json = try XCTUnwrap(String(data: TrainingCapture.encoder.encode(TrainingPackageView.saved(p)), encoding: .utf8))
+        for key in ["\"rimThickness\" : 1.1", "\"patchLength\" : 9.4", "\"primerDiameter\" : 4.4"] { XCTAssertTrue(json.contains(key), key) }
+        p.bullet = "lead"
+        p.ignition = "rimfire"
+        XCTAssertEqual(TrainingPackageView.saved(p).measurements, Measurements(overallLength: 30.1, rimThickness: 1.1))
+        p.ignition = nil
+        p.primer = "rimfire"
+        XCTAssertNil(TrainingPackageView.saved(p).measurements?.primerDiameter)
+        p.measurements = Measurements(belt: 13.0)
+        XCTAssertNil(TrainingPackageView.saved(p).measurements, "nothing left to save")
+        p.head = "belted"
+        XCTAssertEqual(TrainingPackageView.saved(p).measurements?.belt, 13.0)
+        p.measurements = Measurements(shoulderLength: 20.1, shoulder: 9.6)
+        p.shape = "tapered"
+        XCTAssertNil(TrainingPackageView.saved(p).measurements, "no shoulder on a tapered case")
+        p.shape = "bottleneck"
+        XCTAssertEqual(TrainingPackageView.saved(p).measurements, p.measurements)
+        XCTAssertEqual(TrainingPackageView.saved(package()), package(), "nothing measured")
+    }
+
     func testEveryHeadAndShapeChoiceHasItsOutline() {
         let rim = { (token: String) in CaseIcon.profile(token)!.last!.halfWidth }
         let body = CaseIcon.profile("rimless")![0].halfWidth

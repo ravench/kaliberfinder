@@ -285,9 +285,8 @@ struct TrainingPackageView: View {
             Section {
                 // Where each value is taken, as on the old-ammunition page (Raven 2026-11-10).
                 // The sketch and the fields as the series' Randform and Hülsenform say, like the dimensions form (Raven 2026-11-19).
-                let shape = Self.shape(of: package.shape), head = Self.head(of: package.head)
-                let fields = Self.fields(shape: shape, head: head, ignition: package.ignition, bullet: package.bullet)
-                MeasuringGuide(letters: Set(fields.map(\.letter)), shape: shape, head: head)
+                let fields = Self.fields(for: package)
+                MeasuringGuide(letters: Set(fields.map(\.letter)), shape: Self.shape(of: package.shape), head: Self.head(of: package.head))
                     .padding(.vertical, 4)
                 ForEach(fields, id: \.letter) { measured($0) }
             } header: {
@@ -308,8 +307,8 @@ struct TrainingPackageView: View {
         .onAppear(perform: reload)
         .onChange(of: package) { _, new in
             // Written as typed, also back to the value the screen opened with (review 2026-11-10); nothing
-            // measured and no atypical bullet leave their keys out of package.json.
-            do { try CaptureStore.update(new, at: capture.url) } catch { status = error.localizedDescription }
+            // measured and no atypical bullet leave their keys out of package.json, as do the values of hidden fields.
+            do { try CaptureStore.update(Self.saved(new), at: capture.url) } catch { status = error.localizedDescription }
         }
         .fullScreenCover(isPresented: $showCamera, onDismiss: reload) {
             TrainingCameraView(capture: capture)
@@ -415,6 +414,23 @@ struct TrainingPackageView: View {
         }
     }
 
+    /// The fields of this series, as its choices say; a series from before Zündart may carry rimfire as its primer.
+    static func fields(for package: CapturePackage) -> [CalliperField] {
+        fields(shape: shape(of: package.shape), head: head(of: package.head), ignition: package.ignition ?? package.primer, bullet: package.bullet)
+    }
+
+    /// The package as package.json gets it: without the values of fields its choices hide, such as a primer on a
+    /// rimfire round or a patch length after the bullet is changed to lead (review 2026-11-19). The screen keeps
+    /// them while it is open, so switching back brings them back.
+    static func saved(_ package: CapturePackage) -> CapturePackage {
+        guard var measurements = package.measurements else { return package }
+        let shown = Set(fields(for: package).map(\.letter))
+        for field in calliperFields where !shown.contains(field.letter) { measurements[keyPath: field.value] = nil }
+        var saved = package
+        saved.measurements = measurements.isEmpty ? nil : measurements
+        return saved
+    }
+
     /// A calliper value with its unit, «9.95 mm»; a dash until measured.
     private func measured(_ field: CalliperField) -> some View {
         LabeledContent {
@@ -440,6 +456,8 @@ struct TrainingPackageView: View {
 
     private func share() {
         do {
+            // Without hidden fields' values also when nothing was edited since an older build saved them (review 2026-11-20).
+            try CaptureStore.update(Self.saved(package), at: capture.url)
             shared = SharedFile(url: try CaptureStore.zip(capture.url))
         } catch {
             status = String(format: "ZIP fehlgeschlagen: %@".loc, error.localizedDescription)
