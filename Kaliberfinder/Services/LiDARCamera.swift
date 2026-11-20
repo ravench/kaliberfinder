@@ -221,8 +221,10 @@ final class LiDARCamera: NSObject, ObservableObject {
         let chosen = choice.format.flatMap { device.formats.indices.contains($0) ? device.formats[$0] : nil }
         // Among formats whose photos are equally large, the largest stream: the first of equals is the smallest in
         // the list (192×144 without depth; TestFlight 1158 showed it blurred on the iPhone 13 and the iPad mini).
-        if let format = chosen ?? candidates.max(by: { Self.rank($0) < Self.rank($1) }) {
-            try? device.lockForConfiguration()
+        // Only with the lock: setting a format without it raises an exception, which ends the app. Where another
+        // client holds the camera, it keeps its current format (review 2026-11-20).
+        if let format = chosen ?? candidates.max(by: { Self.rank($0) < Self.rank($1) }),
+           (try? device.lockForConfiguration()) != nil {
             device.activeFormat = format
             // The whole sensor unless the choice says otherwise: the 17 Pro's telephoto comes up zoomed to its 8x crop.
             device.videoZoomFactor = chosen == nil ? device.minAvailableVideoZoomFactor
