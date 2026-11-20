@@ -121,7 +121,7 @@ private struct NewTrainingSeriesView: View {
                     }
                 }
                 if calibre == .unlisted {
-                    TextField("Name", text: $name, prompt: Text("z. B. Bodenprägung oder eigener Name"))
+                    TextField("Name", text: $name, prompt: Text("z. B. Bodenstempel oder eigener Name"))
                 }
                 Picker(selection: $mode) {
                     ForEach(TrainingCapture.parts) { part in

@@ -299,11 +299,12 @@ struct MatchesView: View {
     }
 
     /// What the photo shows, e.g. "Erkannt: leere Hülse · mit Flaschenhals · ohne Rand" (SCAN-03).
-    /// Nil for silhouettes built without slice widths.
+    /// Nil for silhouettes built without slice widths. The part is in the key, so that it starts lower-case after the
+    /// colon in every language («Detected: cartridge · rimless»), where «Patrone» alone is the picker's «Cartridge».
     static func featuresText(_ shape: ShapeMeasurement, mode: ScanMode) -> String? {
         let part = mode.part(for: shape)
         guard let f = (part == .emptyCase ? shape.mouthFirst() : shape).features else { return nil }
-        var parts: [String] = [part == .emptyCase ? "leere Hülse".loc : "Patrone".loc]
+        var parts: [String] = []
         // A loaded round shows its neck where the shoulder steps down to it (SHAPE-06).
         if part == .emptyCase {
             parts.append(f.hasNeck ? "mit Flaschenhals".loc : "gerade Hülse".loc)
@@ -311,7 +312,8 @@ struct MatchesView: View {
             parts.append("mit Flaschenhals".loc)
         }
         parts.append(f.isRimmed ? "mit Rand".loc : "ohne Rand".loc)
-        return String(format: "Erkannt: %@".loc, parts.joined(separator: " · "))
+        let detected = part == .emptyCase ? "Erkannt: leere Hülse · %@".loc : "Erkannt: Patrone · %@".loc
+        return String(format: detected, parts.joined(separator: " · "))
     }
 
     /// "Gemessen: L ≈ 71 mm, Ø ≈ 12 mm", rounded to what the measurement can tell.
