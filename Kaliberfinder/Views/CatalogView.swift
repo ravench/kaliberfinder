@@ -1,37 +1,22 @@
 import SwiftUI
 
-/// All catalogue calibres by category, with search. In selection mode several can be compared 1:1.
+/// All catalogue calibres by category, with search. «Auswählen» picks several to compare 1:1.
 struct CatalogView: View {
     @State private var query = ""
-    @State private var selecting: Bool
+    @State private var selecting = false
     @State private var selection: [Cartridge] = []
 
-    /// `selecting`: start in selection mode, to pick calibres for a side-by-side comparison.
-    init(selecting: Bool = false) {
-        _selecting = State(initialValue: selecting)
-    }
+    /// Whether a calibre can be picked for the 1:1 comparison: a partial entry has nothing to draw. It stays in the
+    /// list, greyed, so switching to selection does not move the rows (Raven, 2026-11-20: the screen jumped).
+    static func canPick(_ c: Cartridge) -> Bool { c.isDrawn }
+
+    /// The toolbar button: «Auswählen», and while selecting «Abbrechen», since leaving drops the picks (Raven, 2026-11-20).
+    static func selectButtonTitle(selecting: Bool) -> String { selecting ? "Abbrechen".loc : "Auswählen".loc }
 
     var body: some View {
-        // A partial entry has nothing to compare at 1:1.
-        let results = CartridgeCatalog.search(query, in: CartridgeCatalog.visible().filter { !selecting || $0.isDrawn })
+        // The same calibres and row layout with and without selection: only the trailing mark changes.
+        let results = CartridgeCatalog.search(query, in: CartridgeCatalog.visible())
         List {
-            if selecting {
-                Section {
-                    if selection.isEmpty {
-                        Text("Kaliber zum Vergleichen wählen.")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                    }
-                    ForEach(selection) { c in
-                        Button { toggle(c) } label: {
-                            Label { Text(verbatim: c.name) } icon: { Image(systemName: "xmark.circle.fill") }
-                        }
-                        .foregroundStyle(.primary)
-                    }
-                } header: {
-                    Text("Ausgewählt")
-                }
-            }
             ForEach(CartridgeCatalog.grouped(results), id: \.category) { group in
                 Section(group.category.loc) {
                     ForEach(group.cartridges) { c in row(c) }
@@ -46,7 +31,7 @@ struct CatalogView: View {
         .navigationTitle("Kaliber")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button(selecting ? "Fertig".loc : "Auswählen".loc) {
+                Button(Self.selectButtonTitle(selecting: selecting)) {
                     selecting.toggle()
                     if !selecting { selection = [] }
                 }
@@ -64,13 +49,15 @@ struct CatalogView: View {
         if selecting {
             Button { toggle(c) } label: {
                 HStack {
-                    CartridgeRow(cartridge: c)
+                    CartridgeRow(cartridge: c, groupTag: .name)
                     Spacer()
                     Image(systemName: selection.contains(c) ? "checkmark.circle.fill" : "circle")
                         .foregroundStyle(selection.contains(c) ? Color.accentColor : .secondary)
                 }
             }
-            .foregroundStyle(.primary)
+            // Set by hand, which overrides the dimming of `.disabled`: a partial entry is greyed itself.
+            .foregroundStyle(Self.canPick(c) ? .primary : .tertiary)
+            .disabled(!Self.canPick(c))
         } else {
             // The calibre itself, with its group as a tag; the group page is a row on the calibre's page
             // (TestFlight 1185, 2026-11-12: a search for the .223 Remington opened its group instead).
@@ -121,7 +108,7 @@ struct CartridgeRow: View {
     /// Raven, 2026-11-13): the group's name (`LookalikeGroup.shownName(drawing:)`) and the «Gruppe» chip, no aliases, flags,
     /// «Selten» or «Veraltet», which its members carry; a calibre without such a group is a plain row. `.name`: the row
     /// is the calibre (catalogue, search) with the group's name as a tag under its name, on every member (Raven,
-    /// 2026-11-12). `.none`: members inside the group page and rows that select. A row that names a calibre opens that
+    /// 2026-11-12), also when picking for 1:1. `.none`: members inside the group page. A row that names a calibre opens that
     /// calibre, which links the group.
     enum GroupTag { case none, name, group }
     var groupTag: GroupTag = .none
