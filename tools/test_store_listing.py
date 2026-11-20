@@ -51,10 +51,48 @@ class StoreTextTests(unittest.TestCase):
         for lang, word in named.items():
             self.assertIn(word, sl.texts(lang)["description"], lang)
 
+    def test_the_search_examples_find_their_rounds(self):
+        """«Platzpatrone» or «Schrot» (2026-11-20): every word a description quotes for the search is one of the group
+        words the app's search reads in that language (`Cartridge.groupWordsKey`, tools/translations.py)."""
+        import translations
+        with open(os.path.join(ROOT, "Kaliberfinder", "Models", "Cartridge.swift"), encoding="utf-8") as f:
+            swift = f.read()
+        switch = swift[swift.index("static func groupWordsKey"):]
+        keys = re.findall(r'case "\w+": "([^"]+)"', switch[:switch.index("default:")])
+        self.assertGreaterEqual(len(keys), 5)
+        quote = r"[«“] ?([^»”]+?) ?[»”]"
+        for column, lang in enumerate(["de", "en", "fr", "it", "es"]):
+            texts = keys if lang == "de" else [translations.T[k][column - 1] for k in keys]
+            words = {w.strip() for text in texts for w in text.split(",")}
+            # «wie «Platzpatrone» oder «Schrot»», «like “blank” or “shotshell”», …
+            examples = re.findall(rf"(?:wie|like|comme|come|como) {quote} (?:oder|or|ou|o) {quote}", sl.texts(lang)["description"])
+            self.assertEqual(len(examples), 1, lang)
+            for word in examples[0]:
+                self.assertIn(word, words, lang)
+
+    def test_lidar_is_promised_only_with_lidar(self):
+        """The iPhone 11 Pro and the iPad Pros of 2017 and 2018 run the app without LiDAR: wherever the listing or the 1.0.0
+        notes name the Pro models, they say «with LiDAR» (review 2026-11-20)."""
+        import changelog
+        with open(os.path.join(ROOT, "RELEASE_NOTES.md"), encoding="utf-8") as f:
+            notes = changelog.hand_written("1.0.0", f.read())
+        with_lidar = {"de": "mit LiDAR", "en": "with LiDAR", "fr": "équipés du LiDAR", "it": "con LiDAR", "es": "con LiDAR"}
+        for lang, words in with_lidar.items():
+            listing = sl.texts(lang)
+            sentences = re.split(r"(?<=\.) |\n", listing["description"] + "\n" + listing["promotional_text"]) + notes[lang]
+            pro = [s for s in sentences if re.search(r"iPhone[- ]Pro", s)]
+            self.assertTrue(pro, lang)
+            for sentence in pro:
+                self.assertIn(words, sentence, lang)
+
     def test_texts_name_no_single_standard_as_the_source(self):
-        """Many calibres have no C.I.P. or SAAMI sheet (Raven, 2026-11-11)."""
+        """Many calibres have no C.I.P. or SAAMI sheet (Raven, 2026-11-11): no field of the listing and no 1.0.0 note names one."""
+        import changelog
+        with open(os.path.join(ROOT, "RELEASE_NOTES.md"), encoding="utf-8") as f:
+            notes = changelog.hand_written("1.0.0", f.read())
         for lang in ("de", "en", "fr", "it", "es"):
-            self.assertNotIn("SAAMI", sl.texts(lang)["description"])
+            for text in list(sl.texts(lang).values()) + notes[lang]:
+                self.assertIsNone(re.search(r"SAAMI|\bC\.?I\.?P\b", text), (lang, text))
 
     def test_problems_catches_long_fields_and_padded_keywords(self):
         listing = {**sl.texts("en"), "subtitle": "x" * 31, "keywords": "a, b"}

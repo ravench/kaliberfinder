@@ -11,7 +11,8 @@ import fnmatch
 import sys
 
 # fnmatch's * also matches /, so "tools/*" covers the whole folder.
-NO_MAC = ["*.md", ".claude/*", ".github/*", "tools/*", ".gitignore", ".swiftlint.yml"]
+# store/: the App Store texts, which only tools/store_listing.py reads (its tests run in the Linux tools job).
+NO_MAC = ["*.md", ".claude/*", ".github/*", "tools/*", "store/*", ".gitignore", ".swiftlint.yml"]
 # Exception: the Mac job itself and the tool its PR screens run.
 NEEDS_MAC = [".github/workflows/build.yml", "tools/pr_screens.py"]
 # What can change a screen of the tour (KaliberfinderUITests/PRScreensTests.swift).
