@@ -41,6 +41,8 @@ final class CountriesTests: XCTestCase {
         XCTAssertTrue(schw.contains("CH") && schw.contains("SE"), "\(schw)")
         XCTAssertFalse(schw.contains("DE"))
         XCTAssertTrue(Countries.matching("li", in: german).map(\.code).contains("LI"), "by code")
-        XCTAssertEqual(Countries.matching("Österreich", in: german).map(\.code), ["AT"])
+        // Present-day countries only: a former state's name is in the app's language (on a German
+        // simulator «Österreich-Ungarn» contains «Österreich» too).
+        XCTAssertEqual(Countries.matching("Österreich", in: german.filter { !$0.former }).map(\.code), ["AT"])
     }
 }

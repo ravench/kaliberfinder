@@ -73,6 +73,11 @@ final class SourcesTests: XCTestCase {
         XCTAssertEqual(SourcesView.header(group), "Hülsenmaterial".loc + " · " + "Herkunft".loc)
     }
 
+    func testNoseIsTheHeadLengthForRoundAndPointedNoses() {
+        // Raven 2026-11-20: the curved part in front of the straight one, round noses too (calibre-data #202).
+        XCTAssertEqual(Cartridge.SourceGroup.title("nose"), "Kopflänge")
+    }
+
     func testEveryPartHasATitle() {
         for part in ["mm", "shoulder_angle", "nose", "case_head", "primer", "bullet", "case", "origin", "colour_codes"] {
             XCTAssertNotEqual(Cartridge.SourceGroup.title(part), part, part)
