@@ -80,7 +80,7 @@ final class CatalogTests: XCTestCase {
                                              "piombino", "pallino", "aria compressa", "balín", "aire comprimido"]),
             (group { $0.kind == "minie" }, ["Minié-Geschoss", "minie ball", "balle minié", "palla minié", "bala minié"]),
         ]
-        XCTAssertEqual(groups.map(\.members.count), [9, 8, 8, 2, 2])
+        XCTAssertEqual(groups.map(\.members.count), [10, 8, 8, 2, 2])  // the 6.8/11 is the tenth blank (calibre-data #204)
         for (members, words) in groups {
             for word in words { XCTAssertTrue(members.isSubset(of: found(word)), "«\(word)» misses \(members.subtracting(found(word)).sorted())") }
         }

@@ -83,8 +83,12 @@ final class EmptyCaseTests: XCTestCase {
         // Sampled every 0.3 mm: at 0.5 mm five short rounds (.22 Long, .32 S&W Long …) come out as empty cases.
         // A bullet nearly as wide as the neck (0.86 and 0.95 of it) reads as the neck running up to the end.
         let neckWide: Set = ["5.2x68 mm Mondragón", ".38-90 Winchester Express"]
+        // Flats measured on their AECC drawings (calibre-data #205), half the case or more over a short nose: without the
+        // colours the square-cut flat reads as a mouth. In a photo the colours decide (`Matcher.decidedPart`).
+        let flatWide: Set = [".25-36 Marlin", ".32-35 Stevens & Maynard", "8x42 mm R M88", "8x48 mm R Sauer"]
         let rounds = CartridgeCatalog.all.filter {
             $0.hasCase && $0.kind != "shot" && $0.dimensions.overallLength > $0.dimensions.caseLength && !neckWide.contains($0.id)
+                && !flatWide.contains($0.id)
         }
         // Two silhouettes per calibre, on every core; the detection reads only static tables.
         var parts = [(loaded: ShapePart?, empty: ShapePart?)?](repeating: nil, count: rounds.count)

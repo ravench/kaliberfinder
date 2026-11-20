@@ -3,7 +3,7 @@
     "neck" : 80,
     "part" : 70,
     "top1" : 57.5,
-    "top1All" : 40,
+    "top1All" : 42.5,
     "top1Obsolete" : 57.5,
     "top5" : 75,
     "top5All" : 65,
@@ -57,9 +57,9 @@
     },
     "45-acp-20261105-224631/04" : {
       "part" : true,
-      "rank" : 4,
+      "rank" : 3,
       "row" : 2,
-      "rowAll" : 4,
+      "rowAll" : 3,
       "rowObsolete" : 2
     },
     "45-acp-20261105-224631/12" : {
@@ -91,9 +91,9 @@
     },
     "45-acp-20261105-224631/18" : {
       "part" : true,
-      "rank" : 2,
+      "rank" : 1,
       "row" : 1,
-      "rowAll" : 2,
+      "rowAll" : 1,
       "rowObsolete" : 1
     },
     "5-6-mm-gp-90-20261105-225100/01" : {
