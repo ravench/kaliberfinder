@@ -20,7 +20,7 @@ struct MeasuringGuide: View {
         let label: CGPoint
     }
 
-    /// The box with every length's row.
+    /// The box with every length's row; `box` takes its width, or `sideBox`'s, down to the rows shown.
     static let box = CGRect(x: 30, y: 4, width: 615, height: 232)
     /// The box without the head view, up to the OAL line's end.
     static let sideBox = CGRect(x: 30, y: 4, width: 490, height: 232)

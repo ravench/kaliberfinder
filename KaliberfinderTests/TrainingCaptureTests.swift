@@ -254,6 +254,11 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertNil(TrainingPackageView.saved(p).measurements, "nothing left to save")
         p.head = "belted"
         XCTAssertEqual(TrainingPackageView.saved(p).measurements?.belt, 13.0)
+        p.measurements = Measurements(shoulderLength: 20.1, shoulder: 9.6)
+        p.shape = "tapered"
+        XCTAssertNil(TrainingPackageView.saved(p).measurements, "no shoulder on a tapered case")
+        p.shape = "bottleneck"
+        XCTAssertEqual(TrainingPackageView.saved(p).measurements, p.measurements)
         XCTAssertEqual(TrainingPackageView.saved(package()), package(), "nothing measured")
     }
 

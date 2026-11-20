@@ -503,8 +503,8 @@ final class PRScreensTests: XCTestCase {
     /// same series on every run and the checked-in one stays as it is: changing a choice writes its package.json.
     func testTrainingCapture() {
         let captures = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        try? FileManager.default.copyItem(at: URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
-            .appendingPathComponent("KaliberfinderTests/Captures"), to: captures)
+        XCTAssertNoThrow(try FileManager.default.copyItem(at: URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+            .deletingLastPathComponent().appendingPathComponent("KaliberfinderTests/Captures"), to: captures))
         app.terminate()
         app.launchArguments += ["-trainingCaptureEnabled", "YES", "-screenTourCaptures", captures.path]
         app.launch()
@@ -661,7 +661,7 @@ final class PRScreensTests: XCTestCase {
     /// The row is tapped once hittable: the menu before it may still be fading out over it (tour of #277).
     private func menuStop(_ row: String, choice: String, _ name: String? = nil) {
         let button = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", row)).firstMatch
-        guard button.waitForExistence(timeout: 5), button.wait(for: \.isHittable, toEqual: true, timeout: 5) else { return }
+        guard button.waitForExistence(timeout: 5), button.wait(for: \.isHittable, toEqual: true, timeout: 5) else { return XCTFail("\(row) not tappable") }
         button.tap()
         if app.buttons[choice].waitForExistence(timeout: 5), let name { snap(name) }
         app.buttons[choice].tap()

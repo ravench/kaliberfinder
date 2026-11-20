@@ -456,6 +456,8 @@ struct TrainingPackageView: View {
 
     private func share() {
         do {
+            // Without hidden fields' values also when nothing was edited since an older build saved them (review 2026-11-20).
+            try CaptureStore.update(Self.saved(package), at: capture.url)
             shared = SharedFile(url: try CaptureStore.zip(capture.url))
         } catch {
             status = String(format: "ZIP fehlgeschlagen: %@".loc, error.localizedDescription)
