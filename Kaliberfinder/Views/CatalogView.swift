@@ -10,6 +10,9 @@ struct CatalogView: View {
     /// list, greyed, so switching to selection does not move the rows (Raven, 2026-11-20: the screen jumped).
     static func canPick(_ c: Cartridge) -> Bool { c.isDrawn }
 
+    /// The toolbar button: «Auswählen», and while selecting «Abbrechen», since leaving drops the picks (Raven, 2026-11-20).
+    static func selectButtonTitle(selecting: Bool) -> String { selecting ? "Abbrechen".loc : "Auswählen".loc }
+
     var body: some View {
         // The same calibres and row layout with and without selection: only the trailing mark changes.
         let results = CartridgeCatalog.search(query, in: CartridgeCatalog.visible())
@@ -28,7 +31,7 @@ struct CatalogView: View {
         .navigationTitle("Kaliber")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button(selecting ? "Fertig".loc : "Auswählen".loc) {
+                Button(Self.selectButtonTitle(selecting: selecting)) {
                     selecting.toggle()
                     if !selecting { selection = [] }
                 }

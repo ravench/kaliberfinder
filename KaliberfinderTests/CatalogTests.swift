@@ -362,4 +362,10 @@ final class CatalogTests: XCTestCase {
         XCTAssertTrue(CatalogView.canPick(try Fixture.cartridge("20x102 mm")))
         XCTAssertFalse(CatalogView.canPick(try Fixture.cartridge("57x121 mm R")))
     }
+
+    /// Leaving selection drops the picks, so the button says «Abbrechen», not «Fertig» (Raven, 2026-11-20).
+    func testLeavingSelectionIsACancel() {
+        XCTAssertEqual(CatalogView.selectButtonTitle(selecting: false), "Auswählen".loc)
+        XCTAssertEqual(CatalogView.selectButtonTitle(selecting: true), "Abbrechen".loc)
+    }
 }
