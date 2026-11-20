@@ -14,7 +14,6 @@ INFO_PLIST = {
 
 T = {
     "Bankkarte oder Ausweis hochkant auf das Rechteck legen, oben bündig. Regler schieben, bis das Rechteck gleich lang ist.": ("Lay a bank card or ID upright on the rectangle, flush at the top. Move the slider until the rectangle is as long as the card.", "Posez une carte bancaire ou d'identité verticalement sur le rectangle, alignée en haut. Déplacez le curseur jusqu'à ce que le rectangle ait la même longueur.", "Appoggia una carta bancaria o d'identità in verticale sul rettangolo, allineata in alto. Sposta il cursore finché il rettangolo è lungo quanto la carta.", "Coloca una tarjeta bancaria o un documento de identidad en vertical sobre el rectángulo, con el borde superior alineado. Arrastra el regulador hasta que el rectángulo sea tan largo como la tarjeta."),
-    "Kaliber zum Vergleichen wählen.": ("Pick calibres to compare.", "Choisissez les calibres à comparer.", "Scegli i calibri da confrontare.", "Elige los calibres que quieres comparar."),
     "Mehrere Patronen erkannt: Tippe auf eine.": ("Several cartridges found: tap one.", "Plusieurs cartouches détectées : touchez-en une.", "Più cartucce trovate: toccane una.", "Se han detectado varios cartuchos: toca uno."),
     "Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe.": (
         "For identification only: a match does not mean a cartridge is safe to fire. Check the headstamp and the calibre marked on the firearm.",
@@ -201,7 +200,6 @@ T = {
     "Patrone fotografieren": ("Photograph cartridge", "Photographier la cartouche", "Fotografa la cartuccia", "Fotografiar el cartucho"),
     "Treffer": ("Matches", "Résultats", "Risultati", "Coincidencias"),
     "Auch bekannt als": ("Also known as", "Aussi appelé", "Noto anche come", "También conocido como"),
-    "Ausgewählt": ("Selected", "Sélectionnés", "Selezionati", "Seleccionados"),
     "Auswählen": ("Select", "Sélectionner", "Seleziona", "Seleccionar"),
     "Bauart": ("Type", "Type", "Tipo", "Tipo"),
     "Bildschirm": ("Screen", "Écran", "Schermo", "Pantalla"),
@@ -253,7 +251,6 @@ T = {
     "Kaliber": ("Calibres", "Calibres", "Calibri", "Calibres"),
     "Kaliber, z. B. 9 mm Luger": ("Calibre, e.g. 9 mm Luger", "Calibre, p. ex. 9 mm Luger", "Calibro, p. es. 9 mm Luger", "Calibre, p. ej. 9 mm Luger"),
     "Kaliberfinder": ("Kaliberfinder", "Kaliberfinder", "Kaliberfinder", "Kaliberfinder"),
-    "Auswählen und vergleichen": ("Pick and compare", "Choisir et comparer", "Scegli e confronta", "Elegir y comparar"),
     "Kalibriert": ("Calibrated", "Calibré", "Calibrato", "Calibrada"),
     "Kategorie": ("Category", "Catégorie", "Categoria", "Categoría"),
     "Kleiner": ("Smaller", "Plus petit", "Più piccolo", "Más pequeño"),

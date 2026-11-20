@@ -152,8 +152,8 @@ final class PRScreensTests: XCTestCase {
     /// Calibres picked long, short, middle stand by length: in the picked list and on the 1:1 screen.
     func testPickAndCompare() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
-        guard open(app.buttons["Auswählen und vergleichen"].firstMatch) else { return }
-        snap("19a-Auswahl-leer")  // the hint above the list, before anything is picked
+        guard open(app.buttons["Alle Kaliber"].firstMatch), open(app.buttons["Auswählen"].firstMatch) else { return }
+        snap("19a-Auswahl-leer")  // the same list as «Alle Kaliber», with a circle per row, before anything is picked
         for (query, name) in [("GP 11", "7.5x55 mm Swiss (GP 11)"), ("9x19", "9x19 mm"), (".45 ACP", ".45 ACP")] {
             let search = app.searchFields.firstMatch
             if search.waitForExistence(timeout: 5) {

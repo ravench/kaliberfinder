@@ -871,35 +871,6 @@
         }
       }
     },
-    "Ausgewählt": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Selected"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seleccionados"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sélectionnés"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Selezionati"
-          }
-        }
-      }
-    },
     "Auswählen": {
       "extractionState": "manual",
       "localizations": {
@@ -925,35 +896,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seleziona"
-          }
-        }
-      }
-    },
-    "Auswählen und vergleichen": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pick and compare"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegir y comparar"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choisir et comparer"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scegli e confronta"
           }
         }
       }
@@ -4086,35 +4028,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Raggruppa i calibri con dimensioni identiche"
-          }
-        }
-      }
-    },
-    "Kaliber zum Vergleichen wählen.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pick calibres to compare."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elige los calibres que quieres comparar."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choisissez les calibres à comparer."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scegli i calibri da confrontare."
           }
         }
       }

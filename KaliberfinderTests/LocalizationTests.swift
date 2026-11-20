@@ -56,14 +56,6 @@ final class LocalizationTests: XCTestCase {
         }
     }
 
-    func testPickAndCompareHasShortTitle() throws {
-        let expected = ["en": "Pick and compare", "fr": "Choisir et comparer", "it": "Scegli e confronta", "es": "Elegir y comparar"]
-        for (lang, title) in expected {
-            XCTAssertEqual(try table(lang)["Auswählen und vergleichen"], title, lang)
-            XCTAssertNil(try table(lang)["Kaliber auswählen und vergleichen"], lang)
-        }
-    }
-
     func testSpanishUsesTheCartridgeTermsOfMunicionOrg() throws {
         let es = try table("es")
         XCTAssertEqual(es["Hülse"], "Vaina")

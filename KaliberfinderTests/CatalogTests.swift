@@ -355,4 +355,11 @@ final class CatalogTests: XCTestCase {
         let file = try XCTUnwrap(CartridgeCatalog.decodeFile(Data(json.utf8)))
         XCTAssertEqual(file.calibreData?.text, "04653a8 · soon")
     }
+
+    /// «Auswählen» in «Alle Kaliber» keeps a partial entry in the list, greyed, so the rows do not move (Raven,
+    /// 2026-11-20); only drawn calibres can be picked for 1:1.
+    func testOnlyDrawnCalibresCanBePickedForTheComparison() throws {
+        XCTAssertTrue(CatalogView.canPick(try Fixture.cartridge("20x102 mm")))
+        XCTAssertFalse(CatalogView.canPick(try Fixture.cartridge("57x121 mm R")))
+    }
 }

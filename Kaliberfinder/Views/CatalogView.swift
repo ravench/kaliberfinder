@@ -1,37 +1,19 @@
 import SwiftUI
 
-/// All catalogue calibres by category, with search. In selection mode several can be compared 1:1.
+/// All catalogue calibres by category, with search. «Auswählen» picks several to compare 1:1.
 struct CatalogView: View {
     @State private var query = ""
-    @State private var selecting: Bool
+    @State private var selecting = false
     @State private var selection: [Cartridge] = []
 
-    /// `selecting`: start in selection mode, to pick calibres for a side-by-side comparison.
-    init(selecting: Bool = false) {
-        _selecting = State(initialValue: selecting)
-    }
+    /// Whether a calibre can be picked for the 1:1 comparison: a partial entry has nothing to draw. It stays in the
+    /// list, greyed, so switching to selection does not move the rows (Raven, 2026-11-20: the screen jumped).
+    static func canPick(_ c: Cartridge) -> Bool { c.isDrawn }
 
     var body: some View {
-        // A partial entry has nothing to compare at 1:1.
-        let results = CartridgeCatalog.search(query, in: CartridgeCatalog.visible().filter { !selecting || $0.isDrawn })
+        // The same calibres and row layout with and without selection: only the trailing mark changes.
+        let results = CartridgeCatalog.search(query, in: CartridgeCatalog.visible())
         List {
-            if selecting {
-                Section {
-                    if selection.isEmpty {
-                        Text("Kaliber zum Vergleichen wählen.")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                    }
-                    ForEach(selection) { c in
-                        Button { toggle(c) } label: {
-                            Label { Text(verbatim: c.name) } icon: { Image(systemName: "xmark.circle.fill") }
-                        }
-                        .foregroundStyle(.primary)
-                    }
-                } header: {
-                    Text("Ausgewählt")
-                }
-            }
             ForEach(CartridgeCatalog.grouped(results), id: \.category) { group in
                 Section(group.category.loc) {
                     ForEach(group.cartridges) { c in row(c) }
@@ -64,13 +46,14 @@ struct CatalogView: View {
         if selecting {
             Button { toggle(c) } label: {
                 HStack {
-                    CartridgeRow(cartridge: c)
+                    CartridgeRow(cartridge: c, groupTag: .name)
                     Spacer()
                     Image(systemName: selection.contains(c) ? "checkmark.circle.fill" : "circle")
                         .foregroundStyle(selection.contains(c) ? Color.accentColor : .secondary)
                 }
             }
             .foregroundStyle(.primary)
+            .disabled(!Self.canPick(c))
         } else {
             // The calibre itself, with its group as a tag; the group page is a row on the calibre's page
             // (TestFlight 1185, 2026-11-12: a search for the .223 Remington opened its group instead).
