@@ -6,7 +6,7 @@
     "top1All" : 40,
     "top1Obsolete" : 57.5,
     "top5" : 75,
-    "top5All" : 62.5,
+    "top5All" : 65,
     "top5Obsolete" : 75
   },
   "shots" : {
@@ -57,9 +57,9 @@
     },
     "45-acp-20261105-224631/04" : {
       "part" : true,
-      "rank" : 5,
+      "rank" : 4,
       "row" : 2,
-      "rowAll" : 5,
+      "rowAll" : 4,
       "rowObsolete" : 2
     },
     "45-acp-20261105-224631/12" : {
@@ -99,9 +99,9 @@
     "5-6-mm-gp-90-20261105-225100/01" : {
       "neck" : false,
       "part" : false,
-      "rank" : 9,
+      "rank" : 8,
       "row" : 2,
-      "rowAll" : 6,
+      "rowAll" : 5,
       "rowObsolete" : 2
     },
     "5-6-mm-gp-90-20261105-225100/02" : {
@@ -264,9 +264,9 @@
     },
     "9x19-mm-20261105-224844/15" : {
       "part" : true,
-      "rank" : 12,
+      "rank" : 10,
       "row" : 4,
-      "rowAll" : 12,
+      "rowAll" : 10,
       "rowObsolete" : 5
     },
     "9x19-mm-20261105-224844/16" : {
