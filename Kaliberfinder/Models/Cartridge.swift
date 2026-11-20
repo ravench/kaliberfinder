@@ -41,11 +41,11 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     /// Where the calibre page's values come from (calibre-data's sources), for its sources page (Raven, 2026-11-15).
     let sources: [SourceGroup]
 
-    /// The works one or more parts of the calibre page come from. calibre-data cites a whole table (all of `[mm]`),
-    /// not a single value, so a group names parts, never one measurement.
+    /// The works one or more parts of the calibre page come from: a whole table (all of `[mm]`), or a single
+    /// measurement with its own sources (`cite.<key>` in calibre-data: flat, mouth, crimp_length).
     struct SourceGroup: Decodable, Hashable {
-        /// "mm", "shoulder_angle", "nose" (the length of the curved nose, round or pointed), "case_head", "primer", "bullet", "case", "origin" or "colour_codes";
-        /// several when they cite the same works.
+        /// "mm", "shoulder_angle", "nose" (the length of the curved nose, round or pointed), "flat", "mouth",
+        /// "crimp_length", "case_head", "primer", "bullet", "case", "origin" or "colour_codes"; several when they cite the same works.
         let parts: [String]
         let refs: [Ref]
 
@@ -63,6 +63,11 @@ struct Cartridge: Decodable, Identifiable, Hashable {
             // The curved part in front of the straight one, round or pointed: «Kopflänge» (Raven, 2026-11-20), not
             // «Spitzenlänge», which reads as pointed bullets only.
             case "nose": "Kopflänge"
+            // A flat nose's flat tip, a crimped blank's mouth and crimp (calibre-data #204, #205).
+            case "flat": "Breite der Abflachung"
+            // A crimped blank's mouth: the page and the drawing show it as the neck.
+            case "mouth": "Halsdurchmesser"
+            case "crimp_length": "Bördellänge"
             case "case_head": "Hülsenboden"
             case "primer": "Zündhütchen"
             case "bullet": "Geschoss"

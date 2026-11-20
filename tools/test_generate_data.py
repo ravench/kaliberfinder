@@ -122,7 +122,8 @@ class BlankFlagTests(unittest.TestCase):
         # Named as their C.I.P. sheets since calibre-data #168; the old names stay as display aliases.
         self.assertEqual(sorted(c["name"] for c in cartridges if c["blank"]),
                          sorted([".22 SH (5.6/11)", "9 mm PA Blanc", "8 mm Blanc", ".315 Blanc", "9 mm R Blanc",
-                                 ".320 Court Blanc", ".45 K Blanc", ".22 Long Blanc", "6 mm Flobert Blanc"]))
+                                 ".320 Court Blanc", ".45 K Blanc", ".22 Long Blanc", "6 mm Flobert Blanc",
+                                 "6.8/11"]))  # the Hilti power-tool load (calibre-data #204)
         self.assertIn("9 mm P.A.K.", next(c for c in cartridges if c["name"] == "9 mm PA Blanc")["displayAliases"])
         # A bullet seated inside the case is still a bullet.
         for name in (".32 S&W Long Wadcutter", "7.62x38 mm R Nagant"):
@@ -464,6 +465,14 @@ class SourcesTests(unittest.TestCase):
         self.assertNotIn("introduced", parts)
         rimfire = self.by_name[".22 LR"]
         self.assertFalse(any("primer" in g["parts"] for g in rimfire["sources"]), "no primer row, no primer sources")
+
+    def test_own_sources_of_flat_mouth_and_crimp(self):
+        # calibre-data #204/#205: values read off a drawing or Raven's photos are credited apart from the [mm] sheets.
+        def parts(name):
+            return {p for g in self.by_name[name]["sources"] for p in g["parts"]}
+        self.assertIn("flat", parts(".45 Colt"))
+        self.assertLessEqual({"mouth", "crimp_length"}, parts("6.8/11"))
+        self.assertNotIn("crimp_length", parts(".22 LR"))
 
     def test_almost_every_calibre_cites_its_measurements(self):
         missing = [n for n, c in self.by_name.items() if not any("mm" in g["parts"] for g in c["sources"])]

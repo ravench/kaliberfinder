@@ -265,6 +265,8 @@ T = {
     "Masse eingeben": ("Enter dimensions", "Saisir les dimensions", "Inserisci le dimensioni", "Introducir dimensiones"),
     "Masse": ("Dimensions", "Dimensions", "Dimensioni", "Dimensiones"),
     "Schulterwinkel": ("Shoulder angle", "Angle d'épaulement", "Angolo della spalla", "Ángulo del hombro"),
+    "Breite der Abflachung": ("Flat tip width", "Largeur du méplat", "Larghezza della punta piatta", "Ancho de la punta plana"),
+    "Bördellänge": ("Crimp length", "Longueur du sertissage", "Lunghezza della crimpatura", "Longitud del engarce"),
     "Kopflänge": ("Nose length", "Longueur de l'ogive", "Lunghezza dell'ogiva", "Longitud de la ojiva"),
     "Quellen": ("Sources", "Sources", "Fonti", "Fuentes"),
     "Eigene Messung": ("Our own measurement", "Mesure personnelle", "Misurazione propria", "Medición propia"),

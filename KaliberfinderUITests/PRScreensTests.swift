@@ -167,14 +167,18 @@ final class PRScreensTests: XCTestCase {
     }
 
     /// The dimensioned drawing of a bottleneck rifle round (with its shoulder) and its sources, then of a
-    /// belted magnum in inches, of a case whose rim stands on a foot and of the GP 90 with its nose-length source.
+    /// belted magnum in inches, of a case whose rim stands on a foot, of the GP 90 with its nose-length source,
+    /// of the .45 Colt's flat and of the 6.8/11 blank's mouth and crimp.
     func testMeasurementDrawings() {
         for (query, name, unit, shot) in [("GP 11", "7.5x55 mm Swiss (GP 11)", "metric", "34-Masszeichnung-GP11"),
                                           ("300 Win Mag", ".300 Winchester Magnum", "imperial", "35-Masszeichnung-Zoll"),
                                           // A rim on a foot: the rim's extension lines start at the rim (2026-11-17).
                                           ("11x59", "11x59 mm R Gras", "metric", "35b-Masszeichnung-Gras"),
                                           // A spitzer whose nose length is measured: its own «Kopflänge» source (calibre-data #197).
-                                          ("GP 90", "5.6 mm GP 90", "metric", "35c-Masszeichnung-GP90")] {
+                                          ("GP 90", "5.6 mm GP 90", "metric", "35c-Masszeichnung-GP90"),
+                                          // A flat nose (AECC flat width) and a crimped blank: their own source rows (calibre-data #204, #205).
+                                          ("45 Colt", ".45 Colt", "metric", "35e-Masszeichnung-45Colt"),
+                                          ("6.8/11", "6.8/11", "metric", "35g-Masszeichnung-6-8-11")] {
             app.terminate()
             app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_CH", "-lengthUnit", unit]
             app.launch()
@@ -193,13 +197,10 @@ final class PRScreensTests: XCTestCase {
             guard open(app.buttons["Masszeichnung anzeigen"].firstMatch) else { return }
             snap(shot)
             // The drawing's book button opens the calibre's sources, the measurements' first.
-            if query == "GP 11", open(app.navigationBars.buttons["Quellen"].firstMatch) {
+            let sourcesShot = ["GP 11": "34b-Quellen-GP11", "GP 90": "35d-Quellen-GP90", "45 Colt": "35f-Quellen-45Colt", "6.8/11": "35h-Quellen-6-8-11"][query]
+            if let sourcesShot, open(app.navigationBars.buttons["Quellen"].firstMatch) {
                 XCTAssertTrue(app.navigationBars["Quellen"].waitForExistence(timeout: 5), "The sources page did not open")
-                snap("34b-Quellen-GP11")
-            }
-            if query == "GP 90", open(app.navigationBars.buttons["Quellen"].firstMatch) {
-                XCTAssertTrue(app.navigationBars["Quellen"].waitForExistence(timeout: 5), "The sources page did not open")
-                snap("35d-Quellen-GP90")
+                snap(sourcesShot)
             }
         }
     }

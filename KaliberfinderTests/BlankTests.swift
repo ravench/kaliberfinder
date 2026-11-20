@@ -39,6 +39,18 @@ final class BlankTests: XCTestCase {
         XCTAssertEqual(match.part, .cartridge)
     }
 
+    /// The Hilti 6.8/11 power-tool load (calibre-data #204): a blank of its own, found by its names, and its own
+    /// outline finds it first, not the smaller .22 SH.
+    func testThePowerToolLoadIsABlankOfItsOwn() throws {
+        let id = "6.8/11"
+        XCTAssertEqual(CartridgeCatalog.cartridge(id: id)?.blank, true)
+        for query in ["6.8/11", ".27 Blank", "Hilti"] {
+            XCTAssertTrue(CartridgeCatalog.search(query).contains { $0.id == id }, query)
+        }
+        let shape = try XCTUnwrap(ShapeMatcher.catalogue[id])
+        XCTAssertEqual(rank(shape, limit: 3).first?.cartridge.id, id)
+    }
+
     /// A blank closed inside the case (9 mm PA Blanc, 8 mm and .315 Blanc; C.I.P. titles since calibre-data #168) has no bullet either. It is flagged
     /// like the crimped ones (review 2026-11-13: it was not, so its page listed a bullet diameter and a photo
     /// was compared with its «empty case»), and compared whole in every mode.

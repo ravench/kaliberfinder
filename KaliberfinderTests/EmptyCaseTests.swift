@@ -83,6 +83,9 @@ final class EmptyCaseTests: XCTestCase {
         // Sampled every 0.3 mm: at 0.5 mm five short rounds (.22 Long, .32 S&W Long …) come out as empty cases.
         // A bullet nearly as wide as the neck (0.86 and 0.95 of it) reads as the neck running up to the end.
         let neckWide: Set = ["5.2x68 mm Mondragón", ".38-90 Winchester Express"]
+        // Flats measured on their AECC drawings (calibre-data #205), half the case or more over a short nose: without the
+        // colours the square-cut flat reads as a mouth. In a photo the colours decide (`Matcher.decidedPart`).
+        let flatWide: Set = [".25-36 Marlin", ".32-35 Stevens & Maynard", "8x42 mm R M88", "8x48 mm R Sauer"]
         let rounds = CartridgeCatalog.all.filter {
             $0.hasCase && $0.kind != "shot" && $0.dimensions.overallLength > $0.dimensions.caseLength && !neckWide.contains($0.id)
         }
@@ -92,7 +95,8 @@ final class EmptyCaseTests: XCTestCase {
         DispatchQueue.concurrentPerform(iterations: rounds.count) { i in
             guard let loaded = try? photo(rounds[i], part: .cartridge), let empty = try? photo(rounds[i], part: .emptyCase) else { return }
             // A flat-nosed bullet nearly as wide as the case ends like a mouth: that end is no evidence.
-            let judged = Matcher.endWidth(loaded) < Matcher.partMiddle ? ScanMode.auto.part(for: loaded) : nil
+            let judged = Matcher.endWidth(loaded) < Matcher.partMiddle && !flatWide.contains(rounds[i].id)
+                ? ScanMode.auto.part(for: loaded) : nil
             lock.lock(); parts[i] = (judged, ScanMode.auto.part(for: empty)); lock.unlock()
         }
         for (c, part) in zip(rounds, parts) {

@@ -79,7 +79,7 @@ final class SourcesTests: XCTestCase {
     }
 
     func testEveryPartHasATitle() {
-        for part in ["mm", "shoulder_angle", "nose", "case_head", "primer", "bullet", "case", "origin", "colour_codes"] {
+        for part in ["mm", "shoulder_angle", "nose", "flat", "mouth", "crimp_length", "case_head", "primer", "bullet", "case", "origin", "colour_codes"] {
             XCTAssertNotEqual(Cartridge.SourceGroup.title(part), part, part)
         }
     }
