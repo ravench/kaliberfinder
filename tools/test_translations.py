@@ -52,6 +52,10 @@ class TranslationTests(unittest.TestCase):
         for lang, words in ((EN, "safe to fire"), (FR, "n'autorise pas le tir"), (IT, "non autorizza a sparare"),
                             (ES, "no autoriza a disparar")):
             self.assertIn(words, note[lang])
+        # «Prüfe Bodenstempel»: in the app's own word for the headstamp, as in the store texts (review 2026-11-20:
+        # the Italian said «Controlla il fondello», the case head, instead of its marking).
+        for lang in (EN, FR, IT, ES):
+            self.assertIn(T["Bodenstempel"][lang].lower(), note[lang].lower(), lang)
         root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         for view in ("MatchesView.swift", "MeasureView.swift"):
             with open(os.path.join(root, "Kaliberfinder", "Views", view), encoding="utf-8") as f:
