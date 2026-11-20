@@ -28,6 +28,7 @@ struct CatalogView: View {
         }
         .readableWidth()
         .searchable(text: $query, prompt: "Kaliber, z. B. 9 mm Luger")
+        .keepingNavigationBarWhileSearching()
         .navigationTitle("Kaliber")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -67,6 +68,14 @@ struct CatalogView: View {
 
     private func toggle(_ c: Cartridge) {
         selection = selection.toggling(c)
+    }
+}
+
+extension View {
+    /// Typing in the search field hid the navigation bar, and with it «Auswählen» (Raven, 2026-11-20): the bar stays,
+    /// so picking and searching go together.
+    @ViewBuilder func keepingNavigationBarWhileSearching() -> some View {
+        if #available(iOS 17.1, *) { searchPresentationToolbarBehavior(.avoidHidingContent) } else { self }
     }
 }
 

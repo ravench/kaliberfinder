@@ -154,6 +154,14 @@ final class PRScreensTests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch), open(app.buttons["Auswählen"].firstMatch) else { return }
         snap("19a-Auswahl-leer")  // the same list as «Alle Kaliber», with a circle per row, before anything is picked
+        let field = app.searchFields.firstMatch
+        if field.waitForExistence(timeout: 5) {
+            field.tap()
+            field.typeText("9x")
+            // While typing, «Abbrechen» stays in the navigation bar (Raven, 2026-11-20: it went away).
+            XCTAssertTrue(app.navigationBars.buttons["Abbrechen"].exists, "The selection button is gone while searching")
+            snap("19b-Auswahl-Suche")
+        }
         for (query, name) in [("GP 11", "7.5x55 mm Swiss (GP 11)"), ("9x19", "9x19 mm"), (".45 ACP", ".45 ACP")] {
             let search = app.searchFields.firstMatch
             if search.waitForExistence(timeout: 5) {
