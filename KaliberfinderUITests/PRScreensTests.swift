@@ -177,7 +177,7 @@ final class PRScreensTests: XCTestCase {
                                           ("300 Win Mag", ".300 Winchester Magnum", "imperial", "35-Masszeichnung-Zoll"),
                                           // A rim on a foot: the rim's extension lines start at the rim (2026-11-17).
                                           ("11x59", "11x59 mm R Gras", "metric", "35b-Masszeichnung-Gras"),
-                                          // A spitzer whose nose length is measured: its own «Spitzenlänge» source (calibre-data #197).
+                                          // A spitzer whose nose length is measured: its own «Kopflänge» source (calibre-data #197).
                                           ("GP 90", "5.6 mm GP 90", "metric", "35c-Masszeichnung-GP90")] {
             app.terminate()
             app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_CH", "-lengthUnit", unit]

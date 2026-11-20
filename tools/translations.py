@@ -268,7 +268,7 @@ T = {
     "Masse eingeben": ("Enter dimensions", "Saisir les dimensions", "Inserisci le dimensioni", "Introducir dimensiones"),
     "Masse": ("Dimensions", "Dimensions", "Dimensioni", "Dimensiones"),
     "Schulterwinkel": ("Shoulder angle", "Angle d'épaulement", "Angolo della spalla", "Ángulo del hombro"),
-    "Spitzenlänge": ("Nose length", "Longueur de l'ogive", "Lunghezza dell'ogiva", "Longitud de la ojiva"),
+    "Kopflänge": ("Nose length", "Longueur de l'ogive", "Lunghezza dell'ogiva", "Longitud de la ojiva"),
     "Quellen": ("Sources", "Sources", "Fonti", "Fuentes"),
     "Eigene Messung": ("Our own measurement", "Mesure personnelle", "Misurazione propria", "Medición propia"),
     "S. %@": ("p. %@", "p. %@", "p. %@", "p. %@"),
