@@ -52,7 +52,8 @@ struct CatalogView: View {
                         .foregroundStyle(selection.contains(c) ? Color.accentColor : .secondary)
                 }
             }
-            .foregroundStyle(.primary)
+            // Set by hand, which overrides the dimming of `.disabled`: a partial entry is greyed itself.
+            .foregroundStyle(Self.canPick(c) ? .primary : .tertiary)
             .disabled(!Self.canPick(c))
         } else {
             // The calibre itself, with its group as a tag; the group page is a row on the calibre's page
@@ -104,7 +105,7 @@ struct CartridgeRow: View {
     /// Raven, 2026-11-13): the group's name (`LookalikeGroup.shownName(drawing:)`) and the «Gruppe» chip, no aliases, flags,
     /// «Selten» or «Veraltet», which its members carry; a calibre without such a group is a plain row. `.name`: the row
     /// is the calibre (catalogue, search) with the group's name as a tag under its name, on every member (Raven,
-    /// 2026-11-12). `.none`: members inside the group page and rows that select. A row that names a calibre opens that
+    /// 2026-11-12), also when picking for 1:1. `.none`: members inside the group page. A row that names a calibre opens that
     /// calibre, which links the group.
     enum GroupTag { case none, name, group }
     var groupTag: GroupTag = .none
