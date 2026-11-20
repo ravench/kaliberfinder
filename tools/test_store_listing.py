@@ -51,6 +51,37 @@ class StoreTextTests(unittest.TestCase):
         for lang, word in named.items():
             self.assertIn(word, sl.texts(lang)["description"], lang)
 
+    def test_the_search_examples_find_their_rounds(self):
+        """«Platzpatrone» or «Schrot» (2026-11-20): every word a description quotes for the search is one of the group
+        words the app's search reads in that language (`Cartridge.groupWordsKey`, tools/translations.py)."""
+        import translations
+        with open(os.path.join(ROOT, "Kaliberfinder", "Models", "Cartridge.swift"), encoding="utf-8") as f:
+            swift = f.read()
+        switch = swift[swift.index("static func groupWordsKey"):]
+        keys = re.findall(r'case "\w+": "([^"]+)"', switch[:switch.index("default:")])
+        self.assertEqual(len(keys), 5)
+        for column, lang in enumerate(["de", "en", "fr", "it", "es"]):
+            texts = keys if lang == "de" else [translations.T[k][column - 1] for k in keys]
+            words = {w.strip() for text in texts for w in text.split(",")}
+            quoted = re.findall(r"[«“] ?([^»”]+?) ?[»”]", sl.texts(lang)["description"])
+            self.assertEqual(len(quoted), 2, lang)
+            for word in quoted:
+                self.assertIn(word, words, lang)
+
+    def test_lidar_is_promised_only_with_lidar(self):
+        """The iPhone 11 Pro and the iPad Pro of 2018 run the app without LiDAR: wherever the description or the 1.0.0 notes
+        name the Pro models, they say «with LiDAR» (review 2026-11-20)."""
+        import changelog
+        with open(os.path.join(ROOT, "RELEASE_NOTES.md"), encoding="utf-8") as f:
+            notes = changelog.hand_written("1.0.0", f.read())
+        with_lidar = {"de": "mit LiDAR", "en": "with LiDAR", "fr": "équipés du LiDAR", "it": "con LiDAR", "es": "con LiDAR"}
+        for lang, words in with_lidar.items():
+            sentences = re.split(r"(?<=\.) |\n", sl.texts(lang)["description"]) + notes[lang]
+            pro = [s for s in sentences if re.search(r"iPhone[- ]Pro", s)]
+            self.assertEqual(len(pro), 2, lang)
+            for sentence in pro:
+                self.assertIn(words, sentence, lang)
+
     def test_texts_name_no_single_standard_as_the_source(self):
         """Many calibres have no C.I.P. or SAAMI sheet (Raven, 2026-11-11)."""
         for lang in ("de", "en", "fr", "it", "es"):

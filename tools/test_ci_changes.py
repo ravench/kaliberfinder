@@ -25,6 +25,9 @@ class NeedsMacTests(unittest.TestCase):
             "tools/website.py", "tools/test_website.py", ".swiftlint.yml",
         ]))
 
+    def test_store_texts_skip_the_mac(self):
+        self.assertFalse(needs_mac(["store/de/description.txt", "store/es/keywords.txt", "RELEASE_NOTES.md"]))
+
     def test_the_build_workflow_and_tools_it_runs_need_the_mac(self):
         self.assertIn(".github/workflows/build.yml", NEEDS_MAC)
         for path in NEEDS_MAC:

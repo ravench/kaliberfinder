@@ -1,7 +1,7 @@
 Found a cartridge or an empty case and want to know the calibre? Kaliberfinder narrows it down from a photo and lets you check the result at real size on the screen.
 
 IDENTIFY A CARTRIDGE
-Photograph the cartridge lying on its side on a plain, light background, or choose a photo from your library. Kaliberfinder cuts out the silhouette and compares its side profile with the outlines in its catalogue. You get a short list of likely calibres to choose from, each marked by how well it fits; calibres that are far off are not listed. Empty cases and fired shotgun shells work too: the app tells a case mouth from a bullet and uses the rim and the neck to rule calibres out. If several cartridges are in the photo, tap the one you want. Only the outline counts and nothing is read from the photo, so calibres with the same profile are listed together.
+Photograph the cartridge lying on its side on a plain, light background, or choose a photo from your library. Kaliberfinder cuts out the silhouette and compares its side profile with the outlines in its catalogue. You get a short list of likely calibres to choose from, each marked by how well it fits; calibres that are far off are not listed. Empty cases and fired shotgun shells work too: the app tells a case mouth from a bullet and uses the rim and the neck to rule calibres out. If several cartridges are in the photo, tap the one you want. The app compares the shape and does not read the headstamp, so calibres with the same profile are listed together.
 
 REAL SIZE (1:1)
 Compare the matches at real size, side by side next to a millimetre ruler, with the case head and primer seen from below. Lay the cartridge on the display and see which one fits. Kaliberfinder knows the display density of every iPhone since the XS and of the iPads that run iPadOS 17; you can also calibrate the screen once with a bank card.
@@ -10,10 +10,10 @@ LIDAR
 On iPhone Pro and iPad Pro models with LiDAR, the app's camera also measures the distance and works out the cartridge's dimensions from it. With these measurements the list usually narrows down to one or a few calibres.
 
 WITHOUT A PHOTO
-Enter what you measured (overall length, case length, rim or bullet diameter, case shape) and see which calibres fit. Or pick calibres by name and compare them 1:1.
+Enter what you measured (overall length, case length, rim or bullet diameter, case and head shape) and see which calibres fit; a sketch shows where each value is measured. Or search for calibres by name or with words like “blank” or “shotshell”, pick several and compare them 1:1.
 
 ALL CALIBRES
-Over 700 calibres, from the dawn of cartridge ammunition to today: rimfire, handgun, rifle, black powder, shotgun and air gun, including Swiss service rounds (GP 11, GP 90, GP 1890) and blanks. Each calibre shows its dimensions (overall length, case length, rim, base, shoulder, neck and bullet diameter), the primer, the origin, other names, a dimensioned drawing and similar calibres with what tells them apart. Some military calibres list the bullet tip colour codes. Rare and obsolete calibres are marked and stay out of the matches until you switch them on; when one fits well, the app says so.
+Over 700 calibres, from the dawn of cartridge ammunition to today: rimfire, handgun, rifle, black powder, shotgun and air gun, including Swiss service rounds (GP 11, GP 90, GP 1890) and blanks. Each calibre shows its dimensions (overall length, case length, rim, base, shoulder, neck and bullet diameter) with their sources, the primer, the origin and a dimensioned drawing; where they exist, also other names and similar calibres with what tells them apart. Some military calibres list the colour codes of the bullet tip, case base or primer ring. Rare and obsolete calibres are marked and stay out of the matches until you switch them on; when one fits well, the app says so.
 
 MORE
 • Share a photo from Photos, Files or Messages straight to Kaliberfinder.

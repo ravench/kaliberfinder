@@ -1,7 +1,7 @@
 ¿Has encontrado un cartucho o una vaina vacía y no sabes de qué calibre es? Kaliberfinder reduce las posibilidades a partir de una foto y te deja comprobar el resultado a tamaño real en la pantalla.
 
 IDENTIFICAR UN CARTUCHO
-Fotografía el cartucho tumbado de lado sobre un fondo claro y liso, o elige una foto de tu fototeca. Kaliberfinder recorta la silueta y compara su perfil lateral con los contornos de su catálogo. Obtienes una lista corta de calibres probables para elegir, cada uno con lo bien que encaja; los calibres muy alejados no aparecen. También funciona con vainas vacías y cartuchos de escopeta disparados: la app distingue la boca de la vaina de la bala y descarta calibres por la pestaña y el cuello. Si hay varios cartuchos en la foto, toca el que quieras. Solo cuenta el contorno y de la foto no se lee nada más, por eso los calibres con el mismo perfil aparecen juntos.
+Fotografía el cartucho tumbado de lado sobre un fondo claro y liso, o elige una foto de tu fototeca. Kaliberfinder recorta la silueta y compara su perfil lateral con los contornos de su catálogo. Obtienes una lista corta de calibres probables para elegir, cada uno con lo bien que encaja; los calibres muy alejados no aparecen. También funciona con vainas vacías y cartuchos de escopeta disparados: la app distingue la boca de la vaina de la bala y descarta calibres por la pestaña y el cuello. Si hay varios cartuchos en la foto, toca el que quieras. La app compara la forma y no lee el marcaje del culote, por eso los calibres con el mismo perfil aparecen juntos.
 
 TAMAÑO REAL (1:1)
 Compara las coincidencias a tamaño real, una junto a otra al lado de una regla milimetrada, con el culote y el pistón vistos desde abajo. Coloca el cartucho sobre la pantalla y mira cuál encaja. Kaliberfinder conoce la densidad de pantalla de todos los iPhone desde el XS y de los iPad que funcionan con iPadOS 17; también puedes calibrar la pantalla una vez con una tarjeta bancaria.
@@ -10,10 +10,10 @@ LIDAR
 En los iPhone Pro y iPad Pro con LiDAR, la cámara de la app mide además la distancia y calcula con ella las dimensiones del cartucho. Con estas medidas la lista suele quedarse en uno o pocos calibres.
 
 SIN FOTO
-Introduce lo que has medido (longitud total, longitud de la vaina, diámetro de la pestaña o de la bala, forma de la vaina) y mira qué calibres encajan. O elige calibres por su nombre y compáralos 1:1.
+Introduce lo que has medido (longitud total, longitud de la vaina, diámetro de la pestaña o de la bala, forma de la vaina y del culote) y mira qué calibres encajan; un esquema muestra dónde medir. O busca calibres por su nombre, también con palabras como «de fogueo» o «cartucho de escopeta», elige varios y compáralos 1:1.
 
 TODOS LOS CALIBRES
-Más de 700 calibres, desde los inicios del cartucho metálico hasta hoy: fuego anular, arma corta, arma larga, pólvora negra, escopeta y aire comprimido, entre ellos los cartuchos reglamentarios suizos (GP 11, GP 90, GP 1890) y los de fogueo. Cada calibre muestra sus dimensiones (longitud total, longitud de la vaina, diámetro de la pestaña, del culote, del hombro, del cuello y de la bala), el pistón, el origen, otros nombres, un plano acotado y calibres parecidos con lo que los distingue. Algunos calibres militares indican los códigos de color de la punta de la bala. Los calibres raros y obsoletos están marcados y no aparecen en las coincidencias hasta que los activas; si uno encaja bien, la app te avisa.
+Más de 700 calibres, desde los inicios del cartucho metálico hasta hoy: fuego anular, arma corta, arma larga, pólvora negra, escopeta y aire comprimido, entre ellos los cartuchos reglamentarios suizos (GP 11, GP 90, GP 1890) y los de fogueo. Cada calibre muestra sus dimensiones (longitud total, longitud de la vaina, diámetro de la pestaña, del culote, del hombro, del cuello y de la bala) con sus fuentes, el pistón, el origen y un plano acotado; si los hay, también otros nombres y calibres parecidos con lo que los distingue. Algunos calibres militares indican los códigos de color de la punta de la bala, del culote o del anillo del pistón. Los calibres raros y obsoletos están marcados y no aparecen en las coincidencias hasta que los activas; si uno encaja bien, la app te avisa.
 
 ADEMÁS
 • Comparte una foto desde Fotos, Archivos o Mensajes directamente con Kaliberfinder.
