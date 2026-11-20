@@ -112,6 +112,17 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertNotEqual(before, after, "an equal value would keep SwiftUI showing «0 Fotos»")
     }
 
+    func testListedPackageChangesWhenItIsEdited() throws {
+        let url = try store.create(package())
+        let before = try XCTUnwrap(store.packages().first)
+        var edited = before.package
+        edited.note = "Holztisch, Teilmantel statt Vollmantel"
+        try CaptureStore.update(edited, at: url)
+        let after = try XCTUnwrap(store.packages().first)
+        XCTAssertEqual(after.shotCount, before.shotCount)
+        XCTAssertNotEqual(before, after, "an equal value would keep the row's old package, which its page writes back over the edit")
+    }
+
     /// The PR screens tour opens the example package (`-screenTourCaptures`) instead of the phone's series.
     func testTourPointsTheStoreAtItsFolder() {
         XCTAssertEqual(CaptureStore.standard.root.lastPathComponent, "TrainingCaptures")
