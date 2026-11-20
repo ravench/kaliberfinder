@@ -36,6 +36,8 @@ struct CatalogView: View {
                     selecting.toggle()
                     if !selecting { selection = [] }
                 }
+                // The search bar's own Cancel also reads «Abbrechen» on iOS 17 and 18: the tour finds this one by id.
+                .accessibilityIdentifier("selectButton")
             }
         }
         .safeAreaInset(edge: .bottom) {

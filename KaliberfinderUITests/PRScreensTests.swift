@@ -152,7 +152,7 @@ final class PRScreensTests: XCTestCase {
         snap("19a-Auswahl-leer")  // the same list as «Alle Kaliber», with a circle per row, before anything is picked
         search("9x")
         // While typing, «Abbrechen» stays in the navigation bar (Raven, 2026-11-20: it went away).
-        XCTAssertTrue(app.navigationBars.buttons["Abbrechen"].exists, "The selection button is gone while searching")
+        XCTAssertTrue(app.navigationBars.buttons["selectButton"].exists, "The selection button is gone while searching")
         snap("19b-Auswahl-Suche")
         for (query, name) in [("GP 11", "7.5x55 mm Swiss (GP 11)"), ("9x19", "9x19 mm"), (".45 ACP", ".45 ACP")] {
             // Clears the previous query; return hides the keyboard, so the rows can be tapped.
@@ -349,7 +349,8 @@ final class PRScreensTests: XCTestCase {
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         for (query, name, shot) in [("5.45", "5.45x39 mm", "10-Stahlhuelse"), ("Fury", ".277 SIG Fury", "11-Hybridhuelse"),
                                     ("Snider", ".577 Snider", "12-Papierhuelse")] {
-            search(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 8) + query)  // clears the previous query first
+            // Clears the previous query; return hides the keyboard, whose search field would cover the row (the bar stays since #281).
+            search(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 8) + query + "\n")
             if open(app.staticTexts[name].firstMatch) {
                 snap(shot)
                 back()
