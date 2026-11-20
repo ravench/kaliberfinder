@@ -298,7 +298,7 @@ struct MatchesView: View {
         return parts.joined(separator: " · ")
     }
 
-    /// What the photo shows, e.g. "Erkannt: leere Hülse · Flaschenhals · ohne Rand" (SCAN-03).
+    /// What the photo shows, e.g. "Erkannt: leere Hülse · mit Flaschenhals · ohne Rand" (SCAN-03).
     /// Nil for silhouettes built without slice widths.
     static func featuresText(_ shape: ShapeMeasurement, mode: ScanMode) -> String? {
         let part = mode.part(for: shape)
@@ -306,9 +306,9 @@ struct MatchesView: View {
         var parts: [String] = [part == .emptyCase ? "leere Hülse".loc : "Patrone".loc]
         // A loaded round shows its neck where the shoulder steps down to it (SHAPE-06).
         if part == .emptyCase {
-            parts.append(f.hasNeck ? "Flaschenhals".loc : "gerade Hülse".loc)
+            parts.append(f.hasNeck ? "mit Flaschenhals".loc : "gerade Hülse".loc)
         } else if shape.neck != nil {
-            parts.append("Flaschenhals".loc)
+            parts.append("mit Flaschenhals".loc)
         }
         parts.append(f.isRimmed ? "mit Rand".loc : "ohne Rand".loc)
         return String(format: "Erkannt: %@".loc, parts.joined(separator: " · "))

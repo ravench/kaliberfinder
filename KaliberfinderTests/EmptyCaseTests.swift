@@ -231,7 +231,7 @@ final class EmptyCaseTests: XCTestCase {
     func testFeaturesText() throws {
         let rifle = try photo(cartridge(".308 Winchester"), part: .emptyCase)
         XCTAssertEqual(MatchesView.featuresText(rifle, mode: .auto),
-                       String(format: "Erkannt: %@".loc, ["leere Hülse".loc, "Flaschenhals".loc, "ohne Rand".loc].joined(separator: " · ")))
+                       String(format: "Erkannt: %@".loc, ["leere Hülse".loc, "mit Flaschenhals".loc, "ohne Rand".loc].joined(separator: " · ")))
         let revolver = try photo(cartridge(".38 Special"), part: .emptyCase)
         XCTAssertTrue(try XCTUnwrap(MatchesView.featuresText(revolver, mode: .auto)).contains("gerade Hülse".loc))
         XCTAssertTrue(try XCTUnwrap(MatchesView.featuresText(revolver, mode: .auto)).contains("mit Rand".loc))
@@ -249,7 +249,7 @@ final class EmptyCaseTests: XCTestCase {
         for mode in ScanMode.choices { XCTAssertNotNil(en[mode.title], mode.title) }
         XCTAssertNil(en["Automatisch"])
         XCTAssertEqual(en["Leere Hülse"], "Empty case")
-        XCTAssertEqual(en["Flaschenhals"], "bottleneck")
+        XCTAssertEqual(en["mit Flaschenhals"], "bottleneck")
         XCTAssertEqual(en["Was liegt im Bild?"], "What is in the photo?")
     }
 }

@@ -271,6 +271,6 @@ final class ShapeContourTests: XCTestCase {
         let gp11 = try cartridge("7.5x55 mm Swiss (GP 11)")
         let notes = MatchesView.notes(for: PhotoAnalysis(shape: ShapeMatcher.catalogue[gp11.id], contour: ShapeContour(points: [.zero], parts: [.end])), mode: .cartridge)
         XCTAssertEqual(notes.count, 1)
-        XCTAssertTrue(notes[0].contains("Flaschenhals".loc), notes[0])
+        XCTAssertTrue(notes[0].contains("mit Flaschenhals".loc), notes[0])
     }
 }

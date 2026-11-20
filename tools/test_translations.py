@@ -37,9 +37,14 @@ class TranslationTests(unittest.TestCase):
 
     def test_bottleneck_uses_the_overlay_terms(self):
         """The overlay explains «collet et épaulement»; the shape names use the same words."""
-        self.assertEqual(T["Hülse mit Flaschenhals"][FR], "Douille à épaulement")
-        self.assertEqual(T["Flaschenhals"][FR], "à épaulement")
+        self.assertEqual(T["Flaschenhals"][FR], "À épaulement")
+        self.assertEqual(T["mit Flaschenhals"][FR], "à épaulement")
         self.assertEqual(T["Schrot (209)"][FR], "Cartouche à plombs (209)")
+
+    def test_any_fits_both_rows(self):
+        """«Beliebig» is the unset choice of Hülsenform (la douille) and Randform (le culot): no gender in French."""
+        self.assertEqual(T["Beliebig"][FR], "Peu importe")
+        self.assertNotIn("Beliebige Randform", T)
 
     def test_a_match_is_no_clearance_to_fire(self):
         """Both result screens say under «Mögliche Kaliber» that a match must not decide what is fired (review 2026-11-18)."""
@@ -78,8 +83,8 @@ class TranslationTests(unittest.TestCase):
                    "Geschoss": "Bala", "Gürtel": "Cinturón", "Zündhütchen": "Pistón", "Bodenstempel": "Marcaje del culote",
                    "Randdurchmesser": "Diámetro de la pestaña", "Hülsenlänge": "Longitud de la vaina",
                    "Gesamtlänge": "Longitud total", "Schulterwinkel": "Ángulo del hombro",
-                   "Hülse mit Flaschenhals": "Vaina abotellada", "Gerade Hülse": "Vaina recta",
-                   "Konische Hülse": "Vaina cónica", "Mit Rand": "Con pestaña", "Randlos": "Sin pestaña",
+                   "Flaschenhals": "Abotellada", "Gerade": "Recta",
+                   "Konisch": "Cónica", "Mit Rand": "Con pestaña", "Randlos": "Sin pestaña",
                    "Halbrand": "Con semipestaña", "Zentralfeuer": "Fuego central", "Randfeuer": "Fuego anular",
                    "Stiftfeuer": "De espiga", "Vollmantel": "Blindada", "Teilmantel": "Semiblindada",
                    "Hohlspitz": "Punta hueca", "Mit Papierpflaster": "Calepinada", "Rundkugel": "Bala esférica",

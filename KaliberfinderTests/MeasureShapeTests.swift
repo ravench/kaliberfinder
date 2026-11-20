@@ -21,7 +21,7 @@ final class MeasureShapeTests: XCTestCase {
         XCTAssertTrue(bottleneck.allSatisfy { $0.cartridge.dimensions.shoulder != nil })
     }
 
-    /// The dropdowns show the series screen's outlines (tester, 2026-11-17); «Beliebige …» has none.
+    /// The dropdowns show the series screen's outlines (tester, 2026-11-17); «Beliebig» has none.
     func testChoicesHaveTheSeriesScreensIcons() {
         XCTAssertNil(CaseIcon.image(CaseShape.any.rawValue))
         XCTAssertNil(CaseIcon.image(RimKind.any.token))
@@ -93,9 +93,9 @@ final class MeasureShapeTests: XCTestCase {
     func testShapeTitlesAreTranslated() throws {
         let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "en"))
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
-        XCTAssertEqual(CaseShape.allCases.map { en[$0.title] }, ["Any shape", "Straight case", "Bottleneck case"])
-        XCTAssertEqual(en["Form"], "Shape")
-        XCTAssertEqual(RimKind.allCases.map { en[$0.title] }, ["Any head", "Rimmed", "Semi-rimmed", "Rimless", "Belted"])
+        XCTAssertEqual(CaseShape.allCases.map { en[$0.title] }, ["Any", "Straight", "Bottleneck"])
+        XCTAssertEqual(en["Hülsenform"], "Case shape")
+        XCTAssertEqual(RimKind.allCases.map { en[$0.title] }, ["Any", "Rimmed", "Semi-rimmed", "Rimless", "Belted"])
         XCTAssertEqual(en["Randform"], "Head")
     }
 }

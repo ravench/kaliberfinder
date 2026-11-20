@@ -1045,60 +1045,31 @@
         }
       }
     },
-    "Beliebige Form": {
+    "Beliebig": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Any shape"
+            "value": "Any"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cualquier forma"
+            "value": "Cualquiera"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Toute forme"
+            "value": "Peu importe"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Qualsiasi forma"
-          }
-        }
-      }
-    },
-    "Beliebige Randform": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Any head"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cualquier culote"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tout culot"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Qualsiasi fondello"
+            "value": "Qualsiasi"
           }
         }
       }
@@ -2211,25 +2182,25 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "bottleneck"
+            "value": "Bottleneck"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "vaina abotellada"
+            "value": "Abotellada"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "à épaulement"
+            "value": "À épaulement"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "a collo di bottiglia"
+            "value": "A collo di bottiglia"
           }
         }
       }
@@ -2259,35 +2230,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fucile a canna liscia"
-          }
-        }
-      }
-    },
-    "Form": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shape"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Forma"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Forme"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Forma"
           }
         }
       }
@@ -2814,31 +2756,31 @@
         }
       }
     },
-    "Gerade Hülse": {
+    "Gerade": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Straight case"
+            "value": "Straight"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vaina recta"
+            "value": "Recta"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Douille droite"
+            "value": "Droite"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bossolo dritto"
+            "value": "Dritto"
           }
         }
       }
@@ -3738,35 +3680,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bossolo %@"
-          }
-        }
-      }
-    },
-    "Hülse mit Flaschenhals": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bottleneck case"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vaina abotellada"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Douille à épaulement"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bossolo a collo di bottiglia"
           }
         }
       }
@@ -4815,31 +4728,31 @@
         }
       }
     },
-    "Konische Hülse": {
+    "Konisch": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tapered case"
+            "value": "Tapered"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vaina cónica"
+            "value": "Cónica"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Douille conique"
+            "value": "Conique"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bossolo conico"
+            "value": "Conico"
           }
         }
       }
@@ -9480,6 +9393,35 @@
           "stringUnit": {
             "state": "translated",
             "value": "bossolo vuoto"
+          }
+        }
+      }
+    },
+    "mit Flaschenhals": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bottleneck"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vaina abotellada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "à épaulement"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a collo di bottiglia"
           }
         }
       }

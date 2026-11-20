@@ -1,8 +1,7 @@
 import UIKit
 import XCTest
 
-/// A tour of the main screens, one screenshot per stop. The Build job's PR screens run it on the
-/// pull request and on its base branch and posts the screens that changed as a comment.
+/// A tour of the main screens, one screenshot per stop, run on a pull request and its base (PR screens in the Build job).
 /// A pull request that changes a screen the tour does not reach adds a stop.
 final class PRScreensTests: XCTestCase {
     private var app: XCUIApplication!
@@ -45,7 +44,7 @@ final class PRScreensTests: XCTestCase {
         if open(app.buttons["Masse eingeben"].firstMatch) {
             snap("03-Masse-eingeben")
             // The outlines beside the shape and head choices, and the sketch as the choices say (TestFlight 2026-11-17).
-            menuStop("Form", choice: "Gerade Hülse", "03a-Masse-Form")
+            menuStop("Hülsenform", choice: "Gerade", "03a-Masse-Form")
             menuStop("Randform", choice: "Gürtelhülse", "03a-Masse-Randform")
             snap("03a-Masse-Skizze-gerade-Guertel")
             back()
@@ -518,7 +517,7 @@ final class PRScreensTests: XCTestCase {
         // The outlines next to the Randform and Hülsenform choices (TestFlight 1174 and 1175), paper and plastic
         // hulls as two choices (TestFlight 1175); the fixture's own choice closes each menu again.
         menuStop("Randform", choice: "Randlos", "22c-Trainingsdaten-Randform")
-        menuStop("Hülsenform", choice: "Konische Hülse", "22d-Trainingsdaten-Huelsenform")
+        menuStop("Hülsenform", choice: "Konisch", "22d-Trainingsdaten-Huelsenform")
         menuStop("Hülsenmaterial", choice: "Messing", "22e-Trainingsdaten-Huelsenmaterial")
         // A rimfire round, paper-patched (Raven 2026-11-19): no primer field or head view, the patch's length; reset after.
         menuStop("Zündart", choice: "Randfeuer"); menuStop("Geschoss", choice: "Mit Papierpflaster")
