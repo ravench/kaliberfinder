@@ -18,7 +18,7 @@ T = {
     "Nur zur Bestimmung: Ein Treffer ist keine Freigabe zum Schiessen. Prüfe Bodenstempel und Kaliberangabe der Waffe.": (
         "For identification only: a match does not mean a cartridge is safe to fire. Check the headstamp and the calibre marked on the firearm.",
         "Pour l'identification seulement : une correspondance n'autorise pas le tir. Vérifiez le marquage du culot et le calibre indiqué sur l'arme.",
-        "Solo per l'identificazione: una corrispondenza non autorizza a sparare. Controlla il fondello e il calibro indicato sull'arma.",
+        "Solo per l'identificazione: una corrispondenza non autorizza a sparare. Controlla la punzonatura del fondello e il calibro indicato sull'arma.",
         "Solo para identificar: una coincidencia no autoriza a disparar. Comprueba el marcaje del culote y el calibre indicado en el arma."),
     # Search words of a group of rounds (Cartridge.groupWordsKey), never shown: the everyday words for it in each
     # language, comma-separated. The catalogue search matches the words of every language. «Minié-Geschoss», the
