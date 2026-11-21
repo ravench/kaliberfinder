@@ -122,7 +122,7 @@ enum DimensionMatcher {
                 (measured.belt, [(d.belt ?? d.rim)...(d.belt ?? d.rim)]),
                 (measured.bullet, [d.bullet...d.bullet]),
             ]
-            let deviations = pairs.compactMap { pair in pair.0.map { v in max(0, (pair.1.map { outside(v, $0) }.min() ?? 0) - tolerance) } }
+            let deviations = pairs.compactMap { pair in pair.0.map { deviation($0, from: pair.1) } }
             // Within a shotshell's crimp range, nearer the hull length goes first (12/70 before 12/76), loaded or opened;
             // the catalogue's length is the folded crimp's maximum (calibre-data #155), too short for a roll crimp.
             let typed = measured.overallLength ?? measured.caseLength
@@ -136,6 +136,13 @@ enum DimensionMatcher {
         }.map(\.0)
         let best = ranked.map(\.maxDeviation).min() ?? 0
         return Array(ranked.filter { $0.maxDeviation <= min(maxDeviation, best + maxBehindBest) }.prefix(limit))
+    }
+
+    /// How far `value` lies beyond the tolerance of the nearest of `ranges` (0 within it). Rounding noise counts as
+    /// within: 9.16 against 9.01 left 4e-16 mm, which read «Abweichung bis 0.2 mm», not «Passt genau» (review 2026-11-20).
+    static func deviation(_ value: Double, from ranges: [ClosedRange<Double>]) -> Double {
+        let beyond = (ranges.map { outside(value, $0) }.min() ?? 0) - tolerance
+        return beyond > 1e-9 ? beyond : 0
     }
 
     /// How far `value` lies outside `range` (0 inside it).

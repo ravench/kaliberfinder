@@ -116,6 +116,16 @@ final class DimensionMatcherTests: XCTestCase {
         XCTAssertEqual(Set(matches.prefix(2).map(\.cartridge.id)), [".308 Winchester", "7.62x51 mm NATO"])
     }
 
+    /// Every value exactly 0.15 mm off (9.16 against 9.01 leaves 4e-16 mm in floating point): «Passt genau».
+    func testDifferencesOfExactlyTheToleranceFitExactly() throws {
+        let c = try Fixture.cartridge("9x19 mm")
+        let matches = rank(MeasuredDimensions(overallLength: 29.85, caseLength: 19.3, rim: 9.81, bullet: 9.16), cartridges: [c])
+        let match = try XCTUnwrap(matches.first)
+        XCTAssertEqual(match.maxDeviation, 0)
+        XCTAssertEqual(MeasureView.detail(for: match), MeasureView.detail(for: DimensionMatch(cartridge: c, maxDeviation: 0, meanDeviation: 0)))
+        XCTAssertEqual(DimensionMatcher.deviation(9.17, from: [9.01...9.01]), 0.01, accuracy: 1e-9)
+    }
+
     func testSmallDifferencesAreWithinTolerance() {
         let matches = rank(MeasuredDimensions(overallLength: 25.5, rim: 6.85))
         XCTAssertEqual(matches.first?.cartridge.id, ".22 LR")

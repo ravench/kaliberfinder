@@ -343,7 +343,11 @@ struct SavedCapture: Identifiable, Hashable {
     var bytes: Int64 = 0
     var id: URL { url }
 
-    static func == (a: SavedCapture, b: SavedCapture) -> Bool { a.url == b.url && a.shotCount == b.shotCount }
+    /// The package too: a list reloaded after an edit kept the row's old package, whose page then wrote it back over
+    /// the edit on the next change or share (review 2026-11-20).
+    static func == (a: SavedCapture, b: SavedCapture) -> Bool {
+        a.url == b.url && a.shotCount == b.shotCount && a.package == b.package
+    }
     func hash(into hasher: inout Hasher) { hasher.combine(url) }
 
     var shots: [SavedShot] { CaptureStore.shots(in: url) }
