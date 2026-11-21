@@ -52,7 +52,8 @@ struct TwinGroup<Item: Identifiable>: Identifiable where Item.ID == String {
         let fitting = matches.filter(fits)
         let among = fitting.isEmpty ? matches : fitting
         let nearest = among.map(distance).min() ?? 0
-        let lead = among.first { distance($0) <= nearest + margin }
+        // Exactly the margin counts, though 0.18 + 0.5 comes out below 0.68 in floating point (review 2026-11-20).
+        let lead = among.first { distance($0) <= nearest + margin + 1e-9 }
         items = lead.map { lead in [lead] + matches.filter { $0.id != lead.id } } ?? matches
     }
 }

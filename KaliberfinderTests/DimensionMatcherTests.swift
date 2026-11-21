@@ -124,6 +124,19 @@ final class DimensionMatcherTests: XCTestCase {
         XCTAssertEqual(match.maxDeviation, 0)
         XCTAssertEqual(MeasureView.detail(for: match), MeasureView.detail(for: DimensionMatch(cartridge: c, maxDeviation: 0, meanDeviation: 0)))
         XCTAssertEqual(DimensionMatcher.deviation(9.17, from: [9.01...9.01]), 0.01, accuracy: 1e-9)
+        // The same noise at the fit and list limits: exactly 1 mm beyond is rough, not poor; 1.5 mm is still listed.
+        let rough = try XCTUnwrap(rank(MeasuredDimensions(bullet: 10.16), cartridges: [c]).first)
+        XCTAssertEqual(rough.maxDeviation, 1)
+        XCTAssertEqual(rough.fit, .rough)
+        XCTAssertEqual(rank(MeasuredDimensions(bullet: 10.66), cartridges: [c]).first?.maxDeviation, 1.5)
+        // Exactly 0.5 mm behind the best is listed: 0.18 + 0.5 is just below 0.68 in floating point.
+        let behind = rank(MeasuredDimensions(bullet: 9.84), cartridges: [try Fixture.cartridge("10 mm Auto"), c])
+        XCTAssertEqual(behind.map(\.cartridge.id), ["10 mm Auto", "9x19 mm"])
+        XCTAssertEqual(behind.map(\.maxDeviation), [0.18, 0.68])
+        // Equal means, the smaller largest deviation first: (0.1 + 0.2) / 2 came out above (0.3 + 0) / 2.
+        let tie = rank(MeasuredDimensions(caseLength: 23.05, rim: 9.75),
+                       cartridges: [try Fixture.cartridge(".38 Super"), try Fixture.cartridge(".32 S&W Long")])
+        XCTAssertEqual(tie.map(\.cartridge.id), [".32 S&W Long", ".38 Super"])
     }
 
     func testSmallDifferencesAreWithinTolerance() {

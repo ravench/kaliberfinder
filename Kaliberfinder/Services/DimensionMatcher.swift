@@ -99,7 +99,7 @@ struct DimensionMatch: Identifiable, Equatable {
 enum DimensionMatcher {
     /// Catalogue values are rounded and real cartridges vary, so differences up to this many mm count as equal.
     static let tolerance = 0.15
-    /// Calibres this far (mm) behind the best are not listed, nor any beyond `maxDeviation`, as after a photo
+    /// Calibres more than this far (mm) behind the best are not listed, nor any beyond `maxDeviation`, as after a photo
     /// (`Matcher.maxBehindBest`): the list was always full, down to a 7.9 mm bullet for a 9 mm one (tester, 2026-11-17).
     static let maxBehindBest = 0.5
     static let maxDeviation = 1.5
@@ -129,20 +129,27 @@ enum DimensionMatcher {
             let fromCatalogue = c.kind == "shot" ? typed.map { abs($0 - d.caseLength) } ?? 0 : 0
             return (DimensionMatch(cartridge: c,
                                    maxDeviation: deviations.max() ?? 0,
-                                   meanDeviation: deviations.reduce(0, +) / Double(deviations.count)), fromCatalogue)
+                                   meanDeviation: micrometres(deviations.reduce(0, +) / Double(deviations.count))), fromCatalogue)
         }
         let ranked = matches.sorted {
             ($0.0.meanDeviation, $0.0.maxDeviation, $0.1) < ($1.0.meanDeviation, $1.0.maxDeviation, $1.1)
         }.map(\.0)
         let best = ranked.map(\.maxDeviation).min() ?? 0
-        return Array(ranked.filter { $0.maxDeviation <= min(maxDeviation, best + maxBehindBest) }.prefix(limit))
+        let cut = micrometres(min(maxDeviation, best + maxBehindBest))
+        return Array(ranked.filter { $0.maxDeviation <= cut }.prefix(limit))
     }
 
-    /// How far `value` lies beyond the tolerance of the nearest of `ranges` (0 within it). Rounding noise counts as
-    /// within: 9.16 against 9.01 left 4e-16 mm, which read «Abweichung bis 0.2 mm», not «Passt genau» (review 2026-11-20).
+    /// How far `value` lies beyond the tolerance of the nearest of `ranges` (0 within it), in whole micrometres.
     static func deviation(_ value: Double, from ranges: [ClosedRange<Double>]) -> Double {
-        let beyond = (ranges.map { outside(value, $0) }.min() ?? 0) - tolerance
-        return beyond > 1e-9 ? beyond : 0
+        micrometres(max(0, (ranges.map { outside(value, $0) }.min() ?? 0) - tolerance))
+    }
+
+    /// `mm` to the micrometre. The deviations, their mean and the list's limit are all rounded so, as floating-point
+    /// noise decided at every limit: 9.16 against 9.01 came out 4e-16 mm beyond the tolerance, no «Passt genau»;
+    /// 10.16 against 9.01 just past 1 mm, a poor fit; 0.18 + 0.5 just below 0.68, which dropped the calibres exactly
+    /// 0.5 mm behind; and a mean of 0.1 and 0.2 above one of 0.3 and 0 (review 2026-11-20).
+    static func micrometres(_ mm: Double) -> Double {
+        (mm * 1e6).rounded() / 1e6
     }
 
     /// How far `value` lies outside `range` (0 inside it).

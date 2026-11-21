@@ -114,6 +114,7 @@ final class ProfileTwinTests: XCTestCase {
         // Less than the margin leaves the row its parent's: these sheets are 0.48 mm apart in overall length.
         XCTAssertEqual(try row([glisenti: 0, luger: 0.33]), [luger, glisenti], "a 29.2 mm round stays a 9x19 mm")
         XCTAssertEqual(try row([glisenti: 1.33, luger: 1.36]), [luger, glisenti])
+        XCTAssertEqual(try row([glisenti: 0.18, luger: 0.68]), [luger, glisenti], "exactly the margin behind")
         XCTAssertEqual(try row([tokarev: 0.5, mauser: 0.6, borchardt: 0.9]), [borchardt, mauser, tokarev])
         // Unless only another fits: the row counts as fitting then.
         XCTAssertEqual(try row([tokarev: 0.75, mauser: 1.15]), [tokarev, mauser])
