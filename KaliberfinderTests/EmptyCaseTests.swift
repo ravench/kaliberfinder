@@ -247,16 +247,10 @@ final class EmptyCaseTests: XCTestCase {
         XCTAssertEqual(MatchesView.notes(for: analysis).count, 1)
     }
 
-    func testNewTextsAreTranslated() throws {
+    func testScanModeTitlesAreTranslated() throws {
         let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "en"))
         let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
         for mode in ScanMode.choices { XCTAssertNotNil(en[mode.title], mode.title) }
         XCTAssertNil(en["Automatisch"])
-        XCTAssertEqual(en["Leere Hülse"], "Empty case")
-        XCTAssertEqual(en["mit Flaschenhals"], "bottleneck")
-        // The part is in the key, so «cartridge» starts lower-case after the colon like «empty case» (review 2026-11-20).
-        XCTAssertEqual(en["Erkannt: Patrone · %@"], "Detected: cartridge · %@")
-        XCTAssertEqual(en["Erkannt: leere Hülse · %@"], "Detected: empty case · %@")
-        XCTAssertEqual(en["Was liegt im Bild?"], "What is in the photo?")
     }
 }

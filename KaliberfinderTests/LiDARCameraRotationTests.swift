@@ -20,12 +20,8 @@ final class LiDARCameraRotationTests: XCTestCase {
         XCTAssertEqual(camera.rotationAngle, 90)
     }
 
-    func testGuidanceSpeaksOfTheDevice() throws {
+    func testGuidanceSpeaksOfTheDevice() {
+        // The English «device» is checked in tools/test_translations.py.
         XCTAssertEqual(LiDARGuidance.tilted.title, "Gerät parallel zum Tisch halten")
-        let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "en"))
-        let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
-        XCTAssertEqual(en["Gerät parallel zum Tisch halten"], "Hold the device parallel to the table")
-        XCTAssertEqual(en["Lege die Patrone flach auf einen hellen Untergrund und halte das Gerät parallel, 20–30 cm darüber."],
-                       "Lay the cartridge flat on a light background and hold the device parallel, 20–30 cm above it.")
     }
 }

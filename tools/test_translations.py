@@ -117,9 +117,31 @@ class TranslationTests(unittest.TestCase):
         for key in ("Erkannt: Patrone · %@", "Erkannt: leere Hülse · %@"):
             for text in T[key]:
                 self.assertRegex(text, r"^[^:]+ ?: [a-zà-ÿ]", key)
-        for key in ("Hülsenrand", "Laufdurchmesser", "Länge", "Setztiefe des Geschosses", "Ladung", "Zündung"):
+        for key in ("Hülsenrand", "Laufdurchmesser", "Länge", "Setztiefe des Geschosses", "Ladung", "Zündung",
+                    "mit Flaschenhals", "gerade Hülse", "mit Rand", "ohne Rand"):  # and the features after «Erkannt: … ·»
             for text in T[key]:
                 self.assertRegex(text, r"^[a-zà-ÿ]", key)
+
+    def test_the_nose_is_the_ogive(self):
+        """«Kopflänge» is the curved part of round and pointed bullets alike (Raven, 2026-11-20); «ogive» means just that."""
+        self.assertEqual(T["Kopflänge"], ("Nose length", "Longueur de l'ogive", "Lunghezza dell'ogiva", "Longitud de la ojiva"))
+        self.assertNotIn("Spitzenlänge", T)
+
+    def test_the_guidance_speaks_of_the_device(self):
+        """«Gerät»: the LiDAR scanner is on iPads too, so no English text says «phone»."""
+        for key, values in T.items():
+            if "Gerät" in key:
+                self.assertIn("device", values[EN], key)
+            self.assertNotRegex(values[EN], r"(?i)\bphone\b", key)
+
+    def test_country_names_come_in_their_language(self):
+        """calibre-data's country names join the string table in localize.py, not through T."""
+        import json
+        path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Kaliberfinder", "Resources", "Localizable.xcstrings")
+        with open(path, encoding="utf-8") as f:
+            names = json.load(f)["strings"]["Schweiz"]["localizations"]
+        self.assertEqual({lang: v["stringUnit"]["value"] for lang, v in names.items()},
+                         {"en": "Switzerland", "fr": "Suisse", "it": "Svizzera", "es": "Suiza"})
 
     def test_spanish_takes_its_cartridge_terms_from_municion_org(self):
         """The Spanish names of a cartridge's parts are those of municion.org (AECC), the Spanish source
@@ -176,7 +198,7 @@ class TranslationTests(unittest.TestCase):
 
     def test_no_text_names_an_open_licence(self):
         # Closed source since 2026-11-10: the Settings line is the copyright alone («© 2026 Simon
-        # Giotta»; a new year changes it in SettingsView, translations.py and both tests).
+        # Giotta»; a new year changes it in SettingsView and translations.py).
         views = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Kaliberfinder", "Views")
         texts = [k for k in T] + [v for values in T.values() for v in values]
         for name in os.listdir(views):
