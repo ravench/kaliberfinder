@@ -414,14 +414,22 @@ final class TrainingCaptureTests: XCTestCase {
         XCTAssertEqual(shot.photo, "photo.jpg")
     }
 
-    /// The analysis stored with a shot is what the results screen shows: the example package's
-    /// photo (a 9 mm from the library, no depth) gives its shape, frame and matches.
+    /// The analysis stored with a shot is what the results screen shows: a photo without depth gives
+    /// its shape, frame and matches. A drawn brass rod, 3:1: real photos take 25 s each on the simulator
+    /// and go through the same analysis in ColorSegmenterTests and SecondLookTests.
     func testAnalysisOfAPhoto() throws {
-        let root = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "Captures", withExtension: nil))
-        let image = try XCTUnwrap(UIImage(contentsOfFile: root.appendingPathComponent("9x19-mm-example/01/photo.jpg").path))
+        let size = CGSize(width: 600, height: 450)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let image = UIGraphicsImageRenderer(size: size, format: format).image { context in
+            UIColor(white: 0.45, alpha: 1).setFill()
+            context.fill(CGRect(origin: .zero, size: size))
+            UIColor(red: 0.85, green: 0.65, blue: 0.25, alpha: 1).setFill()
+            context.fill(CGRect(x: 210, y: 195, width: 180, height: 60))
+        }
         let analysis = TrainingRecorder.analyse(image, scale: nil, mode: .cartridge)
         XCTAssertEqual(try XCTUnwrap(analysis.aspect), 3, accuracy: 0.5)
-        XCTAssertEqual(analysis.imageLongSide, 1200)
+        XCTAssertEqual(analysis.imageLongSide, 600)
         XCTAssertNil(analysis.size, "no depth, no size")
         XCTAssertFalse(analysis.matches.isEmpty)
         XCTAssertLessThanOrEqual(analysis.matches.count, 5)
