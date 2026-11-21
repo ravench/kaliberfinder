@@ -38,6 +38,10 @@ final class FirstLookTests: XCTestCase {
             return whole.cropping(to: pixels)
         }
         XCTAssertNotNil(analysis.shape, "the rod is found one way or another")
+        #if targetEnvironment(simulator)
+        // Vision finds no foreground here: without this the test would drop to a weaker branch unnoticed.
+        XCTAssertTrue(analysis.byColour, "on the simulator the colour cut-out finds the rod")
+        #endif
         if analysis.byColour {
             XCTAssertEqual(cut, PhotoAnalyzer.cascadeRegions(of: whole), "every region was tried first")
             XCTAssertFalse(analysis.byCrop)

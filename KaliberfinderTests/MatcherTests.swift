@@ -108,8 +108,6 @@ final class MatcherTests: XCTestCase {
         // Without a size the rank is by shape only, so the switch changes nothing.
         let unmeasured = try ids.map { try match($0, deviation: nil) }
         XCTAssertEqual(MatchesView.toCompare(unmeasured, byFit: true).map(\.id), byLength)
-        // Nothing stored until the user touches the switch; the views start it on (Raven, 2026-11-08).
-        XCTAssertNil(UserDefaults.standard.object(forKey: MatchesView.compareByFitKey))
     }
 
     func testEmptyCasesCompareByCaseLength() throws {

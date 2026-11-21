@@ -109,6 +109,8 @@ targets:
         CODE_SIGN_STYLE: Automatic
         SWIFT_VERSION: "5.10"
         GENERATE_INFOPLIST_FILE: YES
+        # Clears the app's saved settings before the first test (KaliberfinderTests/TestRun.swift).
+        INFOPLIST_KEY_NSPrincipalClass: KaliberfinderTestRun
   KaliberfinderUITests:
     type: bundle.ui-testing
     platform: iOS

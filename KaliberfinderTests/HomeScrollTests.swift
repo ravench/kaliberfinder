@@ -62,10 +62,14 @@ final class HomeScrollTests: XCTestCase {
         window.makeKeyAndVisible()
         self.window = window
         // SwiftUI builds the list and sizes its rows over the next run loop passes.
-        var list: UIScrollView?
-        for _ in 0..<50 where list == nil {
+        // Measured once the height holds on two passes in a row: a busy runner can show a half-sized list.
+        var list: UIScrollView?, height: CGFloat = 0
+        for _ in 0..<50 {
             RunLoop.main.run(until: Date().addingTimeInterval(0.1))
             list = scrollViews(in: window).first { $0.contentSize.height > 0 }
+            guard let now = list?.contentSize.height else { continue }
+            if now == height { break }
+            height = now
         }
         window.layoutIfNeeded()
         return try XCTUnwrap(list, "No list on the home screen")
