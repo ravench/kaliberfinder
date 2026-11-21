@@ -284,6 +284,8 @@ final class CatalogTests: XCTestCase {
         XCTAssertEqual(group.calibres, [".308 Winchester", "7.62x51 mm NATO"])
         XCTAssertEqual(group.differs, ["load"])
         XCTAssertEqual(LookalikeGroup.title("load"), "Ladung")
+        // Not «Rand», the drawing's capitalised label: the difference stands lower-case mid-line («Differ in: rim»).
+        XCTAssertEqual(LookalikeGroup.title("rim"), "Hülsenrand")
         // Every difference the catalogue names has a German title (and so a translation).
         for difference in Set(groups.flatMap(\.differs)) {
             XCTAssertNotEqual(LookalikeGroup.title(difference), difference, "\(difference) has no title")

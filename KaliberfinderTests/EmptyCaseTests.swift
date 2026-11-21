@@ -235,13 +235,13 @@ final class EmptyCaseTests: XCTestCase {
     func testFeaturesText() throws {
         let rifle = try photo(cartridge(".308 Winchester"), part: .emptyCase)
         XCTAssertEqual(MatchesView.featuresText(rifle, mode: .auto),
-                       String(format: "Erkannt: %@".loc, ["leere Hülse".loc, "mit Flaschenhals".loc, "ohne Rand".loc].joined(separator: " · ")))
+                       String(format: "Erkannt: leere Hülse · %@".loc, ["mit Flaschenhals".loc, "ohne Rand".loc].joined(separator: " · ")))
         let revolver = try photo(cartridge(".38 Special"), part: .emptyCase)
         XCTAssertTrue(try XCTUnwrap(MatchesView.featuresText(revolver, mode: .auto)).contains("gerade Hülse".loc))
         XCTAssertTrue(try XCTUnwrap(MatchesView.featuresText(revolver, mode: .auto)).contains("mit Rand".loc))
         let loaded = try photo(cartridge("9x19 mm"), part: .cartridge)
         XCTAssertEqual(MatchesView.featuresText(loaded, mode: .auto),
-                       String(format: "Erkannt: %@".loc, ["Patrone".loc, "ohne Rand".loc].joined(separator: " · ")))
+                       String(format: "Erkannt: Patrone · %@".loc, "ohne Rand".loc))
         XCTAssertNil(MatchesView.featuresText(ShapeMeasurement(aspect: 3, profile: [1]), mode: .auto))
         let analysis = PhotoAnalysis(shape: rifle)
         XCTAssertEqual(MatchesView.notes(for: analysis).count, 1)
@@ -254,6 +254,9 @@ final class EmptyCaseTests: XCTestCase {
         XCTAssertNil(en["Automatisch"])
         XCTAssertEqual(en["Leere Hülse"], "Empty case")
         XCTAssertEqual(en["mit Flaschenhals"], "bottleneck")
+        // The part is in the key, so «cartridge» starts lower-case after the colon like «empty case» (review 2026-11-20).
+        XCTAssertEqual(en["Erkannt: Patrone · %@"], "Detected: cartridge · %@")
+        XCTAssertEqual(en["Erkannt: leere Hülse · %@"], "Detected: empty case · %@")
         XCTAssertEqual(en["Was liegt im Bild?"], "What is in the photo?")
     }
 }

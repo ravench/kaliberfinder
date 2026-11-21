@@ -188,10 +188,11 @@ struct LookalikeGroup: Decodable, Identifiable, Hashable {
     /// told apart by a measurement (rim, length, bore) is a page of its own, reached from its members' pages.
     var sameSize: Bool { !differs.contains { ["rim", "length", "bore"].contains($0) } }
 
-    /// German name of a difference, used as localization key.
+    /// German name of a difference, used as localization key. «Hülsenrand», not «Rand»: that key is the drawing's
+    /// label, «Rim» with a capital, where this one stands lower-case mid-line in «Differ in: rim, length».
     static func title(_ difference: String) -> String {
         switch difference {
-        case "rim": "Rand"
+        case "rim": "Hülsenrand"
         case "bore": "Laufdurchmesser"
         case "length": "Länge"
         case "seating": "Setztiefe des Geschosses"

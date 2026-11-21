@@ -73,6 +73,50 @@ class TranslationTests(unittest.TestCase):
                     "Kaliber, deren Masse in calibre-data nicht gut belegt sind: Teile ihrer Zeichnung sind geschätzt."):
             self.assertEqual([word in text for word, text in zip(("dimensions", "dimensions", "dimensioni"), T[key])], [True] * 3, key)
 
+    def test_the_check_of_2026_11_20_stays_fixed(self):
+        """What the review of 2026-11-20 found: iOS's French word for the camera, the colour legend's word order,
+        the Italian rim, one word per part, the English seating depth and a capital «Cartridge» mid-line."""
+        # French iOS names the camera «appareil photo», in Réglages too, where the access is allowed.
+        self.assertIn("l'appareil photo", T["Kein Zugriff auf die Kamera. Erlaube ihn in den Einstellungen."][FR])
+        self.assertEqual(T["Kamera"][FR], "Appareil photo")
+        # «Pointe et culot en vert», not «Vert pointe et culot».
+        legend = T["Grün Spitze und Boden, violett Geschoss, orange Hals und Schulter, hellblau Körper."]
+        self.assertEqual(legend[FR:], ("Pointe et culot en vert, projectile en violet, collet et épaulement en orange, corps en bleu clair.",
+                                       "Punta e fondello in verde, palla in viola, colletto e spalla in arancione, corpo in azzurro.",
+                                       "Punta y culote en verde, bala en violeta, cuello y hombro en naranja, cuerpo en azul claro."))
+        # The Italian rim is the «collarino» (earmi.it's C.I.P. columns: «R Spessore del collarino», «R1 Diametro del
+        # collarino», «con/senza collarino»), in the app and in the store text, which names the app's fields.
+        self.assertEqual(T["Rand"][IT], "Collarino")
+        self.assertEqual(T["Randdurchmesser"][IT], "Diametro del collarino")
+        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+        def read(*path):
+            with open(os.path.join(root, *path), encoding="utf-8") as f:
+                return f.read()
+        for key, values in T.items():
+            self.assertNotRegex(values[IT], r"(?i)\borl[oi]\b", key)
+            self.assertNotRegex(values[IT], r"(?i)proiettil", f"{key}: the bullet is «palla»")
+            self.assertNotIn("caméra", values[FR].lower(), key)
+            self.assertNotIn("Bodenprägung", key)  # «Bodenstempel», as everywhere else
+        self.assertNotRegex(read("store", "it", "description.txt"), r"(?i)\borl[oi]\b")
+        # The store text and the release notes, which the app shows too, say what the app says.
+        self.assertNotIn("caméra", read("store", "fr", "description.txt").lower())
+        french_notes = re.findall(r"### fr\n(.*?)(?=\n### |\n## |\Z)", read("RELEASE_NOTES.md"), re.S)
+        self.assertTrue(french_notes)
+        for notes in french_notes:
+            self.assertNotIn("caméra", notes.lower())
+        # The depth, not the act of seating.
+        self.assertEqual(T["Setztiefe des Geschosses"], ("seating depth", "profondeur d'enfoncement du projectile",
+                                                         "profondità di inserimento della palla", "profundidad de asiento de la bala"))
+        # After «Detected:» and «Differ in:» a part starts lower-case like the words that follow it; «Rand» is the
+        # drawing's capitalised label, so the rim difference has a key of its own.
+        for key in ("Erkannt: Patrone · %@", "Erkannt: leere Hülse · %@"):
+            for text in T[key]:
+                self.assertRegex(text, r"^[^:]+ ?: [a-zà-ÿ]", key)
+        for key in ("Hülsenrand", "Laufdurchmesser", "Länge", "Setztiefe des Geschosses", "Ladung", "Zündung"):
+            for text in T[key]:
+                self.assertRegex(text, r"^[a-zà-ÿ]", key)
+
     def test_spanish_takes_its_cartridge_terms_from_municion_org(self):
         """The Spanish names of a cartridge's parts are those of municion.org (AECC), the Spanish source
         calibre-data cites most: its glossary («vaina», «culote», «pistón», «marcaje») and its specimen

@@ -779,7 +779,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Proiettile atipico"
+            "value": "Palla atipica"
           }
         }
       }
@@ -1973,31 +1973,60 @@
         }
       }
     },
-    "Erkannt: %@": {
+    "Erkannt: Patrone · %@": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Detected: %@"
+            "value": "Detected: cartridge · %@"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Detectado: %@"
+            "value": "Detectado: cartucho · %@"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Détecté : %@"
+            "value": "Détecté : cartouche · %@"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Riconosciuto: %@"
+            "value": "Riconosciuto: cartuccia · %@"
+          }
+        }
+      }
+    },
+    "Erkannt: leere Hülse · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detected: empty case · %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detectado: vaina vacía · %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Détecté : douille vide · %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riconosciuto: bossolo vuoto · %@"
           }
         }
       }
@@ -3377,19 +3406,19 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verde punta y culote, violeta bala, naranja cuello y hombro, azul claro cuerpo."
+            "value": "Punta y culote en verde, bala en violeta, cuello y hombro en naranja, cuerpo en azul claro."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vert pointe et culot, violet projectile, orange collet et épaulement, bleu clair corps."
+            "value": "Pointe et culot en vert, projectile en violet, collet et épaulement en orange, corps en bleu clair."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verde punta e fondello, viola palla, arancione colletto e spalla, azzurro corpo."
+            "value": "Punta e fondello in verde, palla in viola, colletto e spalla in arancione, corpo in azzurro."
           }
         }
       }
@@ -3505,7 +3534,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Con semi-orlo"
+            "value": "Con semicollarino"
           }
         }
       }
@@ -3825,6 +3854,35 @@
           "stringUnit": {
             "state": "translated",
             "value": "Materiale del bossolo"
+          }
+        }
+      }
+    },
+    "Hülsenrand": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rim"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pestaña"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bourrelet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "collarino"
           }
         }
       }
@@ -4253,7 +4311,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Caméra"
+            "value": "Appareil photo"
           }
         },
         "it": {
@@ -4456,7 +4514,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pas d'accès à la caméra. Autorisez-le dans les Réglages."
+            "value": "Pas d'accès à l'appareil photo. Autorisez-le dans les Réglages."
           }
         },
         "it": {
@@ -5680,7 +5738,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Con orlo"
+            "value": "Con collarino"
           }
         }
       }
@@ -6753,7 +6811,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Orlo"
+            "value": "Collarino"
           }
         }
       }
@@ -6782,7 +6840,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Spessore dell'orlo"
+            "value": "Spessore del collarino"
           }
         }
       }
@@ -6811,7 +6869,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Diametro dell'orlo"
+            "value": "Diametro del collarino"
           }
         }
       }
@@ -6927,7 +6985,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Senza orlo"
+            "value": "Senza collarino"
           }
         }
       }
@@ -7663,7 +7721,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "bullet seating"
+            "value": "seating depth"
           }
         },
         "es": {
@@ -7675,13 +7733,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "enfoncement du projectile"
+            "value": "profondeur d'enfoncement du projectile"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "inserimento della palla"
+            "value": "profondità di inserimento della palla"
           }
         }
       }
@@ -9073,7 +9131,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Con orlo ridotto"
+            "value": "Con collarino ridotto"
           }
         }
       }
@@ -9339,35 +9397,6 @@
         }
       }
     },
-    "leere Hülse": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "empty case"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "vaina vacía"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "douille vide"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "bossolo vuoto"
-          }
-        }
-      }
-    },
     "mit Flaschenhals": {
       "extractionState": "manual",
       "localizations": {
@@ -9421,7 +9450,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "con orlo"
+            "value": "con collarino"
           }
         }
       }
@@ -9450,7 +9479,7 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "senza orlo"
+            "value": "senza collarino"
           }
         }
       }
@@ -9484,7 +9513,7 @@
         }
       }
     },
-    "z. B. Bodenprägung oder eigener Name": {
+    "z. B. Bodenstempel oder eigener Name": {
       "extractionState": "manual",
       "localizations": {
         "en": {

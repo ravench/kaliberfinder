@@ -7,7 +7,7 @@ TAILLE RÉELLE (1:1)
 Comparez les résultats en taille réelle, côte à côte le long d'une règle millimétrée, avec le culot et l'amorce vus de dessous. Posez la cartouche sur l'écran et voyez laquelle correspond. Kaliberfinder connaît la densité d'affichage des iPhone et iPad sur lesquels l'app fonctionne ; vous pouvez aussi calibrer l'écran une fois avec une carte bancaire.
 
 LIDAR
-Sur les iPhone Pro et iPad Pro équipés du LiDAR, la caméra de l'app mesure en plus les dimensions de la cartouche à partir de la distance. Avec ces mesures, il ne reste en général qu'un calibre ou quelques-uns.
+Sur les iPhone Pro et iPad Pro équipés du LiDAR, l'appareil photo de l'app mesure en plus les dimensions de la cartouche à partir de la distance. Avec ces mesures, il ne reste en général qu'un calibre ou quelques-uns.
 
 SANS PHOTO
 Saisissez ce que vous avez mesuré (longueur totale, longueur de douille, diamètre du bourrelet ou du projectile, forme de la douille et du culot) et voyez quels calibres correspondent ; un croquis montre où mesurer. Ou cherchez des calibres par leur nom ou avec des mots comme « à blanc » ou « cartouche de chasse », sélectionnez-en plusieurs et comparez-les 1:1.
