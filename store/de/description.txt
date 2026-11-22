@@ -1,25 +1,25 @@
-Eine Patrone oder leere Hülse gefunden und das Kaliber ist unklar? Kaliberfinder grenzt es anhand eines Fotos ein und zeigt die Treffer in Originalgrösse auf dem Display.
+Kaliberfinder bestimmt das Kaliber einer Patrone oder leeren Hülse anhand eines Fotos und zeigt die passenden Kaliber in Originalgrösse auf dem Bildschirm.
 
 PATRONE ERKENNEN
-Fotografiere die Patrone seitlich liegend auf hellem, einfarbigem Grund oder wähle ein Foto aus der Mediathek. Kaliberfinder schneidet die Silhouette aus und vergleicht das Seitenprofil mit den Umrissen im Katalog. Du erhältst eine kurze Liste wahrscheinlicher Kaliber zur Auswahl, jeweils mit der Angabe, wie gut es passt; weit entfernte Kaliber erscheinen nicht. Leere Hülsen und abgeschossene Schrotpatronen gehen auch: Die App unterscheidet Hülsenmund und Geschoss und schliesst Kaliber anhand von Rand und Hals aus. Sind mehrere Patronen im Bild, tippst du die gewünschte an. Die App vergleicht die Form und liest keinen Bodenstempel; Kaliber mit gleichem Profil stehen deshalb gemeinsam in der Liste.
+Die Patrone liegt seitlich auf einem hellen, einfarbigen Untergrund und wird von oben fotografiert; ein Foto aus der Mediathek geht auch. Kaliberfinder schneidet die Umrisse aus und vergleicht das Seitenprofil mit dem Katalog. Das Resultat ist eine kurze Liste der wahrscheinlichsten Kaliber, jeweils mit der Angabe, wie gut sie passen; weit entfernte Kaliber erscheinen nicht. Auch leere Hülsen und abgeschossene Schrotpatronen lassen sich bestimmen: Die App unterscheidet Hülsenmund und Geschoss und schliesst Kaliber anhand von Rand und Hals aus. Liegen mehrere Patronen im Bild, wird eine davon angetippt. Die App vergleicht die Form und liest keinen Bodenstempel; Kaliber mit gleichem Profil stehen deshalb gemeinsam in der Liste.
 
 ORIGINALGRÖSSE (1:1)
-Vergleiche die Treffer in Originalgrösse, nebeneinander an einem Millimeterlineal, mit Hülsenboden und Zündhütchen von unten. Leg die Patrone aufs Display und sieh, welche passt. Kaliberfinder kennt die Pixeldichte der iPhones und iPads, auf denen die App läuft; du kannst den Bildschirm auch einmal mit einer Bankkarte kalibrieren.
+Die Treffer erscheinen in Originalgrösse nebeneinander an einem Millimeterlineal, mit Hülsenboden und Zündhütchen von unten. Die Patrone lässt sich direkt auf den Bildschirm legen und vergleichen. Kaliberfinder kennt die Pixeldichte der iPhones und iPads, auf denen die App läuft; zusätzlich lässt sich der Bildschirm mit einer Bankkarte kalibrieren.
 
 LIDAR
-Auf iPhone-Pro- und iPad-Pro-Modellen mit LiDAR misst die Kamera der App zusätzlich die Masse der Patrone aus dem Abstand. Mit diesen Massen bleiben meist nur ein oder wenige Kaliber übrig.
+Auf iPhone-Pro- und iPad-Pro-Modellen mit LiDAR misst die App zusätzlich die Masse der Patrone. Damit bleiben meist nur ein oder wenige Kaliber übrig.
 
 OHNE FOTO
-Gib ein, was du gemessen hast (Gesamtlänge, Hülsenlänge, Rand- oder Geschossdurchmesser, Hülsen- und Randform), und sieh, welche Kaliber passen; eine Skizze zeigt, wo gemessen wird. Oder suche Kaliber nach Namen, auch mit Wörtern wie «Platzpatrone» oder «Schrot», wähle mehrere aus und vergleiche sie 1:1.
+Von Hand gemessene Werte (Gesamtlänge, Hülsenlänge, Rand- oder Geschossdurchmesser, Hülsen- und Randform) genügen ebenfalls; eine Skizze zeigt, wo gemessen wird. Die Suche findet Kaliber nach Namen oder mit Begriffen wie «Platzpatrone» oder «Schrot». Mehrere Kaliber lassen sich auswählen und 1:1 vergleichen.
 
 ALLE KALIBER
-Über 700 Kaliber, von den Anfängen der Patronenmunition bis heute: Randfeuer, Kurzwaffe, Langwaffe, Schwarzpulver, Flinte und Luftdruck, darunter die Schweizer Ordonnanzpatronen (GP 11, GP 90, GP 1890) und Platzpatronen. Zu jedem Kaliber: die Masse (je nach Bauart Gesamtlänge, Hülsenlänge, Rand-, Boden-, Schulter-, Hals- und Geschossdurchmesser) mit ihren Quellen und eine Masszeichnung; falls vorhanden, auch Zündhütchen, Herkunft, weitere Namen und ähnliche Kaliber mit dem, was sie unterscheidet. Bei einigen Militärkalibern stehen die Farbcodes von Geschossspitze, Hülsenboden oder Zündhütchenring. Seltene und veraltete Kaliber sind markiert und erscheinen nicht in den Treffern, bis du sie einschaltest; passt eines gut, weist die App darauf hin.
+Über 700 Kaliber, von den Anfängen der Patronenmunition bis heute: Randfeuer, Kurzwaffe, Langwaffe, Schwarzpulver, Flinte und Luftdruck, darunter die Schweizer Ordonnanzpatronen (GP 11, GP 90, GP 1890) und Platzpatronen. Zu jedem Kaliber gibt es die Masse (je nach Bauart Gesamtlänge, Hülsenlänge, Rand-, Boden-, Schulter-, Hals- und Geschossdurchmesser) mit ihren Quellen und eine Masszeichnung, falls vorhanden auch Zündhütchen, Herkunft, weitere Namen und ähnliche Kaliber mit den Unterschieden. Bei einigen Militärkalibern sind die Farbcodes von Geschossspitze, Hülsenboden oder Zündhütchenring angegeben. Seltene und veraltete Kaliber sind markiert und erscheinen erst in den Treffern, wenn sie eingeschaltet sind; passt eines gut, weist die App darauf hin.
 
 AUSSERDEM
-• Foto aus Fotos, Dateien oder Nachrichten direkt mit Kaliberfinder teilen.
+• Fotos lassen sich aus Fotos, Dateien oder Nachrichten direkt an Kaliberfinder teilen.
 • Metrische oder imperiale Einheiten.
 • Deutsch, Englisch, Französisch, Italienisch und Spanisch.
 • Für iPhone und iPad.
 • Funktioniert offline. Kein Konto, kein Tracking, keine Werbung. Fotos werden auf dem Gerät ausgewertet und nie hochgeladen.
 
-Die Masse sind gerundete Richtwerte zur Bestimmung, keine Wiederladedaten. Ein Treffer ist keine Freigabe zum Schiessen: Prüfe Bodenstempel und Kaliberangabe der Waffe. Kaliberfinder verkauft oder bewirbt weder Waffen noch Munition.
+Die Masse sind gerundete Richtwerte zur Bestimmung, keine Wiederladedaten. Ein Treffer ist keine Freigabe zum Schiessen: Bodenstempel und Kaliberangabe der Waffe sind immer zu prüfen. Kaliberfinder verkauft oder bewirbt weder Waffen noch Munition.
