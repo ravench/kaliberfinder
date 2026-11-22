@@ -41,7 +41,8 @@ final class ProfileTwinTests: XCTestCase {
 
     func testOnlyTheKnownGroupsAreTwins() {
         let all = CartridgeCatalog.all
-        let groups = CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).filter { $0.count > 1 }
+        let grouped = CartridgeCatalog.groupedByProfile(all, cartridge: { $0 })  // ~15 s in the Debug build: once
+        let groups = grouped.filter { $0.count > 1 }
         // The known twin sets are among them; the catalogue may add more (the .500/450 Express pair with #196).
         XCTAssertTrue(Set(groups.map { Set($0.map(\.id)) }).isSuperset(of:
                        [[".308 Winchester", "7.62x51 mm NATO"], [".223 Remington", "5.56x45 mm NATO", "5.56 Commercial", "5.6 mm GP 90"],
@@ -54,7 +55,7 @@ final class ProfileTwinTests: XCTestCase {
             XCTAssertEqual(group[0].id, sizeGroups.first)
         }
         // Grouping never loses or duplicates a calibre.
-        XCTAssertEqual(CartridgeCatalog.groupedByProfile(all, cartridge: { $0 }).flatMap { $0 }.map(\.id).sorted(), all.map(\.id).sorted())
+        XCTAssertEqual(grouped.flatMap { $0 }.map(\.id).sorted(), all.map(\.id).sorted())
     }
 
     func testPhotoMatchesShowTwinsInOneRow() throws {

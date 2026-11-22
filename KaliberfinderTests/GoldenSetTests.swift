@@ -112,9 +112,7 @@ final class GoldenSetTests: XCTestCase {
         for package in try golden() {
             for entry in Evaluation.included(package.shots, in: package.url.lastPathComponent).shots {
                 let name = "\(package.url.lastPathComponent)/\(entry.url.lastPathComponent)"
-                let info = try XCTUnwrap(entry.shot.mask, name), labels = try XCTUnwrap(labels(of: entry), name)
-                let image = (width: try XCTUnwrap(info.imageWidth, name), height: try XCTUnwrap(info.imageHeight, name))
-                let analysis = PhotoAnalyzer.analyze(instanceLabels: labels, mask: (info.width, info.height), image: image, isBrass: true)
+                let analysis = try replayed(entry, isBrass: true, named: name)
                 guard let shape = analysis.shape, let contour = analysis.contour, ScanMode.auto.part(for: shape) == .emptyCase else { continue }
                 emptyCases += 1
                 if contour.nose != nil { withNose += 1 }
@@ -130,13 +128,19 @@ final class GoldenSetTests: XCTestCase {
         XCTAssertGreaterThan(withNose, 0, "no empty case with something in front of its neck left to check")
     }
 
-    /// One shot through the phone's path, and its report line.
+    /// One shot through the phone's path, from its stored mask: once per run, though two tests replay every shot.
+    private func replayed(_ entry: SavedShot, isBrass: Bool, named name: String) throws -> PhotoAnalysis {
+        let info = try XCTUnwrap(entry.shot.mask, name), labels = try XCTUnwrap(labels(of: entry), name)
+        let image = (width: try XCTUnwrap(info.imageWidth, name), height: try XCTUnwrap(info.imageHeight, name))
+        return Once.value("GoldenSetTests analysis \(entry.url.path) \(isBrass)") {
+            PhotoAnalyzer.analyze(instanceLabels: labels, mask: (info.width, info.height), image: image, isBrass: isBrass)
+        }
+    }
+
+    /// One shot's score and its report line.
     private func replay(_ entry: SavedShot, named name: String, of package: CapturePackage) throws -> (Evaluation.Shot, String) {
         let shot = entry.shot
-        let info = try XCTUnwrap(shot.mask), labels = try XCTUnwrap(labels(of: entry))
-        let image = (width: try XCTUnwrap(info.imageWidth), height: try XCTUnwrap(info.imageHeight))
-        let analysis = PhotoAnalyzer.analyze(instanceLabels: labels, mask: (info.width, info.height), image: image,
-                                             isBrass: shot.analysis?.isBrass ?? true)
+        let analysis = try replayed(entry, isBrass: shot.analysis?.isBrass ?? true, named: name)
         let scored = Evaluation.shot(name, analysis: analysis, depth: shot.scale?.depthScale, package: package)
         let result = scored.result
         let rows = [result.row, result.rowObsolete, result.rowAll].map { $0.map { "\($0)" } ?? "–" }.joined(separator: "/")

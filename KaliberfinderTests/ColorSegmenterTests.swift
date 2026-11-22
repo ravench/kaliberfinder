@@ -151,34 +151,33 @@ final class ColorSegmenterTests: XCTestCase {
     /// handgun calibres as the matches, and the frame along the measured silhouette.
     /// (The .45 ACP photo is checked the same way in testAnalyzerOffersBothCartridgesAndMeasuresThePickedOne.)
     func testRealPhotosShowOneHandgunCartridge() async throws {
-        for (name, id) in [("photo-9x19-wood", "9x19 mm")] {
-            let analysis = try await RealPhotos.analysis(name)
-            XCTAssertFalse(analysis.hasSeveralObjects, "\(name): \(analysis.candidates)")
-            let shape = try XCTUnwrap(analysis.shape, name)
-            XCTAssertFalse(shape.isEndView, name)
-            XCTAssertNotNil(analysis.lengthPixels, name)
-            XCTAssertEqual(shape.aspect, 2.85, accuracy: 0.35, name)
-            let top = Matcher.rank(shape: shape)
-            XCTAssertTrue(top.contains { $0.cartridge.id == id }, "\(name): \(top.map(\.cartridge.id))")
-            let handgun = CartridgeCatalog.Category.handgun.rawValue
-            XCTAssertTrue(top.prefix(5).allSatisfy { $0.cartridge.category == handgun }, "\(name): \(top.map(\.cartridge.id))")
-            // The frame: four corners inside the photo, around a small part of it (a cartridge, not the board).
-            let outline = try XCTUnwrap(analysis.outline, name)
-            XCTAssertEqual(outline.count, 4, name)
-            let unit = CGRect(x: -0.01, y: -0.01, width: 1.02, height: 1.02)
-            XCTAssertTrue(outline.allSatisfy { unit.contains($0) }, "\(name): \(outline)")
-            let box = try XCTUnwrap(MatchesView.detectedBoxes(analysis).first, name)
-            XCTAssertLessThan(box.width * box.height, 0.2, "\(name): \(box)")
-            XCTAssertGreaterThan(box.width * box.height, 0.001, "\(name): \(box)")
-            // The frame is the measured silhouette's own outline, inside its box.
-            let frames = MatchesView.frames(overview: analysis, measured: analysis, picking: false)
-            XCTAssertTrue(frames.candidates.isEmpty, name)
-            let contour = try XCTUnwrap(analysis.contour, name)
-            XCTAssertEqual(frames.measured, contour.points, name)
-            XCTAssertEqual(frames.parts, contour.parts, name)
-            let around = box.insetBy(dx: -0.005, dy: -0.005)
-            XCTAssertTrue(contour.points.allSatisfy { around.contains($0) }, name)
-        }
+        let (name, id) = ("photo-9x19-wood", "9x19 mm")
+        let analysis = try await RealPhotos.analysis(name)
+        XCTAssertFalse(analysis.hasSeveralObjects, "\(name): \(analysis.candidates)")
+        let shape = try XCTUnwrap(analysis.shape, name)
+        XCTAssertFalse(shape.isEndView, name)
+        XCTAssertNotNil(analysis.lengthPixels, name)
+        XCTAssertEqual(shape.aspect, 2.85, accuracy: 0.35, name)
+        let top = Matcher.rank(shape: shape)
+        XCTAssertTrue(top.contains { $0.cartridge.id == id }, "\(name): \(top.map(\.cartridge.id))")
+        let handgun = CartridgeCatalog.Category.handgun.rawValue
+        XCTAssertTrue(top.prefix(5).allSatisfy { $0.cartridge.category == handgun }, "\(name): \(top.map(\.cartridge.id))")
+        // The frame: four corners inside the photo, around a small part of it (a cartridge, not the board).
+        let outline = try XCTUnwrap(analysis.outline, name)
+        XCTAssertEqual(outline.count, 4, name)
+        let unit = CGRect(x: -0.01, y: -0.01, width: 1.02, height: 1.02)
+        XCTAssertTrue(outline.allSatisfy { unit.contains($0) }, "\(name): \(outline)")
+        let box = try XCTUnwrap(MatchesView.detectedBoxes(analysis).first, name)
+        XCTAssertLessThan(box.width * box.height, 0.2, "\(name): \(box)")
+        XCTAssertGreaterThan(box.width * box.height, 0.001, "\(name): \(box)")
+        // The frame is the measured silhouette's own outline, inside its box.
+        let frames = MatchesView.frames(overview: analysis, measured: analysis, picking: false)
+        XCTAssertTrue(frames.candidates.isEmpty, name)
+        let contour = try XCTUnwrap(analysis.contour, name)
+        XCTAssertEqual(frames.measured, contour.points, name)
+        XCTAssertEqual(frames.parts, contour.parts, name)
+        let around = box.insetBy(dx: -0.005, dy: -0.005)
+        XCTAssertTrue(contour.points.allSatisfy { around.contains($0) }, name)
     }
 
     /// One of Raven's empty 6 mm BR cases on a grey table (2026-11-05), the empty case of the PR screens:

@@ -20,14 +20,14 @@ final class FirstLookTests: XCTestCase {
     /// cut from the full-size photo, and ends on the colour cut-out of the whole photo. Where Vision
     /// works (the Mac), the whole photo or a crop is enough and the cut-out is never taken.
     func testCascadeCutsEveryRegionBeforeTheColourCutOut() throws {
-        let size = CGSize(width: 1800, height: 1350)
+        let size = CGSize(width: 900, height: 675)  // larger only costs time: Vision looks at every region
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
         let image = UIGraphicsImageRenderer(size: size, format: format).image { context in
             UIColor(white: 0.9, alpha: 1).setFill()
             context.fill(CGRect(origin: .zero, size: size))
             UIColor(red: 0.85, green: 0.65, blue: 0.25, alpha: 1).setFill()
-            context.fill(CGRect(x: 787, y: 637, width: 225, height: 75))
+            context.fill(CGRect(x: 394, y: 319, width: 113, height: 38))
         }
         let whole = try XCTUnwrap(image.cgImage)
         var cut: [CGRect] = []
