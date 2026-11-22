@@ -54,5 +54,7 @@ def needs_screens(paths, labels=()):
 if __name__ == "__main__":
     paths = sys.stdin.readlines()
     labels = sys.argv[1].splitlines() if len(sys.argv) > 1 else []
-    print(f"mac={'true' if needs_mac(paths) else 'false'}")
-    print(f"screens={'true' if needs_screens(paths, labels) else 'false'}")
+    screens = needs_screens(paths, labels)
+    # The PR screens run in the Mac job, so the label starts it too.
+    print(f"mac={'true' if screens or needs_mac(paths) else 'false'}")
+    print(f"screens={'true' if screens else 'false'}")

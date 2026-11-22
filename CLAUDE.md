@@ -10,4 +10,4 @@
   after. After pushing, check that the comment shows your change. If it says «No visible change»
   but your change is visible, the tour does not reach that screen: add a stop for it in the same
   pull request. If your change is visible but touches none of those files (logic, data), add the
-  «screens» label before you push, or re-run the Build after adding it.
+  «screens» label before you push, or use «Re-run all jobs» on the Build after adding it.
