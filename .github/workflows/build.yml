@@ -27,7 +27,7 @@ jobs:
   changes:
     # Pull requests that change only docs, tools or other workflows skip the Mac job (see
     # tools/ci_changes.py); lint and the tools job still check them. Pushes to main always build.
-    # Pull requests that change the GUI also get the PR screens in the Mac job.
+    # Pull requests that change how a screen looks, or carry the «screens» label, also get the PR screens in the Mac job.
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -42,8 +42,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "${{ github.event_name }}" != pull_request ]; then printf 'mac=true\nscreens=false\n' >> "$GITHUB_OUTPUT"; exit 0; fi
-          gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" --paginate \
-            --jq '.[] | .filename, (.previous_filename // empty)' | python3 tools/ci_changes.py | tee -a "$GITHUB_OUTPUT"
+          PR="repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}"
+          # Read now, not from the event: a re-run after adding the «screens» label takes the screens.
+          LABELS=$(gh api "$PR" --jq '.labels[].name')
+          gh api "$PR/files" --paginate --jq '.[] | .filename, (.previous_filename // empty)' \
+            | python3 tools/ci_changes.py "$LABELS" | tee -a "$GITHUB_OUTPUT"
   tools:
     # The Python checks need no Mac.
     runs-on: ubuntu-latest
@@ -85,7 +88,8 @@ jobs:
       contents: read # the PR screens below push their images to ravench/app-screens with a deploy key
       pull-requests: write # and comment on the pull request
     env:
-      # Pull requests that change the GUI (tools/ci_changes.py) also get the PR screens.
+      # Pull requests that change how a screen looks, or carry the «screens» label (tools/ci_changes.py),
+      # also get the PR screens.
       SCREENS_TOUR: ${{ needs.changes.outputs.screens }}
     steps:
       - uses: actions/checkout@v5

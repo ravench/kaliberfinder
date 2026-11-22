@@ -16,4 +16,6 @@ invites work on it, under a written agreement with Simon Giotta. These notes are
 - Keep pull requests small and focused, and describe what you changed and how you tested it.
 - A pull request that changes the GUI shows screenshots. CI comments with the screens that
   changed, before and after; if your screen is missing, add it to the tour in
-  `KaliberfinderUITests/PRScreensTests.swift`.
+  `KaliberfinderUITests/PRScreensTests.swift`. The tour takes about an hour, so it runs only for
+  pull requests that change views, strings or images; for a visible change elsewhere add the
+  «screens» label and use «Re-run all jobs» on the Build.

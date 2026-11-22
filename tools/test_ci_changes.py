@@ -41,6 +41,10 @@ class NeedsMacTests(unittest.TestCase):
         run = lambda text: subprocess.run(
             [sys.executable, str(TOOL)], input=text, capture_output=True, text=True, check=True).stdout
         self.assertEqual(run("README.md\ntools/localize.py\n"), "mac=false\nscreens=false\n")
+        self.assertEqual(subprocess.run([sys.executable, str(TOOL), "wip\nscreens"], input="README.md\n",
+                                        capture_output=True, text=True, check=True).stdout, "mac=true\nscreens=true\n")
+        self.assertEqual(subprocess.run([sys.executable, str(TOOL), ""], input="README.md\n",
+                                        capture_output=True, text=True, check=True).stdout, "mac=false\nscreens=false\n")
         self.assertEqual(run(f"README.md\n{APP_PATHS[0]}\n"), "mac=true\nscreens=true\n")
         self.assertEqual(run("KaliberfinderTests/MatcherTests.swift\n"), "mac=true\nscreens=false\n")
 
@@ -48,13 +52,14 @@ class NeedsMacTests(unittest.TestCase):
 class NeedsScreensTests(unittest.TestCase):
     def test_gui_changes_get_the_screens(self):
         for path in ["Kaliberfinder/Views/ContentView.swift", "KaliberfinderUITests/PRScreensTests.swift",
-                     "calibre-data", "project.yml", "tools/pr_screens.py", ".github/workflows/build.yml"]:
+                     "Kaliberfinder/Resources/Localizable.xcstrings", "Kaliberfinder/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json", "tools/pr_screens.py", ".github/workflows/build.yml"]:
             with self.subTest(path=path):
                 self.assertTrue(needs_screens(["README.md", path]))
 
     def test_unit_tests_and_docs_skip_the_screens(self):
         self.assertFalse(needs_screens(["KaliberfinderTests/MatcherTests.swift", "README.md",
-                                        "tools/localize.py", ".github/workflows/testflight.yml"]))
+                                        "tools/localize.py", ".github/workflows/testflight.yml",
+                                        "KaliberfinderUITests/AppStoreScreensTests.swift"]))
 
     def test_screens_always_come_with_the_mac_job(self):
         # They run in the Mac job, so every path that takes them must also start it.
@@ -62,6 +67,16 @@ class NeedsScreensTests(unittest.TestCase):
             path = pattern.replace("*", "Some.swift")
             with self.subTest(path=path):
                 self.assertTrue(needs_mac([path]))
+
+    def test_logic_and_data_bumps_skip_the_screens(self):
+        # The tour takes about an hour; these rarely change a screen, and the label asks for it.
+        self.assertFalse(needs_screens(["calibre-data", "Kaliberfinder/Resources/Cartridges.json",
+                                        "Kaliberfinder/Services/Matcher.swift", "Kaliberfinder/Models/Cartridge.swift",
+                                        "project.yml"]))
+
+    def test_the_screens_label_asks_for_them(self):
+        self.assertTrue(needs_screens(["KaliberfinderTests/SomeTests.swift"], ["bug", "screens"]))
+        self.assertFalse(needs_screens(["KaliberfinderTests/SomeTests.swift"], ["bug", "screenshots"]))
 
     def test_no_files_takes_the_screens_to_be_safe(self):
         self.assertTrue(needs_screens([]))
