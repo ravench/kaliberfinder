@@ -44,7 +44,12 @@ class AppStoreScreensTests(unittest.TestCase):
         self.assertIn('"-screenTourBullet"', self.swift)
         self.assertNotIn("element(boundBy:", self.swift)
         self.assertNotIn("_ = app.staticTexts", self.swift)
-        self.assertEqual(self.swift.count('XCTAssertTrue(app.staticTexts[t("Mögliche Kaliber")]'), 2)
+        # Both waits for the matches can fail the run; the photo's stops before it saves a screenshot of a spinner,
+        # and the 1:1 screen and the search field are waited for the same way (review 2026-11-22).
+        self.assertIn('guard app.staticTexts[t("Mögliche Kaliber")].waitForExistence(timeout: 90) else { return XCTFail(', self.swift)
+        self.assertIn('XCTAssertTrue(app.staticTexts[t("Mögliche Kaliber")].waitForExistence(timeout: 5)', self.swift)
+        self.assertNotIn('if open(compare.firstMatch)', self.swift)
+        self.assertNotIn('if search.waitForExistence', self.swift)
 
     def test_languages_match_the_app(self):
         # The tour's locales cover exactly the app's five languages.
