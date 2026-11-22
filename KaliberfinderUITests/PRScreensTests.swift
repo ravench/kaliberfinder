@@ -4,14 +4,20 @@ import XCTest
 /// A tour of the main screens, one screenshot per stop, run on a pull request and its base (PR screens in the Build job).
 /// A pull request that changes a screen the tour does not reach adds a stop.
 final class PRScreensTests: XCTestCase {
-    private var app: XCUIApplication!
+    private var application: XCUIApplication!
+    private var launched = false
+    /// The app, launched when a stop first touches it: a stop that needs launch arguments adds them to `application`
+    /// before, so each stop launches the app once.
+    private var app: XCUIApplication {
+        if !launched { launched = true; application.launch() }
+        return application
+    }
 
     override func setUp() {
         // A broken stop should not cost the screenshots of the others.
         continueAfterFailure = true
-        app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_CH"]
-        app.launch()
+        application = XCUIApplication()
+        application.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_CH"]
     }
 
     /// Types `text` into the search field of the screen, when it has one (a trailing return hides the keyboard).
@@ -68,9 +74,7 @@ final class PRScreensTests: XCTestCase {
     /// Measurements typed by hand, 29.7 mm long with a 9 mm bullet: the 9x19 group is one row of the results
     /// (Raven, 2026-11-13). The values come as launch arguments: the number pad does not go away on the simulator.
     func testMeasuredMatches() {
-        app.terminate()
-        app.launchArguments += ["-screenTourLength", "29.7", "-screenTourBullet", "9.0"]
-        app.launch()
+        application.launchArguments += ["-screenTourLength", "29.7", "-screenTourBullet", "9.0"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
         XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
@@ -82,9 +86,7 @@ final class PRScreensTests: XCTestCase {
     /// The groups' switch off (Raven, 2026-11-13): the 9x19 and the Glisenti as rows of their own, each named
     /// after the group, and both drawn at 1:1.
     func testUngroupedMatches() {
-        app.terminate()
-        app.launchArguments += ["-screenTourLength", "29.7", "-screenTourBullet", "9.0", "-groupSizeGroups", "NO"]
-        app.launch()
+        application.launchArguments += ["-screenTourLength", "29.7", "-screenTourBullet", "9.0", "-groupSizeGroups", "NO"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
         XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
@@ -99,9 +101,7 @@ final class PRScreensTests: XCTestCase {
     /// with a 7.85 mm bullet lists «7.63x25 mm» (was the obsolete «.30 Borchardt», hidden but ranked). The .38 Auto
     /// group of the old values, 34.3 mm and 8.8 mm, is cut since the list goes like a photo's (TestFlight 2026-11-17).
     func testGroupNames() {
-        app.terminate()
-        app.launchArguments += ["-screenTourLength", "34.6", "-screenTourBullet", "7.85"]
-        app.launch()
+        application.launchArguments += ["-screenTourLength", "34.6", "-screenTourBullet", "7.85"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
         XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
@@ -128,10 +128,8 @@ final class PRScreensTests: XCTestCase {
     /// 7.9 mm bullet is a 7.62x25 mm Tokarev; with the obsolete and rare calibres switched on, its row was drawn and
     /// rated as the group's parent, the .30 Borchardt, 1.2 mm off where the Mauser is 0.4, and not among the 1:1 button's.
     func testGroupRowOfANearerMember() {
-        app.terminate()
-        app.launchArguments += ["-screenTourLength", "35.2", "-screenTourBullet", "7.9",
-                                "-includeObsoleteCalibres", "YES", "-includeRareCalibres", "YES"]
-        app.launch()
+        application.launchArguments += ["-screenTourLength", "35.2", "-screenTourBullet", "7.9",
+                                        "-includeObsoleteCalibres", "YES", "-includeRareCalibres", "YES"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Masse eingeben"].firstMatch) else { return }
         XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "No results for the launch arguments")
@@ -178,9 +176,8 @@ final class PRScreensTests: XCTestCase {
                                           // A flat nose (AECC flat width) and a crimped blank: their own source rows (calibre-data #204, #205).
                                           ("45 Colt", ".45 Colt", "metric", "35e-Masszeichnung-45Colt"),
                                           ("6.8/11", "6.8/11", "metric", "35g-Masszeichnung-6-8-11")] {
-            app.terminate()
-            app.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_CH", "-lengthUnit", unit]
-            app.launch()
+            application.launchArguments = ["-AppleLanguages", "(de)", "-AppleLocale", "de_CH", "-lengthUnit", unit]
+            launched = false  // launched again with this unit
             XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
             guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
             search(query + "\n")
@@ -262,9 +259,7 @@ final class PRScreensTests: XCTestCase {
     /// The cannon rounds behind «Kanonenkaliber zeigen» (Raven, 2026-11-15: the same rules as every calibre): a complete
     /// one has its drawing, its tag, its 1:1 and its dimensioned drawing.
     func testCannonCalibres() {
-        app.terminate()
-        app.launchArguments += ["-showCannonCalibres", "YES"]
-        app.launch()
+        application.launchArguments += ["-showCannonCalibres", "YES"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         search("30x1\n")
@@ -280,9 +275,7 @@ final class PRScreensTests: XCTestCase {
     /// The Swiss cadet round, found by the name on its box, with its own drawing; sourced since calibre-data #163,
     /// the stop keeps the developer switch «Unbelegte Kaliber zeigen» on for the «Unbelegt» tag that follows.
     func testKadettenpatrone() {
-        app.terminate()
-        app.launchArguments += ["-showUnsourcedCalibres", "YES"]
-        app.launch()
+        application.launchArguments += ["-showUnsourcedCalibres", "YES"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         search("Kadetten\n")
@@ -309,9 +302,7 @@ final class PRScreensTests: XCTestCase {
 
     /// The calibre picker of a new training series finds a calibre by its other names too, and shows them.
     func testTrainingCalibreSearch() {
-        app.terminate()
-        app.launchArguments += ["-trainingCaptureEnabled", "YES"]
-        app.launch()
+        application.launchArguments += ["-trainingCaptureEnabled", "YES"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]),
               developerOptions(),
@@ -326,9 +317,7 @@ final class PRScreensTests: XCTestCase {
     /// A new training series of a round the catalogue lacks: searched in vain, then «Nicht in der Liste»,
     /// named after the search.
     func testTrainingUnlistedRound() {
-        app.terminate()
-        app.launchArguments += ["-trainingCaptureEnabled", "YES"]
-        app.launch()
+        application.launchArguments += ["-trainingCaptureEnabled", "YES"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]),
               developerOptions(),
@@ -381,14 +370,14 @@ final class PRScreensTests: XCTestCase {
     /// One of Raven's empty 6 mm BR cases: its outline ends flat at the mouth, without a bullet.
     /// Then its match at 1:1 with «Geschosse bei leeren Hülsen zeigen» off (the matches don't use it).
     func testEmptyCasePhoto() {
-        app.launchArguments += ["-showBulletsOnEmptyCases", "NO"]
+        application.launchArguments += ["-showBulletsOnEmptyCases", "NO"]
         photoMatches("photo-6mmbr-case", shot: "15-Foto-leere-Huelse", compareShot: "18-Foto-Huelse-ohne-Geschoss")
     }
 
     /// The loaded 9 mm with the hidden switch that colours the outline by detection: the bullet up to
     /// the case mouth, where its copper meets the brass, a line across the case there, and the case.
     func testLoadedCartridgePartColours() {
-        app.launchArguments += ["-outlinePartColours", "YES"]
+        application.launchArguments += ["-outlinePartColours", "YES"]
         photoMatches("photo-9x19-wood", shot: "16-Foto-Erkennung-farbig")
     }
 
@@ -397,11 +386,9 @@ final class PRScreensTests: XCTestCase {
     func testMatchToCalibrePage() {
         let photo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("KaliberfinderTests/Fixtures/set-gp11-case-02.jpg")
-        app.terminate()
-        app.launchArguments += ["-screenTourPhoto", photo.path]
-        app.launch()
+        application.launchArguments += ["-screenTourPhoto", photo.path]
         XCTAssertTrue(app.navigationBars["Treffer"].waitForExistence(timeout: 10))
-        _ = app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90)
+        guard app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90) else { return XCTFail("No matches for the photo") }
         guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "6.5-284 Norma")).firstMatch) else { return }
         XCTAssertTrue(app.navigationBars["6.5-284 Norma"].waitForExistence(timeout: 5), "The calibre's page did not open from the match")
         snap("32-Treffer-Kaliber")
@@ -418,11 +405,9 @@ final class PRScreensTests: XCTestCase {
     func testUnsureMatches() {
         let photo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("KaliberfinderTests/Fixtures/photo-9x19-wood.jpg")
-        app.terminate()
-        app.launchArguments += ["-screenTourPhoto", photo.path]
-        app.launch()
+        application.launchArguments += ["-screenTourPhoto", photo.path]
         XCTAssertTrue(app.navigationBars["Treffer"].waitForExistence(timeout: 10))
-        _ = app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90)
+        guard app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90) else { return XCTFail("No matches for the photo") }
         app.buttons["Leere Hülse"].tap()
         // With the measurements in the top block (Raven, 2026-11-08), so no scrolling.
         XCTAssertTrue(app.buttons["Masse von Hand eingeben"].waitForExistence(timeout: 5), "The link to measure by hand is not shown")
@@ -440,11 +425,9 @@ final class PRScreensTests: XCTestCase {
             context.fill(CGRect(x: 0, y: 0, width: 1200, height: 900))
         }
         try XCTUnwrap(paper.pngData()).write(to: photo)
-        app.terminate()
-        app.launchArguments += ["-screenTourPhoto", photo.path]
-        app.launch()
+        application.launchArguments += ["-screenTourPhoto", photo.path]
         XCTAssertTrue(app.navigationBars["Treffer"].waitForExistence(timeout: 10))
-        XCTAssertTrue(app.buttons["Masse von Hand eingeben"].waitForExistence(timeout: 90), "The link to measure by hand is not shown")
+        guard app.buttons["Masse von Hand eingeben"].waitForExistence(timeout: 90) else { return XCTFail("The link to measure by hand is not shown") }
         snap("31b-Foto-ohne-Treffer")
     }
 
@@ -502,9 +485,7 @@ final class PRScreensTests: XCTestCase {
         let captures = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         XCTAssertNoThrow(try FileManager.default.copyItem(at: URL(fileURLWithPath: #filePath).deletingLastPathComponent()
             .deletingLastPathComponent().appendingPathComponent("KaliberfinderTests/Captures"), to: captures))
-        app.terminate()
-        app.launchArguments += ["-trainingCaptureEnabled", "YES", "-screenTourCaptures", captures.path]
-        app.launch()
+        application.launchArguments += ["-trainingCaptureEnabled", "YES", "-screenTourCaptures", captures.path]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.navigationBars["Kaliberfinder"].buttons["Einstellungen"]), developerOptions() else { return }
         snap("21a-Einstellungen-Trainingsdaten")  // the switch on, with the link below it
@@ -526,9 +507,7 @@ final class PRScreensTests: XCTestCase {
 
     /// With the training capture on, a calibre's detail page starts a series of that calibre.
     func testTrainingSeriesFromACalibre() {
-        app.terminate()
-        app.launchArguments += ["-trainingCaptureEnabled", "YES"]
-        app.launch()
+        application.launchArguments += ["-trainingCaptureEnabled", "YES"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         search("9x19\n")
@@ -545,9 +524,7 @@ final class PRScreensTests: XCTestCase {
     func testWhatsNew() {
         let notes = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("KaliberfinderTests/Fixtures/changelog.json")
-        app.terminate()
-        app.launchArguments += ["-screenTourChangelog", notes.path, "-changelogShownBuild", "none"]
-        app.launch()
+        application.launchArguments += ["-screenTourChangelog", notes.path, "-changelogShownBuild", "none"]
         XCTAssertTrue(app.navigationBars["Neu in dieser Version"].waitForExistence(timeout: 10), "The release notes did not open")
         snap("30-Neu-in-dieser-Version")
     }
@@ -557,18 +534,15 @@ final class PRScreensTests: XCTestCase {
     private func photoMatches(_ fixture: String, shot: String, compareShot: String? = nil) {
         let photo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("KaliberfinderTests/Fixtures/\(fixture).jpg")
-        app.terminate()
-        app.launchArguments += ["-screenTourPhoto", photo.path]
-        app.launch()
-        if app.navigationBars["Treffer"].waitForExistence(timeout: 10) {
-            // The colour cut-out on the simulator can take a while on a busy runner.
-            _ = app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90)
-            snap(shot)
-            // A busy runner can take over 5 s for the 1:1 row; a missed stop fails, not vanishes (Raven, 2026-11-19).
-            if let compareShot, open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden 1:1")).firstMatch) {
-                guard app.navigationBars["1:1"].waitForExistence(timeout: 30) else { return XCTFail("No 1:1 screen for \(compareShot)") }
-                snap(compareShot)
-            }
+        application.launchArguments += ["-screenTourPhoto", photo.path]
+        // The colour cut-out on the simulator can take a while on a busy runner; a stop that would show its spinner fails.
+        guard app.navigationBars["Treffer"].waitForExistence(timeout: 10),
+              app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 90) else { return XCTFail("No matches for \(shot)") }
+        snap(shot)
+        // A busy runner can take over 5 s for the 1:1 row; a missed stop fails, not vanishes (Raven, 2026-11-19).
+        if let compareShot, open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden 1:1")).firstMatch) {
+            guard app.navigationBars["1:1"].waitForExistence(timeout: 30) else { return XCTFail("No 1:1 screen for \(compareShot)") }
+            snap(compareShot)
         }
     }
 
