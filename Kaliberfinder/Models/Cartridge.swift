@@ -206,6 +206,11 @@ struct Cartridge: Decodable, Identifiable, Hashable {
         let bulletMaterial: String?
         /// "copper", "steel" (lacquered), "nickel", "aluminium", "paper" or "hybrid" where the case is not brass.
         let caseMaterial: String?
+        /// What is most commonly found today where it is not the original (calibre-data's [today]): the jacket,
+        /// "copper" too (the GP 11's first bullets were silver), and the case, "brass" too (the 7.92x33 mm Kurz's
+        /// first cases were steel). The app draws these unless «Originalfarben zeigen» is on.
+        let todayBulletMaterial: String?
+        let todayCaseMaterial: String?
         /// "steel" for the steel head of a hybrid case (.277 Fury); nil means brass.
         let headMaterial: String?
     }
