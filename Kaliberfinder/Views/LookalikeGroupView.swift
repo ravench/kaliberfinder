@@ -25,6 +25,12 @@ struct LookalikeGroupView: View {
         }
     }
 
+    /// Whether the page has more to list than the calibre it is opened from: four calibres' only siblings are unsourced
+    /// and hidden, so their «Gruppe» row led to a page of one, named after a calibre nobody finds (review 2026-11-22).
+    static func lists(_ group: LookalikeGroup, showUnsourced: Bool = UserDefaults.standard.bool(forKey: CartridgeCatalog.showUnsourcedKey)) -> Bool {
+        CartridgeCatalog.visible(group.members, showUnsourced: showUnsourced).count > 1
+    }
+
     /// Identical-looking calibres once, standing by the length setting; the 1:1 screen names the others under the drawing.
     static func compared(_ members: [Cartridge], by: CompareLength = .current) -> [Cartridge] {
         CartridgeCatalog.groupedByProfile(members, cartridge: { $0 }).map { $0[0] }.byLength(by)

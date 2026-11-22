@@ -210,7 +210,9 @@ enum Matcher {
             matches.append(scored)
         }
         matches.sort { $0.score > $1.score }
-        if !shape.isEndView, let best = matches.first?.shapeDistance {
+        // From the smallest distance, not the leader's: with LiDAR a shotshell's hull length orders the gauges, so the
+        // first row need not be the nearest (review 2026-11-22).
+        if !shape.isEndView, let best = matches.compactMap(\.shapeDistance).min() {
             matches.removeAll { ($0.shapeDistance ?? .infinity) > min(maxDistance, best + maxBehindBest) }
         }
         return Array(matches.prefix(limit))
