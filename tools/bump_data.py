@@ -56,6 +56,9 @@ def brought_in(old, new, data=DATA):
     if subprocess.run(["git", "merge-base", "--is-ancestor", old, new], cwd=data,
                       capture_output=True).returncode == 0:
         return subprocess.check_output(["git", "log", "--oneline", f"{old}..{new}"], cwd=data, text=True).strip()
+    if subprocess.run(["git", "merge-base", "--is-ancestor", new, old], cwd=data,
+                      capture_output=True).returncode == 0:
+        return f"calibre-data moved back from {old[:7]} to {new[:7]}"
     # A pointer from before the public repository's history (it started over on 2026-11-22).
     return f"calibre-data {old[:7]} -> {new[:7]} (not in one history)"
 

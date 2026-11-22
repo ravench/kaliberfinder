@@ -49,6 +49,8 @@ class BroughtInTests(unittest.TestCase):
             public = git("rev-parse", "HEAD")
             self.assertEqual(bump_data.brought_in(old, old, data), f"calibre-data already at {old[:7]}")
             self.assertTrue(bump_data.brought_in(old, new, data).endswith("second"))
+            self.assertEqual(bump_data.brought_in(new, old, data),
+                             f"calibre-data moved back from {new[:7]} to {old[:7]}")
             # The public repository started over: the old pointer is not in its history.
             self.assertEqual(bump_data.brought_in(old, public, data),
                              f"calibre-data {old[:7]} -> {public[:7]} (not in one history)")
