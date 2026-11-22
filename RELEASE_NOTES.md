@@ -32,7 +32,7 @@ Format: a `## <version>` heading, then `### de`, `### en`, `### fr`, `### it`, `
 ### fr
 - Première version sur l'App Store.
 - Photographiez une cartouche ou une douille vide : Kaliberfinder compare sa silhouette au catalogue et propose une courte liste de calibres probables parmi lesquels choisir.
-- Comparez les résultats en taille réelle sur l'écran, côte à côte sur une règle : posez la cartouche sur l'écran et voyez laquelle correspond.
+- Comparez les résultats en taille réelle sur l'écran, côte à côte le long d'une règle : posez la cartouche sur l'écran et voyez laquelle correspond.
 - Sur les iPhone Pro et iPad Pro équipés du LiDAR, l'appareil photo mesure aussi la taille ; il ne reste alors le plus souvent qu'un calibre ou quelques-uns.
 - Sans photo : saisissez les mesures, ou choisissez des calibres par leur nom et comparez-les.
 - Plus de 700 calibres avec dimensions et leurs sources, dessin coté, amorce et origine ; pour certains aussi codes couleur et calibres semblables.
@@ -41,7 +41,7 @@ Format: a `## <version>` heading, then `### de`, `### en`, `### fr`, `### it`, `
 ### it
 - Prima versione sull'App Store.
 - Fotografa una cartuccia o un bossolo vuoto: Kaliberfinder confronta la sagoma con il catalogo e mostra un breve elenco di calibri probabili tra cui scegliere.
-- Confronta i risultati a grandezza reale sullo schermo, uno accanto all'altro su un righello: appoggia la cartuccia sullo schermo e vedi quale corrisponde.
+- Confronta i risultati a grandezza reale sullo schermo, uno accanto all'altro lungo un righello: appoggia la cartuccia sullo schermo e vedi quale corrisponde.
 - Su iPhone Pro e iPad Pro con LiDAR la fotocamera misura anche le dimensioni; di solito restano solo uno o pochi calibri.
 - Senza foto: inserisci le misure, oppure scegli i calibri per nome e confrontali.
 - Oltre 700 calibri con misure e relative fonti, disegno quotato, innesco e origine; per alcuni anche codici colore e calibri simili.
@@ -50,7 +50,7 @@ Format: a `## <version>` heading, then `### de`, `### en`, `### fr`, `### it`, `
 ### es
 - Primera versión en el App Store.
 - Fotografía un cartucho o una vaina vacía: Kaliberfinder compara su contorno con el catálogo y muestra una lista corta de calibres probables para elegir.
-- Compara las coincidencias a tamaño real en la pantalla, una junto a otra sobre una regla: coloca el cartucho sobre la pantalla y mira cuál encaja.
+- Compara las coincidencias a tamaño real en la pantalla, una junto a otra al lado de una regla: coloca el cartucho sobre la pantalla y mira cuál encaja.
 - En los iPhone Pro y iPad Pro con LiDAR, la cámara mide además el tamaño; normalmente solo quedan uno o unos pocos calibres.
 - Sin foto: introduce las medidas, o elige calibres por su nombre y compáralos.
 - Más de 700 calibres con dimensiones y sus fuentes, plano acotado, pistón y origen; para algunos también códigos de color y calibres parecidos.
