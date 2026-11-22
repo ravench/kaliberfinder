@@ -32,7 +32,7 @@ struct CartridgeView: View {
     static func bulletFill(for cartridge: Cartridge,
                            original: Bool = UserDefaults.standard.bool(forKey: showOriginalKey)) -> Color {
         let o = cartridge.outline
-        switch original ? o.bulletMaterial : o.todayBulletMaterial ?? o.bulletMaterial {
+        return switch original ? o.bulletMaterial : o.todayBulletMaterial ?? o.bulletMaterial {
         case "copper": copper
         case "steel": steel
         case "cupronickel": nickel
