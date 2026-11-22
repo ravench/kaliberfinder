@@ -1,1 +1,1 @@
-Zum Start gratis. Kaliberfinder bestimmt Patronen und leere Hülsen anhand eines Fotos und zeigt die passenden Kaliber in Originalgrösse neben dem Lineal.
+Zum Start gratis. Kaliberfinder grenzt das Kaliber einer Patrone oder leeren Hülse anhand eines Fotos ein und zeigt die Treffer in Originalgrösse neben dem Lineal.
