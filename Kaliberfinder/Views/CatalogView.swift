@@ -148,8 +148,8 @@ struct CartridgeRow: View {
         let group = Self.shownGroup(for: cartridge, groupTag: groupTag)
         let groupName = Self.groupName(for: cartridge, groupTag: groupTag)
         HStack(spacing: 12) {
-            // A group's row draws the calibre it came with, the row's lead (`TwinGroup`): the parent, unless it is not
-            // among the matches (hidden by a switch, or too far off) or another member fits clearly better.
+            // A group's row draws the calibre it came with, the row's lead (`TwinGroup`): the best match among the
+            // group's calibres that are listed, a current one before a rare or obsolete one that matches alike.
             CartridgeThumbnail(cartridge: cartridge)
             VStack(alignment: .leading, spacing: 2) {
                 Text(verbatim: Self.title(for: cartridge, groupTag: groupTag))

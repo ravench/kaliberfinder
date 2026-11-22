@@ -124,9 +124,9 @@ final class PRScreensTests: XCTestCase {
         snap("03g-Kaliber-Gruppenzeile")
     }
 
-    /// A group's row goes to a member that is clearly nearer than its parent (review 2026-11-13). 35.2 mm long with a
-    /// 7.9 mm bullet is a 7.62x25 mm Tokarev; with the obsolete and rare calibres switched on, its row was drawn and
-    /// rated as the group's parent, the .30 Borchardt, 1.2 mm off where the Mauser is 0.4, and not among the 1:1 button's.
+    /// A group's row goes to its best match (Raven, 2026-11-22). 35.2 mm long with a 7.9 mm bullet is a 7.62x25 mm
+    /// Tokarev; with the obsolete and rare calibres switched on, its row was drawn and rated as the group's parent, the
+    /// .30 Borchardt, 1.2 mm off and not among the 1:1 button's, then as the Mauser, 0.4 mm off (review 2026-11-13).
     func testGroupRowOfANearerMember() {
         application.launchArguments += ["-screenTourLength", "35.2", "-screenTourBullet", "7.9",
                                         "-includeObsoleteCalibres", "YES", "-includeRareCalibres", "YES"]
@@ -139,7 +139,7 @@ final class PRScreensTests: XCTestCase {
         // The row's own label, not the screen's.
         let group = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "7.63x25 mm")).firstMatch
         XCTAssertTrue(group.exists, "The 7.63x25 mm group's row is not on the screen")
-        XCTAssertTrue(group.label.contains("Abweichung bis 0.4 mm"), "The 7.63x25 mm row is not rated as its Mauser: \(group.label)")
+        XCTAssertTrue(group.label.contains("Passt genau"), "The 7.63x25 mm row is not rated as its Tokarev: \(group.label)")
         snap("03h-Masse-Treffer-Gruppe-passt")
     }
 
