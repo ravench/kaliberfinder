@@ -1,8 +1,8 @@
 {
  "version": 1,
  "calibreData": {
-  "commit": "5ae997ec6712470f317e1fe93da297cd00f1710c",
-  "date": "2026-11-20T11:04:49+01:00"
+  "commit": "5daf14e353ebfd049906f1e6e2446a86f4f8ef62",
+  "date": "2026-11-22T19:13:51+01:00"
  },
  "cartridges": [
   {
@@ -72773,6 +72773,88 @@
    }
   },
   {
+   "id": "20x101 mm RB",
+   "name": "20x101 mm RB",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20x101rb",
+    "20x101 rb",
+    "oerlikon ffl",
+    "type 99-2"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "CH",
+    "name": "Schweiz",
+    "flag": "🇨🇭"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "115"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "115"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1423
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 18.99,
+    "base": 22.1,
+    "neck": 20.6,
+    "caseLength": 101.0,
+    "overallLength": 173.0,
+    "bullet": 20.0
+   },
+   "outline": {
+    "width": 22.1,
+    "height": 173.0,
+    "case": "M20.55 173.00 L20.55 171.70 L19.31 171.70 L19.31 170.70 L22.10 167.38 L21.35 72.00 L0.75 72.00 L0.00 167.38 L2.79 170.70 L2.79 171.70 L1.56 171.70 L1.56 173.00 Z",
+    "bullet": "M21.05 72.00 L21.05 48.96 L20.96 45.46 L20.76 41.97 L20.46 38.47 L20.09 34.97 L19.63 31.47 L19.11 27.98 L18.50 24.48 L17.82 20.98 L17.05 17.49 L16.19 13.99 L15.23 10.49 L14.14 6.99 L12.86 3.50 L11.55 0.00 L11.05 0.00 L10.55 0.00 L9.24 3.50 L7.96 6.99 L6.87 10.49 L5.91 13.99 L5.05 17.49 L4.28 20.98 L3.60 24.48 L2.99 27.98 L2.47 31.47 L2.01 34.97 L1.64 38.47 L1.34 41.97 L1.14 45.46 L1.05 48.96 L1.05 72.00 Z"
+   }
+  },
+  {
    "id": "20x102 mm",
    "name": "20x102 mm",
    "category": "Kanone",
@@ -72806,7 +72888,7 @@
        ]
       },
       {
-       "work": 1422
+       "work": 1424
       },
       {
        "work": 7,
@@ -72815,7 +72897,7 @@
        ]
       },
       {
-       "work": 1423
+       "work": 1425
       }
      ]
     },
@@ -72826,7 +72908,7 @@
      ],
      "refs": [
       {
-       "work": 1423
+       "work": 1425
       }
      ]
     },
@@ -72836,7 +72918,7 @@
      ],
      "refs": [
       {
-       "work": 1422
+       "work": 1424
       }
      ]
     }
@@ -72855,6 +72937,188 @@
     "height": 168.0,
     "case": "M29.49 168.00 L29.49 165.54 L27.43 165.54 L27.43 162.63 L29.35 160.65 L28.02 83.26 L25.05 74.38 L25.05 66.00 L4.44 66.00 L4.44 74.38 L1.47 83.26 L0.14 160.65 L2.05 162.63 L2.05 165.54 L0.00 165.54 L0.00 168.00 Z",
     "bullet": "M24.74 66.00 L24.74 44.88 L24.65 41.67 L24.45 38.47 L24.16 35.26 L23.78 32.06 L23.33 28.85 L22.80 25.65 L22.20 22.44 L21.51 19.23 L20.75 16.03 L19.89 12.82 L18.93 9.62 L17.84 6.41 L16.56 3.21 L15.24 0.00 L14.74 0.00 L14.24 0.00 L12.93 3.21 L11.65 6.41 L10.56 9.62 L9.60 12.82 L8.74 16.03 L7.98 19.23 L7.29 22.44 L6.69 25.65 L6.16 28.85 L5.71 32.06 L5.33 35.26 L5.04 38.47 L4.84 41.67 L4.74 44.88 L4.74 66.00 Z"
+   }
+  },
+  {
+   "id": "20x105 mm",
+   "name": "20x105 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20 mm mg 204",
+    "mg 204"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "116"
+       ]
+      },
+      {
+       "work": 1427
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1427
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 25.0,
+    "base": 26.2,
+    "neck": 21.08,
+    "caseLength": 105.0,
+    "overallLength": 170.0,
+    "bullet": 20.0,
+    "shoulder": 23.97
+   },
+   "outline": {
+    "width": 26.2,
+    "height": 170.0,
+    "case": "M25.60 170.00 L25.60 167.51 L23.53 167.51 L23.53 163.34 L26.20 161.10 L25.09 78.60 L23.64 75.01 L23.64 65.00 L2.56 65.00 L2.56 75.01 L1.12 78.60 L0.00 161.10 L2.67 163.34 L2.67 167.51 L0.60 167.51 L0.60 170.00 Z",
+    "bullet": "M23.10 65.00 L23.10 44.20 L23.01 41.04 L22.81 37.89 L22.51 34.73 L22.14 31.57 L21.68 28.41 L21.16 25.26 L20.55 22.10 L19.87 18.94 L19.10 15.79 L18.24 12.63 L17.28 9.47 L16.19 6.31 L14.91 3.16 L13.60 0.00 L13.10 0.00 L12.60 0.00 L11.29 3.16 L10.01 6.31 L8.92 9.47 L7.96 12.63 L7.10 15.79 L6.33 18.94 L5.65 22.10 L5.04 25.26 L4.52 28.41 L4.06 31.57 L3.69 34.73 L3.39 37.89 L3.19 41.04 L3.10 44.20 L3.10 65.00 Z"
+   }
+  },
+  {
+   "id": "20x105 mm B",
+   "name": "20x105 mm B",
+   "category": "Kanone",
+   "kind": "belted",
+   "aliases": [
+    "20x105b",
+    "20 mm short solothurn",
+    "s-18/100",
+    "s18-100"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682"
+       ]
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "116"
+       ]
+      },
+      {
+       "work": 1428
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1428
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1429
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 24.99,
+    "base": 25.0,
+    "neck": 20.7,
+    "caseLength": 105.0,
+    "overallLength": 170.0,
+    "bullet": 20.0,
+    "shoulder": 23.8,
+    "belt": 26.29
+   },
+   "outline": {
+    "width": 26.29,
+    "height": 170.0,
+    "case": "M25.64 170.00 L25.64 167.83 L24.07 167.83 L24.07 166.83 L26.29 164.36 L26.29 157.30 L25.64 157.30 L25.05 80.66 L23.49 74.49 L23.49 65.00 L2.79 65.00 L2.79 74.49 L1.24 80.66 L0.64 157.30 L0.00 157.30 L0.00 164.36 L2.22 166.83 L2.22 167.83 L0.65 167.83 L0.65 170.00 Z",
+    "bullet": "M23.14 65.00 L23.14 44.20 L23.05 41.04 L22.85 37.89 L22.56 34.73 L22.18 31.57 L21.73 28.41 L21.20 25.26 L20.60 22.10 L19.91 18.94 L19.15 15.79 L18.29 12.63 L17.33 9.47 L16.24 6.31 L14.96 3.16 L13.64 0.00 L13.14 0.00 L12.64 0.00 L11.33 3.16 L10.05 6.31 L8.96 9.47 L8.00 12.63 L7.14 15.79 L6.38 18.94 L5.69 22.10 L5.09 25.26 L4.56 28.41 L4.11 31.57 L3.73 34.73 L3.44 37.89 L3.24 41.04 L3.14 44.20 L3.14 65.00 Z"
    }
   },
   {
@@ -72882,16 +73146,16 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "226"
        ]
       },
       {
-       "work": 1425
+       "work": 1430
       },
       {
-       "work": 1426
+       "work": 1431
       }
      ]
     },
@@ -72903,7 +73167,7 @@
      ],
      "refs": [
       {
-       "work": 1426
+       "work": 1431
       }
      ]
     }
@@ -72922,6 +73186,570 @@
     "height": 182.94,
     "case": "M24.80 182.94 L24.80 180.47 L23.36 180.47 L23.36 177.31 L24.80 176.44 L24.41 87.77 L22.69 81.98 L22.69 72.94 L2.11 72.94 L2.11 81.98 L0.38 87.77 L0.00 176.44 L1.45 177.31 L1.45 180.47 L0.00 180.47 L0.00 182.94 Z",
     "bullet": "M22.40 72.94 L22.40 49.60 L22.31 46.06 L22.11 42.51 L21.81 38.97 L21.44 35.43 L20.98 31.89 L20.46 28.34 L19.85 24.80 L19.17 21.26 L18.40 17.71 L17.54 14.17 L16.58 10.63 L15.49 7.09 L14.21 3.54 L12.90 0.00 L12.40 0.00 L11.90 0.00 L10.59 3.54 L9.31 7.09 L8.22 10.63 L7.26 14.17 L6.40 17.71 L5.63 21.26 L4.95 24.80 L4.34 28.34 L3.82 31.89 L3.36 35.43 L2.99 38.97 L2.69 42.51 L2.49 46.06 L2.40 49.60 L2.40 72.94 Z"
+   }
+  },
+  {
+   "id": "20x110 mm RB",
+   "name": "20x110 mm RB",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20x110rb",
+    "20x110 rb",
+    "20 mm oerlikon",
+    "oerlikon s",
+    "oerlikon ss",
+    "oerlikon ffs",
+    "polsten"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "CH",
+    "name": "Schweiz",
+    "flag": "🇨🇭"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682",
+        "84"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "117"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "117"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1423
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 22.2,
+    "base": 24.69,
+    "neck": 20.6,
+    "caseLength": 110.0,
+    "overallLength": 181.0,
+    "bullet": 20.0
+   },
+   "outline": {
+    "width": 24.69,
+    "height": 181.0,
+    "case": "M23.45 181.00 L23.45 179.70 L22.00 179.70 L22.00 178.70 L24.69 175.50 L22.65 71.00 L2.04 71.00 L0.00 175.50 L2.69 178.70 L2.69 179.70 L1.25 179.70 L1.25 181.00 Z",
+    "bullet": "M22.34 71.00 L22.34 48.28 L22.25 44.83 L22.05 41.38 L21.76 37.93 L21.38 34.49 L20.93 31.04 L20.40 27.59 L19.80 24.14 L19.11 20.69 L18.35 17.24 L17.49 13.79 L16.53 10.35 L15.44 6.90 L14.16 3.45 L12.85 0.00 L12.35 0.00 L11.85 0.00 L10.53 3.45 L9.25 6.90 L8.16 10.35 L7.20 13.79 L6.34 17.24 L5.58 20.69 L4.89 24.14 L4.29 27.59 L3.76 31.04 L3.31 34.49 L2.93 37.93 L2.64 41.38 L2.44 44.83 L2.35 48.28 L2.35 71.00 Z"
+   }
+  },
+  {
+   "id": "20x110 mm USN",
+   "name": "20x110 mm USN",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20x110 usn",
+    "20 mm mk 12",
+    "20 mm mk 100"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      },
+      {
+       "work": 5,
+       "pages": [
+        "682"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "118"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "118"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1432
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 29.5,
+    "base": 29.3,
+    "neck": 20.6,
+    "caseLength": 110.0,
+    "overallLength": 185.0,
+    "bullet": 20.0
+   },
+   "outline": {
+    "width": 29.5,
+    "height": 185.0,
+    "case": "M29.50 185.00 L29.50 183.70 L27.58 183.70 L27.58 182.70 L29.40 180.53 L25.05 75.00 L4.45 75.00 L0.10 180.53 L1.92 182.70 L1.92 183.70 L0.00 183.70 L0.00 185.00 Z",
+    "bullet": "M24.75 75.00 L24.75 51.00 L24.66 47.36 L24.46 43.71 L24.16 40.07 L23.79 36.43 L23.33 32.79 L22.81 29.14 L22.20 25.50 L21.52 21.86 L20.75 18.21 L19.89 14.57 L18.93 10.93 L17.84 7.29 L16.56 3.64 L15.25 0.00 L14.75 0.00 L14.25 0.00 L12.94 3.64 L11.66 7.29 L10.57 10.93 L9.61 14.57 L8.75 18.21 L7.98 21.86 L7.30 25.50 L6.69 29.14 L6.17 32.79 L5.71 36.43 L5.34 40.07 L5.04 43.71 L4.84 47.36 L4.75 51.00 L4.75 75.00 Z",
+    "caseMaterial": "steel"
+   }
+  },
+  {
+   "id": "20x113 mm",
+   "name": "20x113 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20 mm lahti",
+    "lahti l-34",
+    "lahti l34"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "FI",
+    "name": "Finnland",
+    "flag": "🇫🇮"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "119"
+       ]
+      },
+      {
+       "work": 1433
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1433
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "119"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 28.0,
+    "base": 28.0,
+    "neck": 21.0,
+    "caseLength": 113.0,
+    "overallLength": 177.0,
+    "bullet": 20.0,
+    "shoulder": 23.8
+   },
+   "outline": {
+    "width": 28.0,
+    "height": 177.0,
+    "case": "M28.00 177.00 L28.00 172.97 L25.23 172.97 L25.23 170.02 L28.00 167.35 L25.90 81.67 L24.50 74.12 L24.50 64.00 L3.50 64.00 L3.50 74.12 L2.10 81.67 L0.00 167.35 L2.77 170.02 L2.77 172.97 L0.00 172.97 L0.00 177.00 Z",
+    "bullet": "M24.00 64.00 L24.00 43.52 L23.91 40.41 L23.71 37.30 L23.41 34.19 L23.04 31.09 L22.58 27.98 L22.06 24.87 L21.45 21.76 L20.77 18.65 L20.00 15.54 L19.14 12.43 L18.18 9.33 L17.09 6.22 L15.81 3.11 L14.50 0.00 L14.00 0.00 L13.50 0.00 L12.19 3.11 L10.91 6.22 L9.82 9.33 L8.86 12.43 L8.00 15.54 L7.23 18.65 L6.55 21.76 L5.94 24.87 L5.42 27.98 L4.96 31.09 L4.59 34.19 L4.29 37.30 L4.09 40.41 L4.00 43.52 L4.00 64.00 Z"
+   }
+  },
+  {
+   "id": "20x120 mm",
+   "name": "20x120 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20x119",
+    "20 mm madsen"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DK",
+    "name": "Dänemark",
+    "flag": "🇩🇰"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      },
+      {
+       "work": 1434
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1434
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "119"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1434
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 28.9,
+    "base": 29.0,
+    "neck": 20.9,
+    "caseLength": 120.0,
+    "overallLength": 184.4,
+    "bullet": 20.0,
+    "shoulder": 26.8
+   },
+   "outline": {
+    "width": 29.0,
+    "height": 184.4,
+    "case": "M28.95 184.40 L28.95 179.40 L26.40 179.40 L26.40 177.44 L29.00 174.65 L27.90 85.60 L24.95 74.59 L24.95 64.40 L4.05 64.40 L4.05 74.59 L1.10 85.60 L0.00 174.65 L2.60 177.44 L2.60 179.40 L0.05 179.40 L0.05 184.40 Z",
+    "bullet": "M24.50 64.40 L24.50 43.79 L24.41 40.66 L24.21 37.54 L23.91 34.41 L23.54 31.28 L23.08 28.15 L22.56 25.02 L21.95 21.90 L21.27 18.77 L20.50 15.64 L19.64 12.51 L18.68 9.38 L17.59 6.26 L16.31 3.13 L15.00 0.00 L14.50 0.00 L14.00 0.00 L12.69 3.13 L11.41 6.26 L10.32 9.38 L9.36 12.51 L8.50 15.64 L7.73 18.77 L7.05 21.90 L6.44 25.02 L5.92 28.15 L5.46 31.28 L5.09 34.41 L4.79 37.54 L4.59 40.66 L4.50 43.79 L4.50 64.40 Z"
+   }
+  },
+  {
+   "id": "20x124 mm",
+   "name": "20x124 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20x125",
+    "20 mm type 97",
+    "ho-1",
+    "ho-3"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "JP",
+    "name": "Japan",
+    "flag": "🇯🇵"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "120"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "120"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1435
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 28.5,
+    "base": 28.7,
+    "neck": 0,
+    "caseLength": 124.0,
+    "overallLength": 0,
+    "bullet": 20.0
+   },
+   "outline": {
+    "width": 28.7,
+    "height": 124.0
+   }
+  },
+  {
+   "id": "20x128 mm",
+   "name": "20x128 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20x128",
+    "20 mm kaa",
+    "20 mm kab",
+    "20 mm oerlikon kaa",
+    "20 mm 204 gk",
+    "20 mm 5tg"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "CH",
+    "name": "Schweiz",
+    "flag": "🇨🇭"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682",
+        "85"
+       ]
+      },
+      {
+       "work": 1436
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1436
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "120"
+       ]
+      },
+      {
+       "work": 1436
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1436
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 32.0,
+    "base": 32.18,
+    "neck": 21.21,
+    "caseLength": 128.0,
+    "overallLength": 203.0,
+    "bullet": 20.0,
+    "shoulder": 29.95
+   },
+   "outline": {
+    "width": 32.18,
+    "height": 203.0,
+    "case": "M32.09 203.00 L32.09 199.70 L30.06 199.70 L30.06 196.31 L32.18 193.50 L31.06 102.50 L26.70 84.16 L26.70 75.00 L5.48 75.00 L5.48 84.16 L1.12 102.50 L0.00 193.50 L2.12 196.31 L2.12 199.70 L0.09 199.70 L0.09 203.00 Z",
+    "bullet": "M26.09 75.00 L26.09 51.00 L26.00 47.36 L25.80 43.71 L25.50 40.07 L25.13 36.43 L24.67 32.79 L24.15 29.14 L23.54 25.50 L22.86 21.86 L22.09 18.21 L21.23 14.57 L20.27 10.93 L19.18 7.29 L17.90 3.64 L16.59 0.00 L16.09 0.00 L15.59 0.00 L14.28 3.64 L13.00 7.29 L11.91 10.93 L10.95 14.57 L10.09 18.21 L9.32 21.86 L8.64 25.50 L8.03 29.14 L7.51 32.79 L7.05 36.43 L6.68 40.07 L6.38 43.71 L6.18 47.36 L6.09 51.00 L6.09 75.00 Z",
+    "caseMaterial": "steel"
    }
   },
   {
@@ -72953,10 +73781,10 @@
      ],
      "refs": [
       {
-       "work": 1427
+       "work": 1437
       },
       {
-       "work": 1428
+       "work": 1438
       }
      ]
     },
@@ -72967,7 +73795,7 @@
      ],
      "refs": [
       {
-       "work": 1427
+       "work": 1437
       }
      ]
     }
@@ -73017,16 +73845,16 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "227"
        ]
       },
       {
-       "work": 1429
+       "work": 1439
       },
       {
-       "work": 1430
+       "work": 1440
       },
       {
        "work": 5,
@@ -73036,7 +73864,7 @@
        ]
       },
       {
-       "work": 1431
+       "work": 1441
       }
      ]
     },
@@ -73047,7 +73875,7 @@
      ],
      "refs": [
       {
-       "work": 1431
+       "work": 1441
       }
      ]
     },
@@ -73057,7 +73885,7 @@
      ],
      "refs": [
       {
-       "work": 1430
+       "work": 1440
       }
      ]
     }
@@ -73107,13 +73935,13 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "227"
        ]
       },
       {
-       "work": 1430
+       "work": 1440
       }
      ]
     },
@@ -73123,7 +73951,7 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "227"
        ]
@@ -73136,7 +73964,7 @@
      ],
      "refs": [
       {
-       "work": 1430
+       "work": 1440
       }
      ]
     }
@@ -73152,6 +73980,828 @@
    "outline": {
     "width": 28.5,
     "height": 139.0
+   }
+  },
+  {
+   "id": "20x142 mm",
+   "name": "20x142 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20x143",
+    "20 mm type 98"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "JP",
+    "name": "Japan",
+    "flag": "🇯🇵"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      },
+      {
+       "work": 1442
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "124"
+       ]
+      },
+      {
+       "work": 1443
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1443
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "124"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1444
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 33.4,
+    "base": 33.5,
+    "neck": 20.72,
+    "caseLength": 142.0,
+    "overallLength": 208.0,
+    "bullet": 20.0,
+    "shoulder": 31.47
+   },
+   "outline": {
+    "width": 33.5,
+    "height": 208.0,
+    "case": "M33.45 208.00 L33.45 204.54 L30.92 204.54 L30.92 202.10 L33.50 198.80 L32.48 88.30 L27.11 78.56 L27.11 66.00 L6.39 66.00 L6.39 78.56 L1.02 88.30 L0.00 198.80 L2.58 202.10 L2.58 204.54 L0.05 204.54 L0.05 208.00 Z",
+    "bullet": "M26.75 66.00 L26.75 44.88 L26.66 41.67 L26.46 38.47 L26.16 35.26 L25.79 32.06 L25.33 28.85 L24.81 25.65 L24.20 22.44 L23.52 19.23 L22.75 16.03 L21.89 12.82 L20.93 9.62 L19.84 6.41 L18.56 3.21 L17.25 0.00 L16.75 0.00 L16.25 0.00 L14.94 3.21 L13.66 6.41 L12.57 9.62 L11.61 12.82 L10.75 16.03 L9.98 19.23 L9.30 22.44 L8.69 25.65 L8.17 28.85 L7.71 32.06 L7.34 35.26 L7.04 38.47 L6.84 41.67 L6.75 44.88 L6.75 66.00 Z"
+   }
+  },
+  {
+   "id": "20x145 mm R",
+   "name": "20x145 mm R",
+   "category": "Kanone",
+   "kind": "rimmed",
+   "aliases": [
+    "20x145r",
+    "20 mm bofors m/40",
+    "20 mm m/40"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SE",
+    "name": "Schweden",
+    "flag": "🇸🇪"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "681"
+       ]
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      },
+      {
+       "work": 1445
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1445
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "124"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 29.49,
+    "base": 25.4,
+    "neck": 21.01,
+    "caseLength": 145.0,
+    "overallLength": 222.09,
+    "bullet": 20.0,
+    "shoulder": 23.11
+   },
+   "outline": {
+    "width": 29.49,
+    "height": 222.09,
+    "case": "M29.49 222.09 L29.49 218.11 L27.45 218.11 L26.30 100.91 L25.25 92.10 L25.25 77.09 L4.24 77.09 L4.24 92.10 L3.19 100.91 L2.04 218.11 L0.00 218.11 L0.00 222.09 Z",
+    "bullet": "M24.74 77.09 L24.74 52.42 L24.65 48.68 L24.45 44.93 L24.16 41.19 L23.78 37.44 L23.33 33.70 L22.80 29.95 L22.20 26.21 L21.51 22.47 L20.75 18.72 L19.89 14.98 L18.93 11.23 L17.84 7.49 L16.56 3.74 L15.24 0.00 L14.74 0.00 L14.24 0.00 L12.93 3.74 L11.65 7.49 L10.56 11.23 L9.60 14.98 L8.74 18.72 L7.98 22.47 L7.29 26.21 L6.69 29.95 L6.16 33.70 L5.71 37.44 L5.33 41.19 L5.04 44.93 L4.84 48.68 L4.74 52.42 L4.74 77.09 Z"
+   }
+  },
+  {
+   "id": "20x70 mm RB",
+   "name": "20x70 mm RB",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20x70rb",
+    "20x70 rb",
+    "20 mm becker"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "225"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "111"
+       ]
+      },
+      {
+       "work": 1446
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1446
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "111"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "225"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 20.2,
+    "base": 21.9,
+    "neck": 20.4,
+    "caseLength": 70.0,
+    "overallLength": 147.0,
+    "bullet": 20.0,
+    "shoulder": 21.18
+   },
+   "outline": {
+    "width": 21.9,
+    "height": 147.0,
+    "case": "M21.05 147.00 L21.05 144.84 L19.99 144.84 L19.99 143.09 L21.90 139.50 L21.54 89.81 L21.15 86.49 L21.15 77.00 L0.75 77.00 L0.75 86.49 L0.36 89.81 L0.00 139.50 L1.91 143.09 L1.91 144.84 L0.85 144.84 L0.85 147.00 Z",
+    "bullet": "M20.95 77.00 L20.95 52.36 L20.86 48.62 L20.66 44.88 L20.36 41.14 L19.99 37.40 L19.53 33.66 L19.01 29.92 L18.40 26.18 L17.72 22.44 L16.95 18.70 L16.09 14.96 L15.13 11.22 L14.04 7.48 L12.76 3.74 L11.45 0.00 L10.95 0.00 L10.45 0.00 L9.14 3.74 L7.86 7.48 L6.77 11.22 L5.81 14.96 L4.95 18.70 L4.18 22.44 L3.50 26.18 L2.89 29.92 L2.37 33.66 L1.91 37.40 L1.54 41.14 L1.24 44.88 L1.04 48.62 L0.95 52.36 L0.95 77.00 Z"
+   }
+  },
+  {
+   "id": "20x72 mm RB",
+   "name": "20x72 mm RB",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20x72rb",
+    "20x72 rb",
+    "oerlikon ff",
+    "type 99-1"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "CH",
+    "name": "Schweiz",
+    "flag": "🇨🇭"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "112"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "113"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1423
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 18.99,
+    "base": 22.4,
+    "neck": 20.6,
+    "caseLength": 72.0,
+    "overallLength": 0,
+    "bullet": 20.0
+   },
+   "outline": {
+    "width": 22.4,
+    "height": 72.0
+   }
+  },
+  {
+   "id": "20x80 mm RB",
+   "name": "20x80 mm RB",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20x80rb",
+    "20x80 rb",
+    "mg ff",
+    "mg-ff",
+    "mg ffm",
+    "mg-ffm",
+    "20 mm mg ff"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1447
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "225"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 19.2,
+    "base": 22.2,
+    "neck": 20.7,
+    "caseLength": 80.0,
+    "overallLength": 0,
+    "bullet": 20.0
+   },
+   "outline": {
+    "width": 22.2,
+    "height": 80.0
+   }
+  },
+  {
+   "id": "20x82 mm",
+   "name": "20x82 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20x82",
+    "20x83.5",
+    "20 mm mg 151",
+    "mg 151/20",
+    "mg151/20"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "114"
+       ]
+      },
+      {
+       "work": 1448
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1448
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 25.09,
+    "base": 24.99,
+    "neck": 20.7,
+    "caseLength": 82.0,
+    "overallLength": 147.0,
+    "bullet": 20.0,
+    "shoulder": 23.55
+   },
+   "outline": {
+    "width": 25.09,
+    "height": 147.0,
+    "case": "M25.09 147.00 L25.09 144.78 L23.49 144.78 L23.49 141.97 L25.04 140.25 L24.32 81.84 L22.89 76.60 L22.89 65.00 L2.20 65.00 L2.20 76.60 L0.77 81.84 L0.05 140.25 L1.60 141.97 L1.60 144.78 L0.00 144.78 L0.00 147.00 Z",
+    "bullet": "M22.55 65.00 L22.55 44.20 L22.45 41.04 L22.25 37.89 L21.96 34.73 L21.58 31.57 L21.13 28.41 L20.60 25.26 L20.00 22.10 L19.31 18.94 L18.55 15.79 L17.69 12.63 L16.73 9.47 L15.64 6.31 L14.36 3.16 L13.04 0.00 L12.54 0.00 L12.04 0.00 L10.73 3.16 L9.45 6.31 L8.36 9.47 L7.40 12.63 L6.54 15.79 L5.78 18.94 L5.09 22.10 L4.49 25.26 L3.96 28.41 L3.51 31.57 L3.13 34.73 L2.84 37.89 L2.64 41.04 L2.54 44.20 L2.54 65.00 Z"
+   }
+  },
+  {
+   "id": "20x94 mm",
+   "name": "20x94 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "20x94",
+    "20 mm ho-5",
+    "ho-5",
+    "20 mm type 2"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "JP",
+    "name": "Japan",
+    "flag": "🇯🇵"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "114"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "114"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1449
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 24.9,
+    "base": 25.0,
+    "neck": 0,
+    "caseLength": 94.0,
+    "overallLength": 148.0,
+    "bullet": 20.0
+   },
+   "outline": {
+    "width": 25.0,
+    "height": 148.0
+   }
+  },
+  {
+   "id": "20x99 mm R",
+   "name": "20x99 mm R",
+   "category": "Kanone",
+   "kind": "rimmed",
+   "aliases": [
+    "20x99r",
+    "20 mm shvak",
+    "shvak"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SU",
+    "name": "Sowjetunion"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "681"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "115"
+       ]
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1450
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "115"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1451
+      },
+      {
+       "work": 1450
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "226"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 25.19,
+    "base": 21.89,
+    "neck": 20.7,
+    "caseLength": 99.0,
+    "overallLength": 145.0,
+    "bullet": 20.0
+   },
+   "outline": {
+    "width": 25.19,
+    "height": 145.0,
+    "case": "M25.19 145.00 L25.19 143.07 L23.54 143.07 L22.95 46.00 L2.25 46.00 L1.65 143.07 L0.00 143.07 L0.00 145.00 Z",
+    "bullet": "M22.59 46.00 L22.59 31.28 L22.50 29.05 L22.30 26.81 L22.01 24.58 L21.63 22.34 L21.18 20.11 L20.65 17.87 L20.05 15.64 L19.36 13.41 L18.60 11.17 L17.74 8.94 L16.78 6.70 L15.69 4.47 L14.41 2.23 L13.10 0.00 L12.60 0.00 L12.10 0.00 L10.78 2.23 L9.50 4.47 L8.41 6.70 L7.45 8.94 L6.59 11.17 L5.83 13.41 L5.14 15.64 L4.54 17.87 L4.01 20.11 L3.56 22.34 L3.18 24.58 L2.89 26.81 L2.69 29.05 L2.60 31.28 L2.60 46.00 Z"
+   }
+  },
+  {
+   "id": "23x115 mm",
+   "name": "23x115 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "23x115",
+    "23 mm ns-23",
+    "ns-23",
+    "nr-23",
+    "am-23",
+    "gsh-23"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SU",
+    "name": "Sowjetunion"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "127"
+       ]
+      },
+      {
+       "work": 1452
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1452
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1453
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 26.8,
+    "base": 26.9,
+    "neck": 23.9,
+    "caseLength": 115.0,
+    "overallLength": 200.0,
+    "bullet": 23.0,
+    "shoulder": 26.26
+   },
+   "outline": {
+    "width": 26.9,
+    "height": 200.0,
+    "case": "M26.85 200.00 L26.85 197.58 L24.90 197.58 L24.90 193.26 L26.90 190.96 L26.58 100.47 L25.40 97.73 L25.40 85.00 L1.50 85.00 L1.50 97.73 L0.32 100.47 L0.00 190.96 L2.00 193.26 L2.00 197.58 L0.05 197.58 L0.05 200.00 Z",
+    "bullet": "M24.95 85.00 L24.95 57.80 L24.85 53.67 L24.61 49.54 L24.27 45.41 L23.84 41.29 L23.32 37.16 L22.71 33.03 L22.02 28.90 L21.23 24.77 L20.35 20.64 L19.37 16.51 L18.26 12.39 L17.01 8.26 L15.54 4.13 L14.02 0.00 L13.45 0.00 L12.88 0.00 L11.36 4.13 L9.89 8.26 L8.64 12.39 L7.53 16.51 L6.55 20.64 L5.67 24.77 L4.88 28.90 L4.19 33.03 L3.58 37.16 L3.06 41.29 L2.63 45.41 L2.29 49.54 L2.05 53.67 L1.95 57.80 L1.95 85.00 Z"
    }
   },
   {
@@ -73182,10 +74832,10 @@
      ],
      "refs": [
       {
-       "work": 1432
+       "work": 1454
       },
       {
-       "work": 1433
+       "work": 1455
       }
      ]
     },
@@ -73196,7 +74846,7 @@
      ],
      "refs": [
       {
-       "work": 1432
+       "work": 1454
       }
      ]
     },
@@ -73219,7 +74869,7 @@
      ],
      "refs": [
       {
-       "work": 1433
+       "work": 1455
       }
      ]
     }
@@ -73270,7 +74920,7 @@
      ],
      "refs": [
       {
-       "work": 1434
+       "work": 1456
       }
      ]
     },
@@ -73293,7 +74943,7 @@
      ],
      "refs": [
       {
-       "work": 1435
+       "work": 1457
       }
      ]
     }
@@ -73314,6 +74964,55 @@
     "case": "M33.95 236.07 L33.95 232.19 L31.19 232.19 L31.19 231.19 L34.57 227.56 L34.57 224.12 L33.91 224.12 L33.11 124.03 L29.15 103.47 L29.15 84.07 L5.42 84.07 L5.42 103.47 L1.46 124.03 L0.66 224.12 L0.00 224.12 L0.00 227.56 L3.38 231.19 L3.38 232.19 L0.62 232.19 L0.62 236.07 Z",
     "bullet": "M28.79 84.07 L28.79 57.17 L28.68 53.08 L28.45 49.00 L28.11 44.92 L27.68 40.83 L27.16 36.75 L26.55 32.67 L25.85 28.58 L25.07 24.50 L24.19 20.42 L23.20 16.33 L22.09 12.25 L20.84 8.17 L19.37 4.08 L17.86 0.00 L17.29 0.00 L16.71 0.00 L15.20 4.08 L13.73 8.17 L12.48 12.25 L11.37 16.33 L10.38 20.42 L9.50 24.50 L8.72 28.58 L8.02 32.67 L7.41 36.75 L6.89 40.83 L6.46 44.92 L6.12 49.00 L5.89 53.08 L5.79 57.17 L5.79 84.07 Z",
     "caseMaterial": "steel"
+   }
+  },
+  {
+   "id": "23x260 mm",
+   "name": "23x260 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "23 mm r-23",
+    "r-23"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SU",
+    "name": "Sowjetunion"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 15.0,
+    "base": 30.0,
+    "neck": 0,
+    "caseLength": 260.0,
+    "overallLength": 0,
+    "bullet": 23.0
+   },
+   "outline": {
+    "width": 30.0,
+    "height": 260.0
    }
   },
   {
@@ -73346,13 +75045,13 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "227"
        ]
       },
       {
-       "work": 1436
+       "work": 1458
       }
      ]
     },
@@ -73364,7 +75063,7 @@
      ],
      "refs": [
       {
-       "work": 1436
+       "work": 1458
       }
      ]
     }
@@ -73383,6 +75082,158 @@
     "height": 210.0,
     "case": "M31.70 210.00 L31.70 208.05 L29.75 208.05 L29.75 204.32 L32.00 199.90 L31.55 95.10 L28.60 84.53 L28.60 72.00 L3.40 72.00 L3.40 84.53 L0.45 95.10 L0.00 199.90 L2.25 204.32 L2.25 208.05 L0.30 208.05 L0.30 210.00 Z",
     "bullet": "M28.00 72.00 L28.00 48.96 L27.89 45.46 L27.65 41.97 L27.29 38.47 L26.84 34.97 L26.30 31.47 L25.67 27.98 L24.94 24.48 L24.12 20.98 L23.20 17.49 L22.17 13.99 L21.02 10.49 L19.71 6.99 L18.18 3.50 L16.60 0.00 L16.00 0.00 L15.40 0.00 L13.82 3.50 L12.29 6.99 L10.98 10.49 L9.83 13.99 L8.80 17.49 L7.88 20.98 L7.06 24.48 L6.33 27.98 L5.70 31.47 L5.16 34.97 L4.71 38.47 L4.35 41.97 L4.11 45.46 L4.00 48.96 L4.00 72.00 Z"
+   }
+  },
+  {
+   "id": "25.4x87 mm",
+   "name": "25.4x87 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "25x87",
+    "revelli-fiat 25 mm",
+    "fiat-revelli 25 mm"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "IT",
+    "name": "Italien",
+    "flag": "🇮🇹"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "133"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 30.2,
+    "base": 30.2,
+    "neck": 0,
+    "caseLength": 87.0,
+    "overallLength": 162.0,
+    "bullet": 25.4
+   },
+   "outline": {
+    "width": 30.2,
+    "height": 162.0
+   }
+  },
+  {
+   "id": "25.4x87 mm R",
+   "name": "25.4x87 mm R",
+   "category": "Kanone",
+   "kind": "rimmed",
+   "aliases": [
+    "25x87r",
+    "25.4x87r",
+    "1-inch vickers",
+    "vickers-terni"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "IT",
+    "name": "Italien",
+    "flag": "🇮🇹"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "133"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "133"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 31.5,
+    "base": 28.1,
+    "neck": 0,
+    "caseLength": 87.0,
+    "overallLength": 162.0,
+    "bullet": 25.4
+   },
+   "outline": {
+    "width": 31.5,
+    "height": 162.0
    }
   },
   {
@@ -73419,10 +75270,10 @@
        ]
       },
       {
-       "work": 1437
+       "work": 1459
       },
       {
-       "work": 1438
+       "work": 1460
       },
       {
        "work": 7,
@@ -73431,7 +75282,7 @@
        ]
       },
       {
-       "work": 1439
+       "work": 1461
       }
      ]
     },
@@ -73442,7 +75293,7 @@
      ],
      "refs": [
       {
-       "work": 1439
+       "work": 1461
       }
      ]
     },
@@ -73452,7 +75303,7 @@
      ],
      "refs": [
       {
-       "work": 1437
+       "work": 1459
       }
      ]
     }
@@ -73471,6 +75322,449 @@
     "height": 223.0,
     "case": "M37.89 223.00 L37.89 218.99 L35.98 218.99 L35.98 214.89 L37.99 213.26 L36.78 113.13 L32.03 98.34 L32.03 86.00 L5.96 86.00 L5.96 98.34 L1.21 113.13 L0.00 213.26 L2.01 214.89 L2.01 218.99 L0.10 218.99 L0.10 223.00 Z",
     "bullet": "M31.50 86.00 L31.50 58.48 L31.38 54.30 L31.13 50.13 L30.76 45.95 L30.29 41.77 L29.73 37.59 L29.06 33.42 L28.31 29.24 L27.45 25.06 L26.50 20.89 L25.42 16.71 L24.22 12.53 L22.86 8.35 L21.26 4.18 L19.62 0.00 L19.00 0.00 L18.37 0.00 L16.73 4.18 L15.13 8.35 L13.77 12.53 L12.57 16.71 L11.49 20.89 L10.54 25.06 L9.68 29.24 L8.93 33.42 L8.26 37.59 L7.70 41.77 L7.23 45.95 L6.86 50.13 L6.61 54.30 L6.50 58.48 L6.50 86.00 Z"
+   }
+  },
+  {
+   "id": "25x163 mm",
+   "name": "25x163 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "25 mm hotchkiss",
+    "25 mm type 96"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "FR",
+    "name": "Frankreich",
+    "flag": "🇫🇷"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "131"
+       ]
+      },
+      {
+       "work": 1462
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1462
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "131"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 42.6,
+    "base": 42.7,
+    "neck": 26.81,
+    "caseLength": 163.0,
+    "overallLength": 233.0,
+    "bullet": 25.0,
+    "shoulder": 39.59
+   },
+   "outline": {
+    "width": 42.7,
+    "height": 233.0,
+    "case": "M42.65 233.00 L42.65 229.24 L40.34 229.24 L40.34 227.23 L42.70 224.20 L41.15 108.71 L34.76 93.13 L34.76 70.00 L7.95 70.00 L7.95 93.13 L1.55 108.71 L0.00 224.20 L2.37 227.23 L2.37 229.24 L0.05 229.24 L0.05 233.00 Z",
+    "bullet": "M33.85 70.00 L33.85 47.60 L33.74 44.20 L33.48 40.80 L33.12 37.40 L32.65 34.00 L32.08 30.60 L31.42 27.20 L30.66 23.80 L29.81 20.40 L28.85 17.00 L27.78 13.60 L26.58 10.20 L25.21 6.80 L23.62 3.40 L21.98 0.00 L21.35 0.00 L20.73 0.00 L19.08 3.40 L17.49 6.80 L16.12 10.20 L14.92 13.60 L13.85 17.00 L12.89 20.40 L12.04 23.80 L11.28 27.20 L10.62 30.60 L10.05 34.00 L9.58 37.40 L9.22 40.80 L8.96 44.20 L8.85 47.60 L8.85 70.00 Z"
+   }
+  },
+  {
+   "id": "25x173 mm",
+   "name": "25x173 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "25x184",
+    "25x181",
+    "25 mm kbb",
+    "oerlikon kbb"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "CH",
+    "name": "Schweiz",
+    "flag": "🇨🇭"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "132"
+       ]
+      },
+      {
+       "work": 5,
+       "pages": [
+        "92"
+       ]
+      },
+      {
+       "work": 1463
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1463
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "92"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1463
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "227"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 38.0,
+    "base": 38.2,
+    "neck": 26.18,
+    "caseLength": 173.0,
+    "overallLength": 288.0,
+    "bullet": 25.0,
+    "shoulder": 34.58
+   },
+   "outline": {
+    "width": 38.2,
+    "height": 288.0,
+    "case": "M38.10 288.00 L38.10 284.08 L35.07 284.08 L35.07 281.60 L38.20 278.00 L36.39 138.60 L32.19 125.97 L32.19 115.00 L6.01 115.00 L6.01 125.97 L1.81 138.60 L0.00 278.00 L3.13 281.60 L3.13 284.08 L0.10 284.08 L0.10 288.00 Z",
+    "bullet": "M31.60 115.00 L31.60 78.20 L31.49 72.61 L31.23 67.03 L30.87 61.44 L30.40 55.86 L29.83 50.27 L29.17 44.69 L28.41 39.10 L27.56 33.51 L26.60 27.93 L25.53 22.34 L24.33 16.76 L22.96 11.17 L21.37 5.59 L19.73 0.00 L19.10 0.00 L18.48 0.00 L16.83 5.59 L15.24 11.17 L13.87 16.76 L12.67 22.34 L11.60 27.93 L10.64 33.51 L9.79 39.10 L9.03 44.69 L8.37 50.27 L7.80 55.86 L7.33 61.44 L6.97 67.03 L6.71 72.61 L6.60 78.20 L6.60 115.00 Z",
+    "caseMaterial": "steel"
+   }
+  },
+  {
+   "id": "25x205 mm SR",
+   "name": "25x205 mm SR",
+   "category": "Kanone",
+   "kind": "semi-rimmed",
+   "aliases": [
+    "25x205sr",
+    "25x205r",
+    "25 mm bofors m/32",
+    "25 mm m/32"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SE",
+    "name": "Schweden",
+    "flag": "🇸🇪"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "132"
+       ]
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 42.01,
+    "base": 36.91,
+    "neck": 25.7,
+    "caseLength": 205.0,
+    "overallLength": 265.0,
+    "bullet": 25.0
+   },
+   "outline": {
+    "width": 42.01,
+    "height": 265.0,
+    "case": "M42.01 265.00 L42.01 263.70 L37.61 263.70 L37.61 262.70 L39.46 260.50 L33.85 60.00 L8.15 60.00 L2.55 260.50 L4.40 262.70 L4.40 263.70 L0.00 263.70 L0.00 265.00 Z",
+    "bullet": "M33.50 60.00 L33.50 40.80 L33.39 37.89 L33.14 34.97 L32.77 32.06 L32.30 29.14 L31.74 26.23 L31.07 23.31 L30.32 20.40 L29.46 17.49 L28.51 14.57 L27.43 11.66 L26.23 8.74 L24.87 5.83 L23.27 2.91 L21.63 0.00 L21.00 0.00 L20.38 0.00 L18.74 2.91 L17.14 5.83 L15.78 8.74 L14.58 11.66 L13.50 14.57 L12.55 17.49 L11.69 20.40 L10.94 23.31 L10.27 26.23 L9.71 29.14 L9.24 32.06 L8.87 34.97 L8.62 37.89 L8.50 40.80 L8.50 60.00 Z"
+   }
+  },
+  {
+   "id": "25x218 mm",
+   "name": "25x218 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "25 mm 2m-3",
+    "2m-3",
+    "110-pm"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SU",
+    "name": "Sowjetunion"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "133"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 34.9,
+    "base": 34.8,
+    "neck": 26.08,
+    "caseLength": 218.0,
+    "overallLength": 293.0,
+    "bullet": 25.0
+   },
+   "outline": {
+    "width": 34.9,
+    "height": 293.0,
+    "case": "M34.90 293.00 L34.90 291.70 L32.63 291.70 L32.63 290.70 L34.85 288.06 L30.49 75.00 L4.41 75.00 L0.05 288.06 L2.27 290.70 L2.27 291.70 L0.00 291.70 L0.00 293.00 Z",
+    "bullet": "M29.95 75.00 L29.95 51.00 L29.84 47.36 L29.58 43.71 L29.22 40.07 L28.75 36.43 L28.18 32.79 L27.52 29.14 L26.76 25.50 L25.91 21.86 L24.95 18.21 L23.88 14.57 L22.68 10.93 L21.31 7.29 L19.72 3.64 L18.07 0.00 L17.45 0.00 L16.82 0.00 L15.18 3.64 L13.59 7.29 L12.22 10.93 L11.02 14.57 L9.95 18.21 L8.99 21.86 L8.14 25.50 L7.38 29.14 L6.72 32.79 L6.15 36.43 L5.68 40.07 L5.32 43.71 L5.06 47.36 L4.95 51.00 L4.95 75.00 Z"
+   }
+  },
+  {
+   "id": "25x218 mm SR",
+   "name": "25x218 mm SR",
+   "category": "Kanone",
+   "kind": "semi-rimmed",
+   "aliases": [
+    "25x218sr",
+    "25x218r",
+    "25 mm 72-k",
+    "72-k",
+    "25 mm m1940"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SU",
+    "name": "Sowjetunion"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "133"
+       ]
+      },
+      {
+       "work": 1464
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1464
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 40.0,
+    "base": 34.7,
+    "neck": 27.45,
+    "caseLength": 218.0,
+    "overallLength": 291.0,
+    "bullet": 25.0,
+    "shoulder": 32.21
+   },
+   "outline": {
+    "width": 40.0,
+    "height": 291.0,
+    "case": "M40.00 291.00 L40.00 286.00 L36.36 286.00 L36.36 282.68 L37.35 282.15 L36.11 129.01 L33.73 101.25 L33.73 73.00 L6.28 73.00 L6.28 101.25 L3.89 129.01 L2.65 282.15 L3.64 282.68 L3.64 286.00 L0.00 286.00 L0.00 291.00 Z",
+    "bullet": "M32.50 73.00 L32.50 49.64 L32.39 46.09 L32.13 42.55 L31.77 39.00 L31.30 35.46 L30.73 31.91 L30.07 28.37 L29.31 24.82 L28.46 21.27 L27.50 17.73 L26.43 14.18 L25.23 10.64 L23.86 7.09 L22.27 3.55 L20.62 0.00 L20.00 0.00 L19.38 0.00 L17.73 3.55 L16.14 7.09 L14.77 10.64 L13.57 14.18 L12.50 17.73 L11.54 21.27 L10.69 24.82 L9.93 28.37 L9.27 31.91 L8.70 35.46 L8.23 39.00 L7.87 42.55 L7.61 46.09 L7.50 49.64 L7.50 73.00 Z"
    }
   },
   {
@@ -73508,7 +75802,7 @@
        ]
       },
       {
-       "work": 1440
+       "work": 1465
       }
      ]
     },
@@ -73531,7 +75825,7 @@
      ],
      "refs": [
       {
-       "work": 1440
+       "work": 1465
       }
      ]
     }
@@ -73548,6 +75842,107 @@
    "outline": {
     "width": 34.49,
     "height": 243.0
+   }
+  },
+  {
+   "id": "28x199 mm SR",
+   "name": "28x199 mm SR",
+   "category": "Kanone",
+   "kind": "semi-rimmed",
+   "aliases": [
+    "28x199sr",
+    "1.1-inch",
+    "1.1 inch",
+    "1.1-inch/75",
+    "chicago piano"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "135"
+       ]
+      },
+      {
+       "work": 1466
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1466
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "135"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 43.5,
+    "base": 41.4,
+    "neck": 28.91,
+    "caseLength": 199.0,
+    "overallLength": 309.0,
+    "bullet": 28.0,
+    "shoulder": 40.16
+   },
+   "outline": {
+    "width": 43.5,
+    "height": 309.0,
+    "case": "M43.50 309.00 L43.50 305.80 L41.53 305.80 L41.53 304.42 L42.45 303.40 L41.83 171.17 L36.20 132.61 L36.20 110.00 L7.29 110.00 L7.29 132.61 L1.67 171.17 L1.05 303.40 L1.97 304.42 L1.97 305.80 L0.00 305.80 L0.00 309.00 Z",
+    "bullet": "M35.75 110.00 L35.75 74.80 L35.62 69.46 L35.34 64.11 L34.93 58.77 L34.40 53.43 L33.77 48.09 L33.03 42.74 L32.18 37.40 L31.22 32.06 L30.15 26.71 L28.95 21.37 L27.61 16.03 L26.08 10.69 L24.29 5.34 L22.45 0.00 L21.75 0.00 L21.05 0.00 L19.21 5.34 L17.42 10.69 L15.89 16.03 L14.55 21.37 L13.35 26.71 L12.28 32.06 L11.32 37.40 L10.47 42.74 L9.73 48.09 L9.10 53.43 L8.57 58.77 L8.16 64.11 L7.88 69.46 L7.75 74.80 L7.75 110.00 Z"
    }
   },
   {
@@ -73579,10 +75974,10 @@
      ],
      "refs": [
       {
-       "work": 1441
+       "work": 1467
       },
       {
-       "work": 1442
+       "work": 1468
       },
       {
        "work": 5,
@@ -73591,7 +75986,7 @@
        ]
       },
       {
-       "work": 1443
+       "work": 1469
       }
      ]
     },
@@ -73601,7 +75996,7 @@
      ],
      "refs": [
       {
-       "work": 1443
+       "work": 1469
       }
      ]
     }
@@ -73623,6 +76018,276 @@
     "currentCaseMaterials": [
      "aluminium"
     ]
+   }
+  },
+  {
+   "id": "30x114 mm",
+   "name": "30x114 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "30x115",
+    "30 mm ho-155",
+    "ho-155"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "JP",
+    "name": "Japan",
+    "flag": "🇯🇵"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "141"
+       ]
+      },
+      {
+       "work": 1470
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "141"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 37.5,
+    "base": 38.0,
+    "neck": 0,
+    "caseLength": 114.0,
+    "overallLength": 190.0,
+    "bullet": 30.0
+   },
+   "outline": {
+    "width": 38.0,
+    "height": 190.0
+   }
+  },
+  {
+   "id": "30x122 mm",
+   "name": "30x122 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "30 mm type 5"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "JP",
+    "name": "Japan",
+    "flag": "🇯🇵"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "141"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "141"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 40.0,
+    "base": 41.0,
+    "neck": 0,
+    "caseLength": 122.0,
+    "overallLength": 211.0,
+    "bullet": 30.0
+   },
+   "outline": {
+    "width": 41.0,
+    "height": 211.0
+   }
+  },
+  {
+   "id": "30x155 mm B",
+   "name": "30x155 mm B",
+   "category": "Kanone",
+   "kind": "belted",
+   "aliases": [
+    "30x155b",
+    "30 mm nr-30",
+    "nr-30"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SU",
+    "name": "Sowjetunion"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "142"
+       ]
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      },
+      {
+       "work": 1471
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1471
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "142"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 40.0,
+    "base": 39.9,
+    "neck": 31.8,
+    "caseLength": 155.0,
+    "overallLength": 266.0,
+    "bullet": 30.0,
+    "shoulder": 37.48,
+    "belt": 41.5
+   },
+   "outline": {
+    "width": 41.5,
+    "height": 266.0,
+    "case": "M40.75 266.00 L40.75 262.63 L37.91 262.63 L37.91 261.63 L41.50 257.91 L41.50 251.05 L40.70 251.05 L39.49 141.22 L36.65 132.58 L36.65 111.00 L4.85 111.00 L4.85 132.58 L2.01 141.22 L0.80 251.05 L0.00 251.05 L0.00 257.91 L3.59 261.63 L3.59 262.63 L0.75 262.63 L0.75 266.00 Z",
+    "bullet": "M35.75 111.00 L35.75 75.48 L35.61 70.09 L35.31 64.70 L34.87 59.31 L34.31 53.91 L33.63 48.52 L32.83 43.13 L31.93 37.74 L30.90 32.35 L29.75 26.96 L28.47 21.57 L27.02 16.17 L25.39 10.78 L23.47 5.39 L21.50 0.00 L20.75 0.00 L20.00 0.00 L18.03 5.39 L16.11 10.78 L14.48 16.17 L13.03 21.57 L11.75 26.96 L10.60 32.35 L9.57 37.74 L8.67 43.13 L7.87 48.52 L7.19 53.91 L6.63 59.31 L6.19 64.70 L5.89 70.09 L5.75 75.48 L5.75 111.00 Z"
    }
   },
   {
@@ -73652,7 +76317,7 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "228"
        ]
@@ -73664,17 +76329,17 @@
        ]
       },
       {
-       "work": 1444,
+       "work": 1472,
        "pages": [
         "281",
         "298"
        ]
       },
       {
-       "work": 1445
+       "work": 1473
       },
       {
-       "work": 1446
+       "work": 1474
       }
      ]
     },
@@ -73685,7 +76350,7 @@
      ],
      "refs": [
       {
-       "work": 1446
+       "work": 1474
       }
      ]
     },
@@ -73708,7 +76373,7 @@
      ],
      "refs": [
       {
-       "work": 1445
+       "work": 1473
       }
      ]
     }
@@ -73759,7 +76424,7 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "228"
        ]
@@ -73772,7 +76437,7 @@
        ]
       },
       {
-       "work": 1447
+       "work": 1475
       }
      ]
     },
@@ -73783,7 +76448,7 @@
      ],
      "refs": [
       {
-       "work": 1447
+       "work": 1475
       }
      ]
     },
@@ -73806,7 +76471,7 @@
      ],
      "refs": [
       {
-       "work": 1448
+       "work": 1476
       }
      ]
     }
@@ -73826,6 +76491,92 @@
     "case": "M40.00 284.00 L40.00 279.52 L37.16 279.52 L37.16 275.99 L40.00 273.05 L38.84 149.75 L35.91 140.62 L35.91 119.00 L4.09 119.00 L4.09 140.62 L1.16 149.75 L0.00 273.05 L2.84 275.99 L2.84 279.52 L0.00 279.52 L0.00 284.00 Z",
     "bullet": "M35.00 119.00 L35.00 80.92 L34.86 75.14 L34.56 69.36 L34.12 63.58 L33.56 57.80 L32.88 52.02 L32.08 46.24 L31.18 40.46 L30.15 34.68 L29.00 28.90 L27.72 23.12 L26.27 17.34 L24.64 11.56 L22.72 5.78 L20.75 0.00 L20.00 0.00 L19.25 0.00 L17.28 5.78 L15.36 11.56 L13.73 17.34 L12.28 23.12 L11.00 28.90 L9.85 34.68 L8.82 40.46 L7.92 46.24 L7.12 52.02 L6.44 57.80 L5.88 63.58 L5.44 69.36 L5.14 75.14 L5.00 80.92 L5.00 119.00 Z",
     "caseMaterial": "steel"
+   }
+  },
+  {
+   "id": "30x170 mm",
+   "name": "30x170 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "30x170",
+    "30 mm rarden",
+    "30 mm kcb",
+    "30 mm oerlikon kcb",
+    "hs 831"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "CH",
+    "name": "Schweiz",
+    "flag": "🇨🇭"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682",
+        "105"
+       ]
+      },
+      {
+       "work": 1477
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1477
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1477
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 42.9,
+    "base": 42.9,
+    "neck": 31.5,
+    "caseLength": 170.0,
+    "overallLength": 285.25,
+    "bullet": 30.0,
+    "shoulder": 41.8
+   },
+   "outline": {
+    "width": 42.9,
+    "height": 285.25,
+    "case": "M42.90 285.25 L42.90 281.77 L40.88 281.77 L40.88 278.48 L42.90 276.90 L42.35 147.25 L37.20 129.41 L37.20 115.25 L5.70 115.25 L5.70 129.41 L0.55 147.25 L0.00 276.90 L2.02 278.48 L2.02 281.77 L0.00 281.77 L0.00 285.25 Z",
+    "bullet": "M36.45 115.25 L36.45 78.37 L36.31 72.77 L36.01 67.17 L35.57 61.58 L35.01 55.98 L34.33 50.38 L33.53 44.78 L32.63 39.19 L31.60 33.59 L30.45 27.99 L29.17 22.39 L27.72 16.79 L26.09 11.20 L24.17 5.60 L22.20 0.00 L21.45 0.00 L20.70 0.00 L18.73 5.60 L16.81 11.20 L15.18 16.79 L13.73 22.39 L12.45 27.99 L11.30 33.59 L10.27 39.19 L9.37 44.78 L8.57 50.38 L7.89 55.98 L7.33 61.58 L6.89 67.17 L6.59 72.77 L6.45 78.37 L6.45 115.25 Z"
    }
   },
   {
@@ -73856,13 +76607,13 @@
      ],
      "refs": [
       {
-       "work": 1449
+       "work": 1478
       },
       {
-       "work": 1450
+       "work": 1479
       },
       {
-       "work": 1451
+       "work": 1480
       }
      ]
     },
@@ -73873,7 +76624,7 @@
      ],
      "refs": [
       {
-       "work": 1449
+       "work": 1478
       }
      ]
     },
@@ -73897,7 +76648,7 @@
      ],
      "refs": [
       {
-       "work": 1450
+       "work": 1479
       }
      ]
     }
@@ -73960,7 +76711,7 @@
        ]
       },
       {
-       "work": 1452
+       "work": 1481
       }
      ]
     },
@@ -73971,7 +76722,7 @@
      ],
      "refs": [
       {
-       "work": 1452
+       "work": 1481
       }
      ]
     },
@@ -73994,7 +76745,7 @@
      ],
      "refs": [
       {
-       "work": 1453
+       "work": 1482
       }
      ]
     }
@@ -74014,6 +76765,653 @@
     "case": "M43.99 290.47 L43.99 286.08 L40.94 286.08 L40.94 282.55 L43.99 279.27 L42.03 145.29 L37.75 132.90 L37.75 117.47 L6.25 117.47 L6.25 132.90 L1.96 145.29 L0.00 279.27 L3.05 282.55 L3.05 286.08 L0.00 286.08 L0.00 290.47 Z",
     "bullet": "M37.00 117.47 L37.00 79.88 L36.86 74.17 L36.55 68.47 L36.11 62.76 L35.55 57.06 L34.87 51.35 L34.08 45.65 L33.17 39.94 L32.15 34.23 L31.00 28.53 L29.71 22.82 L28.27 17.12 L26.63 11.41 L24.72 5.71 L22.75 0.00 L22.00 0.00 L21.25 0.00 L19.27 5.71 L17.36 11.41 L15.72 17.12 L14.28 22.82 L12.99 28.53 L11.84 34.23 L10.82 39.94 L9.91 45.65 L9.12 51.35 L8.44 57.06 L7.88 62.76 L7.44 68.47 L7.13 74.17 L7.00 79.88 L7.00 117.47 Z",
     "caseMaterial": "steel"
+   }
+  },
+  {
+   "id": "30x184 mm B",
+   "name": "30x184 mm B",
+   "category": "Kanone",
+   "kind": "belted",
+   "aliases": [
+    "30x184b",
+    "30x183",
+    "30 mm mk 103",
+    "30 mm mk 101",
+    "mk 103",
+    "mk 101"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      },
+      {
+       "work": 1483
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "147"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1483
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "147"
+       ]
+      },
+      {
+       "work": 1484
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1483
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 37.8,
+    "base": 37.9,
+    "neck": 31.16,
+    "caseLength": 184.0,
+    "overallLength": 298.0,
+    "bullet": 30.0,
+    "shoulder": 35.46,
+    "belt": 39.4
+   },
+   "outline": {
+    "width": 39.4,
+    "height": 298.0,
+    "case": "M38.60 298.00 L38.60 295.05 L36.31 295.05 L36.31 294.05 L39.40 290.62 L39.40 282.60 L38.65 282.60 L37.43 138.92 L35.28 129.06 L35.28 114.00 L4.12 114.00 L4.12 129.06 L1.97 138.92 L0.75 282.60 L0.00 282.60 L0.00 290.62 L3.09 294.05 L3.09 295.05 L0.80 295.05 L0.80 298.00 Z",
+    "bullet": "M34.70 114.00 L34.70 77.52 L34.56 71.98 L34.26 66.45 L33.82 60.91 L33.26 55.37 L32.58 49.83 L31.78 44.30 L30.88 38.76 L29.85 33.22 L28.70 27.69 L27.42 22.15 L25.97 16.61 L24.34 11.07 L22.42 5.54 L20.45 0.00 L19.70 0.00 L18.95 0.00 L16.98 5.54 L15.06 11.07 L13.43 16.61 L11.98 22.15 L10.70 27.69 L9.55 33.22 L8.52 38.76 L7.62 44.30 L6.82 49.83 L6.14 55.37 L5.58 60.91 L5.14 66.45 L4.84 71.98 L4.70 77.52 L4.70 114.00 Z",
+    "caseMaterial": "steel"
+   }
+  },
+  {
+   "id": "30x210 mm",
+   "name": "30x210 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "30x211",
+    "30x220",
+    "30 mm m53",
+    "3 cm mk 303"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "CS",
+    "name": "Tschechoslowakei"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "148"
+       ]
+      },
+      {
+       "work": 1485
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1485
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "148"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 47.7,
+    "base": 47.7,
+    "neck": 31.36,
+    "caseLength": 210.0,
+    "overallLength": 332.0,
+    "bullet": 30.0,
+    "shoulder": 45.03
+   },
+   "outline": {
+    "width": 47.7,
+    "height": 332.0,
+    "case": "M47.70 332.00 L47.70 326.52 L43.81 326.52 L43.81 322.90 L47.70 318.10 L46.37 163.29 L39.53 142.25 L39.53 122.00 L8.17 122.00 L8.17 142.25 L1.34 163.29 L0.00 318.10 L3.89 322.90 L3.89 326.52 L0.00 326.52 L0.00 332.00 Z",
+    "bullet": "M38.85 122.00 L38.85 82.96 L38.71 77.03 L38.41 71.11 L37.97 65.18 L37.41 59.26 L36.73 53.33 L35.93 47.41 L35.03 41.48 L34.00 35.55 L32.85 29.63 L31.57 23.70 L30.12 17.78 L28.49 11.85 L26.57 5.93 L24.60 0.00 L23.85 0.00 L23.10 0.00 L21.13 5.93 L19.21 11.85 L17.58 17.78 L16.13 23.70 L14.85 29.63 L13.70 35.55 L12.67 41.48 L11.77 47.41 L10.97 53.33 L10.29 59.26 L9.73 65.18 L9.29 71.11 L8.99 77.03 L8.85 82.96 L8.85 122.00 Z"
+   }
+  },
+  {
+   "id": "30x210 mm B",
+   "name": "30x210 mm B",
+   "category": "Kanone",
+   "kind": "belted",
+   "aliases": [
+    "30x210b",
+    "30 mm nn-30",
+    "nn-30",
+    "30 mm ak-230"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SU",
+    "name": "Sowjetunion"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "147"
+       ]
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "147"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 46.0,
+    "base": 45.9,
+    "neck": 32.21,
+    "caseLength": 210.0,
+    "overallLength": 306.0,
+    "bullet": 30.0,
+    "belt": 47.5
+   },
+   "outline": {
+    "width": 47.5,
+    "height": 306.0,
+    "case": "M46.75 306.00 L46.75 304.70 L43.76 304.70 L43.76 303.70 L47.50 300.40 L47.50 300.40 L46.70 300.40 L39.86 96.00 L7.64 96.00 L0.80 300.40 L0.00 300.40 L0.00 300.40 L3.74 303.70 L3.74 304.70 L0.75 304.70 L0.75 306.00 Z",
+    "bullet": "M38.75 96.00 L38.75 65.28 L38.61 60.62 L38.31 55.95 L37.87 51.29 L37.31 46.63 L36.63 41.97 L35.83 37.30 L34.93 32.64 L33.90 27.98 L32.75 23.31 L31.47 18.65 L30.02 13.99 L28.39 9.33 L26.47 4.66 L24.50 0.00 L23.75 0.00 L23.00 0.00 L21.03 4.66 L19.11 9.33 L17.48 13.99 L16.03 18.65 L14.75 23.31 L13.60 27.98 L12.57 32.64 L11.67 37.30 L10.87 41.97 L10.19 46.63 L9.63 51.29 L9.19 55.95 L8.89 60.62 L8.75 65.28 L8.75 96.00 Z"
+   }
+  },
+  {
+   "id": "30x29 mm B",
+   "name": "30x29 mm B",
+   "category": "Kanone",
+   "kind": "belted",
+   "aliases": [
+    "30x29b",
+    "30 mm vog-17",
+    "vog-17",
+    "ags-17"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SU",
+    "name": "Sowjetunion"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      },
+      {
+       "work": 1486
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1486
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 31.5,
+    "base": 31.5,
+    "neck": 31.08,
+    "caseLength": 29.0,
+    "overallLength": 132.0,
+    "bullet": 30.0,
+    "belt": 32.57
+   },
+   "outline": {
+    "width": 32.57,
+    "height": 132.0,
+    "case": "M32.03 132.00 L32.03 129.00 L29.99 129.00 L29.99 128.00 L32.57 124.92 L32.57 124.70 L32.03 124.70 L31.82 103.00 L0.75 103.00 L0.54 124.70 L0.00 124.70 L0.00 124.92 L2.58 128.00 L2.58 129.00 L0.54 129.00 L0.54 132.00 Z",
+    "bullet": "M31.29 103.00 L31.29 80.34 L31.25 74.60 L31.13 68.86 L30.94 63.12 L30.66 57.39 L30.30 51.65 L29.84 45.91 L29.28 40.17 L28.59 34.43 L27.77 28.69 L26.78 22.95 L25.56 17.22 L24.01 11.48 L21.85 5.74 L18.68 0.00 L16.29 0.00 L13.88 0.00 L10.72 5.74 L8.56 11.48 L7.01 17.22 L5.79 22.95 L4.80 28.69 L3.98 34.43 L3.29 40.17 L2.73 45.91 L2.27 51.65 L1.91 57.39 L1.63 63.12 L1.44 68.86 L1.32 74.60 L1.29 80.34 L1.29 103.00 Z"
+   }
+  },
+  {
+   "id": "30x86 mm B",
+   "name": "30x86 mm B",
+   "category": "Kanone",
+   "kind": "belted",
+   "aliases": [
+    "30x86b",
+    "30 mm aden 3m",
+    "aden 3m"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "GB",
+    "name": "Grossbritannien",
+    "flag": "🇬🇧"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 33.2,
+    "base": 32.3,
+    "neck": 0,
+    "caseLength": 86.0,
+    "overallLength": 0,
+    "bullet": 30.0
+   },
+   "outline": {
+    "width": 33.2,
+    "height": 86.0
+   }
+  },
+  {
+   "id": "30x90 mm RB",
+   "name": "30x90 mm RB",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "30x90rb",
+    "30x91rb",
+    "30 mm mk 108",
+    "mk 108"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      },
+      {
+       "work": 1487
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "138"
+       ]
+      },
+      {
+       "work": 1487
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 24.9,
+    "base": 32.3,
+    "neck": 0,
+    "caseLength": 90.0,
+    "overallLength": 0,
+    "bullet": 30.0
+   },
+   "outline": {
+    "width": 32.3,
+    "height": 90.0
+   }
+  },
+  {
+   "id": "30x92 mm RB",
+   "name": "30x92 mm RB",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "30x92rb",
+    "30 mm type 2"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "JP",
+    "name": "Japan",
+    "flag": "🇯🇵"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "139"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 27.8,
+    "base": 33.0,
+    "neck": 0,
+    "caseLength": 92.0,
+    "overallLength": 167.0,
+    "bullet": 30.0
+   },
+   "outline": {
+    "width": 33.0,
+    "height": 167.0
+   }
+  },
+  {
+   "id": "30x97 mm B",
+   "name": "30x97 mm B",
+   "category": "Kanone",
+   "kind": "belted",
+   "aliases": [
+    "30x97b",
+    "30 mm defa 540",
+    "30 mm defa 541",
+    "defa 541"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "FR",
+    "name": "Frankreich",
+    "flag": "🇫🇷"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 5,
+       "pages": [
+        "682"
+       ]
+      },
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "139"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "228"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 33.2,
+    "base": 32.0,
+    "neck": 30.99,
+    "caseLength": 97.0,
+    "overallLength": 199.0,
+    "bullet": 30.0,
+    "belt": 33.78
+   },
+   "outline": {
+    "width": 33.78,
+    "height": 199.0,
+    "case": "M33.49 199.00 L33.49 197.70 L31.29 197.70 L31.29 196.70 L33.78 193.73 L33.78 193.40 L32.89 193.40 L32.38 102.00 L1.40 102.00 L0.89 193.40 L0.00 193.40 L0.00 193.73 L2.49 196.70 L2.49 197.70 L0.29 197.70 L0.29 199.00 Z",
+    "bullet": "M31.89 102.00 L31.89 69.36 L31.75 64.41 L31.45 59.45 L31.01 54.50 L30.45 49.54 L29.77 44.59 L28.97 39.63 L28.07 34.68 L27.04 29.73 L25.89 24.77 L24.61 19.82 L23.16 14.86 L21.53 9.91 L19.61 4.95 L17.64 0.00 L16.89 0.00 L16.14 0.00 L14.17 4.95 L12.25 9.91 L10.62 14.86 L9.17 19.82 L7.89 24.77 L6.74 29.73 L5.71 34.68 L4.81 39.63 L4.01 44.59 L3.33 49.54 L2.77 54.50 L2.33 59.45 L2.03 64.41 L1.89 69.36 L1.89 102.00 Z"
    }
   },
   {
@@ -74044,13 +77442,13 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "229"
        ]
       },
       {
-       "work": 1454
+       "work": 1488
       }
      ]
     },
@@ -74061,7 +77459,7 @@
      ],
      "refs": [
       {
-       "work": 1454
+       "work": 1488
       }
      ]
     }
@@ -74110,7 +77508,7 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "229"
        ]
@@ -74123,13 +77521,13 @@
        ]
       },
       {
-       "work": 1455
+       "work": 1489
       },
       {
-       "work": 1456
+       "work": 1490
       },
       {
-       "work": 1457
+       "work": 1491
       }
      ]
     },
@@ -74140,7 +77538,7 @@
      ],
      "refs": [
       {
-       "work": 1457
+       "work": 1491
       }
      ]
     },
@@ -74163,7 +77561,7 @@
      ],
      "refs": [
       {
-       "work": 1455
+       "work": 1489
       }
      ]
     }
@@ -74183,6 +77581,1454 @@
     "case": "M54.80 387.00 L54.80 381.92 L51.60 381.92 L51.60 377.52 L55.10 373.20 L53.49 195.63 L46.03 171.99 L46.03 159.00 L9.07 159.00 L9.07 171.99 L1.61 195.63 L0.00 373.20 L3.50 377.52 L3.50 381.92 L0.30 381.92 L0.30 387.00 Z",
     "bullet": "M45.05 159.00 L45.05 108.12 L44.89 100.40 L44.54 92.67 L44.02 84.95 L43.36 77.23 L42.57 69.51 L41.65 61.78 L40.59 54.06 L39.39 46.34 L38.05 38.61 L36.55 30.89 L34.87 23.17 L32.96 15.45 L30.72 7.72 L28.43 0.00 L27.55 0.00 L26.68 0.00 L24.38 7.72 L22.14 15.45 L20.23 23.17 L18.55 30.89 L17.05 38.61 L15.71 46.34 L14.51 54.06 L13.45 61.78 L12.53 69.51 L11.74 77.23 L11.08 84.95 L10.56 92.67 L10.21 100.40 L10.05 108.12 L10.05 159.00 Z",
     "caseMaterial": "steel"
+   }
+  },
+  {
+   "id": "37x101 mm SR",
+   "name": "37x101 mm SR",
+   "category": "Kanone",
+   "kind": "semi-rimmed",
+   "aliases": [
+    "37x101sr",
+    "sockelflak",
+    "3.7 cm sockelflak"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 42.9,
+    "base": 39.9,
+    "neck": 0,
+    "caseLength": 101.0,
+    "overallLength": 0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 42.9,
+    "height": 101.0
+   }
+  },
+  {
+   "id": "37x112 mm R",
+   "name": "37x112 mm R",
+   "category": "Kanone",
+   "kind": "rimmed",
+   "aliases": [
+    "37x112r",
+    "37x111r",
+    "37 mm ho-203",
+    "ho-203"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "JP",
+    "name": "Japan",
+    "flag": "🇯🇵"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "154"
+       ]
+      },
+      {
+       "work": 1492
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "154"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 47.0,
+    "base": 43.5,
+    "neck": 0,
+    "caseLength": 112.0,
+    "overallLength": 194.0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 47.0,
+    "height": 194.0
+   }
+  },
+  {
+   "id": "37x124 mm R",
+   "name": "37x124 mm R",
+   "category": "Kanone",
+   "kind": "rimmed",
+   "aliases": [
+    "37x124r",
+    "37x123r",
+    "1.5-pounder vickers"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "GB",
+    "name": "Grossbritannien",
+    "flag": "🇬🇧"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "154"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "154"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 47.6,
+    "base": 43.7,
+    "neck": 0,
+    "caseLength": 124.0,
+    "overallLength": 0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 47.6,
+    "height": 124.0
+   }
+  },
+  {
+   "id": "37x136 mm R",
+   "name": "37x136 mm R",
+   "category": "Kanone",
+   "kind": "rimmed",
+   "aliases": [
+    "37x136r",
+    "37x137r",
+    "1-pounder heavy",
+    "1-pounder mk vi"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "155"
+       ]
+      },
+      {
+       "work": 1493
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1493
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "155"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 44.7,
+    "base": 40.6,
+    "neck": 37.5,
+    "caseLength": 136.0,
+    "overallLength": 210.0,
+    "bullet": 37.0,
+    "shoulder": 39.5
+   },
+   "outline": {
+    "width": 44.7,
+    "height": 210.0,
+    "case": "M44.70 210.00 L44.70 207.90 L42.65 207.90 L42.10 98.50 L41.10 95.49 L41.10 74.00 L3.60 74.00 L3.60 95.49 L2.60 98.50 L2.05 207.90 L0.00 207.90 L0.00 210.00 Z",
+    "bullet": "M40.85 74.00 L40.85 50.32 L40.68 46.73 L40.31 43.13 L39.76 39.54 L39.07 35.94 L38.23 32.35 L37.25 28.75 L36.13 25.16 L34.87 21.57 L33.45 17.97 L31.87 14.38 L30.09 10.78 L28.07 7.19 L25.71 3.59 L23.28 0.00 L22.35 0.00 L21.43 0.00 L18.99 3.59 L16.63 7.19 L14.61 10.78 L12.83 14.38 L11.25 17.97 L9.83 21.57 L8.57 25.16 L7.45 28.75 L6.47 32.35 L5.63 35.94 L4.94 39.54 L4.39 43.13 L4.02 46.73 L3.85 50.32 L3.85 74.00 Z"
+   }
+  },
+  {
+   "id": "37x144 mm",
+   "name": "37x144 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "37 mm ho-204",
+    "ho-204"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "JP",
+    "name": "Japan",
+    "flag": "🇯🇵"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "155"
+       ]
+      },
+      {
+       "work": 1494
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "155"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 44.0,
+    "base": 44.0,
+    "neck": 0,
+    "caseLength": 144.0,
+    "overallLength": 230.0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 44.0,
+    "height": 230.0
+   }
+  },
+  {
+   "id": "37x145 mm R",
+   "name": "37x145 mm R",
+   "category": "Kanone",
+   "kind": "rimmed",
+   "aliases": [
+    "37x145r",
+    "37 mm m4",
+    "37 mm m10"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "155"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 45.0,
+    "base": 40.6,
+    "neck": 0,
+    "caseLength": 145.0,
+    "overallLength": 0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 45.0,
+    "height": 145.0
+   }
+  },
+  {
+   "id": "37x155 mm",
+   "name": "37x155 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "37 mm n-37",
+    "n-37"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SU",
+    "name": "Sowjetunion"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "155"
+       ]
+      },
+      {
+       "work": 1495
+      },
+      {
+       "work": 1496
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1496
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 46.0,
+    "base": 45.8,
+    "neck": 39.0,
+    "caseLength": 155.0,
+    "overallLength": 288.0,
+    "bullet": 37.0,
+    "shoulder": 44.0
+   },
+   "outline": {
+    "width": 46.0,
+    "height": 288.0,
+    "case": "M46.00 288.00 L46.00 284.50 L43.05 284.50 L43.05 280.35 L45.90 277.50 L45.00 162.00 L42.50 158.00 L42.50 133.00 L3.50 133.00 L3.50 158.00 L1.00 162.00 L0.10 277.50 L2.95 280.35 L2.95 284.50 L0.00 284.50 L0.00 288.00 Z",
+    "bullet": "M41.50 133.00 L41.50 90.44 L41.33 83.98 L40.96 77.52 L40.41 71.06 L39.72 64.60 L38.88 58.14 L37.90 51.68 L36.78 45.22 L35.52 38.76 L34.10 32.30 L32.52 25.84 L30.74 19.38 L28.72 12.92 L26.36 6.46 L23.93 0.00 L23.00 0.00 L22.07 0.00 L19.64 6.46 L17.28 12.92 L15.26 19.38 L13.48 25.84 L11.90 32.30 L10.48 38.76 L9.22 45.22 L8.10 51.68 L7.12 58.14 L6.28 64.60 L5.59 71.06 L5.04 77.52 L4.67 83.98 L4.50 90.44 L4.50 133.00 Z"
+   }
+  },
+  {
+   "id": "37x190 mm",
+   "name": "37x190 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "37 mm cow",
+    "cow gun",
+    "1.5-pounder cow"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "GB",
+    "name": "Grossbritannien",
+    "flag": "🇬🇧"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "156"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "156"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 46.5,
+    "base": 47.0,
+    "neck": 0,
+    "caseLength": 190.0,
+    "overallLength": 290.0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 47.0,
+    "height": 290.0
+   }
+  },
+  {
+   "id": "37x198 mm",
+   "name": "37x198 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "37x195",
+    "37 mm ns-37",
+    "ns-37"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SU",
+    "name": "Sowjetunion"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "156"
+       ]
+      },
+      {
+       "work": 1497
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 53.3,
+    "base": 53.3,
+    "neck": 0,
+    "caseLength": 198.0,
+    "overallLength": 332.0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 53.3,
+    "height": 332.0
+   }
+  },
+  {
+   "id": "37x223 mm SR",
+   "name": "37x223 mm SR",
+   "category": "Kanone",
+   "kind": "semi-rimmed",
+   "aliases": [
+    "37x223sr",
+    "37 mm m1",
+    "37 mm m9"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "157"
+       ]
+      },
+      {
+       "work": 1498
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1498
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "157"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 51.1,
+    "base": 50.3,
+    "neck": 38.0,
+    "caseLength": 223.0,
+    "overallLength": 325.0,
+    "bullet": 37.0,
+    "shoulder": 48.5
+   },
+   "outline": {
+    "width": 51.1,
+    "height": 325.0,
+    "case": "M51.10 325.00 L51.10 322.50 L49.30 322.50 L49.30 318.67 L50.70 317.00 L49.80 172.00 L44.55 141.92 L44.55 102.00 L6.55 102.00 L6.55 141.92 L1.30 172.00 L0.40 317.00 L1.80 318.67 L1.80 322.50 L0.00 322.50 L0.00 325.00 Z",
+    "bullet": "M44.05 102.00 L44.05 69.36 L43.88 64.41 L43.51 59.45 L42.96 54.50 L42.27 49.54 L41.43 44.59 L40.45 39.63 L39.33 34.68 L38.07 29.73 L36.65 24.77 L35.07 19.82 L33.29 14.86 L31.27 9.91 L28.91 4.95 L26.48 0.00 L25.55 0.00 L24.62 0.00 L22.19 4.95 L19.83 9.91 L17.81 14.86 L16.03 19.82 L14.45 24.77 L13.03 29.73 L11.77 34.68 L10.65 39.63 L9.67 44.59 L8.83 49.54 L8.14 54.50 L7.59 59.45 L7.22 64.41 L7.05 69.36 L7.05 102.00 Z"
+   }
+  },
+  {
+   "id": "37x232 mm SR",
+   "name": "37x232 mm SR",
+   "category": "Kanone",
+   "kind": "semi-rimmed",
+   "aliases": [
+    "37x232sr",
+    "37x230sr",
+    "breda 37/54",
+    "37 mm breda"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "IT",
+    "name": "Italien",
+    "flag": "🇮🇹"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      },
+      {
+       "work": 1499
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 51.5,
+    "base": 50.0,
+    "neck": 0,
+    "caseLength": 232.0,
+    "overallLength": 0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 51.5,
+    "height": 232.0
+   }
+  },
+  {
+   "id": "37x240 mm",
+   "name": "37x240 mm",
+   "category": "Kanone",
+   "kind": "rimless",
+   "aliases": [
+    "37 mm type 76"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "CN",
+    "name": "China",
+    "flag": "🇨🇳"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "158"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "158"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 54.0,
+    "base": 54.0,
+    "neck": 0,
+    "caseLength": 240.0,
+    "overallLength": 383.0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 54.0,
+    "height": 383.0
+   }
+  },
+  {
+   "id": "37x250 mm R",
+   "name": "37x250 mm R",
+   "category": "Kanone",
+   "kind": "rimmed",
+   "aliases": [
+    "37x250r",
+    "37x249r",
+    "3.7 cm sk c/36",
+    "3.7 cm m42"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "158"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "158"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 51.4,
+    "base": 45.9,
+    "neck": 0,
+    "caseLength": 250.0,
+    "overallLength": 355.0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 51.4,
+    "height": 355.0
+   }
+  },
+  {
+   "id": "37x252 mm SR",
+   "name": "37x252 mm SR",
+   "category": "Kanone",
+   "kind": "semi-rimmed",
+   "aliases": [
+    "37x252sr",
+    "37 mm 61-k",
+    "61-k",
+    "37 mm m1939",
+    "37 mm type 55"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "SU",
+    "name": "Sowjetunion"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "159"
+       ]
+      },
+      {
+       "work": 1500
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1501
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 51.9,
+    "base": 45.8,
+    "neck": 0,
+    "caseLength": 252.0,
+    "overallLength": 383.0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 51.9,
+    "height": 383.0
+   }
+  },
+  {
+   "id": "37x263 mm B",
+   "name": "37x263 mm B",
+   "category": "Kanone",
+   "kind": "belted",
+   "aliases": [
+    "37x263b",
+    "37x264b",
+    "3.7 cm flak 18",
+    "3.7 cm flak 36",
+    "3.7 cm flak 37",
+    "3.7 cm flak 43",
+    "bk 3.7"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "DE",
+    "name": "Deutschland",
+    "flag": "🇩🇪"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      },
+      {
+       "work": 1502
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "161"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 46.8,
+    "base": 45.9,
+    "neck": 0,
+    "caseLength": 263.0,
+    "overallLength": 367.0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 46.8,
+    "height": 367.0
+   }
+  },
+  {
+   "id": "37x69 mm R",
+   "name": "37x69 mm R",
+   "category": "Kanone",
+   "kind": "rimmed",
+   "aliases": [
+    "37x69r",
+    "1-pounder mk iii",
+    "1 pdr mk iii"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "GB",
+    "name": "Grossbritannien",
+    "flag": "🇬🇧"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "153"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "153"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 44.0,
+    "base": 39.5,
+    "neck": 0,
+    "caseLength": 69.0,
+    "overallLength": 137.0,
+    "bullet": 37.0
+   },
+   "outline": {
+    "width": 44.0,
+    "height": 137.0
+   }
+  },
+  {
+   "id": "37x94 mm R",
+   "name": "37x94 mm R",
+   "category": "Kanone",
+   "kind": "rimmed",
+   "aliases": [
+    "37x94r",
+    "1-pounder pom-pom",
+    "1 pdr pom-pom",
+    "37 mm hotchkiss",
+    "37 mm maxim"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "FR",
+    "name": "Frankreich",
+    "flag": "🇫🇷"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": true,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      },
+      {
+       "work": 1503
+      },
+      {
+       "work": 1504
+      }
+     ]
+    },
+    {
+     "parts": [
+      "shoulder_angle",
+      "case_head"
+     ],
+     "refs": [
+      {
+       "work": 1504
+      }
+     ]
+    },
+    {
+     "parts": [
+      "case"
+     ],
+     "refs": [
+      {
+       "work": 1422,
+       "pages": [
+        "154"
+       ]
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "229"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 44.1,
+    "base": 39.7,
+    "neck": 38.0,
+    "caseLength": 94.0,
+    "overallLength": 166.0,
+    "bullet": 37.0,
+    "shoulder": 39.2
+   },
+   "outline": {
+    "width": 44.1,
+    "height": 166.0,
+    "case": "M44.10 166.00 L44.10 164.00 L41.90 164.00 L41.65 91.00 L41.05 84.99 L41.05 72.00 L3.05 72.00 L3.05 84.99 L2.45 91.00 L2.20 164.00 L0.00 164.00 L0.00 166.00 Z",
+    "bullet": "M40.55 72.00 L40.55 56.16 L40.50 52.15 L40.36 48.14 L40.12 44.13 L39.78 40.11 L39.33 36.10 L38.76 32.09 L38.07 28.08 L37.23 24.07 L36.22 20.06 L35.00 16.05 L33.49 12.03 L31.58 8.02 L28.92 4.01 L25.01 0.00 L22.05 0.00 L19.09 0.00 L15.18 4.01 L12.52 8.02 L10.61 12.03 L9.10 16.05 L7.88 20.06 L6.87 24.07 L6.03 28.08 L5.34 32.09 L4.77 36.10 L4.32 40.11 L3.98 44.13 L3.74 48.14 L3.60 52.15 L3.55 56.16 L3.55 72.00 Z"
+   }
+  },
+  {
+   "id": "40x158 mm R",
+   "name": "40x158 mm R",
+   "category": "Kanone",
+   "kind": "rimmed",
+   "aliases": [
+    "40x158r",
+    "2-pounder pom-pom",
+    "2 pdr pom-pom",
+    "40 mm class s"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "GB",
+    "name": "Grossbritannien",
+    "flag": "🇬🇧"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      },
+      {
+       "work": 1422,
+       "pages": [
+        "163"
+       ]
+      },
+      {
+       "work": 1505
+      }
+     ]
+    },
+    {
+     "parts": [
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 48.1,
+    "base": 43.9,
+    "neck": 0,
+    "caseLength": 158.0,
+    "overallLength": 300.0,
+    "bullet": 40.0
+   },
+   "outline": {
+    "width": 48.1,
+    "height": 300.0
    }
   },
   {
@@ -74213,16 +79059,16 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "230"
        ]
       },
       {
-       "work": 1458
+       "work": 1506
       },
       {
-       "work": 1459
+       "work": 1507
       },
       {
        "work": 5,
@@ -74251,7 +79097,7 @@
      ],
      "refs": [
       {
-       "work": 1458
+       "work": 1506
       }
      ]
     }
@@ -74298,16 +79144,16 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "230"
        ]
       },
       {
-       "work": 1460
+       "work": 1508
       },
       {
-       "work": 1461
+       "work": 1509
       }
      ]
     },
@@ -74330,7 +79176,7 @@
      ],
      "refs": [
       {
-       "work": 1460
+       "work": 1508
       }
      ]
     }
@@ -74346,6 +79192,57 @@
    "outline": {
     "width": 65.0,
     "height": 535.0
+   }
+  },
+  {
+   "id": "40x53 mm SR",
+   "name": "40x53 mm SR",
+   "category": "Kanone",
+   "kind": "semi-rimmed",
+   "aliases": [
+    "40x53sr",
+    "40 mm hv",
+    "40x53 hv"
+   ],
+   "displayAliases": [],
+   "obsolete": false,
+   "rare": false,
+   "country": {
+    "code": "US",
+    "name": "USA",
+    "flag": "🇺🇸"
+   },
+   "worldwide": false,
+   "blank": false,
+   "wellSourced": false,
+   "colourCodes": [],
+   "sources": [
+    {
+     "parts": [
+      "mm",
+      "origin"
+     ],
+     "refs": [
+      {
+       "work": 1426,
+       "pages": [
+        "230"
+       ]
+      }
+     ]
+    }
+   ],
+   "dimensions": {
+    "rim": 43.6,
+    "base": 41.3,
+    "neck": 0,
+    "caseLength": 53.0,
+    "overallLength": 0,
+    "bullet": 40.0
+   },
+   "outline": {
+    "width": 43.6,
+    "height": 53.0
    }
   },
   {
@@ -74375,7 +79272,7 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "230"
        ]
@@ -74425,13 +79322,13 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "230"
        ]
       },
       {
-       "work": 1462
+       "work": 1510
       }
      ]
     },
@@ -74441,7 +79338,7 @@
      ],
      "refs": [
       {
-       "work": 1462
+       "work": 1510
       }
      ]
     }
@@ -74490,13 +79387,13 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "230"
        ]
       },
       {
-       "work": 1463
+       "work": 1511
       }
      ]
     },
@@ -74506,7 +79403,7 @@
      ],
      "refs": [
       {
-       "work": 1463
+       "work": 1511
       }
      ]
     }
@@ -74553,13 +79450,13 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "231"
        ]
       },
       {
-       "work": 1464
+       "work": 1512
       }
      ]
     },
@@ -74569,7 +79466,7 @@
      ],
      "refs": [
       {
-       "work": 1464
+       "work": 1512
       }
      ]
     }
@@ -74616,13 +79513,13 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "231"
        ]
       },
       {
-       "work": 1465
+       "work": 1513
       }
      ]
     }
@@ -74669,7 +79566,7 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "231"
        ]
@@ -74682,7 +79579,7 @@
        ]
       },
       {
-       "work": 1466
+       "work": 1514
       }
      ]
     },
@@ -74692,7 +79589,7 @@
      ],
      "refs": [
       {
-       "work": 1466
+       "work": 1514
       }
      ]
     }
@@ -74741,16 +79638,16 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "231"
        ]
       },
       {
-       "work": 1467
+       "work": 1515
       },
       {
-       "work": 1468
+       "work": 1516
       }
      ]
     }
@@ -74798,13 +79695,13 @@
      ],
      "refs": [
       {
-       "work": 1424,
+       "work": 1426,
        "pages": [
         "231"
        ]
       },
       {
-       "work": 1469
+       "work": 1517
       }
      ]
     }
@@ -81901,6 +86798,16 @@
    "url": "https://en.wikipedia.org/wiki/Airsoft_pellets"
   },
   {
+   "detail": "Anthony G. Williams",
+   "title": "Autocannon: A History of Automatic Cannon and Their Ammunition",
+   "year": 2022
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Oerlikon 20 mm cannon",
+   "url": "https://en.wikipedia.org/wiki/Oerlikon_20_mm_cannon"
+  },
+  {
    "detail": "en.wikipedia.org",
    "title": "Wikipedia: M61 Vulcan",
    "url": "https://en.wikipedia.org/wiki/M61_Vulcan"
@@ -81916,6 +86823,21 @@
    "year": 2000
   },
   {
+   "detail": "20-x-105-german-xpl-mg-204",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/20-x-105-german-xpl-mg-204/"
+  },
+  {
+   "detail": "20-x-105-b-swiss-solothurn-sh-anti-tank-s-18-100-german",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/20-x-105-b-swiss-solothurn-sh-anti-tank-s-18-100-german/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Solothurn S-18/100",
+   "url": "https://en.wikipedia.org/wiki/Solothurn_S-18/100"
+  },
+  {
    "detail": "en.wikipedia.org",
    "title": "Wikipedia: Hispano-Suiza HS.404",
    "url": "https://en.wikipedia.org/wiki/Hispano-Suiza_HS.404"
@@ -81924,6 +86846,31 @@
    "detail": "20-x-110-hispano-hs-404-804-mle-1938",
    "title": "municion.org",
    "url": "https://municion.org/producto/20-x-110-hispano-hs-404-804-mle-1938/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Colt Mk 12 cannon",
+   "url": "https://en.wikipedia.org/wiki/Colt_Mk_12_cannon"
+  },
+  {
+   "detail": "20-x-113-lahti-tikkakoski-anti-tank",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/20-x-113-lahti-tikkakoski-anti-tank/"
+  },
+  {
+   "detail": "20-x-119-danish-madsen",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/20-x-119-danish-madsen/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Type 97 automatic cannon",
+   "url": "https://en.wikipedia.org/wiki/Type_97_automatic_cannon"
+  },
+  {
+   "detail": "20-x-128-oerlikon-rk-206",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/20-x-128-oerlikon-rk-206/"
   },
   {
    "detail": "20-x-138-b-rheinmetall-flak-30-38",
@@ -81949,6 +86896,66 @@
    "detail": "20-x-139-hispano-hs-820-a-rh-202-m-693-f1",
    "title": "municion.org",
    "url": "https://municion.org/producto/20-x-139-hispano-hs-820-a-rh-202-m-693-f1/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 20 mm caliber",
+   "url": "https://en.wikipedia.org/wiki/20_mm_caliber"
+  },
+  {
+   "detail": "20-x-142-japanese-type-98",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/20-x-142-japanese-type-98/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Type 98 20 mm AA machine cannon",
+   "url": "https://en.wikipedia.org/wiki/Type_98_20_mm_AA_machine_cannon"
+  },
+  {
+   "detail": "20-x-145-r-swedish-bofors-m-40-tubkanon",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/20-x-145-r-swedish-bofors-m-40-tubkanon/"
+  },
+  {
+   "detail": "20-x-70-becker-necked-case-2nd-model",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/20-x-70-becker-necked-case-2nd-model/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: MG FF cannon",
+   "url": "https://en.wikipedia.org/wiki/MG_FF_cannon"
+  },
+  {
+   "detail": "20-mm-mauser-for-mg-151-20",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/20-mm-mauser-for-mg-151-20/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Ho-5 cannon",
+   "url": "https://en.wikipedia.org/wiki/Ho-5_cannon"
+  },
+  {
+   "detail": "20-x-99-r-russian-shvak",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/20-x-99-r-russian-shvak/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: ShVAK cannon",
+   "url": "https://en.wikipedia.org/wiki/ShVAK_cannon"
+  },
+  {
+   "detail": "23-x-115-russian-nr-ns23-nudelmann-suranov",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/23-x-115-russian-nr-ns23-nudelmann-suranov/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Nudelman-Suranov NS-23",
+   "url": "https://en.wikipedia.org/wiki/Nudelman-Suranov_NS-23"
   },
   {
    "detail": "23-x-152-b-russian-vya-23-aircraft",
@@ -81991,9 +86998,29 @@
    "url": "https://municion.org/producto/25-x-137-swiss-oerlikon-kba-mecanic-primer/"
   },
   {
+   "detail": "25-x-163-hotchkiss-short-rimless-m-1938",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/25-x-163-hotchkiss-short-rimless-m-1938/"
+  },
+  {
+   "detail": "25-x-173-swiss-xpl-oerlikon-kbb-short-neck-normal-bullets",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/25-x-173-swiss-xpl-oerlikon-kbb-short-neck-normal-bullets/"
+  },
+  {
+   "detail": "25-x-218-sr-russian-model-1940",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/25-x-218-sr-russian-model-1940/"
+  },
+  {
    "detail": "en.wikipedia.org",
    "title": "Wikipedia: Mauser BK-27",
    "url": "https://en.wikipedia.org/wiki/Mauser_BK-27"
+  },
+  {
+   "detail": "1-1-us-navy-mk-i",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/1-1-us-navy-mk-i/"
   },
   {
    "detail": "30x113-mm-b",
@@ -82009,6 +87036,16 @@
    "detail": "30-x-113-b-french-defa-30-550",
    "title": "municion.org",
    "url": "https://municion.org/producto/30-x-113-b-french-defa-30-550/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Ho-155 cannon",
+   "url": "https://en.wikipedia.org/wiki/Ho-155_cannon"
+  },
+  {
+   "detail": "30-x-155-b-russian-nudelmann-nr-30",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/30-x-155-b-russian-nudelmann-nr-30/"
   },
   {
    "detail": "Christian Koll",
@@ -82036,6 +87073,11 @@
    "url": "https://en.wikipedia.org/wiki/Gryazev-Shipunov_GSh-6-30"
   },
   {
+   "detail": "30-x-170-swiss-hispano-hs-830-831l-british-rarden-kcb",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/30-x-170-swiss-hispano-hs-830-831l-british-rarden-kcb/"
+  },
+  {
    "detail": "30-x-173-us-xpl-gau-8",
    "title": "municion.org",
    "url": "https://municion.org/producto/30-x-173-us-xpl-gau-8/"
@@ -82061,6 +87103,31 @@
    "url": "https://en.wikipedia.org/wiki/Oerlikon_KCA"
   },
   {
+   "detail": "30-x-184-b-german-rheinmetall-mk-103",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/30-x-184-b-german-rheinmetall-mk-103/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: MK 101 cannon",
+   "url": "https://en.wikipedia.org/wiki/MK_101_cannon"
+  },
+  {
+   "detail": "30-x-210-german-mk-303",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/30-x-210-german-mk-303/"
+  },
+  {
+   "detail": "30-x-29-ags-17",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/30-x-29-ags-17/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: MK 108 cannon",
+   "url": "https://en.wikipedia.org/wiki/MK_108_cannon"
+  },
+  {
    "detail": "14433",
    "title": "naboje.org",
    "url": "https://naboje.org/en/node/14433"
@@ -82079,6 +87146,76 @@
    "detail": "35-x-228-oerlikon-flab-k-63",
    "title": "municion.org",
    "url": "https://municion.org/producto/35-x-228-oerlikon-flab-k-63/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Ho-203 cannon",
+   "url": "https://en.wikipedia.org/wiki/Ho-203_cannon"
+  },
+  {
+   "detail": "37-x-137-r-us-navy-1-pdr",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/37-x-137-r-us-navy-1-pdr/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Ho-204 cannon",
+   "url": "https://en.wikipedia.org/wiki/Ho-204_cannon"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Nudelman N-37",
+   "url": "https://en.wikipedia.org/wiki/Nudelman_N-37"
+  },
+  {
+   "detail": "37-x-155-russian-nudelmann-n37",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/37-x-155-russian-nudelmann-n37/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Nudelman-Suranov NS-37",
+   "url": "https://en.wikipedia.org/wiki/Nudelman-Suranov_NS-37"
+  },
+  {
+   "detail": "37-x-222-sr-us-m17",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/37-x-222-sr-us-m17/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: Cannone-Mitragliera da 37/54 (Breda)",
+   "url": "https://en.wikipedia.org/wiki/Cannone-Mitragliera_da_37/54_(Breda)"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 37 mm automatic air defense gun M1939 (61-K)",
+   "url": "https://en.wikipedia.org/wiki/37_mm_automatic_air_defense_gun_M1939_(61-K)"
+  },
+  {
+   "detail": "37-x-253-sr-soviet-aa-gun-m-1939",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/37-x-253-sr-soviet-aa-gun-m-1939/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: 3.7 cm Flak 18/36/37",
+   "url": "https://en.wikipedia.org/wiki/3.7_cm_Flak_18/36/37"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: QF 1-pounder pom-pom",
+   "url": "https://en.wikipedia.org/wiki/QF_1-pounder_pom-pom"
+  },
+  {
+   "detail": "37-x-94-r-hotchkiss-m1878",
+   "title": "municion.org",
+   "url": "https://municion.org/producto/37-x-94-r-hotchkiss-m1878/"
+  },
+  {
+   "detail": "en.wikipedia.org",
+   "title": "Wikipedia: QF 2-pounder naval gun",
+   "url": "https://en.wikipedia.org/wiki/QF_2-pounder_naval_gun"
   },
   {
    "detail": "en.wikipedia.org",

@@ -157,6 +157,8 @@ class CalibreDataSubmoduleTests(unittest.TestCase):
         self.assertIn("submodules: true", build_job.split("- run:", 1)[0])
         # A pull request's pointer is main's or newer, so a merge cannot revert a bump (tools/bump_data.py).
         self.assertIn("merge-base --is-ancestor", tools_job)
+        # A pointer from before the public repository's history is not compared (2026-11-22).
+        self.assertIn('cat-file -e "$main^{commit}"', tools_job)
 
     def test_catalogue_names_the_commit_it_was_read_from(self):
         """Settings show the calibre-data commit of the app's catalogue (CartridgeCatalog.source)."""
