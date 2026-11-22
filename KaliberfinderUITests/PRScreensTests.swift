@@ -83,6 +83,23 @@ final class PRScreensTests: XCTestCase {
         snap("03b-Masse-Treffer-unten")
     }
 
+    /// The number pad has no return key: «Fertig» above it and a tap beside the fields put it away, and the fields
+    /// keep the focus when the next one is tapped (TestFlight 2026-11-19).
+    func testNumberPad() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Masse eingeben"].firstMatch), open(app.textFields.element(boundBy: 3)) else { return }
+        app.textFields.element(boundBy: 3).typeText("29.7")
+        guard open(app.textFields.element(boundBy: 1)) else { return }
+        app.textFields.element(boundBy: 1).typeText("9")
+        XCTAssertTrue(app.staticTexts["Mögliche Kaliber"].waitForExistence(timeout: 5), "Typed values gave no results")
+        snap("03i-Masse-Tastatur")
+        guard open(app.buttons["Fertig"].firstMatch) else { return }
+        XCTAssertTrue(app.buttons["Fertig"].waitForNonExistence(timeout: 5), "«Fertig» left the number pad up")
+        guard open(app.textFields.element(boundBy: 0)), app.buttons["Fertig"].waitForExistence(timeout: 5) else { return XCTFail("No number pad") }
+        app.textFields.element(boundBy: 0).coordinate(withNormalizedOffset: CGVector(dx: 0, dy: -4)).tap()  // the sketch above it
+        XCTAssertTrue(app.buttons["Fertig"].waitForNonExistence(timeout: 5), "A tap beside the fields left the number pad up")
+    }
+
     /// The groups' switch off (Raven, 2026-11-13): the 9x19 and the Glisenti as rows of their own, each named
     /// after the group, and both drawn at 1:1.
     func testUngroupedMatches() {

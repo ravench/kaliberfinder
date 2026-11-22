@@ -16,6 +16,10 @@ struct MeasureView: View {
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
     /// The user tapped «Einblenden»: hidden matching calibres are listed too, until the input changes.
     @State private var revealed = false
+    /// The field with the number pad up, by its letter: the pad has no return key, so «Fertig» above it and a tap on the
+    /// sketch or the texts around the fields put it away (TestFlight 2026-11-19). Not a tap gesture on the whole list: it
+    /// fires with the tap that focuses a field and takes the focus back.
+    @FocusState private var typing: String?
 
     private var measured: MeasuredDimensions {
         MeasuredDimensions(overallLength: unit.parse(overallLength),
@@ -47,6 +51,8 @@ struct MeasureView: View {
                 // Where each value is taken, as on the training screen, in its order (TestFlight 2026-11-16).
                 MeasuringGuide(letters: Self.letters, shape: shape, head: head)
                     .padding(.vertical, 4)
+                    .contentShape(Rectangle())
+                    .onTapGesture { typing = nil }
                 // Diameters from the rim to the tip, then lengths, as on the training screen (Raven 2026-11-19).
                 field("Randdurchmesser", letter: "R", text: $rim)
                 if head == .belted { field("Gürteldurchmesser", letter: "G", text: $belt) }  // the sketch draws the belt then
@@ -54,9 +60,10 @@ struct MeasureView: View {
                 field("Hülsenlänge", letter: "L", text: $caseLength)
                 field("Gesamtlänge", letter: "OAL", text: $overallLength)
             } header: {
-                if unit == .metric { Text("Gemessen in mm") } else { Text("Gemessen in Zoll") }
+                Group { if unit == .metric { Text("Gemessen in mm") } else { Text("Gemessen in Zoll") } }
+                    .onTapGesture { typing = nil }
             } footer: {
-                Text("Eine Länge und ein Durchmesser reichen oft.")
+                Text("Eine Länge und ein Durchmesser reichen oft.").onTapGesture { typing = nil }
             }
             if !matches.isEmpty || ranked.summary != nil {
                 Section {
@@ -75,6 +82,12 @@ struct MeasureView: View {
             }
         }
         .scrollDismissesKeyboard(.interactively)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Fertig") { typing = nil }
+            }
+        }
         .readableWidth()
         .navigationTitle("Masse eingeben")
         .navigationBarTitleDisplayMode(.inline)
@@ -103,6 +116,7 @@ struct MeasureView: View {
         LabeledContent {
             TextField(unit.symbol, text: text)
                 .keyboardType(.decimalPad)
+                .focused($typing, equals: letter)
                 .multilineTextAlignment(.trailing)
                 .frame(maxWidth: 100)
         } label: {
