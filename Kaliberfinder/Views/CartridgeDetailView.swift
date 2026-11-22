@@ -27,7 +27,7 @@ struct CartridgeDetailView: View {
                         Label("Masszeichnung anzeigen", systemImage: "pencil.and.ruler")
                     }
                 }
-                if let group = CartridgeCatalog.lookalikeGroup(of: cartridge) {
+                if let group = CartridgeCatalog.lookalikeGroup(of: cartridge), LookalikeGroupView.lists(group) {
                     // The calibre's lookalike group of calibre-data, by its name (Raven, PR 188): the group page
                     // lists the members and compares them at 1:1.
                     NavigationLink { LookalikeGroupView(group: group) } label: {

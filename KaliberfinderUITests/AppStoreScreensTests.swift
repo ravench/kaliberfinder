@@ -41,10 +41,12 @@ final class AppStoreScreensTests: XCTestCase {
         app.launchArguments += ["-screenTourPhoto", photo.path]
         app.launch()
         XCTAssertTrue(app.navigationBars[t("Treffer")].waitForExistence(timeout: 15), "Matches missing")
-        XCTAssertTrue(app.staticTexts[t("Mögliche Kaliber")].waitForExistence(timeout: 90), "No calibres for the photo")
+        // A screen that did not come must not be saved as a screenshot, nor a missing one pass (review 2026-11-22).
+        guard app.staticTexts[t("Mögliche Kaliber")].waitForExistence(timeout: 90) else { return XCTFail("No calibres for the photo") }
         save("01-matches")
         let compare = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix("Alle passenden 1:1 vergleichen (%lld)")))
-        if open(compare.firstMatch), app.navigationBars["1:1"].waitForExistence(timeout: 5) {
+        guard open(compare.firstMatch), app.navigationBars["1:1"].waitForExistence(timeout: 30) else { return XCTFail("The 1:1 screen did not open") }
+        do {
             // The row stands by length, the 9 mm towards the end: on the iPhone, scroll until it shows.
             // Each column is a button whose label holds the calibre's name.
             let nine = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "9x19 mm")).firstMatch
@@ -68,10 +70,9 @@ final class AppStoreScreensTests: XCTestCase {
         // 4, 5: the GP 11's page and its dimensioned drawing.
         if open(app.buttons[t("Alle Kaliber")].firstMatch) {
             let search = app.searchFields.firstMatch
-            if search.waitForExistence(timeout: 5) {
-                search.tap()
-                search.typeText("GP 11")
-            }
+            guard search.waitForExistence(timeout: 5) else { return XCTFail("No search field") }
+            search.tap()
+            search.typeText("GP 11")
             if open(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "7.5x55")).firstMatch) {
                 save("04-calibre")
                 if open(app.buttons[t("Masszeichnung anzeigen")].firstMatch) {

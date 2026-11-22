@@ -304,6 +304,21 @@ final class CatalogTests: XCTestCase {
 
     /// A group goes by calibre-data's name: its parent's, or the family's (review 2026-11-13: the app took the
     /// parent's for every group, so the 7.63x25 mm rounds stood under the obsolete .30 Borchardt).
+    /// A calibre page shows its «Gruppe» row only when the group page lists another calibre (review 2026-11-22): the
+    /// siblings of these four are unsourced, hidden until the Developer Options show them.
+    func testAGroupOfOneVisibleCalibreIsNotLinked() throws {
+        for id in ["11x50 mm R Albini", ".577/500 Nitro Express", ".38-56 WCF", "7.21 Lazzeroni Firehawk"] {
+            let group = try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)), id)
+            XCTAssertFalse(LookalikeGroupView.lists(group, showUnsourced: false), id)
+            XCTAssertTrue(LookalikeGroupView.lists(group, showUnsourced: true), id)
+        }
+        let nine = try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: try XCTUnwrap(CartridgeCatalog.cartridge(id: "9x19 mm"))))
+        XCTAssertTrue(LookalikeGroupView.lists(nine, showUnsourced: false))
+        // No other group is cut to one.
+        let single = CartridgeCatalog.lookalikes.filter { CartridgeCatalog.visible($0.members, showUnsourced: false).count == 1 }
+        XCTAssertEqual(single.count, 4, "\(single.map(\.name))")
+    }
+
     func testLookalikeGroupsCarryTheDatabaseName() throws {
         func group(of id: String) throws -> LookalikeGroup {
             try XCTUnwrap(CartridgeCatalog.lookalikeGroup(of: XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)), id)

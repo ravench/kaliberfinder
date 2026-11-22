@@ -183,6 +183,9 @@ final class MatcherTests: XCTestCase {
                                     lengthError: 1, diameterError: 0.3)
             let matches = Matcher.rank(shape: loaded, size: size, limit: .max)
             let own = try XCTUnwrap(matches.first { $0.cartridge.id == id }, "\(id) is not listed")
+            // The list is cut from the nearest calibre, which the hull's order may put behind the first row.
+            let nearest = try XCTUnwrap(matches.compactMap(\.shapeDistance).min())
+            XCTAssertLessThanOrEqual(matches.compactMap(\.shapeDistance).max() ?? 0, nearest + Matcher.maxBehindBest + 1e-9, id)
             XCTAssertTrue(own.fitsWell, "\(id) at \(length) mm: distance \(String(describing: own.shapeDistance))")
             XCTAssertEqual(own.part, .cartridge, id)
             XCTAssertEqual(matches.first?.cartridge.id, "12/70", "\(length) mm is nearer the 12/70's hull")
