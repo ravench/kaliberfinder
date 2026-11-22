@@ -66,7 +66,7 @@ final class ProfileTwinTests: XCTestCase {
         XCTAssertEqual(rows.flatMap(\.items).count, matches.count)
         let first = try XCTUnwrap(rows.first)
         XCTAssertEqual(Set(first.items.map(\.cartridge.id)), [".308 Winchester", "7.62x51 mm NATO"])
-        XCTAssertEqual(first.lead.cartridge.id, ".308 Winchester", "the best match names the row")
+        XCTAssertEqual(first.lead.cartridge.id, ".308 Winchester", "the group's parent names the row")
         XCTAssertEqual(first.others.count, 1)
         // The 1:1 view and its button show the shape once.
         let compare = MatchesView.toCompare(matches).map(\.id)
@@ -87,11 +87,11 @@ final class ProfileTwinTests: XCTestCase {
                        String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, compare.count))
     }
 
-    /// A row is drawn and rated as its group's best match (Raven, 2026-11-22), not as the group's first calibre. A rare
-    /// or obsolete calibre leads only where it is nearer than every current one by more than a margin, or the only one
-    /// to fit. Measured exactly, a .32 S&W Long Wadcutter came up as the .32 S&W Long, «Abweichung bis 9.09 mm», and a
-    /// 7.62x25 mm Tokarev as the .30 Borchardt, then as the Mauser, 0.4 mm off (review 2026-11-13).
-    func testTheBestMatchLeadsItsRow() throws {
+    /// A row is drawn and rated as its group's first current calibre, the parent where it is one (Raven, 2026-11-22),
+    /// unless another member is nearer by more than a margin or the only one to fit. Measured exactly, a .32 S&W Long
+    /// Wadcutter came up as the .32 S&W Long, «Abweichung bis 9.09 mm», and a 7.62x25 mm Tokarev as the rare, obsolete
+    /// .30 Borchardt, 1 mm off, which the 1:1 button then left out (review 2026-11-13).
+    func testAMemberClearlyNearerThanTheFirstLeadsItsRow() throws {
         func live(_ id: String) throws -> Cartridge { try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id) }
         let swLong = ".32 S&W Long", wadcutter = ".32 S&W Long Wadcutter", luger = "9x19 mm", glisenti = "9 mm Glisenti"
         let borchardt = ".30 Borchardt", mauser = "7.63x25 mm Mauser", tokarev = "7.62x25 mm Tokarev"
@@ -114,10 +114,10 @@ final class ProfileTwinTests: XCTestCase {
         XCTAssertEqual(try row([swLong: 0, wadcutter: 9.09]), [swLong, wadcutter])
         // The rest of the row stands with the current calibres first, the rare and obsolete Borchardt last.
         XCTAssertEqual(try row([mauser: 0, tokarev: 0.25, borchardt: 0.61]), [mauser, tokarev, borchardt])
-        XCTAssertEqual(try row([tokarev: 0, mauser: 0.25, borchardt: 1.01]), [tokarev, mauser, borchardt],
-                       "the nearest, not the first of the group's order within the margin")
-        XCTAssertEqual(try row([tokarev: 0.5, mauser: 0.6, borchardt: 0.9]), [tokarev, mauser, borchardt])
-        XCTAssertEqual(try row([mauser: 0.3, tokarev: 0.3, borchardt: 0.3]), [mauser, tokarev, borchardt], "of equals, the first current one")
+        XCTAssertEqual(try row([tokarev: 0, mauser: 0.25, borchardt: 1.01]), [mauser, tokarev, borchardt],
+                       "the first of the group's order within the margin, not the nearest")
+        XCTAssertEqual(try row([tokarev: 0.5, mauser: 0.6, borchardt: 0.9]), [mauser, tokarev, borchardt])
+        XCTAssertEqual(try row([borchardt: 0.3, mauser: 0.5, tokarev: 0.6]), [mauser, tokarev, borchardt], "within the margin, a current one")
         // A rare, obsolete calibre less than the margin nearer leaves the row the current one's: these sheets are
         // 0.48 mm apart in overall length.
         XCTAssertEqual(try row([glisenti: 0, luger: 0.33]), [luger, glisenti], "a 29.2 mm round stays a 9x19 mm")
@@ -129,7 +129,7 @@ final class ProfileTwinTests: XCTestCase {
         XCTAssertEqual(try row([glisenti: 0.56, luger: 1.04]), [glisenti, luger])
         // The 1:1 button takes and counts the row as it is rated.
         let found = try measured([tokarev: 0, mauser: 0.25, borchardt: 1.01])
-        XCTAssertEqual(DimensionMatcher.toCompare(found).map(\.id), [tokarev])
+        XCTAssertEqual(DimensionMatcher.toCompare(found).map(\.id), [mauser])
         XCTAssertEqual(MeasureView.compareTitle(matches: found), String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, 1))
 
         // A photo's row goes by the distance the list is ranked by.
@@ -138,7 +138,7 @@ final class ProfileTwinTests: XCTestCase {
             return Matcher.grouped(matches).flatMap(\.items).map(\.cartridge.id)
         }
         XCTAssertEqual(try photoRow([wadcutter: 0.1, swLong: 0.35]), [wadcutter, swLong], "a wadcutter's photo is not the .32 S&W Long's")
-        XCTAssertEqual(try photoRow([wadcutter: 0.1, swLong: 0.15]), [wadcutter, swLong], "both current: the nearer")
+        XCTAssertEqual(try photoRow([wadcutter: 0.1, swLong: 0.15]), [swLong, wadcutter])
         XCTAssertEqual(try photoRow([glisenti: 0.28, luger: 0.31]), [luger, glisenti], "a few hundredths, though across a fit's border")
         // An empty 6 mm BR case is as near the Remington's as the Norma's: the row is the Norma's, with its bullet, not
         // the rare, obsolete parent's (Raven, 2026-11-22). A loaded Remington, 6 mm shorter, is clearly its own.
