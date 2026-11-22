@@ -14,7 +14,7 @@ Format: a `## <version>` heading, then `### de`, `### en`, `### fr`, `### it`, `
 ### de
 - Erste Version im App Store.
 - Patrone oder leere Hülse fotografieren: Kaliberfinder vergleicht den Umriss mit dem Katalog und zeigt eine kurze Liste wahrscheinlicher Kaliber zur Auswahl.
-- Treffer in Originalgrösse auf dem Display vergleichen, nebeneinander am Lineal: Patrone auflegen und sehen, welche passt.
+- Treffer in Originalgrösse auf dem Bildschirm vergleichen, nebeneinander am Lineal: Patrone auflegen und sehen, welche passt.
 - Auf iPhone Pro und iPad Pro mit LiDAR misst die Kamera auch die Grösse; meist bleiben dann nur ein oder wenige Kaliber übrig.
 - Ohne Foto: Masse eingeben oder Kaliber nach Namen wählen und vergleichen.
 - Über 700 Kaliber mit Massen und ihren Quellen, Masszeichnung, Zündhütchen und Herkunft; bei einigen auch Farbcodes und ähnliche Kaliber.
