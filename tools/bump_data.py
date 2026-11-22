@@ -49,6 +49,20 @@ def git(*args):
     return subprocess.check_output(["git", *args], cwd=DATA, text=True).strip()
 
 
+def brought_in(old, new, data=DATA):
+    """The calibre-data commits from `old` to `new`, for the pull request."""
+    if old == new:
+        return f"calibre-data already at {new[:7]}"
+    if subprocess.run(["git", "merge-base", "--is-ancestor", old, new], cwd=data,
+                      capture_output=True).returncode == 0:
+        return subprocess.check_output(["git", "log", "--oneline", f"{old}..{new}"], cwd=data, text=True).strip()
+    if subprocess.run(["git", "merge-base", "--is-ancestor", new, old], cwd=data,
+                      capture_output=True).returncode == 0:
+        return f"calibre-data moved back from {old[:7]} to {new[:7]}"
+    # A pointer from before the public repository's history (it started over on 2026-11-22).
+    return f"calibre-data {old[:7]} -> {new[:7]} (not in one history)"
+
+
 def main():
     target = sys.argv[1] if len(sys.argv) > 1 else "origin/main"
     git("fetch", "-q", "origin")
@@ -64,7 +78,7 @@ def main():
     if not fixture_is_current(fixture, catalogue):
         subprocess.run([sys.executable, os.path.join(ROOT, "tools", "catalogue_fixture.py")], check=True)
         print("The catalogue's fields changed: the test fixture is regenerated too. Check the tests that read it.")
-    print(git("log", "--oneline", f"{old}..{new}") if old != new else f"calibre-data already at {new[:7]}")
+    print(brought_in(old, new))
 
 
 if __name__ == "__main__":

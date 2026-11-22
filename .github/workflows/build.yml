@@ -64,6 +64,11 @@ jobs:
           git fetch -q --depth=1 origin main
           main=$(git ls-tree FETCH_HEAD calibre-data | awk '{print $3}')
           git -C calibre-data fetch -q --unshallow origin 2>/dev/null || git -C calibre-data fetch -q origin
+          [ -n "$main" ] || { echo "::error::main has no calibre-data pointer"; exit 1; }
+          # main's pointer can predate the public repository's history (it started over on 2026-11-22).
+          if ! git -C calibre-data cat-file -e "$main^{commit}" 2>/dev/null; then
+            echo "::notice::main's calibre-data ${main:0:7} is not in the public history: not compared"; exit 0
+          fi
           git -C calibre-data merge-base --is-ancestor "$main" HEAD \
             || { echo "::error::calibre-data is at $(git -C calibre-data rev-parse --short HEAD), behind main's ${main:0:7}: run tools/bump_data.py $main"; exit 1; }
       - name: Check generated data and translations
