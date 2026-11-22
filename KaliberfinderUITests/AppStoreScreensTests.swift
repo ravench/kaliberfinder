@@ -52,8 +52,9 @@ final class AppStoreScreensTests: XCTestCase {
             let screen = app.windows.firstMatch.frame
             for _ in 0..<6 where !(nine.exists && screen.contains(nine.frame)) {
                 let row = app.coordinate(withNormalizedOffset: CGVector(dx: 0.85, dy: 0.6))
-                row.press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.25, dy: 0.6)))
+                row.dragWithoutFling(to: app.coordinate(withNormalizedOffset: CGVector(dx: 0.25, dy: 0.6)))
             }
+            XCTAssertTrue(nine.exists && screen.contains(nine.frame), "9x19 not on screen after the drags")
             save("02-real-size")
         }
 
