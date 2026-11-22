@@ -237,6 +237,10 @@ struct Cartridge: Decodable, Identifiable, Hashable {
     /// Diameter of the case head seen from below: the rim, or the base or the belt where it is wider.
     var headDiameter: Double { max(dimensions.rim, dimensions.base, dimensions.belt ?? 0) }
 
+    /// Still in regular production and not a rarity: what a one-size group is drawn as, where one of its members is
+    /// (Raven, 2026-11-22: the 6 mm BR group showed the rare, obsolete Remington's bullet, not the Norma's).
+    var isCurrent: Bool { !rare && !obsolete }
+
     /// All names the cartridge is known by, for search.
     var allNames: [String] { [name] + displayAliases + aliases }
 

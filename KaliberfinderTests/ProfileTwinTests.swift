@@ -47,12 +47,14 @@ final class ProfileTwinTests: XCTestCase {
         XCTAssertTrue(Set(groups.map { Set($0.map(\.id)) }).isSuperset(of:
                        [[".308 Winchester", "7.62x51 mm NATO"], [".223 Remington", "5.56x45 mm NATO", "5.56 Commercial", "5.6 mm GP 90"],
                         ["10.4x38 mm R Vetterli", "10.4x38 mm R Vetterli Centrefire"]]), "\(groups.map { $0.map(\.id) })")
-        // Every twin pair comes from a one-size lookalike group of calibre-data, never from equal numbers alone,
-        // and the group's parent leads the row.
+        // Every twin pair comes from a one-size lookalike group of calibre-data, never from equal numbers alone. It
+        // stands with its current calibres first, each in the group's order: the parent, unless that one is rare or
+        // obsolete and another is not.
         for group in groups {
-            let sizeGroups = Set(group.compactMap { CartridgeCatalog.sizeGroup(of: $0)?.id })
+            let sizeGroups = Set(group.compactMap { CartridgeCatalog.sizeGroup(of: $0) })
             XCTAssertEqual(sizeGroups.count, 1, "\(group.map(\.id))")
-            XCTAssertEqual(group[0].id, sizeGroups.first)
+            let members = sizeGroups.first?.members.filter { m in group.contains { $0.id == m.id } } ?? []
+            XCTAssertEqual(group.map(\.id), (members.filter(\.isCurrent) + members.filter { !$0.isCurrent }).map(\.id))
         }
         // Grouping never loses or duplicates a calibre.
         XCTAssertEqual(grouped.flatMap { $0 }.map(\.id).sorted(), all.map(\.id).sorted())
@@ -64,7 +66,7 @@ final class ProfileTwinTests: XCTestCase {
         XCTAssertEqual(rows.flatMap(\.items).count, matches.count)
         let first = try XCTUnwrap(rows.first)
         XCTAssertEqual(Set(first.items.map(\.cartridge.id)), [".308 Winchester", "7.62x51 mm NATO"])
-        XCTAssertEqual(first.lead.cartridge.id, ".308 Winchester", "the group's parent names the row")
+        XCTAssertEqual(first.lead.cartridge.id, ".308 Winchester", "the best match names the row")
         XCTAssertEqual(first.others.count, 1)
         // The 1:1 view and its button show the shape once.
         let compare = MatchesView.toCompare(matches).map(\.id)
@@ -85,10 +87,11 @@ final class ProfileTwinTests: XCTestCase {
                        String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, compare.count))
     }
 
-    /// A row is drawn and rated as its group's parent, unless another member is nearer by more than a margin or the
-    /// only one to fit. Measured exactly, a .32 S&W Long Wadcutter came up as the .32 S&W Long, «Abweichung bis 9.09 mm»,
-    /// and a 7.62x25 mm Tokarev as the .30 Borchardt, 1 mm off, which the 1:1 button then left out (review 2026-11-13).
-    func testAMemberClearlyNearerThanTheParentLeadsItsRow() throws {
+    /// A row is drawn and rated as its group's best match (Raven, 2026-11-22), not as the group's first calibre. A rare
+    /// or obsolete calibre leads only where it is nearer than every current one by more than a margin, or the only one
+    /// to fit. Measured exactly, a .32 S&W Long Wadcutter came up as the .32 S&W Long, «Abweichung bis 9.09 mm», and a
+    /// 7.62x25 mm Tokarev as the .30 Borchardt, then as the Mauser, 0.4 mm off (review 2026-11-13).
+    func testTheBestMatchLeadsItsRow() throws {
         func live(_ id: String) throws -> Cartridge { try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id) }
         let swLong = ".32 S&W Long", wadcutter = ".32 S&W Long Wadcutter", luger = "9x19 mm", glisenti = "9 mm Glisenti"
         let borchardt = ".30 Borchardt", mauser = "7.63x25 mm Mauser", tokarev = "7.62x25 mm Tokarev"
@@ -109,20 +112,24 @@ final class ProfileTwinTests: XCTestCase {
         XCTAssertEqual(try row([wadcutter: 0, swLong: 9.09]), [wadcutter, swLong], "the parent is 9 mm too long")
         XCTAssertEqual(try row([wadcutter: 1.08, swLong: 7.86]), [wadcutter, swLong], "also where neither fits")
         XCTAssertEqual(try row([swLong: 0, wadcutter: 9.09]), [swLong, wadcutter])
-        XCTAssertEqual(try row([mauser: 0, tokarev: 0.25, borchardt: 0.61]), [mauser, borchardt, tokarev])
-        XCTAssertEqual(try row([tokarev: 0, mauser: 0.25, borchardt: 1.01]), [mauser, borchardt, tokarev],
-                       "the first of the group's order within the margin, not the nearest")
-        // Less than the margin leaves the row its parent's: these sheets are 0.48 mm apart in overall length.
+        // The rest of the row stands with the current calibres first, the rare and obsolete Borchardt last.
+        XCTAssertEqual(try row([mauser: 0, tokarev: 0.25, borchardt: 0.61]), [mauser, tokarev, borchardt])
+        XCTAssertEqual(try row([tokarev: 0, mauser: 0.25, borchardt: 1.01]), [tokarev, mauser, borchardt],
+                       "the nearest, not the first of the group's order within the margin")
+        XCTAssertEqual(try row([tokarev: 0.5, mauser: 0.6, borchardt: 0.9]), [tokarev, mauser, borchardt])
+        XCTAssertEqual(try row([mauser: 0.3, tokarev: 0.3, borchardt: 0.3]), [mauser, tokarev, borchardt], "of equals, the first current one")
+        // A rare, obsolete calibre less than the margin nearer leaves the row the current one's: these sheets are
+        // 0.48 mm apart in overall length.
         XCTAssertEqual(try row([glisenti: 0, luger: 0.33]), [luger, glisenti], "a 29.2 mm round stays a 9x19 mm")
         XCTAssertEqual(try row([glisenti: 1.33, luger: 1.36]), [luger, glisenti])
         XCTAssertEqual(try row([glisenti: 0.18, luger: 0.68]), [luger, glisenti], "exactly the margin behind")
-        XCTAssertEqual(try row([tokarev: 0.5, mauser: 0.6, borchardt: 0.9]), [borchardt, mauser, tokarev])
+        XCTAssertEqual(try row([borchardt: 0, mauser: 0.61, tokarev: 0.86]), [borchardt, mauser, tokarev], "clearly the Borchardt")
         // Unless only another fits: the row counts as fitting then.
         XCTAssertEqual(try row([tokarev: 0.75, mauser: 1.15]), [tokarev, mauser])
         XCTAssertEqual(try row([glisenti: 0.56, luger: 1.04]), [glisenti, luger])
         // The 1:1 button takes and counts the row as it is rated.
         let found = try measured([tokarev: 0, mauser: 0.25, borchardt: 1.01])
-        XCTAssertEqual(DimensionMatcher.toCompare(found).map(\.id), [mauser])
+        XCTAssertEqual(DimensionMatcher.toCompare(found).map(\.id), [tokarev])
         XCTAssertEqual(MeasureView.compareTitle(matches: found), String(format: "Alle passenden 1:1 vergleichen (%lld)".loc, 1))
 
         // A photo's row goes by the distance the list is ranked by.
@@ -131,7 +138,29 @@ final class ProfileTwinTests: XCTestCase {
             return Matcher.grouped(matches).flatMap(\.items).map(\.cartridge.id)
         }
         XCTAssertEqual(try photoRow([wadcutter: 0.1, swLong: 0.35]), [wadcutter, swLong], "a wadcutter's photo is not the .32 S&W Long's")
-        XCTAssertEqual(try photoRow([wadcutter: 0.1, swLong: 0.15]), [swLong, wadcutter])
+        XCTAssertEqual(try photoRow([wadcutter: 0.1, swLong: 0.15]), [wadcutter, swLong], "both current: the nearer")
         XCTAssertEqual(try photoRow([glisenti: 0.28, luger: 0.31]), [luger, glisenti], "a few hundredths, though across a fit's border")
+        // An empty 6 mm BR case is as near the Remington's as the Norma's: the row is the Norma's, with its bullet, not
+        // the rare, obsolete parent's (Raven, 2026-11-22). A loaded Remington, 6 mm shorter, is clearly its own.
+        let remington = "6 mm BR Remington", norma = "6 mm BR Norma"
+        XCTAssertEqual(CartridgeCatalog.lookalikeGroup(of: try live(norma))?.calibres, [remington, norma])
+        XCTAssertEqual(try photoRow([remington: 0.2, norma: 0.2]), [norma, remington])
+        XCTAssertEqual(try photoRow([remington: 0.19, norma: 0.21]), [norma, remington])
+        XCTAssertEqual(try photoRow([remington: 0.05, norma: 0.32]), [remington, norma])
+    }
+
+    /// Where nothing was measured, a one-size group is drawn as its first current calibre, the parent only where it
+    /// is one (Raven, 2026-11-22): on the 1:1 screen and from the group's page.
+    func testAGroupIsDrawnAsACurrentCalibre() throws {
+        func live(_ id: String) throws -> Cartridge { try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id) }
+        for (parent, drawn) in [("6 mm BR Remington", "6 mm BR Norma"), (".38 ACP", ".38 Super"), (".30 Borchardt", "7.63x25 mm Mauser"),
+                                ("9x19 mm", "9x19 mm"), (".223 Remington", ".223 Remington")] {
+            let group = try XCTUnwrap(CartridgeCatalog.sizeGroup(of: try live(parent)), parent)
+            XCTAssertEqual(group.members.first?.id, parent)
+            XCTAssertEqual(TrueScaleView.unique(group.members.reversed()).map(\.id), [drawn], "1:1, whatever order they were picked in")
+            XCTAssertEqual(LookalikeGroupView.compared(group.members).map(\.id), [drawn], "the group's page")
+        }
+        XCTAssertTrue(try live("6 mm BR Norma").isCurrent)
+        XCTAssertFalse(try live("6 mm BR Remington").isCurrent)
     }
 }
