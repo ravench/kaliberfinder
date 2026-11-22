@@ -227,5 +227,25 @@ class WorkflowTests(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(ROOT, pr_screens.TOUR)))
 
 
+class TourDragTests(unittest.TestCase):
+    """A drag that lifts while moving lets the view coast on by a different distance each run: stop 14b's
+    1:1 row stood one column apart on #283 and looked like other calibres (2026-11-21)."""
+
+    def read(self, name):
+        with open(os.path.join(ROOT, "KaliberfinderUITests", name)) as f:
+            return f.read()
+
+    def test_scrolling_drags_hold_before_lifting(self):
+        for name in ("PRScreensTests.swift", "AppStoreScreensTests.swift"):
+            bare = [line.strip() for line in self.read(name).splitlines()
+                    if "thenDragTo:" in line and "thenHoldForDuration:" not in line and not line.strip().startswith("//")]
+            # Only the Settings sheet's drags to its end may coast (`developerOptions`): the end of the content stops them.
+            self.assertTrue(all("dx: 0.1, dy: 0.2" in line for line in bare), f"{name}: {bare}")
+
+    def test_the_helper_lives_in_the_tour_file(self):
+        # The base branch is toured with only this pull request's PRScreensTests.swift copied in.
+        self.assertIn("func dragWithoutFling", self.read("PRScreensTests.swift"))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -166,9 +166,8 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
-    /// The dimensioned drawing of a bottleneck rifle round (with its shoulder) and its sources, then of a
-    /// belted magnum in inches, of a case whose rim stands on a foot, of the GP 90 with its nose-length source,
-    /// of the .45 Colt's flat and of the 6.8/11 blank's mouth and crimp.
+    /// The dimensioned drawing of a bottleneck rifle round (with its shoulder) and its sources, then of a belted magnum in inches,
+    /// of a case whose rim stands on a foot, of the GP 90 with its nose-length source, of the .45 Colt's flat and of the 6.8/11 blank.
     func testMeasurementDrawings() {
         for (query, name, unit, shot) in [("GP 11", "7.5x55 mm Swiss (GP 11)", "metric", "34-Masszeichnung-GP11"),
                                           ("300 Win Mag", ".300 Winchester Magnum", "imperial", "35-Masszeichnung-Zoll"),
@@ -343,8 +342,7 @@ final class PRScreensTests: XCTestCase {
         snap("25-Trainingsdaten-unbekannte-Patrone")
     }
 
-    /// Cases that are not brass, from the side and from below: lacquered steel, a brass body on a
-    /// steel head, and a paper case in a brass cup.
+    /// Cases that are not brass, from the side and from below: lacquered steel, a brass body on a steel head, and a paper case in a brass cup.
     func testCaseMaterials() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
@@ -374,8 +372,9 @@ final class PRScreensTests: XCTestCase {
         let screen = app.windows.firstMatch.frame
         for _ in 0..<6 where !(nine.exists && screen.contains(nine.frame)) {
             app.coordinate(withNormalizedOffset: CGVector(dx: 0.85, dy: 0.6))
-                .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.25, dy: 0.6)))
+                .dragWithoutFling(to: app.coordinate(withNormalizedOffset: CGVector(dx: 0.25, dy: 0.6)))
         }
+        XCTAssertTrue(nine.exists && screen.contains(nine.frame), "9x19 not on screen after the drags")
         snap("14b-Foto-1zu1-9x19")
     }
 
@@ -642,9 +641,8 @@ final class PRScreensTests: XCTestCase {
         return true
     }
 
-    /// Scrolls the Settings sheet to its last section and opens the developer options, where the training
-    /// switch (on by launch argument) and its link sit. The drags run along the left edge: a swipe through
-    /// the middle can catch a switch and turn it off.
+    /// Scrolls the Settings sheet to its last section and opens the developer options, where the training switch (on by
+    /// launch argument) and its link sit. The drags run along the left edge: a swipe through the middle can catch a switch.
     private func developerOptions() -> Bool {
         for _ in 0..<6 {
             app.coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.8))
@@ -655,8 +653,8 @@ final class PRScreensTests: XCTestCase {
 
     private func back() { app.navigationBars.buttons.element(boundBy: 0).tap() }
 
-    /// Opens the picker menu of the row whose label starts with `row`, snaps it as `name` if given, and picks `choice`.
-    /// The row is tapped once hittable: the menu before it may still be fading out over it (tour of #277).
+    /// Opens the menu of the row whose label starts with `row`, snaps it as `name` if given, and picks `choice`; tapped once
+    /// hittable, as the menu before it may still be fading out over it (tour of #277).
     private func menuStop(_ row: String, choice: String, _ name: String? = nil) {
         let button = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", row)).firstMatch
         guard button.waitForExistence(timeout: 5), button.wait(for: \.isHittable, toEqual: true, timeout: 5) else { return XCTFail("\(row) not tappable") }
@@ -665,17 +663,15 @@ final class PRScreensTests: XCTestCase {
         app.buttons[choice].tap()
     }
 
-    /// Swipes to the very end (or start): a single swipe or drag stops at a different place on
-    /// each run, the end of the content does not.
+    /// Swipes to the very end (or start): a single swipe stops at a different place on each run, the end does not.
     private func scroll(up: Bool = true) {
         for _ in 0..<6 {
             if up { app.swipeUp(velocity: .fast) } else { app.swipeDown(velocity: .fast) }
         }
     }
 
-    /// Drags the page until the row `label` (the last of the section above) is in the upper third of the
-    /// screen, so the section below it is in the picture whole (a page's end would cut its first rows off).
-    /// Drags, not swipes: a swipe flings the row past the zone.
+    /// Drags the page until the row `label` (the last of the section above) is in the upper third of the screen, so the
+    /// section below it is in the picture whole (a page's end would cut its first rows off). A swipe would fling past the zone.
     private func scroll(toRowAbove label: String) {
         let row = app.staticTexts[label].firstMatch, height = app.frame.height
         for _ in 0..<10 {
@@ -684,7 +680,7 @@ final class PRScreensTests: XCTestCase {
             let distance = min(top - height / 4, height * 0.6)
             guard distance > 0 else { return }  // already above the top: leave the page as it is
             let from = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85))
-            from.press(forDuration: 0.1, thenDragTo: from.withOffset(CGVector(dx: 0, dy: -distance)))
+            from.dragWithoutFling(to: from.withOffset(CGVector(dx: 0, dy: -distance)))
         }
     }
 
@@ -695,4 +691,10 @@ final class PRScreensTests: XCTestCase {
         attachment.lifetime = .keepAlways
         add(attachment)
     }
+}
+
+extension XCUICoordinate {
+    /// Holds before lifting, so the view stops where the finger stops; a plain `press(forDuration:thenDragTo:)` coasts on a
+    /// different distance each run (14b showed other calibres, 2026-11-21). Here, not in its own file: the base tour gets only this file.
+    func dragWithoutFling(to end: XCUICoordinate) { press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3) }
 }
