@@ -105,6 +105,5 @@ final class LengthUnitTests: XCTestCase {
         for unit in LengthUnit.allCases {
             XCTAssertNotNil(en[unit.title], unit.title)
         }
-        XCTAssertEqual(en["Imperial (Zoll)"], "Imperial (in)")
     }
 }

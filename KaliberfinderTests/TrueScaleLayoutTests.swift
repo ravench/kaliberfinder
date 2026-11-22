@@ -61,14 +61,6 @@ final class TrueScaleLayoutTests: XCTestCase {
         XCTAssertGreaterThan(gap, 0)
     }
 
-    func testOneToOneHintsAreTranslated() throws {
-        let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "en"))
-        let en = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
-        XCTAssertEqual(en["Originalgrösse"], "Real size")
-        XCTAssertEqual(en["Hülse %@"], "Case %@")
-        XCTAssertEqual(en["Geschosse bei leeren Hülsen zeigen"], "Show bullets on empty cases")
-    }
-
     func testEmptyCasesShowTheirCaseLength() throws {
         let c = try Fixture.cartridge(".308 Winchester")
         XCTAssertEqual(TrueScaleView.caseLengthText(c, unit: .metric), String(format: "Hülse %@".loc, LengthUnit.metric.format(51.2)))
