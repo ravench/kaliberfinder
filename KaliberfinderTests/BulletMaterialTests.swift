@@ -4,7 +4,7 @@ import XCTest
 
 /// Each calibre is drawn with its original bullet and case (Raven, 2026-11-05): bare lead,
 /// paper-patched lead, a soft point's lead tip, or a copper jacket; copper, steel or paper cases. Where calibre-data
-/// names what is most commonly found today, that is drawn unless «Originalfarben zeigen» is on (Raven, 2026-11-22).
+/// names what is most commonly found today, that is drawn unless «Ursprüngliche Materialien zeigen» is on (Raven, 2026-11-22).
 final class BulletMaterialTests: XCTestCase {
     private func cartridge(_ id: String) throws -> Cartridge {
         try XCTUnwrap(CartridgeCatalog.cartridge(id: id), id)

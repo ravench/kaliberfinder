@@ -22,7 +22,7 @@ struct CartridgeView: View {
     /// Airsoft BB: most are white plastic.
     static let plastic = Color(red: 0.97, green: 0.97, blue: 0.96)
 
-    /// UserDefaults key of the Developer Options switch «Originalfarben zeigen», off by default: on, bullet and case
+    /// UserDefaults key of the Developer Options switch «Ursprüngliche Materialien zeigen», off by default: on, bullet and case
     /// are drawn as first issued (the posters' way); off, as most commonly found today (Raven, 2026-11-22).
     static let showOriginalKey = "showOriginalMaterials"
 

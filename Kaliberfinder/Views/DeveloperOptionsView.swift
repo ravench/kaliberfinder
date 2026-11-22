@@ -39,7 +39,7 @@ struct DeveloperOptionsView: View {
             }
             Section {
                 Toggle(isOn: $showOriginal) {
-                    Label { Text("Originalfarben zeigen") } icon: { Image(systemName: "clock.arrow.circlepath") }
+                    Label { Text("Ursprüngliche Materialien zeigen") } icon: { Image(systemName: "clock.arrow.circlepath") }
                 }
             } footer: {
                 Text("Zeichnet Geschoss und Hülse, wie die Patrone zuerst ausgegeben wurde, statt wie man sie heute meist findet.")

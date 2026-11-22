@@ -6265,35 +6265,6 @@
         }
       }
     },
-    "Originalfarben zeigen": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show original colours"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostrar colores originales"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Afficher les couleurs d'origine"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostra i colori originali"
-          }
-        }
-      }
-    },
     "Originalgrösse": {
       "extractionState": "manual",
       "localizations": {
@@ -8552,6 +8523,35 @@
           "stringUnit": {
             "state": "translated",
             "value": "Differiscono per: %@"
+          }
+        }
+      }
+    },
+    "Ursprüngliche Materialien zeigen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show original materials"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar materiales originales"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher les matériaux d'origine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra i materiali originali"
           }
         }
       }
