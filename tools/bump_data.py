@@ -4,8 +4,9 @@
     python3 tools/bump_data.py [commit]    # default: calibre-data's origin/main
 
 the submodule, Resources/Cartridges.json (generate_data.py), the strings (localize.py) and, only
-when the catalogue's fields changed, the test fixture (catalogue_fixture.py: a bump must not move
-the frozen test data otherwise). Prints the calibre-data commits brought in, for the pull request.
+when the catalogue's fields changed, the test fixture's fields: it gains the new ones and loses the
+dropped ones, but keeps its frozen values (a bump must not move the test data). Prints the
+calibre-data commits brought in, for the pull request.
 Commit the result yourself (`git add calibre-data Kaliberfinder KaliberfinderTests`)."""
 import json
 import os
@@ -13,12 +14,13 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
+import catalogue_fixture  # noqa: E402
 from catalogue_fixture import groups_among  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "calibre-data")
 CATALOGUE = os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json")
-FIXTURE = os.path.join(ROOT, "KaliberfinderTests", "Fixtures", "catalogue.json")
+FIXTURE = catalogue_fixture.FIXTURE
 
 
 def paths(value, prefix=""):
@@ -43,6 +45,42 @@ def fixture_is_current(fixture, catalogue):
     same = [c for c in catalogue["cartridges"] if c["id"] in chosen]
     return (paths(fixture["cartridges"]) == paths(same) and set(fixture) == set(catalogue)
             and paths(fixture.get("lookalikes", [])) == paths(groups_among(catalogue, chosen)))
+
+
+def merge(frozen, fresh):
+    """`frozen` with the fields `fresh` added or dropped (key paths, as `paths` names them), and nothing
+    else: a key one calibre lacks and another has is no new field, and every value stays frozen. A new
+    field's values come from `fresh`; list items pair up by id, by lookalike group (calibres), by work
+    (title and detail) or else by place (also where an id found no partner), and items only `fresh` has
+    are not added."""
+    new, gone = paths(fresh) - paths(frozen), paths(frozen) - paths(fresh)
+
+    def ident(item, place):
+        keys = next((ks for ks in (("id",), ("calibres",), ("title", "detail"))
+                     if isinstance(item, dict) and ks[0] in item), None)
+        return json.dumps([item.get(k) for k in keys]) if keys else place
+
+    def walk(old, now, prefix):
+        if isinstance(old, dict) and isinstance(now, dict):
+            kept = {k: walk(v, now[k], prefix + k + ".") if k in now else v
+                    for k, v in old.items() if prefix + k not in gone}
+            return {**kept, **{k: v for k, v in now.items() if k not in old and prefix + k in new}}
+        if isinstance(old, list) and isinstance(now, list):
+            inner = prefix.rstrip(".") + "[]." if prefix else ""
+            partners = {ident(item, i): item for i, item in enumerate(now)}
+            pair = lambda item, i: partners.get(ident(item, i), now[i] if i < len(now) else item)  # noqa: E731
+            return [walk(item, pair(item, i), inner) for i, item in enumerate(old)]
+        # A value that became an object or a list (or stopped being one) where that brings new fields.
+        return now if paths(now, prefix) & new or paths(old, prefix) & gone else old
+
+    return walk(frozen, fresh, "")
+
+
+def refresh(fixture, catalogue):
+    """The fixture with the catalogue's fields and its own values, or None where that is not enough
+    (a field only on items the fixture lacks): then it has to be written anew."""
+    merged = merge(fixture, catalogue_fixture.build(catalogue))
+    return merged if fixture_is_current(merged, catalogue) else None
 
 
 def git(*args):
@@ -76,8 +114,11 @@ def main():
     with open(FIXTURE) as f:
         fixture = json.load(f)
     if not fixture_is_current(fixture, catalogue):
-        subprocess.run([sys.executable, os.path.join(ROOT, "tools", "catalogue_fixture.py")], check=True)
-        print("The catalogue's fields changed: the test fixture is regenerated too. Check the tests that read it.")
+        merged = refresh(fixture, catalogue)
+        catalogue_fixture.write(merged or catalogue_fixture.build(catalogue))
+        print("The catalogue's fields changed: the test fixture took the new fields and kept its values."
+              if merged else "The catalogue's fields changed and the test fixture had to be written anew, "
+              "values too: check the tests that read it.")
     print(brought_in(old, new))
 
 
