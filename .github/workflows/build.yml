@@ -85,8 +85,7 @@ jobs:
     # private (README, CI on your own Mac).
     runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}
     permissions:
-      contents: read # the PR screens below push their images to ravench/app-screens with a deploy key
-      pull-requests: write # and comment on the pull request
+      contents: read
     env:
       # Pull requests that change how a screen looks, or carry the «screens» label (tools/ci_changes.py),
       # also get the PR screens.
@@ -97,8 +96,6 @@ jobs:
           submodules: true
           # The golden set's Vision masks are in Git LFS (GoldenSetTests).
           lfs: true
-          # The merge commit and its first parent, the base branch, for the PR screens.
-          fetch-depth: 2
       - run: command -v xcodegen >/dev/null || brew install xcodegen
       - run: xcodegen generate
       - name: Pick an iPhone simulator and a build folder
@@ -107,7 +104,7 @@ jobs:
           echo "Testing on $UDID"
           echo "UDID=$UDID" >> "$GITHUB_ENV"
           echo "DERIVED_DATA=$RUNNER_TEMP/DerivedData" >> "$GITHUB_ENV"
-          # Outside the checkout, which the base branch tour replaces; upload-artifact rejects '..' paths.
+          # Outside the checkout; upload-artifact rejects '..' paths.
           echo "SCREENS=$RUNNER_TEMP/screens" >> "$GITHUB_ENV"
           # Erased first, so a Mac that keeps its simulators starts as clean as GitHub's. A fresh
           # simulator takes minutes to boot; it boots while the app compiles.
@@ -165,17 +162,12 @@ jobs:
           fi
           python3 tools/test_summary.py "Unit tests=$RUNNER_TEMP/UnitTests.json"
       # PR screens: the screen tour (KaliberfinderUITests/PRScreensTests.swift) on this pull request
-      # and on its base branch, and one comment with the screens that look different. The images
-      # are kept in ravench/app-screens on its kaliberfinder/pr-screens branch, outside this repo's history;
-      # all screens of a run are in its "pr-screens" artifact.
-      # In this job rather than its own, so it reuses this build and simulator and needs no
-      # second Mac runner.
+      # here, and on its base branch in the base-screens job at the same time, on a second Mac; the
+      # screens job compares them. The tour reuses this build and simulator.
       - name: Screens of this pull request
         if: "!cancelled() && steps.build-tour.outcome == 'success'"
         run: |
           mkdir -p "$SCREENS"
-          # The base branch is toured with this pull request's tour and tools.
-          cp KaliberfinderUITests/PRScreensTests.swift tools/pr_screens.py "$SCREENS/"
           xcrun simctl bootstatus "$UDID" >/dev/null
           # Same clock and bars in both tours, so unchanged screens give the same image.
           xcrun simctl status_bar "$UDID" override --time 9:41 --dataNetwork wifi --wifiBars 3 \
@@ -190,23 +182,86 @@ jobs:
             -only-testing:KaliberfinderUITests/PRScreensTests \
             -resultBundlePath "$SCREENS/after.xcresult" \
             CODE_SIGNING_ALLOWED=NO | xcpretty
-      - name: Screens of the base branch
-        # A base without some of the screens still gives the others.
+      - name: Export the screens
+        # A tour that broke off still gives the screens it took.
         if: "!cancelled() && steps.build-tour.outcome == 'success'"
-        continue-on-error: true
         run: |
+          xcrun xcresulttool export attachments --path "$SCREENS/after.xcresult" --output-path "$SCREENS/raw"
+          python3 tools/pr_screens.py rename "$SCREENS/raw" "$SCREENS/after"
+      - uses: actions/upload-artifact@v5
+        if: "!cancelled() && steps.build-tour.outcome == 'success'"
+        with:
+          name: pr-screens-after
+          path: ${{ env.SCREENS }}/after
+      - name: Shut down the simulator
+        # A self-hosted Mac would otherwise keep it running until the next build.
+        if: always()
+        run: xcrun simctl shutdown "$UDID" 2>/dev/null || true
+  base-screens:
+    # The PR screens' «before»: the base branch toured with this pull request's tour, on its own Mac
+    # while the build job compiles and tours the pull request. A later push to the pull request
+    # takes them from the cache while the base, the tour, Xcode, the runner image and the day
+    # are the same: the tour then only runs here once per base.
+    needs: changes
+    if: needs.changes.outputs.screens == 'true'
+    runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: true
+          lfs: true
+          # The merge commit and its first parent, the base branch.
+          fetch-depth: 2
+      - name: Cache key
+        id: key
+        run: |
+          echo "SCREENS=$RUNNER_TEMP/screens" >> "$GITHUB_ENV"
+          echo "DERIVED_DATA=$RUNNER_TEMP/DerivedData" >> "$GITHUB_ENV"
+          tour=$(cat KaliberfinderUITests/PRScreensTests.swift tools/pr_screens.py | shasum -a 256 | cut -c1-16)
+          xcode=$(xcodebuild -version | tr -cs 'A-Za-z0-9.' '-')
+          # The day too: a screen that shows a date changes with it.
+          echo "key=pr-screens-before-$(git rev-parse HEAD^1)-$tour-$xcode${ImageVersion:-self-hosted}-$(date -u +%F)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache/restore@v5
+        id: cache
+        with:
+          path: ${{ env.SCREENS }}/before
+          key: ${{ steps.key.outputs.key }}
+      - name: Check out the base branch with this pull request's tour
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p "$SCREENS"
+          cp KaliberfinderUITests/PRScreensTests.swift tools/pr_screens.py "$SCREENS/"
           git checkout -q HEAD^1
           git submodule update -q
           cp "$SCREENS/PRScreensTests.swift" KaliberfinderUITests/
+          command -v xcodegen >/dev/null || brew install xcodegen
           xcodegen generate
-          # Same build folder: only what the pull request changed compiles again.
+      - name: Pick an iPhone simulator
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          # The same pick as the build job's, so both sides come from the same iPhone.
+          UDID=$(xcrun simctl list devices available -j | python3 "$SCREENS/pr_screens.py" pick-iphone)
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
+          xcrun simctl shutdown "$UDID" 2>/dev/null || true
+          xcrun simctl erase "$UDID"
+          xcrun simctl boot "$UDID"
+      - name: Screens of the base branch
+        id: tour
+        # A base without some of the screens still gives the others.
+        if: steps.cache.outputs.cache-hit != 'true'
+        continue-on-error: true
+        run: |
           xcodebuild build-for-testing \
             -project Kaliberfinder.xcodeproj \
             -scheme KaliberfinderScreens \
             -destination "id=$UDID" \
             -derivedDataPath "$DERIVED_DATA" \
             CODE_SIGNING_ALLOWED=NO | xcpretty
-          xcrun simctl uninstall "$UDID" ch.giotta.kaliberfinder
+          xcrun simctl bootstatus "$UDID" >/dev/null
+          xcrun simctl status_bar "$UDID" override --time 9:41 --dataNetwork wifi --wifiBars 3 \
+            --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
           xcodebuild test-without-building \
             -project Kaliberfinder.xcodeproj \
             -scheme KaliberfinderScreens \
@@ -215,31 +270,65 @@ jobs:
             -only-testing:KaliberfinderUITests/PRScreensTests \
             -resultBundlePath "$SCREENS/before.xcresult" \
             CODE_SIGNING_ALLOWED=NO | xcpretty
+      - name: Export the screens
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          # A run that broke off early leaves no readable result: that side just has no screens.
+          mkdir -p "$SCREENS/before"
+          xcrun xcresulttool export attachments --path "$SCREENS/before.xcresult" --output-path "$SCREENS/raw" \
+            && python3 "$SCREENS/pr_screens.py" rename "$SCREENS/raw" "$SCREENS/before" || true
+      - uses: actions/cache/save@v5
+        # Only a full tour: a broken one is toured again next time.
+        if: steps.tour.outcome == 'success'
+        with:
+          path: ${{ env.SCREENS }}/before
+          key: ${{ steps.key.outputs.key }}
+      - uses: actions/upload-artifact@v5
+        with:
+          name: pr-screens-before
+          path: ${{ env.SCREENS }}/before
+          if-no-files-found: ignore
+      - name: Shut down the simulator
+        if: always()
+        run: '[ -z "$UDID" ] || xcrun simctl shutdown "$UDID" 2>/dev/null || true'
+  screens:
+    # Compares both tours and comments with the screens that look different. The images are kept
+    # in ravench/app-screens on its kaliberfinder/pr-screens branch, outside this repo's history;
+    # all screens of a run are in its pr-screens-after and pr-screens-before artifacts.
+    needs: [changes, build, base-screens]
+    if: "!cancelled() && needs.changes.outputs.screens == 'true'"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # the images go to ravench/app-screens with a deploy key
+      pull-requests: write # and the comment on the pull request
+    env:
+      SCREENS: ${{ github.workspace }}/screens
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v6
+        id: after
+        continue-on-error: true
+        with:
+          name: pr-screens-after
+          path: ${{ env.SCREENS }}/after
+      - uses: actions/download-artifact@v6
+        # A base tour that took no screens leaves no artifact: every screen is then new.
+        continue-on-error: true
+        with:
+          name: pr-screens-before
+          path: ${{ env.SCREENS }}/before
       - name: Compare
         id: compare
-        if: "!cancelled() && steps.build-tour.outcome == 'success'"
+        if: steps.after.outcome == 'success'
         run: |
           cd "$SCREENS"
+          mkdir -p before
           # Pillow lets the comparison ignore faint rendering noise.
           python3 -m venv venv && venv/bin/pip install -q pillow
-          for side in after before; do
-            mkdir -p "$side"
-            [ -d "$side.xcresult" ] || continue
-            # A run that broke off early leaves no readable result: that side just has no screens.
-            xcrun xcresulttool export attachments --path "$side.xcresult" --output-path "raw-$side" || continue
-            python3 pr_screens.py rename "raw-$side" "$side"
-          done
           # A screen the tour still names but this run lacks is "missed", not "gone".
-          venv/bin/python pr_screens.py changes before after changed PRScreensTests.swift
-          # Smaller copies for the comment; the artifact keeps the full size.
-          find changed -name '*.png' -exec sips -Z 1200 {} \; >/dev/null
-      - uses: actions/upload-artifact@v5
-        if: "!cancelled() && steps.build-tour.outcome == 'success'"
-        with:
-          name: pr-screens
-          path: |
-            ${{ env.SCREENS }}/after
-            ${{ env.SCREENS }}/before
+          venv/bin/python ../tools/pr_screens.py changes before after changed ../KaliberfinderUITests/PRScreensTests.swift
+          # Smaller copies for the comment; the artifacts keep the full size.
+          venv/bin/python ../tools/pr_screens.py shrink changed 1200
       - name: Comment on the pull request
         # Pull requests from forks get a read-only token, so they only get the artifact.
         if: "!cancelled() && steps.compare.outcome == 'success' && github.event.pull_request.head.repo.full_name == github.repository"
@@ -278,7 +367,7 @@ jobs:
           # private, for viewers who are signed in and can read it (not in notification emails).
           BASE_URL="https://github.com/${SCREENS_REPO}/raw/$(git rev-parse HEAD)/${PR}"
           cd ..
-          python3 pr_screens.py comment changed "$BASE_URL" "$RUN_URL" > comment.md
+          python3 ../tools/pr_screens.py comment changed "$BASE_URL" "$RUN_URL" > comment.md
           # One comment per pull request, updated on every run.
           ID=$(gh api "repos/$REPO/issues/$PR/comments" --paginate \
             --jq '.[] | select(.body | startswith("<!-- pr-screens -->")) | .id' | head -1)
@@ -287,7 +376,3 @@ jobs:
           else
             gh api "repos/$REPO/issues/$PR/comments" -F body=@comment.md >/dev/null
           fi
-      - name: Shut down the simulator
-        # A self-hosted Mac would otherwise keep it running until the next build.
-        if: always()
-        run: xcrun simctl shutdown "$UDID" 2>/dev/null || true

@@ -4,6 +4,7 @@
 """
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -142,6 +143,15 @@ class SameTests(unittest.TestCase):
     def test_other_size_differs(self):
         self.assertFalse(pr_screens.same(self.png("a.png"), self.png("b.png", size=(40, 41))))
 
+    def test_shrink_scales_only_larger_screens_down(self):
+        os.makedirs(os.path.join(self.tmp.name, "after"))
+        big = self.png(os.path.join("after", "a.png"), size=(60, 120))
+        small = self.png("b.png", size=(20, 30))
+        pr_screens.shrink(self.tmp.name, 40)
+        for path, size in ((big, (20, 40)), (small, (20, 30))):
+            with Image.open(path) as img:
+                self.assertEqual(img.size, size)
+
 
 class CommentTests(unittest.TestCase):
     def test_table_with_before_and_after(self):
@@ -187,7 +197,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertRegex(self.workflow, r"runs-on: .*macos-2[6-9]")
 
     def test_reuses_the_build_and_its_simulator(self):
-        # No second Mac runner: the tour runs on the Build job's build, without compiling it again.
+        # The pull request's tour runs on the Build job's build, without compiling it again.
         self.assertFalse(os.path.exists(os.path.join(ROOT, ".github", "workflows", "pr-screens.yml")))
         self.assertNotIn("xcodebuild test ", self.workflow)
         self.assertIn('xcrun simctl boot "$UDID"', self.workflow)
@@ -196,7 +206,41 @@ class WorkflowTests(unittest.TestCase):
                         self.workflow.index("-scheme Kaliberfinder \\"))
 
     def test_tours_start_without_the_unit_tests_data(self):
-        self.assertEqual(self.workflow.count("xcrun simctl uninstall \"$UDID\" ch.giotta.kaliberfinder"), 2)
+        self.assertEqual(self.workflow.count("xcrun simctl uninstall \"$UDID\" ch.giotta.kaliberfinder"), 1)
+        # The base tour's simulator is erased and never ran the unit tests.
+        self.assertIn('xcrun simctl erase "$UDID"', self.job("base-screens"))
+
+    def job(self, name):
+        """The text of one job of build.yml."""
+        rest = self.workflow.split(f"\n  {name}:\n", 1)[1]
+        end = re.search(r"\n  [\w-]+:\n", rest)
+        return rest[:end.start()] if end else rest
+
+    def test_base_tour_runs_beside_the_build_on_its_own_mac(self):
+        # About 30 minutes each: side by side the screens come about half an hour sooner (2026-11-23).
+        base = self.job("base-screens")
+        self.assertIn("    needs: changes\n", base)
+        self.assertIn("runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}", base)
+        self.assertIn("git checkout -q HEAD^1", base)
+        self.assertNotIn("git checkout -q HEAD^1", self.job("build"))
+        self.assertIn("name: pr-screens-before", base)
+        self.assertIn("name: pr-screens-after", self.job("build"))
+        screens = self.job("screens")
+        self.assertIn("needs: [changes, build, base-screens]", screens)
+        self.assertIn("runs-on: ubuntu-latest", screens)
+        self.assertIn("pull-requests: write", screens)
+
+    def test_base_screens_are_cached_per_base_and_tour(self):
+        base = self.job("base-screens")
+        key = base.split('echo "key=', 1)[1].split("\n", 1)[0]
+        for part in ("$(git rev-parse HEAD^1)", "$tour", "$xcode", "ImageVersion", "$(date -u +%F)"):
+            self.assertIn(part, key)
+        self.assertIn("cat KaliberfinderUITests/PRScreensTests.swift tools/pr_screens.py | shasum", base)
+        self.assertIn("xcodebuild -version", base)
+        # A hit skips the base tour; only a full tour is saved.
+        self.assertEqual(base.count("if: steps.cache.outputs.cache-hit != 'true'"), 4)
+        save = base.split("actions/cache/save@", 1)[1]
+        self.assertIn("if: steps.tour.outcome == 'success'", save.split("key:", 1)[0])
 
     def test_tours_head_and_base_with_the_same_tour(self):
         self.assertEqual(self.workflow.count("-only-testing:KaliberfinderUITests/PRScreensTests"), 2)

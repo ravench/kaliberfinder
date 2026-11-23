@@ -49,9 +49,11 @@ class MacRunnerTests(unittest.TestCase):
         # Shut down first: erase fails on a simulator a crashed run left booted.
         self.assertLess(build.index('xcrun simctl shutdown "$UDID"'), build.index('xcrun simctl erase "$UDID"'))
         self.assertLess(build.index('xcrun simctl erase "$UDID"'), build.index('xcrun simctl boot "$UDID"'))
-        last_step = build.rsplit("\n      - ", 1)[1]
-        self.assertIn("if: always()", last_step)
-        self.assertIn('xcrun simctl shutdown "$UDID"', last_step)
+        for job in re.split(r"\n  [\w-]+:\n", build):
+            if "macos-26" in job:
+                last_step = job.rsplit("\n      - ", 1)[1]
+                self.assertIn("if: always()", last_step)
+                self.assertIn('xcrun simctl shutdown "$UDID"', last_step)
         evaluate = workflow("evaluate.yml")
         self.assertLess(evaluate.index("git worktree prune"), evaluate.index("git worktree add"))
         for path in sorted(WORKFLOWS.glob("*.yml")):

@@ -3,6 +3,7 @@
     xcrun simctl list devices available -j | python3 tools/pr_screens.py pick-iphone
     python3 tools/pr_screens.py rename <xcresulttool export dir> <out dir>
     python3 tools/pr_screens.py changes <before dir> <after dir> <out dir> [<tour file>]
+    python3 tools/pr_screens.py shrink <dir> <largest side>
     python3 tools/pr_screens.py comment <out dir> <image base url> <run url>
 """
 import filecmp
@@ -137,6 +138,20 @@ def collect(before_dir, after_dir, out_dir, tour=None):
     return summary
 
 
+def shrink(folder, size):
+    """Scales the PNGs under folder down to at most size pixels on their longer side (needs Pillow)."""
+    from PIL import Image
+    for root, _, files in os.walk(folder):
+        for name in files:
+            if name.endswith(".png"):
+                path = os.path.join(root, name)
+                with Image.open(path) as img:
+                    img.load()
+                if max(img.size) > size:
+                    img.thumbnail((size, size))
+                    img.save(path)
+
+
 def _img(url):
     return f'<img src="{url}" width="250">'
 
@@ -177,6 +192,8 @@ def main(argv):
         summary = collect(argv[2], argv[3], argv[4], tour)
         for name, status in summary["changes"]:
             print(f"{status}: {name}")
+    elif argv[1:2] == ["shrink"] and len(argv) == 4:
+        shrink(argv[2], int(argv[3]))
     elif argv[1:2] == ["comment"] and len(argv) == 5:
         with open(os.path.join(argv[2], "changes.json")) as f:
             sys.stdout.write(comment(json.load(f), argv[3], argv[4]))
