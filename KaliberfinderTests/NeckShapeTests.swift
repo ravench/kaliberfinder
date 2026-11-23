@@ -125,7 +125,7 @@ final class NeckShapeTests: XCTestCase {
                                        cartridges: CartridgeCatalog.matchable(includeObsolete: true), limit: .max)
             XCTAssertEqual(matches.first?.cartridge.dimensions.shoulder != nil, true, id)
             // A cannon round whose drawing gives no shoulder has none in its dimensions, but its case still
-            // narrows to a neck (20x110 USN, 25x218): not a straight calibre.
+            // narrows to a neck (20x110 RB, 25x205 SR): not a straight calibre.
             let straight = matches.filter { $0.cartridge.dimensions.shoulder == nil && !$0.cartridge.isCannon }
             XCTAssertTrue(straight.isEmpty, "\(id): \(straight.map(\.cartridge.id))")
         }
