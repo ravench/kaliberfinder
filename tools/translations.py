@@ -98,7 +98,7 @@ T = {
     "Selten": ("Rare", "Rare", "Raro", "Raro"),
     "Veraltet": ("Obsolete", "Obsolète", "Obsoleto", "Obsoleto"),
     "Herkunft": ("Origin", "Origine", "Origine", "Origen"),
-    "Selten: Ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen.": (
+    "Selten: Ein Treffer ist oft eine ähnliche Patrone, genau nachmessen.": (
         "Rare: a match is often a similar cartridge, measure carefully.",
         "Rare : une correspondance est souvent une cartouche semblable, mesurez avec soin.",
         "Raro: una corrispondenza è spesso una cartuccia simile, misura con cura.", "Raro: una coincidencia suele ser un cartucho parecido, mide con cuidado."),
@@ -274,7 +274,7 @@ T = {
     "Quellen": ("Sources", "Sources", "Fonti", "Fuentes"),
     "Eigene Messung": ("Our own measurement", "Mesure personnelle", "Misurazione propria", "Medición propia"),
     "S. %@": ("p. %@", "p. %@", "p. %@", "p. %@"),
-    "Öffnet die Webseite": ("Opens the web page", "Ouvre la page web", "Apre la pagina web", "Abre la página web"),
+    "Öffnet die Website": ("Opens the web page", "Ouvre la page web", "Apre la pagina web", "Abre la página web"),
     "Minié-Geschoss": ("Minié ball", "Balle Minié", "Palla Minié", "Bala Minié"),
     "Mit Rand": ("Rimmed", "À bourrelet", "Con collarino", "Con pestaña"),
     "Ohne Foto": ("Without a photo", "Sans photo", "Senza foto", "Sin foto"),

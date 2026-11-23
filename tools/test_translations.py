@@ -8,6 +8,16 @@ sys.path.insert(0, os.path.dirname(__file__))
 from translations import T  # noqa: E402
 
 EN, FR, IT, ES = 0, 1, 2, 3
+# The German keys are Swiss Standard German (CONTRIBUTING.md): ss, «», decimal point, Swiss words.
+SWISS = [(re.compile(r"ß"), "ss"), (re.compile(r"[„“”]"), "«»"), (re.compile(r"\d,\d"), "decimal point, 10.9")]
+GERMANISMS = {r"Webseiten?": "Website", r"oftmals": "oft", r"Los geht['’]s": "Starten", r"Wartung\w*": "Pflege or Service",
+              r"Displays?": "Bildschirm"}
+
+
+def swiss_problems(texts):
+    bad = [(text, hint) for text in texts for pattern, hint in SWISS if pattern.search(text)]
+    return bad + [(text, swiss) for text in texts for word, swiss in GERMANISMS.items()
+                  if re.search(rf"(?<!\w){word}(?!\w)", text, re.I)]
 
 
 class TranslationTests(unittest.TestCase):
@@ -27,7 +37,7 @@ class TranslationTests(unittest.TestCase):
             fr = values[FR]
             self.assertFalse(re.search(r"\b(tu|ton|ta|tes|toi)\b", fr, re.IGNORECASE), f"{key!r}: {fr}")
             self.assertNotIn("mesure donc", fr, key)
-        self.assertIn("mesurez avec soin", T["Selten: Ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen."][FR])
+        self.assertIn("mesurez avec soin", T["Selten: Ein Treffer ist oft eine ähnliche Patrone, genau nachmessen."][FR])
 
     def test_case_types_are_short_attributes(self):
         """«Bauart» values read like «Rimmed» / «Belted», not like a noun phrase."""
@@ -172,7 +182,7 @@ class TranslationTests(unittest.TestCase):
         """Like the German «du» and the Italian «tu»: no «usted» forms slip into the Spanish texts."""
         for key, values in T.items():
             self.assertNotRegex(values[ES], r"(?i)\b(usted|ustedes|coloque|elija|mida|compruebe|toque)\b", key)
-        self.assertIn("mide con cuidado", T["Selten: Ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen."][ES])
+        self.assertIn("mide con cuidado", T["Selten: Ein Treffer ist oft eine ähnliche Patrone, genau nachmessen."][ES])
 
     def test_spanish_questions_open_with_their_mark(self):
         for key, values in T.items():
@@ -213,6 +223,17 @@ class TranslationTests(unittest.TestCase):
             for value in values:
                 self.assertEqual(value.count("%"), key.count("%"), f"{key!r} -> {value!r}")
                 self.assertTrue(value.strip(), key)
+
+    def test_german_is_swiss(self):
+        with open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "RELEASE_NOTES.md"),
+                  encoding="utf-8") as f:
+            notes = re.findall(r"^### de\n(.*?)(?=^#)", f.read() + "\n#", re.S | re.M)
+        self.assertTrue(notes)
+        self.assertEqual(swiss_problems(list(T) + notes), [])
+
+    def test_swiss_check_catches_german_spelling(self):
+        found = swiss_problems(["Grösse", "Größe", "„Schrot“", "Abstand 1,5 cm", "Öffnet die Webseiten", "Oftmals", "10.9"])
+        self.assertEqual([text for text, _ in found], ["Größe", "„Schrot“", "Abstand 1,5 cm", "Öffnet die Webseiten", "Oftmals"])
 
 
 if __name__ == "__main__":
