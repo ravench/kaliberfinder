@@ -1,3 +1,5 @@
+// One stop per screen, so the tour grows with every pull request: two that each fit under the limit would fail main's lint together.
+// swiftlint:disable file_length
 import UIKit
 import XCTest
 
