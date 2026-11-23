@@ -40,19 +40,30 @@ def works_of(catalogue, cartridges):
     return works
 
 
-def main():
-    with open(os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json")) as f:
-        catalogue = json.load(f)
+FIXTURE = os.path.join(ROOT, "KaliberfinderTests", "Fixtures", "catalogue.json")
+
+
+def build(catalogue):
+    """The fixture of the calibres in IDS, as the catalogue has them now."""
     by_id = {c["id"]: c for c in catalogue["cartridges"]}
     missing = [i for i in IDS if i not in by_id]
     assert not missing, f"not in the catalogue: {missing}"
-    cartridges = [by_id[i] for i in IDS]
-    fixture = {"version": catalogue["version"], "calibreData": catalogue["calibreData"],
-               "cartridges": cartridges, "sources": works_of(catalogue, cartridges),
-               "lookalikes": groups_among(catalogue, IDS)}
-    with open(os.path.join(ROOT, "KaliberfinderTests", "Fixtures", "catalogue.json"), "w") as f:
+    cartridges = [json.loads(json.dumps(by_id[i])) for i in IDS]  # works_of renumbers their refs
+    return {"version": catalogue["version"], "calibreData": catalogue["calibreData"],
+            "cartridges": cartridges, "sources": works_of(catalogue, cartridges),
+            "lookalikes": groups_among(catalogue, IDS)}
+
+
+def write(fixture):
+    with open(FIXTURE, "w") as f:
         json.dump(fixture, f, ensure_ascii=False, indent=1)
         f.write("\n")
+
+
+def main():
+    with open(os.path.join(ROOT, "Kaliberfinder", "Resources", "Cartridges.json")) as f:
+        fixture = build(json.load(f))
+    write(fixture)
     print(f"{len(IDS)} calibres, {len(fixture['lookalikes'])} groups")
 
 
