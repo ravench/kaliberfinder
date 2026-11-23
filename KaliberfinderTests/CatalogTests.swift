@@ -256,7 +256,7 @@ final class CatalogTests: XCTestCase {
         XCTAssertGreaterThan(kp.dimensions.caseLength, gp1890.dimensions.caseLength)
         XCTAssertFalse(CartridgeCatalog.sameProfile(kp, gp9023))
         XCTAssertFalse(CartridgeCatalog.sameProfile(kp, gp1890))
-        XCTAssertNil(kp.outline.bulletMaterial, "a jacket, not the GP 1890's steel cap")
+        XCTAssertEqual(kp.outline.bulletMaterial, "cupronickel", "a cupronickel jacket, not the GP 1890's steel cap")
         XCTAssertNil(kp.outline.patch)
         // Made for the cadet rifle only: matched only with both switches on, always found by search.
         XCTAssertTrue(kp.obsolete)
