@@ -289,6 +289,14 @@ final class PRScreensTests: XCTestCase {
         }
     }
 
+    /// A cannon round whose shoulder and head come from a specimen drawing (calibre-data db6a80e); unsourced before.
+    func testCannonWithADrawnShoulder() {
+        application.launchArguments += ["-showCannonCalibres", "YES", "-showUnsourcedCalibres", "YES"]
+        guard app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        search("27x145\n")
+        if open(app.staticTexts["27x145 mm B"].firstMatch) { snap("45d-Kanone-27x145-B") }
+    }
+
     /// The Swiss cadet round, found by the name on its box, with its own drawing; sourced since calibre-data #163,
     /// the stop keeps the developer switch «Unbelegte Kaliber zeigen» on for the «Unbelegt» tag that follows.
     func testKadettenpatrone() {
