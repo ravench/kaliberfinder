@@ -50,37 +50,52 @@ def fixture_is_current(fixture, catalogue):
 def merge(frozen, fresh):
     """`frozen` with the fields `fresh` added or dropped (key paths, as `paths` names them), and nothing
     else: a key one calibre lacks and another has is no new field, and every value stays frozen. A new
-    field's values come from `fresh`; list items pair up by id, by lookalike group (calibres), by work
-    (title and detail) or else by place (also where an id found no partner), and items only `fresh` has
-    are not added."""
+    field's values come from the item's partner in `fresh`: the same calibre (id), lookalike group
+    (calibres) or work (title, detail and url), or else the item in the same place. An item without a
+    partner takes them from the first item of its fresh list; the second value names those items, to
+    be checked. Items only `fresh` has are not added."""
     new, gone = paths(fresh) - paths(frozen), paths(frozen) - paths(fresh)
+    borrowed = []
 
-    def ident(item, place):
-        keys = next((ks for ks in (("id",), ("calibres",), ("title", "detail"))
+    def ident(item):
+        keys = next((ks for ks in (("id",), ("calibres",), ("title", "detail", "url"))
                      if isinstance(item, dict) and ks[0] in item), None)
-        return json.dumps([item.get(k) for k in keys]) if keys else place
+        return json.dumps([item.get(k) for k in keys]) if keys else None
 
-    def walk(old, now, prefix):
+    def walk(old, now, prefix, where):
         if isinstance(old, dict) and isinstance(now, dict):
-            kept = {k: walk(v, now[k], prefix + k + ".") if k in now else v
+            kept = {k: walk(v, now[k], prefix + k + ".", f"{where}.{k}" if where else k) if k in now else v
                     for k, v in old.items() if prefix + k not in gone}
             return {**kept, **{k: v for k, v in now.items() if k not in old and prefix + k in new}}
         if isinstance(old, list) and isinstance(now, list):
             inner = prefix.rstrip(".") + "[]." if prefix else ""
-            partners = {ident(item, i): item for i, item in enumerate(now)}
-            pair = lambda item, i: partners.get(ident(item, i), now[i] if i < len(now) else item)  # noqa: E731
-            return [walk(item, pair(item, i), inner) for i, item in enumerate(old)]
-        # A value that became an object or a list (or stopped being one) where that brings new fields.
-        return now if paths(now, prefix) & new or paths(old, prefix) & gone else old
+            keys = [ident(item) for item in now]
+            partners = {k: item for k, item in zip(keys, now) if k is not None and keys.count(k) == 1}
+            merged = []
+            for i, item in enumerate(old):
+                key = ident(item)
+                partner = partners.get(key) if key is not None else now[i] if i < len(now) else None
+                own = walk(item, item if partner is None else partner, inner, f"{where}[{i}]")
+                if partner is None and now and own != (lent := walk(item, now[0], inner, f"{where}[{i}]")):
+                    own = lent
+                    borrowed.append(f"{where}[{i}]")
+                merged.append(own)
+            return merged
+        # A value that became an object or a list (or stopped being one): the fresh one where that brings
+        # new fields, else the frozen one without the dropped ones.
+        if paths(now, prefix) & new:
+            return now
+        return walk(old, old, prefix, where) if isinstance(old, (dict, list)) else old
 
-    return walk(frozen, fresh, "")
+    return walk(frozen, fresh, "", ""), borrowed
 
 
 def refresh(fixture, catalogue):
-    """The fixture with the catalogue's fields and its own values, or None where that is not enough
-    (a field only on items the fixture lacks): then it has to be written anew."""
-    merged = merge(fixture, catalogue_fixture.build(catalogue))
-    return merged if fixture_is_current(merged, catalogue) else None
+    """The fixture with the catalogue's fields and its own values (None where that is not enough: a field
+    only on items the fixture lacks; then it has to be written anew), and the items whose new fields
+    came from another item."""
+    merged, borrowed = merge(fixture, catalogue_fixture.build(catalogue))
+    return (merged if fixture_is_current(merged, catalogue) else None), borrowed
 
 
 def git(*args):
@@ -114,11 +129,20 @@ def main():
     with open(FIXTURE) as f:
         fixture = json.load(f)
     if not fixture_is_current(fixture, catalogue):
-        merged = refresh(fixture, catalogue)
-        catalogue_fixture.write(merged or catalogue_fixture.build(catalogue))
-        print("The catalogue's fields changed: the test fixture took the new fields and kept its values."
-              if merged else "The catalogue's fields changed and the test fixture had to be written anew, "
-              "values too: check the tests that read it.")
+        merged, borrowed = refresh(fixture, catalogue)
+        written = merged or catalogue_fixture.build(catalogue)
+        if not fixture_is_current(written, catalogue):
+            sys.exit("catalogue_fixture.build misses some of the catalogue's fields (a new top-level key?): "
+                     "fix it first.")
+        catalogue_fixture.write(written)
+        if not merged:
+            print("The catalogue's fields changed and the test fixture had to be written anew, values too: "
+                  "check the tests that read it.")
+        else:
+            print("The catalogue's fields changed: the test fixture took the new fields and kept its values.")
+            if borrowed:
+                print("These items had no partner and took their new fields from another item; check them where "
+                      "a test reads them: " + ", ".join(borrowed))
     print(brought_in(old, new))
 
 

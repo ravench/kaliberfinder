@@ -1,5 +1,5 @@
 """Tests for the calibre-data bump: python3 -m unittest discover -s tools -p 'test_*.py'"""
-import os, subprocess, sys, tempfile, unittest
+import json, os, subprocess, sys, tempfile, unittest
 
 sys.path.insert(0, os.path.dirname(__file__))
 import bump_data  # noqa: E402
@@ -43,22 +43,43 @@ class MergeTests(unittest.TestCase):
         fresh = {"cartridges": [{"id": "b", "dimensions": {"rim": 2.2, "neck": 0.6}},
                                 {"id": "a", "dimensions": {"rim": 1.1, "neck": 0.5}, "tip": "M0 0"}]}
         self.assertEqual(bump_data.merge(frozen, fresh),
-                         {"cartridges": [{"id": "a", "dimensions": {"rim": 1.0, "neck": 0.5}, "tip": "M0 0"},
-                                         {"id": "b", "dimensions": {"rim": 2.0, "neck": 0.6}}]})
+                         ({"cartridges": [{"id": "a", "dimensions": {"rim": 1.0, "neck": 0.5}, "tip": "M0 0"},
+                                          {"id": "b", "dimensions": {"rim": 2.0, "neck": 0.6}}]}, []))
 
     def test_an_optional_key_is_no_new_field(self):
         frozen = {"refs": [{"work": 0}, {"work": 1, "pages": "5"}], "outline": {"width": 9}}
         fresh = {"refs": [{"work": 0, "pages": "9"}, {"work": 1}], "outline": {"width": 9.5}}
-        self.assertEqual(bump_data.merge(frozen, fresh), frozen)
+        self.assertEqual(bump_data.merge(frozen, fresh), (frozen, []))
 
     def test_works_and_groups_find_their_own_partner(self):
-        frozen = {"sources": [{"title": "A", "detail": "1"}, {"title": "B", "detail": "2"}],
+        # Works share a title and detail (every SAAMI page is «SAAMI, saami.org»): the url tells them apart.
+        frozen = {"sources": [{"title": "S", "detail": "s", "url": "1"}, {"title": "S", "detail": "s", "url": "2"}],
                   "lookalikes": [{"calibres": ["a", "b"]}, {"calibres": ["c", "d"]}]}
-        fresh = {"sources": [{"title": "B", "detail": "2", "year": 2002}, {"title": "A", "detail": "1", "year": 2001}],
+        fresh = {"sources": [{"title": "S", "detail": "s", "url": "2", "year": 2002},
+                             {"title": "S", "detail": "s", "url": "1", "year": 2001}],
                  "lookalikes": [{"calibres": ["c", "d"], "name": "c"}, {"calibres": ["a", "b"], "name": "a"}]}
-        merged = bump_data.merge(frozen, fresh)
+        merged, borrowed = bump_data.merge(frozen, fresh)
         self.assertEqual([w["year"] for w in merged["sources"]], [2001, 2002])
         self.assertEqual([g["name"] for g in merged["lookalikes"]], ["a", "c"])
+        self.assertEqual(borrowed, [])
+
+    def test_an_item_without_a_partner_borrows_the_new_fields_and_says_so(self):
+        # A frozen list longer than the fresh one, and a group the catalogue no longer forms.
+        frozen = {"cartridges": [{"id": "a", "sources": [{"refs": [{"work": 0}]}, {"refs": [{"work": 1}]}]}],
+                  "lookalikes": [{"calibres": ["a", "b"]}]}
+        fresh = {"cartridges": [{"id": "a", "sources": [{"refs": [{"work": 0, "edition": 2}]}]}],
+                 "lookalikes": [{"calibres": ["a", "c"], "name": "a"}]}
+        merged, borrowed = bump_data.merge(frozen, fresh)
+        self.assertEqual(merged["cartridges"][0]["sources"],
+                         [{"refs": [{"work": 0, "edition": 2}]}, {"refs": [{"work": 1, "edition": 2}]}])
+        self.assertEqual(merged["lookalikes"], [{"calibres": ["a", "b"], "name": "a"}])
+        self.assertEqual(borrowed, ["cartridges[0].sources[1]", "lookalikes[0]"])
+
+    def test_a_value_that_changed_its_shape(self):
+        frozen = {"c": [{"id": "a", "o": {"w": 1, "old": 2}, "p": None}, {"id": "b", "o": {"w": 3, "old": 4}, "p": None}]}
+        fresh = {"c": [{"id": "a", "o": None, "p": None}, {"id": "b", "o": {"w": 3}, "p": {"x": 1}}]}
+        self.assertEqual(bump_data.merge(frozen, fresh)[0],
+                         {"c": [{"id": "a", "o": {"w": 1}, "p": None}, {"id": "b", "o": {"w": 3}, "p": {"x": 1}}]})
 
     def test_refresh_writes_anew_only_where_merging_cannot_bring_a_field(self):
         catalogue = {"version": 1, "calibreData": {"commit": "new"}, "sources": [], "lookalikes": [],
@@ -68,12 +89,14 @@ class MergeTests(unittest.TestCase):
         ids = bump_data.catalogue_fixture.IDS
         bump_data.catalogue_fixture.IDS = ["a"]
         try:
-            refreshed = bump_data.refresh(fixture, catalogue)
+            before = json.dumps(catalogue)
+            refreshed, borrowed = bump_data.refresh(fixture, catalogue)
             self.assertEqual(refreshed["cartridges"], [{"id": "a", "colourCodes": [], "rim": 1.0, "neck": 0.5}])
-            self.assertEqual(refreshed["calibreData"], {"commit": "old"})
+            self.assertEqual((refreshed["calibreData"], borrowed), ({"commit": "old"}, []))
+            self.assertEqual(json.dumps(catalogue), before, "building the fixture leaves the catalogue as it was")
             # A field that only a colour code the frozen calibre lacks would bring: the fixture is written anew.
             catalogue["cartridges"][0]["colourCodes"] = [{"colours": ["red"]}]
-            self.assertIsNone(bump_data.refresh(fixture, catalogue))
+            self.assertIsNone(bump_data.refresh(fixture, catalogue)[0])
         finally:
             bump_data.catalogue_fixture.IDS = ids
 
