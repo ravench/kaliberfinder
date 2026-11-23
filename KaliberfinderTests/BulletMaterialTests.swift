@@ -12,10 +12,10 @@ final class BulletMaterialTests: XCTestCase {
 
     func testLeadBulletsAreDrawnInLead() throws {
         for id in [".22 LR", ".38 Special", ".45-70 Government"] {
-            XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge(id)), CartridgeView.lead, id)
+            XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge(id), original: false), CartridgeView.lead, id)
         }
-        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge("9x19 mm")), CartridgeView.copper)
-        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge("7.5x53.5 mm Swiss (Patrone Modell 1890)")), CartridgeView.steel)
+        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge("9x19 mm"), original: false), CartridgeView.copper)
+        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge("7.5x53.5 mm Swiss (Patrone Modell 1890)"), original: false), CartridgeView.steel)
     }
 
     /// A jacket that is not copper-coloured is drawn in its metal: the silver cupronickel of the GP 11 and, since
@@ -52,7 +52,7 @@ final class BulletMaterialTests: XCTestCase {
         let c = try cartridge("9.3x62 mm")
         let tip = try XCTUnwrap(c.outline.tip.map(OutlineGeometry.parse)?.first, "lead tip")
         XCTAssertEqual(tip.map(\.y).min() ?? 1, 0, accuracy: 0.01, "the tip reaches the front of the bullet")
-        XCTAssertEqual(CartridgeView.bulletFill(for: c), CartridgeView.copper, "the jacket stays copper")
+        XCTAssertEqual(CartridgeView.bulletFill(for: c, original: false), CartridgeView.copper, "the jacket stays copper")
         // The tip is not part of the shape the photo is matched against.
         XCTAssertEqual(OutlineGeometry(c.outline).polygons.count, OutlineGeometry(c.outline, includeBullet: false).polygons.count + 1)
         XCTAssertNil(try cartridge("7.62x51 mm NATO").outline.tip, "military ball is a full metal jacket")
@@ -97,11 +97,11 @@ final class BulletMaterialTests: XCTestCase {
     func testSteelBBIsSteelAndAirsoftBBsArePlastic() throws {
         let steelBB = try cartridge("4.4 mm Stahl-BB (.177 BB)")
         XCTAssertEqual(steelBB.kind, "ball")
-        XCTAssertEqual(CartridgeView.bulletFill(for: steelBB), CartridgeView.steel)
+        XCTAssertEqual(CartridgeView.bulletFill(for: steelBB, original: false), CartridgeView.steel)
         for id in ["6 mm Airsoft-BB", "8 mm Airsoft-BB"] {
-            XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge(id)), CartridgeView.plastic, id)
+            XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge(id), original: false), CartridgeView.plastic, id)
         }
-        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge(".44 Rundkugel (.454)")), CartridgeView.lead)
+        XCTAssertEqual(CartridgeView.bulletFill(for: try cartridge(".44 Rundkugel (.454)"), original: false), CartridgeView.lead)
     }
 
     /// A hollow point's cavity reads at the detail page's size (Raven, 2026-11-17: the thin dashes were too fine):
