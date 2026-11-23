@@ -78,7 +78,7 @@ private struct SourceRow: View {
                         .accessibilityHidden(true)
                 }
             }
-            .accessibilityHint(Text("Öffnet die Webseite"))
+            .accessibilityHint(Text("Öffnet die Website"))
         } else {
             text.accessibilityElement(children: .combine)
         }

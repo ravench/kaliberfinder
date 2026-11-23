@@ -6,6 +6,7 @@ struct DeveloperOptionsView: View {
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
     @AppStorage(CartridgeCatalog.showUnsourcedKey) private var showUnsourced = false
     @AppStorage(CartridgeCatalog.showCannonKey) private var showCannon = false
+    @AppStorage(CartridgeView.showOriginalKey) private var showOriginal = false
     @ScaledMetric(relativeTo: .body) private var iconSize: CGFloat = 20
 
     var body: some View {
@@ -35,6 +36,13 @@ struct DeveloperOptionsView: View {
                 }
             } footer: {
                 Text("Munition von 20 bis 57 mm, zu gross für den Bildschirm.")
+            }
+            Section {
+                Toggle(isOn: $showOriginal) {
+                    Label { Text("Ursprüngliche Materialien zeigen") } icon: { Image(systemName: "clock.arrow.circlepath") }
+                }
+            } footer: {
+                Text("Zeichnet Geschoss und Hülse, wie die Patrone zuerst ausgegeben wurde, statt wie man sie heute meist findet.")
             }
         }
         .readableWidth()

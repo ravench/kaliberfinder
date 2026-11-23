@@ -228,9 +228,10 @@ def preview(cartridges, path):
     cells = []
     for c in cartridges:
         o = c["outline"]
+        # What is most commonly found today, as the app draws it by default (the GP 11's copper jacket).
         bullet = {"steel": "#a7adb4", "cupronickel": CASE_COLOURS["nickel"], "lead": "#8a8c91",
-                  "plastic": "#f7f7f5"}.get(o.get("bulletMaterial"), "#b87333")
-        case = CASE_COLOURS.get(o.get("caseMaterial"), "#e3c16f")
+                  "plastic": "#f7f7f5"}.get(o.get("todayBulletMaterial", o.get("bulletMaterial")), "#b87333")
+        case = CASE_COLOURS.get(o.get("todayCaseMaterial", o.get("caseMaterial")), "#e3c16f")
         parts = "".join(f'<path d="{o[k]}" fill="{col}" stroke="#333" stroke-width="0.25"/>'
                         for k, col in (("case", case), ("head", "#a7adb4" if o.get("headMaterial") == "steel" else "#e3c16f"),
                                        ("bullet", bullet), ("patch", "#f2ede0"),

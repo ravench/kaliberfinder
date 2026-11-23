@@ -348,8 +348,9 @@ final class PRScreensTests: XCTestCase {
         snap("25-Trainingsdaten-unbekannte-Patrone")
     }
 
-    /// Cases that are not brass, from the side and from below: lacquered steel, a brass body on a steel head, and a paper case in a brass cup.
+    /// Cases that are not brass as first issued (developer switch), side and bottom: lacquered steel, brass body on a steel head, paper case in a brass cup.
     func testCaseMaterials() {
+        application.launchArguments += ["-showOriginalMaterials", "YES"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         for (query, name, shot) in [("5.45", "5.45x39 mm", "10-Stahlhuelse"), ("Fury", ".277 SIG Fury", "11-Hybridhuelse"),
