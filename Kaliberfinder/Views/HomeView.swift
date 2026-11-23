@@ -18,6 +18,11 @@ struct HomeView: View {
     @State private var libraryItem: PhotosPickerItem?
     @State private var loading = PhotoLoading()
     @State private var photo: PickedPhoto?
+    /// At the accessibility text sizes a row wraps its text under the icon, and the drawn tag icons, which take all the room
+    /// they get, lay over it: there they are a square that grows with the text. Below, the row sizes them as before.
+    @ScaledMetric(relativeTo: .body) private var scaledIcon: CGFloat = 22
+    @Environment(\.dynamicTypeSize) private var textSize
+    private var iconSize: CGFloat? { textSize.isAccessibilitySize ? scaledIcon : nil }
     @AppStorage(CartridgeCatalog.includeObsoleteKey) private var includeObsolete = false
     @AppStorage(CartridgeCatalog.includeRareKey) private var includeRare = false
     @State private var fit = LargeTitleFit()
@@ -61,10 +66,10 @@ struct HomeView: View {
                 case .recognition:
                 Section {
                     Toggle(isOn: $includeObsolete) {
-                        Label { Text("Veraltete Kaliber berücksichtigen") } icon: { TagIcon(tag: .obsolete).foregroundStyle(.secondary) }
+                        Label { Text("Veraltete Kaliber berücksichtigen") } icon: { TagIcon(tag: .obsolete).frame(width: iconSize, height: iconSize).foregroundStyle(.secondary) }
                     }
                     Toggle(isOn: $includeRare) {
-                        Label { Text("Seltene Kaliber berücksichtigen") } icon: { TagIcon(tag: .rare).foregroundStyle(.orange) }
+                        Label { Text("Seltene Kaliber berücksichtigen") } icon: { TagIcon(tag: .rare).frame(width: iconSize, height: iconSize).foregroundStyle(.orange) }
                     }
                 } header: {
                     Text("Erkennung")

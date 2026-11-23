@@ -44,6 +44,7 @@ struct TrueScaleView: View {
     /// Tapping a drawing opens the calibre's page; off when this screen was opened from that page.
     var linksToDetails = true
     @EnvironmentObject private var scale: ScaleModel
+    @Environment(\.dynamicTypeSize) private var textSize
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     @AppStorage(Self.bulletsOnCasesKey) private var bulletsOnCases = true
 
@@ -184,6 +185,13 @@ struct TrueScaleView: View {
         CartridgeView(cartridge: c, pointsPerMM: ppmm, caseOnly: caseOnly(c))
     }
 
+    /// The labels' column: as wide as the drawing, and at least 70 pt at the standard text size. The minimum grows with
+    /// the text, or large text wraps into a column so tall that it pushes the cartridges off the screen.
+    static func labelWidth(drawing: CGFloat, textSize: DynamicTypeSize) -> CGFloat {
+        let traits = UITraitCollection(preferredContentSizeCategory: UIContentSizeCategory(textSize))
+        return max(UIFontMetrics(forTextStyle: .caption1).scaledValue(for: 70, compatibleWith: traits), drawing)
+    }
+
     private func label(for c: Cartridge) -> some View {
         VStack(spacing: 2) {
             let shown = Self.shownGroup(of: c, linking: linksToDetails)
@@ -209,7 +217,7 @@ struct TrueScaleView: View {
         .multilineTextAlignment(.center)
         // Takes the height it needs, so a long name wraps instead of being cut short.
         .fixedSize(horizontal: false, vertical: true)
-        .frame(width: max(70, c.outline.width * scale.pointsPerMM))
+        .frame(width: Self.labelWidth(drawing: c.outline.width * scale.pointsPerMM, textSize: textSize))
         .foregroundStyle(.secondary)
     }
 }

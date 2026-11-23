@@ -9,6 +9,7 @@ struct CompareButton: View {
     var emptyCases: Set<String> = []
     /// Matches that fit well, with the reason (`TrueScaleView.goodMatches`).
     var goodMatches: [String: String] = [:]
+    @Environment(\.dynamicTypeSize) private var textSize
 
     /// Two items side by side.
     static let symbol = "square.and.line.vertical.and.square"
@@ -17,11 +18,15 @@ struct CompareButton: View {
     /// Space to the screen edges and the bottom, so the capsule floats clear of them.
     static let margin: CGFloat = 24
 
+    /// One line, shrunk a little when it is long; at the accessibility text sizes it wraps instead of being cut short.
+    static func titleLines(_ textSize: DynamicTypeSize) -> Int { textSize.isAccessibilitySize ? 3 : 1 }
+
     var body: some View {
         NavigationLink { TrueScaleView(cartridges: cartridges, emptyCases: emptyCases, goodMatches: goodMatches) } label: {
             Label(title, systemImage: Self.symbol)
                 .font(.headline)
-                .lineLimit(1)
+                .lineLimit(Self.titleLines(textSize))
+                .multilineTextAlignment(.center)
                 .minimumScaleFactor(0.8)
                 .padding(.horizontal, 12)
                 .frame(minHeight: Self.height)
