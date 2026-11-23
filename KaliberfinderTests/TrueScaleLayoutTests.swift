@@ -7,6 +7,20 @@ final class TrueScaleLayoutTests: XCTestCase {
         try ids.map { try XCTUnwrap(CartridgeCatalog.cartridge(id: $0)) }
     }
 
+    /// App Accessibility check 2026-11-23: at 235 % the labels under a slim cartridge wrapped in a 70 pt column and
+    /// pushed the drawings off the screen.
+    func testLabelColumnGrowsWithTheText() {
+        XCTAssertEqual(TrueScaleView.labelWidth(drawing: 40, textSize: .large), 70, accuracy: 1e-9)
+        XCTAssertGreaterThan(TrueScaleView.labelWidth(drawing: 40, textSize: .accessibility3), 105)
+        // A wide drawing keeps its own width at every text size.
+        XCTAssertEqual(TrueScaleView.labelWidth(drawing: 400, textSize: .accessibility3), 400, accuracy: 1e-9)
+    }
+
+    func testCompareButtonWrapsOnlyAtAccessibilitySizes() {
+        XCTAssertEqual(CompareButton.titleLines(.xxxLarge), 1)
+        XCTAssertEqual(CompareButton.titleLines(.accessibility1), 3)
+    }
+
     func testBandIsAsTallAsTheRuler() throws {
         let layout = TrueScaleLayout(cartridges: try cartridges(["9x19 mm", "7.5x55 mm Swiss (GP 11)"]), unit: .metric, pointsPerMM: 6)
         // GP 11 is 77.5 mm: plus 5 mm, rounded up to whole centimetres.

@@ -1,3 +1,5 @@
+// One stop per screen, so the tour grows with every pull request: two that each fit under the limit would fail main's lint together.
+// swiftlint:disable file_length
 import UIKit
 import XCTest
 
@@ -630,6 +632,15 @@ final class PRScreensTests: XCTestCase {
               open(app.staticTexts["Bildschirm"].firstMatch) else { return }
         XCTAssertTrue(app.buttons["Speichern"].waitForExistence(timeout: 5), "The calibration screen did not open")
         snap("38-Bildschirm-kalibrieren")
+    }
+
+    /// At 235 % text size (App Accessibility, 2026-11-23): the start screen's switches, the compare button and the 1:1 labels.
+    func testLargeText() {
+        application.launchArguments += ["-screenTourLength", "29.7", "-screenTourBullet", "9.0", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXL"]
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        scroll(); snap("47a-Grosse-Schrift-Start"); scroll(up: false)
+        if open(app.buttons["Masse eingeben"].firstMatch) { snap("47b-Grosse-Schrift-Treffer") }
+        if open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden")).firstMatch) { snap("47c-Grosse-Schrift-1zu1") }
     }
 
     private func open(_ element: XCUIElement) -> Bool {
