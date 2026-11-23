@@ -5,13 +5,14 @@ import SwiftUI
 struct CaseBaseView: View {
     let cartridge: Cartridge
     let pointsPerMM: Double
+    @AppStorage(CartridgeView.showOriginalKey) private var original = false
 
     var body: some View {
         if cartridge.hasCase {
             let d = cartridge.headDiameter * pointsPerMM
             let line = max(0.3, min(0.8, pointsPerMM * 0.08))
             ZStack {
-                Circle().fill(CartridgeView.headFill(for: cartridge))
+                Circle().fill(CartridgeView.headFill(for: cartridge, original: original))
                 Circle().stroke(Color.black.opacity(0.7), lineWidth: line)
                 // Edge of the head face (chamfer, or the step to the body on rimmed cases).
                 Circle()

@@ -239,6 +239,16 @@ class BulletMaterialTests(unittest.TestCase):
         self.assertTrue(set(generate_data.CASE_COLOURS) >= {c["outline"]["caseMaterial"] for c in by_name.values()
                                                              if "caseMaterial" in c["outline"]})
 
+    def test_todays_materials_reach_the_json(self):
+        # What is most commonly found today, drawn by default (Raven 2026-11-22); the original stays beside it.
+        by_name = {c["name"]: c for c in generate_data.build()}
+        gp11 = by_name["7.5x55 mm Swiss (GP 11)"]["outline"]
+        self.assertEqual((gp11["bulletMaterial"], gp11["todayBulletMaterial"]), ("cupronickel", "copper"))
+        self.assertEqual(by_name["7.62x54 mm R"]["outline"]["todayCaseMaterial"], "steel")
+        self.assertNotIn("todayBulletMaterial", by_name["9x19 mm"]["outline"])
+        self.assertTrue(set(generate_data.CASE_COLOURS) | {"brass"} >= {c["outline"]["todayCaseMaterial"] for c in by_name.values()
+                                                                         if "todayCaseMaterial" in c["outline"]})
+
 
 class LookalikeTests(unittest.TestCase):
     """The lookalike groups go into the JSON so the app can show a calibre's group."""

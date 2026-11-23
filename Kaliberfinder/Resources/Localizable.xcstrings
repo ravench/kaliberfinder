@@ -8527,6 +8527,35 @@
         }
       }
     },
+    "Ursprüngliche Materialien zeigen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show original materials"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar materiales originales"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher les matériaux d'origine"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra i materiali originali"
+          }
+        }
+      }
+    },
     "Veraltet": {
       "extractionState": "manual",
       "localizations": {
@@ -9045,6 +9074,35 @@
           "stringUnit": {
             "state": "translated",
             "value": "ZIP non riuscito: %@"
+          }
+        }
+      }
+    },
+    "Zeichnet Geschoss und Hülse, wie die Patrone zuerst ausgegeben wurde, statt wie man sie heute meist findet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Draws bullet and case as the cartridge was first issued, instead of as it is mostly found today."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dibuja la bala y la vaina como se emitió el cartucho por primera vez, en lugar de como se encuentra hoy en día."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dessine la balle et l'étui tels que la cartouche a d'abord été fournie, au lieu de tels qu'on la trouve surtout aujourd'hui."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disegna palla e bossolo come la cartuccia fu distribuita all'inizio, invece che come si trova oggi di solito."
           }
         }
       }
