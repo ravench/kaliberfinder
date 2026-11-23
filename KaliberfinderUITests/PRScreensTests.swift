@@ -141,9 +141,9 @@ final class PRScreensTests: XCTestCase {
         snap("03g-Kaliber-Gruppenzeile")
     }
 
-    /// A group's row goes to its best match (Raven, 2026-11-22). 35.2 mm long with a 7.9 mm bullet is a 7.62x25 mm
-    /// Tokarev; with the obsolete and rare calibres switched on, its row was drawn and rated as the group's parent, the
-    /// .30 Borchardt, 1.2 mm off and not among the 1:1 button's, then as the Mauser, 0.4 mm off (review 2026-11-13).
+    /// A group's row goes to a member that is clearly nearer than its parent (review 2026-11-13). 35.2 mm long with a
+    /// 7.9 mm bullet is a 7.62x25 mm Tokarev; with the obsolete and rare calibres switched on, its row was drawn and
+    /// rated as the group's parent, the .30 Borchardt, 1.2 mm off where the Mauser is 0.4, and not among the 1:1 button's.
     func testGroupRowOfANearerMember() {
         application.launchArguments += ["-screenTourLength", "35.2", "-screenTourBullet", "7.9",
                                         "-includeObsoleteCalibres", "YES", "-includeRareCalibres", "YES"]
@@ -156,7 +156,7 @@ final class PRScreensTests: XCTestCase {
         // The row's own label, not the screen's.
         let group = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "7.63x25 mm")).firstMatch
         XCTAssertTrue(group.exists, "The 7.63x25 mm group's row is not on the screen")
-        XCTAssertTrue(group.label.contains("Passt genau"), "The 7.63x25 mm row is not rated as its Tokarev: \(group.label)")
+        XCTAssertTrue(group.label.contains("Abweichung bis 0.4 mm"), "The 7.63x25 mm row is not rated as its Mauser: \(group.label)")
         snap("03h-Masse-Treffer-Gruppe-passt")
     }
 
@@ -356,8 +356,9 @@ final class PRScreensTests: XCTestCase {
         snap("25-Trainingsdaten-unbekannte-Patrone")
     }
 
-    /// Cases that are not brass, from the side and from below: lacquered steel, a brass body on a steel head, and a paper case in a brass cup.
+    /// Cases that are not brass as first issued (developer switch), side and bottom: lacquered steel, brass body on a steel head, paper case in a brass cup.
     func testCaseMaterials() {
+        application.launchArguments += ["-showOriginalMaterials", "YES"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         for (query, name, shot) in [("5.45", "5.45x39 mm", "10-Stahlhuelse"), ("Fury", ".277 SIG Fury", "11-Hybridhuelse"),

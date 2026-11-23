@@ -98,7 +98,7 @@ T = {
     "Selten": ("Rare", "Rare", "Raro", "Raro"),
     "Veraltet": ("Obsolete", "Obsolète", "Obsoleto", "Obsoleto"),
     "Herkunft": ("Origin", "Origine", "Origine", "Origen"),
-    "Selten: Ein Treffer ist oftmals eine ähnliche Patrone, genau nachmessen.": (
+    "Selten: Ein Treffer ist oft eine ähnliche Patrone, genau nachmessen.": (
         "Rare: a match is often a similar cartridge, measure carefully.",
         "Rare : une correspondance est souvent une cartouche semblable, mesurez avec soin.",
         "Raro: una corrispondenza è spesso una cartuccia simile, misura con cura.", "Raro: una coincidencia suele ser un cartucho parecido, mide con cuidado."),
@@ -274,7 +274,7 @@ T = {
     "Quellen": ("Sources", "Sources", "Fonti", "Fuentes"),
     "Eigene Messung": ("Our own measurement", "Mesure personnelle", "Misurazione propria", "Medición propia"),
     "S. %@": ("p. %@", "p. %@", "p. %@", "p. %@"),
-    "Öffnet die Webseite": ("Opens the web page", "Ouvre la page web", "Apre la pagina web", "Abre la página web"),
+    "Öffnet die Website": ("Opens the web page", "Ouvre la page web", "Apre la pagina web", "Abre la página web"),
     "Minié-Geschoss": ("Minié ball", "Balle Minié", "Palla Minié", "Bala Minié"),
     "Mit Rand": ("Rimmed", "À bourrelet", "Con collarino", "Con pestaña"),
     "Ohne Foto": ("Without a photo", "Sans photo", "Senza foto", "Sin foto"),
@@ -302,6 +302,12 @@ T = {
     "Trainingsdaten": ("Training data", "Données d'entraînement", "Dati di addestramento", "Datos de entrenamiento"),
     "Unbelegte Kaliber zeigen": ("Show unsourced calibres", "Afficher les calibres sans source", "Mostra i calibri senza fonte", "Mostrar calibres sin fuentes"),
     "Kanonenkaliber zeigen": ("Show cannon calibres", "Afficher les calibres de canon", "Mostra i calibri da cannone", "Mostrar calibres de cañón"),
+    "Ursprüngliche Materialien zeigen": ("Show original materials", "Afficher les matériaux d'origine", "Mostra i materiali originali", "Mostrar materiales originales"),
+    "Zeichnet Geschoss und Hülse, wie die Patrone zuerst ausgegeben wurde, statt wie man sie heute meist findet.": (
+        "Draws bullet and case as the cartridge was first issued, instead of as it is mostly found today.",
+        "Dessine la balle et l'étui tels que la cartouche a d'abord été fournie, au lieu de tels qu'on la trouve surtout aujourd'hui.",
+        "Disegna palla e bossolo come la cartuccia fu distribuita all'inizio, invece che come si trova oggi di solito.",
+        "Dibuja la bala y la vaina como se emitió el cartucho por primera vez, en lugar de como se encuentra hoy en día."),
     "Unbelegt": ("Unsourced", "Sans source", "Senza fonte", "Sin fuentes"),
     "Unbelegt: Masse in calibre-data nicht gut belegt, Teile der Zeichnung geschätzt. Nur mit der Entwickleroption sichtbar.": (
         "Unsourced: dimensions not well sourced in calibre-data, parts of the drawing are estimated. Shown with the developer option only.",

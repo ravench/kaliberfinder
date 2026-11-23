@@ -6,6 +6,7 @@ struct CartridgeView: View {
     let pointsPerMM: Double
     /// Draws the case alone, without the bullet, to compare an empty case.
     var caseOnly = false
+    @AppStorage(showOriginalKey) private var original = false
 
     static let brass = Color(red: 0.89, green: 0.76, blue: 0.44)
     static let copper = Color(red: 0.72, green: 0.45, blue: 0.20)
@@ -21,11 +22,18 @@ struct CartridgeView: View {
     /// Airsoft BB: most are white plastic.
     static let plastic = Color(red: 0.97, green: 0.97, blue: 0.96)
 
+    /// UserDefaults key of the Developer Options switch «Ursprüngliche Materialien zeigen», off by default: on, bullet and case
+    /// are drawn as first issued (the posters' way); off, as most commonly found today (Raven, 2026-11-22).
+    static let showOriginalKey = "showOriginalMaterials"
+
     /// Fill of the bullet: steel cap (GP 1890), steel jacket (7.65x53 mm Argentine) or steel BB, bare lead,
-    /// plastic airsoft BB, the silver cupronickel jacket of early service rounds (GP 11), or copper jacket;
-    /// other balls and pellets are lead.
-    static func bulletFill(for cartridge: Cartridge) -> Color {
-        switch cartridge.outline.bulletMaterial {
+    /// plastic airsoft BB, the silver cupronickel jacket of early service rounds (the 6 mm Lee Navy), or copper
+    /// jacket; other balls and pellets are lead. Today's jacket unless `original`: the GP 11 is copper today.
+    static func bulletFill(for cartridge: Cartridge,
+                           original: Bool = UserDefaults.standard.bool(forKey: showOriginalKey)) -> Color {
+        let o = cartridge.outline
+        return switch original ? o.bulletMaterial : o.todayBulletMaterial ?? o.bulletMaterial {
+        case "copper": copper
         case "steel": steel
         case "cupronickel": nickel
         case "lead": lead
@@ -34,10 +42,13 @@ struct CartridgeView: View {
         }
     }
 
-    /// Fill of the case: brass unless the outline names another material; shot shells are plastic.
-    static func caseFill(for cartridge: Cartridge) -> Color {
+    /// Fill of the case: brass unless the outline names another material; shot shells are plastic. Today's case
+    /// unless `original`: the 7.62x54 mm R is mostly steel today, its first cases were brass.
+    static func caseFill(for cartridge: Cartridge,
+                         original: Bool = UserDefaults.standard.bool(forKey: showOriginalKey)) -> Color {
         if cartridge.kind == "shot" { return shotShell }
-        switch cartridge.outline.caseMaterial {
+        let o = cartridge.outline
+        switch original ? o.caseMaterial : o.todayCaseMaterial ?? o.caseMaterial {
         case "copper": return copper
         case "steel": return lacqueredSteel
         case "nickel": return nickel
@@ -49,8 +60,9 @@ struct CartridgeView: View {
 
     /// Fill of the case head, in the side view and seen from below: a separate head part is brass
     /// (shot shell) or steel (hybrid case); without one, the case's own material reaches the rim.
-    static func headFill(for cartridge: Cartridge) -> Color {
-        guard cartridge.outline.head != nil else { return caseFill(for: cartridge) }
+    static func headFill(for cartridge: Cartridge,
+                         original: Bool = UserDefaults.standard.bool(forKey: showOriginalKey)) -> Color {
+        guard cartridge.outline.head != nil else { return caseFill(for: cartridge, original: original) }
         return cartridge.outline.headMaterial == "steel" ? steel : brass
     }
 
@@ -69,10 +81,10 @@ struct CartridgeView: View {
         let o = cartridge.outline
         let lineWidth = Self.lineWidth(pointsPerMM: pointsPerMM)
         ZStack(alignment: .topLeading) {
-            part(o.case, fill: Self.caseFill(for: cartridge), lineWidth: lineWidth)
-            part(o.head, fill: Self.headFill(for: cartridge), lineWidth: lineWidth)
+            part(o.case, fill: Self.caseFill(for: cartridge, original: original), lineWidth: lineWidth)
+            part(o.head, fill: Self.headFill(for: cartridge, original: original), lineWidth: lineWidth)
             if !caseOnly {
-                part(o.bullet, fill: Self.bulletFill(for: cartridge), lineWidth: lineWidth)
+                part(o.bullet, fill: Self.bulletFill(for: cartridge, original: original), lineWidth: lineWidth)
                 part(o.patch, fill: Self.paper, lineWidth: lineWidth)
                 part(o.tip, fill: o.tipMaterial == "polymer" ? Self.polymer : Self.lead, lineWidth: lineWidth)
                 if let cavity = o.cavity {
