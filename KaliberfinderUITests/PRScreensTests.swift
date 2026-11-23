@@ -627,9 +627,9 @@ final class PRScreensTests: XCTestCase {
     func testLargeText() {
         application.launchArguments += ["-screenTourLength", "29.7", "-screenTourBullet", "9.0", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXL"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
-        scroll(); snap("45a-Grosse-Schrift-Start"); scroll(up: false)
-        if open(app.buttons["Masse eingeben"].firstMatch) { snap("45b-Grosse-Schrift-Treffer") }
-        if open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden")).firstMatch) { snap("45c-Grosse-Schrift-1zu1") }
+        scroll(); snap("47a-Grosse-Schrift-Start"); scroll(up: false)
+        if open(app.buttons["Masse eingeben"].firstMatch) { snap("47b-Grosse-Schrift-Treffer") }
+        if open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden")).firstMatch) { snap("47c-Grosse-Schrift-1zu1") }
     }
 
     private func open(_ element: XCUIElement) -> Bool {

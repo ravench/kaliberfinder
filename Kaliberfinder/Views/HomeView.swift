@@ -66,10 +66,14 @@ struct HomeView: View {
                 case .recognition:
                 Section {
                     Toggle(isOn: $includeObsolete) {
-                        Label { Text("Veraltete Kaliber berücksichtigen") } icon: { TagIcon(tag: .obsolete).frame(width: iconSize, height: iconSize).foregroundStyle(.secondary) }
+                        Label { Text("Veraltete Kaliber berücksichtigen").wrapped() } icon: {
+                            TagIcon(tag: .obsolete).frame(width: iconSize, height: iconSize).foregroundStyle(.secondary)
+                        }
                     }
                     Toggle(isOn: $includeRare) {
-                        Label { Text("Seltene Kaliber berücksichtigen") } icon: { TagIcon(tag: .rare).frame(width: iconSize, height: iconSize).foregroundStyle(.orange) }
+                        Label { Text("Seltene Kaliber berücksichtigen").wrapped() } icon: {
+                            TagIcon(tag: .rare).frame(width: iconSize, height: iconSize).foregroundStyle(.orange)
+                        }
                     }
                 } header: {
                     Text("Erkennung")
@@ -232,4 +236,9 @@ struct PickedPhoto: Identifiable, Hashable {
 
     static func == (a: PickedPhoto, b: PickedPhoto) -> Bool { a.id == b.id }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
+}
+
+private extension Text {
+    /// Every line shown: on iOS 26 at 235 % text size the switches' labels ended in «berücksichtig…» after three lines (PR screens of #305).
+    func wrapped() -> some View { lineLimit(nil).fixedSize(horizontal: false, vertical: true) }
 }
