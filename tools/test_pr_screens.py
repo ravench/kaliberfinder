@@ -193,7 +193,7 @@ class WorkflowTests(unittest.TestCase):
     def test_runs_on_gui_pull_requests(self):
         self.assertIn("pull_request:", self.workflow)
         self.assertIn("SCREENS_TOUR: ${{ needs.changes.outputs.screens }}", self.workflow)
-        self.assertIn("if: env.SCREENS_TOUR == 'true'", self.workflow)
+        self.assertIn("env.SCREENS_TOUR == 'true' && steps.build-tour.outcome == 'success'", self.workflow)
         self.assertRegex(self.workflow, r"runs-on: .*macos-2[6-9]")
 
     def test_reuses_the_build_and_its_simulator(self):

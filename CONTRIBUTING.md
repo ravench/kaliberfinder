@@ -22,4 +22,5 @@ invites work on it, under a written agreement with Simon Giotta. These notes are
   changed, before and after; if your screen is missing, add it to the tour in
   `KaliberfinderUITests/PRScreensTests.swift`. The tour takes about an hour, so it runs only for
   pull requests that change views, strings or images; for a visible change elsewhere add the
-  «screens» label and use «Re-run all jobs» on the Build.
+  «screens» label and use «Re-run all jobs» on the Build. While the repository is private and has
+  no Mac of its own, CI takes no screens (`tools/ci_changes.py`); attach your own then.

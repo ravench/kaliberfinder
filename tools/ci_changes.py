@@ -11,7 +11,8 @@ PR screens in that job; they take about an hour, so data bumps and logic changes
 LABELS: the pull request's label names, one per line.
 
 With BILLED_MAC=true in the environment (a private repo without its own Mac, where GitHub bills
-every Mac minute) the screens never run: they cost two Mac jobs of up to an hour each.
+every Mac minute) the screens never run: they cost two Mac jobs of up to an hour each. A change to
+the UI tests then still compiles the tour (`tour=true`), so it can't break unseen.
 """
 import fnmatch
 import os
@@ -55,10 +56,21 @@ def needs_screens(paths, labels=()):
             or any(fnmatch.fnmatch(p, pattern) for p in paths for pattern in SCREENS))
 
 
+def outputs(paths, labels=(), billed=False):
+    """The lines for $GITHUB_OUTPUT: mac, screens, and tour (compile the screen tour)."""
+    screens = not billed and needs_screens(paths, labels)
+    tour = screens or (billed and any(p.startswith("KaliberfinderUITests/") for p in _clean(paths)))
+    # The PR screens run in the Mac job, so the label starts it too.
+    mac = screens or needs_mac(paths)
+    return [f"{name}={'true' if value else 'false'}" for name, value in
+            [("mac", mac), ("screens", screens), ("tour", mac and tour)]]
+
+
 if __name__ == "__main__":
     paths = sys.stdin.readlines()
     labels = sys.argv[1].splitlines() if len(sys.argv) > 1 else []
-    screens = os.environ.get("BILLED_MAC") != "true" and needs_screens(paths, labels)
-    # The PR screens run in the Mac job, so the label starts it too.
-    print(f"mac={'true' if screens or needs_mac(paths) else 'false'}")
-    print(f"screens={'true' if screens else 'false'}")
+    billed = os.environ.get("BILLED_MAC") == "true"
+    print("\n".join(outputs(paths, labels, billed)))
+    if billed and needs_screens(paths, labels):
+        print("::notice::No PR screens: this private repo has no own Mac (MAC_RUNNER), and GitHub bills every Mac minute",
+              file=sys.stderr)
