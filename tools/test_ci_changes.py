@@ -74,6 +74,9 @@ class BilledMacTests(unittest.TestCase):
         # Nothing else builds the UI tests, so a broken tour would otherwise only show once screens are back.
         self.assertEqual(run_tool("KaliberfinderUITests/PRScreensTests.swift\n").stdout,
                          "mac=true\nscreens=false\ntour=true\n")
+        for path in ["project.yml", ".github/workflows/build.yml"]:
+            with self.subTest(path=path):
+                self.assertEqual(run_tool(f"{path}\n").stdout, "mac=true\nscreens=false\ntour=true\n")
 
     def test_says_why_the_screens_are_missing(self):
         self.assertIn("::notice::No PR screens", run_tool(f"{APP_PATHS[0]}\n").stderr)

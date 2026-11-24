@@ -12,7 +12,7 @@ LABELS: the pull request's label names, one per line.
 
 With BILLED_MAC=true in the environment (a private repo without its own Mac, where GitHub bills
 every Mac minute) the screens never run: they cost two Mac jobs of up to an hour each. A change to
-the UI tests then still compiles the tour (`tour=true`), so it can't break unseen.
+the UI tests, project.yml or build.yml then still compiles the tour (`tour=true`), so it can't break unseen.
 """
 import fnmatch
 import os
@@ -31,6 +31,8 @@ SCREENS = ["Kaliberfinder/Views/*", "Kaliberfinder/App/*", "Kaliberfinder/Resour
            "Kaliberfinder/Resources/*.xcstrings", "KaliberfinderUITests/PRScreensTests.swift", "tools/pr_screens.py",
            ".github/workflows/build.yml"]
 SCREENS_LABEL = "screens"
+# Besides the UI tests, what can break the tour's build (the KaliberfinderScreens scheme).
+TOUR_BUILD = ["project.yml", ".github/workflows/build.yml"]
 
 
 def _clean(paths):
@@ -59,7 +61,8 @@ def needs_screens(paths, labels=()):
 def outputs(paths, labels=(), billed=False):
     """The lines for $GITHUB_OUTPUT: mac, screens, and tour (compile the screen tour)."""
     screens = not billed and needs_screens(paths, labels)
-    tour = screens or (billed and any(p.startswith("KaliberfinderUITests/") for p in _clean(paths)))
+    tour = screens or (billed and any(p.startswith("KaliberfinderUITests/") or p in TOUR_BUILD
+                                      for p in _clean(paths)))
     # The PR screens run in the Mac job, so the label starts it too.
     mac = screens or needs_mac(paths)
     return [f"{name}={'true' if value else 'false'}" for name, value in
