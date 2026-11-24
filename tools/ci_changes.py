@@ -9,8 +9,12 @@ PR screens in that job; they take about an hour, so data bumps and logic changes
     gh api repos/OWNER/REPO/pulls/N/files --paginate --jq '.[].filename' | python3 tools/ci_changes.py [LABELS]
 
 LABELS: the pull request's label names, one per line.
+
+With BILLED_MAC=true in the environment (a private repo without its own Mac, where GitHub bills
+every Mac minute) the screens never run: they cost two Mac jobs of up to an hour each.
 """
 import fnmatch
+import os
 import sys
 
 # fnmatch's * also matches /, so "tools/*" covers the whole folder.
@@ -54,7 +58,7 @@ def needs_screens(paths, labels=()):
 if __name__ == "__main__":
     paths = sys.stdin.readlines()
     labels = sys.argv[1].splitlines() if len(sys.argv) > 1 else []
-    screens = needs_screens(paths, labels)
+    screens = os.environ.get("BILLED_MAC") != "true" and needs_screens(paths, labels)
     # The PR screens run in the Mac job, so the label starts it too.
     print(f"mac={'true' if screens or needs_mac(paths) else 'false'}")
     print(f"screens={'true' if screens else 'false'}")

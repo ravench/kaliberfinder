@@ -1,4 +1,5 @@
 """Which pull requests need the Mac build (tools/ci_changes.py)."""
+import os
 import subprocess
 import sys
 import unittest
@@ -47,6 +48,28 @@ class NeedsMacTests(unittest.TestCase):
                                         capture_output=True, text=True, check=True).stdout, "mac=false\nscreens=false\n")
         self.assertEqual(run(f"README.md\n{APP_PATHS[0]}\n"), "mac=true\nscreens=true\n")
         self.assertEqual(run("KaliberfinderTests/MatcherTests.swift\n"), "mac=true\nscreens=false\n")
+
+
+class BilledMacTests(unittest.TestCase):
+    """A private repo on GitHub's Macs pays per minute: no screens, not even by label."""
+
+    def run_tool(self, paths, labels="", billed="true"):
+        env = {**os.environ, "BILLED_MAC": billed}
+        return subprocess.run([sys.executable, str(TOOL), labels], input=paths, env=env,
+                              capture_output=True, text=True, check=True).stdout
+
+    def test_gui_changes_build_without_screens(self):
+        self.assertEqual(self.run_tool(f"{APP_PATHS[0]}\n"), "mac=true\nscreens=false\n")
+
+    def test_the_label_starts_no_mac_job(self):
+        self.assertEqual(self.run_tool("README.md\n", "screens"), "mac=false\nscreens=false\n")
+
+    def test_public_repo_or_own_mac_keeps_the_screens(self):
+        self.assertEqual(self.run_tool(f"{APP_PATHS[0]}\n", billed="false"), "mac=true\nscreens=true\n")
+
+    def test_the_workflow_sets_it_for_private_repos_without_their_own_mac(self):
+        build = (TOOL.parent.parent / ".github" / "workflows" / "build.yml").read_text()
+        self.assertIn("BILLED_MAC: ${{ github.event.repository.private && vars.MAC_RUNNER == '' }}", build)
 
 
 class NeedsScreensTests(unittest.TestCase):
