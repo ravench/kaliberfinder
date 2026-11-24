@@ -202,8 +202,7 @@ final class PRScreensTests: XCTestCase {
             search(query + "\n")
             guard open(app.staticTexts[name].firstMatch) else { return }
             if query == "GP 11" {
-                // The colour codes of calibre-data (tip and bases) sit under the measurements (Raven, 2026-11-11).
-                scroll(toRowAbove: "Zündhütchen")
+                // The colour codes of calibre-data (tip and bases) sit right under the drawing's links (Raven, 2026-11-11 and -24).
                 snap("39-GP11-Farbcodes")
                 scroll()  // the «Quellen» row at the end of the page (Raven, 2026-11-15)
                 snap("39b-GP11-Quellenzeile")
@@ -226,8 +225,7 @@ final class PRScreensTests: XCTestCase {
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         search(".303 British\n")
         guard open(app.staticTexts[".303 British"].firstMatch) else { return }
-        scroll(toRowAbove: "Zündhütchen")
-        snap("40-303-Zuendhuetchenringe")
+        snap("40-303-Zuendhuetchenringe")  // right under the drawing's links
     }
 
     /// A hollow point's cavity, shaded with a bold dashed line inside the full nose: the .357 SIG (TestFlight 2026-11-16/17).
@@ -239,15 +237,13 @@ final class PRScreensTests: XCTestCase {
         snap("46-357-SIG-Hohlspitze")
     }
 
-    /// A blank closed inside the case (9 mm P.A.K.): no bullet diameter on its page or in its drawing.
+    /// A blank closed inside the case (9 mm P.A.K.): no bullet diameter in its drawing.
     func testClosedBlank() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         search("PA Blanc\n")
         guard open(app.staticTexts["9 mm PA Blanc"].firstMatch) else { return }
-        scroll(toRowAbove: "Gesamtlänge") // «Masse» whole: the bullet's row was its last but one
         snap("41-Knallpatrone-PAK")
-        scroll(up: false)
         if open(app.buttons["Masszeichnung anzeigen"].firstMatch) {
             snap("41b-Knallpatrone-PAK-Masszeichnung")
         }
@@ -297,6 +293,16 @@ final class PRScreensTests: XCTestCase {
         guard app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), open(app.buttons["Alle Kaliber"].firstMatch) else { return }
         search("27x145\n")
         if open(app.staticTexts["27x145 mm B"].firstMatch) { snap("45d-Kanone-27x145-B") }
+    }
+
+    /// A partial entry has no drawing, so its page lists the measurements its sources give (Raven, 2026-11-24).
+    func testCannonWithoutADrawing() {
+        application.launchArguments += ["-showCannonCalibres", "YES", "-showUnsourcedCalibres", "YES"]
+        guard app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        search("30x114\n")
+        guard open(app.staticTexts["30x114 mm"].firstMatch) else { return }
+        XCTAssertTrue(app.staticTexts["Masse"].waitForExistence(timeout: 5), "A calibre without a drawing lists no measurements")
+        snap("45e-Kanone-ohne-Zeichnung")
     }
 
     /// The Swiss cadet round, found by the name on its box, with its own drawing; sourced since calibre-data #163,
@@ -424,7 +430,7 @@ final class PRScreensTests: XCTestCase {
         guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden 1:1")).firstMatch),
               app.navigationBars["1:1"].waitForExistence(timeout: 5),
               open(app.scrollViews.firstMatch.buttons.firstMatch) else { return } // the first drawing on screen
-        XCTAssertTrue(app.staticTexts["Masse"].waitForExistence(timeout: 5), "The calibre's page did not open from the 1:1 screen")
+        XCTAssertTrue(app.buttons["Masszeichnung anzeigen"].waitForExistence(timeout: 5), "The calibre's page did not open from the 1:1 screen")
         snap("33-1zu1-Kaliber")
     }
 
@@ -595,7 +601,7 @@ final class PRScreensTests: XCTestCase {
     }
 
     /// A belt wider than the rim (calibre-data #150): the .378 Weatherby Magnum is drawn with its belt, and its
-    /// measurements name the belt's diameter.
+    /// dimensioned drawing names the belt's diameter.
     func testBeltWiderThanTheRim() {
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
@@ -603,9 +609,7 @@ final class PRScreensTests: XCTestCase {
         guard open(app.staticTexts[".378 Weatherby Magnum"].firstMatch) else { return }
         snap("43-Guertel-378-Weatherby")
         // Its drawing: the belt's line on the belt, the base's on the body in front of it (tester, 2026-11-14).
-        if open(app.buttons["Masszeichnung anzeigen"].firstMatch) { snap("43c-Guertel-Masszeichnung"); app.navigationBars.buttons.firstMatch.tap() }
-        scroll(toRowAbove: "Gesamtlänge")
-        snap("43b-Guertel-378-Weatherby-Masse")
+        if open(app.buttons["Masszeichnung anzeigen"].firstMatch) { snap("43c-Guertel-Masszeichnung") }
     }
 
     /// A round taller than the screen at 1:1 scrolls (tester, 2026-11-14): the base first, the tip after a swipe down.
@@ -634,13 +638,20 @@ final class PRScreensTests: XCTestCase {
         snap("38-Bildschirm-kalibrieren")
     }
 
-    /// At 235 % text size (App Accessibility, 2026-11-23): the start screen's switches, the compare button and the 1:1 labels.
+    /// At 235 % text size (App Accessibility, 2026-11-23): the start screen's switches, the compare button, the 1:1 labels
+    /// and a calibre's measurements.
     func testLargeText() {
         application.launchArguments += ["-screenTourLength", "29.7", "-screenTourBullet", "9.0", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXL"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         scroll(); snap("47a-Grosse-Schrift-Start"); scroll(up: false)
         if open(app.buttons["Masse eingeben"].firstMatch) { snap("47b-Grosse-Schrift-Treffer") }
-        if open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden")).firstMatch) { snap("47c-Grosse-Schrift-1zu1") }
+        guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden")).firstMatch) else { return }
+        snap("47c-Grosse-Schrift-1zu1")
+        // A calibre's page lists its measurements at these sizes, where the drawing's labels stop growing (Raven, 2026-11-24).
+        guard open(app.scrollViews.firstMatch.buttons.firstMatch) else { return } // the first drawing on screen
+        scroll(toRowAbove: "Gesamtlänge")
+        XCTAssertTrue(app.staticTexts["Gesamtlänge"].exists, "No measurements on the calibre's page at a large text size")
+        snap("47d-Grosse-Schrift-Kaliber-Masse")
     }
 
     private func open(_ element: XCUIElement) -> Bool {

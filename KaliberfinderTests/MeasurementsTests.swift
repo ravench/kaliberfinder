@@ -207,4 +207,24 @@ final class MeasurementsTests: XCTestCase {
         let bullet = try XCTUnwrap(DimensionLayout.diameters(of: c).first)
         XCTAssertEqual(bullet.y, 3, accuracy: 0.15)
     }
+
+    /// The calibre's page lists the measurements only where the drawing can't show them (Raven, 2026-11-24): a partial
+    /// entry has no drawing, and from the accessibility text sizes on the drawing's labels stop growing.
+    func testThePageListsTheMeasurementsOnlyWithoutADrawing() throws {
+        let gp11 = try XCTUnwrap(CartridgeCatalog.cartridge(id: "7.5x55 mm Swiss (GP 11)"))
+        let cannon = try XCTUnwrap(CartridgeCatalog.cartridge(id: "30x114 mm"))
+        XCTAssertFalse(CartridgeDetailView.listsMeasurements(isDrawn: gp11.isDrawn, textSize: .large))
+        XCTAssertFalse(CartridgeDetailView.listsMeasurements(isDrawn: gp11.isDrawn, textSize: .xxxLarge))
+        XCTAssertTrue(CartridgeDetailView.listsMeasurements(isDrawn: gp11.isDrawn, textSize: .accessibility1))
+        XCTAssertTrue(CartridgeDetailView.listsMeasurements(isDrawn: cannon.isDrawn, textSize: .large))
+    }
+
+    /// Without the rows, the drawing is the only place for a belt's diameter: every belted calibre's drawing has one.
+    func testEveryBeltIsDrawn() {
+        let belted = CartridgeCatalog.all.filter { $0.dimensions.belt != nil }
+        XCTAssertGreaterThan(belted.count, 10)
+        for c in belted {
+            XCTAssertTrue(DimensionLayout.diameters(of: c).contains { $0.part == .belt }, "\(c.name): no belt on the drawing")
+        }
+    }
 }
