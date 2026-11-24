@@ -9,7 +9,7 @@ struct MeasurementsView: View {
     /// Size of a label (name over value): `DimensionLayout.label`, grown with the text size up to
     /// `DimensionLayout.largestLabel`. The width gets there at about xxLarge, the height at xxxLarge,
     /// where the text stops growing (`dynamicTypeSize` below): the drawing needs the room. Long values
-    /// then shrink a little to fit; the values in any size are on the calibre's page.
+    /// then shrink a little to fit; from the accessibility sizes on, the calibre's page lists the values too.
     @ScaledMetric(relativeTo: .caption) private var labelWidth = DimensionLayout.label.width
     @ScaledMetric(relativeTo: .caption) private var labelHeight = DimensionLayout.label.height
 
@@ -78,7 +78,7 @@ private struct Polylines: Shape {
 /// Where the parts of `MeasurementsView` go, in points inside `size`: the label column, the
 /// cartridge as large as fits, then the length lines and their labels; centred.
 struct DimensionLayout {
-    /// The measurements the detail screen lists.
+    /// The measurements of the drawing.
     enum Part {
         case bullet, neck, shoulder, base, belt, rim, overall, caseLength
 
@@ -236,7 +236,7 @@ struct DimensionLayout {
         (dimension.part.isDiameter ? "Ø " : "") + unit.format(dimension.mm, locale: locale)
     }
 
-    /// The diameters the detail screen lists, top to bottom, each where the drawing is that wide.
+    /// The diameters of the drawing, top to bottom, each where the drawing is that wide.
     static func diameters(of c: Cartridge) -> [Mark] {
         let d = c.dimensions, height = c.outline.height, mouth = height - d.caseLength
         let empty = OutlineGeometry(c.outline, includeBullet: false)

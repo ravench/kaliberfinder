@@ -45,7 +45,8 @@ struct CartridgeDetailView: View {
                     }
                 }
             }
-            if Self.listsMeasurements(isDrawn: cartridge.isDrawn, textSize: textSize) {
+            let listed = Self.listsMeasurements(isDrawn: cartridge.isDrawn, textSize: textSize)
+            if listed {
                 Section("Masse") {
                     // A partial entry's measurement no source gives is 0: no row.
                     if d.overallLength > 0 {
@@ -90,6 +91,10 @@ struct CartridgeDetailView: View {
                     LabeledContent("Zündhütchen", value: "\(primer.title.loc), \(unit.format(primer.diameter))")
                 } else if cartridge.kind == "rimfire" {
                     LabeledContent("Zündhütchen", value: "Randfeuer, ohne Zündhütchen".loc)
+                }
+                if cartridge.kind == "shot" && !listed {
+                    // The drawing is the crimped shell: the open length, its name's second number, is only here.
+                    LabeledContent("Hülsenlänge (offen)", value: unit.format(d.caseLength))
                 }
                 if let country = cartridge.country {
                     LabeledContent("Herkunft") {

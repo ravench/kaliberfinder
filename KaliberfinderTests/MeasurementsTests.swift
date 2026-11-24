@@ -219,6 +219,13 @@ final class MeasurementsTests: XCTestCase {
         XCTAssertTrue(CartridgeDetailView.listsMeasurements(isDrawn: cannon.isDrawn, textSize: .large))
     }
 
+    /// A shot shell is drawn crimped, so its open length is not on the drawing: the page keeps that row (12/70: 70 mm open).
+    func testAShotShellsOpenLengthIsNotDrawn() throws {
+        let shell = try XCTUnwrap(CartridgeCatalog.cartridge(id: "12/70"))
+        XCTAssertGreaterThan(shell.dimensions.caseLength, shell.dimensions.overallLength)
+        XCTAssertEqual(DimensionLayout.lengths(of: shell).map(\.part), [.overall])
+    }
+
     /// Without the rows, the drawing is the only place for a belt's diameter: every belted calibre's drawing has one.
     func testEveryBeltIsDrawn() {
         let belted = CartridgeCatalog.all.filter { $0.dimensions.belt != nil }

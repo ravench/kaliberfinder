@@ -295,6 +295,16 @@ final class PRScreensTests: XCTestCase {
         if open(app.staticTexts["27x145 mm B"].firstMatch) { snap("45d-Kanone-27x145-B") }
     }
 
+    /// A shot shell beside its drawing (Raven, 2026-11-24): the drawing is the crimped shell, the page names the open length.
+    func testShotShellPage() {
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        guard open(app.buttons["Alle Kaliber"].firstMatch) else { return }
+        search("12/70\n")
+        guard open(app.staticTexts["12/70"].firstMatch) else { return }
+        XCTAssertTrue(app.staticTexts["Hülsenlänge (offen)"].waitForExistence(timeout: 5), "The open length is missing")
+        snap("48-Schrotpatrone")
+    }
+
     /// A partial entry has no drawing, so its page lists the measurements its sources give (Raven, 2026-11-24).
     func testCannonWithoutADrawing() {
         application.launchArguments += ["-showCannonCalibres", "YES", "-showUnsourcedCalibres", "YES"]
@@ -638,17 +648,25 @@ final class PRScreensTests: XCTestCase {
         snap("38-Bildschirm-kalibrieren")
     }
 
-    /// At 235 % text size (App Accessibility, 2026-11-23): the start screen's switches, the compare button, the 1:1 labels
-    /// and a calibre's measurements.
+    /// At 235 % text size (App Accessibility, 2026-11-23): the start screen's switches, the compare button and the 1:1 labels.
     func testLargeText() {
         application.launchArguments += ["-screenTourLength", "29.7", "-screenTourBullet", "9.0", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXL"]
         XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
         scroll(); snap("47a-Grosse-Schrift-Start"); scroll(up: false)
         if open(app.buttons["Masse eingeben"].firstMatch) { snap("47b-Grosse-Schrift-Treffer") }
-        guard open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden")).firstMatch) else { return }
-        snap("47c-Grosse-Schrift-1zu1")
-        // A calibre's page lists its measurements at these sizes, where the drawing's labels stop growing (Raven, 2026-11-24).
-        guard open(app.scrollViews.firstMatch.buttons.firstMatch) else { return } // the first drawing on screen
+        if open(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Alle passenden")).firstMatch) { snap("47c-Grosse-Schrift-1zu1") }
+    }
+
+    /// At 235 % text size a calibre's page lists its measurements, where the drawing's labels stop growing (Raven,
+    /// 2026-11-24). Opened from the list: the 1:1 screen's first drawing can be a lookalike group's.
+    func testLargeTextCalibrePage() {
+        application.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXL"]
+        XCTAssertTrue(app.navigationBars["Kaliberfinder"].waitForExistence(timeout: 10), "Start screen missing")
+        let all = app.buttons["Alle Kaliber"].firstMatch
+        if !(all.waitForExistence(timeout: 5) && all.isHittable) { scroll() }
+        guard open(all) else { return }
+        search("GP 11\n")
+        guard open(app.staticTexts["7.5x55 mm Swiss (GP 11)"].firstMatch) else { return }
         scroll(toRowAbove: "Gesamtlänge")
         XCTAssertTrue(app.staticTexts["Gesamtlänge"].exists, "No measurements on the calibre's page at a large text size")
         snap("47d-Grosse-Schrift-Kaliber-Masse")
