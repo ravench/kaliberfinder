@@ -6,6 +6,7 @@ struct CartridgeDetailView: View {
     @AppStorage(LengthUnit.storageKey) private var unit: LengthUnit = .metric
     /// The training switch at the bottom of Settings (`TrainingCapture`): with it on, a series of this calibre starts from here.
     @AppStorage(TrainingCapture.enabledKey) private var trainingCapture = false
+    @Environment(\.dynamicTypeSize) private var textSize
 
     var body: some View {
         let d = cartridge.dimensions
@@ -44,34 +45,32 @@ struct CartridgeDetailView: View {
                     }
                 }
             }
-            Section("Masse") {
-                // A partial entry's measurement no source gives is 0: no row.
-                if d.overallLength > 0 {
-                    LabeledContent("Gesamtlänge", value: unit.format(d.overallLength))
-                }
-                if cartridge.hasCase {
-                    LabeledContent(cartridge.kind == "shot" ? "Hülsenlänge (offen)".loc : "Hülsenlänge".loc, value: unit.format(d.caseLength))
-                    LabeledContent("Randdurchmesser", value: unit.format(d.rim))
-                    if let belt = d.belt {
-                        LabeledContent("Gürteldurchmesser", value: unit.format(belt))
+            let listed = Self.listsMeasurements(isDrawn: cartridge.isDrawn, textSize: textSize)
+            if listed {
+                Section("Masse") {
+                    // A partial entry's measurement no source gives is 0: no row.
+                    if d.overallLength > 0 {
+                        LabeledContent("Gesamtlänge", value: unit.format(d.overallLength))
                     }
-                    if d.base > 0 {
-                        LabeledContent("Bodendurchmesser", value: unit.format(d.base))
+                    if cartridge.hasCase {
+                        LabeledContent(cartridge.kind == "shot" ? "Hülsenlänge (offen)".loc : "Hülsenlänge".loc, value: unit.format(d.caseLength))
+                        LabeledContent("Randdurchmesser", value: unit.format(d.rim))
+                        if let belt = d.belt {
+                            LabeledContent("Gürteldurchmesser", value: unit.format(belt))
+                        }
+                        if d.base > 0 {
+                            LabeledContent("Bodendurchmesser", value: unit.format(d.base))
+                        }
+                        if let shoulder = d.shoulder {
+                            LabeledContent("Schulterdurchmesser", value: unit.format(shoulder))
+                        }
+                        if cartridge.kind != "shot" && d.neck > 0 {
+                            LabeledContent("Halsdurchmesser", value: unit.format(d.neck))
+                        }
                     }
-                    if let shoulder = d.shoulder {
-                        LabeledContent("Schulterdurchmesser", value: unit.format(shoulder))
+                    if cartridge.kind != "shot" && !cartridge.blank {
+                        LabeledContent("Geschossdurchmesser", value: unit.format(d.bullet))
                     }
-                    if cartridge.kind != "shot" && d.neck > 0 {
-                        LabeledContent("Halsdurchmesser", value: unit.format(d.neck))
-                    }
-                }
-                if cartridge.kind != "shot" && !cartridge.blank {
-                    LabeledContent("Geschossdurchmesser", value: unit.format(d.bullet))
-                }
-                if let primer = cartridge.primer {
-                    LabeledContent("Zündhütchen", value: "\(primer.title.loc), \(unit.format(primer.diameter))")
-                } else if cartridge.kind == "rimfire" {
-                    LabeledContent("Zündhütchen", value: "Randfeuer, ohne Zündhütchen".loc)
                 }
             }
             if !cartridge.colourCodes.isEmpty {
@@ -88,6 +87,15 @@ struct CartridgeDetailView: View {
             Section {
                 LabeledContent("Kategorie", value: cartridge.category.loc)
                 LabeledContent("Bauart", value: Self.kindTitle(cartridge.kind).loc)
+                if let primer = cartridge.primer {
+                    LabeledContent("Zündhütchen", value: "\(primer.title.loc), \(unit.format(primer.diameter))")
+                } else if cartridge.kind == "rimfire" {
+                    LabeledContent("Zündhütchen", value: "Randfeuer, ohne Zündhütchen".loc)
+                }
+                if cartridge.kind == "shot" && !listed {
+                    // The drawing is the crimped shell: the open length, its name's second number, is only here.
+                    LabeledContent("Hülsenlänge (offen)", value: unit.format(d.caseLength))
+                }
                 if let country = cartridge.country {
                     LabeledContent("Herkunft") {
                         HStack(spacing: 6) {
@@ -119,6 +127,12 @@ struct CartridgeDetailView: View {
         .readableWidth()
         .navigationTitle(Text(verbatim: cartridge.name))
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    /// The measurements as rows, only where the dimensioned drawing can't show them (Raven, 2026-11-24): a calibre
+    /// without a drawing, and accessibility text sizes, past which the drawing's labels stop growing.
+    static func listsMeasurements(isDrawn: Bool, textSize: DynamicTypeSize) -> Bool {
+        !isDrawn || textSize.isAccessibilitySize
     }
 
     /// Points per mm of the 90 × 160 pt thumbnail.
