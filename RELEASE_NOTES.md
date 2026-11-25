@@ -14,22 +14,27 @@ Format: a `## <version>` heading, then `### de`, `### en`, `### fr`, `### it`, `
 ### de
 - Die Kaliberseite zeigt die Masse in der Masszeichnung statt in einer Liste. Die Liste bleibt für Kaliber ohne Zeichnung und bei sehr grosser Schrift.
 - Zündhütchen und, bei Schrotpatronen, die offene Hülsenlänge stehen neu bei den übrigen Angaben zum Kaliber.
+- Neue Kaliberdaten: Die .44-40 WCF steht neu unter «Langwaffe» statt «Schwarzpulver», Gürtelhülsen sind genauer gezeichnet, und einige alte Kaliber zeigen ihr Hülsenmaterial.
 
 ### en
 - The calibre page shows the dimensions in the dimensioned drawing instead of a list. The list stays for calibres without a drawing and at very large text sizes.
 - The primer and, for shotshells, the open case length now sit with the calibre's other details.
+- Updated calibre data: the .44-40 WCF is now listed under «Rifle» instead of «Black powder», belted cases are drawn more accurately, and some old calibres show their case material.
 
 ### fr
 - La page d'un calibre montre les dimensions sur le dessin coté au lieu d'une liste. La liste reste pour les calibres sans dessin et avec un très grand texte.
 - L'amorce et, pour les cartouches de chasse, la longueur de douille ouverte figurent désormais avec les autres informations du calibre.
+- Données de calibres mises à jour : la .44-40 WCF figure désormais sous «Arme longue» au lieu de «Poudre noire», les douilles à ceinture sont dessinées plus fidèlement et quelques anciens calibres montrent le matériau de leur douille.
 
 ### it
 - La pagina di un calibro mostra le misure nel disegno quotato invece che in un elenco. L'elenco resta per i calibri senza disegno e con testo molto grande.
 - L'innesco e, per le cartucce a pallini, la lunghezza del bossolo aperto ora si trovano con le altre informazioni sul calibro.
+- Dati dei calibri aggiornati: la .44-40 WCF ora si trova sotto «Arma lunga» invece di «Polvere nera», i bossoli con cintura sono disegnati con più precisione e alcuni calibri storici mostrano il materiale del bossolo.
 
 ### es
 - La página de un calibre muestra las medidas en el plano acotado en lugar de en una lista. La lista se mantiene para los calibres sin plano y con texto muy grande.
 - El pistón y, en los cartuchos de escopeta, la longitud de la vaina abierta aparecen ahora con los demás datos del calibre.
+- Datos de calibres actualizados: el .44-40 WCF figura ahora en «Arma larga» en lugar de «Pólvora negra», las vainas con cinturón se dibujan con más precisión y algunos calibres antiguos muestran el material de su vaina.
 
 ## 1.0.0
 
