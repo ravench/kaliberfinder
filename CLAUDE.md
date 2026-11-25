@@ -12,3 +12,6 @@
   but your change is visible, the tour does not reach that screen: add a stop for it in the same
   pull request. If your change is visible but touches none of those files (logic, data), add the
   «screens» label before you push, or use «Re-run all jobs» on the Build after adding it.
+- While the repo is private without its own Mac (`MAC_RUNNER` unset), CI takes no screens, since
+  GitHub bills every Mac minute; the Build says so in a notice. Then don't wait for the comment:
+  say in the pull request that it has no screenshots, or attach ones taken on the Mac.

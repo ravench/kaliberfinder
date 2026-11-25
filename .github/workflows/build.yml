@@ -27,7 +27,8 @@ jobs:
   changes:
     # Pull requests that change only docs, tools or other workflows skip the Mac job (see
     # tools/ci_changes.py); lint and the tools job still check them. Pushes to main always build.
-    # Pull requests that change how a screen looks, or carry the «screens» label, also get the PR screens in the Mac job.
+    # Pull requests that change how a screen looks, or carry the «screens» label, also get the PR screens in the Mac job,
+    # except on a private repo without its own Mac (BILLED_MAC).
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -35,13 +36,17 @@ jobs:
     outputs:
       mac: ${{ steps.check.outputs.mac }}
       screens: ${{ steps.check.outputs.screens }}
+      tour: ${{ steps.check.outputs.tour }}
     steps:
       - uses: actions/checkout@v5
       - id: check
         env:
           GH_TOKEN: ${{ github.token }}
+          # A private repo without its own Mac (MAC_RUNNER) pays for every GitHub Mac minute: no
+          # screens there (tools/ci_changes.py).
+          BILLED_MAC: ${{ github.event.repository.private && vars.MAC_RUNNER == '' }}
         run: |
-          if [ "${{ github.event_name }}" != pull_request ]; then printf 'mac=true\nscreens=false\n' >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [ "${{ github.event_name }}" != pull_request ]; then printf 'mac=true\nscreens=false\ntour=false\n' >> "$GITHUB_OUTPUT"; exit 0; fi
           PR="repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}"
           # Read now, not from the event: a re-run after adding the «screens» label takes the screens.
           LABELS=$(gh api "$PR" --jq '.labels[].name')
@@ -90,6 +95,8 @@ jobs:
       # Pull requests that change how a screen looks, or carry the «screens» label (tools/ci_changes.py),
       # also get the PR screens.
       SCREENS_TOUR: ${{ needs.changes.outputs.screens }}
+      # The tour is compiled for the screens, and on a billed Mac (no screens) when the UI tests change.
+      BUILD_TOUR: ${{ needs.changes.outputs.tour }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -120,7 +127,7 @@ jobs:
       # test bundle from the app's PlugIns, and the unit tests then fail to load it.
       - name: Build the screen tour
         id: build-tour
-        if: env.SCREENS_TOUR == 'true'
+        if: env.BUILD_TOUR == 'true'
         run: |
           xcodebuild build-for-testing \
             -project Kaliberfinder.xcodeproj \
@@ -165,7 +172,7 @@ jobs:
       # here, and on its base branch in the base-screens job at the same time, on a second Mac; the
       # screens job compares them. The tour reuses this build and simulator.
       - name: Screens of this pull request
-        if: "!cancelled() && steps.build-tour.outcome == 'success'"
+        if: "!cancelled() && env.SCREENS_TOUR == 'true' && steps.build-tour.outcome == 'success'"
         run: |
           mkdir -p "$SCREENS"
           xcrun simctl bootstatus "$UDID" >/dev/null
@@ -184,12 +191,12 @@ jobs:
             CODE_SIGNING_ALLOWED=NO | xcpretty
       - name: Export the screens
         # A tour that broke off still gives the screens it took.
-        if: "!cancelled() && steps.build-tour.outcome == 'success'"
+        if: "!cancelled() && env.SCREENS_TOUR == 'true' && steps.build-tour.outcome == 'success'"
         run: |
           xcrun xcresulttool export attachments --path "$SCREENS/after.xcresult" --output-path "$SCREENS/raw"
           python3 tools/pr_screens.py rename "$SCREENS/raw" "$SCREENS/after"
       - uses: actions/upload-artifact@v5
-        if: "!cancelled() && steps.build-tour.outcome == 'success'"
+        if: "!cancelled() && env.SCREENS_TOUR == 'true' && steps.build-tour.outcome == 'success'"
         with:
           name: pr-screens-after
           path: ${{ env.SCREENS }}/after

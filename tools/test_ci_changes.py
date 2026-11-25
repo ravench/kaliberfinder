@@ -1,4 +1,5 @@
 """Which pull requests need the Mac build (tools/ci_changes.py)."""
+import os
 import subprocess
 import sys
 import unittest
@@ -38,15 +39,65 @@ class NeedsMacTests(unittest.TestCase):
         self.assertTrue(needs_mac(["", "\n"]))
 
     def test_prints_a_github_output_line(self):
-        run = lambda text: subprocess.run(
-            [sys.executable, str(TOOL)], input=text, capture_output=True, text=True, check=True).stdout
-        self.assertEqual(run("README.md\ntools/localize.py\n"), "mac=false\nscreens=false\n")
-        self.assertEqual(subprocess.run([sys.executable, str(TOOL), "wip\nscreens"], input="README.md\n",
-                                        capture_output=True, text=True, check=True).stdout, "mac=true\nscreens=true\n")
-        self.assertEqual(subprocess.run([sys.executable, str(TOOL), ""], input="README.md\n",
-                                        capture_output=True, text=True, check=True).stdout, "mac=false\nscreens=false\n")
-        self.assertEqual(run(f"README.md\n{APP_PATHS[0]}\n"), "mac=true\nscreens=true\n")
-        self.assertEqual(run("KaliberfinderTests/MatcherTests.swift\n"), "mac=true\nscreens=false\n")
+        run = lambda text, *args: run_tool(text, *args, billed="").stdout
+        self.assertEqual(run("README.md\ntools/localize.py\n"), "mac=false\nscreens=false\ntour=false\n")
+        self.assertEqual(run("README.md\n", "wip\nscreens"), "mac=true\nscreens=true\ntour=true\n")
+        self.assertEqual(run("README.md\n", ""), "mac=false\nscreens=false\ntour=false\n")
+        self.assertEqual(run(f"README.md\n{APP_PATHS[0]}\n"), "mac=true\nscreens=true\ntour=true\n")
+        self.assertEqual(run("KaliberfinderTests/MatcherTests.swift\n"), "mac=true\nscreens=false\ntour=false\n")
+
+
+def run_tool(paths, labels="", billed="true"):
+    """The tool as the workflow runs it; billed="" leaves BILLED_MAC out."""
+    env = {k: v for k, v in os.environ.items() if k != "BILLED_MAC"}
+    if billed:
+        env["BILLED_MAC"] = billed
+    return subprocess.run([sys.executable, str(TOOL), labels], input=paths, env=env,
+                          capture_output=True, text=True, check=True)
+
+
+def changes_job():
+    build = (TOOL.parent.parent / ".github" / "workflows" / "build.yml").read_text()
+    return build.split("\n  changes:\n", 1)[1].split("\n  tools:\n", 1)[0]
+
+
+class BilledMacTests(unittest.TestCase):
+    """A private repo on GitHub's Macs pays per minute: no screens, not even by label."""
+
+    def test_gui_changes_build_without_screens(self):
+        self.assertEqual(run_tool(f"{APP_PATHS[0]}\n").stdout, "mac=true\nscreens=false\ntour=false\n")
+
+    def test_the_label_starts_no_mac_job(self):
+        self.assertEqual(run_tool("README.md\n", "screens").stdout, "mac=false\nscreens=false\ntour=false\n")
+
+    def test_a_tour_change_still_compiles_the_tour(self):
+        # Nothing else builds the UI tests, so a broken tour would otherwise only show once screens are back.
+        self.assertEqual(run_tool("KaliberfinderUITests/PRScreensTests.swift\n").stdout,
+                         "mac=true\nscreens=false\ntour=true\n")
+        for path in ["project.yml", ".github/workflows/build.yml"]:
+            with self.subTest(path=path):
+                self.assertEqual(run_tool(f"{path}\n").stdout, "mac=true\nscreens=false\ntour=true\n")
+
+    def test_says_why_the_screens_are_missing(self):
+        self.assertIn("::notice::No PR screens", run_tool(f"{APP_PATHS[0]}\n").stderr)
+        self.assertEqual(run_tool("KaliberfinderTests/MatcherTests.swift\n").stderr, "")
+
+    def test_public_repo_or_own_mac_keeps_the_screens(self):
+        self.assertEqual(run_tool(f"{APP_PATHS[0]}\n", billed="false").stdout, "mac=true\nscreens=true\ntour=true\n")
+
+    def test_the_changes_job_sets_it_for_private_repos_without_their_own_mac(self):
+        job = changes_job()
+        env = "BILLED_MAC: ${{ github.event.repository.private && vars.MAC_RUNNER == '' }}"
+        self.assertIn(env, job)
+        self.assertLess(job.index(env), job.index("python3 tools/ci_changes.py"))
+        self.assertIn("tour: ${{ steps.check.outputs.tour }}", job)
+
+    def test_only_the_screens_run_the_tour(self):
+        build = (TOOL.parent.parent / ".github" / "workflows" / "build.yml").read_text()
+        build_job = build.split("\n  build:\n", 1)[1].split("\n  base-screens:\n", 1)[0]
+        self.assertIn("if: env.BUILD_TOUR == 'true'", build_job)
+        self.assertEqual(build_job.count("steps.build-tour.outcome == 'success'"), 3)
+        self.assertEqual(build_job.count("env.SCREENS_TOUR == 'true' && steps.build-tour.outcome == 'success'"), 3)
 
 
 class NeedsScreensTests(unittest.TestCase):

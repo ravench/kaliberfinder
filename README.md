@@ -136,7 +136,8 @@ Register the runner only once the repo is private, and remove it (`./svc.sh unin
 `./config.sh remove`) before the repo ever goes public again: on a public repo, a pull request
 could change its own workflow to run code on that Mac. The Linux jobs stay on GitHub. While the
 Mac is off or asleep, or its runner user is logged out, the Mac jobs wait (up to 24 hours)
-instead of falling back to GitHub's runner.
+instead of falling back to GitHub's runner. While the repo is private and `MAC_RUNNER` is not
+set, GitHub bills every Mac minute, so pull requests get no PR screens (`tools/ci_changes.py`).
 
 1. On the Mac, make a standard macOS user just for the runner: CI erases and restarts its
    iPhone simulator on every run, and a user of its own keeps your simulators, keys and keychain
