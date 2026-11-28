@@ -10,8 +10,8 @@ PR screens in that job; they take about an hour, so data bumps and logic changes
 
 LABELS: the pull request's label names, one per line.
 
-With BILLED_MAC=true in the environment (a private repo without its own Mac, where GitHub bills
-every Mac minute) the screens never run: they cost two Mac jobs of up to an hour each. A change to
+With BILLED_MAC=true in the environment (set it in build.yml's changes job if a private repo ever
+runs on GitHub's Macs again, where GitHub bills every Mac minute) the screens never run: they cost two Mac jobs of up to an hour each. A change to
 the UI tests, project.yml or build.yml then still compiles the tour (`tour=true`), so it can't break unseen.
 """
 import fnmatch
@@ -75,5 +75,5 @@ if __name__ == "__main__":
     billed = os.environ.get("BILLED_MAC") == "true"
     print("\n".join(outputs(paths, labels, billed)))
     if billed and needs_screens(paths, labels):
-        print("::notice::No PR screens: this private repo has no own Mac (MAC_RUNNER), and GitHub bills every Mac minute",
+        print("::notice::No PR screens: BILLED_MAC is set, and GitHub bills every Mac minute",
               file=sys.stderr)

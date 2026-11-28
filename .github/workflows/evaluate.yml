@@ -30,9 +30,9 @@ permissions:
   contents: read
 jobs:
   evaluate:
-    # GitHub's Mac, or the self-hosted one named in the MAC_RUNNER variable while the repo is
-    # private (README, CI on your own Mac).
-    runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}
+    # GitHub's Mac, or the self-hosted Mac mini while the repo is private (README, CI on your
+    # own Mac).
+    runs-on: ${{ github.event.repository.private && fromJSON('["self-hosted", "macOS", "ARM64"]') || 'macos-26' }}
     env:
       # A fine-grained token that can only read ravench/kaliberfinder-training. Without it (forks
       # get no secrets) the job evaluates the public golden set instead.

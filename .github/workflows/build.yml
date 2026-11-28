@@ -27,8 +27,7 @@ jobs:
   changes:
     # Pull requests that change only docs, tools or other workflows skip the Mac job (see
     # tools/ci_changes.py); lint and the tools job still check them. Pushes to main always build.
-    # Pull requests that change how a screen looks, or carry the «screens» label, also get the PR screens in the Mac job,
-    # except on a private repo without its own Mac (BILLED_MAC).
+    # Pull requests that change how a screen looks, or carry the «screens» label, also get the PR screens in the Mac job.
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -42,9 +41,6 @@ jobs:
       - id: check
         env:
           GH_TOKEN: ${{ github.token }}
-          # A private repo without its own Mac (MAC_RUNNER) pays for every GitHub Mac minute: no
-          # screens there (tools/ci_changes.py).
-          BILLED_MAC: ${{ github.event.repository.private && vars.MAC_RUNNER == '' }}
         run: |
           if [ "${{ github.event_name }}" != pull_request ]; then printf 'mac=true\nscreens=false\ntour=false\n' >> "$GITHUB_OUTPUT"; exit 0; fi
           PR="repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}"
@@ -86,16 +82,16 @@ jobs:
   build:
     needs: changes
     if: needs.changes.outputs.mac == 'true'
-    # GitHub's Mac, or the self-hosted one named in the MAC_RUNNER variable while the repo is
-    # private (README, CI on your own Mac).
-    runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}
+    # GitHub's Mac, or the self-hosted Mac mini while the repo is private (README, CI on your
+    # own Mac).
+    runs-on: ${{ github.event.repository.private && fromJSON('["self-hosted", "macOS", "ARM64"]') || 'macos-26' }}
     permissions:
       contents: read
     env:
       # Pull requests that change how a screen looks, or carry the «screens» label (tools/ci_changes.py),
       # also get the PR screens.
       SCREENS_TOUR: ${{ needs.changes.outputs.screens }}
-      # The tour is compiled for the screens, and on a billed Mac (no screens) when the UI tests change.
+      # The tour is compiled for the screens (and, with BILLED_MAC, when the UI tests change).
       BUILD_TOUR: ${{ needs.changes.outputs.tour }}
     steps:
       - uses: actions/checkout@v5
@@ -211,7 +207,7 @@ jobs:
     # are the same: the tour then only runs here once per base.
     needs: changes
     if: needs.changes.outputs.screens == 'true'
-    runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}
+    runs-on: ${{ github.event.repository.private && fromJSON('["self-hosted", "macOS", "ARM64"]') || 'macos-26' }}
     permissions:
       contents: read
     steps:

@@ -85,11 +85,11 @@ class BilledMacTests(unittest.TestCase):
     def test_public_repo_or_own_mac_keeps_the_screens(self):
         self.assertEqual(run_tool(f"{APP_PATHS[0]}\n", billed="false").stdout, "mac=true\nscreens=true\ntour=true\n")
 
-    def test_the_changes_job_sets_it_for_private_repos_without_their_own_mac(self):
+    def test_the_changes_job_keeps_the_screens_on_private_repos(self):
+        # A private repo runs its Mac jobs on the Mac mini, which costs nothing per minute.
         job = changes_job()
-        env = "BILLED_MAC: ${{ github.event.repository.private && vars.MAC_RUNNER == '' }}"
-        self.assertIn(env, job)
-        self.assertLess(job.index(env), job.index("python3 tools/ci_changes.py"))
+        self.assertNotIn("BILLED_MAC", job)
+        self.assertIn("python3 tools/ci_changes.py", job)
         self.assertIn("tour: ${{ steps.check.outputs.tour }}", job)
 
     def test_only_the_screens_run_the_tour(self):
