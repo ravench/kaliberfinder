@@ -6,7 +6,7 @@ ranking in automatic mode. It holds **no photos**: each shot is Vision's mask
 (`vision-instances.png`, in Git LFS) and a trimmed `shot.json` with the LiDAR scale, the size of
 the upright photo the mask covers (`mask.imageWidth`, `mask.imageHeight`) and what the phone
 found when the shot was taken. The photos stay in the private training repo
-(`ravench/kaliberfinder-training`), which also decides which shots are golden (`splits.json`) and
+(`ch-giotta/kaliberfinder-training`), which also decides which shots are golden (`splits.json`) and
 writes this folder with `tools/export_golden.py`. Don't edit the packages here by hand.
 
 Same layout as a capture package (see `../Captures/README.md`), without photo and depth map.

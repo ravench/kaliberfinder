@@ -300,13 +300,13 @@ jobs:
         run: '[ -z "$UDID" ] || xcrun simctl shutdown "$UDID" 2>/dev/null || true'
   screens:
     # Compares both tours and comments with the screens that look different. The images are kept
-    # in ravench/app-screens on its kaliberfinder/pr-screens branch, outside this repo's history;
+    # in ch-giotta/app-screens on its kaliberfinder/pr-screens branch, outside this repo's history;
     # all screens of a run are in its pr-screens-after and pr-screens-before artifacts.
     needs: [changes, build, base-screens]
     if: "!cancelled() && needs.changes.outputs.screens == 'true'"
     runs-on: ubuntu-latest
     permissions:
-      contents: read # the images go to ravench/app-screens with a deploy key
+      contents: read # the images go to ch-giotta/app-screens with a deploy key
       pull-requests: write # and the comment on the pull request
     env:
       SCREENS: ${{ github.workspace }}/screens
@@ -344,12 +344,12 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          SCREENS_REPO: ravench/app-screens
+          SCREENS_REPO: ch-giotta/app-screens
           SCREENS_BRANCH: ${{ github.event.repository.name }}/pr-screens
           SCREENS_DEPLOY_KEY: ${{ secrets.SCREENS_DEPLOY_KEY }}
         run: |
           cd "$SCREENS"
-          # ravench/app-screens accepts this repo's deploy key; the host key is GitHub's published one.
+          # ch-giotta/app-screens accepts this repo's deploy key; the host key is GitHub's published one.
           [ -n "$SCREENS_DEPLOY_KEY" ] || { echo "::error::The SCREENS_DEPLOY_KEY secret is missing"; exit 1; }
           # Both in RUNNER_TEMP, which is emptied after the job, not in the runner's home folder.
           KEY="$RUNNER_TEMP/app-screens" HOSTS="$RUNNER_TEMP/known_hosts"

@@ -4,7 +4,7 @@ import UniformTypeIdentifiers
 
 /// Training data for the photo detection (Raven, 2026-11-04): a series of photos of one known
 /// calibre with everything the phone measured, saved as a package for the private training repo
-/// (ravench/kaliberfinder-training), whose golden shots come back as KaliberfinderTests/Golden.
+/// (ch-giotta/kaliberfinder-training), whose golden shots come back as KaliberfinderTests/Golden.
 ///
 /// A tool for invited helpers, switched on at the bottom of Settings (off by default). It can be removed
 /// with TrainingCapture*.swift, TrainingRecorder.swift and its lines in SettingsView and LiDARCamera.
