@@ -1,10 +1,10 @@
-"""Mac jobs run on GitHub's Mac, or on the self-hosted Mac in MAC_RUNNER while the repo is private."""
+"""Mac jobs run on GitHub's Mac, or on the self-hosted Mac mini while the repo is private."""
 import re
 import unittest
 from pathlib import Path
 
 WORKFLOWS = Path(__file__).resolve().parent.parent / ".github" / "workflows"
-MAC = "runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}"
+MAC = """runs-on: ${{ github.event.repository.private && fromJSON('["self-hosted", "macOS", "ARM64"]') || 'macos-26' }}"""
 
 
 def workflow(name):

@@ -30,13 +30,13 @@ permissions:
   contents: read
 jobs:
   evaluate:
-    # GitHub's Mac, or the self-hosted one named in the MAC_RUNNER variable while the repo is
-    # private (README, CI on your own Mac).
-    runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}
+    # GitHub's Mac, or the self-hosted Mac mini while the repo is private (README, CI on your
+    # own Mac).
+    runs-on: ${{ github.event.repository.private && fromJSON('["self-hosted", "macOS", "ARM64"]') || 'macos-26' }}
     env:
-      # A fine-grained token that can only read ravench/kaliberfinder-training. Without it (forks
-      # get no secrets) the job evaluates the public golden set instead.
-      TRAINING_TOKEN: ${{ secrets.TRAINING_DATA_TOKEN }}
+      # The private key of a read-only deploy key on ch-giotta/kaliberfinder-training. Without it
+      # (forks get no secrets) the job evaluates the public golden set instead.
+      TRAINING_KEY: ${{ secrets.TRAINING_DEPLOY_KEY }}
       COMPARE: ${{ github.event_name == 'pull_request' && github.base_ref || inputs.compare }}
       HOLDOUT: ${{ inputs.holdout && '--holdout' || '' }}
     steps:
@@ -47,18 +47,18 @@ jobs:
           # Every branch, for the comparison.
           fetch-depth: 0
       - uses: actions/checkout@v5
-        if: env.TRAINING_TOKEN != ''
+        if: env.TRAINING_KEY != ''
         with:
-          repository: ravench/kaliberfinder-training
-          token: ${{ secrets.TRAINING_DATA_TOKEN }}
+          repository: ch-giotta/kaliberfinder-training
+          ssh-key: ${{ secrets.TRAINING_DEPLOY_KEY }}
           path: training
           lfs: true
       - name: Shots
         run: |
-          if [ -n "$TRAINING_TOKEN" ]; then
+          if [ -n "$TRAINING_KEY" ]; then
             echo "SHOTS=$PWD/training" >> "$GITHUB_ENV"
           else
-            echo "::notice::No TRAINING_DATA_TOKEN secret: evaluating the golden set only"
+            echo "::notice::No TRAINING_DEPLOY_KEY secret: evaluating the golden set only"
             echo "SHOTS=$PWD/KaliberfinderTests/Golden" >> "$GITHUB_ENV"
           fi
           echo "REPORT=$RUNNER_TEMP/evaluation" >> "$GITHUB_ENV"

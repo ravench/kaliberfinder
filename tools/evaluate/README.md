@@ -1,7 +1,7 @@
 # Evaluation tool
 
 Runs the app's photo analysis on every shot of the private training data
-([ravench/kaliberfinder-training](https://github.com/ravench/kaliberfinder-training)) and reports how
+([ch-giotta/kaliberfinder-training](https://github.com/ch-giotta/kaliberfinder-training)) and reports how
 often the right calibre comes first, in automatic mode as the phone starts. Use it to tune the
 matching rules against all photos; the build CI only replays the small golden set
 (`KaliberfinderTests/GoldenSetTests.swift`), with the same scoring (`KaliberfinderTests/Evaluation.swift`).
@@ -73,8 +73,9 @@ would. The phone's list shows calibres that look exactly the same from the side,
 *Evaluate matching* (`.github/workflows/evaluate.yml`) runs the tool on a macOS runner: start it by
 hand from the Actions tab on a branch, for example a tuning pull request's. It compares with `main`
 (or the branch you name) and puts the report on the run's page and in its `evaluation` download.
-It checks out the training repo with the `TRAINING_DATA_TOKEN` secret, a fine-grained token
-that can only read that repo's contents. Without the secret, as on forks, it evaluates the golden set.
+It checks out the training repo with the `TRAINING_DEPLOY_KEY` secret, the private half of a
+read-only deploy key on that repo (`ssh-keygen -t ed25519`, then `gh repo deploy-key add` on the
+training repo and `gh secret set TRAINING_DEPLOY_KEY` here). Without the secret, as on forks, it evaluates the golden set.
 Pull requests that change the tool run it too.
 
 Held-back shots are for a last look before merging a tuning change (`--holdout`, or the *holdout*

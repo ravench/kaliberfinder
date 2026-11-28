@@ -11,6 +11,7 @@ import tempfile
 import unittest
 
 import pr_screens
+import test_mac_runner
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RT = "com.apple.CoreSimulator.SimRuntime.iOS-"
@@ -220,7 +221,7 @@ class WorkflowTests(unittest.TestCase):
         # About 30 minutes each: side by side the screens come about half an hour sooner (2026-11-23).
         base = self.job("base-screens")
         self.assertIn("    needs: changes\n", base)
-        self.assertIn("runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}", base)
+        self.assertIn(test_mac_runner.MAC, base)
         self.assertIn("git checkout -q HEAD^1", base)
         self.assertNotIn("git checkout -q HEAD^1", self.job("build"))
         self.assertIn("name: pr-screens-before", base)

@@ -211,7 +211,7 @@ class WorkflowTests(unittest.TestCase):
 
     def test_builds_with_ios_26_sdk(self):
         # App Store Connect rejects builds made with an SDK older than iOS 26 (Xcode 26); a
-        # self-hosted Mac (MAC_RUNNER) needs Xcode 26 too (README).
+        # self-hosted Mac mini needs Xcode 26 too (README).
         for name in ("build.yml", "testflight.yml"):
             with open(os.path.join(testflight.ROOT, ".github", "workflows", name)) as f:
                 runners = re.findall(r"runs-on:.*macos-(\d+)", f.read())

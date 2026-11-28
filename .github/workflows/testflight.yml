@@ -113,9 +113,9 @@ jobs:
     concurrency:
       group: testflight
       cancel-in-progress: false
-    # GitHub's Mac, or the self-hosted one named in the MAC_RUNNER variable while the repo is
-    # private (README, CI on your own Mac).
-    runs-on: ${{ github.event.repository.private && vars.MAC_RUNNER || 'macos-26' }}
+    # GitHub's Mac, or the self-hosted Mac mini while the repo is private (README, CI on your
+    # own Mac).
+    runs-on: ${{ github.event.repository.private && fromJSON('["self-hosted", "macOS", "ARM64"]') || 'macos-26' }}
     permissions:
       # Tags the uploaded commit (testflight/<build>): the next build's notes start after it.
       contents: write
