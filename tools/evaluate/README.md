@@ -1,7 +1,7 @@
 # Evaluation tool
 
 Runs the app's photo analysis on every shot of the private training data
-([ravench/kaliberfinder-training](https://github.com/ravench/kaliberfinder-training)) and reports how
+([ch-giotta/kaliberfinder-training](https://github.com/ch-giotta/kaliberfinder-training)) and reports how
 often the right calibre comes first, in automatic mode as the phone starts. Use it to tune the
 matching rules against all photos; the build CI only replays the small golden set
 (`KaliberfinderTests/GoldenSetTests.swift`), with the same scoring (`KaliberfinderTests/Evaluation.swift`).

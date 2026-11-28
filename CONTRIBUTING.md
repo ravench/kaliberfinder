@@ -10,7 +10,7 @@ invites work on it, under a written agreement with Simon Giotta. These notes are
 - German is Swiss Standard German, in the neutral tone of [srf.ch](https://www.srf.ch): ss (never ß),
   «guillemets», a decimal point (10.9), Swiss words (Website, Bildschirm, Service, Total), and «du».
   `tools/test_translations.py` fails on ß, „“, a decimal comma and the German words it lists.
-- Cartridge data comes from the shared [calibre-data](https://github.com/ravench/calibre-data)
+- Cartridge data comes from the shared [calibre-data](https://github.com/ch-giotta/calibre-data)
   repository, a git submodule at `calibre-data/` (run `git submodule update --init` after
   cloning). Fix dimensions there, then `python3 tools/bump_data.py` here: it moves the submodule
   and regenerates the catalogue JSON, the strings and, when the fields changed, the test fixture's

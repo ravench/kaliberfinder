@@ -52,7 +52,7 @@ parentheses.
 - **Units** (Einheiten): metric (mm, the default) or US imperial (inches, three decimals,
   ruler in 1/16 in). Data and matching stay in millimetres; only display and input change.
 
-The cartridge data comes from the shared [calibre-data](https://github.com/ravench/calibre-data)
+The cartridge data comes from the shared [calibre-data](https://github.com/ch-giotta/calibre-data)
 repository (a git submodule at `calibre-data/`, also used by Schiesstagebuch), one TOML file per
 calibre. Dimensions are rounded reference values (C.I.P. and SAAMI where they exist, else reference books; each
 calibre lists its sources there), not reloading data.

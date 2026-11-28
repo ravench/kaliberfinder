@@ -2,7 +2,7 @@
 
 Raven asked for one night of tuning: start the photo matching from scratch, see what the best
 reachable result is, and only then compare with the app's algorithm, on all of the training data
-(222 shots in 23 packages of [ravench/kaliberfinder-training](https://github.com/ravench/kaliberfinder-training)).
+(222 shots in 23 packages of [ch-giotta/kaliberfinder-training](https://github.com/ch-giotta/kaliberfinder-training)).
 This folder is that experiment, in Python, so it can iterate in seconds. Nothing here ships in
 the app; what proved out is listed under *Worth porting*.
 

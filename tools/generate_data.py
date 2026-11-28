@@ -4,7 +4,7 @@
     python3 tools/generate_data.py [--preview preview.html]
 
 The catalogue (cartridges.py) and the outline drawing (outline.py) live in the shared
-calibre-data repository (github.com/ravench/calibre-data), included at calibre-data/ and
+calibre-data repository (github.com/ch-giotta/calibre-data), included at calibre-data/ and
 also used by Schiesstagebuch and the calibre poster.
 
 Each entry carries its dimensions in millimetres (for the 1:1 drawing and the
