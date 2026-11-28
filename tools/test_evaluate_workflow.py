@@ -16,10 +16,11 @@ class EvaluateWorkflowTests(unittest.TestCase):
         self.assertRegex(text, r"compare:\n\s+description: .*\n\s+default: main")
         self.assertIn("--compare", text)
 
-    def test_it_reads_the_training_repo_with_its_own_token_and_lfs(self):
+    def test_it_reads_the_training_repo_with_its_own_deploy_key_and_lfs(self):
         text = EVALUATE.read_text()
-        checkout = text.split("repository: ravench/kaliberfinder-training", 1)[1].split("\n      - ", 1)[0]
-        self.assertIn("token: ${{ secrets.TRAINING_DATA_TOKEN }}", checkout)
+        checkout = text.split("repository: ch-giotta/kaliberfinder-training", 1)[1].split("\n      - ", 1)[0]
+        self.assertIn("ssh-key: ${{ secrets.TRAINING_DEPLOY_KEY }}", checkout)
+        self.assertNotIn("token:", checkout)
         self.assertIn("lfs: true", checkout)
 
     def test_only_the_report_is_uploaded(self):
